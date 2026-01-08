@@ -1,0 +1,108 @@
+@extends('layouts.backoffice.master')
+@section('cuerpobackoffice')  
+<style>
+  .custom-form textarea, .custom-form input[type="text"], .custom-form input[type=date], .custom-form input[type=password], .custom-form input[type=button] {
+      float: left;
+      border: 1px solid #eee;
+      background: #f9f9f9;
+      width: 100%;
+      padding: 15px 20px 15px 55px;
+      border-radius: 6px;
+      color: #666;
+      font-size: 13px;
+      -webkit-appearance: none;
+  }
+  table.width200,table.rwd_auto {border:1px solid #4db7fe;width:100%;margin:0 0 50px 0}
+      .width200 th,.rwd_auto th {    background: #4db7fe;padding: 5px;text-align: center;color: white;}
+      .width200 td,.rwd_auto td {border-bottom:1px solid #ccc;padding:10px;text-align:center}
+      .width200 tr:last-child td, .rwd_auto tr:last-child td{border:0}
+
+    .rwd {width:100%;overflow:auto;}
+      .rwd table.rwd_auto {width:auto;min-width:100%}
+        .rwd_auto th,.rwd_auto td {white-space: nowrap;}
+
+    @media only screen and (max-width: 760px), (min-width: 768px) and (max-width: 1024px)  
+    {
+
+      table.width200, .width200 thead, .width200 tbody, .width200 th, .width200 td, .width200 tr { display: block; }
+
+      .width200 thead tr { position: absolute;top: -9999px;left: -9999px; }
+
+      .width200 tr { border: 1px solid #ccc; }
+
+      .width200 td { border: none;border-bottom: 1px solid #ccc; position: relative;padding-left: 50%;text-align:left }
+
+      .width200 td:before {  position: absolute; top: 6px; left: 6px; width: 45%; padding-right: 10px; white-space: nowrap;}
+
+      .width200 td:nth-of-type(1):before { content: "Nombre"; }
+      .width200 td:nth-of-type(2):before { content: "Apellidos"; }
+      .width200 td:nth-of-type(3):before { content: "Cargo"; }
+      .width200 td:nth-of-type(4):before { content: "Twitter"; }
+      .width200 td:nth-of-type(5):before { content: "ID"; }
+
+      .descarto {display:none;}
+      .fontsize {font-size:10px}
+    }
+
+    /* Smartphones (portrait and landscape) ----------- */
+    @media only screen and (min-width : 320px) and (max-width : 480px) 
+    {
+      body { width: 320px; }
+      .descarto {display:none;}
+    }
+
+    /* iPads (portrait and landscape) ----------- */
+    @media only screen and (min-width: 768px) and (max-width: 1024px) 
+    {
+      body { width: 495px; }
+      .descarto {display:none;}
+      .fontsize {font-size:10px}
+    }
+    .btn {
+      padding: 5px 10px;
+      border-radius: 6px;
+      background: #4db7fe;
+      color: #ffffff;
+      font-weight: 600;
+    }
+</style>
+<div class="list-single-main-wrapper fl-wrap">
+    <div class="breadcrumbs gradient-bg fl-wrap">
+      <span>Reporte Tienda</span>
+<!--       <a class="btn btn-warning" href="{{ url('backoffice/evento/create') }}"><i class="fa fa-angle-right"></i> Registrar</a></a> -->
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table" id="tabla-contenido">
+        <thead class="thead-dark">
+          <tr>
+            <th>TIENDA</th>
+            <th>DIRECCIÓN</th>
+            <th>CATEGORIA</th>
+            <th>CORREO</th>
+            <th>TELÉFONO</th>
+            <th>FECHA</th>
+          </tr>
+        </thead>
+        @include('app.tablesearch',[
+            'searchs'=>['nombreTienda','direccionTienda','nombreCategoria','correoTienda','numerotelefonoTienda','fechainicio'],
+            'search_url'=> url('backoffice/reportetienda')
+        ])
+        <tbody>
+          @foreach($tiendas as $value)
+          <tr>
+            <td  style="padding:1pc">{{ $value->nombreTienda }}</td>
+            <td>{{ $value->direccionTienda }}</td>
+            <td>{{ $value->nombreCategoria }}</td>
+            <td>{{ $value->correoTienda }}</td>
+            <td>{{ $value->numerotelefonoTienda }}</td>
+            <td>{{ date_format(date_create($value->fechainicio),'d-m-Y') }}</td>
+          </tr>
+          @endforeach
+        </tbody>
+    </table>
+    {{ $tiendas->links('app.tablepagination', ['results' => $tiendas]) }}
+</div> 
+
+@endsection

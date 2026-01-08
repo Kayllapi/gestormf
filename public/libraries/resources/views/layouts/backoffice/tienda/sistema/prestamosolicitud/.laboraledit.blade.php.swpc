@@ -1,0 +1,2053 @@
+
+    <div class="tabs-container" id="tab-laboral">
+        <ul class="tabs-menu">
+            <li class="current"><a href="#tab-laboral-0">General</a></li>
+            <li><a href="#tab-laboral-12">Documentos</a></li>
+            <li class="tab-laboral-ingreso" style="display:none;"><a href="#tab-laboral-4">Ingresos</a></li>
+            <li class="tab-laboral-venta" style="display:none;"><a href="#tab-laboral-2">Ventas</a></li>
+            <li class="tab-laboral-costodeventa" style="display:none;"><a href="#tab-laboral-3">Costo de Ventas</a></li>
+            <li class="tab-laboral-servicio" style="display:none;"><a href="#tab-laboral-8">Ingresos</a></li>
+            <li class="tab-laboral-gastooperativo" style="display:none;"><a href="#tab-laboral-5">Gastos Operativos</a></li>
+            <li class="tab-laboral-pagodecuota" style="display:none;"><a href="#tab-laboral-6">Pago de Cuotas (Bancos)</a></li>
+            <li class="tab-laboral-otroingreso" style="display:none;"><a href="#tab-laboral-10">Otros Ingresos</a></li>
+            <li class="tab-laboral-gastofamiliar" style="display:none;"><a href="#tab-laboral-9">Gastos Familiares</a></li>
+            <li class="tab-laboral-otrogasto" style="display:none;"><a href="#tab-laboral-11">Otros Gastos</a></li>
+        </ul>
+        <div class="tab">
+            <div id="tab-laboral-0" class="tab-content" style="display: block;">
+                <form action="javascript:;" 
+                      class="form-laboraledit"
+                      onsubmit="callback({
+                                route:  'backoffice/tienda/sistema/{{ $tienda->id }}/prestamosolicitud/{{ $prestamocredito->id }}',
+                                method: 'PUT',
+                                carga: '#carga-credito',
+                                data:   {
+                                    view: 'editar-laboral',
+                                    ventas: seleccinar_ventas(),
+                                    compras: seleccinar_compras(),
+                                    ingresos: seleccinar_ingresos(),
+                                    egresogastos: seleccinar_egresogastos(),
+                                    egresogastosfamiliares: seleccinar_egresogastosfamiliares(),
+                                    egresopagos: seleccinar_egresopagos(),
+                                    otroingresos: seleccinar_otroingresos(),
+                                    otrogastos: seleccinar_otrogastos(),
+                                    servicios: seleccinar_servicios(),
+                                    check_estadolicenciafuncionamiento: $('#check_estadolicenciafuncionamiento:checked').val(),
+                                    check_estadocontratoalquiler: $('#check_estadocontratoalquiler:checked').val(),
+                                    check_estadoficharuc: $('#check_estadoficharuc:checked').val(),
+                                    check_estadoreciboagua: $('#check_estadoreciboagua:checked').val(),
+                                    check_estadoreciboluz: $('#check_estadoreciboluz:checked').val(),
+                                    check_estadoboletacompra: $('#check_estadoboletacompra:checked').val(),
+                                    laboral_editar_idprestamo_codigolicenciafuncionamiento: $('#laboral_editar_idprestamo_codigolicenciafuncionamiento').val(),
+                                    laboral_editar_idprestamo_duenocontratoalquiler: $('#laboral_editar_idprestamo_duenocontratoalquiler').val(),
+                                    laboral_editar_idprestamo_rucficharuc: $('#laboral_editar_idprestamo_rucficharuc').val(),
+                                    laboral_editar_idprestamo_emisioncomprobanteficharuc: $('#laboral_editar_idprestamo_emisioncomprobanteficharuc').val(),
+                                    laboral_editar_idprestamo_codigoreciboagua: $('#laboral_editar_idprestamo_codigoreciboagua').val(),
+                                    laboral_editar_idprestamo_codigoreciboluz: $('#laboral_editar_idprestamo_codigoreciboluz').val(),
+                                    imagensuministro_anterior: $('#imagensuministro_anterior').val(),
+                                    imagenfachada_anterior: $('#imagenfachada_anterior').val(),
+                                },
+                                dataimage:   {
+                                    imagensuministro: '#imagensuministro',
+                                    imagenfachada: '#imagenfachada'
+                                }
+                            },
+                            function(resultado){
+                                removecarga({input:'#carga-credito'});
+                                laboral_edit();
+                                resultado_index();
+                            },this)">
+                    <div class="row">
+                            <div class="col-sm-6">
+                                <label>Fuente de Ingreso *</label>
+                                <select id="laboral_editar_idfuenteingreso">
+                                    <option></option>
+                                    @foreach ($fuenteingreso as $value)
+                                    <option value="{{ $value->id }}">{{ $value->nombre }}</option>
+                                    @endforeach
+                                </select>
+                                <label>Giro *</label>
+                                <select id="laboral_editar_idprestamo_giro">
+                                    <option></option>
+                                    @foreach ($giro as $value)
+                                    <option value="{{ $value->id }}">{{ $value->nombre }}</option>
+                                    @endforeach
+                                </select>
+                                <label>Actividad *</label>
+                                <input type="text" value="{{$prestamolaboral!=''?$prestamolaboral->actividad:''}}" id="laboral_editar_idprestamo_actividad" onkeyup="texto_mayucula(this)">
+                                <label>Nombre de Negocio *</label>
+                                <input type="text" value="{{$prestamolaboral!=''?$prestamolaboral->nombrenegocio:''}}" id="laboral_editar_idprestamo_nombrenegocio" onkeyup="texto_mayucula(this)">
+                                
+                                <label>Labora Desde (mes / año) *</label>
+                                <div class="row">
+                                  <div class="col-sm-6">
+                                      <select id="laboral_editar_labora_desdemes">
+                                              <option></option>
+                                              <option value="1">ENERO</option>
+                                              <option value="2">FEBRERO</option>
+                                              <option value="3">MARZO</option>
+                                              <option value="4">ABRIL</option>
+                                              <option value="5">MAYO</option>
+                                              <option value="6">JUNIO</option>
+                                              <option value="7">JULIO</option>
+                                              <option value="8">AGOSTO</option>
+                                              <option value="9">SEPTIEMBRE</option>
+                                              <option value="10">OCTUBRE</option>
+                                              <option value="11">NOVIEMBRE</option>
+                                              <option value="12">DICIEMBRE</option>
+                                      </select>
+                                  </div>
+                                  <div class="col-sm-6">
+                                          <select id="laboral_editar_labora_desdeanio">
+                                              <option></option>
+                                              <?php $fecha_reside = Carbon\Carbon::now()->format('Y') ?>
+                                              @for($i=$fecha_reside;$i>1950;$i--)
+                                              <option value="{{$fecha_reside}}">{{$fecha_reside}}</option>
+                                              <?php $fecha_reside=$fecha_reside-1 ?>
+                                              @endfor
+                                          </select>
+                                  </div>
+                                </div>
+                                <label>Días Laborables:</label>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <table style="width: 100%;">
+                                              <tr>
+                                                <td style="text-align: right;padding: 10px;font-weight: bold;">Lunes</td>
+                                                <td>
+                                                  <div class="onoffswitch">
+                                                      <input type="checkbox" class="onoffswitch-checkbox seleccionar_lunes" id="seleccionar_lunes" <?php echo $prestamolaboral!=''?($prestamolaboral->labora_lunes == "si"? 'checked':''):'checked' ?> onclick="calcularmontoventa(),calcularmontocompra(),calcularmontoservicio()">
+                                                      <label class="onoffswitch-label" for="seleccionar_lunes">
+                                                          <span class="onoffswitch-inner"></span>
+                                                          <span class="onoffswitch-switch"></span>
+                                                      </label> 
+                                                  </div>
+                                                </td>
+                                              </tr>
+                                              <tr>
+                                                <td style="text-align: right;padding: 10px;font-weight: bold;">Martes</td>
+                                                <td>
+                                                  <div class="onoffswitch">
+                                                      <input type="checkbox" class="onoffswitch-checkbox seleccionar_martes" id="seleccionar_martes" <?php echo  $prestamolaboral!=''?($prestamolaboral->labora_martes == "si"? 'checked':''):'checked' ?> onclick="calcularmontoventa(),calcularmontocompra(),calcularmontoservicio()">
+                                                      <label class="onoffswitch-label" for="seleccionar_martes">
+                                                          <span class="onoffswitch-inner"></span>
+                                                          <span class="onoffswitch-switch"></span>
+                                                      </label> 
+                                                  </div>
+                                                </td>
+                                              </tr>
+                                            </table>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <table style="width: 100%;">
+                                              <tr>
+                                                <td style="text-align: right;padding: 10px;font-weight: bold;">Miercoles</td>
+                                                <td>
+                                                  <div class="onoffswitch">
+                                                      <input type="checkbox" class="onoffswitch-checkbox seleccionar_miercoles" id="seleccionar_miercoles" <?php echo $prestamolaboral!=''?($prestamolaboral->labora_miercoles == "si"? 'checked':''):'checked' ?> onclick="calcularmontoventa(),calcularmontocompra(),calcularmontoservicio()">
+                                                      <label class="onoffswitch-label" for="seleccionar_miercoles">
+                                                          <span class="onoffswitch-inner"></span>
+                                                          <span class="onoffswitch-switch"></span>
+                                                      </label> 
+                                                  </div>
+                                                </td>
+                                              </tr>
+                                              <tr>
+                                                <td style="text-align: right;padding: 10px;font-weight: bold;">Jueves</td>
+                                                <td>
+                                                  <div class="onoffswitch">
+                                                      <input type="checkbox" class="onoffswitch-checkbox seleccionar_jueves" id="seleccionar_jueves" <?php echo $prestamolaboral!=''?($prestamolaboral->labora_jueves == "si"? 'checked':''):'checked' ?> onclick="calcularmontoventa(),calcularmontocompra(),calcularmontoservicio()">
+                                                      <label class="onoffswitch-label" for="seleccionar_jueves">
+                                                          <span class="onoffswitch-inner"></span>
+                                                          <span class="onoffswitch-switch"></span>
+                                                      </label> 
+                                                  </div>
+                                                </td>
+                                              </tr>
+                                            </table>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <table style="width: 100%;">
+                                              <tr>
+                                                <td style="text-align: right;padding: 10px;font-weight: bold;">Viernes</td>
+                                                <td>
+                                                  <div class="onoffswitch">
+                                                      <input type="checkbox" class="onoffswitch-checkbox seleccionar_viernes" id="seleccionar_viernes" <?php echo $prestamolaboral!=''?($prestamolaboral->labora_viernes == "si"? 'checked':''):'checked' ?> onclick="calcularmontoventa(),calcularmontocompra(),calcularmontoservicio()">
+                                                      <label class="onoffswitch-label" for="seleccionar_viernes">
+                                                          <span class="onoffswitch-inner"></span>
+                                                          <span class="onoffswitch-switch"></span>
+                                                      </label> 
+                                                  </div>
+                                                </td>
+                                              </tr>
+                                              <tr>
+                                                <td style="text-align: right;padding: 10px;font-weight: bold;">Sábados</td>
+                                                <td>
+                                                  <div class="onoffswitch">
+                                                      <input type="checkbox" class="onoffswitch-checkbox seleccionar_sabados" id="seleccionar_sabados" <?php echo $prestamolaboral!=''?($prestamolaboral->labora_sabados == "si"? 'checked':''):'checked' ?> onclick="calcularmontoventa(),calcularmontocompra(),calcularmontoservicio()">
+                                                      <label class="onoffswitch-label" for="seleccionar_sabados">
+                                                          <span class="onoffswitch-inner"></span>
+                                                          <span class="onoffswitch-switch"></span>
+                                                      </label> 
+                                                  </div>
+                                                </td>
+                                              </tr>
+                                            </table>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <table style="width: 100%;">
+                                              <tr>
+                                                <td style="text-align: right;padding: 10px;font-weight: bold;">Domingos</td>
+                                                <td>
+                                                  <div class="onoffswitch">
+                                                      <input type="checkbox" class="onoffswitch-checkbox seleccionar_domingos" id="seleccionar_domingos" <?php echo $prestamolaboral!=''?($prestamolaboral->labora_domingos == "si"? 'checked':''):'checked' ?> onclick="calcularmontoventa(),calcularmontocompra(),calcularmontoservicio()">
+                                                      <label class="onoffswitch-label" for="seleccionar_domingos">
+                                                          <span class="onoffswitch-inner"></span>
+                                                          <span class="onoffswitch-switch"></span>
+                                                      </label> 
+                                                  </div>
+                                                </td>
+                                              </tr>
+                                            </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label>Ubigeo *</label>
+                                <select id="laboral_editar_idubigeo" onchange="seleccionar_ubicacion($('#laboral_editar_idubigeo').select2('data')[0].ubicacion)">
+                                    <option value="{{$prestamolaboral!=''?$prestamolaboral->idubigeo:$prestamocredito->clienteidubigeo}}">{{$prestamolaboral!=''?$prestamolaboral->nombre_ubigeo:$prestamocredito->clienteubigeonombre}}</option>
+                                </select>
+                                <label>Dirección *</label>
+                                <input type="text" value="{{$prestamolaboral!=''?$prestamolaboral->direccion:$prestamocredito->clientedireccion}}" id="laboral_editar_direccion" onkeyup="texto_mayucula(this)">
+                                <label>Referencia</label>
+                                <input type="text" value="{{$prestamolaboral!=''?$prestamolaboral->referencia:$prestamocredito->clientereferencia}}" id="laboral_editar_referencia" onkeyup="texto_mayucula(this)">
+                                <label>Ubicación (Mapa)</label>
+                                <div id="laboral_editar_mapa" style="height: 355px;width: 100%;margin-bottom: 5px;border-radius: 5px;border: 1px solid #aaaaaa;"></div>
+                                <input type="hidden" value="{{$prestamolaboral!=''?$prestamolaboral->mapa_latitud:'-12.071871667822409'}}" id="laboral_editar_mapa_latitud"/>
+                                <input type="hidden" value="{{$prestamolaboral!=''?$prestamolaboral->mapa_longitud:'-75.21026847919165'}}" id="laboral_editar_mapa_longitud"/>
+                            </div>
+                    </div> 
+                </form>
+            </div>
+            <div id="tab-laboral-12" class="tab-content" style="display: block;">
+                <div class="tabs-container" id="tab-laboraldocumento">
+                    <ul class="tabs-menu">
+                        <li class="current"><a href="#tab-laboraldocumento-0">Fotografias de Negocio</a></li>
+                        <li><a href="#tab-laboraldocumento-1">Licencia de Funcionamiento</a></li>
+                        <li><a href="#tab-laboraldocumento-2">Contrato de Alquiler</a></li>
+                        <li><a href="#tab-laboraldocumento-3">Ficha RUC</a></li>
+                        <li><a href="#tab-laboraldocumento-4">Recibo de Agua</a></li>
+                        <li><a href="#tab-laboraldocumento-5">Recibo de Luz</a></li>
+                        <li><a href="#tab-laboraldocumento-6">Boletas de Compra</a></li>
+                    </ul>
+                    <div class="tab" style="margin-bottom: 5px;">
+                        <div id="tab-laboraldocumento-0" class="tab-content" style="display: block;">
+                          
+                            <div class="tabs-container" id="tab-laboraldocumentonegocio">
+                                <ul class="tabs-menu">
+                                    <li class="current"><a href="#tab-laboraldocumentonegocio-1">Mercaderia</a></li>
+                                    <li><a href="#tab-laboraldocumentonegocio-2">Suministro</a></li>
+                                    <li><a href="#tab-laboraldocumentonegocio-3">Fachada</a></li>
+                                </ul>
+                                <div class="tab" style="margin-bottom: 5px;">
+                                    <div id="tab-laboraldocumentonegocio-1" class="tab-content" style="display: block;">
+                                        <form action="javascript:;" 
+                                               class="form-imagennegocio"
+                                               onsubmit="callback({
+                                                   route:  'backoffice/tienda/sistema/{{ $tienda->id }}/prestamosolicitud/{{ $prestamocredito->id }}',
+                                                   method: 'PUT',
+                                                   carga: '#carga-credito',
+                                                   data:{
+                                                       view :  'editar-imagennegocio'
+                                                   }
+                                               },
+                                               function(resultado){
+                                                     $('#cont-imagennegocio').css('display','block');
+                                                     removecarga({input:'#carga-credito'});
+                                                     load('#cont-imagennegocio');
+                                                     $.ajax({
+                                                         url:'{{url('backoffice/tienda/sistema/'.$tienda->id.'/prestamosolicitud/show-imagennegocio')}}',
+                                                         type:'GET',
+                                                         data: {
+                                                             idprestamocredito : {{$prestamocredito->id}}
+                                                         },
+                                                         success: function (respuesta){
+                                                             $('#cont-imagennegocio').html(respuesta['imagenes']);
+                                                         }
+                                                     });
+                                               },this)">
+                                             <div class="fuzone" style="height: 180px;">
+                                                 <div class="fu-text">
+                                                     <span><i class="fa fa-picture-o"></i> Haga clic aquí o suelte para cargar</span>
+                                                 </div>
+                                                 <input type="file" class="upload" id="imagennegocio" multiple>
+                                             </div>
+                                         </form> 
+                                         <div class="gallery-items grid-small-pad list-single-gallery three-coulms lightgallery" id="cont-imagennegocio" style="float:none;"></div>    
+                                    </div>
+                                    <div id="tab-laboraldocumentonegocio-2" class="tab-content" style="display: none;">  
+                                        <div class="fuzone" id="cont-imagensuministro">
+                                            <div class="fu-text"><span><i class="fa fa-picture-o"></i> Haga clic aquí o suelte para cargar</span></div>
+                                            <input type="file" class="upload" id="imagensuministro">
+                                            <input type="hidden" id="imagensuministro_anterior">
+                                        </div>
+                                        <div id="resultado-imagensuministro" style="display: none;"></div>
+                                    </div>
+                                    <div id="tab-laboraldocumentonegocio-3" class="tab-content" style="display: none;">   
+                                        <div class="fuzone" id="cont-imagenfachada">
+                                            <div class="fu-text"><span><i class="fa fa-picture-o"></i> Haga clic aquí o suelte para cargar</span></div>
+                                            <input type="file" class="upload" id="imagenfachada">
+                                            <input type="hidden" id="imagenfachada_anterior">
+                                        </div>
+                                        <div id="resultado-imagenfachada" style="display: none;"></div>
+                                    </div>
+                                </div>
+                            </div>    
+                        </div>
+                        <div id="tab-laboraldocumento-1" class="tab-content" style="display: none;">
+                             <div class="mensaje-info">
+                               <i class="fa fa-warning"></i> ¿Tiene Licencia de Funcionamiento?
+                             </div>
+                             <div style="width: 100%;text-align: center;float: left;margin-bottom: 5px;">
+                                 <div class="onoffswitch" style="margin: auto;">
+                                     <input type="checkbox" class="onoffswitch-checkbox check_estadolicenciafuncionamiento" id="check_estadolicenciafuncionamiento"  
+                                            <?php echo $prestamolaboral!=''?($prestamolaboral->estadolicenciafuncionamiento=='on'?'checked="true"':''):'' ?>>
+                                     <label class="onoffswitch-label" for="check_estadolicenciafuncionamiento">
+                                     <span class="onoffswitch-inner"></span>
+                                     <span class="onoffswitch-switch"></span>
+                                     </label>
+                                 </div>
+                             </div>
+                             <div id="cont-estadolicenciafuncionamiento" <?php echo $prestamolaboral!=''?($prestamolaboral->estadolicenciafuncionamiento!='on'?'style="display: none;"':''):'style="display: none;"' ?>>
+                                 <label>Código de Licencia de Funcionamiento *</label>
+                                 <input type="text" value="{{$prestamolaboral!=''?$prestamolaboral->codigolicenciafuncionamiento:''}}" id="laboral_editar_idprestamo_codigolicenciafuncionamiento" onkeyup="texto_mayucula(this)">
+                                 <label>Licencia de Funcionamiento Fotografiado</label>
+                                 <form action="javascript:;" 
+                                       class="form-imagenlicenciafuncionamiento"
+                                       onsubmit="callback({
+                                           route:  'backoffice/tienda/sistema/{{ $tienda->id }}/prestamosolicitud/{{ $prestamocredito->id }}',
+                                           method: 'PUT',
+                                           carga: '#carga-credito',
+                                           data:{
+                                               view :  'editar-imagenlicenciafuncionamiento'
+                                           }
+                                       },
+                                       function(resultado){
+                                             $('#cont-imagenlicenciafuncionamiento').css('display','block');
+                                             removecarga({input:'#carga-credito'});
+                                             load('#cont-imagenlicenciafuncionamiento');
+                                             $.ajax({
+                                                 url:'{{url('backoffice/tienda/sistema/'.$tienda->id.'/prestamosolicitud/show-imagenlicenciafuncionamiento')}}',
+                                                 type:'GET',
+                                                 data: {
+                                                     idprestamocredito : {{$prestamocredito->id}}
+                                                 },
+                                                 success: function (respuesta){
+                                                     $('#cont-imagenlicenciafuncionamiento').html(respuesta['imagenes']);
+                                                 }
+                                             });
+                                       },this)">
+                                     <div class="fuzone" style="height: 180px;">
+                                         <div class="fu-text">
+                                             <span><i class="fa fa-picture-o"></i> Haga clic aquí o suelte para cargar</span>
+                                         </div>
+                                         <input type="file" class="upload" id="imagenlicenciafuncionamiento" multiple>
+                                     </div>
+                                 </form> 
+                                 <div class="gallery-items grid-small-pad list-single-gallery three-coulms lightgallery" id="cont-imagenlicenciafuncionamiento" style="float:none;"></div>
+                            </div>    
+                        </div>
+                        <div id="tab-laboraldocumento-2" class="tab-content" style="display: none;">
+                             <div class="mensaje-info">
+                               <i class="fa fa-warning"></i> ¿Tiene Contrato de Alquiler?
+                             </div>
+                             <div style="width: 100%;text-align: center;float: left;margin-bottom: 5px;">
+                                 <div class="onoffswitch" style="margin: auto;">
+                                     <input type="checkbox" class="onoffswitch-checkbox check_estadocontratoalquiler" id="check_estadocontratoalquiler"  
+                                            <?php echo $prestamolaboral!=''?($prestamolaboral->estadocontratoalquiler=='on'?'checked="true"':''):'' ?>>
+                                     <label class="onoffswitch-label" for="check_estadocontratoalquiler">
+                                     <span class="onoffswitch-inner"></span>
+                                     <span class="onoffswitch-switch"></span>
+                                     </label>
+                                 </div>
+                             </div>
+                             <div id="cont-estadocontratoalquiler" <?php echo $prestamolaboral!=''?($prestamolaboral->estadocontratoalquiler!='on'?'style="display: none;"':''):'style="display: none;"' ?>>
+                                <label>Dueño de Establecimiento *</label>
+                                <input type="text" value="{{$prestamolaboral!=''?$prestamolaboral->duenocontratoalquiler:''}}" id="laboral_editar_idprestamo_duenocontratoalquiler" onkeyup="texto_mayucula(this)">
+                                 <label>Contrato de Alquiler Fotografiado</label>
+                                 <form action="javascript:;" 
+                                       class="form-imagencontratoalquiler"
+                                       onsubmit="callback({
+                                           route:  'backoffice/tienda/sistema/{{ $tienda->id }}/prestamosolicitud/{{ $prestamocredito->id }}',
+                                           method: 'PUT',
+                                           carga: '#carga-credito',
+                                           data:{
+                                               view :  'editar-imagencontratoalquiler'
+                                           }
+                                       },
+                                       function(resultado){
+                                             $('#cont-imagencontratoalquiler').css('display','block');
+                                             removecarga({input:'#carga-credito'});
+                                             load('#cont-imagencontratoalquiler');
+                                             $.ajax({
+                                                 url:'{{url('backoffice/tienda/sistema/'.$tienda->id.'/prestamosolicitud/show-imagencontratoalquiler')}}',
+                                                 type:'GET',
+                                                 data: {
+                                                     idprestamocredito : {{$prestamocredito->id}}
+                                                 },
+                                                 success: function (respuesta){
+                                                     $('#cont-imagencontratoalquiler').html(respuesta['imagenes']);
+                                                 }
+                                             });
+                                       },this)">
+                                     <div class="fuzone" style="height: 180px;">
+                                         <div class="fu-text">
+                                             <span><i class="fa fa-picture-o"></i> Haga clic aquí o suelte para cargar</span>
+                                         </div>
+                                         <input type="file" class="upload" id="imagencontratoalquiler" multiple>
+                                     </div>
+                                 </form> 
+                                 <div class="gallery-items grid-small-pad list-single-gallery three-coulms lightgallery" id="cont-imagencontratoalquiler" style="float:none;"></div>
+                            </div>  
+                        </div>
+                        <div id="tab-laboraldocumento-3" class="tab-content" style="display: none;">
+                             <div class="mensaje-info">
+                               <i class="fa fa-warning"></i> ¿Tiene Ficha RUC?
+                             </div>
+                             <div style="width: 100%;text-align: center;float: left;margin-bottom: 5px;">
+                                 <div class="onoffswitch" style="margin: auto;">
+                                     <input type="checkbox" class="onoffswitch-checkbox check_estadoficharuc" id="check_estadoficharuc"  
+                                            <?php echo $prestamolaboral!=''?($prestamolaboral->estadoficharuc=='on'?'checked="true"':''):'' ?>>
+                                     <label class="onoffswitch-label" for="check_estadoficharuc">
+                                     <span class="onoffswitch-inner"></span>
+                                     <span class="onoffswitch-switch"></span>
+                                     </label>
+                                 </div>
+                             </div>
+                             <div id="cont-estadoficharuc" <?php echo $prestamolaboral!=''?($prestamolaboral->estadoficharuc!='on'?'style="display: none;"':''):'style="display: none;"' ?>>
+                                 <label>RUC *</label>
+                                 <input type="text" value="{{$prestamolaboral!=''?$prestamolaboral->rucficharuc:''}}" id="laboral_editar_idprestamo_rucficharuc" onkeyup="texto_mayucula(this)">
+                                 <label>Comprobantes que Emite *</label>
+                                 <select id="laboral_editar_idprestamo_emisioncomprobanteficharuc">
+                                     <option></option>
+                                     <option value="1">FACTURA</option>
+                                     <option value="2">BOLETA</option>
+                                     <option value="3">FACTURA Y BOLETA</option>
+                                 </select>
+                                 <label>Ficha RUC Fotografiado</label>
+                                 <form action="javascript:;" 
+                                       class="form-imagenficharuc"
+                                       onsubmit="callback({
+                                           route:  'backoffice/tienda/sistema/{{ $tienda->id }}/prestamosolicitud/{{ $prestamocredito->id }}',
+                                           method: 'PUT',
+                                           carga: '#carga-credito',
+                                           data:{
+                                               view :  'editar-imagenficharuc'
+                                           }
+                                       },
+                                       function(resultado){
+                                             $('#cont-imagenficharuc').css('display','block');
+                                             removecarga({input:'#carga-credito'});
+                                             load('#cont-imagenficharuc');
+                                             $.ajax({
+                                                 url:'{{url('backoffice/tienda/sistema/'.$tienda->id.'/prestamosolicitud/show-imagenficharuc')}}',
+                                                 type:'GET',
+                                                 data: {
+                                                     idprestamocredito : {{$prestamocredito->id}}
+                                                 },
+                                                 success: function (respuesta){
+                                                     $('#cont-imagenficharuc').html(respuesta['imagenes']);
+                                                 }
+                                             });
+                                       },this)">
+                                     <div class="fuzone" style="height: 180px;">
+                                         <div class="fu-text">
+                                             <span><i class="fa fa-picture-o"></i> Haga clic aquí o suelte para cargar</span>
+                                         </div>
+                                         <input type="file" class="upload" id="imagenficharuc" multiple>
+                                     </div>
+                                 </form> 
+                                 <div class="gallery-items grid-small-pad list-single-gallery three-coulms lightgallery" id="cont-imagenficharuc" style="float:none;"></div>
+                            </div> 
+                        </div>
+                        <div id="tab-laboraldocumento-4" class="tab-content" style="display: none;">
+                             <div class="mensaje-info">
+                               <i class="fa fa-warning"></i> ¿Tiene Recibo de Agua?
+                             </div>
+                             <div style="width: 100%;text-align: center;float: left;margin-bottom: 5px;">
+                                 <div class="onoffswitch" style="margin: auto;">
+                                     <input type="checkbox" class="onoffswitch-checkbox check_estadoreciboagua" id="check_estadoreciboagua"  
+                                            <?php echo $prestamolaboral!=''?($prestamolaboral->estadoreciboagua=='on'?'checked="true"':''):'' ?>>
+                                     <label class="onoffswitch-label" for="check_estadoreciboagua">
+                                     <span class="onoffswitch-inner"></span>
+                                     <span class="onoffswitch-switch"></span>
+                                     </label>
+                                 </div>
+                             </div>
+                             <div id="cont-estadoreciboagua" <?php echo $prestamolaboral!=''?($prestamolaboral->estadoreciboagua!='on'?'style="display: none;"':''):'style="display: none;"' ?>>
+                                 <label>Código de Suministro *</label>
+                                 <input type="text" value="{{$prestamolaboral!=''?$prestamolaboral->codigoreciboagua:''}}" id="laboral_editar_idprestamo_codigoreciboagua" onkeyup="texto_mayucula(this)">
+                                 <label>Recibo de Agua Fotografiado</label>
+                                 <form action="javascript:;" 
+                                       class="form-imagenreciboagua"
+                                       onsubmit="callback({
+                                           route:  'backoffice/tienda/sistema/{{ $tienda->id }}/prestamosolicitud/{{ $prestamocredito->id }}',
+                                           method: 'PUT',
+                                           carga: '#carga-credito',
+                                           data:{
+                                               view :  'editar-imagenreciboagua'
+                                           }
+                                       },
+                                       function(resultado){
+                                             $('#cont-imagenreciboagua').css('display','block');
+                                             removecarga({input:'#carga-credito'});
+                                             load('#cont-imagenreciboagua');
+                                             $.ajax({
+                                                 url:'{{url('backoffice/tienda/sistema/'.$tienda->id.'/prestamosolicitud/show-imagenreciboagua')}}',
+                                                 type:'GET',
+                                                 data: {
+                                                     idprestamocredito : {{$prestamocredito->id}}
+                                                 },
+                                                 success: function (respuesta){
+                                                     $('#cont-imagenreciboagua').html(respuesta['imagenes']);
+                                                 }
+                                             });
+                                       },this)">
+                                     <div class="fuzone" style="height: 180px;">
+                                         <div class="fu-text">
+                                             <span><i class="fa fa-picture-o"></i> Haga clic aquí o suelte para cargar</span>
+                                         </div>
+                                         <input type="file" class="upload" id="imagenreciboagua" multiple>
+                                     </div>
+                                 </form> 
+                                 <div class="gallery-items grid-small-pad list-single-gallery three-coulms lightgallery" id="cont-imagenreciboagua" style="float:none;"></div>
+                            </div> 
+                        </div>
+                        <div id="tab-laboraldocumento-5" class="tab-content" style="display: none;">
+                             <div class="mensaje-info">
+                               <i class="fa fa-warning"></i> ¿Tiene Recibo de Luz?
+                             </div>
+                             <div style="width: 100%;text-align: center;float: left;margin-bottom: 5px;">
+                                 <div class="onoffswitch" style="margin: auto;">
+                                     <input type="checkbox" class="onoffswitch-checkbox check_estadoreciboluz" id="check_estadoreciboluz"  
+                                            <?php echo $prestamolaboral!=''?($prestamolaboral->estadoreciboluz=='on'?'checked="true"':''):'' ?>>
+                                     <label class="onoffswitch-label" for="check_estadoreciboluz">
+                                     <span class="onoffswitch-inner"></span>
+                                     <span class="onoffswitch-switch"></span>
+                                     </label>
+                                 </div>
+                             </div>
+                             <div id="cont-estadoreciboluz" <?php echo $prestamolaboral!=''?($prestamolaboral->estadoreciboluz!='on'?'style="display: none;"':''):'style="display: none;"' ?>>
+                                 <label>Código de Suministro *</label>
+                                 <input type="text" value="{{$prestamolaboral!=''?$prestamolaboral->codigoreciboluz:''}}" id="laboral_editar_idprestamo_codigoreciboluz" onkeyup="texto_mayucula(this)">
+                                 <label>Recibo de Luz Fotografiado</label>
+                                 <form action="javascript:;" 
+                                       class="form-imagenreciboluz"
+                                       onsubmit="callback({
+                                           route:  'backoffice/tienda/sistema/{{ $tienda->id }}/prestamosolicitud/{{ $prestamocredito->id }}',
+                                           method: 'PUT',
+                                           carga: '#carga-credito',
+                                           data:{
+                                               view :  'editar-imagenreciboluz'
+                                           }
+                                       },
+                                       function(resultado){
+                                             $('#cont-imagenreciboluz').css('display','block');
+                                             removecarga({input:'#carga-credito'});
+                                             load('#cont-imagenreciboluz');
+                                             $.ajax({
+                                                 url:'{{url('backoffice/tienda/sistema/'.$tienda->id.'/prestamosolicitud/show-imagenreciboluz')}}',
+                                                 type:'GET',
+                                                 data: {
+                                                     idprestamocredito : {{$prestamocredito->id}}
+                                                 },
+                                                 success: function (respuesta){
+                                                     $('#cont-imagenreciboluz').html(respuesta['imagenes']);
+                                                 }
+                                             });
+                                       },this)">
+                                     <div class="fuzone" style="height: 180px;">
+                                         <div class="fu-text">
+                                             <span><i class="fa fa-picture-o"></i> Haga clic aquí o suelte para cargar</span>
+                                         </div>
+                                         <input type="file" class="upload" id="imagenreciboluz" multiple>
+                                     </div>
+                                 </form> 
+                                 <div class="gallery-items grid-small-pad list-single-gallery three-coulms lightgallery" id="cont-imagenreciboluz" style="float:none;"></div>
+                            </div> 
+                        </div>
+                        <div id="tab-laboraldocumento-6" class="tab-content" style="display: none;">
+                             <div class="mensaje-info">
+                               <i class="fa fa-warning"></i> ¿Tiene Boletas de Compra?
+                             </div>
+                             <div style="width: 100%;text-align: center;float: left;margin-bottom: 5px;">
+                                 <div class="onoffswitch" style="margin: auto;">
+                                     <input type="checkbox" class="onoffswitch-checkbox check_estadoboletacompra" id="check_estadoboletacompra"  
+                                            <?php echo $prestamolaboral!=''?($prestamolaboral->estadoboletacompra=='on'?'checked="true"':''):'' ?>>
+                                     <label class="onoffswitch-label" for="check_estadoboletacompra">
+                                     <span class="onoffswitch-inner"></span>
+                                     <span class="onoffswitch-switch"></span>
+                                     </label>
+                                 </div>
+                             </div>
+                             <div id="cont-estadoboletacompra" <?php echo $prestamolaboral!=''?($prestamolaboral->estadoboletacompra!='on'?'style="display: none;"':''):'style="display: none;"' ?>>
+                                 <label>Boletas de Compra Fotografiado</label>
+                                 <form action="javascript:;" 
+                                       class="form-imagenboletacompra"
+                                       onsubmit="callback({
+                                           route:  'backoffice/tienda/sistema/{{ $tienda->id }}/prestamosolicitud/{{ $prestamocredito->id }}',
+                                           method: 'PUT',
+                                           carga: '#carga-credito',
+                                           data:{
+                                               view :  'editar-imagenboletacompra'
+                                           }
+                                       },
+                                       function(resultado){
+                                             $('#cont-imagenboletacompra').css('display','block');
+                                             removecarga({input:'#carga-credito'});
+                                             load('#cont-imagenboletacompra');
+                                             $.ajax({
+                                                 url:'{{url('backoffice/tienda/sistema/'.$tienda->id.'/prestamosolicitud/show-imagenboletacompra')}}',
+                                                 type:'GET',
+                                                 data: {
+                                                     idprestamocredito : {{$prestamocredito->id}}
+                                                 },
+                                                 success: function (respuesta){
+                                                     $('#cont-imagenboletacompra').html(respuesta['imagenes']);
+                                                 }
+                                             });
+                                       },this)">
+                                     <div class="fuzone" style="height: 180px;">
+                                         <div class="fu-text">
+                                             <span><i class="fa fa-picture-o"></i> Haga clic aquí o suelte para cargar</span>
+                                         </div>
+                                         <input type="file" class="upload" id="imagenboletacompra" multiple>
+                                     </div>
+                                 </form> 
+                                 <div class="gallery-items grid-small-pad list-single-gallery three-coulms lightgallery" id="cont-imagenboletacompra" style="float:none;"></div>
+                            </div> 
+                        </div>
+                    </div>
+                </div>          
+            </div>
+            <div id="tab-laboral-4" class="tab-content" style="display: none;">
+                <div class="table-responsive">
+                  <table class="table" id="tabla-contenidoproducto-servicio">
+                      <thead>
+                        <tr>
+                          <th style="background-color: #343a40;width:200px;border-color: #343a40;color: #eee;padding: 8px;">Pago Mensual</th>
+                          <th><input id="laboral_ingreso_mensual" type="number" value="{{$laboralingreso!=''?$laboralingreso->monto:'0.00'}}" step="0.01" min="0"></th>
+                        </tr>
+                      </thead>
+                  </table>
+                </div>
+            </div>
+            <div id="tab-laboral-2" class="tab-content" style="display: none;">
+                <div class="table-responsive">
+                  <table class="table" id="tabla-contenidoproducto-venta">
+                      <thead class="thead-dark">
+                        <tr>
+                          <th>Producto</th>
+                          <th width="60px">Cantidad</th>
+                          <th width="110px">P. Unitario</th>
+                          <th width="110px">Venta Diaria</th>
+                          <th width="110px">Venta Semanal</th>
+                          <th width="110px">Venta Quincenal</th>
+                          <th width="110px">Venta Mensual</th>
+                          <th width="10px" style="padding: 0px;padding-right: 1px;">
+                          <a href="javascript:;" class="btn  color-bg flat-btn" onclick="laboral_agregarproducto_venta(),laboral_agregarproducto_compra()"><i class="fa fa-angle-right"></i> Agregar</a>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody num="{{ count($laboralventa) }}">
+                      <?php $numVenta = 0; ?>
+                        @foreach ($laboralventa as $value)
+                          <tr id="{{ $numVenta }}">
+                            <td class="mx-td-input">
+                              <input type="text" id="laboral_idproductoventa{{ $numVenta }}" value="{{ $value->producto }}" onkeyup="texto_mayucula(this),calcularmontoventa()" onclick="calcularmontoventa()">
+                            </td>
+                            <td class="mx-td-input">
+                              <input id="productCantVenta{{ $numVenta }}" type="number" value="{{ $value->cantidad }}" onkeyup="calcularmontoventa()" onclick="calcularmontoventa()">
+                            </td>
+                            <td class="mx-td-input">
+                              <input id="productUnidadVenta{{ $numVenta }}" type="number" value="{{ $value->preciounitario }}" step="0.001" min="0" onkeyup="calcularmontoventa()" onclick="calcularmontoventa()">
+                            </td>
+                            <td class="mx-td-input">
+                              <input id="productTotalVenta{{ $numVenta }}" type="number" value="{{ $value->preciototal }}" step="0.01" min="0" disabled>
+                            </td>
+                            <td class="mx-td-input">
+                              <input id="productTotalVenta_Semanal{{ $numVenta }}" type="number" value="{{ $value->preciototal_semanal }}" step="0.01" min="0" disabled>
+                            </td>
+                            <td class="mx-td-input">
+                              <input id="productTotalVenta_Quincenal{{ $numVenta }}" type="number" value="{{ $value->preciototal_quincenal }}" step="0.01" min="0" disabled>
+                            </td>
+                            <td class="mx-td-input">
+                              <input id="productTotalVenta_Mensual{{ $numVenta }}" type="number" value="{{ $value->preciototal_mensual }}" step="0.01" min="0" disabled>
+                            </td>
+                            <td>
+                              <a id="del{{ $numVenta }}" href="javascript:;" onclick="eliminarproductoventa({{ $numVenta }}),eliminarproductocompra({{ $numVenta }})" class="btn btn-danger big-btn" style="padding: 10px 15px;"><i class="fa fa-close"></i></a>
+                            </td>
+                          </tr>
+                          <?php $numVenta++; ?>
+                        @endforeach
+                      </tbody>
+                      <tfoot>
+                        <tr>
+                          <th></th>
+                          <th></th>
+                          <th><input id="productUnidadVenta_total" type="number" step="0.01" min="0" disabled></th>
+                          <th><input id="productTotalVenta_total" type="number" step="0.01" min="0" disabled></th>
+                          <th><input id="productTotalVenta_Semanal_total" type="number" step="0.01" min="0" disabled></th>
+                          <th><input id="productTotalVenta_Quincenal_total" type="number" step="0.01" min="0" disabled></th>
+                          <th><input id="productTotalVenta_Mensual_total" type="number" step="0.01" min="0" disabled></th>
+                          <th></th>
+                        </tr>
+                      </tfoot>
+                  </table>
+                </div>
+            </div>
+            <div id="tab-laboral-3" class="tab-content" style="display: none;">
+                <div class="table-responsive">
+                  <table class="table" id="tabla-contenidoproducto-compra">
+                      <thead class="thead-dark">
+                        <tr>
+                          <th>Producto</th>
+                          <th width="60px">Cantidad</th>
+                          <th width="110px">P. Unitario</th>
+                          <th width="110px">Venta Diaria</th>
+                          <th width="110px">Venta Semanal</th>
+                          <th width="110px">Venta Quincenal</th>
+                          <th width="110px">Venta Mensual</th>
+                        </tr>
+                      </thead>
+                      <tbody num="{{ count($laboralcompra)  }}">
+                      <?php $numCompra = 0; ?>
+                        @foreach ($laboralcompra as $value)
+                          <tr id="{{ $numCompra }}">
+                            <td class="mx-td-input">
+                              <input type="text" id="laboral_idproductocompra{{ $numCompra }}" value="{{ $value->producto }}" disabled>
+                            </td>
+                            <td class="mx-td-input">
+                              <input id="productCantCompra{{ $numCompra }}" type="number" value="{{ $value->cantidad }}" onkeyup="calcularmontocompra()" onclick="calcularmontocompra()" disabled>
+                            </td>
+                            <td class="mx-td-input">
+                              <input id="productUnidadCompra{{ $numCompra }}" type="number" value="{{ $value->preciounitario }}" step="0.001" min="0" onkeyup="calcularmontocompra()" onclick="calcularmontocompra()">
+                            </td>
+                            <td class="mx-td-input">
+                              <input id="productTotalCompra{{ $numCompra }}" type="number" value="{{ $value->preciototal }}" step="0.01" min="0" disabled>
+                            </td>
+                            <td class="mx-td-input">
+                              <input id="productTotalCompra_Semanal{{ $numCompra }}" type="number" value="{{ $value->preciototal_semanal }}" step="0.01" min="0" disabled>
+                            </td>
+                            <td class="mx-td-input">
+                              <input id="productTotalCompra_Quincenal{{ $numCompra }}" type="number" value="{{ $value->preciototal_quincenal }}" step="0.01" min="0" disabled>
+                            </td>
+                            <td class="mx-td-input">
+                              <input id="productTotalCompra_Mensual{{ $numCompra }}" type="number" value="{{ $value->preciototal_mensual }}" step="0.01" min="0" disabled>
+                            </td>
+                          </tr>
+                          <?php $numCompra++; ?>
+                        @endforeach
+                      </tbody>
+                      <tfoot>
+                        <tr>
+                          <th></th>
+                          <th></th>
+                          <th><input id="productUnidadCompra_total" type="number" step="0.01" min="0" disabled></th>
+                          <th><input id="productTotalCompra_total" type="number" step="0.01" min="0" disabled></th>
+                          <th><input id="productTotalCompra_Semanal_total" type="number" step="0.01" min="0" disabled></th>
+                          <th><input id="productTotalCompra_Quincenal_total" type="number" step="0.01" min="0" disabled></th>
+                          <th><input id="productTotalCompra_Mensual_total" type="number" step="0.01" min="0" disabled></th>
+                        </tr>
+                      </tfoot>
+                  </table>
+                </div>
+            </div>
+            <div id="tab-laboral-8" class="tab-content" style="display: none;">
+                <div class="table-responsive">
+                  <table class="table" id="tabla-contenidoproducto-servicio">
+                      <thead>
+                        <tr>
+                          <th style="background-color: #343a40;width:200px;border-color: #343a40;color: #eee;padding: 8px;">Bueno</th>
+                          <th><input id="laboral_servicio_bueno" type="number" value="{{$laboralservicio!=''?$laboralservicio->bueno:'0.00'}}" step="0.01" min="0" onkeyup="calcularmontoservicio()" onclick="calcularmontoservicio()"></th>
+                        </tr>
+                        <tr>
+                          <th style="background-color: #343a40;border-color: #343a40;color: #eee;padding: 8px;">Regular</th>
+                          <th><input id="laboral_servicio_regular" type="number" value="{{$laboralservicio!=''?$laboralservicio->regular:'0.00'}}" step="0.01" min="0" onkeyup="calcularmontoservicio()" onclick="calcularmontoservicio()"></th>
+                        </tr>
+                        <tr>
+                          <th style="background-color: #343a40;border-color: #343a40;color: #eee;padding: 8px;">Malo</th>
+                          <th><input id="laboral_servicio_malo" type="number" value="{{$laboralservicio!=''?$laboralservicio->malo:'0.00'}}" step="0.01" min="0" onkeyup="calcularmontoservicio()" onclick="calcularmontoservicio()"></th>
+                        </tr>
+                        <tr>
+                          <th style="background-color: #343a40;border-color: #343a40;color: #eee;padding: 8px;">Promedio</th>
+                          <th><input id="laboral_servicio_promedio" type="number" value="{{$laboralservicio!=''?$laboralservicio->promedio:'0.00'}}" step="0.01" min="0" disabled></th>
+                        </tr>
+                        <tr>
+                          <th style="background-color: #343a40;border-color: #343a40;color: #eee;padding: 8px;">Venta Semanal</th>
+                          <th><input id="laboral_servicio_semanal" type="number" value="{{$laboralservicio!=''?$laboralservicio->semanal:'0.00'}}" step="0.01" min="0" disabled></th>
+                        </tr>
+                        <tr>
+                          <th style="background-color: #343a40;border-color: #343a40;color: #eee;padding: 8px;">Venta Quincenal</th>
+                          <th><input id="laboral_servicio_quincenal" type="number" value="{{$laboralservicio!=''?$laboralservicio->quincenal:'0.00'}}" step="0.01" min="0" disabled></th>
+                        </tr>
+                        <tr>
+                          <th style="background-color: #343a40;border-color: #343a40;color: #eee;padding: 8px;">Venta Mensual</th>
+                          <th><input id="laboral_servicio_mensual" type="number" value="{{$laboralservicio!=''?$laboralservicio->mensual:'0.00'}}" step="0.01" min="0" disabled></th>
+                        </tr>
+                      </thead>
+                  </table>
+                </div>
+            </div>
+            <div id="tab-laboral-5" class="tab-content" style="display: none;">
+                <div class="table-responsive">
+                  <table class="table" id="tabla-contenidoproducto-egresogasto">
+                      <thead class="thead-dark">
+                        <tr>
+                          <th>Concepto</th>
+                          <th width="110px">Monto</th>
+                          <th width="10px" style="padding: 0px;padding-right: 1px;">
+                          <a href="javascript:;" class="btn  color-bg flat-btn" onclick="laboral_agregarconcepto_egresogasto()"><i class="fa fa-angle-right"></i> Agregar</a>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody num="0">
+                      </tbody>
+                  </table>
+                </div>
+                <div class="profile-edit-container">
+                  <div class="custom-form">
+                    <div class="row">  
+                      <div class="col-md-8">
+                      </div> 
+                      <div class="col-md-4">
+                        <label for="">Total</label>
+                        <input type="text" id="totalsinredondear-egresogasto" placeholder="0.00" disabled>
+                      </div>         
+                    </div> 
+                  </div>
+                </div>
+            </div>
+            <div id="tab-laboral-9" class="tab-content" style="display: none;">
+                <div class="table-responsive">
+                  <table class="table" id="tabla-contenidoproducto-egresogastofamiliares">
+                      <thead class="thead-dark">
+                        <tr>
+                          <th>Concepto</th>
+                          <th width="110px">Monto</th>
+                          <th width="10px" style="padding: 0px;padding-right: 1px;">
+                          <a href="javascript:;" class="btn  color-bg flat-btn" onclick="laboral_agregarconcepto_egresogastofamiliares()"><i class="fa fa-angle-right"></i> Agregar</a>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody num="0">
+                      </tbody>
+                  </table>
+                </div>
+                <div class="profile-edit-container">
+                  <div class="custom-form">
+                    <div class="row">  
+                      <div class="col-md-8">
+                      </div> 
+                      <div class="col-md-4">
+                        <label for="">Total</label>
+                        <input type="text" id="totalsinredondear-egresogastofamiliares" placeholder="0.00" disabled>
+                      </div>         
+                    </div> 
+                  </div>
+                </div>
+            </div>
+            <div id="tab-laboral-6" class="tab-content" style="display: none;">
+                <div class="table-responsive">
+                  <table class="table" id="tabla-contenidoproducto-egresopago">
+                      <thead class="thead-dark">
+                        <tr>
+                          <th>Institución Financiera</th>
+                          <th width="110px">Monto</th>
+                          <th width="10px" style="padding: 0px;padding-right: 1px;">
+                          <a href="javascript:;" class="btn  color-bg flat-btn" onclick="laboral_agregarconcepto_egresopago()"><i class="fa fa-angle-right"></i> Agregar</a>
+                          </th>
+                        </tr>
+                      </thead>
+                      <?php $numEgresopago = 0; ?>
+                      <tbody num="{{ $numEgresopago }}">
+                        @foreach ($laboralegresopago as $value)
+                          <?php $numEgresopago++; ?>
+                          <tr id="{{ $numEgresopago }}">
+                            <td class="mx-td-input">
+                              <input type="text" id="laboral_idconceptoegresopago{{ $numEgresopago }}" value="{{ $value->conceptoegresopago }}" onkeyup="texto_mayucula(this)">
+                            </td>
+                            <td class="mx-td-input">
+                              <input id="montoEgresopago{{ $numEgresopago }}" type="number" value="{{ $value->monto }}" step="0.01" min="0" onkeyup="calcularmontoegresopago()" onclick="calcularmontoegresopago()">
+                            </td>
+                            <td>
+                              <a id="del{{ $numEgresopago }}" href="javascript:;" onclick="eliminarproductoegresopago({{ $numEgresopago }})" class="btn btn-danger big-btn" style="padding: 10px 15px;"><i class="fa fa-close"></i></a>
+                            </td>
+                          </tr>
+                        @endforeach
+                    </tbody>
+                  </table>
+                </div>
+                <div class="profile-edit-container">
+                  <div class="custom-form">
+                    <div class="row">  
+                      <div class="col-md-8">
+                      </div> 
+                      <div class="col-md-4">
+                        <label for="">Total</label>
+                        <input type="text" id="totalsinredondear-egresopago" placeholder="0.00" disabled>
+                      </div>         
+                    </div> 
+                  </div>
+                </div>
+            </div>
+            <div id="tab-laboral-10" class="tab-content" style="display: none;">
+                <div class="table-responsive">
+                  <table class="table" id="tabla-contenidoproducto-otroingreso">
+                      <thead class="thead-dark">
+                        <tr>
+                          <th>Concepto</th>
+                          <th width="110px">Monto</th>
+                          <th width="10px" style="padding: 0px;padding-right: 1px;">
+                          <a href="javascript:;" class="btn  color-bg flat-btn" onclick="laboral_agregarconcepto_otroingreso()"><i class="fa fa-angle-right"></i> Agregar</a>
+                          </th>
+                        </tr>
+                      </thead>
+                      <?php $numotroingreso = 0; ?>
+                      <tbody num="{{ $numotroingreso }}">
+                        @foreach ($laboralotroingreso as $value)
+                          <?php $numotroingreso++; ?>
+                          <tr id="{{ $numotroingreso }}">
+                            <td class="mx-td-input">
+                              <input type="text" id="laboral_idconceptootroingreso{{ $numotroingreso }}" value="{{ $value->conceptootroingreso }}" onkeyup="texto_mayucula(this)">
+                            </td>
+                            <td class="mx-td-input">
+                              <input id="montootroingreso{{ $numotroingreso }}" type="number" value="{{ $value->monto }}" step="0.01" min="0" onkeyup="calcularmontootroingreso()" onclick="calcularmontootroingreso()">
+                            </td>
+                            <td>
+                              <a id="del{{ $numotroingreso }}" href="javascript:;" onclick="eliminarproductootroingreso({{ $numotroingreso }})" class="btn btn-danger big-btn" style="padding: 10px 15px;"><i class="fa fa-close"></i></a>
+                            </td>
+                          </tr>
+                        @endforeach
+                    </tbody>
+                  </table>
+                </div>
+                <div class="profile-edit-container">
+                  <div class="custom-form">
+                    <div class="row">  
+                      <div class="col-md-8">
+                      </div> 
+                      <div class="col-md-4">
+                        <label for="">Total</label>
+                        <input type="text" id="totalsinredondear-otroingreso" placeholder="0.00" disabled>
+                      </div>         
+                    </div> 
+                  </div>
+                </div>
+            </div>
+            <div id="tab-laboral-11" class="tab-content" style="display: none;">
+                <div class="table-responsive">
+                  <table class="table" id="tabla-contenidoproducto-otrogasto">
+                      <thead class="thead-dark">
+                        <tr>
+                          <th>Concepto</th>
+                          <th width="110px">Monto</th>
+                          <th width="10px" style="padding: 0px;padding-right: 1px;">
+                          <a href="javascript:;" class="btn  color-bg flat-btn" onclick="laboral_agregarconcepto_otrogasto()"><i class="fa fa-angle-right"></i> Agregar</a>
+                          </th>
+                        </tr>
+                      </thead>
+                      <?php $numotrogasto = 0; ?>
+                      <tbody num="{{ $numotrogasto }}">
+                        @foreach ($laboralotrogasto as $value)
+                          <?php $numotrogasto++; ?>
+                          <tr id="{{ $numotrogasto }}">
+                            <td class="mx-td-input">
+                              <input type="text" id="laboral_idconceptootrogasto{{ $numotrogasto }}" value="{{ $value->conceptootrogasto }}" onkeyup="texto_mayucula(this)">
+                            </td>
+                            <td class="mx-td-input">
+                              <input id="montootrogasto{{ $numotrogasto }}" type="number" value="{{ $value->monto }}" step="0.01" min="0" onkeyup="calcularmontootrogasto()" onclick="calcularmontootrogasto()">
+                            </td>
+                            <td>
+                              <a id="del{{ $numotrogasto }}" href="javascript:;" onclick="eliminarproductootrogasto({{ $numotrogasto }})" class="btn btn-danger big-btn" style="padding: 10px 15px;"><i class="fa fa-close"></i></a>
+                            </td>
+                          </tr>
+                        @endforeach
+                    </tbody>
+                  </table>
+                </div>
+                <div class="profile-edit-container">
+                  <div class="custom-form">
+                    <div class="row">  
+                      <div class="col-md-8">
+                      </div> 
+                      <div class="col-md-4">
+                        <label for="">Total</label>
+                        <input type="text" id="totalsinredondear-otrogasto" placeholder="0.00" disabled>
+                      </div>         
+                    </div> 
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>   
+    <button type="button" class="btn mx-btn-post" onclick="guardar_laboral();">Guardar Cambios</button>   
+
+<style>
+
+ #cont-imagensuministro {
+      height:300px;
+  }
+  #resultado-imagensuministro {
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: center;
+      height:300px;
+      width:100%;
+      background-color: #eae7e7;
+      border-radius: 5px;
+      border: 1px solid #aaa;
+      float: left;
+      margin-bottom: 10px;
+  }
+  #resultado-imagensuministro-cerrar {
+      margin-top:10px;
+      margin-left:10px;
+      font-size:18px;
+      background-color:#c12e2e;
+      padding:0px;
+      padding-left:9px;
+      padding-right:9px;
+      padding-bottom: 3px;
+      border-radius:15px;
+      color:#fff;
+      font-weight:bold;
+      cursor:pointer;
+      position: absolute;
+      z-index: 100;
+  }
+ #cont-imagenfachada {
+      height:300px;
+  }
+  #resultado-imagenfachada {
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: center;
+      height:300px;
+      width:100%;
+      background-color: #eae7e7;
+      border-radius: 5px;
+      border: 1px solid #aaa;
+      float: left;
+      margin-bottom: 10px;
+  }
+  #resultado-imagenfachada-cerrar {
+      margin-top:10px;
+      margin-left:10px;
+      font-size:18px;
+      background-color:#c12e2e;
+      padding:0px;
+      padding-left:9px;
+      padding-right:9px;
+      padding-bottom: 3px;
+      border-radius:15px;
+      color:#fff;
+      font-weight:bold;
+      cursor:pointer;
+      position: absolute;
+      z-index: 100;
+  }
+</style>
+<script>
+  tab({click:'#tab-laboral'});
+  tab({click:'#tab-laboraldocumento'});
+  tab({click:'#tab-laboraldocumentonegocio'});
+  
+  function guardar_laboral(){
+      $( ".form-laboraledit" ).submit();
+  }
+  
+  $('#laboral_editar_idubigeo').select2({
+    @include('app.select2_ubigeo')
+  });
+
+  function mostrar_ingreso(){
+        $('.tab-laboral-ingreso').css('display','none');
+        $('.tab-laboral-venta').css('display','none');
+        $('.tab-laboral-costodeventa').css('display','none');
+        $('.tab-laboral-servicio').css('display','none');
+        $('.tab-laboral-gastooperativo').css('display','none');
+        $('.tab-laboral-pagodecuota').css('display','none');
+        $('.tab-laboral-otroingreso').css('display','none');
+        $('.tab-laboral-gastofamiliar').css('display','none');
+        $('.tab-laboral-otrogasto').css('display','none');
+        $('.tab-laboral-resultado').css('display','none');
+    
+        $('#cont-resultado-ingreso').html('<b>INGRESO</b>');
+        $('#resultado_total_ingreso').html('0.00');
+    
+        var idfuenteingreso = $('#laboral_editar_idfuenteingreso :selected').val();
+        var idgiro = $('#laboral_editar_idprestamo_giro :selected').val();
+
+        if((idfuenteingreso==1 && idgiro==1) || (idfuenteingreso==1 && idgiro==3) || (idfuenteingreso==1 && idgiro==2)){
+            $('.tab-laboral-ingreso').css('display','block');
+            $('.tab-laboral-gastooperativo').css('display','block');
+            $('.tab-laboral-pagodecuota').css('display','block');
+            $('.tab-laboral-otroingreso').css('display','block');
+            $('.tab-laboral-gastofamiliar').css('display','block');
+            $('.tab-laboral-otrogasto').css('display','block');
+            $('.tab-laboral-resultado').css('display','block');
+            $('#cont-resultado-ingreso').html('<b>INGRESO</b>');
+            $('#resultado_total_ingreso').html('0.00');
+        }else if(idfuenteingreso==2 && idgiro==1){
+            $('.tab-laboral-venta').css('display','block');
+            $('.tab-laboral-costodeventa').css('display','block');
+            $('.tab-laboral-gastooperativo').css('display','block');
+            $('.tab-laboral-pagodecuota').css('display','block');
+            $('.tab-laboral-otroingreso').css('display','block');
+            $('.tab-laboral-gastofamiliar').css('display','block');
+            $('.tab-laboral-otrogasto').css('display','block');
+            $('.tab-laboral-resultado').css('display','block');
+            $('#cont-resultado-ingreso').html('<b>INGRESO POR VENTAS</b>');
+            $('#resultado_total_ingreso').html('0.00');
+        }else if((idfuenteingreso==2 && idgiro==2) || (idfuenteingreso==2 && idgiro==3)){
+            $('.tab-laboral-servicio').css('display','block');
+            $('.tab-laboral-gastooperativo').css('display','block');
+            $('.tab-laboral-pagodecuota').css('display','block');
+            $('.tab-laboral-otroingreso').css('display','block');
+            $('.tab-laboral-gastofamiliar').css('display','block');
+            $('.tab-laboral-otrogasto').css('display','block');
+            $('.tab-laboral-resultado').css('display','block');
+            $('#cont-resultado-ingreso').html('<b>INGRESO POR TRANSPORTE</b>');
+            $('#resultado_total_ingreso').html('0.00');
+        }
+  }
+@if($prestamolaboral!='')
+  $('#laboral_editar_idfuenteingreso').select2({
+      placeholder: '-- Seleccionar --',
+      minimumResultsForSearch: -1
+  }).on("change", function(e) {
+      mostrar_ingreso();     
+  }).val({{$prestamolaboral->idfuenteingreso}}).trigger('change');
+@else
+  $('#laboral_editar_idfuenteingreso').select2({
+      placeholder: '-- Seleccionar --',
+      minimumResultsForSearch: -1
+  }).on("change", function(e) {
+      mostrar_ingreso();     
+  });
+@endif
+
+@if($prestamolaboral!='')
+  $('#laboral_editar_idprestamo_giro').select2({
+      placeholder: '-- Seleccionar --',
+      minimumResultsForSearch: -1
+  }).on("change", function(e) {
+      mostrar_ingreso();     
+  }).val({{$prestamolaboral->idprestamo_giro}}).trigger('change');
+@else
+  $('#laboral_editar_idprestamo_giro').select2({
+      placeholder: '-- Seleccionar --',
+      minimumResultsForSearch: -1
+  }).on("change", function(e) {
+      mostrar_ingreso();     
+  });
+@endif
+  
+
+
+@if($prestamolaboral!='')  
+  $('#laboral_editar_labora_desdemes').select2({
+      placeholder: '-- Seleccionar --',
+      minimumResultsForSearch: -1
+  }).val({{$prestamolaboral->labora_desdemes}}).trigger('change');
+@else  
+  $('#laboral_editar_labora_desdemes').select2({
+      placeholder: '-- Seleccionar --',
+      minimumResultsForSearch: -1
+  });
+@endif  
+
+@if($prestamolaboral!='')  
+  $('#laboral_editar_labora_desdeanio').select2({
+      placeholder: '-- Seleccionar --',
+      minimumResultsForSearch: -1
+  }).val({{$prestamolaboral->labora_desdeanio}}).trigger('change');
+@else  
+  $('#laboral_editar_labora_desdeanio').select2({
+      placeholder: '-- Seleccionar --',
+      minimumResultsForSearch: -1
+  });
+@endif  
+
+  
+  
+@if($prestamolaboral!='')
+    singleMap({
+        'map' : '#laboral_editar_mapa',
+        'lat' : '{{$prestamolaboral->mapa_latitud}}',
+        'lng' : '{{$prestamolaboral->mapa_longitud}}',
+        'result_lat' : '#laboral_editar_mapa_latitud',
+        'result_lng' : '#laboral_editar_mapa_longitud'
+    });
+@else
+    seleccionar_ubicacion('{{$prestamocredito->clienteubigeoubicacion}}');
+@endif
+function seleccionar_ubicacion(address) {
+    singleMap_address({
+        'map' : '#laboral_editar_mapa',
+        'address' : address,
+        'result_lat' : '#laboral_editar_mapa_latitud',
+        'result_lng' : '#laboral_editar_mapa_longitud'
+    });
+}
+
+</script>
+<script>
+  
+  // imagensuministro
+  @if($prestamolaboral!='')
+  @if($prestamolaboral->imagensuministro!='')
+          mostrar_imagensuministro("{{url('/public/backoffice/tienda/'.$tienda->id.'/creditolaboral/'.$prestamolaboral->imagensuministro)}}",'{{$prestamolaboral->imagensuministro}}');
+  @endif
+  @endif
+  
+  subir_archivo({
+          input:"#imagensuministro"
+      }, 
+      function(resultado){ 
+           mostrar_imagensuministro(resultado.archivo);
+      }
+  );
+  
+  function mostrar_imagensuministro(archivo,imagen=''){
+          $('#cont-imagensuministro').css('display','none');
+          $('#resultado-imagensuministro').attr('style','background-image: url('+archivo+')');
+          $('#resultado-imagensuministro').append('<div id="resultado-imagensuministro-cerrar" onclick="limpiar_imagensuministro()">x</div>');
+          $('#imagensuministro_anterior').val(imagen);
+  }
+  function limpiar_imagensuministro(){
+          $('#cont-imagensuministro').css('display','block');
+          $('#resultado-imagensuministro').removeAttr('style');
+          $('#resultado-imagensuministro').css('display','none');
+          $('#resultado-imagensuministro').html('');
+          $('#imagensuministro').val(null);
+          $('#imagensuministro_anterior').val('');
+  }
+  // imagenfachada
+  @if($prestamolaboral!='')
+  @if($prestamolaboral->imagenfachada!='')
+          mostrar_imagenfachada("{{url('/public/backoffice/tienda/'.$tienda->id.'/creditolaboral/'.$prestamolaboral->imagenfachada)}}",'{{$prestamolaboral->imagenfachada}}');
+  @endif
+  @endif
+  
+  subir_archivo({
+          input:"#imagenfachada"
+      }, 
+      function(resultado){ 
+           mostrar_imagenfachada(resultado.archivo);
+      }
+  );
+  
+  function mostrar_imagenfachada(archivo,imagen=''){
+          $('#cont-imagenfachada').css('display','none');
+          $('#resultado-imagenfachada').attr('style','background-image: url('+archivo+')');
+          $('#resultado-imagenfachada').append('<div id="resultado-imagenfachada-cerrar" onclick="limpiar_imagenfachada()">x</div>');
+          $('#imagenfachada_anterior').val(imagen);
+  }
+  function limpiar_imagenfachada(){
+          $('#cont-imagenfachada').css('display','block');
+          $('#resultado-imagenfachada').removeAttr('style');
+          $('#resultado-imagenfachada').css('display','none');
+          $('#resultado-imagenfachada').html('');
+          $('#imagenfachada').val(null);
+          $('#imagenfachada_anterior').val('');
+  }
+</script>
+<script>  
+    $("#check_estadolicenciafuncionamiento").click(function(){
+        $('#cont-estadolicenciafuncionamiento').css('display','none');
+        var checked = $("#check_estadolicenciafuncionamiento:checked").val();
+        if(checked=='on'){
+            $('#cont-estadolicenciafuncionamiento').css('display','block');
+        }
+    });
+    $("#check_estadocontratoalquiler").click(function(){
+        $('#cont-estadocontratoalquiler').css('display','none');
+        var checked = $("#check_estadocontratoalquiler:checked").val();
+        if(checked=='on'){
+            $('#cont-estadocontratoalquiler').css('display','block');
+        }
+    });
+    $("#check_estadoficharuc").click(function(){
+        $('#cont-estadoficharuc').css('display','none');
+        var checked = $("#check_estadoficharuc:checked").val();
+        if(checked=='on'){
+            $('#cont-estadoficharuc').css('display','block');
+        }
+    });
+    $("#check_estadoreciboagua").click(function(){
+        $('#cont-estadoreciboagua').css('display','none');
+        var checked = $("#check_estadoreciboagua:checked").val();
+        if(checked=='on'){
+            $('#cont-estadoreciboagua').css('display','block');
+        }
+    });
+    $("#check_estadoreciboluz").click(function(){
+        $('#cont-estadoreciboluz').css('display','none');
+        var checked = $("#check_estadoreciboluz:checked").val();
+        if(checked=='on'){
+            $('#cont-estadoreciboluz').css('display','block');
+        }
+    });
+    $("#check_estadoboletacompra").click(function(){
+        $('#cont-estadoboletacompra').css('display','none');
+        var checked = $("#check_estadoboletacompra:checked").val();
+        if(checked=='on'){
+            $('#cont-estadoboletacompra').css('display','block');
+        }
+    });
+  
+  
+  @if($prestamolaboral!='')
+  @if($prestamolaboral->emisioncomprobante!=0)
+  $('#laboral_editar_idprestamo_emisioncomprobanteficharuc').select2({
+      placeholder: '-- Seleccionar --',
+      minimumResultsForSearch: -1
+  }).val({{$prestamolaboral->emisioncomprobante}}).trigger('change');
+  @else
+  $('#laboral_editar_idprestamo_emisioncomprobanteficharuc').select2({
+      placeholder: '-- Seleccionar --',
+      minimumResultsForSearch: -1
+  });
+  @endif
+  @else
+  $('#laboral_editar_idprestamo_emisioncomprobanteficharuc').select2({
+      placeholder: '-- Seleccionar --',
+      minimumResultsForSearch: -1
+  });
+  @endif
+  
+    // NEGOCIO
+    $('#imagennegocio').change(function(evt) {
+        $(".form-imagennegocio").submit();
+    });
+    function removeimagennegocio(id) {
+      $(".form-imagennegocioimagen"+id).submit();
+        callback({
+            route: 'backoffice/tienda/sistema/{{$tienda->id}}/prestamosolicitud/'+id,
+            method: 'DELETE',
+            carga: '#carga-credito',
+            data: {
+                view : 'eliminarimagennegocio'
+            }
+        },
+        function(resultado){
+            imagennegocio();
+        })
+    }
+    imagennegocio();
+  
+    function imagennegocio(){
+        removecarga({input:'#carga-credito'});
+        load('#cont-imagennegocio');
+        $.ajax({
+            url:"{{url('backoffice/tienda/sistema/'.$tienda->id.'/prestamosolicitud/show-imagennegocio')}}",
+            type:'GET',
+            data: {
+                idprestamocredito : {{$prestamocredito->id}}
+            },
+            success: function (respuesta){
+                $('#cont-imagennegocio').html(respuesta['imagenes']);
+            }
+        });
+    }
+    // LICENCIA FUNCIONAMIENTO
+    $('#imagenlicenciafuncionamiento').change(function(evt) {
+        $(".form-imagenlicenciafuncionamiento").submit();
+    });
+    function removeimagenlicenciafuncionamiento(id) {
+      $(".form-imagenlicenciafuncionamientoimagen"+id).submit();
+        callback({
+            route: 'backoffice/tienda/sistema/{{$tienda->id}}/prestamosolicitud/'+id,
+            method: 'DELETE',
+            carga: '#carga-credito',
+            data: {
+                view : 'eliminarimagenlicenciafuncionamiento'
+            }
+        },
+        function(resultado){
+            imagenlicenciafuncionamiento();
+        })
+    }
+    imagenlicenciafuncionamiento();
+  
+    function imagenlicenciafuncionamiento(){
+        removecarga({input:'#carga-credito'});
+        load('#cont-imagenlicenciafuncionamiento');
+        $.ajax({
+            url:"{{url('backoffice/tienda/sistema/'.$tienda->id.'/prestamosolicitud/show-imagenlicenciafuncionamiento')}}",
+            type:'GET',
+            data: {
+                idprestamocredito : {{$prestamocredito->id}}
+            },
+            success: function (respuesta){
+                $('#cont-imagenlicenciafuncionamiento').html(respuesta['imagenes']);
+            }
+        });
+    }
+    // CONTRATO ALQUILER
+    $('#imagencontratoalquiler').change(function(evt) {
+        $(".form-imagencontratoalquiler").submit();
+    });
+    function removeimagencontratoalquiler(id) {
+      $(".form-imagencontratoalquilerimagen"+id).submit();
+        callback({
+            route: 'backoffice/tienda/sistema/{{$tienda->id}}/prestamosolicitud/'+id,
+            method: 'DELETE',
+            carga: '#carga-credito',
+            data: {
+                view : 'eliminarimagencontratoalquiler'
+            }
+        },
+        function(resultado){
+            imagencontratoalquiler();
+        })
+    }
+    imagencontratoalquiler();
+  
+    function imagencontratoalquiler(){
+        removecarga({input:'#carga-credito'});
+        load('#cont-imagencontratoalquiler');
+        $.ajax({
+            url:"{{url('backoffice/tienda/sistema/'.$tienda->id.'/prestamosolicitud/show-imagencontratoalquiler')}}",
+            type:'GET',
+            data: {
+                idprestamocredito : {{$prestamocredito->id}}
+            },
+            success: function (respuesta){
+                $('#cont-imagencontratoalquiler').html(respuesta['imagenes']);
+            }
+        });
+    }
+    // FICHA RUC
+    $('#imagenficharuc').change(function(evt) {
+        $(".form-imagenficharuc").submit();
+    });
+    function removeimagenficharuc(id) {
+      $(".form-imagenficharucimagen"+id).submit();
+        callback({
+            route: 'backoffice/tienda/sistema/{{$tienda->id}}/prestamosolicitud/'+id,
+            method: 'DELETE',
+            carga: '#carga-credito',
+            data: {
+                view : 'eliminarimagenficharuc'
+            }
+        },
+        function(resultado){
+            imagenficharuc();
+        })
+    }
+    imagenficharuc();
+  
+    function imagenficharuc(){
+        removecarga({input:'#carga-credito'});
+        load('#cont-imagenficharuc');
+        $.ajax({
+            url:"{{url('backoffice/tienda/sistema/'.$tienda->id.'/prestamosolicitud/show-imagenficharuc')}}",
+            type:'GET',
+            data: {
+                idprestamocredito : {{$prestamocredito->id}}
+            },
+            success: function (respuesta){
+                $('#cont-imagenficharuc').html(respuesta['imagenes']);
+            }
+        });
+    }
+    // RECIBO AGUA
+    $('#imagenreciboagua').change(function(evt) {
+        $(".form-imagenreciboagua").submit();
+    });
+    function removeimagenreciboagua(id) {
+      $(".form-imagenreciboaguaimagen"+id).submit();
+        callback({
+            route: 'backoffice/tienda/sistema/{{$tienda->id}}/prestamosolicitud/'+id,
+            method: 'DELETE',
+            carga: '#carga-credito',
+            data: {
+                view : 'eliminarimagenreciboagua'
+            }
+        },
+        function(resultado){
+            imagenreciboagua();
+        })
+    }
+    imagenreciboagua();
+  
+    function imagenreciboagua(){
+        removecarga({input:'#carga-credito'});
+        load('#cont-imagenreciboagua');
+        $.ajax({
+            url:"{{url('backoffice/tienda/sistema/'.$tienda->id.'/prestamosolicitud/show-imagenreciboagua')}}",
+            type:'GET',
+            data: {
+                idprestamocredito : {{$prestamocredito->id}}
+            },
+            success: function (respuesta){
+                $('#cont-imagenreciboagua').html(respuesta['imagenes']);
+            }
+        });
+    }
+    // RECIBO LUZ
+    $('#imagenreciboluz').change(function(evt) {
+        $(".form-imagenreciboluz").submit();
+    });
+    function removeimagenreciboluz(id) {
+      $(".form-imagenreciboluzimagen"+id).submit();
+        callback({
+            route: 'backoffice/tienda/sistema/{{$tienda->id}}/prestamosolicitud/'+id,
+            method: 'DELETE',
+            carga: '#carga-credito',
+            data: {
+                view : 'eliminarimagenreciboluz'
+            }
+        },
+        function(resultado){
+            imagenreciboluz();
+        })
+    }
+    imagenreciboluz();
+  
+    function imagenreciboluz(){
+        removecarga({input:'#carga-credito'});
+        load('#cont-imagenreciboluz');
+        $.ajax({
+            url:"{{url('backoffice/tienda/sistema/'.$tienda->id.'/prestamosolicitud/show-imagenreciboluz')}}",
+            type:'GET',
+            data: {
+                idprestamocredito : {{$prestamocredito->id}}
+            },
+            success: function (respuesta){
+                $('#cont-imagenreciboluz').html(respuesta['imagenes']);
+            }
+        });
+    }
+    // BOLETA COMPRA
+    $('#imagenboletacompra').change(function(evt) {
+        $(".form-imagenboletacompra").submit();
+    });
+    function removeimagenboletacompra(id) {
+      $(".form-imagenboletacompraimagen"+id).submit();
+        callback({
+            route: 'backoffice/tienda/sistema/{{$tienda->id}}/prestamosolicitud/'+id,
+            method: 'DELETE',
+            carga: '#carga-credito',
+            data: {
+                view : 'eliminarimagenboletacompra'
+            }
+        },
+        function(resultado){
+            imagenboletacompra();
+        })
+    }
+    imagenboletacompra();
+  
+    function imagenboletacompra(){
+        removecarga({input:'#carga-credito'});
+        load('#cont-imagenboletacompra');
+        $.ajax({
+            url:"{{url('backoffice/tienda/sistema/'.$tienda->id.'/prestamosolicitud/show-imagenboletacompra')}}",
+            type:'GET',
+            data: {
+                idprestamocredito : {{$prestamocredito->id}}
+            },
+            success: function (respuesta){
+                $('#cont-imagenboletacompra').html(respuesta['imagenes']);
+            }
+        });
+    }
+</script>
+<script>
+  // Ventas
+  function contar_semana(){
+      var cant = 1;
+      var seleccionar_lunes = $('#seleccionar_lunes:checked').val();
+      var seleccionar_martes = $('#seleccionar_martes:checked').val();
+      var seleccionar_miercoles = $('#seleccionar_miercoles:checked').val();
+      var seleccionar_jueves = $('#seleccionar_jueves:checked').val();
+      var seleccionar_viernes = $('#seleccionar_viernes:checked').val();
+      var seleccionar_sabados = $('#seleccionar_sabados:checked').val();
+      var seleccionar_domingos = $('#seleccionar_domingos:checked').val();
+      if(seleccionar_lunes=='on'){
+          var cant = cant+1;;
+      }
+      if(seleccionar_martes=='on'){
+          var cant = cant+1;;
+      }
+      if(seleccionar_miercoles=='on'){
+          var cant = cant+1;;
+      }
+      if(seleccionar_jueves=='on'){
+          var cant = cant+1;;
+      }
+      if(seleccionar_viernes=='on'){
+          var cant = cant+1;;
+      }
+      if(seleccionar_sabados=='on'){
+          var cant = cant+1;;
+      }
+      if(seleccionar_domingos=='on'){
+          var cant = cant+1;;
+      }
+      return parseFloat(cant);
+  }
+  
+  calcularmontoventa();
+  function seleccinar_ventas(){
+    var data = '';
+    $("#tabla-contenidoproducto-venta tbody tr").each(function() {
+        var num = $(this).attr('id');        
+        var idproducto = $("#laboral_idproductoventa"+num).val();
+        var productCantVenta = $("#productCantVenta"+num).val();
+        var productUnidadVenta = $("#productUnidadVenta"+num).val();
+        var productTotalVenta = $("#productTotalVenta"+num).val();
+        var productTotalVenta_Semanal = $("#productTotalVenta_Semanal"+num).val();
+        var productTotalVenta_Quincenal = $("#productTotalVenta_Quincenal"+num).val();
+        var productTotalVenta_Mensual = $("#productTotalVenta_Mensual"+num).val();
+        data = data+'/&/'+idproducto+'/,/'+productCantVenta+'/,/'+productUnidadVenta+'/,/'+productTotalVenta+'/,/'+productTotalVenta_Semanal+'/,/'+productTotalVenta_Quincenal+'/,/'+productTotalVenta_Mensual;
+    });
+    return data;
+  }
+  function laboral_agregarproducto_venta(){
+    var num = $("#tabla-contenidoproducto-venta > tbody").attr('num');
+    $('#tabla-contenidoproducto-venta > tbody').append('<tr id="'+num+'">'+
+                                                 '<td class="mx-td-input">'+
+                                                   '<input type="text" id="laboral_idproductoventa'+num+'" onkeyup="calcularmontoventa(),texto_mayucula(this)" onclick="calcularmontoventa()">'+
+                                                 '</td>'+
+                                                 '<td class="mx-td-input"><input id="productCantVenta'+num+'" type="number" value="1" onkeyup="calcularmontoventa()" onclick="calcularmontoventa()"></td>'+
+                                                 '<td class="mx-td-input"><input id="productUnidadVenta'+num+'" type="number" value="0.00" step="0.001" min="0" onkeyup="calcularmontoventa()" onclick="calcularmontoventa()"></td>'+
+                                                 '<td class="mx-td-input"><input id="productTotalVenta'+num+'" type="number" value="0.00" step="0.01" min="0" disabled></td>'+
+                                                 '<td class="mx-td-input"><input id="productTotalVenta_Semanal'+num+'" type="number" value="0.00" step="0.01" min="0" disabled></td>'+
+                                                 '<td class="mx-td-input"><input id="productTotalVenta_Quincenal'+num+'" type="number" value="0.00" step="0.01" min="0" disabled></td>'+
+                                                 '<td class="mx-td-input"><input id="productTotalVenta_Mensual'+num+'" type="number" value="0.00" step="0.01" min="0" disabled></td>'+
+                                                 '<td><a id="del'+num+'" href="javascript:;" onclick="eliminarproductoventa('+num+'),eliminarproductocompra('+num+')" class="btn btn-danger big-btn" style="padding: 10px 15px;"><i class="fa fa-close"></i></a></td>'+
+                                             '</tr>');
+    $("#tabla-contenidoproducto-venta > tbody").attr('num',parseInt(num)+1);
+    calcularmontoventa();
+  }
+  function calcularmontoventa(){
+    var total_unitario = 0;
+    var total = 0;
+    var total_semanal = 0;
+    var total_quincenal = 0;
+    var total_mensual = 0;
+    $("#tabla-contenidoproducto-venta > tbody > tr").each(function() {
+        var num = $(this).attr('id');        
+        var productCantVenta = parseFloat($("#productCantVenta"+num).val());
+        var productUnidadVenta = parseFloat($("#productUnidadVenta"+num).val());
+        var subtotal = (productCantVenta*productUnidadVenta).toFixed(2);
+        if(contar_semana()>0){
+            var subtotal_semanal = (subtotal*contar_semana()).toFixed(2);
+            var subtotal_quincenal = (subtotal*(contar_semana()*2)).toFixed(2);
+            var subtotal_mensual = (subtotal*(contar_semana()*4)).toFixed(2);
+        }else{
+            subtotal = 0.00;
+            var subtotal_semanal = subtotal.toFixed(2);
+            var subtotal_quincenal = subtotal.toFixed(2);
+            var subtotal_mensual = subtotal.toFixed(2);
+        }
+            
+        $("#productTotalVenta"+num).val(parseFloat(subtotal).toFixed(2));
+        $("#productTotalVenta_Semanal"+num).val(subtotal_semanal);
+        $("#productTotalVenta_Quincenal"+num).val(subtotal_quincenal);
+        $("#productTotalVenta_Mensual"+num).val(subtotal_mensual);
+        total_unitario = total_unitario+parseFloat(productUnidadVenta);
+        total = total+parseFloat(subtotal);
+        total_semanal = total_semanal+parseFloat(subtotal_semanal);
+        total_quincenal = total_quincenal+parseFloat(subtotal_quincenal);
+        total_mensual = total_mensual+parseFloat(subtotal_mensual);
+      
+        // duplicar en compras
+        $("#productCantCompra"+num).val(productCantVenta);
+        var productonombre = $("#laboral_idproductoventa"+num).val();
+        $("#laboral_idproductocompra"+num).val(productonombre);
+    });
+    $("#productUnidadVenta_total").val(total_unitario.toFixed(2)); 
+    $("#productTotalVenta_total").val(total.toFixed(2));  
+    $("#productTotalVenta_Semanal_total").val(total_semanal.toFixed(2));  
+    $("#productTotalVenta_Quincenal_total").val(total_quincenal.toFixed(2));  
+    $("#productTotalVenta_Mensual_total").val(total_mensual.toFixed(2)); 
+    calcularmontocompra();
+  }
+  function eliminarproductoventa(num){
+    $("#tabla-contenidoproducto-venta > tbody > tr#"+num).remove();
+    calcularmontoventa();
+  }
+  
+  // Compras
+  calcularmontocompra();
+  function seleccinar_compras(){
+    var data = '';
+    $("#tabla-contenidoproducto-compra tbody tr").each(function() {
+        var num = $(this).attr('id');        
+        var idproducto = $("#laboral_idproductocompra"+num).val();
+        var productCantCompra = $("#productCantCompra"+num).val();
+        var productUnidadCompra = $("#productUnidadCompra"+num).val();
+        var productTotalCompra = $("#productTotalCompra"+num).val();
+        var productTotalCompra_Semanal = $("#productTotalCompra_Semanal"+num).val();
+        var productTotalCompra_Quincenal = $("#productTotalCompra_Quincenal"+num).val();
+        var productTotalCompra_Mensual = $("#productTotalCompra_Mensual"+num).val();
+        data = data+'/&/'+idproducto+'/,/'+productCantCompra+'/,/'+productUnidadCompra+'/,/'+productTotalCompra+'/,/'+productTotalCompra_Semanal+'/,/'+productTotalCompra_Quincenal+'/,/'+productTotalCompra_Mensual;
+    });
+    return data;
+  }
+  function laboral_agregarproducto_compra(){
+    var productos = '';
+
+    var num = $("#tabla-contenidoproducto-compra > tbody").attr('num');
+    $('#tabla-contenidoproducto-compra > tbody').append('<tr id="'+num+'">'+
+                                                 '<td class="mx-td-input">'+
+                                                    '<input type="text" id="laboral_idproductocompra'+num+'" disabled>'+
+                                                 '</td>'+
+                                                 '<td class="mx-td-input"><input id="productCantCompra'+num+'" type="number" value="1" onkeyup="calcularmontocompra()" onclick="calcularmontocompra()" disabled></td>'+
+                                                 '<td class="mx-td-input"><input id="productUnidadCompra'+num+'" type="number" value="0.00" step="0.001" min="0" onkeyup="calcularmontocompra()" onclick="calcularmontocompra()"></td>'+
+                                                 '<td class="mx-td-input"><input id="productTotalCompra'+num+'" type="number" value="0.00" step="0.01" min="0" disabled></td>'+
+                                                 '<td class="mx-td-input"><input id="productTotalCompra_Semanal'+num+'" type="number" value="0.00" step="0.01" min="0" disabled></td>'+
+                                                 '<td class="mx-td-input"><input id="productTotalCompra_Quincenal'+num+'" type="number" value="0.00" step="0.01" min="0" disabled></td>'+
+                                                 '<td class="mx-td-input"><input id="productTotalCompra_Mensual'+num+'" type="number" value="0.00" step="0.01" min="0" disabled></td>'+
+                                             '</tr>');
+    $("#tabla-contenidoproducto-compra > tbody").attr('num',parseInt(num)+1);
+    calcularmontocompra();
+  }
+  function calcularmontocompra(){
+    var total_unitario = 0;
+    var total = 0;
+    var total_semanal = 0;
+    var total_quincenal = 0;
+    var total_mensual = 0;
+    $("#tabla-contenidoproducto-compra > tbody > tr").each(function() {
+        var num = $(this).attr('id');        
+        var productCantCompra = parseFloat($("#productCantCompra"+num).val());
+        var productUnidadCompra = parseFloat($("#productUnidadCompra"+num).val());
+        var subtotal = (productCantCompra*productUnidadCompra).toFixed(2);
+      
+        if(contar_semana()>0){
+            var subtotal_semanal = (subtotal*contar_semana()).toFixed(2);
+            var subtotal_quincenal = (subtotal*(contar_semana()*2)).toFixed(2);
+            var subtotal_mensual = (subtotal*(contar_semana()*4)).toFixed(2);
+        }else{
+            subtotal = 0.00;
+            var subtotal_semanal = subtotal.toFixed(2);
+            var subtotal_quincenal = subtotal.toFixed(2);
+            var subtotal_mensual = subtotal.toFixed(2);
+        }
+      
+        $("#productTotalCompra"+num).val(parseFloat(subtotal).toFixed(2));
+        $("#productTotalCompra_Semanal"+num).val(subtotal_semanal);
+        $("#productTotalCompra_Quincenal"+num).val(subtotal_quincenal);
+        $("#productTotalCompra_Mensual"+num).val(subtotal_mensual);
+        total_unitario = total_unitario+parseFloat(productUnidadCompra);
+        total = total+parseFloat(subtotal);
+        total_semanal = total_semanal+parseFloat(subtotal_semanal);
+        total_quincenal = total_quincenal+parseFloat(subtotal_quincenal);
+        total_mensual = total_mensual+parseFloat(subtotal_mensual);
+    });
+    $("#productUnidadCompra_total").val(total_unitario.toFixed(2)); 
+    $("#productTotalCompra_total").val(total.toFixed(2));  
+    $("#productTotalCompra_Semanal_total").val(total_semanal.toFixed(2));  
+    $("#productTotalCompra_Quincenal_total").val(total_quincenal.toFixed(2));  
+    $("#productTotalCompra_Mensual_total").val(total_mensual.toFixed(2)); 
+  }
+  function eliminarproductocompra(num){
+    $("#tabla-contenidoproducto-compra > tbody > tr#"+num).remove();
+    calcularmontocompra();
+  }
+</script>
+<script>
+  // Servicios
+  
+  function seleccinar_servicios(){
+        var data='';
+        var laboral_servicio_bueno = $("#laboral_servicio_bueno").val();
+        var laboral_servicio_regular = $("#laboral_servicio_regular").val();
+        var laboral_servicio_malo = $("#laboral_servicio_malo").val();
+        var laboral_servicio_promedio = $("#laboral_servicio_promedio").val();
+        var laboral_servicio_semanal = $("#laboral_servicio_semanal").val();
+        var laboral_servicio_quincenal = $("#laboral_servicio_quincenal").val();
+        var laboral_servicio_mensual = $("#laboral_servicio_mensual").val();
+        var data = '/,/'+laboral_servicio_bueno
+                  +'/,/'+laboral_servicio_regular
+                  +'/,/'+laboral_servicio_malo
+                  +'/,/'+laboral_servicio_promedio
+                  +'/,/'+laboral_servicio_semanal
+                  +'/,/'+laboral_servicio_quincenal
+                  +'/,/'+laboral_servicio_mensual;
+        return data;
+  }
+
+  function calcularmontoservicio(){
+    
+    var laboral_servicio_bueno = parseFloat($("#laboral_servicio_bueno").val());
+    var laboral_servicio_regular = parseFloat($("#laboral_servicio_regular").val());
+    var laboral_servicio_malo = parseFloat($("#laboral_servicio_malo").val());
+    var suma_laboral = laboral_servicio_bueno+laboral_servicio_regular+laboral_servicio_malo;
+    var laboral_servicio_promedio = suma_laboral/contar_semana();
+    var laboral_servicio_semanal = laboral_servicio_promedio*contar_semana();
+    var laboral_servicio_quincenal = laboral_servicio_promedio*(contar_semana()*2);
+    var laboral_servicio_mensual = laboral_servicio_promedio*(contar_semana()*4);
+
+    $("#laboral_servicio_promedio").val(laboral_servicio_promedio.toFixed(2)); 
+    $("#laboral_servicio_semanal").val(laboral_servicio_semanal.toFixed(2));  
+    $("#laboral_servicio_quincenal").val(laboral_servicio_quincenal.toFixed(2));  
+    $("#laboral_servicio_mensual").val(laboral_servicio_mensual.toFixed(2));  
+  }
+</script>
+<script>
+  // Ingreso
+  function seleccinar_ingresos(){
+        var data='';
+        var laboral_ingreso_mensual = $("#laboral_ingreso_mensual").val();
+        return laboral_ingreso_mensual;
+  }
+</script>
+<script>
+  // Egresogasto Operativos
+  calcularmontoegresogasto();
+  function seleccinar_egresogastos(){
+    var data = '';
+    $("#tabla-contenidoproducto-egresogasto tbody tr").each(function() {
+        var num = $(this).attr('id');        
+        var idconcepto = $("#laboral_idconceptoegresogasto"+num+' :selected').val();
+        var montoEgresogasto = $("#montoEgresogasto"+num).val();
+        data = data+'/&/'+idconcepto+'/,/'+montoEgresogasto;
+    });
+    return data;
+  }
+  
+  @foreach ($laboralegresogasto as $value)
+    laboral_agregarconcepto_egresogasto({{ $value->s_idprestamo_tipogasto }},'{{ $value->monto }}');
+  @endforeach
+  
+  function laboral_agregarconcepto_egresogasto(idconcepto='',monto=''){
+    var num = $("#tabla-contenidoproducto-egresogasto > tbody").attr('num');
+    $('#tabla-contenidoproducto-egresogasto > tbody').append('<tr id="'+num+'">'+
+                                                 '<td class="mx-td-input">'+
+                                                    '<select id="laboral_idconceptoegresogasto'+num+'">'+
+                                                        '<option></option>'+
+                                                        '@foreach ($tipogastos as $value)'+
+                                                        '<option value="{{ $value->id }}">{{ $value->nombre }}</option>'+
+                                                        '@endforeach'+
+                                                    '</select>'+
+                                                 '</td>'+
+                                                 '<td class="mx-td-input"><input id="montoEgresogasto'+num+'" type="number" value="'+monto+'" onkeyup="calcularmontoegresogasto()" onclick="calcularmontoegresogasto()"></td>'+
+                                                 '<td><a id="del'+num+'" href="javascript:;" onclick="eliminarproductoegresogasto('+num+')" class="btn btn-danger big-btn" style="padding: 10px 15px;"><i class="fa fa-close"></i></a></td>'+
+                                             '</tr>');
+    $("#tabla-contenidoproducto-egresogasto > tbody").attr('num',parseInt(num)+1);
+    calcularmontoegresogasto();
+    
+    if(idconcepto!=''){
+        $('#laboral_idconceptoegresogasto'+num).select2({
+            placeholder: '-- Seleccionar --',
+            minimumResultsForSearch: -1
+        }).val(idconcepto).trigger('change');
+    }else{
+        $('#laboral_idconceptoegresogasto'+num).select2({
+            placeholder: '-- Seleccionar --',
+            minimumResultsForSearch: -1
+        });
+    }
+        
+  }
+  function calcularmontoegresogasto(){
+    var total = 0;
+    $("#tabla-contenidoproducto-egresogasto > tbody > tr").each(function() {
+        var num = $(this).attr('id');        
+        var montoEgresogasto = parseFloat($("#montoEgresogasto"+num).val());
+        total = total+parseFloat(montoEgresogasto);
+    });
+    $("#totalsinredondear-egresogasto").val((Math.round10(total, -1)).toFixed(2));  
+  }
+  function eliminarproductoegresogasto(num){
+    $("#tabla-contenidoproducto-egresogasto > tbody > tr#"+num).remove();
+    calcularmontoegresogasto();
+  }
+</script>
+<script>
+  // Egresogasto Familiares
+  calcularmontoegresogastofamiliares();
+  function seleccinar_egresogastosfamiliares(){
+    var data = '';
+    $("#tabla-contenidoproducto-egresogastofamiliares tbody tr").each(function() {
+        var num = $(this).attr('id');        
+        var idconcepto = $("#laboral_idconceptoegresogastofamiliares"+num+' :selected').val();
+        var montoEgresogastofamiliares = $("#montoEgresogastofamiliares"+num).val();
+        data = data+'/&/'+idconcepto+'/,/'+montoEgresogastofamiliares;
+    });
+    return data;
+  }
+  
+  @foreach ($laboralegresogastofamiliares as $value)
+    laboral_agregarconcepto_egresogastofamiliares({{ $value->s_idprestamo_tipogasto }},'{{ $value->monto }}');
+  @endforeach
+  
+  function laboral_agregarconcepto_egresogastofamiliares(idconcepto='',monto=''){
+    var num = $("#tabla-contenidoproducto-egresogastofamiliares > tbody").attr('num');
+    $('#tabla-contenidoproducto-egresogastofamiliares > tbody').append('<tr id="'+num+'">'+
+                                                 '<td class="mx-td-input">'+
+                                                    '<select id="laboral_idconceptoegresogastofamiliares'+num+'">'+
+                                                        '<option></option>'+
+                                                        '@foreach ($tipogastofamiliares as $value)'+
+                                                        '<option value="{{ $value->id }}">{{ $value->nombre }}</option>'+
+                                                        '@endforeach'+
+                                                    '</select>'+
+                                                 '</td>'+
+                                                 '<td class="mx-td-input"><input id="montoEgresogastofamiliares'+num+'" type="number" value="'+monto+'" onkeyup="calcularmontoegresogastofamiliares()" onclick="calcularmontoegresogastofamiliares()"></td>'+
+                                                 '<td><a id="del'+num+'" href="javascript:;" onclick="eliminarproductoegresogastofamiliares('+num+')" class="btn btn-danger big-btn" style="padding: 10px 15px;"><i class="fa fa-close"></i></a></td>'+
+                                             '</tr>');
+    $("#tabla-contenidoproducto-egresogastofamiliares > tbody").attr('num',parseInt(num)+1);
+    calcularmontoegresogastofamiliares();
+    
+    if(idconcepto!=''){
+        $('#laboral_idconceptoegresogastofamiliares'+num).select2({
+            placeholder: '-- Seleccionar --',
+            minimumResultsForSearch: -1
+        }).val(idconcepto).trigger('change');
+    }else{
+        $('#laboral_idconceptoegresogastofamiliares'+num).select2({
+            placeholder: '-- Seleccionar --',
+            minimumResultsForSearch: -1
+        });
+    }
+        
+  }
+  function calcularmontoegresogastofamiliares(){
+    var total = 0;
+    $("#tabla-contenidoproducto-egresogastofamiliares > tbody > tr").each(function() {
+        var num = $(this).attr('id');        
+        var montoEgresogastofamiliares = parseFloat($("#montoEgresogastofamiliares"+num).val());
+        total = total+parseFloat(montoEgresogastofamiliares);
+    });
+    $("#totalsinredondear-egresogastofamiliares").val((Math.round10(total, -1)).toFixed(2));  
+  }
+  function eliminarproductoegresogastofamiliares(num){
+    $("#tabla-contenidoproducto-egresogastofamiliares > tbody > tr#"+num).remove();
+    calcularmontoegresogastofamiliares();
+  }
+</script>
+<script>
+  // Egresopago
+  calcularmontoegresopago();
+  function seleccinar_egresopagos(){
+    var data = '';
+    $("#tabla-contenidoproducto-egresopago tbody tr").each(function() {
+        var num = $(this).attr('id');        
+        var idconcepto = $("#laboral_idconceptoegresopago"+num).val();
+        var montoEgresopago = $("#montoEgresopago"+num).val();
+        data = data+'/&/'+idconcepto+'/,/'+montoEgresopago;
+    });
+    return data;
+  }
+  function laboral_agregarconcepto_egresopago(){
+    var num = $("#tabla-contenidoproducto-egresopago > tbody").attr('num');
+    $('#tabla-contenidoproducto-egresopago > tbody').append('<tr id="'+num+'">'+
+                                                 '<td class="mx-td-input">'+
+                                                   '<input type="text" id="laboral_idconceptoegresopago'+num+'" onkeyup="texto_mayucula(this)">'+
+                                                 '</td>'+
+                                                 '<td class="mx-td-input"><input id="montoEgresopago'+num+'" type="number" value="" onkeyup="calcularmontoegresopago()" onclick="calcularmontoegresopago()"></td>'+
+                                                 '<td><a id="del'+num+'" href="javascript:;" onclick="eliminarproductoegresopago('+num+')" class="btn btn-danger big-btn" style="padding: 10px 15px;"><i class="fa fa-close"></i></a></td>'+
+                                             '</tr>');
+    $("#tabla-contenidoproducto-egresopago > tbody").attr('num',parseInt(num)+1);
+    calcularmontoegresopago();
+  }
+  function calcularmontoegresopago(){
+    var total = 0;
+    $("#tabla-contenidoproducto-egresopago > tbody > tr").each(function() {
+        var num = $(this).attr('id');        
+        var montoEgresopago = parseFloat($("#montoEgresopago"+num).val());
+        total = total+parseFloat(montoEgresopago);
+    });
+    $("#totalsinredondear-egresopago").val((Math.round10(total, -1)).toFixed(2)); 
+  }
+  function eliminarproductoegresopago(num){
+    $("#tabla-contenidoproducto-egresopago > tbody > tr#"+num).remove();
+    calcularmontoegresopago();
+  }
+</script>
+<script>
+  // Otro ingreso
+  calcularmontootroingreso();
+  function seleccinar_otroingresos(){
+    var data = '';
+    $("#tabla-contenidoproducto-otroingreso tbody tr").each(function() {
+        var num = $(this).attr('id');        
+        var idconcepto = $("#laboral_idconceptootroingreso"+num).val();
+        var montootroingreso = $("#montootroingreso"+num).val();
+        data = data+'/&/'+idconcepto+'/,/'+montootroingreso;
+    });
+    return data;
+  }
+  function laboral_agregarconcepto_otroingreso(){
+    var num = $("#tabla-contenidoproducto-otroingreso > tbody").attr('num');
+    $('#tabla-contenidoproducto-otroingreso > tbody').append('<tr id="'+num+'">'+
+                                                 '<td class="mx-td-input">'+
+                                                   '<input type="text" id="laboral_idconceptootroingreso'+num+'" onkeyup="texto_mayucula(this)">'+
+                                                 '</td>'+
+                                                 '<td class="mx-td-input"><input id="montootroingreso'+num+'" type="number" value="" onkeyup="calcularmontootroingreso()" onclick="calcularmontootroingreso()"></td>'+
+                                                 '<td><a id="del'+num+'" href="javascript:;" onclick="eliminarproductootroingreso('+num+')" class="btn btn-danger big-btn" style="padding: 10px 15px;"><i class="fa fa-close"></i></a></td>'+
+                                             '</tr>');
+    $("#tabla-contenidoproducto-otroingreso > tbody").attr('num',parseInt(num)+1);
+    calcularmontootroingreso();
+  }
+  function calcularmontootroingreso(){
+    var total = 0;
+    $("#tabla-contenidoproducto-otroingreso > tbody > tr").each(function() {
+        var num = $(this).attr('id');        
+        var montootroingreso = parseFloat($("#montootroingreso"+num).val());
+        total = total+parseFloat(montootroingreso);
+    });
+    $("#totalsinredondear-otroingreso").val((Math.round10(total, -1)).toFixed(2)); 
+  }
+  function eliminarproductootroingreso(num){
+    $("#tabla-contenidoproducto-otroingreso > tbody > tr#"+num).remove();
+    calcularmontootroingreso();
+  }
+</script>
+<script>
+  // Otro gasto
+  calcularmontootrogasto();
+  function seleccinar_otrogastos(){
+    var data = '';
+    $("#tabla-contenidoproducto-otrogasto tbody tr").each(function() {
+        var num = $(this).attr('id');        
+        var idconcepto = $("#laboral_idconceptootrogasto"+num).val();
+        var montootrogasto = $("#montootrogasto"+num).val();
+        data = data+'/&/'+idconcepto+'/,/'+montootrogasto;
+    });
+    return data;
+  }
+  function laboral_agregarconcepto_otrogasto(){
+    var num = $("#tabla-contenidoproducto-otrogasto > tbody").attr('num');
+    $('#tabla-contenidoproducto-otrogasto > tbody').append('<tr id="'+num+'">'+
+                                                 '<td class="mx-td-input">'+
+                                                   '<input type="text" id="laboral_idconceptootrogasto'+num+'" onkeyup="texto_mayucula(this)">'+
+                                                 '</td>'+
+                                                 '<td class="mx-td-input"><input id="montootrogasto'+num+'" type="number" value="" onkeyup="calcularmontootrogasto()" onclick="calcularmontootrogasto()"></td>'+
+                                                 '<td><a id="del'+num+'" href="javascript:;" onclick="eliminarproductootrogasto('+num+')" class="btn btn-danger big-btn" style="padding: 10px 15px;"><i class="fa fa-close"></i></a></td>'+
+                                             '</tr>');
+    $("#tabla-contenidoproducto-otrogasto > tbody").attr('num',parseInt(num)+1);
+    calcularmontootrogasto();
+  }
+  function calcularmontootrogasto(){
+    var total = 0;
+    $("#tabla-contenidoproducto-otrogasto > tbody > tr").each(function() {
+        var num = $(this).attr('id');        
+        var montootrogasto = parseFloat($("#montootrogasto"+num).val());
+        total = total+parseFloat(montootrogasto);
+    });
+    $("#totalsinredondear-otrogasto").val((Math.round10(total, -1)).toFixed(2)); 
+  }
+  function eliminarproductootrogasto(num){
+    $("#tabla-contenidoproducto-otrogasto > tbody > tr#"+num).remove();
+    calcularmontootrogasto();
+  }
+</script>

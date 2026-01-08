@@ -1,0 +1,66 @@
+
+
+.datocomprobante {
+  text-align: left;
+}
+.datofinal {
+  text-align: center;
+}
+.qr {
+    text-align: center;
+    margin-top:5px;
+    margin-bottom:10px;
+}
+.autorizacion{
+    text-align:center;
+    font-size:9px;
+}
+.logo {
+        height: 60px;
+    }
+
+.tabla {
+    width: 100%;
+    margin:0px;
+    padding:0px;
+    font-size: 10px;
+
+}
+.subtitulo {
+    font-size: 12px;
+    width:100%;
+    font-weight: bold;
+}
+.texto {
+    width:100%;
+}
+.linea {
+    border-top: 1px solid #31353d;
+    width:100%;
+    margin-top:2px;
+    height:2px;
+}
+.linea_tabla {
+    border-top: 1px solid #31353d;
+    width:100%;
+}
+
+@media print {
+  /** Setting margins */
+  @page { margin: 1cm }
+
+  /* Or: */
+  @page :left {
+    margin: 1cm;
+  }
+
+  @page :right {
+    margin: 1cm;
+  }
+  .nombrecomercial, .subtitulo {
+    text-align:center;
+  }
+
+
+
+}

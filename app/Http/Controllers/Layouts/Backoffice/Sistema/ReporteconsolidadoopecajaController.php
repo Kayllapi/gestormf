@@ -1,0 +1,580 @@
+<?php
+
+namespace App\Http\Controllers\Layouts\Backoffice\Sistema;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use DB;
+use Auth;
+use Carbon\Carbon;
+use PDF;
+
+class ReporteconsolidadoopecajaController extends Controller
+{
+    public function index(Request $request,$idtienda)
+    {
+        //$request->user()->authorizeRoles($request->path(),$idtienda);
+        $tienda = DB::table('tienda')->whereId($idtienda)->first();
+      
+        if($request->input('view') == 'tabla'){
+            
+            $agencias = DB::table('tienda')->get();
+            return view(sistema_view().'/reporteconsolidadoopecaja/tabla',[
+                'tienda' => $tienda,
+                'agencias' => $agencias,
+            ]);
+        }
+            
+    }
+  
+    public function create(Request $request,$idtienda)
+    {
+        
+    }
+  
+    public function store(Request $request, $idtienda)
+    {
+        $tienda = DB::table('tienda')->whereId($idtienda)->first();
+        if($request->input('view') == 'valid_registro_arqueocaja') {
+            $rules = [
+                'moneda_1' => 'required',          
+                'moneda_2' => 'required',         
+                'moneda_3' => 'required',         
+                'moneda_4' => 'required',         
+                'moneda_5' => 'required',         
+                'moneda_6' => 'required',         
+                'moneda_7' => 'required',         
+                'moneda_8' => 'required',         
+                'moneda_9' => 'required',         
+                'moneda_10' => 'required',         
+                'moneda_11' => 'required',              
+            ];
+
+            $messages = [
+                'moneda_1.required' => 'La "Cantidad de Denominación de 0.10" es Obligatorio.',
+                'moneda_2.required' => 'La "Cantidad de Denominación de 0.20" es Obligatorio.',
+                'moneda_3.required' => 'La "Cantidad de Denominación de 0.50" es Obligatorio.',
+                'moneda_4.required' => 'La "Cantidad de Denominación de 1.00" es Obligatorio.',
+                'moneda_5.required' => 'La "Cantidad de Denominación de 2.00" es Obligatorio.',
+                'moneda_6.required' => 'La "Cantidad de Denominación de 5.00" es Obligatorio.',
+                'moneda_7.required' => 'La "Cantidad de Denominación de 10.00" es Obligatorio.',
+                'moneda_8.required' => 'La "Cantidad de Denominación de 20.00" es Obligatorio.',
+                'moneda_9.required' => 'La "Cantidad de Denominación de 50.00" es Obligatorio.',
+                'moneda_10.required' => 'La "Cantidad de Denominación de 100.00" es Obligatorio.',
+                'moneda_11.required' => 'La "Cantidad de Denominación de 200.00" es Obligatorio.',
+            ];
+
+            $this->validate($request,$rules,$messages);
+          
+            if($request->total_arqueocaja<=0){
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'El TOTAL DE EFECTIVO EN CAJA AL ARQUEO debe ser mayor a S/. 0.00.'
+                ]);
+            }
+            if($request->total_arqueocaja!=$request->saldocaja_arqueocaja){
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'El TOTAL DE EFECTIVO EN CAJA AL ARQUEO debe ser igual a SALDO EN CAJA.'
+                ]);
+            }
+          
+            return response()->json([
+                'resultado' => 'CORRECTO',
+                'mensaje'   => 'Se ha validado correctamente.'
+            ]);
+        }
+        elseif($request->input('view') == 'submit_registro_arqueocaja'){
+
+            $co = consolidadooperaciones($tienda,$request->idagencia_arqueocaja,$request->corte_arqueocaja);
+          
+            $idarqueocaja = DB::table('arqueocaja')->insertGetId([
+                'fecharegistro' => now(),
+                'total' => $request->total_arqueocaja,
+                'corte' => $request->corte_arqueocaja,
+              
+                'ingresoyegresocaja_ingreso_crediticio_cnp_capital' => $co['ingresoyegresocaja_ingreso_crediticio_cnp_capital'],
+                'ingresoyegresocaja_ingreso_crediticio_cnp_interes' => $co['ingresoyegresocaja_ingreso_crediticio_cnp_interes'],
+                'ingresoyegresocaja_ingreso_crediticio_cnp_desgravcargo' => $co['ingresoyegresocaja_ingreso_crediticio_cnp_desgravcargo'],
+                'ingresoyegresocaja_ingreso_crediticio_cnp_tenencxc' => $co['ingresoyegresocaja_ingreso_crediticio_cnp_tenencxc'],
+                'ingresoyegresocaja_ingreso_crediticio_cnp' => $co['ingresoyegresocaja_ingreso_crediticio_cnp'],
+                'ingresoyegresocaja_ingreso_crediticio_cp_capital' => $co['ingresoyegresocaja_ingreso_crediticio_cp_capital'],
+                'ingresoyegresocaja_ingreso_crediticio_cp_interes' => $co['ingresoyegresocaja_ingreso_crediticio_cp_interes'],
+                'ingresoyegresocaja_ingreso_crediticio_cp_desgravcargo' => $co['ingresoyegresocaja_ingreso_crediticio_cp_desgravcargo'],
+                'ingresoyegresocaja_ingreso_crediticio_cp_tenencxc' => $co['ingresoyegresocaja_ingreso_crediticio_cp_tenencxc'],
+                'ingresoyegresocaja_ingreso_crediticio_cp' => $co['ingresoyegresocaja_ingreso_crediticio_cp'],
+                'ingresoyegresocaja_ingreso_ahorro_plazofijo' => $co['ingresoyegresocaja_ingreso_ahorro_plazofijo'],
+                'ingresoyegresocaja_ingreso_ahorro_ahorroc' => $co['ingresoyegresocaja_ingreso_ahorro_ahorroc'],
+                'ingresoyegresocaja_ingreso_ahorro' => $co['ingresoyegresocaja_ingreso_ahorro'],
+                'ingresoyegresocaja_ingreso_incrementocapital' => $co['ingresoyegresocaja_ingreso_incrementocapital'],
+                'ingresoyegresocaja_ingreso_ingresosextraordinarios' => $co['ingresoyegresocaja_ingreso_ingresosextraordinarios'],
+                'ingresoyegresocaja_ingreso_crediticio' => $co['ingresoyegresocaja_ingreso_crediticio'],
+                'ingresoyegresocaja_ingreso_crediticio_transitorio' => $co['ingresoyegresocaja_ingreso_crediticio_transitorio'],
+
+                'ingresoyegresocaja_egreso_crediticio' => $co['ingresoyegresocaja_egreso_crediticio'],
+                'ingresoyegresocaja_egreso_ahorro_plazofijo' => $co['ingresoyegresocaja_egreso_ahorro_plazofijo'],
+                'ingresoyegresocaja_egreso_ahorro_intplazofijo' => $co['ingresoyegresocaja_egreso_ahorro_intplazofijo'],
+                'ingresoyegresocaja_egreso_ahorro_ahorrocte' => $co['ingresoyegresocaja_egreso_ahorro_ahorrocte'],
+                'ingresoyegresocaja_egreso_ahorro_intcte' => $co['ingresoyegresocaja_egreso_ahorro_intcte'],
+                'ingresoyegresocaja_egreso_ahorro' => $co['ingresoyegresocaja_egreso_ahorro'],
+                'ingresoyegresocaja_egreso_reduccioncapital' => $co['ingresoyegresocaja_egreso_reduccioncapital'],
+                'ingresoyegresocaja_egreso_gastosadministrativosyoperativos' => $co['ingresoyegresocaja_egreso_gastosadministrativosyoperativos'],
+
+                'ingresoyegresobanco_ingreso_crediticio_cnpcp' => $co['ingresoyegresobanco_ingreso_crediticio_cnpcp'],
+                'ingresoyegresobanco_ingreso_crediticio_cnpcps_bancos' => json_encode($co['ingresoyegresobanco_ingreso_crediticio_cnpcps_bancos']),
+                'ingresoyegresobanco_ingreso_crediticio_cnpcps_validacion' => $co['ingresoyegresobanco_ingreso_crediticio_cnpcps_validacion'],
+                'ingresoyegresobanco_ingreso_crediticio_cnpcps_validacion_cantida' => $co['ingresoyegresobanco_ingreso_crediticio_cnpcps_validacion_cantidad'],
+                'ingresoyegresobanco_ingreso_incrementocapital' => $co['ingresoyegresobanco_ingreso_incrementocapital'],
+                'ingresoyegresobanco_ingreso_incrementocapital_bancos' => json_encode($co['ingresoyegresobanco_ingreso_incrementocapital_bancos']),
+                'ingresoyegresobanco_ingreso_incrementocapital_validacion' => $co['ingresoyegresobanco_ingreso_incrementocapital_validacion'],
+                'ingresoyegresobanco_ingreso_incrementocapital_validacion_cantida' => $co['ingresoyegresobanco_ingreso_incrementocapital_validacion_cantidad'],
+                'ingresoyegresobanco_ingreso_ingresosextraordinarios' => $co['ingresoyegresobanco_ingreso_ingresosextraordinarios'],
+                'ingresoyegresobanco_ingreso_ingresosextraordinarios_bancos' => json_encode($co['ingresoyegresobanco_ingreso_ingresosextraordinarios_bancos']),
+                'ingresoyegresobanco_ingreso_ingresosextraordinarios_validacion' => $co['ingresoyegresobanco_ingreso_ingresosextraordinarios_validacion'],
+                'ingresoyegresobanco_ingreso_ingresosextraordinarios_validacion_c' => $co['ingresoyegresobanco_ingreso_ingresosextraordinarios_validacion_cantidad'],
+
+                'ingresoyegresobanco_egreso_crediticio' => $co['ingresoyegresobanco_egreso_crediticio'],
+                'ingresoyegresobanco_egreso_crediticio_bancos' => json_encode($co['ingresoyegresobanco_egreso_crediticio_bancos']),
+                'ingresoyegresobanco_egreso_crediticio_validacion' => $co['ingresoyegresobanco_egreso_crediticio_validacion'],
+                'ingresoyegresobanco_egreso_crediticio_validacion_cantidad' => $co['ingresoyegresobanco_egreso_crediticio_validacion_cantidad'],
+                'ingresoyegresobanco_egreso_reduccioncapital' => $co['ingresoyegresobanco_egreso_reduccioncapital'],
+                'ingresoyegresobanco_egreso_reduccioncapital_bancos' => json_encode($co['ingresoyegresobanco_egreso_reduccioncapital_bancos']),
+                'ingresoyegresobanco_egreso_reduccioncapital_validacion' => $co['ingresoyegresobanco_egreso_reduccioncapital_validacion'],
+                'ingresoyegresobanco_egreso_reduccioncapital_validacion_cantidad' => $co['ingresoyegresobanco_egreso_reduccioncapital_validacion_cantidad'],
+                'ingresoyegresobanco_egreso_gastosadministrativosyoperativos' => $co['ingresoyegresobanco_egreso_gastosadministrativosyoperativos'],
+                'ingresoyegresobanco_egreso_gastosadministrativosyoperativos_banc' => json_encode($co['ingresoyegresobanco_egreso_gastosadministrativosyoperativos_bancos']),
+                'ingresoyegresobanco_egreso_gastosadministrativosyoperativos_vali' => $co['ingresoyegresobanco_egreso_gastosadministrativosyoperativos_validacion'],
+                'ingresoyegresobanco_egreso_gastosadministrativosyoperativos_cant' => $co['ingresoyegresobanco_egreso_gastosadministrativosyoperativos_validacion_cantidad'],
+
+                'ret_reservacf_caja' => $co['ret_reservacf_caja'],
+                'ret_banco_caja' => $co['ret_banco_caja'],
+                'ret_banco_caja_bancos' => json_encode($co['ret_banco_caja_bancos']),
+                'ret_caja_reservacf' => $co['ret_caja_reservacf'],
+                'ret_caja_banco' => $co['ret_caja_banco'],
+                'ret_caja_banco_bancos' => json_encode($co['ret_caja_banco_bancos']),
+                'ret_banco_reservacf' => $co['ret_banco_reservacf'],
+                'ret_banco_reservacf_bancos' => json_encode($co['ret_banco_reservacf_bancos']),
+                'ret_reservacf_caja_total' => $co['ret_reservacf_caja_total'],
+                'ret_caja_reservacf_total' => $co['ret_caja_reservacf_total'],
+
+                'dep_caja_reservacf' => $co['dep_caja_reservacf'],
+                'dep_caja_banco' => $co['dep_caja_banco'],
+                'dep_caja_banco_bancos' => json_encode($co['dep_caja_banco_bancos']),
+                'dep_reservacf_caja' => $co['dep_reservacf_caja'],
+                'dep_banco_caja' => $co['dep_banco_caja'],
+                'dep_banco_caja_bancos' => json_encode($co['dep_banco_caja_bancos']),
+                'dep_reservacf_banco' => $co['dep_reservacf_banco'],
+                'dep_reservacf_banco_bancos' => json_encode($co['dep_reservacf_banco_bancos']),
+                'dep_caja_reservacf_total' => $co['dep_caja_reservacf_total'],
+                'dep_reservacf_caja_total' => $co['dep_reservacf_caja_total'],
+
+                'habilitacion_gestion_liquidez1' => $co['habilitacion_gestion_liquidez1'],
+                'habilitacion_gestion_liquidez2' => $co['habilitacion_gestion_liquidez2'],
+                'cierre_caja_apertura' => $co['cierre_caja_apertura'],
+
+                'saldos_capitalasignada' => $co['saldos_capitalasignada'],
+                'saldos_cuentabanco' => $co['saldos_cuentabanco'],
+                'saldos_cuentabanco_bancos' => json_encode($co['saldos_cuentabanco_bancos']),
+                'saldos_reserva' => $co['saldos_reserva'],
+                'saldos_caja' => $co['saldos_caja'],
+                'arqueo_caja' => $co['arqueo_caja'],
+                'saldos_creditovigente_cnp' => $co['saldos_creditovigente_cnp'],
+                'saldos_creditovigente_cp' => $co['saldos_creditovigente_cp'],
+                'saldos_creditovigente' => $co['saldos_creditovigente'],
+                'saldos_interescreditovigentexcobrar_cnp' => $co['saldos_interescreditovigentexcobrar_cnp'],
+                'saldos_interescreditovigentexcobrar_cp' => $co['saldos_interescreditovigentexcobrar_cp'],
+                'saldos_interescreditovigentexcobrar' => $co['saldos_interescreditovigentexcobrar'],
+                'saldos_ahorros' => $co['saldos_ahorros'],
+                'saldos_interesgeneradosxpagar_ahorropf' => $co['saldos_interesgeneradosxpagar_ahorropf'],
+                'saldos_interesgeneradosxpagar_interescuentaahorropdfprogramadas' => $co['saldos_interesgeneradosxpagar_interescuentaahorropdfprogramadas'],
+                'saldos_interesgeneradosxpagar_ahorrocorriente' => $co['saldos_interesgeneradosxpagar_ahorrocorriente'],
+                'saldos_interesgeneradosxpagar_interescuentaahorrocgeneradas' => $co['saldos_interesgeneradosxpagar_interescuentaahorrocgeneradas'],
+                'saldos_interesgeneradosxpagar' => $co['saldos_interesgeneradosxpagar'],
+                'total_efectivo_ejercicio' => $co['total_efectivo_ejercicio'],
+                'incremental_capital_asignado' => $co['incremental_capital_asignado'],
+                'spread_financiero_proyectado' => $co['spread_financiero_proyectado'],
+                'indicador_reserva_legal' => $co['indicador_reserva_legal'],
+                'validacion_operaciones_cuenta_banco' => $co['validacion_operaciones_cuenta_banco'],
+                'efectivo_caja_corte' => $co['efectivo_caja_corte'],
+                'efectivo_caja_arqueo' => $co['efectivo_caja_arqueo'],
+                'resultado' => $co['resultado'],
+              
+                'idresponsable' => Auth::user()->id,
+                'idresponsable_registro' => $request->idresponsable_registro,
+                'idresponsable_registro_idpermiso' => $request->idresponsable_registro_idpermiso,
+                'idagencia' => $request->idagencia_arqueocaja,
+                'idtienda' => user_permiso()->idtienda,
+                'idestado' => 1,
+            ]);
+          
+            DB::table('arqueocaja_denominacion')->insert([
+                'denominacion' => 0.10,
+                'cantidad' => $request->moneda_1,
+                'total' => $request->moneda_1*0.10,
+                'tipo' => 1,
+                'idarqueocaja' => $idarqueocaja,
+                'idtienda' => user_permiso()->idtienda,
+            ]);
+          
+            DB::table('arqueocaja_denominacion')->insert([
+                'denominacion' => 0.20,
+                'cantidad' => $request->moneda_2,
+                'total' => $request->moneda_2*0.20,
+                'tipo' => 1,
+                'idarqueocaja' => $idarqueocaja,
+                'idtienda' => user_permiso()->idtienda,
+            ]);
+          
+            DB::table('arqueocaja_denominacion')->insert([
+                'denominacion' => 0.50,
+                'cantidad' => $request->moneda_3,
+                'total' => $request->moneda_3*0.50,
+                'tipo' => 1,
+                'idarqueocaja' => $idarqueocaja,
+                'idtienda' => user_permiso()->idtienda,
+            ]);
+          
+            DB::table('arqueocaja_denominacion')->insert([
+                'denominacion' => 1.00,
+                'cantidad' => $request->moneda_4,
+                'total' => $request->moneda_4*1.00,
+                'tipo' => 1,
+                'idarqueocaja' => $idarqueocaja,
+                'idtienda' => user_permiso()->idtienda,
+            ]);
+          
+            DB::table('arqueocaja_denominacion')->insert([
+                'denominacion' => 2.00,
+                'cantidad' => $request->moneda_5,
+                'total' => $request->moneda_5*2.00,
+                'tipo' => 1,
+                'idarqueocaja' => $idarqueocaja,
+                'idtienda' => user_permiso()->idtienda,
+            ]);
+          
+            DB::table('arqueocaja_denominacion')->insert([
+                'denominacion' => 5.00,
+                'cantidad' => $request->moneda_6,
+                'total' => $request->moneda_6*5.00,
+                'tipo' => 1,
+                'idarqueocaja' => $idarqueocaja,
+                'idtienda' => user_permiso()->idtienda,
+            ]);
+          
+            DB::table('arqueocaja_denominacion')->insert([
+                'denominacion' => 10.00,
+                'cantidad' => $request->moneda_7,
+                'total' => $request->moneda_7*10.00,
+                'tipo' => 2,
+                'idarqueocaja' => $idarqueocaja,
+                'idtienda' => user_permiso()->idtienda,
+            ]);
+          
+            DB::table('arqueocaja_denominacion')->insert([
+                'denominacion' => 20.00,
+                'cantidad' => $request->moneda_8,
+                'total' => $request->moneda_8*20.00,
+                'tipo' => 2,
+                'idarqueocaja' => $idarqueocaja,
+                'idtienda' => user_permiso()->idtienda,
+            ]);
+          
+            DB::table('arqueocaja_denominacion')->insert([
+                'denominacion' => 50.00,
+                'cantidad' => $request->moneda_9,
+                'total' => $request->moneda_9*50.00,
+                'tipo' => 2,
+                'idarqueocaja' => $idarqueocaja,
+                'idtienda' => user_permiso()->idtienda,
+            ]);
+          
+            DB::table('arqueocaja_denominacion')->insert([
+                'denominacion' => 100.00,
+                'cantidad' => $request->moneda_10,
+                'total' => $request->moneda_10*100.00,
+                'tipo' => 2,
+                'idarqueocaja' => $idarqueocaja,
+                'idtienda' => user_permiso()->idtienda,
+            ]);
+          
+            DB::table('arqueocaja_denominacion')->insert([
+                'denominacion' => 200.00,
+                'cantidad' => $request->moneda_11,
+                'total' => $request->moneda_11*200.00,
+                'tipo' => 2,
+                'idarqueocaja' => $idarqueocaja,
+                'idtienda' => user_permiso()->idtienda,
+            ]);
+          
+            return response()->json([
+              'resultado' => 'CORRECTO',
+              'mensaje'   => 'Se ha registrado correctamente.',
+              'corte'   => $request->corte_arqueocaja,
+              'idagencia'   => $request->idagencia_arqueocaja,
+            ]);
+        }
+    }
+
+    public function show(Request $request, $idtienda, $id)
+    {
+    }
+
+    public function edit(Request $request, $idtienda, $id)
+    {
+        $tienda = DB::table('tienda')->whereId($idtienda)->first();
+        if($request->input('view') == 'pdf_reporte'){
+          $co_actual = consolidadooperaciones($tienda,$request->idagencia,$request->corte);
+          $date = Carbon::createFromFormat('Y-m-d', $request->corte);
+          $date->subDay(); // Subtracts 1 day
+          //$co_anterior = consolidadooperaciones($tienda,$request->idagencia,$date->format('Y-m-d'));
+          $co_anterior = DB::table('arqueocaja')
+              ->where('idagencia',$request->idagencia)
+              ->where('corte',$date->format('Y-m-d'))
+              ->first();
+          $data_actual = DB::table('arqueocaja')
+              ->where('idagencia',$request->idagencia)
+              ->where('corte',$request->corte)
+              ->first();
+          $pdf = PDF::loadView(sistema_view().'/reporteconsolidadoopecaja/pdf_reporte',[
+              'co_actual' => $co_actual,
+              'co_anterior' => $co_anterior,
+              'data_actual' => $data_actual,
+          ]); 
+          $pdf->setPaper('A4', 'landscape');
+          return $pdf->stream('REPORTE_CONSOLIDADO_OPE_CAJA.pdf');
+        }
+        else if($request->input('view') == 'valid_registro_arqueocaja') {
+          
+            $usuarios = DB::table('users')
+                ->join('users_permiso','users_permiso.idusers','users.id')
+                ->join('permiso','permiso.id','users_permiso.idpermiso')
+                ->whereIn('users_permiso.idpermiso',[2,4])
+                ->where('users_permiso.idtienda',$idtienda)
+                ->select('users.*','permiso.id as idpermiso','permiso.nombre as nombrepermiso')
+                ->get();
+            return view(sistema_view().'/reporteconsolidadoopecaja/valid_registro_arqueocaja',[
+                'tienda' => $tienda,
+                'usuarios' => $usuarios,
+            ]);
+        }
+        else if($request->input('view') == 'arqueocaja') {
+          
+            $agencias = DB::table('tienda')->get();
+            $agencia = DB::table('tienda')->whereId($request->idagencia)->first();
+            $consolidadooperaciones = consolidadooperaciones($tienda,$request->idagencia,$request->corte);
+            $arqueocaja = DB::table('arqueocaja')->where('idagencia',$request->idagencia)->where('corte',$request->corte)->first();
+            $resposanble = DB::table('users')->where('id',$arqueocaja?$arqueocaja->idresponsable:0)->first();
+            return view(sistema_view().'/reporteconsolidadoopecaja/arqueocaja',[
+                'tienda' => $tienda,
+                'agencias' => $agencias,
+                'agencia' => $agencia,
+                'corte' => $request->corte,
+                'consolidadooperaciones' => $consolidadooperaciones,
+                'arqueocaja' => $arqueocaja,
+                'resposanble' => $resposanble,
+            ]);
+        }
+        else if($request->input('view') == 'reporte_arqueocaja') {
+          
+            $agencias = DB::table('tienda')->get();
+            $agencia = DB::table('tienda')->whereId($request->idagencia)->first();
+            return view(sistema_view().'/reporteconsolidadoopecaja/reporte_arqueocaja',[
+                'tienda' => $tienda,
+                'agencias' => $agencias,
+                'agencia' => $agencia,
+            ]);
+        }
+        else if($request->input('view') == 'reporte_arqueocaja_pdf'){
+            $agencia = DB::table('tienda')->whereId($request->idagencia_reporte_arqueocaja)->first();
+            $arqueocaja = DB::table('arqueocaja')
+                ->join('users','users.id','arqueocaja.idresponsable_registro')
+                ->join('permiso','permiso.id','arqueocaja.idresponsable_registro_idpermiso')
+                ->where('idagencia',$request->idagencia_reporte_arqueocaja)
+                ->where('corte',$request->fecha_reporte_arqueocaja)
+                ->select(
+                    'arqueocaja.*',
+                    'users.nombrecompleto as nombrecompleto_responsable',
+                    'users.codigo as codigo_responsable',
+                    'permiso.nombre as nombre_permiso',
+                )
+                ->first();
+            $idarqueocaja = 0;
+            if($arqueocaja){
+                $idarqueocaja = $arqueocaja->id;
+            }
+            $arqueocaja_denominacion_1 = DB::table('arqueocaja_denominacion')
+                ->where('idarqueocaja',$idarqueocaja)
+                ->where('denominacion','0.10')
+                ->first();
+          
+            $arqueocaja_denominacion_2 = DB::table('arqueocaja_denominacion')
+                ->where('idarqueocaja',$idarqueocaja)
+                ->where('denominacion','0.20')
+                ->first();
+          
+            $arqueocaja_denominacion_3 = DB::table('arqueocaja_denominacion')
+                ->where('idarqueocaja',$idarqueocaja)
+                ->where('denominacion','0.50')
+                ->first();
+          
+            $arqueocaja_denominacion_4 = DB::table('arqueocaja_denominacion')
+                ->where('idarqueocaja',$idarqueocaja)
+                ->where('denominacion','1.00')
+                ->first();
+          
+            $arqueocaja_denominacion_5 = DB::table('arqueocaja_denominacion')
+                ->where('idarqueocaja',$idarqueocaja)
+                ->where('denominacion','2.00')
+                ->first();
+          
+            $arqueocaja_denominacion_6 = DB::table('arqueocaja_denominacion')
+                ->where('idarqueocaja',$idarqueocaja)
+                ->where('denominacion','5.00')
+                ->first();
+          
+            $arqueocaja_denominacion_7 = DB::table('arqueocaja_denominacion')
+                ->where('idarqueocaja',$idarqueocaja)
+                ->where('denominacion','10.00')
+                ->first();
+          
+            $arqueocaja_denominacion_8 = DB::table('arqueocaja_denominacion')
+                ->where('idarqueocaja',$idarqueocaja)
+                ->where('denominacion','20.00')
+                ->first();
+          
+            $arqueocaja_denominacion_9 = DB::table('arqueocaja_denominacion')
+                ->where('idarqueocaja',$idarqueocaja)
+                ->where('denominacion','50.00')
+                ->first();
+          
+            $arqueocaja_denominacion_10 = DB::table('arqueocaja_denominacion')
+                ->where('idarqueocaja',$idarqueocaja)
+                ->where('denominacion','100.00')
+                ->first();
+          
+            $arqueocaja_denominacion_11 = DB::table('arqueocaja_denominacion')
+                ->where('idarqueocaja',$idarqueocaja)
+                ->where('denominacion','200.00')
+                ->first();
+          
+            $pdf = PDF::loadView(sistema_view().'/reporteconsolidadoopecaja/reporte_arqueocaja_pdf',[
+                'tienda' => $tienda,
+                'agencia' => $agencia,
+                'corte' => $request->fecha_reporte_arqueocaja,
+                'arqueocaja' => $arqueocaja,
+                'arqueocaja_denominacion_1' => $arqueocaja_denominacion_1,
+                'arqueocaja_denominacion_2' => $arqueocaja_denominacion_2,
+                'arqueocaja_denominacion_3' => $arqueocaja_denominacion_3,
+                'arqueocaja_denominacion_4' => $arqueocaja_denominacion_4,
+                'arqueocaja_denominacion_5' => $arqueocaja_denominacion_5,
+                'arqueocaja_denominacion_6' => $arqueocaja_denominacion_6,
+                'arqueocaja_denominacion_7' => $arqueocaja_denominacion_7,
+                'arqueocaja_denominacion_8' => $arqueocaja_denominacion_8,
+                'arqueocaja_denominacion_9' => $arqueocaja_denominacion_9,
+                'arqueocaja_denominacion_10' => $arqueocaja_denominacion_10,
+                'arqueocaja_denominacion_11' => $arqueocaja_denominacion_11,
+            ]); 
+            //$pdf->setPaper('A4', 'landscape');
+            return $pdf->stream('REPORTE_ARQUEO_CAJA.pdf');
+        }
+        else if($request->input('view') == 'valid_eliminar_arqueocaja') {
+          
+            $arqueocaja = DB::table('arqueocaja')->where('corte',$request->corte)->first();
+            $usuarios = DB::table('users')
+                ->join('users_permiso','users_permiso.idusers','users.id')
+                ->join('permiso','permiso.id','users_permiso.idpermiso')
+                ->whereIn('users_permiso.idpermiso',[2])
+                ->where('users_permiso.idtienda',$request->idagencia)
+                ->select('users.*','permiso.id as idpermiso','permiso.nombre as nombrepermiso')
+                ->get();
+            return view(sistema_view().'/reporteconsolidadoopecaja/valid_eliminar_arqueocaja',[
+                'tienda' => $tienda,
+                'usuarios' => $usuarios,
+                'arqueocaja' => $arqueocaja,
+            ]);
+        }
+    }
+
+    public function update(Request $request, $idtienda, $id)
+    {
+
+        if($request->input('view') == 'valid_registro_arqueocaja'){
+            $rules = [
+                'idresponsable' => 'required',          
+                'responsableclave' => 'required',              
+            ];
+
+            $messages = [
+                'idresponsable.required' => 'El "Responsable" es Obligatorio.',
+                'responsableclave.required' => 'La "Contraseña" es Obligatorio.',
+            ];
+
+            $this->validate($request,$rules,$messages);
+
+            $usuario = DB::table('users')
+                ->where('users.id',$request->idresponsable)
+                ->where('users.clave',$request->responsableclave)
+                ->first();
+            $idresponsable = 0;
+            if($usuario!=''){
+                $idresponsable = $usuario->id;
+            }else{
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'El usuario y/o la contraseña es incorrecta!!.'
+                ]);
+            }
+          
+            return response()->json([
+              'resultado' => 'CORRECTO',
+              'mensaje'   => 'Se ha validado correctamente.',
+              'idresponsable'   => $idresponsable
+            ]);
+        }
+        elseif($request->input('view') == 'valid_eliminar_arqueocaja'){
+            $rules = [
+                'idresponsable' => 'required',          
+                'responsableclave' => 'required',              
+            ];
+
+            $messages = [
+                'idresponsable.required' => 'El "Responsable" es Obligatorio.',
+                'responsableclave.required' => 'La "Contraseña" es Obligatorio.',
+            ];
+
+            $this->validate($request,$rules,$messages);
+
+            $usuario = DB::table('users')
+                ->where('users.id',$request->idresponsable)
+                ->where('users.clave',$request->responsableclave)
+                ->first();
+            $idresponsable = 0;
+            if($usuario!=''){
+                $idresponsable = $usuario->id;
+            }else{
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'El usuario y/o la contraseña es incorrecta!!.'
+                ]);
+            }
+          
+            $arqueocaja = DB::table('arqueocaja')->whereId($id)->first();
+            DB::table('arqueocaja')->whereId($id)->delete();
+            DB::table('arqueocaja_denominacion')->where('idarqueocaja',$id)->delete();
+          
+            return response()->json([
+              'resultado' => 'CORRECTO',
+              'mensaje'   => 'Se ha eliminado correctamente.',
+              'idresponsable'   => $idresponsable,
+              'corte'   => $arqueocaja->corte,
+              'idagencia'   => $arqueocaja->idagencia,
+            ]);
+        }
+    }
+
+
+    public function destroy(Request $request, $idtienda, $id)
+    {
+
+    }
+}

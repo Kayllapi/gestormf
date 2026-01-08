@@ -1,0 +1,123 @@
+.menu-sistema{
+      float: right;
+      text-align: left;
+}
+.menu-sistema ul {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+      /*background: #e3e3e3;*/
+      /*position: relative;*/
+}
+
+.menu-sistema .active {
+      background-color: #2f3b59;
+}
+ 
+.menu-sistema ul li {
+      display: inline-block;
+}
+ 
+.menu-sistema ul li a {
+      color: #eee;
+      text-decoration: none;
+      padding: 12px;
+      display: block;
+      font-weight: 400;
+      padding-top: 15px;
+    padding-bottom: 15px;
+}
+.menu-sistema ul li ul li a {
+      padding-top: 12px;
+      padding-bottom: 12px;
+}
+ 
+.menu-sistema ul li:hover {
+      background: #2f3b59;
+}
+.menu-sistema ul li:hover a,
+.menu-sistema ul li:hover a i{
+      color:#eee;
+} 
+.menu-sistema ul ul {
+      position: absolute;
+      min-width: 200px;
+      background: #2f3b59;
+      display: none;
+      z-index: 1000;
+}
+ 
+.menu-sistema ul ul li {
+      display: block;
+      /*background: #e3e3e3;*/
+}
+ 
+.menu-sistema ul li:hover ul {
+      /*display: block;*/
+}
+.menu-sistema ul li ul li:hover {
+      background-color:#4db7fe;
+}
+.menu-sistema ul li:hover ul li a {
+      padding-top: 12px;
+      padding-bottom: 12px;
+}
+ 
+.menu-sistema ul li i {
+      color: #eee;
+      float: left;
+      padding-left: 5px;
+      margin-right: 5px;
+      margin-top: 2px;
+}
+.menu-sistema ul li i+i {
+      color: #eee;
+      float: right;
+      padding-left: 5px;
+      margin-top: 0px;
+}
+.menu-sistema ul li ul li i {
+      color: #eee;
+      float: left;
+      padding-left: 5px;
+      margin-right: 5px;
+      margin-top: 3px;
+}
+ 
+.menu-sistema div {
+      background: #03A9F4;
+      color: #eee;
+      font-size: 19px;
+      padding: 0.6em;
+      cursor: pointer;
+      display: none;
+      padding-top: 15px;
+      padding-left: 15px;
+    padding-right: 15px;
+}
+ 
+@media(max-width: 768px) {
+      .menu-sistema div {
+            display: block;
+      }
+ 
+      .menu-sistema ul {
+            display: none;
+            /*position: static;*/
+            /*background: #e3e3e3;*/
+            position: absolute;
+    background: #03A9F4;
+    z-index: 1;
+    width: 100%;
+    left: 0px;
+      }
+ 
+      .menu-sistema ul li {
+            display: block;
+      }
+ 
+      .menu-sistema ul ul {
+            position: static;
+            /*background: #e3e3e3;*/
+      }
+}

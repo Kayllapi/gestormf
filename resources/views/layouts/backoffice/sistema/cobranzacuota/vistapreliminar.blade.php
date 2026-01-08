@@ -1,0 +1,32 @@
+<div id="carga_cambiar_estado">
+<form action="javascript:;" id="form_cambiar_estado">
+    <style>
+      .form-check-label {
+          margin-top: 5px;
+          margin-left: 5px;
+      }
+    </style>
+    <div class="modal-header">
+        <h5 class="modal-title">CRONOGRAMA/HOJA DE RESUMEN</h5>
+        <button type="button" class="btn-close" id="modal-close-cambiar-estado" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+      <div class="row" style="font-size: 14px;padding: 7px;">
+          <div class="col-md-6"><b>CLIENTE:</b> {{ $usuario->nombrecompleto }}</div>
+          <div class="col-md-6" style="text-align: right;"><b>PRODUCTO:</b> {{ $credito->nombreproductocredito }}</div>
+      </div>
+       <div class="col-sm-12 mt-2 text-center">
+            <button type="button" class="btn btn-danger" style="background-color: #144081;border-color: #144081;" onclick="verpdf('pdf_cronograma')"> CRONOGRAMA</button>
+            <button type="button" class="btn btn-danger" style="background-color: #144081;border-color: #144081;" onclick="verpdf('pdf_resumen')"> H. RESUMEN</button>
+       </div>
+       <div class="col-sm-12 mt-2">
+        <iframe id="iframe_acta_aprobacion" src="{{ url('/backoffice/'.$tienda->id.'/desembolso/'.$credito->id.'/edit?view=pdf_cronograma') }}#zoom=90" frameborder="0" width="100%" height="600px"></iframe>
+      </div>
+      </div>
+</form>   
+</div>
+<script>
+function verpdf(valor,idgarantia,num){
+    $('#iframe_acta_aprobacion').attr('src',"{{ url('/backoffice/'.$tienda->id.'/desembolso/'.$credito->id.'/edit?view=') }}"+valor+'&idgarantia='+idgarantia+'&num='+num+'#zoom=90');
+}
+</script>

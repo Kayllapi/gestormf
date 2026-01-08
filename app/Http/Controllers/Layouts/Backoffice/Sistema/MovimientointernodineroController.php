@@ -1,0 +1,1533 @@
+<?php
+
+namespace App\Http\Controllers\Layouts\Backoffice\Sistema;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use DB;
+use Auth;
+use PDF;
+use Carbon\Carbon;
+
+class MovimientointernodineroController extends Controller
+{
+    public function __construct()
+    {
+       
+    }
+    public function index(Request $request,$idtienda)
+    {
+        $tienda = DB::table('tienda')->whereId($idtienda)->first();
+      
+        if($request->input('view') == 'tabla'){
+            return view(sistema_view().'/movimientointernodinero/tabla',[
+              'tienda' => $tienda
+            ]);
+        }
+            
+    }
+  
+    public function create(Request $request,$idtienda)
+    {
+        $tienda = DB::table('tienda')->whereId($idtienda)->first();
+        
+        if($request->view == 'registrar_retiro1') {
+            $bancos = DB::table('banco')->where('estado','ACTIVO')->get();
+            $fuenteretiros= DB::table('credito_fuenteretiro')
+              ->where('idtipo',2)
+              ->whereIn('id',[6,7,8,9])
+              ->get();
+            return view(sistema_view().'/movimientointernodinero/create_retiro1',[
+                'tienda' => $tienda,
+                'bancos' => $bancos,
+                'fuenteretiros' => $fuenteretiros,
+            ]);
+        }
+        elseif($request->view == 'registrar_deposito1') {
+            $bancos = DB::table('banco')->where('estado','ACTIVO')->get();
+            $fuenteretiros= DB::table('credito_fuenteretiro')
+              ->where('idtipo',1)
+              ->whereIn('id',[1,2,3,4])
+              ->get();
+            return view(sistema_view().'/movimientointernodinero/create_deposito1',[
+                'tienda' => $tienda,
+                'bancos' => $bancos,
+                'fuenteretiros' => $fuenteretiros,
+            ]);
+        }
+        elseif($request->view == 'registrar_retiro3') {
+            $bancos = DB::table('banco')->where('estado','ACTIVO')->get();
+            $fuenteretiros= DB::table('credito_fuenteretiro')
+              ->where('idtipo',2)
+              ->whereIn('id',[6,8])
+              ->get();
+            return view(sistema_view().'/movimientointernodinero/create_retiro3',[
+                'tienda' => $tienda,
+                'bancos' => $bancos,
+                'fuenteretiros' => $fuenteretiros,
+            ]);
+        }
+        elseif($request->view == 'registrar_deposito3') {
+            $bancos = DB::table('banco')->where('estado','ACTIVO')->get();
+            $fuenteretiros= DB::table('credito_fuenteretiro')
+              ->where('idtipo',1)
+              ->whereIn('id',[1,3])
+              ->get();
+            return view(sistema_view().'/movimientointernodinero/create_deposito3',[
+                'tienda' => $tienda,
+                'bancos' => $bancos,
+                'fuenteretiros' => $fuenteretiros,
+            ]);
+        }
+    }
+  
+    public function store(Request $request, $idtienda)
+    {
+        $tienda = DB::table('tienda')->whereId($idtienda)->first();
+        if($request->input('view') == 'registrar_retiro1') {
+            $rules = [
+                'idfuenteretiro_retiro1' => 'required', 
+                'monto_retiro1' => 'required', 
+                'descripcion_retiro1' => 'required',        
+            ];
+          
+            $messages = [
+                'idfuenteretiro_retiro1.required' => 'La "Fuente de Retiro" es Obligatorio.',
+                'monto_retiro1.required' => 'El "Monto" es Obligatorio.',
+                'descripcion_retiro1.required' => 'La "Descricpión" es Obligatorio.',
+            ];
+            $this->validate($request,$rules,$messages);
+
+            if($request->idtipodestino==2){
+                $rules = [
+                    'idbanco_retiro1' => 'required',                  
+                    'numerooperacion_retiro1' => 'required',                       
+                ];
+
+                $messages = [
+                    'idbanco_retiro1.required' => 'El Campo Banco es Obligatorio.',
+                    'numerooperacion_retiro1.required' => 'El Campo Número de Operación es Obligatorio.',
+                ];
+                $this->validate($request,$rules,$messages);
+            }
+          
+            return response()->json([
+                'resultado' => 'CORRECTO',
+                'mensaje'   => 'Se ha validado correctamente.'
+            ]);
+        }
+        elseif($request->input('view') == 'registrar_retiro1_insert') {
+          
+            // --- RETIRO
+            $consolidadooperaciones = consolidadooperaciones($tienda,$idtienda,now()->format('Y-m-d'));
+            if($request->idfuenteretiro_retiro1==6){
+                if($consolidadooperaciones['saldos_reserva']<$request->monto_retiro1){
+                    return response()->json([
+                        'resultado' => 'ERROR',
+                        'mensaje'   => 'No hay saldo suficiente en RESERVA CF.<br><b>Saldo Actual: S/. '.$consolidadooperaciones['saldos_reserva'].'.</b>.'
+                    ]);
+                }
+            }
+            elseif($request->idfuenteretiro_retiro1==7){
+                foreach($consolidadooperaciones['saldos_cuentabanco_bancos'] as $value){
+                    if($value['banco_id']==$request->idbanco_retiro1 && $value['banco']<$request->monto_retiro1){
+                        return response()->json([
+                            'resultado' => 'ERROR',
+                            'mensaje'   => 'No hay saldo suficiente en Cuenta Bancaria.<br><b>Saldo Actual: S/. '.$value['banco'].'.</b>'
+                        ]);
+                    }
+                }  
+            }
+            elseif($request->idfuenteretiro_retiro1==8 || $request->idfuenteretiro_retiro1==9){
+                if($consolidadooperaciones['saldos_caja']<$request->monto_retiro1){
+                    return response()->json([
+                        'resultado' => 'ERROR',
+                        'mensaje'   => 'No hay saldo suficiente en CAJA.<br><b>Saldo Actual: S/. '.$consolidadooperaciones['saldos_caja'].'.</b>.'
+                    ]);
+                }
+            }
+          
+            $bancoo = DB::table('banco')->where('banco.id',$request->idbanco_retiro1)->first();
+          
+            $movimientointernodinero = DB::table('movimientointernodinero')
+                ->where('movimientointernodinero.idtipomovimientointerno',1)
+                ->orderBy('movimientointernodinero.codigo','desc')
+                ->limit(1)
+                ->first();
+            $codigo = 1;
+            if($movimientointernodinero!=''){
+                $codigo = $movimientointernodinero->codigo+1;
+            }
+          
+            $banco = '';
+            $cuenta = '';
+            if($bancoo!=''){
+                $banco = $bancoo->nombre;
+                $cuenta = $bancoo->cuenta;
+            }
+          
+            $idmovimientointernodinero = DB::table('movimientointernodinero')->insertGetId([
+                'fecharegistro' => now(),
+                'codigoprefijo' => 'OMR',
+                'codigo' => $codigo,
+                'monto' => $request->input('monto_retiro1'),
+                'descripcion' => $request->input('descripcion_retiro1'),
+                'numerooperacion' => $request->numerooperacion_retiro1!=''?$request->numerooperacion_retiro1:'',
+                'banco' => $banco,
+                'cuenta' => $cuenta,
+                'idbanco' => $request->idbanco_retiro1!=''?$request->idbanco_retiro1:0,
+                'idfuenteretiro' => $request->idfuenteretiro_retiro1,
+                'idresponsable' => $request->idresponsable_retiro1,
+                'idresponsable_permiso' => $request->idresponsable_permiso_retiro1,
+                'idtipomovimientointerno' => 1, 
+                'idtienda' => user_permiso()->idtienda,
+                'idestadoeliminado' => 1,
+                'idestado' => 1,
+            ]);
+          
+            // DEPOSITO
+            $movimientointernodinero = DB::table('movimientointernodinero')
+                ->where('movimientointernodinero.idtipomovimientointerno',2)
+                ->orderBy('movimientointernodinero.codigo','desc')
+                ->limit(1)
+                ->first();
+            $codigo = 1;
+            if($movimientointernodinero!=''){
+                $codigo = $movimientointernodinero->codigo+1;
+            }
+          
+            DB::table('movimientointernodinero')->insert([
+                'fecharegistro' => now(),
+                'codigoprefijo' => 'OMD',
+                'codigo' => $codigo,
+                'monto' => $request->input('monto_retiro1'),
+                'descripcion' => $request->input('descripcion_retiro1'),
+                'numerooperacion' => $request->numerooperacion_retiro1!=''?$request->numerooperacion_retiro1:'',
+                'banco' => $banco,
+                'cuenta' => $cuenta,
+                'idbanco' => $request->idbanco_retiro1!=''?$request->idbanco_retiro1:0,
+                'idfuenteretiro' => $request->idfuenteretiro_retiro1-5,
+                'idtipomovimientointerno' => 2, 
+                'idmovimientointernodinero' => $idmovimientointernodinero, 
+                'idtienda' => user_permiso()->idtienda,
+                'idestadoeliminado' => 1,
+                'idestado' => 1,
+            ]);
+          
+            return response()->json([
+                'resultado' => 'CORRECTO',
+                'mensaje'   => 'Se ha registrado correctamente.'
+            ]);
+        }
+        /*elseif($request->input('view') == 'registrar_deposito1') {
+            $rules = [
+                'idfuenteretiro_deposito1' => 'required', 
+                'monto_deposito1' => 'required', 
+                'descripcion_deposito1' => 'required',        
+            ];
+          
+            $messages = [
+                'idfuenteretiro_deposito1.required' => 'La "Fuente de Retiro" es Obligatorio.',
+                'monto_deposito1.required' => 'El "Monto" es Obligatorio.',
+                'descripcion_deposito1.required' => 'La "Descricpión" es Obligatorio.',
+            ];
+            $this->validate($request,$rules,$messages);
+
+            if($request->idtipodestino==2){
+                $rules = [
+                    'idbanco_deposito1' => 'required',                  
+                    'numerooperacion_deposito1' => 'required',                       
+                ];
+
+                $messages = [
+                    'idbanco_deposito1.required' => 'El Campo Banco es Obligatorio.',
+                    'numerooperacion_deposito1.required' => 'El Campo Número de Operación es Obligatorio.',
+                ];
+                $this->validate($request,$rules,$messages);
+            } 
+          
+            DB::table('movimientointernodinero')->whereId()->insert([
+                'fecharegistro' => now(),
+                'idresponsable' => Auth::user()->id,
+            ]);
+          
+            return response()->json([
+                'resultado' => 'CORRECTO',
+                'mensaje'   => 'Se ha validado correctamente.'
+            ]);
+        }
+        elseif($request->input('view') == 'registrar_deposito1_insert') {
+
+            $movimientointernodinero = DB::table('movimientointernodinero')
+                ->where('movimientointernodinero.idtipomovimientointerno',2)
+                ->orderBy('movimientointernodinero.codigo','desc')
+                ->limit(1)
+                ->first();
+            $codigo = 1;
+            if($movimientointernodinero!=''){
+                $codigo = $movimientointernodinero->codigo+1;
+            }
+          
+            $bancoo = DB::table('banco')->where('banco.id',$request->idbanco_deposito1)->first();
+
+            $banco = '';
+            $cuenta = '';
+            if($bancoo!=''){
+                $banco = $bancoo->nombre;
+                $cuenta = $bancoo->cuenta;
+            }
+          
+            DB::table('movimientointernodinero')->insert([
+                'codigoprefijo' => 'OMD',
+                'codigo' => $codigo,
+                'monto' => $request->input('monto_deposito1'),
+                'descripcion' => $request->input('descripcion_deposito1'),
+                'numerooperacion' => $request->numerooperacion_deposito1!=''?$request->numerooperacion_deposito1:'',
+                'banco' => $banco,
+                'cuenta' => $cuenta,
+                'idbanco' => $request->idbanco_deposito1!=''?$request->idbanco_deposito1:0,
+                'idfuenteretiro' => $request->idfuenteretiro_deposito1,
+                'idresponsable' => Auth::user()->id,
+                'idtipomovimientointerno' => 2, 
+                'idtienda' => user_permiso()->idtienda,
+                'idestadoeliminado' => 1,
+                'idestado' => 1,
+            ]);
+          
+            return response()->json([
+                'resultado' => 'CORRECTO',
+                'mensaje'   => 'Se ha registrado correctamente.'
+            ]);
+        }*/
+        elseif($request->input('view') == 'registrar_retiro3') {
+            $rules = [
+                'idfuenteretiro_retiro3' => 'required', 
+                'monto_retiro3' => 'required',  
+                'descripcion_retiro3' => 'required',        
+            ];
+          
+            $messages = [
+                'idfuenteretiro_retiro3.required' => 'La "Fuente de Retiro" es Obligatorio.',
+                'monto_retiro3.required' => 'El "Monto" es Obligatorio.',
+                'descripcion_retiro3.required' => 'La "Descricpión" es Obligatorio.',
+            ];
+            $this->validate($request,$rules,$messages);
+          
+          
+            return response()->json([
+                'resultado' => 'CORRECTO',
+                'mensaje'   => 'Se ha validado correctamente.'
+            ]);
+        }
+        elseif($request->input('view') == 'registrar_retiro3_insert') {    
+          
+            // --- RETIRO
+            $consolidadooperaciones = consolidadooperaciones($tienda,$idtienda,now()->format('Y-m-d'));
+            if($request->idfuenteretiro_retiro3==6){
+                if($consolidadooperaciones['saldos_reserva']<$request->monto_retiro3){
+                    return response()->json([
+                        'resultado' => 'ERROR',
+                        'mensaje'   => 'No hay saldo suficiente en RESERVA CF.<br><b>Saldo Actual: S/. '.$consolidadooperaciones['saldos_reserva'].'.</b>'
+                    ]);
+                }
+            }
+            elseif($request->idfuenteretiro_retiro3==8){
+                if($consolidadooperaciones['saldos_caja']<$request->monto_retiro3){
+                    return response()->json([
+                        'resultado' => 'ERROR',
+                        'mensaje'   => 'No hay saldo suficiente en CAJA.<br><b>Saldo Actual: S/. '.$consolidadooperaciones['saldos_caja'].'.</b>'
+                    ]);
+                }
+            }
+          
+            $movimientointernodinero = DB::table('movimientointernodinero')
+                ->where('movimientointernodinero.idtipomovimientointerno',5)
+                ->orderBy('movimientointernodinero.codigo','desc')
+                ->limit(1)
+                ->first();
+            $codigo = 1;
+            if($movimientointernodinero!=''){
+                $codigo = $movimientointernodinero->codigo+1;
+            }
+          
+            $idmovimientointernodinero = DB::table('movimientointernodinero')->insertGetId([
+                'fecharegistro' => now(),
+                'codigoprefijo' => 'OACR',
+                'codigo' => $codigo,
+                'monto' => $request->input('monto_retiro3'),
+                'descripcion' => $request->input('descripcion_retiro3'),
+                'numerooperacion' => $request->numerooperacion_retiro3!=''?$request->numerooperacion_retiro3:'',
+                'banco' => '',
+                'cuenta' => '',
+                'idbanco' => 0,
+                'idfuenteretiro' => $request->idfuenteretiro_retiro3,
+                'idresponsable' => $request->idresponsable_retiro3,
+                'idresponsable_permiso' => $request->idresponsable_permiso_retiro3,
+                'idtipomovimientointerno' => 5, 
+                'idtienda' => user_permiso()->idtienda,
+                'idestadoeliminado' => 1,
+                'idestado' => 1,
+            ]);
+          
+            // --- DEPOSITO
+            $movimientointernodinero = DB::table('movimientointernodinero')
+                ->where('movimientointernodinero.idtipomovimientointerno',6)
+                ->orderBy('movimientointernodinero.codigo','desc')
+                ->limit(1)
+                ->first();
+            $codigo = 1;
+            if($movimientointernodinero!=''){
+                $codigo = $movimientointernodinero->codigo+1;
+            }
+
+            DB::table('movimientointernodinero')->insert([
+                'fecharegistro' => now(),
+                'codigoprefijo' => 'OACD',
+                'codigo' => $codigo,
+                'monto' => $request->input('monto_retiro3'),
+                'descripcion' => $request->input('descripcion_retiro3'),
+                'numerooperacion' => $request->numerooperacion_retiro3!=''?$request->numerooperacion_retiro3:'',
+                'banco' => '',
+                'cuenta' => '',
+                'idbanco' => 0,
+                'idfuenteretiro' => $request->idfuenteretiro_retiro3-5,
+                'idtipomovimientointerno' => 6, 
+                'idmovimientointernodinero' => $idmovimientointernodinero, 
+                'idtienda' => user_permiso()->idtienda,
+                'idestadoeliminado' => 1,
+                'idestado' => 1,
+            ]);
+          
+            return response()->json([
+                'resultado' => 'CORRECTO',
+                'mensaje'   => 'Se ha registrado correctamente.'
+            ]);
+        }
+        /*elseif($request->input('view') == 'registrar_deposito3') {
+            $rules = [
+                'idfuenteretiro_deposito3' => 'required', 
+                'monto_deposito3' => 'required',   
+                'descripcion_deposito3' => 'required',        
+            ];
+          
+            $messages = [
+                'idfuenteretiro_deposito3.required' => 'La "Fuente de Retiro" es Obligatorio.',
+                'monto_deposito3.required' => 'El "Monto" es Obligatorio.',
+                'descripcion_deposito3.required' => 'La "Descricpión" es Obligatorio.',
+            ];
+            $this->validate($request,$rules,$messages);
+
+          
+            return response()->json([
+                'resultado' => 'CORRECTO',
+                'mensaje'   => 'Se ha validado correctamente.'
+            ]);
+        }
+        elseif($request->input('view') == 'registrar_deposito3_insert') {
+
+            $movimientointernodinero = DB::table('movimientointernodinero')
+                ->where('movimientointernodinero.idtipomovimientointerno',6)
+                ->orderBy('movimientointernodinero.codigo','desc')
+                ->limit(1)
+                ->first();
+            $codigo = 1;
+            if($movimientointernodinero!=''){
+                $codigo = $movimientointernodinero->codigo+1;
+            }
+
+            DB::table('movimientointernodinero')->insert([
+                'codigoprefijo' => 'OACD',
+                'codigo' => $codigo,
+                'monto' => $request->input('monto_deposito3'),
+                'descripcion' => $request->input('descripcion_deposito3'),
+                'numerooperacion' => $request->numerooperacion_deposito3!=''?$request->numerooperacion_deposito3:'',
+                'banco' => '',
+                'cuenta' => '',
+                'idbanco' => 0,
+                'idfuenteretiro' => $request->idfuenteretiro_deposito3,
+                'idresponsable' => Auth::user()->id,
+                'idtipomovimientointerno' => 6, 
+                'idtienda' => user_permiso()->idtienda,
+                'idestadoeliminado' => 1,
+                'idestado' => 1,
+            ]);
+          
+            return response()->json([
+                'resultado' => 'CORRECTO',
+                'mensaje'   => 'Se ha registrado correctamente.'
+            ]);
+        }*/
+    }
+
+    public function show(Request $request, $idtienda, $id)
+    {
+        if($id=='show_table_retiro1'){
+            $where = [];
+            if($request->input('fechainicio') != ''){
+                $where[] = ['movimientointernodinero.fecharegistro','>=',$request->fechainicio.' 00:00:00'];
+            }
+            if($request->input('fechafin') != ''){
+                $where[] = ['movimientointernodinero.fecharegistro','<=',$request->fechafin.' 23:59:59']; 
+            }
+            $movimientointernodinero = DB::table('movimientointernodinero')
+                ->join('credito_fuenteretiro','credito_fuenteretiro.id','movimientointernodinero.idfuenteretiro')
+                ->join('users as responsable','responsable.id','movimientointernodinero.idresponsable')
+                ->join('tienda','tienda.id','movimientointernodinero.idtienda')
+                ->where('movimientointernodinero.idestadoeliminado',1)
+                ->where('movimientointernodinero.idtipomovimientointerno',1)
+                ->where($where)
+                ->select(
+                    'movimientointernodinero.*',
+                    'credito_fuenteretiro.nombre as credito_fuenteretironombre',
+                    'tienda.nombreagencia as tiendanombre',
+                    'responsable.codigo as codigo_responsable',
+                )
+                ->orderBy('movimientointernodinero.id','ASC')
+                ->get();
+  
+            $total = 0;
+            $html = '';
+            foreach($movimientointernodinero as $key => $value){
+                $fecharegistro = date_format(date_create($value->fecharegistro),"d-m-Y H:i:s A");
+                $cuenta = $value->banco!=''?$value->banco.' - ***'.substr($value->cuenta, -4):'';
+                $numerooperacion = $value->banco!=''?$value->numerooperacion:'';
+                $html .= "<tr data-valor-columna='{$value->id}' onclick='show_data_retiro1(this)'>
+                              <td style='white-space: nowrap;'>{$value->codigoprefijo}{$value->codigo}</td>
+                              <td style='white-space: nowrap;'>{$value->credito_fuenteretironombre}</td>
+                              <td style='white-space: nowrap;text-align:right;'>{$value->monto}</td>
+                              <td style='white-space: nowrap;'>{$cuenta}</td>
+                              <td style='white-space: nowrap;'>{$numerooperacion}</td>
+                              <td style='white-space: nowrap;'>{$value->descripcion}</td>
+                              <td style='white-space: nowrap;'>{$fecharegistro}</td>
+                              <td style='white-space: nowrap;'>{$value->codigo_responsable}</td>
+                          </tr>";
+                $total = $total+$value->monto;
+            }
+          
+            if(count($movimientointernodinero)==0){
+                $html.= '<tr><td colspan="7" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
+            }
+               
+            $html .= '
+                <tr style="position: sticky;bottom: 0;">
+                  <td colspan="2" style="background-color: #144081 !important;text-align:right;color:#fff !important;">Total Retiros (S/.)</td>
+                  <td style="background-color: #144081 !important;text-align:right;color:#fff !important;">'.number_format($total, 2, '.', '').'</td>
+                  <td colspan="5" style="background-color: #144081 !important;text-align:right;color:#fff !important;"></td>
+                </tr>'; 
+          
+            return array(
+                'html' => $html
+            );
+        }
+        elseif($id=='show_table_deposito1'){
+            $where = [];
+            if($request->input('fechainicio') != ''){
+                $where[] = ['movimientointernodinero.fecharegistro','>=',$request->fechainicio.' 00:00:00'];
+            }
+            if($request->input('fechafin') != ''){
+                $where[] = ['movimientointernodinero.fecharegistro','<=',$request->fechafin.' 23:59:59']; 
+            }
+            $movimientointernodinero = DB::table('movimientointernodinero')
+                ->join('credito_fuenteretiro','credito_fuenteretiro.id','movimientointernodinero.idfuenteretiro')
+                ->leftJoin('users as responsable','responsable.id','movimientointernodinero.idresponsable')
+                ->join('tienda','tienda.id','movimientointernodinero.idtienda')
+                ->where('movimientointernodinero.idestadoeliminado',1)
+                ->where('movimientointernodinero.idtipomovimientointerno',2)
+                ->where($where)
+                ->select(
+                    'movimientointernodinero.*',
+                    'credito_fuenteretiro.nombre as credito_fuenteretironombre',
+                    'tienda.nombreagencia as tiendanombre',
+                    'responsable.codigo as codigo_responsable',
+                )
+                ->orderBy('movimientointernodinero.id','ASC')
+                ->get();
+  
+            $total = 0;
+            $html = '';
+            foreach($movimientointernodinero as $key => $value){
+                $fecharegistro = date_format(date_create($value->fecharegistro),"d-m-Y H:i:s A");
+                $cuenta = $value->banco!=''?$value->banco.' - ***'.substr($value->cuenta, -4):'';
+                $numerooperacion = $value->banco!=''?$value->numerooperacion:'';
+                $bgcolor = '';
+                if($value->idresponsable==0){
+                    $bgcolor = 'style="background-color: #ffb8b8;"';
+                }
+                $html .= "<tr data-valor-columna='{$value->id}' onclick='show_data_deposito1(this)' ".$bgcolor.">
+                              <td style='white-space: nowrap;'>{$value->codigoprefijo}{$value->codigo}</td>
+                              <td style='white-space: nowrap;'>{$value->credito_fuenteretironombre}</td>
+                              <td style='white-space: nowrap;text-align:right;'>{$value->monto}</td>
+                              <td style='white-space: nowrap;'>{$cuenta}</td>
+                              <td style='white-space: nowrap;'>{$numerooperacion}</td>
+                              <td style='white-space: nowrap;'>{$value->descripcion}</td>
+                              <td style='white-space: nowrap;'>{$fecharegistro}</td>
+                              <td style='white-space: nowrap;'>{$value->codigo_responsable}</td>
+                          </tr>";
+                $total = $total+$value->monto;
+            }
+          
+            if(count($movimientointernodinero)==0){
+                $html.= '<tr><td colspan="7" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
+            }
+               
+            $html .= '
+                <tr style="position: sticky;bottom: 0;">
+                  <td colspan="2" style="background-color: #144081 !important;text-align:right;color:#fff !important;">Total Depósitos (S/.)</td>
+                  <td style="background-color: #144081 !important;text-align:right;color:#fff !important;">'.number_format($total, 2, '.', '').'</td>
+                  <td colspan="5" style="background-color: #144081 !important;text-align:right;color:#fff !important;"></td>
+                </tr>'; 
+          
+            return array(
+                'html' => $html
+            );
+        }
+        elseif($id=='show_table_retiro3'){
+            $where = [];
+            if($request->input('fechainicio') != ''){
+                $where[] = ['movimientointernodinero.fecharegistro','>=',$request->fechainicio.' 00:00:00'];
+            }
+            if($request->input('fechafin') != ''){
+                $where[] = ['movimientointernodinero.fecharegistro','<=',$request->fechafin.' 23:59:59']; 
+            }
+            $movimientointernodinero = DB::table('movimientointernodinero')
+                ->join('credito_fuenteretiro','credito_fuenteretiro.id','movimientointernodinero.idfuenteretiro')
+                ->join('users as responsable','responsable.id','movimientointernodinero.idresponsable')
+                ->join('tienda','tienda.id','movimientointernodinero.idtienda')
+                ->where('movimientointernodinero.idestadoeliminado',1)
+                ->where('movimientointernodinero.idtipomovimientointerno',5)
+                ->where($where)
+                ->select(
+                    'movimientointernodinero.*',
+                    'credito_fuenteretiro.nombre as credito_fuenteretironombre',
+                    'tienda.nombreagencia as tiendanombre',
+                    'responsable.codigo as codigo_responsable',
+                )
+                ->orderBy('movimientointernodinero.id','ASC')
+                ->get();
+  
+            $total = 0;
+            $html = '';
+            foreach($movimientointernodinero as $key => $value){
+                $fecharegistro = date_format(date_create($value->fecharegistro),"d-m-Y H:i:s A");
+                $html .= "<tr data-valor-columna='{$value->id}' onclick='show_data_retiro3(this)'>
+                              <td style='white-space: nowrap;'>{$value->codigoprefijo}{$value->codigo}</td>
+                              <td style='white-space: nowrap;'>{$value->credito_fuenteretironombre}</td>
+                              <td style='white-space: nowrap;text-align:right;'>{$value->monto}</td>
+                              <td style='white-space: nowrap;'>{$value->descripcion}</td>
+                              <td style='white-space: nowrap;'>{$fecharegistro}</td>
+                              <td style='white-space: nowrap;'>{$value->codigo_responsable}</td>
+                          </tr>";
+                $total = $total+$value->monto;
+            }
+          
+            if(count($movimientointernodinero)==0){
+                $html.= '<tr><td colspan="7" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
+            }
+               
+            $html .= '
+                <tr style="position: sticky;bottom: 0;">
+                  <td colspan="2" style="background-color: #144081 !important;text-align:right;color:#fff !important;">Total Retiros (S/.)</td>
+                  <td style="background-color: #144081 !important;text-align:right;color:#fff !important;">'.number_format($total, 2, '.', '').'</td>
+                  <td colspan="3" style="background-color: #144081 !important;text-align:right;color:#fff !important;"></td>
+                </tr>'; 
+          
+            return array(
+                'html' => $html
+            );
+        }
+        elseif($id=='show_table_deposito3'){
+            $where = [];
+            if($request->input('fechainicio') != ''){
+                $where[] = ['movimientointernodinero.fecharegistro','>=',$request->fechainicio.' 00:00:00'];
+            }
+            if($request->input('fechafin') != ''){
+                $where[] = ['movimientointernodinero.fecharegistro','<=',$request->fechafin.' 23:59:59']; 
+            }
+            $movimientointernodinero = DB::table('movimientointernodinero')
+                ->join('credito_fuenteretiro','credito_fuenteretiro.id','movimientointernodinero.idfuenteretiro')
+                ->leftJoin('users as responsable','responsable.id','movimientointernodinero.idresponsable')
+                ->join('tienda','tienda.id','movimientointernodinero.idtienda')
+                ->where('movimientointernodinero.idestadoeliminado',1)
+                ->where('movimientointernodinero.idtipomovimientointerno',6)
+                ->where($where)
+                ->select(
+                    'movimientointernodinero.*',
+                    'credito_fuenteretiro.nombre as credito_fuenteretironombre',
+                    'tienda.nombreagencia as tiendanombre',
+                    'responsable.codigo as codigo_responsable',
+                )
+                ->orderBy('movimientointernodinero.id','ASC')
+                ->get();
+  
+            $total = 0;
+            $html = '';
+            foreach($movimientointernodinero as $key => $value){
+                $fecharegistro = date_format(date_create($value->fecharegistro),"d-m-Y H:i:s A");
+                $bgcolor = '';
+                if($value->idresponsable==0){
+                    $bgcolor = 'style="background-color: #ffb8b8;"';
+                }
+                $html .= "<tr data-valor-columna='{$value->id}' onclick='show_data_deposito3(this)' ".$bgcolor.">
+                              <td style='white-space: nowrap;'>{$value->codigoprefijo}{$value->codigo}</td>
+                              <td style='white-space: nowrap;'>{$value->credito_fuenteretironombre}</td>
+                              <td style='white-space: nowrap;text-align:right;'>{$value->monto}</td>
+                              <td style='white-space: nowrap;'>{$value->descripcion}</td>
+                              <td style='white-space: nowrap;'>{$fecharegistro}</td>
+                              <td style='white-space: nowrap;'>{$value->codigo_responsable}</td>
+                          </tr>";
+                $total = $total+$value->monto;
+            }
+          
+            if(count($movimientointernodinero)==0){
+                $html.= '<tr><td colspan="7" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
+            }
+               
+            $html .= '
+                <tr style="position: sticky;bottom: 0;">
+                  <td colspan="2" style="background-color: #144081 !important;text-align:right;color:#fff !important;">Total Depósitos (S/.)</td>
+                  <td style="background-color: #144081 !important;text-align:right;color:#fff !important;">'.number_format($total, 2, '.', '').'</td>
+                  <td colspan="3" style="background-color: #144081 !important;text-align:right;color:#fff !important;"></td>
+                </tr>'; 
+          
+            return array(
+                'html' => $html
+            );
+        }
+    }
+
+    public function edit(Request $request, $idtienda, $id)
+    {
+        $tienda = DB::table('tienda')->whereId($idtienda)->first();
+        $movimientointernodinero = DB::table('movimientointernodinero')
+                      ->where('movimientointernodinero.id',$id)
+                      ->select(
+                          'movimientointernodinero.*',
+                      )
+                      ->orderBy('movimientointernodinero.id','desc')
+                      ->first();
+      
+        if($request->input('view') == 'editar_retiro1'){
+            $bancos = DB::table('banco')->where('estado','ACTIVO')->get();
+            $fuenteretiros= DB::table('credito_fuenteretiro')
+              ->where('idtipo',2)
+              ->whereIn('id',[6,7,8,9])
+              ->get();
+            return view(sistema_view().'/movimientointernodinero/edit_retiro1',[
+                'tienda' => $tienda,
+                'bancos' => $bancos,
+                'fuenteretiros' => $fuenteretiros,
+                'movimientointernodinero' => $movimientointernodinero,
+            ]);
+        } 
+        elseif($request->input('view') == 'eliminar_retiro1'){
+          
+            $usuarios = DB::table('users')
+                ->join('users_permiso','users_permiso.idusers','users.id')
+                ->join('permiso','permiso.id','users_permiso.idpermiso')
+                ->whereIn('users_permiso.idpermiso',[2])
+                ->where('users_permiso.idtienda',$idtienda)
+                ->select('users.*','permiso.nombre as nombrepermiso')
+                ->get();
+            return view(sistema_view().'/movimientointernodinero/delete_retiro1',[
+                'tienda' => $tienda,
+                'movimientointernodinero' => $movimientointernodinero,
+                'usuarios' => $usuarios,
+            ]);
+        }
+        elseif($request->input('view') == 'editar_deposito1'){
+            $bancos = DB::table('banco')->where('estado','ACTIVO')->get();
+            $fuenteretiros= DB::table('credito_fuenteretiro')
+              ->where('idtipo',1)
+              ->whereIn('id',[1,2,3,4])
+              ->get();
+            return view(sistema_view().'/movimientointernodinero/edit_deposito1',[
+                'tienda' => $tienda,
+                'bancos' => $bancos,
+                'fuenteretiros' => $fuenteretiros,
+                'movimientointernodinero' => $movimientointernodinero,
+            ]);
+        } 
+        elseif($request->input('view') == 'eliminar_deposito1'){
+            $usuarios = DB::table('users')
+                ->join('users_permiso','users_permiso.idusers','users.id')
+                ->join('permiso','permiso.id','users_permiso.idpermiso')
+                ->whereIn('users_permiso.idpermiso',[2])
+                ->where('users_permiso.idtienda',$idtienda)
+                ->select('users.*','permiso.nombre as nombrepermiso')
+                ->get();
+            return view(sistema_view().'/movimientointernodinero/delete_deposito1',[
+              'tienda' => $tienda,
+              'movimientointernodinero' => $movimientointernodinero,
+              'usuarios' => $usuarios,
+            ]);
+        }
+        elseif($request->input('view') == 'editar_retiro3'){
+            $bancos = DB::table('banco')->where('estado','ACTIVO')->get();
+            $fuenteretiros= DB::table('credito_fuenteretiro')
+              ->where('idtipo',2)
+              ->whereIn('id',[6,8])
+              ->get();
+            return view(sistema_view().'/movimientointernodinero/edit_retiro3',[
+                'tienda' => $tienda,
+                'bancos' => $bancos,
+                'fuenteretiros' => $fuenteretiros,
+                'movimientointernodinero' => $movimientointernodinero,
+            ]);
+        } 
+        elseif($request->input('view') == 'eliminar_retiro3'){
+            $usuarios = DB::table('users')
+                ->join('users_permiso','users_permiso.idusers','users.id')
+                ->join('permiso','permiso.id','users_permiso.idpermiso')
+                ->whereIn('users_permiso.idpermiso',[2])
+                ->where('users_permiso.idtienda',$idtienda)
+                ->select('users.*','permiso.nombre as nombrepermiso')
+                ->get();
+            return view(sistema_view().'/movimientointernodinero/delete_retiro3',[
+                'tienda' => $tienda,
+                'movimientointernodinero' => $movimientointernodinero,
+                'usuarios' => $usuarios,
+            ]);
+        }
+        elseif($request->input('view') == 'editar_deposito3'){
+            $bancos = DB::table('banco')->where('estado','ACTIVO')->get();
+            $fuenteretiros= DB::table('credito_fuenteretiro')
+              ->where('idtipo',1)
+              ->whereIn('id',[1,3])
+              ->get();
+            return view(sistema_view().'/movimientointernodinero/edit_deposito3',[
+                'tienda' => $tienda,
+                'bancos' => $bancos,
+                'fuenteretiros' => $fuenteretiros,
+                'movimientointernodinero' => $movimientointernodinero,
+            ]);
+        } 
+        elseif($request->input('view') == 'eliminar_deposito3'){
+            $usuarios = DB::table('users')
+                ->join('users_permiso','users_permiso.idusers','users.id')
+                ->join('permiso','permiso.id','users_permiso.idpermiso')
+                ->whereIn('users_permiso.idpermiso',[2])
+                ->where('users_permiso.idtienda',$idtienda)
+                ->select('users.*','permiso.nombre as nombrepermiso')
+                ->get();
+            return view(sistema_view().'/movimientointernodinero/delete_deposito3',[
+              'tienda' => $tienda,
+              'movimientointernodinero' => $movimientointernodinero,
+              'usuarios' => $usuarios,
+            ]);
+        }
+        elseif($request->input('view') == 'valid_registro_retiro1') {
+            $where = [];
+            if($request->idfuenteretiro_retiro1==6){
+                $where = [1,2];
+            }
+            elseif($request->idfuenteretiro_retiro1==7){
+                $where = [2];
+            }
+            elseif($request->idfuenteretiro_retiro1==8){
+                $where = [2,4];
+            }
+            elseif($request->idfuenteretiro_retiro1==9){
+                $where = [2,4];
+            }
+            elseif($request->idfuenteretiro_retiro1==10){
+                $where = [2];
+            }
+            $usuarios = DB::table('users')
+                ->join('users_permiso','users_permiso.idusers','users.id')
+                ->join('permiso','permiso.id','users_permiso.idpermiso')
+                ->whereIn('users_permiso.idpermiso',$where)
+                ->where('users_permiso.idtienda',$idtienda)
+                ->select('users.*','permiso.id as idpermiso','permiso.nombre as nombrepermiso')
+                ->get();
+            return view(sistema_view().'/movimientointernodinero/valid_registro_retiro1',[
+                'tienda' => $tienda,
+                'usuarios' => $usuarios,
+            ]);
+        }
+        elseif($request->input('view') == 'valid_registro_retiro3') {
+            $where = [];
+            if($request->idfuenteretiro_retiro3==6){
+                $where = [1,2];
+            }
+            elseif($request->idfuenteretiro_retiro3==7){
+                $where = [2];
+            }
+            elseif($request->idfuenteretiro_retiro3==8){
+                $where = [2,4];
+            }
+            elseif($request->idfuenteretiro_retiro3==9){
+                $where = [2,4];
+            }
+            elseif($request->idfuenteretiro_retiro3==10){
+                $where = [2];
+            }
+            $usuarios = DB::table('users')
+                ->join('users_permiso','users_permiso.idusers','users.id')
+                ->join('permiso','permiso.id','users_permiso.idpermiso')
+                ->whereIn('users_permiso.idpermiso',$where)
+                ->where('users_permiso.idtienda',$idtienda)
+                ->select('users.*','permiso.id as idpermiso','permiso.nombre as nombrepermiso')
+                ->get();
+            return view(sistema_view().'/movimientointernodinero/valid_registro_retiro3',[
+                'tienda' => $tienda,
+                'usuarios' => $usuarios,
+            ]);
+        }
+        elseif($request->input('view') == 'valid_registro_deposito1') {
+            $where = [];
+            if($request->idfuenteretiro_deposito1==1){
+                $where = [2,4];
+            }
+            elseif($request->idfuenteretiro_deposito1==2){
+                $where = [2,4];
+            }
+            elseif($request->idfuenteretiro_deposito1==3){
+                $where = [1,2];
+            }
+            elseif($request->idfuenteretiro_deposito1==4){
+                $where = [1,2];
+            }
+            $usuarios = DB::table('users')
+                ->join('users_permiso','users_permiso.idusers','users.id')
+                ->join('permiso','permiso.id','users_permiso.idpermiso')
+                ->whereIn('users_permiso.idpermiso',$where)
+                ->where('users_permiso.idtienda',$idtienda)
+                ->select('users.*','permiso.id as idpermiso','permiso.nombre as nombrepermiso')
+                ->get();
+            return view(sistema_view().'/movimientointernodinero/valid_registro_deposito1',[
+                'tienda' => $tienda,
+                'usuarios' => $usuarios,
+                'idmovimientointernodinero' => $id,
+            ]);
+        }
+        elseif($request->input('view') == 'valid_registro_deposito3') {
+            $where = [];
+            if($request->idfuenteretiro_deposito3==1){
+                $where = [2,4];
+            }
+            elseif($request->idfuenteretiro_deposito3==3){
+                $where = [1,2];
+            }
+            $usuarios = DB::table('users')
+                ->join('users_permiso','users_permiso.idusers','users.id')
+                ->join('permiso','permiso.id','users_permiso.idpermiso')
+                ->whereIn('users_permiso.idpermiso',$where)
+                ->where('users_permiso.idtienda',$idtienda)
+                ->select('users.*','permiso.id as idpermiso','permiso.nombre as nombrepermiso')
+                ->get();
+            return view(sistema_view().'/movimientointernodinero/valid_registro_deposito3',[
+                'tienda' => $tienda,
+                'usuarios' => $usuarios,
+                'idmovimientointernodinero' => $id,
+            ]);
+        }
+        elseif($request->input('view') == 'valid_reporte') {
+            $usuarios = DB::table('users')
+                ->join('users_permiso','users_permiso.idusers','users.id')
+                ->join('permiso','permiso.id','users_permiso.idpermiso')
+                ->whereIn('users_permiso.idpermiso',[2])
+                ->where('users_permiso.idtienda',$idtienda)
+                ->select('users.*','permiso.nombre as nombrepermiso')
+                ->get();
+            return view(sistema_view().'/movimientointernodinero/valid_reporte',[
+                'tienda' => $tienda,
+                'usuarios' => $usuarios,
+            ]);
+        }
+        elseif($request->input('view') == 'exportar') {
+            return view(sistema_view().'/movimientointernodinero/exportar',[
+                'tienda' => $tienda,
+                'fechainicio' => $request->fechainicio,
+                'fechafin' => $request->fechafin,
+            ]);
+        }
+        elseif( $request->input('view') == 'exportar_pdf' ){
+              
+            $where = [];
+            if($request->input('fechainicio') != ''){
+                $where[] = ['movimientointernodinero.fecharegistro','>=',$request->fechainicio.' 00:00:00'];
+            }
+            if($request->input('fechafin') != ''){
+                $where[] = ['movimientointernodinero.fecharegistro','<=',$request->fechafin.' 23:59:59']; 
+            }
+            $movimientointernodinero_retiro1 = DB::table('movimientointernodinero')
+                ->join('credito_fuenteretiro','credito_fuenteretiro.id','movimientointernodinero.idfuenteretiro')
+                ->join('users as responsable','responsable.id','movimientointernodinero.idresponsable')
+                ->join('tienda','tienda.id','movimientointernodinero.idtienda')
+                ->where('movimientointernodinero.idestadoeliminado',1)
+                ->where('movimientointernodinero.idtipomovimientointerno',1)
+                ->where($where)
+                ->select(
+                    'movimientointernodinero.*',
+                    'credito_fuenteretiro.nombre as credito_fuenteretironombre',
+                    'tienda.nombreagencia as tiendanombre',
+                    'responsable.codigo as codigo_responsable',
+                )
+                ->orderBy('movimientointernodinero.id','ASC')
+                ->get();
+          
+            
+            $movimientointernodinero_retiro2 = DB::table('movimientointernodinero')
+                ->join('credito_fuenteretiro','credito_fuenteretiro.id','movimientointernodinero.idfuenteretiro')
+                ->join('users as responsable','responsable.id','movimientointernodinero.idresponsable')
+                ->join('tienda','tienda.id','movimientointernodinero.idtienda')
+                ->where('movimientointernodinero.idestadoeliminado',1)
+                ->where('movimientointernodinero.idtipomovimientointerno',3)
+                ->where($where)
+                ->select(
+                    'movimientointernodinero.*',
+                    'credito_fuenteretiro.nombre as credito_fuenteretironombre',
+                    'tienda.nombreagencia as tiendanombre',
+                    'responsable.codigo as codigo_responsable',
+                )
+                ->orderBy('movimientointernodinero.id','ASC')
+                ->get();
+
+            $movimientointernodinero_retiro3 = DB::table('movimientointernodinero')
+                ->join('credito_fuenteretiro','credito_fuenteretiro.id','movimientointernodinero.idfuenteretiro')
+                ->join('users as responsable','responsable.id','movimientointernodinero.idresponsable')
+                ->join('tienda','tienda.id','movimientointernodinero.idtienda')
+                ->where('movimientointernodinero.idestadoeliminado',1)
+                ->where('movimientointernodinero.idtipomovimientointerno',5)
+                ->where($where)
+                ->select(
+                    'movimientointernodinero.*',
+                    'credito_fuenteretiro.nombre as credito_fuenteretironombre',
+                    'tienda.nombreagencia as tiendanombre',
+                    'responsable.codigo as codigo_responsable',
+                )
+                ->orderBy('movimientointernodinero.id','ASC')
+                ->get();
+          
+            $movimientointernodinero_deposito1 = DB::table('movimientointernodinero')
+                ->join('credito_fuenteretiro','credito_fuenteretiro.id','movimientointernodinero.idfuenteretiro')
+                ->join('users as responsable','responsable.id','movimientointernodinero.idresponsable')
+                ->join('tienda','tienda.id','movimientointernodinero.idtienda')
+                ->where('movimientointernodinero.idestadoeliminado',1)
+                ->where('movimientointernodinero.idtipomovimientointerno',2)
+                ->where($where)
+                ->select(
+                    'movimientointernodinero.*',
+                    'credito_fuenteretiro.nombre as credito_fuenteretironombre',
+                    'tienda.nombreagencia as tiendanombre',
+                    'responsable.codigo as codigo_responsable',
+                )
+                ->orderBy('movimientointernodinero.id','ASC')
+                ->get();
+            
+            $movimientointernodinero_deposito2 = DB::table('movimientointernodinero')
+                ->join('credito_fuenteretiro','credito_fuenteretiro.id','movimientointernodinero.idfuenteretiro')
+                ->join('users as responsable','responsable.id','movimientointernodinero.idresponsable')
+                ->join('tienda','tienda.id','movimientointernodinero.idtienda')
+                ->where('movimientointernodinero.idestadoeliminado',1)
+                ->where('movimientointernodinero.idtipomovimientointerno',4)
+                ->where($where)
+                ->select(
+                    'movimientointernodinero.*',
+                    'credito_fuenteretiro.nombre as credito_fuenteretironombre',
+                    'tienda.nombreagencia as tiendanombre',
+                    'responsable.codigo as codigo_responsable',
+                )
+                ->orderBy('movimientointernodinero.id','ASC')
+                ->get();
+
+            $movimientointernodinero_deposito3 = DB::table('movimientointernodinero')
+                ->join('credito_fuenteretiro','credito_fuenteretiro.id','movimientointernodinero.idfuenteretiro')
+                ->join('users as responsable','responsable.id','movimientointernodinero.idresponsable')
+                ->join('tienda','tienda.id','movimientointernodinero.idtienda')
+                ->where('movimientointernodinero.idestadoeliminado',1)
+                ->where('movimientointernodinero.idtipomovimientointerno',6)
+                ->where($where)
+                ->select(
+                    'movimientointernodinero.*',
+                    'credito_fuenteretiro.nombre as credito_fuenteretironombre',
+                    'tienda.nombreagencia as tiendanombre',
+                    'responsable.codigo as codigo_responsable',
+                )
+                ->orderBy('movimientointernodinero.id','ASC')
+                ->get();
+          
+            $agencia = DB::table('tienda')->whereId(user_permiso()->idtienda)->first();
+        
+            $pdf = PDF::loadView(sistema_view().'/movimientointernodinero/exportar_pdf',[
+                'tienda' => $tienda,
+                'fechainicio' => $request->fechainicio,
+                'fechafin' => $request->fechafin,
+                'movimientointernodinero_retiro1' => $movimientointernodinero_retiro1,
+                'movimientointernodinero_retiro2' => $movimientointernodinero_retiro2,
+                'movimientointernodinero_retiro3' => $movimientointernodinero_retiro3,
+                'movimientointernodinero_deposito1' => $movimientointernodinero_deposito1,
+                'movimientointernodinero_deposito2' => $movimientointernodinero_deposito2,
+                'movimientointernodinero_deposito3' => $movimientointernodinero_deposito3,
+                'agencia' => $agencia,
+            ]); 
+            $pdf->setPaper('A4', 'landscape');
+            return $pdf->stream('OPERACIONES_DE_MOVIMIENTO_INTERNO.pdf');
+        } 
+        /*elseif($request->input('view') == 'valid_reporte_deposito') {
+            $usuarios = DB::table('users')
+                ->join('users_permiso','users_permiso.idusers','users.id')
+                ->join('permiso','permiso.id','users_permiso.idpermiso')
+                ->whereIn('users_permiso.idpermiso',[2])
+                ->where('users_permiso.idtienda',$idtienda)
+                ->select('users.*','permiso.nombre as nombrepermiso')
+                ->get();
+            return view(sistema_view().'/movimientointernodinero/valid_reporte_deposito',[
+                'tienda' => $tienda,
+                'usuarios' => $usuarios,
+            ]);
+        }
+        elseif($request->input('view') == 'exportar_deposito') {
+            return view(sistema_view().'/movimientointernodinero/exportar_deposito',[
+                'tienda' => $tienda,
+                'fechainicio' => $request->fechainicio,
+                'fechafin' => $request->fechafin,
+            ]);
+        }
+        elseif( $request->input('view') == 'exportar_pdf_deposito' ){          
+            $where = [];
+            if($request->input('fechainicio') != ''){
+                $where[] = ['movimientointernodinero.fecharegistro','>=',$request->fechainicio.' 00:00:00'];
+            }
+            if($request->input('fechafin') != ''){
+                $where[] = ['movimientointernodinero.fecharegistro','<=',$request->fechafin.' 23:59:59']; 
+            }
+            $movimientointernodinero_deposito1 = DB::table('movimientointernodinero')
+                ->join('credito_fuenteretiro','credito_fuenteretiro.id','movimientointernodinero.idfuenteretiro')
+                ->join('users as responsable','responsable.id','movimientointernodinero.idresponsable')
+                ->join('tienda','tienda.id','movimientointernodinero.idtienda')
+                ->where('movimientointernodinero.idestadoeliminado',1)
+                ->where('movimientointernodinero.idtipomovimientointerno',2)
+                ->where($where)
+                ->select(
+                    'movimientointernodinero.*',
+                    'credito_fuenteretiro.nombre as credito_fuenteretironombre',
+                    'tienda.nombreagencia as tiendanombre',
+                    'responsable.codigo as codigo_responsable',
+                )
+                ->orderBy('movimientointernodinero.id','ASC')
+                ->get();
+            
+            $movimientointernodinero_deposito2 = DB::table('movimientointernodinero')
+                ->join('credito_fuenteretiro','credito_fuenteretiro.id','movimientointernodinero.idfuenteretiro')
+                ->join('users as responsable','responsable.id','movimientointernodinero.idresponsable')
+                ->join('tienda','tienda.id','movimientointernodinero.idtienda')
+                ->where('movimientointernodinero.idestadoeliminado',1)
+                ->where('movimientointernodinero.idtipomovimientointerno',4)
+                ->where($where)
+                ->select(
+                    'movimientointernodinero.*',
+                    'credito_fuenteretiro.nombre as credito_fuenteretironombre',
+                    'tienda.nombreagencia as tiendanombre',
+                    'responsable.codigo as codigo_responsable',
+                )
+                ->orderBy('movimientointernodinero.id','ASC')
+                ->get();
+
+            $movimientointernodinero_deposito3 = DB::table('movimientointernodinero')
+                ->join('credito_fuenteretiro','credito_fuenteretiro.id','movimientointernodinero.idfuenteretiro')
+                ->join('users as responsable','responsable.id','movimientointernodinero.idresponsable')
+                ->join('tienda','tienda.id','movimientointernodinero.idtienda')
+                ->where('movimientointernodinero.idestadoeliminado',1)
+                ->where('movimientointernodinero.idtipomovimientointerno',2)
+                ->where($where)
+                ->select(
+                    'movimientointernodinero.*',
+                    'credito_fuenteretiro.nombre as credito_fuenteretironombre',
+                    'tienda.nombreagencia as tiendanombre',
+                    'responsable.codigo as codigo_responsable',
+                )
+                ->orderBy('movimientointernodinero.id','ASC')
+                ->get();
+          
+            $agencia = DB::table('tienda')->whereId(user_permiso()->idtienda)->first();
+        
+            $pdf = PDF::loadView(sistema_view().'/movimientointernodinero/exportar_pdf_deposito',[
+                'tienda' => $tienda,
+                'fechainicio' => $request->fechainicio,
+                'fechafin' => $request->fechafin,
+                'movimientointernodinero_deposito1' => $movimientointernodinero_deposito1,
+                'movimientointernodinero_deposito2' => $movimientointernodinero_deposito2,
+                'movimientointernodinero_deposito3' => $movimientointernodinero_deposito3,
+                'agencia' => $agencia,
+            ]); 
+            $pdf->setPaper('A4', 'landscape');
+            return $pdf->stream('OPERACIONES_DE_MOVIMIENTO_INTERNO.pdf');
+        } */
+    }
+
+    public function update(Request $request, $idtienda, $id)
+    {
+        if($request->input('view') == 'valid_registro_retiro1'){
+            $rules = [
+                'idresponsable' => 'required',          
+                'responsableclave' => 'required',              
+            ];
+
+            $messages = [
+                'idresponsable.required' => 'El "Responsable" es Obligatorio.',
+                'responsableclave.required' => 'La "Contraseña" es Obligatorio.',
+            ];
+
+            $this->validate($request,$rules,$messages);
+
+            $usuario = DB::table('users')
+                ->where('users.id',$request->idresponsable)
+                ->where('users.clave',$request->responsableclave)
+                ->first();
+            $idresponsable = 0;
+            if($usuario!=''){
+                $idresponsable = $usuario->id;
+            }else{
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'El usuario y/o la contraseña es incorrecta!!.'
+                ]);
+            }
+          
+            return response()->json([
+              'resultado' => 'CORRECTO',
+              'mensaje'   => 'Se ha validado correctamente.',
+              'idresponsable'   => $idresponsable
+            ]);
+        }
+        elseif($request->input('view') == 'valid_registro_retiro3'){
+            $rules = [
+                'idresponsable' => 'required',          
+                'responsableclave' => 'required',              
+            ];
+
+            $messages = [
+                'idresponsable.required' => 'El "Responsable" es Obligatorio.',
+                'responsableclave.required' => 'La "Contraseña" es Obligatorio.',
+            ];
+
+            $this->validate($request,$rules,$messages);
+
+            $usuario = DB::table('users')
+                ->where('users.id',$request->idresponsable)
+                ->where('users.clave',$request->responsableclave)
+                ->first();
+            $idresponsable = 0;
+            if($usuario!=''){
+                $idresponsable = $usuario->id;
+            }else{
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'El usuario y/o la contraseña es incorrecta!!.'
+                ]);
+            }
+          
+            return response()->json([
+              'resultado' => 'CORRECTO',
+              'mensaje'   => 'Se ha validado correctamente.',
+              'idresponsable'   => $idresponsable
+            ]);
+        }
+        elseif($request->input('view') == 'valid_registro_deposito1'){
+            $rules = [
+                'idresponsable' => 'required',          
+                'responsableclave' => 'required',              
+            ];
+
+            $messages = [
+                'idresponsable.required' => 'El "Responsable" es Obligatorio.',
+                'responsableclave.required' => 'La "Contraseña" es Obligatorio.',
+            ];
+
+            $this->validate($request,$rules,$messages);
+
+            $usuario = DB::table('users')
+                ->where('users.id',$request->idresponsable)
+                ->where('users.clave',$request->responsableclave)
+                ->first();
+            $idresponsable = 0;
+            if($usuario!=''){
+                $idresponsable = $usuario->id;
+            }else{
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'El usuario y/o la contraseña es incorrecta!!.'
+                ]);
+            }
+          
+            DB::table('movimientointernodinero')->whereId($id)->update([
+                'idresponsable' => $request->idresponsable,
+                'idresponsable_permiso' => $request->idresponsable_permiso,
+            ]);
+          
+            return response()->json([
+              'resultado' => 'CORRECTO',
+              'mensaje'   => 'Se ha validado correctamente.'
+            ]);
+        }
+        elseif($request->input('view') == 'valid_registro_deposito3'){
+            $rules = [
+                'idresponsable' => 'required',          
+                'responsableclave' => 'required',              
+            ];
+
+            $messages = [
+                'idresponsable.required' => 'El "Responsable" es Obligatorio.',
+                'responsableclave.required' => 'La "Contraseña" es Obligatorio.',
+            ];
+
+            $this->validate($request,$rules,$messages);
+
+            $usuario = DB::table('users')
+                ->where('users.id',$request->idresponsable)
+                ->where('users.clave',$request->responsableclave)
+                ->first();
+            $idresponsable = 0;
+            if($usuario!=''){
+                $idresponsable = $usuario->id;
+            }else{
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'El usuario y/o la contraseña es incorrecta!!.'
+                ]);
+            }
+          
+            DB::table('movimientointernodinero')->whereId($id)->update([
+                'idresponsable' => $request->idresponsable,
+                'idresponsable_permiso' => $request->idresponsable_permiso,
+            ]);
+          
+            return response()->json([
+              'resultado' => 'CORRECTO',
+              'mensaje'   => 'Se ha validado correctamente.'
+            ]);
+        }
+        elseif($request->input('view') == 'valid_reporte_retiro'){
+            $rules = [
+                'idresponsable' => 'required',          
+                'responsableclave' => 'required',              
+            ];
+
+            $messages = [
+                'idresponsable.required' => 'El "Responsable" es Obligatorio.',
+                'responsableclave.required' => 'La "Contraseña" es Obligatorio.',
+            ];
+
+            $this->validate($request,$rules,$messages);
+
+            $usuario = DB::table('users')
+                ->where('users.id',$request->idresponsable)
+                ->where('users.clave',$request->responsableclave)
+                ->first();
+            $idresponsable = 0;
+            if($usuario!=''){
+                $idresponsable = $usuario->id;
+            }else{
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'El usuario y/o la contraseña es incorrecta!!.'
+                ]);
+            }
+          
+            return response()->json([
+              'resultado' => 'CORRECTO',
+              'mensaje'   => 'Se ha validado correctamente.'
+            ]);
+        }
+        elseif($request->input('view') == 'valid_reporte_deposito'){
+            $rules = [
+                'idresponsable' => 'required',          
+                'responsableclave' => 'required',              
+            ];
+
+            $messages = [
+                'idresponsable.required' => 'El "Responsable" es Obligatorio.',
+                'responsableclave.required' => 'La "Contraseña" es Obligatorio.',
+            ];
+
+            $this->validate($request,$rules,$messages);
+
+            $usuario = DB::table('users')
+                ->where('users.id',$request->idresponsable)
+                ->where('users.clave',$request->responsableclave)
+                ->first();
+            $idresponsable = 0;
+            if($usuario!=''){
+                $idresponsable = $usuario->id;
+            }else{
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'El usuario y/o la contraseña es incorrecta!!.'
+                ]);
+            }
+          
+            return response()->json([
+              'resultado' => 'CORRECTO',
+              'mensaje'   => 'Se ha validado correctamente.'
+            ]);
+        }
+    }
+
+
+    public function destroy(Request $request, $idtienda, $id)
+    {
+        if($request->input('view') == 'eliminar_retiro1'){
+            $rules = [
+                'idresponsable_retiro1' => 'required',          
+                'responsableclave_retiro1' => 'required',              
+            ];
+
+            $messages = [
+                'idresponsable_retiro1.required' => 'El "Responsable" es Obligatorio.',
+                'responsableclave_retiro1.required' => 'La "Contraseña" es Obligatorio.',
+            ];
+
+            $this->validate($request,$rules,$messages);
+
+            $usuario = DB::table('users')
+                ->where('users.id',$request->idresponsable_retiro1)
+                ->where('users.clave',$request->responsableclave_retiro1)
+                ->first();
+            $idresponsable = 0;
+            if($usuario!=''){
+                $idresponsable = $usuario->id;
+            }else{
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'El usuario y/o la contraseña es incorrecta!!.'
+                ]);
+            }
+
+            /*DB::table('movimientointernodinero')->whereId($id)->update([
+               'fecha_eliminado' => now(),
+               'idestadoeliminado' => 2,
+               'idresponsble_eliminado' => Auth::user()->id,
+            ]);*/
+
+            $movimientointernodinero = DB::table('movimientointernodinero')
+                ->whereId($id)
+                ->first();
+          
+            DB::table('movimientointernodinero')->where('idmovimientointernodinero',$movimientointernodinero->id)->delete();
+            DB::table('movimientointernodinero')->whereId($id)->delete();
+          
+            return response()->json([
+              'resultado' => 'CORRECTO',
+              'mensaje'   => 'Se ha elimino correctamente.'
+            ]);
+        }
+        /*elseif($request->input('view') == 'eliminar_deposito1'){
+            $rules = [
+                'idresponsable_deposito1' => 'required',          
+                'responsableclave_deposito1' => 'required',              
+            ];
+
+            $messages = [
+                'idresponsable_deposito1.required' => 'El "Responsable" es Obligatorio.',
+                'responsableclave_deposito1.required' => 'La "Contraseña" es Obligatorio.',
+            ];
+
+            $this->validate($request,$rules,$messages);
+
+            $usuario = DB::table('users')
+                ->where('users.id',$request->idresponsable_deposito1)
+                ->where('users.clave',$request->responsableclave_deposito1)
+                ->first();
+            $idresponsable = 0;
+            if($usuario!=''){
+                $idresponsable = $usuario->id;
+            }else{
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'El usuario y/o la contraseña es incorrecta!!.'
+                ]);
+            }
+
+            DB::table('movimientointernodinero')->whereId($id)->delete();
+            return response()->json([
+              'resultado' => 'CORRECTO',
+              'mensaje'   => 'Se ha elimino correctamente.'
+            ]);
+        }*/
+        elseif($request->input('view') == 'eliminar_retiro3'){
+            $rules = [
+                'idresponsable_retiro3' => 'required',          
+                'responsableclave_retiro3' => 'required',              
+            ];
+
+            $messages = [
+                'idresponsable_retiro3.required' => 'El "Responsable" es Obligatorio.',
+                'responsableclave_retiro3.required' => 'La "Contraseña" es Obligatorio.',
+            ];
+
+            $this->validate($request,$rules,$messages);
+
+            $usuario = DB::table('users')
+                ->where('users.id',$request->idresponsable_retiro3)
+                ->where('users.clave',$request->responsableclave_retiro3)
+                ->first();
+            $idresponsable = 0;
+            if($usuario!=''){
+                $idresponsable = $usuario->id;
+            }else{
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'El usuario y/o la contraseña es incorrecta!!.'
+                ]);
+            }
+
+            /*DB::table('movimientointernodinero')->whereId($id)->update([
+               'fecha_eliminado' => now(),
+               'idestadoeliminado' => 2,
+               'idresponsble_eliminado' => Auth::user()->id,
+            ]);*/
+
+            $movimientointernodinero = DB::table('movimientointernodinero')
+                ->whereId($id)
+                ->first();
+
+            DB::table('movimientointernodinero')->where('idmovimientointernodinero',$movimientointernodinero->id)->delete();
+            DB::table('movimientointernodinero')->whereId($id)->delete();
+            return response()->json([
+              'resultado' => 'CORRECTO',
+              'mensaje'   => 'Se ha elimino correctamente.'
+            ]);
+        }
+        elseif($request->input('view') == 'eliminar_deposito3'){
+            $rules = [
+                'idresponsable_deposito3' => 'required',          
+                'responsableclave_deposito3' => 'required',              
+            ];
+
+            $messages = [
+                'idresponsable_deposito3.required' => 'El "Responsable" es Obligatorio.',
+                'responsableclave_deposito3.required' => 'La "Contraseña" es Obligatorio.',
+            ];
+
+            $this->validate($request,$rules,$messages);
+
+            $usuario = DB::table('users')
+                ->where('users.id',$request->idresponsable_deposito3)
+                ->where('users.clave',$request->responsableclave_deposito3)
+                ->first();
+            $idresponsable = 0;
+            if($usuario!=''){
+                $idresponsable = $usuario->id;
+            }else{
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'El usuario y/o la contraseña es incorrecta!!.'
+                ]);
+            }
+
+            /*DB::table('movimientointernodinero')->whereId($id)->update([
+               'fecha_eliminado' => now(),
+               'idestadoeliminado' => 2,
+               'idresponsble_eliminado' => Auth::user()->id,
+            ]);*/
+
+            DB::table('movimientointernodinero')->whereId($id)->delete();
+            return response()->json([
+              'resultado' => 'CORRECTO',
+              'mensaje'   => 'Se ha elimino correctamente.'
+            ]);
+        }
+    
+    }
+}

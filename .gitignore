@@ -1,0 +1,11 @@
+/.subversion
+/public/backoffice/tienda
+/logs
+/node_modules
+/storage/*.key
+/vendor
+.bash_history
+.env
+.env.example
+composer.phar
+.htaccess

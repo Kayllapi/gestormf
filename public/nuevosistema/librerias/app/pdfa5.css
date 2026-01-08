@@ -1,0 +1,139 @@
+@page {
+    margin: 10px 15px;  
+    font-family:helvetica;
+    padding: 0;
+}
+body {
+    font-family: Arial, sans-serif;
+}
+
+.half-page {
+    width: 45%;
+    float: right;
+}
+.info-empresa {
+    margin-left:10px;
+    width: 40%;
+    height: 100px;
+    float: left;
+    line-height: 15px;
+    margin-right: 1%;
+    border-radius: 5px;
+}
+.info-empresa-borde {
+    text-align: center;
+    font-size: 10px;
+    padding: 10px;
+    position: absolute;
+    top: 0px;
+}
+
+.ruc {
+    width: 238px;
+    height: 100px;
+    float: left;
+    text-align: center;
+    border-radius: 5px;
+}
+
+.info-empresa-img {
+    height: 100px;
+    width: 185px;
+    float: left;
+}
+
+.info-empresa-img > img {
+  margin-top: 2px;
+}
+
+.info-empresa-span-rz {
+    margin-top: 3px; 
+    color: #2f2f2f; 
+    font-weight: bold;
+}
+
+.ruc {
+    /* padding-top:7px; */
+    height: 93px;
+}
+.ruc > span {
+    line-height: 28px;
+}
+
+.text-ruc-serie {
+    font-size: 12px;
+}
+
+.text-tipo-documento {
+    color: #2f2f2f;
+    font-weight: bold;
+}
+
+
+
+.container-detail {
+  /* border-bottom:  1px solid <?php echo $color ?>; */
+
+  margin-right: 7.5px;
+}
+
+
+
+
+
+
+.container-leyenda {
+    margin-top: 10px;
+    width: 100%;
+    /* height: auto; */
+    
+    padding-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+
+
+
+span {
+    display: block;
+}
+
+.container-detail > table {
+    /* margin-top: 20px; */
+    /* width: 750px !important; */
+    width:100% !important;
+    /* width: 731px; */
+}
+
+.thead-tr {
+    color: #fff; 
+    padding: 4px;
+}
+
+.txt-center {
+    text-align: center;
+}
+
+.txt-right {
+    text-align: right;
+}
+
+.txt-12 {
+    font-size: 9px
+}
+
+.txt-10 {
+    font-size: 9px
+}
+
+.txt-7 {
+    font-size: 6px;
+}
+
+.txt-8 {
+    font-size:7px;
+}
+#container-header-pdf > table{
+    width:100% !important;
+}

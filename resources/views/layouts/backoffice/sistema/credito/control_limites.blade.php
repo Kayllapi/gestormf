@@ -1,0 +1,952 @@
+<form action="javascript:;" 
+      onsubmit="callback({
+          route: '{{ url('backoffice/'.$tienda->id.'/credito/'.$credito->id) }}',
+          method: 'PUT',
+          data:{
+              view: 'control_limites',
+              vinculacion_deudor: json_vinculacion_deudor(),
+          }
+      },
+      function(res){
+        removecarga({input:'#mx-carga'})
+        $('#success-message').removeClass('d-none');
+        $('#success-message').text(res.mensaje);
+        setTimeout(function() {
+          $('#success-message').addClass('d-none');
+        }, 5000);
+        lista_credito();
+        load_nuevo_credito();
+        $('#boton_imprimir').attr('disabled',false);
+      },this)"> 
+    @php
+      $vinculacion_deudor = $credito_cuantitativa_control_limites ? ( $credito_cuantitativa_control_limites->vinculacion_deudor == "" ? [] : json_decode($credito_cuantitativa_control_limites->vinculacion_deudor) ) : [];
+      $entidad_regulada = $credito_cuantitativa_deudas ? ( $credito_cuantitativa_deudas->entidad_regulada == "" ? [] : json_decode($credito_cuantitativa_deudas->entidad_regulada) ) : [];
+      $entidad_noregulada = $credito_cuantitativa_deudas ? ( $credito_cuantitativa_deudas->entidad_noregulada == "" ? [] : json_decode($credito_cuantitativa_deudas->entidad_noregulada) ) : [];
+    @endphp
+    
+    <?php
+      $saldo_capital_empresa = 0;
+      $saldo_deducciones_empresa = 0;
+      foreach($entidad_regulada as $value){
+        if($value->tipo_entidad){
+          $saldo_capital_empresa += $value->saldo_capital;
+          $saldo_deducciones_empresa += $value->saldo_capital_deducciones;
+        }
+      }
+      foreach($entidad_noregulada as $value){
+        if($value->tipo_entidad){
+          $saldo_capital_empresa += $value->saldo_capital;
+          $saldo_deducciones_empresa += $value->saldo_capital_deducciones;
+        }
+      }
+  
+    ?>
+    <div class="modal-header" style="border-bottom: 0;">
+        <h5 class="modal-title">GARANTIAS Y LIMITES </h5>
+        <button type="button" class="btn-close text-white" id="modal-close-garantia-cliente" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body modal-body-cualitativa">
+      <div class="row">
+        <div class="col-sm-12 col-md-5">
+          <div class="row">
+            <label class="col-sm-4 col-form-label" style="text-align: right;">AGENCIA/OFICINA:</label>
+            <div class="col-sm-8">
+              <input type="text" step="any" class="form-control" value="{{ $tienda->nombreagencia }}" disabled>
+            </div>
+          </div>
+          <div class="row">
+            <label class="col-sm-4 col-form-label" style="text-align: right;">CLIENTE/RAZON SOCIAL:</label>
+            <div class="col-sm-8">
+              <input type="text" step="any" class="form-control" value="{{ $credito->nombreclientecredito }}" disabled>
+            </div>
+          </div>
+          <div class="row">
+            <label class="col-sm-4 col-form-label" style="text-align: right;">GIRO ECONÓMICO:</label>
+            <div class="col-sm-8">
+              @if($credito->idevaluacion == 1)
+              <input type="text" step="any" class="form-control" value="{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->nombregiro_economico_evaluacion : '' }}" disabled>
+              @else
+              <input type="text" step="any" class="form-control" value="{{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->nombregiro_economico_evaluacion : '' }}" disabled>
+              @endif
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-3">
+          <div class="row">
+            <label class="col-sm-3 col-form-label" style="text-align: right;">FECHA:</label>
+            <div class="col-sm-7">
+              <input type="date" step="any" class="form-control" value="{{ $credito_cuantitativa_control_limites ? date_format(date_create($credito_cuantitativa_control_limites->fecha),'Y-m-d') :'' }}" disabled>
+            </div>
+          </div>
+          <div class="row">
+            <label class="col-sm-3 col-form-label" style="text-align: right;">DNI/RUC:</label>
+            <div class="col-sm-7">
+              <input type="text" step="any" class="form-control" value="{{ $credito->docuementocliente }}" disabled>
+            </div>
+          </div>
+          @if($users_prestamo->dni_pareja!='' or $users_prestamo->nombrecompleto_pareja!='')
+          <div class="row">
+            <label class="col-sm-3 col-form-label" style="text-align: right;">DNI:</label>
+            <div class="col-sm-7">
+              <input type="text" step="any" class="form-control" value="{{ $users_prestamo->dni_pareja }}" disabled>
+            </div>
+          </div>
+          @endif
+          
+          <div class="row">
+            <label class="col-sm-3 col-form-label" style="text-align: right;">EJERCICIO:</label>
+            <div class="col-sm-7">
+              @if($users_prestamo->db_idforma_ac_economica!='')
+                <input type="text" step="any" class="form-control" id="ejercicio_giro_economico" value="{{ $users_prestamo->db_idforma_ac_economica }}" disabled>
+              @else
+                <input type="text" step="any" class="form-control" id="ejercicio_giro_economico" value="{{ $users_prestamo->db_idforma_ac_economica }}" disabled>
+              @endif
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-4">
+          <div class="row">
+            <label class="col-sm-4 col-form-label" style="text-align: right;">NRO SOLICITUD:</label>
+            <div class="col-sm-7">
+              <input type="text" step="any" class="form-control" value="S{{ str_pad($credito->id, 8, '0', STR_PAD_LEFT)  }}" disabled>
+            </div>
+          </div>
+          <div class="row">
+            <label class="col-sm-4 col-form-label" style="text-align: right;">PRODUCTO:</label>
+            <div class="col-sm-7">
+              <input type="text" step="any" class="form-control" value="{{ $credito->nombreproductocredito }}" disabled>
+            </div>
+          </div>
+          
+          <div class="row">
+            <label class="col-sm-4 col-form-label" style="text-align: right;">TIPO DE CLIENTE:</label>
+            <div class="col-sm-7">
+              <input type="text" step="any" class="form-control" value="{{ $credito->tipo_operacion_credito_nombre }}" disabled>
+            </div>
+          </div>
+          <div class="row">
+            <label class="col-sm-4 col-form-label" style="text-align: right;">MODALIDAD:</label>
+            <div class="col-sm-7">
+              <input type="text" step="any" class="form-control" value="{{ $credito->modalidad_credito_nombre }}" disabled>
+            </div>
+          </div>
+          <div class="row">
+            <label class="col-sm-4 col-form-label" style="text-align: right;">DESTINO DE CRÉDITO:</label>
+            <div class="col-sm-7">
+              <input type="text" step="any" class="form-control" value="{{ $credito->tipo_destino_credito_nombre}}" disabled>
+            </div>
+          </div>
+        </div>
+
+
+      
+    </div>
+      <div class="mb-1 mt-2">
+        <span class="badge d-block">
+          @if($credito->idevaluacion == 1)
+          VI. 
+          @else
+          @if($users_prestamo->idfuenteingreso == 2)
+          VII.
+          @else
+          IX.
+          @endif
+          @endif
+          GARANTIAS Y LIMITES</span>
+      </div>
+      <div class="mb-1 mt-2">
+        <span class="badge d-block" style="background-color: #aaa;color: #000;">
+          {{ $credito->idevaluacion == 1 ? '6.1':($users_prestamo->idfuenteingreso == 2?'7.1':'9.1') }} GARANTÍAS DEL CLIENTE</span>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          
+          <input type="hidden" id="cliente_saldo_vigente_cliente_det" value="{{json_encode($credito_garantias_cliente)}}">
+          <input type="hidden" id="cliente_saldo_vigente_aval_det" value="{{json_encode($credito_garantias_aval)}}">
+          
+          <table class="table table-bordered" id="table-garantia-cliente">
+            <thead>
+              <tr>
+                <th>Garantías presentadas por el cliente</th>
+                <th>Descripción de garantía en Propuesta</th>
+                <th style="width:150px;">Valor de mercado (S/.)</th>
+                <th style="width:150px;">Valor comercial (Tasado) (S/.)</th>
+                <th style="width:150px;">Valor de realización (tasado) (S/.)</th>
+              </tr>
+            </thead>
+            <tbody>
+              @if($view_detalle=='false')
+                  @if($credito_cuantitativa_control_limites)
+                  <?php
+                    $saldo_vigente = json_decode($credito_cuantitativa_control_limites->cliente_saldo_vigente_cliente_det);
+                  ?>
+                  @foreach($saldo_vigente as $value)
+                    <tr>
+                        <td>{{ $value->garantias_noprendarias_tipo_garantia_noprendaria }}</td>
+                        <td>{{ $value->descripcion }}</td>
+                        <td class="campo_moneda">{{ $value->valor_mercado==0?'':$value->valor_mercado }}</td>
+                        <td class="campo_moneda">{{ $value->valor_comercial==0?'':$value->valor_comercial }}</td>
+                        <td class="campo_moneda">{{ $value->valor_realizacion==0?'':$value->valor_realizacion }}</td>
+                    </tr>
+                  @endforeach
+                  @if(count($saldo_vigente)==0)
+                  <tr>
+                    <td colspan="8">Sin Garantia</td>
+                  </tr>
+                  @endif
+                @endif
+              @else
+                  @foreach($credito_garantias_cliente as $value)
+                    <tr>
+                        <td>{{ $value->garantias_noprendarias_tipo_garantia_noprendaria }}</td>
+                        <td>{{ $value->descripcion }}</td>
+                        <td class="campo_moneda">{{ $value->valor_mercado==0?'':$value->valor_mercado }}</td>
+                        <td class="campo_moneda">{{ $value->valor_comercial==0?'':$value->valor_comercial }}</td>
+                        <td class="campo_moneda">{{ $value->valor_realizacion==0?'':$value->valor_realizacion }}</td>
+                    </tr>
+                  @endforeach
+                  @if(count($credito_garantias_cliente)==0)
+                  <tr>
+                    <td colspan="5">Sin Garantia</td>
+                  </tr>
+                  @else
+                  <!--tr>
+                    <td class="color_totales campo_moneda" colspan="2" style="text-align: right;font-weight: bold;">TOTAL S/.</td>
+                    <td class="color_totales"></td>
+                    <td class="color_totales"></td>
+                    <td class="color_totales"></td>
+                  </tr-->
+                  @endif
+              @endif
+            </tbody>
+          </table>
+          
+        </div>
+      </div>
+      <div class="mb-1 mt-2">
+        <span class="badge d-block" style="background-color: #aaa;color: #000;">
+          {{ $credito->idevaluacion == 1 ? '6.1.1':($users_prestamo->idfuenteingreso == 2?'7.1.1':'9.1.1') }} SALDO DE DEUDA VIGENTE DEL CLIENTE</span>
+      </div>
+      
+          <input type="hidden" id="credito_saldodeduda_cliente_propio_det" value="{{json_encode($credito_saldodeduda_cliente_propio)}}">
+          <input type="hidden" id="credito_saldodeduda_cliente_aval_det" value="{{json_encode($credito_saldodeduda_cliente_aval)}}">
+      
+      <div class="row">
+        <div class="col-sm-4">
+          <table class="table table-bordered" id="table-garantia-cliente-propio">
+            <thead>
+              <tr>
+                <th colspan="2" style="text-align: center;">PROPIOS</th>
+              </tr>
+              <tr>
+                <th>CUENTA</th>
+                <th>SALDOS (S/.)</th>
+              </tr>
+            </thead>
+            <tbody>
+                  <?php $total_saldo_vigente_propio = 0; ?>
+              @if($view_detalle=='false')
+                  @if($credito_cuantitativa_control_limites)
+                  <?php
+                    $saldo_vigente = json_decode($credito_cuantitativa_control_limites->credito_saldodeduda_cliente_propio_det);
+              //dd($saldo_vigente);
+                  ?>
+                  @foreach($saldo_vigente as $value)
+                    <tr>
+                        <td>{{ $value->cuenta }}</td>
+                        <td class="campo_moneda">{{ $value->saldo_vigente }}</td>
+                    </tr>
+                    <?php $total_saldo_vigente_propio = $total_saldo_vigente_propio+$value->saldo_vigente; ?>
+                  @endforeach
+                @endif
+              @else
+                  @foreach($credito_saldodeduda_cliente_propio as $value)
+                    <tr>
+                        <td>{{ $value['cuenta'] }}</td>
+                        <td class="campo_moneda">{{ $value['saldo_vigente'] }}</td>
+                    </tr>
+                    <?php $total_saldo_vigente_propio = $total_saldo_vigente_propio+$value['saldo_vigente']; ?>
+                  @endforeach
+              @endif
+            </tbody>
+            <tfoot>
+              <tr>
+                <th>TOTAL</th>
+                <th class="campo_moneda">{{number_format($total_saldo_vigente_propio, 2, '.', '')}}</th>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+          <input type="hidden" id="total_saldodeuda_cliente_propio" value="{{number_format($total_saldo_vigente_propio, 2, '.', '')}}">
+        <div class="col-sm-4">
+          <table class="table table-bordered" id="table-garantia-cliente-aval">
+            <thead>
+              <tr>
+                <th colspan="2" style="text-align: center;">AVALADO</th>
+              </tr>
+              <tr>
+                <th>CUENTA</th>
+                <th>SALDOS (S/.)</th>
+              </tr>
+            </thead>
+            <tbody>
+                  <?php $total_saldo_vigente_aval = 0; ?>
+              @if($view_detalle=='false')
+                  @if($credito_cuantitativa_control_limites)
+                  <?php
+                    $saldo_vigente = json_decode($credito_cuantitativa_control_limites->credito_saldodeduda_cliente_aval_det);
+                  ?>
+                  @foreach($saldo_vigente as $value)
+                    <tr>
+                        <td>{{ $value->cuenta }}</td>
+                        <td class="campo_moneda">{{ $value->saldo_vigente }}</td>
+                    </tr>
+                    <?php $total_saldo_vigente_aval = $total_saldo_vigente_aval+$value->saldo_vigente; ?>
+                  @endforeach
+                @endif
+              @else
+                  @foreach($credito_saldodeduda_cliente_aval as $value)
+                    <tr>
+                        <td>{{ $value['cuenta'] }}</td>
+                        <td class="campo_moneda">{{ $value['saldo_vigente'] }}</td>
+                    </tr>
+                    <?php $total_saldo_vigente_aval = $total_saldo_vigente_aval+$value['saldo_vigente']; ?>
+                  @endforeach
+              @endif
+            </tbody>
+            <tfoot>
+              <tr>
+                <th>TOTAL</th>
+                <th class="campo_moneda">{{number_format($total_saldo_vigente_aval, 2, '.', '')}}</th>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+          <input type="hidden" id="total_saldodeuda_cliente_aval" value="{{number_format($total_saldo_vigente_aval, 2, '.', '')}}">
+          <input type="hidden" id="total_garantia_cliente" value="{{number_format($total_saldo_vigente_propio+$total_saldo_vigente_aval, 2, '.', '')}}">
+      </div>
+      <div class="mb-1 mt-2">
+        <span class="badge d-block" style="background-color: #aaa;color: #000;">
+          {{ $credito->idevaluacion == 1 ? '6.2':($users_prestamo->idfuenteingreso == 2?'7.2':'9.2') }} GARANTIAS DEL GARANTE(AVAL)/FIADOR</span>
+      </div>
+      @if($users_prestamo_aval!='')
+      <div class="row" container-garantias-aval>
+        <div class="col-sm-12 col-md-6">
+          <div class="row">
+            <div class="col-sm-12 col-md-8">
+              <div class="row">
+                <label class="col-sm-6 col-form-label" style="text-align: right;">Apellidos y Nombres:</label>
+                <div class="col-sm-6">
+                  <input type="text" step="any" class="form-control" value="{{ $credito->nombreavalcredito }}" disabled>
+                </div>
+              </div>
+              
+              @if($users_prestamo_aval->dni_pareja!='' or $users_prestamo_aval->nombrecompleto_pareja!='')
+              <div class="row">
+                <label class="col-sm-6 col-form-label" style="text-align: right;">PAREJA:</label>
+                <div class="col-sm-6">
+                  <input type="text" step="any" class="form-control" value="{{ $users_prestamo_aval->nombrecompleto_pareja }}" disabled>
+                </div>
+              </div>
+              @endif
+            </div>
+            <div class="col-sm-12 col-md-4">
+              <div class="row">
+                <label class="col-sm-3 col-form-label" style="text-align: right;">DNI:</label>
+                <div class="col-sm-7">
+                  <input type="text" step="any" class="form-control" value="{{ $credito->documentoaval }}" disabled>
+                </div>
+              </div>
+              @if($users_prestamo_aval->dni_pareja!='' or $users_prestamo_aval->nombrecompleto_pareja!='')
+              
+              <div class="row">
+                <label class="col-sm-3 col-form-label" style="text-align: right;">DNI:</label>
+                <div class="col-sm-7">
+                  <input type="text" step="any" class="form-control" value="{{ $users_prestamo_aval->dni_pareja }}" disabled>
+                </div>
+              </div>
+              @endif
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-6">
+          <p>N° DE ENTIDADES FINANCIERAS (Se considera deuda interna y Líneas de creditos sin uso)</p>
+          <table class="table table-bordered" id="tabla-entidadesfinancieras">
+            <thead>
+              <tr>
+                <th style="background-color: #c8c8c8 !important;color: #000 !important;">Deudores</th>
+                <th style="background-color: #c8c8c8 !important;color: #000 !important;">Como</th>
+                <th style="background-color: #c8c8c8 !important;color: #000 !important;text-align: center;" width="100px">N°</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="background-color: #efefef !important;" rowspan="2">Garante (Aval)/Fiador</td>
+                <td style="background-color: #efefef !important;">P.Natural</td>
+                <td style="background-color: #efefef !important;">
+                  <input 
+                         type="text" valida_input_vacio 
+                         style="padding: 4px;" 
+                         onkeyup="total_deudas()" 
+                         onkeydown="total_deudas()" 
+                         {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto campo_moneda " 
+                         value="{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->cantidad_garante_natural : '0.00' }}" 
+                         id="cantidad_garante_natural">
+                </td>
+              </tr>
+              <tr>
+                <td style="background-color: #efefef !important;">P.Jurídica</td>
+                <td style="background-color: #efefef !important;">
+                  <input 
+                         type="text" valida_input_vacio 
+                         style="padding: 4px;" 
+                         onkeyup="total_deudas()" 
+                         onkeydown="total_deudas()" 
+                         {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto campo_moneda" 
+                         value="{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->cantidad_garante_juridico : '0.00' }}" 
+                         id="cantidad_garante_juridico">
+                </td>
+              </tr>
+              <tr>
+                <td style="background-color: #efefef !important;" rowspan="2">Pareja de Garante/ fiador</td>
+                <td style="background-color: #efefef !important;">P.Natural</td>
+                <td style="background-color: #efefef !important;">
+                  <input 
+                         type="text" valida_input_vacio 
+                         style="padding: 4px;" 
+                         onkeyup="total_deudas()" 
+                         onkeydown="total_deudas()" 
+                         {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto campo_moneda" 
+                         value="{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->cantidad_pareja_natural : '0.00' }}" 
+                         id="cantidad_pareja_natural">
+                </td>
+              </tr>
+              <tr>
+                <td style="background-color: #efefef !important;">P.Jurídica</td>
+                <td style="background-color: #efefef !important;">
+                  <input 
+                         type="text" valida_input_vacio 
+                         style="padding: 4px;" 
+                         onkeyup="total_deudas()" 
+                         onkeydown="total_deudas()"
+                         {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto campo_moneda" 
+                         value="{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->cantidad_pareja_juridico : '0.00' }}" 
+                         id="cantidad_pareja_juridico">
+                </td>
+              </tr>
+              <tr>
+                <td class="color_totales" style="background-color: #c8c8c8 !important;text-align: right;" colspan=2>TOTAL S/.</td>
+                <td class="color_totales" style="background-color: #c8c8c8 !important;">
+                  <input 
+                         type="text" valida_input_vacio
+                         style="padding: 4px;" 
+                         disabled class="form-control campo_moneda" 
+                         value="{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->total_deuda : '0.00' }}" 
+                         id="total_deuda">
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <br>
+      @endif
+      <div class="row" container-garantias-aval>
+        <div class="col-sm-12">
+          <table class="table table-bordered" id="table-garantia-aval">
+            <thead>
+              <tr>
+                <th>Garantías presentadas por el aval</th>
+                <th>Descripción de garantía en Propuesta</th>
+                <th style="width:150px;">Valor de mercado (S/.)</th>
+                <th style="width:150px;">Valor comercial (Tasado) (S/.)</th>
+                <th style="width:150px;">Valor de realización (tasado) (S/.)</th>
+              </tr>
+            </thead>
+            <tbody>
+              @if($view_detalle=='false')
+                  @if($credito_cuantitativa_control_limites)
+                  <?php
+                    $saldo_vigente = json_decode($credito_cuantitativa_control_limites->cliente_saldo_vigente_aval_det);
+                  ?>
+                  @foreach($saldo_vigente as $value)
+                    <tr>
+                        <td>{{ $value->garantias_noprendarias_tipo_garantia_noprendaria }}</td>
+                        <td>{{ $value->descripcion }}</td>
+                        <td class="campo_moneda">{{ $value->valor_mercado==0?'':$value->valor_mercado }}</td>
+                        <td class="campo_moneda">{{ $value->valor_comercial==0?'':$value->valor_comercial }}</td>
+                        <td class="campo_moneda">{{ $value->valor_realizacion==0?'':$value->valor_realizacion }}</td>
+                    </tr>
+                  @endforeach
+                  @if(count($saldo_vigente)==0)
+                  <tr>
+                    <td colspan="8">Sin Garantia</td>
+                  </tr>
+                  @endif
+                @endif
+              @else
+                  @foreach($credito_garantias_aval as $value)
+                    <tr>
+                        <td>{{ $value->garantias_noprendarias_tipo_garantia_noprendaria }}</td>
+                        <td>{{ $value->descripcion }}</td>
+                        <td class="campo_moneda">{{ $value->valor_mercado }}</td>
+                        <td class="campo_moneda">{{ $value->valor_comercial }}</td>
+                        <td class="campo_moneda">{{ $value->valor_realizacion }}</td>
+                    </tr>
+                  @endforeach
+                  @if(count($credito_garantias_aval)==0)
+                  <tr>
+                    <td colspan="5">Sin Garantia</td>
+                  </tr>
+                  @else
+                  @endif
+                @endif
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <div class="mb-1 mt-2">
+        <span class="badge d-block" style="background-color: #aaa;color: #000;">
+          {{ $credito->idevaluacion == 1 ? '6.2.1':($users_prestamo->idfuenteingreso == 2?'7.2.1':'9.2.1') }} SALDO DE DEUDA VIGENTE DEL AVAL</span>
+      </div>
+      
+          <input type="hidden" id="credito_saldodeduda_aval_propio_det" value="{{json_encode($credito_saldodeduda_aval_propio)}}">
+          <input type="hidden" id="credito_saldodeduda_aval_aval_det" value="{{json_encode($credito_saldodeduda_aval_aval)}}">
+      
+      <div class="row">
+        <div class="col-sm-4">
+          <table class="table table-bordered" id="table-garantia-aval-propio">
+            <thead>
+              <tr>
+                <th colspan="2" style="text-align: center;">PROPIOS</th>
+              </tr>
+              <tr>
+                <th>CUENTA</th>
+                <th>SALDOS (S/.)</th>
+              </tr>
+            </thead>
+            <tbody>
+                  <?php $total_saldo_vigente_propio = 0; ?>
+              @if($view_detalle=='false')
+                  @if($credito_cuantitativa_control_limites)
+                  <?php
+                    $saldo_vigente = json_decode($credito_cuantitativa_control_limites->credito_saldodeduda_aval_propio_det);
+                  ?>
+                  @foreach($saldo_vigente as $value)
+                    <tr>
+                        <td>{{ $value->cuenta }}</td>
+                        <td class="campo_moneda">{{ $value->saldo_vigente }}</td>
+                    </tr>
+                    <?php $total_saldo_vigente_propio = $total_saldo_vigente_propio+$value->saldo_vigente; ?>
+                  @endforeach
+                @endif
+              @else
+                  @foreach($credito_saldodeduda_aval_propio as $value)
+                    <tr>
+                        <td>{{ $value['cuenta'] }}</td>
+                        <td class="campo_moneda">{{ $value['saldo_vigente'] }}</td>
+                    </tr>
+                    <?php $total_saldo_vigente_propio = $total_saldo_vigente_propio+$value['saldo_vigente']; ?>
+                  @endforeach
+              @endif
+            </tbody>
+            <tfoot>
+              <tr>
+                <th>TOTAL</th>
+                <th class="campo_moneda">{{number_format($total_saldo_vigente_propio, 2, '.', '')}}</th>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+          <input type="hidden" id="total_saldodeuda_aval_propio" value="{{number_format($total_saldo_vigente_propio, 2, '.', '')}}">
+        <div class="col-sm-4">
+          <table class="table table-bordered" id="table-garantia-aval-aval">
+            <thead>
+              <tr>
+                <th colspan="2" style="text-align: center;">AVALADO</th>
+              </tr>
+              <tr>
+                <th>CUENTA</th>
+                <th>SALDOS (S/.)</th>
+              </tr>
+            </thead>
+            <tbody>
+                  <?php $total_saldo_vigente_aval = 0; ?>
+              @if($view_detalle=='false')
+                  @if($credito_cuantitativa_control_limites)
+                  <?php
+                    $saldo_vigente = json_decode($credito_cuantitativa_control_limites->credito_saldodeduda_aval_aval_det);
+                  ?>
+                  @foreach($saldo_vigente as $value)
+                    <tr>
+                        <td>{{ $value->cuenta }}</td>
+                        <td class="campo_moneda">{{ $value->saldo_vigente }}</td>
+                    </tr>
+                    <?php $total_saldo_vigente_aval = $total_saldo_vigente_aval+$value->saldo_vigente; ?>
+                  @endforeach
+                @endif
+              @else
+                  @foreach($credito_saldodeduda_aval_aval as $value)
+                    <tr>
+                        <td>{{ $value['cuenta'] }}</td>
+                        <td class="campo_moneda">{{ $value['saldo_vigente'] }}</td>
+                    </tr>
+                    <?php $total_saldo_vigente_aval = $total_saldo_vigente_aval+$value['saldo_vigente']; ?>
+                  @endforeach
+              @endif
+            </tbody>
+            <tfoot>
+              <tr>
+                <th>TOTAL</th>
+                <th class="campo_moneda">{{number_format($total_saldo_vigente_aval, 2, '.', '')}}</th>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+          <input type="hidden" id="total_saldodeuda_aval_aval" value="{{number_format($total_saldo_vigente_aval, 2, '.', '')}}">
+          <input type="hidden" id="total_garantia_aval" value="{{number_format($total_saldo_vigente_propio+$total_saldo_vigente_aval, 2, '.', '')}}">
+      <div class="mb-1 mt-2">
+        <span class="badge d-block" style="background-color: #aaa;color: #000;">
+          {{ $credito->idevaluacion == 1 ? '6.3':($users_prestamo->idfuenteingreso == 2?'7.3':'9.3') }} VINCULACIÓN POR RIESGO ÚNICO</span>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <p style="margin-bottom: 5px;">Deudores Vinculados con los que conforma Riesgo Único (Revisar Reporte, de existir Vinculación registrar)<br>
+            <b style="background-color:yellow">REGISTRAR SALDO DE PRÉSTAMO VIGENTE</b>
+          </p>
+          <table class="table table-bordered" id="table-vinculo-deudor">
+            <thead>
+              <tr>
+                <th rowspan=3 style="width:100px;">DNI CLIENTE</th>
+                <th rowspan=3>APELLIDOS Y NOMBRES</th>
+                <th colspan=5 style="text-align:center;">FORMA DE VINCULACIÓN</th>
+                
+                <th rowspan=3 style="width:100px;">{{ $tienda->nombre }} </th>
+                  @if($view_detalle!='false')
+                  <th rowspan=3 style="width:10px;"><button type="button" class="btn btn-success" onclick="agrega_deudor_vinculado()"><i class="fa fa-plus"></i></button></th>
+                  @endif
+              </tr>
+              <tr>
+                
+                <th colspan=2 style="text-align:center;">Por propiedad Directa</th>
+                <th colspan=2 style="text-align:center;">Por Propiedad Indirecta</th>
+                <th>Gestión</th>
+              </tr>
+              <tr>
+                
+                <th style="width:100px;">Pertenece al Cliente (%)</th>
+                <th style="width:100px;">Pertenece al Vinculado (%)</th>
+                <th style="width:100px;">Pertenece al Cliente (%)</th>
+                <th style="width:100px;">Pertenece al Vinculado (%)</th>
+                <th>Textual</th>
+              </tr>
+            </thead>
+            <tbody>
+              @foreach($vinculacion_deudor as $value)
+                <tr >
+                  <td codigo><input type="text" {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto" value="{{ $value->codigo }}" onkeyup="persona_riesgo(this)"></td>
+                  <td cliente><input type="text" {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto" value="{{ $value->cliente }}"></td>
+                  <td cliente_propiedad_directa><input type="text" {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto" value="{{ $value->cliente_propiedad_directa }}"></td>
+                  <td vinculado_propiedad_directa><input type="text" {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto" value="{{ $value->vinculado_propiedad_directa }}"></td>
+                  <td cliente_propiedad_indirecta><input type="text" {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto" value="{{ $value->cliente_propiedad_indirecta }}"></td>
+                  <td vinculado_propiedad_indirecta><input type="text" {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto" value="{{ $value->vinculado_propiedad_indirecta }}"></td>
+                  <td gestion>
+                    <select {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto">
+                      <option value=""></option>
+                      <option value="Gerente"       {{ $value->gestion == "Gerente"       ? "selected" : "" }}>Gerente</option>
+                      <option value="Administrador" {{ $value->gestion == "Administrador" ? "selected" : "" }}>Administrador</option>
+                      <option value="Directivo"     {{ $value->gestion == "Directivo"     ? "selected" : "" }}>Directivo</option>
+                      <option value="Trabajador"    {{ $value->gestion == "Trabajador"    ? "selected" : "" }}>Trabajador</option>
+                      <option value="Otros"         {{ $value->gestion == "Otros"         ? "selected" : "" }}>Otros</option>
+                    </select>
+                  </td>
+                  <td saldo><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto" onkeyup="calcular_total()" value="{{ $value->saldo }}"></td>
+           
+                  @if($view_detalle!='false')
+                  <td><button type="button" onclick="eliminar_deudor(this)" class="btn btn-danger "><i class="fa-solid fa-trash"></i></button></td>
+                  @endif
+                 </tr>
+              @endforeach
+            </tbody>
+            <tfoot>
+              <tr>
+                <td class="color_totales campo_moneda" colspan=7>TOTAL S/.</td>
+                <td class="color_totales"><input type="text" disabled class="form-control campo_moneda" value="{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->total_vinculo_deudor : '0.00' }}" id="total_vinculo_deudor"></td>
+              </tr>
+            </tfoot>
+          </table>
+          <script>
+            function persona_riesgo(e){
+    
+              let tr = $(e).closest('tr');
+              let dni = $(e).val();
+              
+              if( dni.length === 8 ){
+                $.ajax({
+                  url:"{{url('backoffice/0/credito/showpersona')}}",
+                  type:'GET',
+                  data: {
+                      dni: dni,
+                  },
+                  success: function (res){
+                    $(tr).find('td[cliente] input').val(res.nombrecompleto);
+                  }
+                })
+              }
+              
+             }
+          </script>
+        </div>
+      </div>
+      <div class="mb-1 mt-2">
+        <span class="badge d-block" style="background-color: #aaa;color: #000;">
+          {{ $credito->idevaluacion == 1 ? '6.4':($users_prestamo->idfuenteingreso == 2?'7.4':'9.4') }} DETERMINACIÓN DE LIMITES</span>
+      </div>
+      <div class="row">
+        <div class="col-sm-42">
+          <table class="table" style="width:500px !important;">
+            <tr class="d-none">
+              <td>Capital Asignado</td>
+              <td width="100px"><input type="text" disabled class="form-control campo_moneda" value="{{ $tienda->capital_agencia }}" id="reporte_institucional"></td>
+              <td width="300px"><input type="text" disabled class="form-control campo_moneda" value="{{ configuracion($tienda->id,'capital_asignado')['valor'] }}" id="capital_asignado"></td>
+              
+
+            </tr>
+            <tr>
+              <td colspan="2">Total financiado al Deudor y Deudores vinculados (Incluido propuesta) ( S/.)</td>
+              <td><input type="text" class="form-control campo_moneda" value="{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->total_financiado_deudor : '0.00' }}" disabled id="total_financiado_deudor"></td>
+            </tr>
+            <tr>
+              <td>Resultado (%)</td>
+              <td><input type="text" class="form-control campo_moneda" style="width:60px;"
+                         value="{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->porcentaje_resultado : '0.00' }}" disabled id="porcentaje_resultado"></td>
+              <td><input type="text" class="form-control text-center" value="{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->estado_resultado : '0.00' }}" disabled id="estado_resultado"></td>
+            </tr>
+          </table>
+          <script>
+            determina_resultado();
+            function determina_resultado(){
+              let saldo_capital_empresa = parseFloat("{{$saldo_capital_empresa}}");
+              let saldo_deducciones_empresa = parseFloat("{{$saldo_deducciones_empresa}}");
+              let credito_solicitado = parseFloat("{{$credito->monto_solicitado}}");
+              
+              let total_vinculo_deudor = parseFloat($('#total_vinculo_deudor').val());
+              let total_financiado_deudor = ( total_vinculo_deudor + credito_solicitado + saldo_capital_empresa ) - saldo_deducciones_empresa;
+              
+              //console.log(total_vinculo_deudor,credito_solicitado,saldo_capital_empresa,saldo_deducciones_empresa)
+              
+              $('#total_financiado_deudor').val(total_financiado_deudor.toFixed(2))
+              
+              
+              let reporte_institucional = parseFloat($('#reporte_institucional').val());
+              let porcentaje_resultado = (total_financiado_deudor/reporte_institucional) * 100;
+              $('#porcentaje_resultado').val(porcentaje_resultado.toFixed(2))
+              
+              let capital_asignado = parseFloat($('#capital_asignado').val());
+              //capital_asignado = capital_asignado*100;
+              //console.log(porcentaje_resultado,capital_asignado)
+              $('#estado_resultado ').val('Suspender Propuesta');
+              $('#estado_resultado ').removeClass('bg-success');
+              $('#estado_resultado ').addClass('bg-danger');
+              
+              if(porcentaje_resultado <= capital_asignado ){
+                $('#estado_resultado ').val('Continuar Propuesta');
+                $('#estado_resultado ').removeClass('bg-danger');
+                $('#estado_resultado ').addClass('bg-success');
+                //$('#btn-guardar-cambios').attr('disabled',false)
+              }else{
+                //$('#btn-guardar-cambios').attr('disabled',true)
+              }
+              
+            }
+            // $saldo_capital_empresa
+            // $saldo_deducciones_empresa
+          </script>
+        </div>
+      </div>
+      <div class="mb-1 mt-2">
+        <span class="badge d-block" style="background-color: #aaa;color: #000;">
+          {{ $credito->idevaluacion == 1 ? '6.5':($users_prestamo->idfuenteingreso == 2?'7.5':'9.5') }} COMENTARIOS SOBRE LA VINCULACIÓN</span>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <textarea id="comentarios"  {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto" cols="30" rows="3">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->comentarios : '' }}</textarea>
+        </div>
+      </div>
+      <div class="row mt-1">
+        @if($view_detalle!='false')
+        <div class="col" style="flex: 0 0 0%;">
+          <button type="submit" class="btn btn-success" id="btn-guardar-cambios"><i class="fa-solid fa-floppy-disk"></i> GUARDAR CAMBIOS</button>
+        </div>
+        @endif
+        <div class="col" style="flex: 0 0 0%;">
+          <button type="button" 
+                  class="btn btn-dark" 
+                  onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=solicitud_control_limites')}}', size: 'modal-fullscreen' })"
+                  id="boton_imprimir"
+                  >
+            <i class="fa-solid fa-file-pdf"></i> IMPRIMIR</button>
+        </div>
+        <div class="col" style="flex: 1 0 0%;">
+          <div id="success-message" class="alert alert-success d-none" style="text-align:left;"></div>
+        </div>
+        <div class="col" style="flex: 0 0 0%;">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-x"></i> SALIR</button>
+        </div>
+      </div>
+</form> 
+<style>
+  .modal-body-cualitativa .form-check-input[type=checkbox],
+  .modal-body-cualitativa .select2-container--bootstrap-5 .select2-selection {
+      background-color: #ffffb5;
+  }
+  .form-check-input:checked {
+      background-color: #585858 !important;
+      border-color: #585858 !important;
+  }
+</style>  
+<script>
+  valida_input_vacio();
+ 
+  $('input').on('blur', function() {
+      $('#boton_imprimir').attr('disabled',true);
+  });
+  
+  /*function cal_total_garantia_cliente_select(){
+    let total_garantia = 0;
+    let propuesta = parseFloat($('#propuesta_general').val());
+    $(`#table-garantia-cliente > tbody > tr`).each(function() {
+      let monto = $(this).val();
+      total_garantia += parseFloat(monto);
+    });
+    $('#total_garantia_cliente_det').val(total_garantia.toFixed(2));
+  }*/
+  
+  /*function cal_total_garantia_cliente(){
+    let total_garantia = 0;
+    let propuesta = parseFloat($('#propuesta_general').val());
+    $(`#table-garantia-cliente > tbody > tr #cliente_saldo_vigente_cliente`).each(function() {
+      let monto = $(this).val();
+      total_garantia += parseFloat(monto);
+    });
+    $(`#table-garantia-cliente > tbody > tr #cliente_saldo_vigente_aval`).each(function() {
+      let monto = $(this).val();
+      total_garantia += parseFloat(monto);
+    });
+    if(isNaN(propuesta) ||  propuesta == Infinity ||  propuesta == -Infinity){
+      propuesta = 0;
+    }
+    total_garantia = total_garantia + propuesta;
+    $('#total_garantia_cliente').val(total_garantia.toFixed(2));
+  }
+  cal_total_garantia_cliente()*/
+  
+  /*cal_total_garantia_aval()
+  function cal_total_garantia_aval(){
+    let total_garantia = 0;
+    let propuesta = parseFloat($('#aval_propuesta_general').val());
+    $(`#table-garantia-aval > tbody > tr #aval_saldo_vigente_cliente`).each(function() {
+      let monto = $(this).val();
+      total_garantia += parseFloat(monto);
+    });
+    $(`#table-garantia-aval > tbody > tr #aval_saldo_vigente_aval`).each(function() {
+      let monto = $(this).val();
+      total_garantia += parseFloat(monto);
+    });
+    if(isNaN(propuesta) ||  propuesta == Infinity ||  propuesta == -Infinity){
+      propuesta = 0;
+    }
+    total_garantia = total_garantia + propuesta;
+    $('#total_garantia_aval').val(total_garantia.toFixed(2));
+  }*/
+  function total_deudas() {
+    var cantidad_garante_natural = parseFloat($('#cantidad_garante_natural').val());
+    var cantidad_garante_juridico = parseFloat($('#cantidad_garante_juridico').val());
+    var cantidad_pareja_natural = parseFloat($('#cantidad_pareja_natural').val());
+    var cantidad_pareja_juridico = parseFloat($('#cantidad_pareja_juridico').val());
+    $('#total_deuda').val(cantidad_garante_natural+cantidad_garante_juridico+cantidad_pareja_natural+cantidad_pareja_juridico);
+  }  
+  function agrega_deudor_vinculado(){
+    let btn_eliminar = `<button type="button" onclick="eliminar_deudor(this)" class="btn btn-danger "><i class="fa-solid fa-trash"></i></button>` ;
+    let tabla = `<tr >
+                  <td codigo><input type="text" {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto" onkeyup="persona_riesgo(this)"></td>
+                  <td cliente><input type="text" {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto"></td>
+                  <td cliente_propiedad_directa><input type="text" {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto"></td>
+                  <td vinculado_propiedad_directa><input type="text" {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto"></td>
+                  <td cliente_propiedad_indirecta><input type="text" {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto"></td>
+                  <td vinculado_propiedad_indirecta><input type="text" {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto"></td>
+                  <td gestion>
+                    <select {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto">
+                      <option></option>
+                      <option value="Gerente">Gerente</option>
+                      <option value="Administrador">Administrador</option>
+                      <option value="Directivo">Directivo</option>
+                      <option value="Trabajador">Trabajador</option>
+                      <option value="Otros">Otros</option>
+                    </select>
+                  </td>
+                  <td saldo><input type="text" valida_input_vacio value="0.00" onkeyup="calcular_total()" {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto"></td>
+                  {{ $view_detalle=='false' ? '' : '<td>${btn_eliminar}</td>' }}
+                  
+                 </tr>`;
+
+      $("#table-vinculo-deudor > tbody").append(tabla);
+      calcular_total();
+      valida_input_vacio();
+    }
+  function calcular_total(){
+    
+    let total = 0;
+
+    $("#table-vinculo-deudor > tbody > tr").each(function() {
+      total += parseFloat($(this).find('td[saldo] input').val());
+    });
+    $('#total_vinculo_deudor').val(total.toFixed(2))
+    determina_resultado();
+  }
+  function eliminar_deudor(e){
+    let path = $(e).closest('tr');
+    path.remove();
+    calcular_total();
+  }
+  /*function select_saldo_vigente_cliente(){
+    let data = [];
+    let total_garantia = 0;
+    $(`#table-garantia-cliente > tbody > tr #saldo_vigente_cliente`).each(function() {
+      let monto = $(this).val();
+      total_garantia += parseFloat(monto);
+      data.push({ 
+        idcredito: '{{ $credito->id }}',
+        monto: $(this).val(),
+      });
+    });
+    return JSON.stringify(data);
+  }*/
+  function json_vinculacion_deudor(){
+    let data = [];
+    $(`#table-vinculo-deudor > tbody > tr`).each(function() {
+      let codigo                        = $(this).find('td[codigo] input').val();
+      let cliente                       = $(this).find('td[cliente] input').val();
+      let cliente_propiedad_directa     = $(this).find('td[cliente_propiedad_directa] input').val();
+      let vinculado_propiedad_directa   = $(this).find('td[vinculado_propiedad_directa] input').val();
+      let cliente_propiedad_indirecta   = $(this).find('td[cliente_propiedad_indirecta] input').val();
+      let vinculado_propiedad_indirecta = $(this).find('td[vinculado_propiedad_indirecta] input').val();
+      let gestion                       = $(this).find('td[gestion] select').val();
+      let saldo                         = $(this).find('td[saldo] input').val();
+
+      data.push({ 
+        codigo: codigo,
+        cliente: cliente,
+        cliente_propiedad_directa: cliente_propiedad_directa,
+        vinculado_propiedad_directa: vinculado_propiedad_directa,
+        cliente_propiedad_indirecta: cliente_propiedad_indirecta,
+        vinculado_propiedad_indirecta: vinculado_propiedad_indirecta,
+        gestion: gestion,
+        saldo: saldo,
+      });
+    });
+    return JSON.stringify(data);
+  }
+</script>

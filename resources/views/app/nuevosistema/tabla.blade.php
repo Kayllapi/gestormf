@@ -30,15 +30,15 @@ if(!isset($check_id)){
         @foreach($tfoot as $value)
           @if(isset($value['type']))
             @if($value['type']=='text')
-            <th style="background-color: #144081 !important;"><input type="text" class="form-control" placeholder="Buscar..."></th>
+            <th style="background-color: #c2c0c2 !important;"><input type="text" class="form-control" placeholder="Buscar..."></th>
             @elseif($value['type']=='date')
-            <th style="background-color: #144081 !important;"><input type="date" class="form-control" style="width: 145px;"></th>
+            <th style="background-color: #c2c0c2 !important;"><input type="date" class="form-control" style="width: 145px;"></th>
             @elseif($value['type']=='check')
-            <th style="background-color: #144081 !important;"><div class="form-check"><input class="form-check-input" type="checkbox" onclick="check_seleccionar_todo{{$check_id}}(this)">
+            <th style="background-color: #c2c0c2 !important;"><div class="form-check"><input class="form-check-input" type="checkbox" onclick="check_seleccionar_todo{{$check_id}}(this)">
               </div>
             </th>
             @elseif($value['type']=='select')
-            <th style="background-color: #144081 !important;">
+            <th style="background-color: #c2c0c2 !important;">
               <select class="form-select" style="width: 100%;">
                 <option value="">Buscar...</option>
                 <?php
@@ -75,7 +75,7 @@ if(!isset($check_id)){
               </select>
             </th>
             @else
-            <th style="background-color: #144081 !important;"></th>
+            <th style="background-color: #c2c0c2 !important;"></th>
             @endif
           @endif
         @endforeach
@@ -173,7 +173,7 @@ $name_table = generateRandomString();
                 alert('hay errro!!')
             }*/
         },
-        dom: '{{isset($dom)?$dom:'rti'}}',
+        dom: '{{isset($dom)?$dom:'rt'}}',
         scrollX: true,
         mark: true,
         select: {

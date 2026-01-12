@@ -414,7 +414,7 @@ function modal(param) {
     .append('<div class="modal fade" id="mx-modal'+key+'" aria-labelledby="exampleModalLabel" aria-hidden="true">'+
         '<div class="modal-dialog '+param['size']+'">'+
               '<div class="modal-content">'+
-                '<div id="mx-modal-cuerpo'+key+'" style="margin-left: 5px;margin-right: 5px;"></div>'+
+                '<div id="mx-modal-cuerpo'+key+'"></div>'+
               '</div>'+
         '</div> '+
     '</div>');

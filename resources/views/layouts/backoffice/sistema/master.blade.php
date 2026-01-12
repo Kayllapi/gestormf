@@ -11,6 +11,7 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
         <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <meta name="robots" content="index, follow"/>
         <title>{{ $tienda->nombreagencia }}</title>
+        
         <link rel="shortcut icon" href="{{ url('/public/backoffice/sistema/logo_gestormf_icono1.png') }}">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
@@ -69,34 +70,8 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
               order: 2;
               font-weight: bold;
           }
-          thead > tr > th,
-          .table-dark > tr > th,
-          .table-dark > tr > td {
-              background-color:#144081 !important;
-          }
-          .btn-primary {
-              background-color:#144081;
-              border-color:#144081;
-          }
-          .table {
-              border-color: #a6a9ab !important;
-          }
-          .table > thead{
-              background-color:#212529;
-          }
-          .table > tbody{
-              background-color:#fff;
-          }
-          .tabla-interno > thead,
-          .tabla-interno > tbody {
-              background-color: #efefef;
-          }
-          .tabla-interno > thead > tr > th {
-              font-weight: 400;
-              color: #000000;
-          }
           body{
-              /*background-color:#efefef;*/
+              background-color:#efefef;
               font-weight: bold;
               color:#000;
 	            font-family: Arial, sans-serif !important;
@@ -106,17 +81,13 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
           }
           
           .modal-title {
-              color: white;
               font-weight: bold;
           }
-          .modal-content {
-              background-color: #144081;
-              padding-bottom: 5px;
-          }
           .badge {
-              background-color: #144081;
+              background-color: #a6a9ab;
               text-align: left;
               font-size: 12px;
+              color: #000;
           }
           .modal-header .fa-plus {
               font-size: 12px !important;
@@ -124,18 +95,21 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
           .modal-header .btn {
               justify-content: space-between;
           }
-          
-          .table {
-              font-weight: normal !important;
-          }
-          #cuerposistema .modal-title {
-              color: #000000;
+          .modal-header,
+          .modal-footer {
+              background: #b7b6b7;
           }
           .btn-close {
             background-color: #efefef;
             border-radius: 20px;
             opacity: 100;
             margin-right: 0px !important;
+            padding: 0px !important;
+            height: 25px;
+    width: 25px;
+          }
+          #cuerposistema .modal-title {
+              color: #000000;
           }
           
             .select2-container--bootstrap-5 .select2-dropdown .select2-results__options .select2-results__option.select2-results__option--highlighted {
@@ -143,22 +117,94 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
     background-color: #ffffff;
     font-weight: bold;
 }
+          .form-control:focus {
+            box-shadow:none;
+          } 
+          .table {
+              border-color: #a6a9ab !important;
+              font-weight: normal !important;
+          }
+  
+          .tabla-interno > thead,
+          .tabla-interno > tbody {
+              background-color: #efefef;
+          }
+          .tabla-interno > thead > tr > th {
+              font-weight: bold;
+              color: #000000;
+          }
+          thead > tr > th, 
+          .table-dark > tr > th, 
+          .table-dark > tr > td, 
+          .table.dataTable tfoot th {
+              background-color: #c2c0c2 !important;
+              color: #000000 !important;
+          }
+          .btn-primary,
+          .btn-primary:hover,
+          .btn-primary:active,
+          .btn-primary:focus {    
+              background-color: #d4d4d4 !important;
+              border: 1px solid #919191 !important;
+              color: #000 !important;
+          }
+          .btn-primary  .fa-solid:before {    
+              color: #000;
+          }
+          .btn-success,
+          .btn-success:hover,
+          .btn-success:active,
+          .btn-success:focus {    
+              background-color: #cfecc5 !important;
+              border: 1px solid #6fa35e !important;
+              color: #000 !important;
+          }
+          .btn-success  .fa-solid:before {    
+              color: #000;
+          }
+          .btn-danger,
+          .btn-danger:hover,
+          .btn-danger:active,
+          .btn-danger:focus {    
+              background-color: #ffc9ca !important;
+              border: 1px solid #b35b5d !important;
+              color: #000 !important;
+          }
+          .btn-danger  .fa-solid:before {    
+              color: #cd2024;
+          }
+          .btn-info,
+          .btn-info:hover,
+          .btn-info:active,
+          .btn-info:focus {    
+              background-color: #c3ddff !important;
+              border: 1px solid #5b81b3 !important;
+              color: #000 !important;
+          }
+          .btn-info  .fa-solid:before {    
+              color: #000;
+          }
 
+          .mx-subcuerpo .modal-body {
+              padding: 0px;
+              padding-top: 5px;
+          }
         </style>
 </head>
 <body url="{{ url('/') }}">
-  <div class="container-fluid" style="background-color:#144081;
+  <div class="container-fluid" style="background-color:#efefef;
     font-size: 20px;
-    font-weight: bold;">
-    <a class="navbar-brand" href="#" style="color:#c59d25">
+    font-weight: bold;text-align: center;height: 35px;">
+    <a class="navbar-brand" href="#" style="color: #1d549b">
           @if($tienda->imagen!='')
-          <img src="{{ url('public/backoffice/sistema/logo_gestormf.png') }}" 
-               style="height: 25px;float: left;margin-top:5px;">
+          <img src="{{ url('public/backoffice/tienda/'.$tienda->id.'/sistema/'.$tienda->imagen) }}" 
+               style="height: 32px;float: left;margin-top:2px;">
           @endif
      {{ $tienda->nombre }} - {{ $tienda->nombreagencia }}</a>
-      <div id="contador_fechaactual" style="float: right;color: #fff;margin-left: 20px;">{{  Carbon\Carbon::now()->format('d-m-Y') }}</div>
+      <div id="contador_fechaactual" style="float: right;color: #b45126;margin-left: 20px;">{{  Carbon\Carbon::now()->format('d-m-Y') }}</div>
   </div>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary" style="background-color:#144081 !important;">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary" style="background-color:#cdcdcd !important;    padding-top: 5px;
+    padding-bottom: 0;">
   <div class="container-fluid">
     <button style="background-color: #fff;" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -215,18 +261,40 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
       </ul>
       <style>
         .menu_click {
-              padding-left: 0 !important;
-              padding-right: 0 !important;
-              margin-left: 8px !important;
-              margin-right: 8px !important;
-        }
-        .menu_click_li:hover > .menu_click {
               padding-bottom: 6px;
-              border-bottom: 3px solid #fff;
+              border-radius: 5px 5px 0px 0px;
+              border-bottom: 2px solid transparent;
         }
+        /*.menu_click_li:hover > .menu_click {
+              padding-bottom: 6px;
+              border-bottom: 0px solid #fff;
+        }*/
+              
+        /*.menu_click_li:hover,
+        .menu_click_li:active,
+        .menu_click_li:focus {
+              background-color: #efefef;
+              border-radius: 5px 5px 0px 0px;
+        }*/
+        .menu_click:hover {
+              /*background-color: #efefef;*/
+              padding-bottom: 6px;
+              border-radius: 5px 5px 0px 0px;
+              border-bottom: 2px solid #000;
+        }
+        .menu_click:active,
         .menu_click:focus {
+              background-color: #fff;
               padding-bottom: 6px;
-              border-bottom: 3px solid rgb(182, 172, 72) !important;
+              border-bottom: 2px solid #efefef;
+              border-radius: 5px 5px 0px 0px;
+        }
+        .nav-link {
+            padding-top: 6px;
+            padding-bottom: 5px;
+        }
+        .dropdown-item:hover {
+            background-color:#e5e5e5;
         }
       </style>
       <ul class="navbar-nav d-flex">
@@ -257,7 +325,7 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
                 <img class="thumb" src="{{ $imagenusuario }}" class="imglogousuario" 
                       style="width: 30px;height: 30px;border-radius: 15px;">
             @else
-                <img class="thumb" src="{{ url('public/backoffice/sistema/logo_gestormf_icono1.png') }}" class="imglogousuario" style="width: 30px !important;height: 30px !important;border-radius: 15px;">
+                <img class="thumb" src="{{ url('public/backoffice/sistema/icono_usuario.png') }}" class="imglogousuario" style="width: 30px !important;height: 30px !important;">
             @endif
             {{ $usuario->nombre }} ({{ $usuario->permiso }})
             
@@ -362,8 +430,8 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
     }
     function menu_click(num){
         $('.menu_click').removeAttr('style');
-        //$('#menu_click'+num).css('background-color','rgb(182 172 72)');
-        $('#menu_click'+num).attr('style','padding-bottom: 6px;border-bottom: 3px solid rgb(182, 172, 72);');
+        //$('.menu_click'+num).attr('style',`background-color: #fff;padding-bottom: 6px;border-bottom: 2px solid #fff;border-radius: 5px 5px 0px 0px;`);
+        $('#menu_click'+num).attr('style','padding-bottom: 6px;border-bottom: 2px solid #fff;background-color: #fff;');
     }
   </script>
 <style>

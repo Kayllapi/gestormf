@@ -8,7 +8,7 @@
         <i class="fa-solid fa-plus"></i> Registrar
       </a>
     </h5>
-    <button type="button" class="btn-close" onclick="ir_inicio()" style="font-size: 20px;"></button>
+    <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>
 <div class="modal-body">
     @include('app.nuevosistema.tabla',[
@@ -40,11 +40,11 @@
             [
                 'data' => [
                     [
-                        'id' => 1,
+                        'id' => 'NATURAL',
                         'text' => 'NATURAL'
                     ],
                     [
-                        'id' => 2,
+                        'id' => 'JURÍDICA',
                         'text' => 'JURÍDICA'
                     ]
                 ],
@@ -53,15 +53,15 @@
             [
                 'data' => [
                     [
-                        'id' => 1,
+                        'id' => 'DNI',
                         'text' => 'DNI'
                     ],
                     [
-                        'id' => 2,
+                        'id' => 'RUC',
                         'text' => 'RUC'
                     ],
                     [
-                        'id' => 3,
+                        'id' => 'CE',
                         'text' => 'CE'
                     ]
                 ],

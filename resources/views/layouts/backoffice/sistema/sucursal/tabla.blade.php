@@ -1,14 +1,14 @@
 <div class="modal-header">
     <h5 class="modal-title">
       Agencias
-      <a href="javascript:;" class="sistema-font" onclick="actualizar_tabla('sucursal')"><i class="fa-solid fa-arrows-rotate"></i></a>
+      <a href="javascript:;" class="sistema-font" onclick="actualizar_tabla('sucursal')"><i class="fa-solid fa-arrows-rotate" style="color: #000;"></i></a>
       <a href="javascript:;" 
          class="btn btn-primary" 
          onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/sucursal/create?view=registrar&modulo=sucursal')}}'})">
         <i class="fa-solid fa-plus"></i> Registrar
       </a>
     </h5>
-    <button type="button" class="btn-close" onclick="ir_inicio()" style="font-size: 20px;"></button>
+    <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>
 <div class="modal-body">
     @include('app.nuevosistema.tabla',[

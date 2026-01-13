@@ -9,7 +9,11 @@
             margin:0;
             padding:0;
         }
-        body{
+        body {
+            margin-top: 1.2cm;
+            margin-left: 0.7cm;
+            margin-right: 0.7cm;
+            margin-bottom: 2cm;
             font-family:helvetica;
             font-size:12px;
         }
@@ -43,100 +47,8 @@
     </style>
 </head>
 <body>
-    <style>
-      body {
-          margin-top: 1.2cm;
-          margin-left: 0.7cm;
-          margin-right: 0.7cm;
-          margin-bottom: 2cm;
-      }
-      /* PDF A4 */
-      /** Definir las reglas del encabezado **/
-      header {
-          position: fixed;
-          top: 0cm;
-          left: 0.7cm;
-          right: 0.7cm;
-          height: 0.6cm;
-          /** Estilos extra personales **/
-          color: #676869;
-          text-align: center;
-          line-height: 0.6cm;
-          font-size:18px !important;
-          font-weight: bold;
-          border-bottom: 2px solid #144081; 
-          margin:5px;
-          text-align:right;
-          padding:5px;
-      }
-      .footer { 
-          position: fixed; 
-          left: 0px; 
-          bottom: -25px; 
-          right: 0px; 
-          height: 25px;   
-          margin:15px;
-          margin-left: 50px;
-          margin-right: 50px;
-          padding-top:5px;
-          border-top: 2px solid #31353d;
-      }
-      .page {
-          float: right;
-      }
-      .content {
-          width:100%;
-          margin-left: 50px;
-          margin-right: 50px;
-      }
-      .content_pdf {
-          width:100%;
-          margin-left: 50px;
-          margin-right:-8px;
-      }
-      .content_pdf table {
-          margin:0px;
-          padding:0px;
-          border-collapse: collapse;
-          margin-right: 55px;
-      }
-      .content_pdf table td {
-          padding:3px;
-          text-align:left;
-      }
-      .footer .page:after { content: counter(page, decimal-leading-zero); }
-      .header_agencia_logo {
-          height: 50px;
-          text-align: center;
-          float: left;
-          margin-right:10px;
-      }
-      .header_agencia_logo > img {
-          display: block;
-          max-width: 100%;
-          height: 50px;
-      }
-      .header_agencia_informacion {
-          float: right;
-          width: 100%;
-          text-align: right;
-      }
-      .header_agencia_nombrecomercial {
-          font-size: 13px;
-          font-weight: bold;
-      }
-      .header_agencia_ruc {
-      }
-      
-    </style>
     
-
-    <header>
-      <div style="float:left;font-size:18px;">{{ $tienda->nombre }}</div> {{ Auth::user()->usuario }} | {{ date('d-m-Y H:iA') }}
-    </header>
-    <div class="footer">
-        <p class="page">Página </p>
-    </div>
+    @include('app/nuevosistema/cabecerapdf_a4')
     <div class="container">
         <h3 align="center">FICHA DE INFORMACIÓN</h3>
         @if($usuario->identificacion!='' or

@@ -24,12 +24,11 @@
           <div class="row">
             <label class="col-sm-4 col-form-label" style="text-align: right;"></label>
             <div class="col-sm-8">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="conyugue_titular" id="participarconyugue_titular" <?php echo $credito->participarconyugue_titular=='on'?'checked':''?>>
-                <label class="form-check-label" for="participarconyugue_titular" style="margin-top: 0;">
+              <label class="chk">
+                  <input type="checkbox" name="conyugue_titular" id="participarconyugue_titular" <?php echo $credito->participarconyugue_titular=='on'?'checked':''?>>
+                  <span class="checkmark"></span>
                   Participar con Conyugue
-                </label>
-              </div>
+              </label>
             </div>
           </div>
           <div class="row">
@@ -43,12 +42,11 @@
           <div class="row">
             <label class="col-sm-4 col-form-label" style="text-align: right;"></label>
             <div class="col-sm-8">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="conyugue_aval" id="participarconyugue_aval" <?php echo $credito->participarconyugue_aval=='on'?'checked':''?>>
-                <label class="form-check-label" for="participarconyugue_aval" style="margin-top: 0;">
+              <label class="chk">
+                  <input type="checkbox" name="conyugue_aval" id="participarconyugue_aval" <?php echo $credito->participarconyugue_aval=='on'?'checked':''?>>
+                  <span class="checkmark"></span>
                   Participar con Conyugue
-                </label>
-              </div>
+              </label>
             </div>
           </div>
           <div class="row">

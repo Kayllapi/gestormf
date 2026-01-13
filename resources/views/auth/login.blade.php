@@ -59,20 +59,14 @@ $tienda = DB::table('tienda')->whereId(194)->first();
       </style>
       <style>
           .mx-logo-login {
-              border: 5px solid #144081;
               background-repeat: no-repeat;
               background-size: contain;
               background-position: center;
-              height: 150px;
-              width: 150px;
+              height: 65px;
               margin: auto;
-              background-color: #ffffff;
-              border-radius: 100px;
-            background-image: url({{url('public/backoffice/sistema/logo_gestormf.png')}});
-          }
-          .color-bg,
-          .section-separator:before {
-              background: #144081;
+                background-image: url({{url('public/backoffice/sistema/logo_gestormf.png')}});
+                margin-top: 20px;
+    margin-bottom: 15px;
           }
           .bg {
             -webkit-background-size: contain;
@@ -116,11 +110,12 @@ $tienda = DB::table('tienda')->whereId(194)->first();
               padding: 0px 10px;
           }
           .cs-wrapper {
-              /*padding: 180px 0px 100px;*/
-              padding-top:12%;
+              padding: 180px 0px 100px;
+              /*padding-top:12%;*/
           }
           .soon-title {
               font-size: 20px;
+              color: #000;
           }
           .cs-wrapper .countdown {
               margin: 10px 0;
@@ -153,12 +148,20 @@ $tienda = DB::table('tienda')->whereId(194)->first();
             .cs-countdown-item p {
                 font-size: 13px;
             }
-            .soon-title {
-                font-size: 20px;
-            }
             .cs-wrapper {
                 padding: 100px 0px 100px;
             }
+          }
+          .btn-primary,
+          .btn-primary:hover,
+          .btn-primary:active,
+          .btn-primary:focus {    
+              background-color: #d4d4d4 !important;
+              border: 1px solid #919191 !important;
+              color: #000 !important;
+          }
+          .section-separator:before {
+                background: #253c7b;
           }
       </style>  
     </head>
@@ -168,25 +171,29 @@ $tienda = DB::table('tienda')->whereId(194)->first();
       location.href = '{{ url('backoffice/'.Auth::user()->idtienda.'/inicio') }}'; 
       </script>
       @else  
-      <div style="height: 82.7vh;">
           <div class="fixed-bg">
               <div class="bg imagen-login"></div>
               <div class="overlay"></div>
               <div class="bubble-bg"></div>
           </div>
+      <div style="height: 82.7vh;">
           <div class="cs-wrapper fl-wrap">
+            <div style="max-width: 300px;margin: auto;">
               <div id="mx-carga-usuario-1">
+                    <div style="background-color: #f8faf0;
+                            border-radius: 10px;
+                            padding: 5px;
+                            padding-top: 15px;">
                   <div class="container small-container counter-widget">
-                      @if($tienda!='')
                       @if($tienda->imagen!='')
                       <div class="cs-logo">
                         <div class="mx-logo-login">
                         </div>
                       </div>
                       @endif
-                      <h3 class="soon-title">{{$tienda->nombre}}</h3>  <span class="section-separator"></span>             
+                      <h3 class="soon-title">GESTOR MF</h3>  <span class="section-separator"></span>             
                       <!-- countdown -->
-                      <div style="color:white;" id="countdown"></div>
+                      <div id="countdown"></div>
                       <form action="javascript:;" 
                              onsubmit="callback({
                                         route: 'login',
@@ -201,44 +208,27 @@ $tienda = DB::table('tienda')->whereId(194)->first();
                                         location.href = '{{ url('/backoffice/'.$tienda->id.'/inicio') }}'; 
                                     },this)">
                       <div class="subcribe-form fl-wrap">
-                          <p>Iniciar Sesión</p>
-                      @else
-                      <form action="javascript:;" 
-                             onsubmit="callback({
-                                        route: 'login',
-                                        method: 'POST',
-                                        carga: '#mx-carga-usuario-1',
-                                        data:{
-                                            idtipousuario: 2
-                                        }
-                                    },
-                                    function(resultado){
-                                        location.href = '{{ url('/backoffice') }}/'+$('#idtienda').val()+'/inicio'; 
-                                    },this)">
-                      <div class="subcribe-form fl-wrap">
-                          <p>Iniciar Sesión</p>
+                          <div style="font-weight: bold;
+                                    font-size: 15px;
+                                    margin-top: 2px;
+                                    margin-bottom: 10px;">Iniciar Sesión</div> 
                           <div id="subscribe">
-                                  <select id="idtienda">
-                                      <option></option>
-                                      <option value="1">TIENDA 1</option>
-                                  </select>
-                          </div>
-                      @endif   
-                          <div id="subscribe">
-                              <input id="usuario" placeholder="Usuario" type="text" style="text-align: center;">
+                              <input id="usuario" placeholder="Usuario" type="text" style="text-align: center;border: 1px solid #808d9f">
                           </div>
                           <div id="subscribe">
-                              <input id="password" placeholder="Contraseña" type="password" style="text-align: center;">
+                              <input id="password" placeholder="Contraseña" type="password" style="text-align: center;border: 1px solid #808d9f">
                           </div>
                           <div id="subscribe" style="margin-bottom: 10px;">
-                              <button type="submit" class="subscribe-button color-bg" style="position: inherit;">
+                              <button type="submit" class="subscribe-button btn-primary" style="position: inherit;">
                                 Ingresar</button>
                           </div>
                       </div>
                       </form>
                   </div>
+                  </div>
                   <!-- container end -->
               </div>
+            </div>
           </div>
           <!-- cs-wrapper end-->
       </div>

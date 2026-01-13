@@ -41,7 +41,7 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
           }
           .select2-container--bootstrap-5 .select2-selection {
               min-height: 28px;
-              padding-top: 3px;
+              padding-top: 4px;
               padding-left: 4px;
           }
           .btn {
@@ -112,11 +112,19 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
               color: #000000;
           }
           
-            .select2-container--bootstrap-5 .select2-dropdown .select2-results__options .select2-results__option.select2-results__option--highlighted {
-    color: #000;
-    background-color: #ffffff;
-    font-weight: bold;
-}
+          .select2-container--bootstrap-5 .select2-dropdown .select2-results__options .select2-results__option.select2-results__option--highlighted {
+              color: #000;
+              background-color: #ffffff;
+              font-weight: bold;
+          }
+          .select2-container--bootstrap-5 .select2-dropdown .select2-results__options .select2-results__option.select2-results__option--selected {
+              color: #000;
+              background-color: #c3ddff;
+              font-weight: bold;
+          }
+          .select2-container--bootstrap-5 .select2-dropdown .select2-results__options .select2-results__option:hover {
+              background-color: #d4d4d4;
+          }
           .form-control:focus {
             box-shadow:none;
           } 

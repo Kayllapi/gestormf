@@ -25,12 +25,11 @@
           <div class="row">
             <label class="col-sm-4 col-form-label" style="text-align: right;"></label>
             <div class="col-sm-8">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="conyugue_titular" id="participarconyugue_titular">
-                <label class="form-check-label" for="participarconyugue_titular" style="margin-top: 0;">
+              <label class="chk">
+                  <input type="checkbox" name="conyugue_titular" id="participarconyugue_titular">
+                  <span class="checkmark"></span>
                   Participar con Conyugue
-                </label>
-              </div>
+              </label>
             </div>
           </div>
           <div class="row">
@@ -45,12 +44,11 @@
           <div class="row">
             <label class="col-sm-4 col-form-label" style="text-align: right;"></label>
             <div class="col-sm-8">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="conyugue_aval" id="participarconyugue_aval">
-                <label class="form-check-label" for="participarconyugue_aval" style="margin-top: 0;">
+              <label class="chk">
+                  <input type="checkbox" name="conyugue_aval" id="participarconyugue_aval">
+                  <span class="checkmark"></span>
                   Participar con Conyugue
-                </label>
-              </div>
+              </label>
             </div>
           </div>
           <div class="row">

@@ -27,6 +27,7 @@ if(!isset($check_id)){
     @if(isset($tfoot))
     <tfoot>
       <tr>
+        <?php $i=0; ?>
         @foreach($tfoot as $value)
           @if(isset($value['type']))
             @if($value['type']=='text')
@@ -39,7 +40,7 @@ if(!isset($check_id)){
             </th>
             @elseif($value['type']=='select')
             <th style="background-color: #c2c0c2 !important;">
-              <select class="form-select" style="width: 100%;">
+              <select class="form-select" style="width: 100%;" id="select_datatable{{$i}}">
                 <option value="">Buscar...</option>
                 <?php
                 $data = $value['data'];
@@ -73,11 +74,15 @@ if(!isset($check_id)){
                   <option value="{{$listval->id}}">{{$listval->text}}</option>
                 @endforeach
               </select>
+              <script>
+                    sistema_select2({ input:'#select_datatable{{$i}}' });
+              </script>
             </th>
             @else
             <th style="background-color: #c2c0c2 !important;"></th>
             @endif
           @endif
+        <?php $i++; ?>
         @endforeach
       </tr>
     </tfoot>

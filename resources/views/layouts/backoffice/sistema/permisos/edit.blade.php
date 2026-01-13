@@ -106,18 +106,17 @@
                                         <tr>
                                             <td width="10px"><i data-feather="check"></i></td>
                                             <td colspan='2'>
-                                                <div class="form-check form-check-reverse">
-                                                    <input class="form-check-input idpermiso MasterCheckboxSistema{{$sistemavalue->id}} checkboxlistitem{{$subsubvalue->id}}" 
+                                                <label class="chk" style="justify-content: space-between;width:100%;">
+                                                    {{$sistemavalue->nombre}}
+                                                    <input class="idpermiso MasterCheckboxSistema{{$sistemavalue->id}} checkboxlistitem{{$subsubvalue->id}}" 
                                                         type="checkbox" 
                                                         value="{{ $sistemavalue->id }}" 
                                                         style="margin-top: 10px;"
                                                         id="idpermiso{{ $sistemavalue->id }}" 
                                                         {{ $permiso_acceso_sub ? 'checked' : '' }}
                                                         >
-                                                    <label class="form-check-label" style="width: 100%;text-align: left;padding-bottom: 10px;padding-top: 8px;margin-top: 0px;" for="idpermiso{{ $sistemavalue->id }}">
-                                                    {{$sistemavalue->nombre}}
-                                                    </label>
-                                                </div>
+                                                    <span class="checkmark"></span>
+                                                </label>
                                                 @foreach($sistemamodulos2 as $sistemavalue2)
                                                     <?php
 
@@ -131,19 +130,18 @@
                                                             <tr>
                                                                 <td width="10px" style="background-color: #e1e1e1 !important;"><i data-feather="check"></i></td>
                                                                 <td colspan='2' style="background-color: #e1e1e1 !important;">
-                                                                    <div class="form-check form-check-reverse">
-                                                                        <input class="form-check-input idpermiso MasterCheckboxSistema{{$sistemavalue2->id}} checkboxlistitem{{$subsubvalue->id}}" 
+                                                                    
+                                                                    <label class="chk" style="justify-content: space-between;width:100%;">
+                                                                        {{$sistemavalue->nombre}}
+                                                                        <input class="idpermiso MasterCheckboxSistema{{$sistemavalue2->id}} checkboxlistitem{{$subsubvalue->id}}" 
                                                                             type="checkbox" 
                                                                             value="{{ $sistemavalue2->id }}" 
                                                                             style="margin-top: 10px;"
                                                                             id="idpermiso{{ $sistemavalue2->id }}" 
                                                                             {{ $permiso_acceso_sub ? 'checked' : '' }}
                                                                             >
-                                                                        <label class="form-check-label" style="width: 100%;text-align: left;padding-bottom: 10px;padding-top: 2px;margin-top: 0px;" for="idpermiso{{ $sistemavalue2->id }}">
-                                                                        {{$sistemavalue2->nombre}}
-                                                                        </label>
-                                                                    </div>
-
+                                                                        <span class="checkmark"></span>
+                                                                    </label>
                                                                 </td>
                                                             </tr>
                                                         </table>

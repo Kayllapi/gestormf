@@ -2,14 +2,14 @@
     <h5 class="modal-title">
         Compra y Venta de Bienes
     </h5>
-    <button type="button" class="btn-close" onclick="ir_inicio()" style="font-size: 20px;"></button>
+    <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>
 <div class="modal-body">
     <div class="row">
         <div class="col-md-6">
             <div class="mb-1">
                 <h5 class="modal-title text-center">
-                    ACTIVOS
+                    COMPRAS
                 </h5>
             </div>
             <div class="row">
@@ -24,8 +24,9 @@
                                                 class="btn btn-primary"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#createCompraModal"
-                                                onclick="create_compra()">
-                                                Resgistrar Compra <br> de Activo
+                                                onclick="create_compra()"
+                                                style="font-size: 15px;">
+                                                Registrar <br> Compra
                                             </button>
                                         </div>
                                         <div class="col-sm-10">
@@ -55,7 +56,11 @@
                                                     <input type="date" class="form-control" id="fecha_fin_compra" value="{{ date('Y-m-d') }}">
                                                 </div>
                                                 <div class="col-sm-2">
-                                                    <input type="checkbox" name="check_compra" id="check_compra">
+                                                    <label class="chk" style="margin-top: 6px;">
+                                                        <input type="checkbox" name="check_compra" id="check_compra">
+                                                        <span class="checkmark"></span>
+                                                        <span style="color: #c40000;">Todas</span>
+                                                    </label>
                                                 </div>
                                             </div>
                                         </div>
@@ -70,7 +75,8 @@
                         <div class="card-body" style="overflow-y: scroll;height: 150px;padding: 0;margin-top: 5px;overflow-x: scroll;">
                             <table class="table table-striped table-hover table-bordered" id="table-lista-movimientointernodinero_retiro1">
                                 <thead class="table-dark" style="position: sticky;top: 0;">
-                                    <tr>
+                                    <tr style="font-weight: bold;">
+                                        <td>Estado(P-V)</td>
                                         <td>Descripción</td>
                                         <td>Serie</td>
                                         <td>Tipo</td>
@@ -87,12 +93,25 @@
                             </table>
                         </div>
                         <div class="modal-body">
-                            <button type="button" class="btn  big-btn  color-bg flat-btn" style="background-color: #144081;color: #fff;margin-bottom: 5px;">
-                                Eliminar
-                            </button>
-                            <button type="button" class="btn  big-btn  color-bg flat-btn" style="background-color: #144081;color: #fff;margin-bottom: 5px;">
-                                Imprimir
-                            </button>
+                            <div class="row">
+                                <div class="col-2">
+                                    <span>TOTAL: 0</span>
+                                </div>
+                                <div class="col-10 text-end">
+                                    <button type="button" class="btn btn-info" style="background-color: #CFEBC5 !important;">
+                                        <i class="fa-solid fa-pencil" style="color:#000 !important; font-weight: bold;"></i> Editar
+                                    </button>
+                                    <button type="button" class="btn btn-info" style="background-color: #FFC5C5 !important;">
+                                        <i class="fa-solid fa-trash" style="color:#000 !important; font-weight: bold;"></i> Eliminar
+                                    </button>
+                                    <button type="button" class="btn btn-info" style="background-color: #F9F3B5 !important;">
+                                        <i class="fa-solid fa-copy" style="color:#000 !important; font-weight: bold;"></i> Duplicar Váucher
+                                    </button>
+                                    <button type="button" class="btn btn-info" onclick="exportar_pdf()" style="font-weight: bold;">
+                                        <i class="fa-solid fa-file-pdf" style="color:#000 !important;font-weight: bold;"></i> Reporte
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -101,7 +120,7 @@
         <div class="col-md-6">
             <div class="mb-1">
                 <h5 class="modal-title text-center">
-                    VENTA
+                    VENTAS
                 </h5>
             </div>
             <div class="row">
@@ -112,8 +131,11 @@
                                 <div class="modal-body">
                                     <div class="row ">
                                         <div class="col-sm-2">
-                                            <button type="button" class="btn btn-primary" onclick="create_venta()">
-                                                Resgistrar Venta <br> de Activo
+                                            <button type="button"
+                                                class="btn btn-primary"
+                                                onclick="create_venta()"
+                                                style="font-size: 15px;">
+                                                Registrar <br> Venta
                                             </button>
                                         </div>
                                         <div class="col-sm-10">
@@ -143,7 +165,6 @@
                                                     <input type="date" class="form-control" id="fecha_fin_venta" value="{{ date('Y-m-d') }}">
                                                 </div>
                                                 <div class="col-sm-2">
-                                                    <input type="checkbox" name="check_venta" id="check_venta">
                                                 </div>
                                             </div>
                                         </div>
@@ -158,7 +179,7 @@
                         <div class="card-body" style="overflow-y: scroll;height: 150px;padding: 0;margin-top: 5px;overflow-x: scroll;">
                             <table class="table table-striped table-hover table-bordered" id="table-lista-movimientointernodinero_retiro1">
                                 <thead class="table-dark" style="position: sticky;top: 0;">
-                                    <tr>
+                                    <tr style="font-weight: bold;">
                                         <td>Descripción</td>
                                         <td>Serie</td>
                                         <td>Tipo</td>
@@ -175,12 +196,22 @@
                             </table>
                         </div>
                         <div class="modal-body">
-                            <button type="button" class="btn  big-btn  color-bg flat-btn" style="background-color: #144081;color: #fff;margin-bottom: 5px;">
-                                Eliminar
-                            </button>
-                            <button type="button" class="btn  big-btn  color-bg flat-btn" style="background-color: #144081;color: #fff;margin-bottom: 5px;">
-                                Imprimir
-                            </button>
+                            <div class="row">
+                                <div class="col-2">
+                                    <span>TOTAL: 0</span>
+                                </div>
+                                <div class="col-10 text-end">
+                                    <button type="button" class="btn btn-info" style="background-color: #FFC5C5 !important;">
+                                        <i class="fa-solid fa-trash" style="color:#000 !important; font-weight: bold;"></i> Eliminar
+                                    </button>
+                                    <button type="button" class="btn btn-info" style="background-color: #F9F3B5 !important;">
+                                        <i class="fa-solid fa-copy" style="color:#000 !important; font-weight: bold;"></i> Duplicar Váucher
+                                    </button>
+                                    <button type="button" class="btn btn-info" onclick="exportar_pdf()" style="font-weight: bold;">
+                                        <i class="fa-solid fa-file-pdf" style="color:#000 !important;font-weight: bold;"></i> Reporte
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -191,10 +222,10 @@
 
 <!-- Modal -->
 <div class="modal fade" id="createCompraModal" tabindex="-1" aria-labelledby="createCompraModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog" style="max-width: 700px;">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5 text-white" id="createCompraModalLabel">Registro de Compra de Activos</h1>
+                <h1 class="modal-title fs-5" id="createCompraModalLabel">Registro de Compra de Bienes</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body p-1">
@@ -283,24 +314,34 @@
                         <input type="text" class="form-control" id="dni_vendedor_compra_modal">
                     </div>
                     <div class="col-sm-3">
-                        <label class="col-form-label" style="text-align: right;">Origen</label>
+                        <label class="col-form-label" style="text-align: right;">Origen *</label>
                         <select class="form-control" id="origen_compra_modal">
                             <option></option>
-                            <option value="1">SERIFP</option>
+                            <option value="1">SERFIP</option>
                             <option value="2">OTROS</option>
                         </select>
                     </div>
                     <div class="col-sm-5">
-                        <label class="col-form-label" style="text-align: right;">N° de Ficha o Comprobante</label>
+                        <label class="col-form-label" style="text-align: right;">N° de Ficha o Comprobante *</label>
                         <input type="text" class="form-control" id="numero_ficha_comprobante_compra_modal">
                     </div>
                     <div class="col-sm-4">
                         <div class="row">
                             <div class="col-sm-12">
-                                <input type="radio" name="tipo_pago" id="tipo_pago_caja" checked>
+                                <label class="chk" style="margin-top: 6px;">
+                                    <input type="checkbox" name="tipo_pago" id="tipo_pago_caja" checked>
+                                    <span class="checkmark"></span>
+                                    <span>Caja</span>
+                                </label>
+                                <label class="chk" style="margin-top: 6px;">
+                                    <input type="checkbox" name="tipo_pago" id="tipo_pago_banco">
+                                    <span class="checkmark"></span>
+                                    <span>Banco</span>
+                                </label>
+                                {{-- <input type="radio" name="tipo_pago" id="tipo_pago_caja" checked>
                                 <label for="tipo_pago_caja">Caja</label>
                                 <input type="radio" name="tipo_pago" id="tipo_pago_banco">
-                                <label for="tipo_pago_banco">Banco</label>
+                                <label for="tipo_pago_banco">Banco</label> --}}
                             </div>
                             <div class="col-sm-12">
                                 <label class="col-form-label" style="text-align: right;">N° Operación</label>
@@ -329,9 +370,9 @@
 </div>
 
 <script>
-    sistema_select2({ input:'#id_agencia_compra' });
-    sistema_select2({ input:'#id_agencia_venta' });
-    sistema_select2({ input:'#id_agencia_compra_modal' });
+    sistema_select2({ input:'#id_agencia_compra', val:'{{$tienda->id}}' });
+    sistema_select2({ input:'#id_agencia_venta', val:'{{$tienda->id}}' });
+    sistema_select2({ input:'#id_agencia_compra_modal', val:'{{$tienda->id}}' });
     sistema_select2({ input:'#idtipogarantia_modal' });
     sistema_select2({ input:'#idestado_garantia_modal' });
     sistema_select2({ input:'#origen_compra_modal' });

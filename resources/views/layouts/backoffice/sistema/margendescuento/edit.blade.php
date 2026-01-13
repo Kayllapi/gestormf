@@ -11,7 +11,7 @@
         <div class="row justify-content-center">
             <div class="col-sm-12 col-md-6">
                 <div class="mb-1">
-                    <span class="badge d-block">Margen prevista / Descuento de Venta</span>
+                    <span class="badge d-block" style="font-size: 13px;">Margen prevista / Descuento de Venta</span>
                 </div>
                 <div class="row mt-1">
                     <label class="col-sm-5 col-form-label" style="text-align: right;">Margen previsto MP(%):</label>

@@ -6,26 +6,14 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DB;
 
-class CompraventaController extends Controller
+class MargendescuentoController extends Controller
 {
     public function index(Request $request,$idtienda)
     {
-        // $request->user()->authorizeRoles($request->path(),$idtienda);
-
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
-        $agencias = DB::table('tienda')->get();
-        $tipo_garantia = DB::table('tipo_garantia')->get();
-        $estado_garantia = DB::table('estado_garantia')->get();
-        $bancos = DB::table('banco')->get();
 
         if(request('view') == 'tabla'){
-            return view(sistema_view().'/compraventa/tabla', compact(
-                'tienda',
-                'agencias',
-                'tipo_garantia',
-                'estado_garantia',
-                'bancos',
-            ));
+            return view(sistema_view().'/margendescuento/tabla', compact('tienda'));
         }
     }
 
@@ -35,7 +23,28 @@ class CompraventaController extends Controller
 
     public function store(Request $request, $idtienda)
     {
-        if(request('view') == 'registrar'){
+    }
+
+    public function show(Request $request, $idtienda, $id)
+    {
+    }
+
+    public function edit(Request $request, $idtienda, $id)
+    {
+        $tienda = DB::table('tienda')->whereId($idtienda)->first();
+        $agencias = DB::table('tienda')->get();
+
+        if(request('view') == 'editar') {
+            return view(sistema_view().'/margendescuento/edit', compact(
+                'tienda',
+                'agencias',
+            ));
+        }
+    }
+
+    public function update(Request $request, $idtienda, $id)
+    {
+        if(request('view') == 'editar'){
             $rules = [
                 'margen_previsto' => 'required',
                 'valor_descuento' => 'required',
@@ -61,18 +70,6 @@ class CompraventaController extends Controller
                 'mensaje'   => 'Se ha actualizado correctamente.'
             ]); 
         }
-    }
-
-    public function show(Request $request, $idtienda, $id)
-    {
-    }
-
-    public function edit(Request $request, $idtienda, $id)
-    {
-    }
-
-    public function update(Request $request, $idtienda, $id)
-    {
     } 
 
     public function destroy(Request $request, $idtienda, $id)

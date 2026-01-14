@@ -29,36 +29,31 @@
                 <input type="date" class="form-control" disabled value="{{ $listanegra->fecharegistro }}">
             </div>
             <div class="col-sm-12 col-md-6">
-                <div class="form-check mt-4">
-                    <input class="form-check-input" type="checkbox" id="idestado">
-                    <label class="form-check-label" for="idestado" style="margin-top:0px;">
-                        QUITAR DE LISTA
-                    </label>
+                <label class="chk mt-4">
+                    <input type="checkbox" id="idestado">
+                    <span class="checkmark"></span>
+                    QUITAR DE LISTA
+                </label>
+            </div>
+            <div class="col-sm-12">
+                <div class="alert mb-1 mt-1 text-start py-0" style="background-color: #ffffff;border: 1px solid grey;">
+                    <b>ULTIMA MODIFICACIÓN:</b> {{ $responsable->nombrecompleto }}
+                </div>
+                <div class="mt-2 bg-primary subtitulo">Aprobación</div>
+                <div class="mb-1">
+                    <label>Responsable (Administración) *</label>
+                    <select class="form-select" id="idresponsable">
+                        <option value=""></option>
+                        @foreach($usuarios as $value)
+                        <option value="{{$value->id}}">{{$value->nombrecompleto}} ({{$value->nombrepermiso}})</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="mb-1">
+                    <label>Contraseña *</label>
+                    <input type="password" class="form-control" id="responsableclave">
                 </div>
             </div>
-        <div class="alert mb-1 text-start py-0" id="cont-ultimamodificacion" 
-             style="background-color: #ffffff;border: 1px solid grey;">
-            <b>ULTIMA MODIFICACIÓN:</b> {{ $responsable->nombrecompleto }}
-        </div>
-        <label class="mt-1" style="background-color: #636363;
-          color: #fff;
-          width: 100%;
-          border-radius: 5px;
-          padding: 0px 5px;
-          margin-bottom: 5px;">Aprobación</label>
-              <div class="mb-1">
-                  <label>Responsable (Administración) *</label>
-                  <select class="form-select" id="idresponsable">
-                      <option value=""></option>
-                      @foreach($usuarios as $value)
-                      <option value="{{$value->id}}">{{$value->nombrecompleto}} ({{$value->nombrepermiso}})</option>
-                      @endforeach
-                  </select>
-              </div>
-              <div class="mb-1">
-                  <label>Contraseña *</label>
-                  <input type="password" class="form-control" id="responsableclave">
-              </div>
         </div>
     </div>
     <div class="modal-footer">

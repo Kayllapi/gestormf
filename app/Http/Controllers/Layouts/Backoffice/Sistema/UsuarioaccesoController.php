@@ -83,8 +83,6 @@ class UsuarioaccesoController extends Controller
                     'celular' => 'required',
                     'idestadodivil' => 'required',
                     'profesion' => 'required',
-                    'nivel_aprox_credito' => 'required',
-                    'e_caja' => 'required',
             ];
             $messages = [
                     // 'idusuario.required' => 'El "Usuario" es Obligatorio.',
@@ -103,11 +101,24 @@ class UsuarioaccesoController extends Controller
                     'celular.required' => 'El es Obligatorio.',
                     'idestadodivil.required' => 'El es Obligatorio.',
                     'profesion.required' => 'El es Obligatorio.',
-                    'nivel_aprox_credito.required' => 'El es Obligatorio.',
-                    'e_caja.required' => 'El es Obligatorio.',
             ];
             $this->validate($request,$rules,$messages);
 
+            $accesos = json_decode($request->input('accesos'),true);
+            $guardados = [];
+            foreach($accesos as $value){
+
+                $clave = $value['idtienda'] . '_' . $value['idpermiso'];
+
+                if (!isset($guardados[$clave])) {
+                    $guardados[$clave] = true;
+                }else{
+                    return response()->json([
+                        'resultado' => 'ERROR',
+                        'mensaje'   => 'El cargo por agencia ya existe!!.'
+                    ]);
+                }
+            }
 
             // INICIO CREAR USUARIO
 
@@ -151,8 +162,8 @@ class UsuarioaccesoController extends Controller
                 'idestado'            => 1,
               
                 'profesion'           => $request->input('profesion'),
-                'nivelcredito'        => $request->input('nivel_aprox_credito'),
-                'ecaja'               => $request->input('e_caja'),
+                'nivelcredito'        => '',
+                'ecaja'               => '',
               
                 'idgenero'            => 0,
                 'fechanacimiento'     => $request->fecha_nacimiento,
@@ -205,6 +216,7 @@ class UsuarioaccesoController extends Controller
                     'idusers' => $user_id,
                     'idpermiso' => $value['idpermiso'],
                     'idtienda' => $value['idtienda'],
+                    'idestado' => 1,
                 ]);
             }
            
@@ -341,8 +353,6 @@ class UsuarioaccesoController extends Controller
                 'celular' => 'required',
                 'idestadodivil' => 'required',
                 'profesion' => 'required',
-                'nivel_aprox_credito' => 'required',
-                'e_caja' => 'required',
             ];
             $messages = [
                 // 'idusuario.required' => 'El "Usuario" es Obligatorio.',
@@ -360,8 +370,6 @@ class UsuarioaccesoController extends Controller
                 'celular.required' => 'El es Obligatorio.',
                 'idestadodivil.required' => 'El es Obligatorio.',
                 'profesion.required' => 'El es Obligatorio.',
-                'nivel_aprox_credito.required' => 'El es Obligatorio.',
-                'e_caja.required' => 'El es Obligatorio.',
             ];
             $this->validate($request,$rules,$messages);
 
@@ -385,8 +393,8 @@ class UsuarioaccesoController extends Controller
                 'idtienda'            => $idtienda,
                 'fechanacimiento'     => $request->fecha_nacimiento,
                 'profesion'           => $request->input('profesion'),
-                'nivelcredito'        => $request->input('nivel_aprox_credito'),
-                'ecaja'               => $request->input('e_caja'),
+                'nivelcredito'        => '',
+                'ecaja'               => '',
                 'idestadocivil'       => $request->idestadodivil != null ? $request->idestadodivil : 0 ,
             ]);
 
@@ -464,8 +472,6 @@ class UsuarioaccesoController extends Controller
                 'celular' => 'required',
                 'idestadodivil' => 'required',
                 'profesion' => 'required',
-                'nivel_aprox_credito' => 'required',
-                'e_caja' => 'required',
             ];
             $messages = [
                 // 'idusuario.required' => 'El "Usuario" es Obligatorio.',
@@ -484,10 +490,25 @@ class UsuarioaccesoController extends Controller
                 'celular.required' => 'El es Obligatorio.',
                 'idestadodivil.required' => 'El es Obligatorio.',
                 'profesion.required' => 'El es Obligatorio.',
-                'nivel_aprox_credito.required' => 'El es Obligatorio.',
-                'e_caja.required' => 'El es Obligatorio.',
             ];
             $this->validate($request,$rules,$messages);
+
+            
+            $accesos = json_decode($request->input('accesos'),true);
+            $guardados = [];
+            foreach($accesos as $value){
+
+                $clave = $value['idtienda'] . '_' . $value['idpermiso'];
+
+                if (!isset($guardados[$clave])) {
+                    $guardados[$clave] = true;
+                }else{
+                    return response()->json([
+                        'resultado' => 'ERROR',
+                        'mensaje'   => 'El cargo por agencia ya existe!!.'
+                    ]);
+                }
+            }
 
             $newusuario = $request->input('usuario');
             $users = DB::table('users')->where('idtienda',$idtienda)->where('id','<>',$id)->where('usuario',$newusuario)->first();
@@ -513,8 +534,8 @@ class UsuarioaccesoController extends Controller
                 'idtienda'            => $idtienda,
                 'fechanacimiento'     => $request->fecha_nacimiento,
                 'profesion'           => $request->input('profesion'),
-                'nivelcredito'        => $request->input('nivel_aprox_credito'),
-                'ecaja'               => $request->input('e_caja'),
+                'nivelcredito'        => '',
+                'ecaja'               => '',
                 'idestadocivil'       => $request->idestadodivil != null ? $request->idestadodivil : 0 ,
                 'estadocreditonoprendario'  => $request->estadocreditonoprendario != null ? $request->estadocreditonoprendario : '' ,
                 'estadocreditoprendario'    => $request->estadocreditoprendario != null ? $request->estadocreditoprendario : '' ,
@@ -535,12 +556,19 @@ class UsuarioaccesoController extends Controller
             }
             $accesos = json_decode($request->input('accesos'),true);
             DB::table('users_permiso')->where('users_permiso.idusers',$id)->delete();
+            $i = 0;
             foreach($accesos as $value){
+                $idsession = 1;
+                if($i==0 && $value['idestado']==1){
+                    $idsession = 2;
+                }
+                $i++;
                 DB::table('users_permiso')->insert([
-                    'idsession' => 1,
+                    'idsession' => $idsession,
                     'idusers' => $id,
                     'idpermiso' => $value['idpermiso'],
                     'idtienda' => $value['idtienda'],
+                    'idestado' => $value['idestado'],
                 ]);
             }
 

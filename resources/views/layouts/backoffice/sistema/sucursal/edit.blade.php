@@ -60,13 +60,14 @@
                 <label>TIPO EMPRESA *</label>
                 <input type="text" class="form-control" id="tipo_empresa" value="{{ $tienda->tipo_empresa }}">
             </div>
+            <div class="mt-2 bg-primary subtitulo">LIMITES DE FONDOS DE CRÉDITO (S/.)</div>
             <div class="mb-1">
-                <label>CONTRASEÑA SISTEMA*</label>
-                <input type="text" class="form-control" id="password_agencia" value="{{ $tienda->password_agencia }}">
+                <label>CAJA *</label>
+                <input type="number" class="form-control" id="compra_limitemaximo_caja" value="{{ $tienda->compra_limitemaximo_caja }}">
             </div>
             <div class="mb-1">
-                <label>CONTRASEÑA COMPRA VENTA</label>
-                <input type="text" class="form-control" id="password_compraventa" value="{{ $tienda->password_compraventa }}">
+                <label>RESERVA CF *</label>
+                <input type="number" class="form-control" id="compra_limitemaximo_reserva" value="{{ $tienda->compra_limitemaximo_reserva }}">
             </div>
           </div>
           <div class="col-sm-12 col-md-4">
@@ -89,6 +90,17 @@
                   <input type="file" class="upload" id="imagen-logo">
                   <div id="resultado-logo"></div>
               </div>
+            </div>
+            <div style="float: left;width: 100%;">   
+            <div class="mt-2 bg-primary subtitulo">LIMITES DE FONDOS DE VENTAS (S/.)</div>
+            <div class="mb-1">
+                <label>CAJA *</label>
+                <input type="number" class="form-control" id="credito_limitemaximo_caja" value="{{ $tienda->credito_limitemaximo_caja }}">
+            </div>
+            <div class="mb-1">
+                <label>RESERVA CF *</label>
+                <input type="number" class="form-control" id="credito_limitemaximo_reserva" value="{{ $tienda->credito_limitemaximo_reserva }}">
+            </div>
             </div>
           </div>
         </div>

@@ -386,8 +386,14 @@ function json_usuarioacceso($idtienda){
 
       
             $permiso = '';
+            $permiso_tiendanombre = '';
+            $permiso_nombreagencia = '';
+            $permiso_nombrepermiso = '';
             foreach($tienda_permiso as $val_permiso){
                 $permiso = $val_permiso->tiendanombre.' / '.$val_permiso->nombreagencia.' ('.$val_permiso->nombrepermiso.')'.'<br>'.$permiso;
+                $permiso_tiendanombre = $val_permiso->tiendanombre.'<br>'.$permiso_tiendanombre;
+                $permiso_nombreagencia = $val_permiso->nombreagencia.'<br>'.$permiso_nombreagencia;
+                $permiso_nombrepermiso = $val_permiso->nombrepermiso.'<br>'.$permiso_nombrepermiso;
             }
 
       
@@ -397,7 +403,9 @@ function json_usuarioacceso($idtienda){
             'codigo'  => $value->codigo,
             'identificacion'  => $value->identificacion,
             'cliente'         => $value->nombrecompleto,
-            'cargo'         => $permiso,
+            'empresa'         => $permiso_tiendanombre,
+            'agencia'         => $permiso_nombreagencia,
+            'cargo'         => $permiso_nombrepermiso,
             'usuario'         => $value->usuario.' '.($idtienda==0?'('.$value->clave.')':''),
             'idestadousuario' => $value->idestadousuario,
             'opcion' => [

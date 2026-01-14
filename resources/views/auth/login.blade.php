@@ -22,7 +22,7 @@ $tienda = DB::table('tienda')->whereId(194)->first();
         <link rel="stylesheet" href="{{ url('public/layouts/css/style.css') }}">
 
         <title>{{ config('app.name', 'Kayllapi') }}</title>
-        <link rel="shortcut icon" href="{{ url('public/backoffice/sistema/favicon.ico') }}">
+        <link rel="shortcut icon" href="{{ url('/public/backoffice/sistema/logo_gestormf_icono1.png') }}">
         <meta name="description" content="Somos una plataforma de búsqueda, con la finalidad de ayudar a todo los usuarios a encontrar el producto y/o servicio adecuado que tu negocio brinda, así mismo buscamos ser la mejor plataforma de búsqueda de negocios online"/>
         <meta name="twitter:card" value="summary">
         <meta property="og:title" content="Kayllapi" />
@@ -110,8 +110,8 @@ $tienda = DB::table('tienda')->whereId(194)->first();
               padding: 0px 10px;
           }
           .cs-wrapper {
-              padding: 180px 0px 100px;
-              /*padding-top:12%;*/
+              padding: 80px 0px 100px;
+              padding-top:8%;
           }
           .soon-title {
               font-size: 20px;

@@ -71,11 +71,11 @@ if(!isset($check_id)){
                       $listval = (object) $listval;
                   }
                   ?>
-                  <option value="{{$listval->id}}">{{$listval->text}}</option>
+                  <option value="{{$listval->text}}">{{$listval->text}}</option>
                 @endforeach
               </select>
               <script>
-                    sistema_select2({ input:'#select_datatable{{$i}}' });
+                    //sistema_select2({ input:'#select_datatable{{$i}}' });
               </script>
             </th>
             @else
@@ -252,9 +252,9 @@ $name_table = generateRandomString();
                       @elseif($value['type']=='badge')
                       {
                           render: function ( data, type, full, meta ) {
-                              var estado = '<span class="badge rounded-pill text-bg-dark">{{$estado_desactivado->nombre}}</span>';
+                              var estado = '<span class="badge rounded-pill bg-danger">{{$estado_desactivado->nombre}}</span>';
                               if(full.{{$value['data']}}==1){
-                                  estado = '<span class="badge rounded-pill text-bg-success">{{$estado_activado->nombre}}</span>';
+                                  estado = '<span class="badge rounded-pill bg-success">{{$estado_activado->nombre}}</span>';
                               }
                               return estado;
                           },
@@ -375,7 +375,11 @@ $name_table = generateRandomString();
         var opcion_html = '';
         $.each(data.opcion, function( key, value ) {
             if(value.nombre!=undefined){
-                var route = 'modal({route:\'{{url('/backoffice')}}'+value.onclick+'\'})';
+                var valuesize = '';
+                if(value.size!=undefined){
+                    valuesize = ',size:\''+value.size+'\'';
+                }
+                var route = 'modal({route:\'{{url('/backoffice')}}'+value.onclick+'\''+valuesize+'})';
                 opcion_html = opcion_html+'<li><a class="dropdown-item" href="javascript:;" onclick="'+route+'"><i class="fa-solid fa-'+value.icono+'"></i> '+value.nombre+'</a></li>';
             }
         });

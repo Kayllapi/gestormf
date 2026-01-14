@@ -61,12 +61,12 @@ class SucursalController extends Controller
                'representante'      => $request->input('representante'),
                'ruc'                => $request->input('ruc'),
                'tipo_empresa'       => $request->input('tipo_empresa'),
-               'password_agencia'   => $request->input('password_agencia'),
+               'password_agencia'   => '',
                'direccion'          => $request->input('direccion'),
                'numerotelefono'     => $request->input('telefono'),
                'paginaweb'          => $request->input('paginaweb')!=''?$request->input('paginaweb'):'',
                'idubigeo'           => $request->input('idubigeo'),
-               'password_compraventa' => $request->input('password_compraventa'),
+               'password_compraventa' => '',
                'idestado'           => 1,
             ]);
 
@@ -114,7 +114,11 @@ class SucursalController extends Controller
                 'nombreagencia' => 'required',    
                 'nombre' => 'required',    
                 'idubigeo' => 'required',   
-                'direccion' => 'required',                   
+                'direccion' => 'required',  
+                'compra_limitemaximo_caja' => 'required',  
+                'compra_limitemaximo_reserva' => 'required',       
+                'credito_limitemaximo_caja' => 'required',       
+                'credito_limitemaximo_reserva' => 'required',                   
             ];
           
             $messages = [
@@ -122,6 +126,10 @@ class SucursalController extends Controller
                 'nombre.required' => 'El "Nombre Comercial" es Obligatorio.',
                 'direccion.required' => 'La "Dirección" es Obligatorio.',
                 'idubigeo.required' => 'El "Ubicación (Ubigeo)" es Obligatorio.',
+                'compra_limitemaximo_caja.required' => 'El "Limites de fondo de Créditos para caja" es Obligatorio.',
+                'compra_limitemaximo_reserva.required' => 'El "Limites de fondo de Créditos para reserva" es Obligatorio.',
+                'credito_limitemaximo_caja.required' => 'El "Limites de fondo de Ventas para caja" es Obligatorio.',
+                'credito_limitemaximo_reserva.required' => 'El "Limites de fondo de Ventas para reserva" es Obligatorio.',
             ];
             $this->validate($request,$rules,$messages);
             $tienda = DB::table('tienda')->whereId($request->idtienda)->first();
@@ -135,12 +143,16 @@ class SucursalController extends Controller
                 'tipo_empresa'       => $request->input('tipo_empresa'),
                 'firma'              => $firma,
                 'imagen'             => $logo,
-                'password_agencia'   => $request->input('password_agencia'),
+                'password_agencia'   => '',
                 'direccion'          => $request->input('direccion'),
                 'numerotelefono'     => $request->input('telefono'),
                 'paginaweb'          => $request->input('paginaweb')!=''?$request->input('paginaweb'):'',
-                'password_compraventa' => $request->input('password_compraventa'),
+                'password_compraventa' => '',
                 'idubigeo'           => $request->input('idubigeo'),
+                'compra_limitemaximo_caja'          => $request->input('compra_limitemaximo_caja'),
+                'compra_limitemaximo_reserva'          => $request->input('compra_limitemaximo_reserva'),
+                'credito_limitemaximo_caja'          => $request->input('credito_limitemaximo_caja'),
+                'credito_limitemaximo_reserva'          => $request->input('credito_limitemaximo_reserva'),
             ]);
             
           

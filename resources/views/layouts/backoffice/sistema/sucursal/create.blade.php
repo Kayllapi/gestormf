@@ -58,14 +58,6 @@
                 <label>TIPO EMPRESA *</label>
                 <input type="text" class="form-control" id="tipo_empresa">
             </div>
-            <div class="mb-1">
-                <label>CONTRASEÑA SISTEMA *</label>
-                <input type="text" class="form-control" id="password_agencia">
-            </div>
-            <div class="mb-1">
-                <label>CONTRASEÑA COMPRA VENTA</label>
-                <input type="text" class="form-control" id="password_compraventa">
-            </div>
         </div>
     </div>
     <div class="modal-footer">

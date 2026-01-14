@@ -19,7 +19,7 @@
     </div>
     <div class="modal-body"> 
         <div class="row">
-            <div class="col-sm-12 col-md-6">
+            <div class="col-sm-12 col-md-5">
                 <div class="row">
                     <div class="col-md-6">
                     <h6>Datos Generales</h6>
@@ -86,16 +86,8 @@
                         <label>Profesión: <span class="text-danger">(*)</span></label>
                         <input type="text" id="profesion" class="form-control"  value="{{ $usuario->profesion }}">
                     </div>
-                    <div class="col-sm-12 col-md-6">
-                        <label>Nivel Aprox. Crédito: <span class="text-danger">(*)</span></label>
-                        <input type="number" id="nivel_aprox_credito" value="{{ $usuario->nivelcredito }}" class="form-control">
-                    </div>
-                    <div class="col-sm-12 col-md-6">
-                        <label>E. Caja: <span class="text-danger">(*)</span></label>
-                        <input type="number" id="e_caja" value="{{ $usuario->ecaja }}" class="form-control">
-                    </div>
                     <div class="col-sm-12">
-                        <label>Estado: <span class="text-danger">(*)</span></label>
+                        <label>Estado de Usuario: <span class="text-danger">(*)</span></label>
                         <select class="form-control" id="idestadousuario">
                             <option value="1">ACTIVADO</option>
                             <option value="2">DESACTIVADO</option>
@@ -103,12 +95,13 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-12 col-md-6">
+            <div class="col-sm-12 col-md-7">
                 <table class="table" id="tabla-permisoacceso">
                     <thead>
                         <tr>
                             <th>Agencia</th>
                             <th>Cargo</th>
+                            <th>Estado</th>
                             <th width="10px"><button type="button" class="btn btn-success" onclick="agregar_permiso()"><i class="fa fa-plus"></i></button></th>
                         </tr>
                     </thead>
@@ -158,18 +151,18 @@
     @include('app.nuevosistema.select2',['json'=>'ubigeo','input'=>'#idubigeo','val'=>$usuario->idubigeo!=0?$usuario->idubigeo:''])
     
     @foreach($user_permiso as $value)
-        agregar_permiso('{{$value->idpermiso}}','{{$value->idtienda}}');
+        agregar_permiso('{{$value->idpermiso}}','{{$value->idtienda}}','{{$value->idestado}}');
     @endforeach
     
-    function agregar_permiso(idpermiso = 0, idtienda = 0){
+    function agregar_permiso(idpermiso = 0, idtienda = 0, idestado = 0){
         
         var num   = $("#tabla-permisoacceso > tbody").attr('num');
         var cant  = $("#tabla-permisoacceso > tbody > tr").length;
       
         var tdeliminar = '<td></td>';
-        // if(cant>0){
+        if(idestado==0){
             tdeliminar = '<td><a href="javascript:;" onclick="eliminar_permiso('+num+')" class="btn btn-danger "><i class="fa-solid fa-trash"></i></td>';
-        // }
+        }
         let option_permiso = '<option></option>';
         @foreach($permisos as $value)
             option_permiso += '<option value="{{ $value->id }}">{{ $value->nombre }}</option>';
@@ -178,9 +171,11 @@
         @foreach($tiendas as $value_tienda)
             option_tienda += '<option value="{{ $value_tienda->id }}">{{ $value_tienda->nombreagencia }}</option>';
         @endforeach
+        let option_estado = '<option></option><option value="1">Act.</option><option value="2">Desact.</option>';
         var tabla='<tr id="'+num+'">'+
                       '<td><select class="form-control" id="idtienda'+num+'">'+option_tienda+'</select></td>'+
                       '<td><select class="form-control" id="idpermiso'+num+'">'+option_permiso+'</select></td>'+
+                      '<td><select class="form-control" id="idestado'+num+'">'+option_estado+'</select></td>'+
                       tdeliminar+
                   '</tr>';
 
@@ -188,9 +183,11 @@
         $("#tabla-permisoacceso > tbody").attr('num',parseInt(num)+1);  
         @include('app.nuevosistema.select2',['input'=>'#idpermiso/+num+/'])
         @include('app.nuevosistema.select2',['input'=>'#idtienda/+num+/'])
+        @include('app.nuevosistema.select2',['input'=>'#idestado/+num+/'])
         $('#idpermiso'+num).val(idpermiso).trigger('change');
 
         $('#idtienda'+num).val(idtienda).trigger('change');
+        $('#idestado'+num).val(idestado).trigger('change');
 
         
     }
@@ -204,6 +201,7 @@
             data.push({ 
                 idpermiso: $('#idpermiso'+num+' option:selected').val(),
                 idtienda: $('#idtienda'+num+' option:selected').val(),
+                idestado: $('#idestado'+num+' option:selected').val(),
             });
         });
         return JSON.stringify(data);

@@ -111,6 +111,12 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
           #cuerposistema .modal-title {
               color: #000000;
           }
+          .subtitulo {
+            border-radius: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-bottom: 3px;
+          }
           
           .select2-container--bootstrap-5 .select2-dropdown .select2-results__options .select2-results__option.select2-results__option--highlighted {
               color: #000;
@@ -148,6 +154,7 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
               background-color: #c2c0c2 !important;
               color: #000000 !important;
           }
+          .bg-primary,
           .btn-primary,
           .btn-primary:hover,
           .btn-primary:active,
@@ -159,6 +166,7 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
           .btn-primary  .fa-solid:before {    
               color: #000;
           }
+          .bg-success,
           .btn-success,
           .btn-success:hover,
           .btn-success:active,
@@ -170,6 +178,7 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
           .btn-success  .fa-solid:before {    
               color: #000;
           }
+          .bg-danger,
           .btn-danger,
           .btn-danger:hover,
           .btn-danger:active,
@@ -181,6 +190,7 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
           .btn-danger  .fa-solid:before {    
               color: #cd2024;
           }
+          .bg-info,
           .btn-info,
           .btn-info:hover,
           .btn-info:active,

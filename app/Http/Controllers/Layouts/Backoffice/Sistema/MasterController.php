@@ -27,7 +27,7 @@ class MasterController extends Controller
             ->select('users.*','permiso.nombre as permiso')
             ->limit(1)
             ->first();
-      
+ 
         $imagenusuario      = '';
         $imagenusuario_ruta = '/public/backoffice/tienda/'.$tienda->id.'/sistema/'.$usuario->imagen;
         if(file_exists(getcwd().$imagenusuario_ruta) AND $usuario->imagen!=''){

@@ -69,14 +69,6 @@
                         <label>Profesión:</label>
                         <input type="text" id="profesion" class="form-control"  value="{{ $usuario->profesion }}">
                     </div>
-                    <div class="col-sm-12 col-md-6">
-                        <label>Nivel Aprox. Crédito:</label>
-                        <input type="number" id="nivel_aprox_credito" value="{{ $usuario->nivelcredito }}" class="form-control">
-                    </div>
-                    <div class="col-sm-12 col-md-6">
-                        <label>E. Caja:</label>
-                        <input type="number" id="e_caja" value="{{ $usuario->ecaja }}" class="form-control">
-                    </div>
                     <div class="col-sm-12">
                         <label>Estado:</label>
                         <select class="form-control" id="idestadousuario">

@@ -117,8 +117,9 @@ class ListaNegraController extends Controller
                   'estado'          => $estado,
                   'opcion' => [
                      [
-                      'nombre' => 'Cambiar Estado',
+                      'nombre' => 'Retirar de Lista Negra',
                       'onclick' => '/'.$idtienda.'/listanegra/'.$value->id.'/edit?view=editar',
+                      'size' => 'modal-sm',
                       'icono' => 'refresh',
                     ]
                   ],

@@ -107,16 +107,8 @@
                         <label>Profesión: <span class="text-danger">(*)</span></label>
                         <input type="text" id="profesion" class="form-control">
                     </div>
-                    <div class="col-sm-12 col-md-6">
-                        <label>Nivel Aprox. Crédito: <span class="text-danger">(*)</span></label>
-                        <input type="number" id="nivel_aprox_credito" value="0.00" class="form-control">
-                    </div>
-                    <div class="col-sm-12 col-md-6">
-                        <label>E. Caja: <span class="text-danger">(*)</span></label>
-                        <input type="number" id="e_caja" value="0.00" class="form-control">
-                    </div>
                     <div class="col-sm-12">
-                        <label>Estado: <span class="text-danger">(*)</span></label>
+                        <label>Estado de Usuario: <span class="text-danger">(*)</span></label>
                         <select class="form-control" id="idestadousuario">
                             <option value="1">ACTIVADO</option>
                             <option value="2">DESACTIVADO</option>

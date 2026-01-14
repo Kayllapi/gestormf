@@ -7,9 +7,9 @@
             <i class="fa-solid fa-plus"></i> Registrar
         </a>
         <a href="javascript:;" 
-            class="btn btn-warning" 
+            class="btn btn-info" 
             onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/listanegra/create?view=reporte')}}'})">
-            <i class="fa-solid fa-bar"></i> Reporte
+            <i class="fa-solid fa-file-pdf"></i> Reporte
         </a>
         
     </h5>
@@ -42,6 +42,7 @@
             ['type' => 'text'],
             ['type' => 'date'],
             ['type' => 'text'],
+            ['type' => ''],
         ]
     ])
 </div>

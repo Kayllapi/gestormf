@@ -66,7 +66,7 @@ select+.select2-container--bootstrap-5 {
     border-color: #ffffff !important;
 }
 .mx-contenedor-subcarga .fa-solid {
-    color: #ffffff !important;
+    color: #e34e4e !important;
 }
 .mensaje-danger {
     background-color: #fb175b;
@@ -274,6 +274,7 @@ input[type=color] {
     border-radius: 4px;
     position: relative;
     transition: all .2s;
+    background-color: #fff;
 }
 
 .chk input:checked + .checkmark {
@@ -504,7 +505,7 @@ section.hero-section {
 }
 /* =========== carga ============ */
 .mx-subcarga .alert-danger {
-  background-color: #f15757;
+  background-color: #ffc9ca;
   padding: 5px;
 }
 .mx-subcarga .alert-primary {
@@ -542,10 +543,11 @@ section.hero-section {
   position:relative;
   cursor: pointer;
   border-color: transparent;
-  color: #fff;
+  color: #000;
+  font-weight: normal;
 }
 .mx-contenedor-subcarga svg {
-  color: #fff;    
+  color: #680b0b;    
   height: 49px;
   width: 40px;
 }

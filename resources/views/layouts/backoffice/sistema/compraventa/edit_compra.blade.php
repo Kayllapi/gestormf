@@ -84,13 +84,31 @@
                 <label class="col-form-label" style="text-align: right;">Placa (Vehículos)</label>
                 <input type="text" class="form-control" id="placa" value="{{$cvcompra->placa}}">
             </div>
-            <div class="col-sm-6">
+            {{-- <div class="col-sm-6">
                 <label class="col-form-label" style="text-align: right;">Valor Compra (soles) *</label>
                 <input type="number" step="any" class="form-control" id="valorcompra" value="{{$cvcompra->valorcompra}}">
             </div>
             <div class="col-sm-6">
                 <label class="col-form-label" style="text-align: right;">Valor Comercial ({{ configuracion($tienda->id,'margen_previsto')['valor'] }}%) *</label>
                 <input type="number" step="any" class="form-control" id="valorcomercial" value="{{$cvcompra->valorcomercial}}">
+            </div> --}}
+            <div class="col-sm-6 mt-2">
+                <div class="row">
+                    <label class="col-sm-6 col-form-label" style="text-align: right;">Valor Compra (soles) *</label>
+                    <div class="col-sm-6">
+                        <input type="number" step="any" class="form-control" id="valorcompra" value="{{$cvcompra->valorcompra}}">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 mt-2">
+                <div class="row">
+                    <label class="col-sm-6 col-form-label" style="text-align: right;">
+                        Valor Comercial <span style="color: #c40000;">(Mínimo {{ configuracion($tienda->id,'margen_previsto')['valor'] }}% del V.Compra)</span> *
+                    </label>
+                    <div class="col-sm-6">
+                        <input type="number" step="any" class="form-control" id="valorcomercial" value="{{$cvcompra->valorcomercial}}">
+                    </div>
+                </div>
             </div>
             <div class="col-sm-6">
                 <label class="col-form-label" style="text-align: right;">Apellidos y Nombres (Vendedor) *</label>
@@ -142,8 +160,8 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="submit" class="btn btn-primary">
-            <i class="fa-solid fa-floppy-disk"></i> Guardar Cambios
+        <button type="submit" class="btn btn-success">
+            <i class="fa-solid fa-floppy-disk"></i> Guardar Compra
         </button>
     </div>
 </form>

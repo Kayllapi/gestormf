@@ -84,13 +84,23 @@
                 <label class="col-form-label" style="text-align: right;">Placa (Vehículos)</label>
                 <input type="text" class="form-control" id="placa">
             </div>
-            <div class="col-sm-6">
-                <label class="col-form-label" style="text-align: right;">Valor Compra (soles) *</label>
-                <input type="number" step="any" class="form-control" id="valorcompra">
+            <div class="col-sm-4 mt-2">
+                <div class="row">
+                    <label class="col-sm-6 col-form-label" style="text-align: left;">Valor Compra (S/.) *</label>
+                    <div class="col-sm-6">
+                        <input type="number" step="any" class="form-control" id="valorcompra">
+                    </div>
+                </div>
             </div>
-            <div class="col-sm-6">
-                <label class="col-form-label" style="text-align: right;">Valor Comercial ({{ configuracion($tienda->id,'margen_previsto')['valor'] }}%) *</label>
-                <input type="number" step="any" class="form-control" id="valorcomercial">
+            <div class="col-sm-8 mt-2">
+                <div class="row">
+                    <label class="col-sm-8 col-form-label" style="text-align: right;">
+                        Valor Comercial (S/.) <span style="color: #c40000;">(Mínimo {{ configuracion($tienda->id,'margen_previsto')['valor'] }}% del V.Compra)</span> *
+                    </label>
+                    <div class="col-sm-4">
+                        <input type="number" step="any" class="form-control" id="valorcomercial">
+                    </div>
+                </div>
             </div>
             <div class="col-sm-6">
                 <label class="col-form-label" style="text-align: right;">Apellidos y Nombres (Vendedor) *</label>
@@ -125,7 +135,6 @@
                     <div class="col-sm-12">
                         <label class="col-form-label" style="text-align: right;">Bancos</label>
                         <select class="form-control" id="compra_idbanco" disabled>
-                            <option></option>
                             @foreach($bancos as $value)
                                 <option value="{{$value->id}}">{{$value->nombre}}</option>
                             @endforeach
@@ -136,8 +145,8 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="submit" class="btn btn-primary">
-            <i class="fa-solid fa-floppy-disk"></i> Guardar Cambios
+        <button type="submit" class="btn btn-success">
+            <i class="fa-solid fa-floppy-disk"></i> Guardar Compra
         </button>
     </div>
 </form>

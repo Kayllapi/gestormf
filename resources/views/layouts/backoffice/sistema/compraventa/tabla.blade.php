@@ -73,7 +73,7 @@
                 </div>
                 <div class="col-sm-12">
                     <div class="card">
-                        <div class="card-body" style="overflow-y: scroll;height: 150px;padding: 0;margin-top: 5px;overflow-x: scroll;">
+                        <div class="card-body" style="overflow-y: scroll;height: 270px;padding: 0;margin-top: 5px;overflow-x: scroll;">
                             <table class="table table-striped table-hover table-bordered" id="table-lista-compra">
                                 <thead class="table-dark" style="position: sticky;top: 0;">
                                     <tr style="font-weight: bold;">
@@ -178,7 +178,7 @@
                 </div>
                 <div class="col-sm-12">
                     <div class="card">
-                        <div class="card-body" style="overflow-y: scroll;height: 150px;padding: 0;margin-top: 5px;overflow-x: scroll;">
+                        <div class="card-body" style="overflow-y: scroll;height: 270px;padding: 0;margin-top: 5px;overflow-x: scroll;">
                             <table class="table table-striped table-hover table-bordered" id="table-lista-movimientointernodinero_retiro1">
                                 <thead class="table-dark" style="position: sticky;top: 0;">
                                     <tr style="font-weight: bold;">
@@ -251,7 +251,9 @@
     }
 //     function editar_compra(){
 //         let id = $('#table-lista-compra > tbody > tr.selected').attr('data-valor-columna');
+//         console.log(id);
 //         $('tr.selected').removeClass('selected');
+//         $('#table-lista-compra > tbody > tr.selected').addClass('selected');
 
 //         if(id == "" || id == undefined ){
 //             alert('Debe de seleccionar un dato.');
@@ -259,6 +261,6 @@
 //         }
 
 //         let url = "{{ url('backoffice/'.$tienda->id) }}/compraventa/"+id+"/edit?view=editar_compra";
-//         modal({ route: url })
+//         modal({ route: url });
 //    }
 </script>

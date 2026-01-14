@@ -4,7 +4,7 @@
         route: '{{ url('backoffice/'.$tienda->id.'/compraventa/') }}',
         method: 'POST',
         data:{
-            view: 'registrar',
+            view: 'registrar_compra',
         }
     },
     function(resultado){
@@ -135,6 +135,7 @@
                     <div class="col-sm-12">
                         <label class="col-form-label" style="text-align: right;">Bancos</label>
                         <select class="form-control" id="compra_idbanco" disabled>
+                            <option></option>
                             @foreach($bancos as $value)
                                 <option value="{{$value->id}}">{{$value->nombre}}</option>
                             @endforeach

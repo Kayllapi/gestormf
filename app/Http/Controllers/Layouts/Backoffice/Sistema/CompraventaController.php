@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Layouts\Backoffice\Sistema;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DB;
+use Illuminate\Support\Str;
 
 class CompraventaController extends Controller
 {
@@ -228,6 +229,8 @@ class CompraventaController extends Controller
 
             if(request('id_agencia_compra') != ''){
                 $where[] = ['idtienda', '=', request('id_agencia_compra')];
+            }else {
+                $where[] = ['idtienda', '=', $idtienda];
             }
             if(request('fecha_inicio_compra') != ''){
                 $where[] = ['fecharegistro','>=',request('fecha_inicio_compra').' 00:00:00'];
@@ -245,30 +248,42 @@ class CompraventaController extends Controller
                 ->where('idestadoeliminado',1)
                 ->orderByDesc('fecharegistro')
                 ->get();
-  
+
             $total = 0;
             $html = '';
             foreach($cvcompras as $value){
                 $fecharegistro = date_format(date_create($value->fecharegistro),"d-m-Y H:i:s A");
                 $origen = $value->idorigen == '1' ? 'SERFIP' : 'OTROS';
+                $lugar_pago = $value->compra_idformapago == '1' ? 'CAJA' : 'BANCO';
+                $validacion = '';
+                if ($value->compra_idformapago == '2') {
+                    $validacion = '<button type="button" class="btn btn-primary">
+                                    <i class="fa-solid fa-check"></i> Validar
+                                </button>';
+                }
 
                 $estado = $value->idestadocvcompra == '1' ? 'P' : 'V';
                 $prefijo = $value->idestadocvcompra == '1' ? 'CB' : 'VB';
 
+                $descripcion = Str::limit($value->descripcion, 25);
+                $vendedor = Str::limit($value->vendedor_nombreapellidos, 25);
+
                 $html .= "<tr data-valor-columna='{$value->id}' onclick='show_data_compra(this)'>
                             <td>{$estado}</td>
                             <td>{$prefijo}{$value->codigo}</td>
-                            <td>{$value->descripcion}</td>
+                            <td>{$descripcion}</td>
                             <td>{$value->serie_motor_partida}</td>
                             <td>{$value->modelo_tipo}</td>
                             <td>{$fecharegistro}</td>
-                            <td>{$value->valorcompra}</td>
-                            <td>{$value->valorcomercial}</td>
+                            <td style='text-align: right;'>{$value->valorcompra}</td>
+                            <td style='text-align: right;'>{$value->valorcomercial}</td>
                             <td>{$value->chasis}</td>
                             <td>{$origen}</td>
                             <td>{$value->numeroficha}</td>
-                            <td>{$value->vendedor_nombreapellidos}</td>
+                            <td>{$vendedor}</td>
                             <td>{$value->vendedor_dni}</td>
+                            <td>{$lugar_pago}</td>
+                            <td>{$validacion}</td>
                             <td>{$value->compra_banco}</td>
                             <td>{$value->compra_numerooperacion}</td>
                         </tr>";
@@ -276,7 +291,7 @@ class CompraventaController extends Controller
             }
 
             if(count($cvcompras)==0){
-                $html.= '<tr><td colspan="15" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
+                $html.= '<tr><td colspan="17" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
             }
 
             return array(
@@ -306,14 +321,24 @@ class CompraventaController extends Controller
             $html = '';
             foreach($cvventas as $value){
                 $fecharegistro = date_format(date_create($value->fecharegistro),"d-m-Y H:i:s A");
+                $comprador = Str::limit($value->comprador_nombreapellidos, 25);
+                $lugar_pago = $value->venta_idformapago == '1' ? 'CAJA' : 'BANCO';
+                $validacion = '';
+                if ($value->venta_idformapago == '2') {
+                    $validacion = '<button type="button" class="btn btn-primary">
+                                    <i class="fa-solid fa-check"></i> Validar
+                                </button>';
+                }
 
                 $html .= "<tr data-valor-columna='{$value->id}' onclick='show_data_venta(this)'>
                             <td>VB{$value->codigo}</td>
-                            <td>{$value->comprador_nombreapellidos}</td>
+                            <td>{$comprador}</td>
                             <td>{$value->comprador_dni}</td>
                             <td>{$fecharegistro}</td>
-                            <td>{$value->venta_precio_venta_descuento}</td>
-                            <td>{$value->venta_montoventa}</td>
+                            <td style='text-align: right;'>{$value->venta_precio_venta_descuento}</td>
+                            <td style='text-align: right;'>{$value->venta_montoventa}</td>
+                            <td>{$lugar_pago}</td>
+                            <td>{$validacion}</td>
                             <td>{$value->venta_banco}</td>
                             <td>{$value->venta_numerooperacion}</td>
                         </tr>";
@@ -321,7 +346,7 @@ class CompraventaController extends Controller
             }
 
             if(count($cvventas)==0){
-                $html.= '<tr><td colspan="8" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
+                $html.= '<tr><td colspan="10" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
             }
 
             return array(

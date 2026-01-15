@@ -44,6 +44,11 @@
             margin: 0; 
         }
 
+        
+        .border-td {
+            border:solid 1px #000;    
+        }
+
     </style>
 </head>
 <body>
@@ -272,19 +277,19 @@
           $referencia_cliente = $users_prestamo ? ( is_null($users_prestamo->referencia_cliente) ? [] : json_decode($users_prestamo->referencia_cliente) ) : [];
         ?>
         <h5 class="ficha-titulo">REFERENCIA TELEFONICA</h5>
-        <table border=1 style="padding:10px;">
+        <table style="padding:10px;">
           
           <tbody>
             <tr>
-              <td>Telf./Celular</td>
-              <td>Nombres y Apellidos</td> 
-              <td>Vinculo Familiar/Personas/Otros</td>
+              <td class="border-td">Telf./Celular</td>
+              <td class="border-td">Nombres y Apellidos</td> 
+              <td class="border-td">Vinculo Familiar/Personas/Otros</td>
             </tr>
             @foreach($referencia_cliente as $value)
               <tr>
-                <td style="padding:2px 10px;">{{ $value->referencia }}</td>
-                <td style="padding:2px 10px;">{{ $value->vinculo }}</td>
-                <td style="padding:2px 10px;">{{ $value->celular }}</td>
+                <td class="border-td">{{ $value->referencia }}</td>
+                <td class="border-td">{{ $value->vinculo }}</td>
+                <td class="border-td">{{ $value->celular }}</td>
               </tr>
             @endforeach
           </tbody>
@@ -545,11 +550,11 @@
         <table style="margin-top:30px">
             <tr>
                 <td style="padding:40px" align="center">
-                    <hr style="border:solid 1px #ccc;">
+                    <div style="border-top:solid 1px #000;"><div>
                     <p style="padding-top:10px;">Firma y huella del cliente ó representante legal</p>
                 </td>
                 <td style="padding:40px" align="center">
-                    <hr style="border:solid 1px #ccc;">
+                    <div style="border-top:solid 1px #000;"><div>
                     <p style="padding-top:10px;">Firma y huella de pareja del cliente</p>
                 </td>
             </tr>

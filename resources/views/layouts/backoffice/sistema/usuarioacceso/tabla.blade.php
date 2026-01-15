@@ -46,7 +46,16 @@
             ['type' => 'text'],
             ['type' => 'text'],
             [
-                'data' => 'json:estado',
+                'data' => [
+                    [
+                        'id' => 'ACTIVO',
+                        'text' => 'ACTIVO'
+                    ],
+                    [
+                        'id' => 'DESHABILITADO',
+                        'text' => 'DESHABILITADO'
+                    ]
+                ],
                 'type' => 'select',
             ],
             ['type' => ''],

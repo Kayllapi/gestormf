@@ -339,7 +339,8 @@ function json_usuario($idtienda){
                 [
                     'nombre'  => 'Ficha',
                     'onclick' => '/'.$idtienda.'/usuario/'.$value->id.'/edit?view=ficha',
-                    'icono'   => 'list'
+                    'icono'   => 'list',
+                    'size'    => 'modal-fullscreen'
                 ],
                 /*[
                     'nombre'  => 'Eliminar',

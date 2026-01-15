@@ -132,7 +132,7 @@
                                                                 <td colspan='2' style="background-color: #e1e1e1 !important;">
                                                                     
                                                                     <label class="chk" style="justify-content: space-between;width:100%;">
-                                                                        {{$sistemavalue->nombre}}
+                                                                        {{$sistemavalue2->nombre}}
                                                                         <input class="idpermiso MasterCheckboxSistema{{$sistemavalue2->id}} checkboxlistitem{{$subsubvalue->id}}" 
                                                                             type="checkbox" 
                                                                             value="{{ $sistemavalue2->id }}" 

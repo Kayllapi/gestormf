@@ -71,7 +71,7 @@ if(!isset($check_id)){
                       $listval = (object) $listval;
                   }
                   ?>
-                  <option value="{{$listval->text}}">{{$listval->text}}</option>
+                  <option value="{{$listval->id}}">{{$listval->text}}</option>
                 @endforeach
               </select>
               <script>

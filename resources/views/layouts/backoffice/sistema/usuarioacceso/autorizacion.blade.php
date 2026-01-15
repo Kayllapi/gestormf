@@ -20,14 +20,9 @@
         
         <div class="alert mb-1 text-start py-0" id="cont-ultimamodificacion" 
              style="background-color: #ffffff;border: 1px solid grey;">
-            <b>ULTIMA MODIFICACIÓN:</b> {{ $responsable->nombrecompleto }}
+            <b>ULTIMA MODIFICACIÓN:</b> <span style="font-weight: normal;">{{ $responsable->nombrecompleto }}</span>
         </div>
-        <label class="mt-1" style="background-color: #636363;
-          color: #fff;
-          width: 100%;
-          border-radius: 5px;
-          padding: 0px 5px;
-          margin-bottom: 5px;">Aprobación</label>
+                <div class="mt-2 bg-primary subtitulo">Aprobación</div>
               <div class="mb-1">
                   <label>Responsable *</label>
                   <select class="form-select" id="idresponsable">

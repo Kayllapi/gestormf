@@ -37,11 +37,11 @@
             </div>
             <div class="col-sm-12">
                 <div class="alert mb-1 mt-1 text-start py-0" style="background-color: #ffffff;border: 1px solid grey;">
-                    <b>ULTIMA MODIFICACIÓN:</b> {{ $responsable->nombrecompleto }}
+                    <b>REGISTRADO POR:</b> <span style="font-weight: normal;">{{ $responsable->nombrecompleto }}</span>
                 </div>
                 <div class="mt-2 bg-primary subtitulo">Aprobación</div>
                 <div class="mb-1">
-                    <label>Responsable (Administración) *</label>
+                    <label>Responsable *</label>
                     <select class="form-select" id="idresponsable">
                         <option value=""></option>
                         @foreach($usuarios as $value)

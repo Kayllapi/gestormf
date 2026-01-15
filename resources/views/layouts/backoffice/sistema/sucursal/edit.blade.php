@@ -92,6 +92,15 @@
               </div>
             </div>
             <div style="float: left;width: 100%;">   
+            <div class="mt-2 bg-primary subtitulo">TICKET DE COMPRA Y VENTA</div>
+            <div class="mb-1">
+                <label>NOMBRE *</label>
+                <input type="text" class="form-control" id="ticket_nombre" value="{{ $tienda->ticket_nombre }}">
+            </div>
+            <div class="mb-1">
+                <label>DIRECCIÓN *</label>
+                <input type="text" class="form-control" id="ticket_direccion" value="{{ $tienda->ticket_direccion }}">
+            </div>
             <div class="mt-2 bg-primary subtitulo">LIMITES DE FONDOS DE VENTAS (S/.)</div>
             <div class="mb-1">
                 <label>CAJA *</label>

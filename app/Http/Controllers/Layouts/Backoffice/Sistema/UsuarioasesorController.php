@@ -55,6 +55,7 @@ class UsuarioasesorController extends Controller
                 ->leftJoin('s_users_prestamo','s_users_prestamo.id_s_users','users.id')
                 ->where('users.idestado',1)
                 ->where('users.idtipousuario',2)
+                ->where('users.idtienda',$idtienda)
                 ->where('users.idasesor',Auth::user()->id)
                 ->where('users.codigo','LIKE','%'.$request->input('columns')[0]['search']['value'].'%')
                 ->where('users.identificacion','LIKE','%'.$request->input('columns')[1]['search']['value'].'%')
@@ -101,7 +102,8 @@ class UsuarioasesorController extends Controller
                       [
                           'nombre'  => 'Ficha',
                           'onclick' => '/'.$idtienda.'/usuario/'.$value->id.'/edit?view=ficha',
-                          'icono'   => 'list'
+                          'icono'   => 'list',
+                            'size'    => 'modal-fullscreen'
                       ],
                       /*[
                           'nombre'  => 'Eliminar',

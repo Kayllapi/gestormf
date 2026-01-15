@@ -239,7 +239,7 @@ class GarantiasController extends Controller
                   ->where('credito.idestadocredito',1)
                   ->whereIn('credito.estado',['PENDIENTE','PROCESO','APROBADO','DESEMBOLSADO'])
                   ->first();
-              $color_garantia = $garantia_credito ? 'style="background-color:#0fb669;"' : '';
+              $color_garantia = $garantia_credito ? 'style="background-color:#3cd48d;"' : '';
               if($garantia_credito==''){
                 $garantia_credito = DB::table('credito_garantia')
                     ->join('credito','credito.id','credito_garantia.idcredito')
@@ -248,7 +248,7 @@ class GarantiasController extends Controller
                     ->where('credito_garantia.idestadoentrega',1)
                     ->whereIn('credito.estado',['PENDIENTE','PROCESO','APROBADO','DESEMBOLSADO'])
                     ->first();
-                $color_garantia = $garantia_credito ? 'style="background-color:#40a7e9;"' : '';
+                $color_garantia = $garantia_credito ? 'style="background-color:#6bc5ff;"' : '';
               }
             
               $html .= "<tr {$color_garantia} data-valor-columna='{$value->id}' onclick='show_data(this)'>

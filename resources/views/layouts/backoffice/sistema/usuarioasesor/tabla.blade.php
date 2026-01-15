@@ -1,6 +1,6 @@
 <div class="modal-header">
     <h5 class="modal-title">
-      | CLIENTES ASESOR |
+      Clientes/Garantes - Asesor
       <a href="javascript:;" 
          class="btn btn-primary" 
          onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/usuario/create?view=registrar&modulo=usuario')}}'})">
@@ -40,11 +40,11 @@
             [
                 'data' => [
                     [
-                        'id' => 1,
+                        'id' => 'NATURAL',
                         'text' => 'NATURAL'
                     ],
                     [
-                        'id' => 2,
+                        'id' => 'JURÍDICA',
                         'text' => 'JURÍDICA'
                     ]
                 ],
@@ -53,15 +53,15 @@
             [
                 'data' => [
                     [
-                        'id' => 1,
+                        'id' => 'DNI',
                         'text' => 'DNI'
                     ],
                     [
-                        'id' => 2,
+                        'id' => 'RUC',
                         'text' => 'RUC'
                     ],
                     [
-                        'id' => 3,
+                        'id' => 'CE',
                         'text' => 'CE'
                     ]
                 ],

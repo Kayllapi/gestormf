@@ -927,7 +927,7 @@ class CreditoController extends Controller
                   ->where('credito_garantia.idcredito','<>',$request->input('idcredito'))
                   ->whereIn('credito.estado',['PENDIENTE','PROCESO','APROBADO','DESEMBOLSADO'])
                   ->first();
-              $color_garantia = $garantia_credito ? 'style="background-color:#0fb669 !important;border-radius: 5px;padding: 3px 5px 3px 5px;white-space: nowrap;"' : '';
+              $color_garantia = $garantia_credito ? 'style="background-color:#3cd48d !important;border-radius: 5px;padding: 3px 5px 3px 5px;white-space: nowrap;"' : '';
               $est_garantia = $garantia_credito ? 'c. Crédito' : '';
               if($garantia_credito==''){
                 $garantia_credito = DB::table('credito_garantia')
@@ -938,7 +938,7 @@ class CreditoController extends Controller
                     ->where('credito_garantia.idcredito','<>',$request->input('idcredito'))
                     ->whereIn('credito.estado',['PENDIENTE','PROCESO','APROBADO','DESEMBOLSADO'])
                     ->first();
-                $color_garantia = $garantia_credito ? 'style="background-color:#40a7e9 !important;border-radius: 5px;padding: 3px 5px 3px 5px;white-space: nowrap;"' : '';
+                $color_garantia = $garantia_credito ? 'style="background-color:#6bc5ff !important;border-radius: 5px;padding: 3px 5px 3px 5px;white-space: nowrap;"' : '';
                 $est_garantia = $garantia_credito ? 'x. Entreg.' : '';
               }
               }

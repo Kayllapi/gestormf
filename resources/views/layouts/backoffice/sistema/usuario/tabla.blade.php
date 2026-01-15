@@ -1,7 +1,6 @@
 <div class="modal-header">
     <h5 class="modal-title">
-      | CLIENTES |
-      <a href="javascript:;" class="sistema-font" onclick="actualizar_tabla('usuario')"><i class="fa-solid fa-arrows-rotate"></i></a>
+      Clientes/Garantes
       <a href="javascript:;" 
          class="btn btn-primary" 
          onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/usuario/create?view=registrar&modulo=usuario')}}'})">
@@ -13,7 +12,8 @@
 <div class="modal-body">
     @include('app.nuevosistema.tabla',[
         'tabla' => '#tabla-usuario',
-        'route' => url('public/backoffice/tienda/'.$tienda->id.'/sistema_json/usuario.json'),
+        'route' => url('backoffice/'.$tienda->id.'/usuario/show_table'),
+        'type' => 'GET',
         'thead' => [
             ['data' => 'Código'],
             ['data' => 'RUC/DNI/CE'],
@@ -40,11 +40,11 @@
             [
                 'data' => [
                     [
-                        'id' => 'NATURAL',
+                        'id' => 1,
                         'text' => 'NATURAL'
                     ],
                     [
-                        'id' => 'JURÍDICA',
+                        'id' => 2,
                         'text' => 'JURÍDICA'
                     ]
                 ],
@@ -53,15 +53,15 @@
             [
                 'data' => [
                     [
-                        'id' => 'DNI',
+                        'id' => 1,
                         'text' => 'DNI'
                     ],
                     [
-                        'id' => 'RUC',
+                        'id' => 2,
                         'text' => 'RUC'
                     ],
                     [
-                        'id' => 'CE',
+                        'id' => 3,
                         'text' => 'CE'
                     ]
                 ],

@@ -65,10 +65,10 @@
           <div class="alert alert-light mb-1 mt-1 py-0 text-start d-none" id="alert-garantia-1">
             Garantía sin Préstamo
           </div>
-          <!--div class="alert mb-1 text-start py-0 d-none" style="background-color: #40a7e9;" id="alert-garantia-2">
+          <!--div class="alert mb-1 text-start py-0 d-none" style="background-color: #6bc5ff;" id="alert-garantia-2">
             Garantía por Recoger
           </div-->
-          <div class="alert mb-1 text-start py-0 d-none" style="background-color: #0fb669;" id="alert-garantia-3">
+          <div class="alert mb-1 text-start py-0 d-none" style="background-color: #3cd48d;" id="alert-garantia-3">
             Garantía con Préstamo
           </div>
         </div>

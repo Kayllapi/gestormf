@@ -146,7 +146,7 @@ class GarantiasNoPrendarioController extends Controller
                   ->whereIn('credito.estado',['PENDIENTE','PROCESO','APROBADO','DESEMBOLSADO'])
                   ->first();
             
-              $color_garantia = $garantia_credito ? 'style="background-color:#0fb669;"' : '';
+              $color_garantia = $garantia_credito ? 'style="background-color:#3cd48d;"' : '';
               /*if($garantia_credito==''){
                 $garantia_credito = DB::table('credito_garantia')
                     ->join('credito','credito.id','credito_garantia.idcredito')

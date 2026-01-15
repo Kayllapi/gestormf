@@ -207,6 +207,16 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
               padding: 0px;
               padding-top: 5px;
           }
+          .modal-content > div {
+              height: 100%;
+          }
+          .modal-content  .modal-body {
+              height: calc(100vh - 38px);;
+          }
+          .modal-content  .modal-body > iframe.modal-1 {
+              width: 100%;
+              height: calc(100vh - 54px);;
+          }
         </style>
 </head>
 <body url="{{ url('/') }}">

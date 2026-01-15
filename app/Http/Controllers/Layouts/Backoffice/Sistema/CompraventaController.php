@@ -17,6 +17,7 @@ class CompraventaController extends Controller
         $cvcompras = DB::table('cvcompra')
             ->where('idtienda',$idtienda)
             ->where('idestadoeliminado',1)
+            ->where('idestadocvcompra',1)
             ->orderByDesc('fecharegistro')
             ->get();
         $cvventas = DB::table('cvventa')
@@ -252,7 +253,7 @@ class CompraventaController extends Controller
                 $origen = $value->idorigen == '1' ? 'SERFIP' : 'OTROS';
 
                 $estado = $value->idestadocvcompra == '1' ? 'P' : 'V';
-                $prefijo = $value->idestadocvcompra == '1' ? 'CB' : 'CV';
+                $prefijo = $value->idestadocvcompra == '1' ? 'CB' : 'VB';
 
                 $html .= "<tr data-valor-columna='{$value->id}' onclick='show_data_compra(this)'>
                             <td>{$estado}</td>

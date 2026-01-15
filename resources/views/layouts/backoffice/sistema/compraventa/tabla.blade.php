@@ -103,7 +103,7 @@
                                         @foreach ($cvcompras as $value)
                                             <tr data-valor-columna="{{$value->id}}" onclick="show_data_compra(this)">
                                                 <td>{{$value->idestadocvcompra == 1 ? 'P' : 'V'}}</td>
-                                                <td>{{ $value->idestadocvcompra == 1 ? 'CB' : 'CV' }}{{$value->codigo}}</td>
+                                                <td>{{ $value->idestadocvcompra == 1 ? 'CB' : 'VB' }}{{$value->codigo}}</td>
                                                 <td>{{$value->descripcion}}</td>
                                                 <td>{{$value->serie_motor_partida}}</td>
                                                 <td>{{$value->modelo_tipo}}</td>
@@ -125,21 +125,21 @@
                         </div>
                         <div class="modal-body">
                             <div class="row">
-                                <div class="col-2">
-                                    TOTAL: <span id="total_compra">{{ $cvcompras->sum('valorcompra') ?? 0 }}</span>
+                                <div class="col-3">
+                                    TOTAL: <span id="total_compra" style="font-weight: normal;">{{ number_format($cvcompras->sum('valorcompra'), 2, '.', '') ?? 0 }}</span>
                                 </div>
-                                <div class="col-10 text-end">
-                                    <button type="button" class="btn btn-info" style="background-color: #CFEBC5 !important;" onclick="editar_compra()">
-                                        <i class="fa-solid fa-pencil" style="color:#000 !important; font-weight: bold;"></i> Editar
+                                <div class="col-9 text-end">
+                                    <button type="button" class="btn btn-success" style="background-color: #CFEBC5 !important;" onclick="editar_compra()">
+                                        <i class="fa-solid fa-pencil"></i> Editar
                                     </button>
-                                    <button type="button" class="btn btn-info" style="background-color: #FFC5C5 !important;" onclick="eliminar_compra()">
-                                        <i class="fa-solid fa-trash" style="color:#000 !important; font-weight: bold;"></i> Eliminar
+                                    <button type="button" class="btn btn-danger" onclick="eliminar_compra()">
+                                        <i class="fa-solid fa-trash"></i> Eliminar
                                     </button>
-                                    <button type="button" class="btn btn-info" style="background-color: #F9F3B5 !important;">
-                                        <i class="fa-solid fa-copy" style="color:#000 !important; font-weight: bold;"></i> Duplicar Váucher
+                                    <button type="button" class="btn btn-warning" style="background-color: #F9F3B5 !important;">
+                                        <i class="fa-solid fa-copy" style="color:#000 !important;"></i> Duplicar Váucher
                                     </button>
                                     <button type="button" class="btn btn-info" onclick="exportar_pdf()" style="font-weight: bold;">
-                                        <i class="fa-solid fa-file-pdf" style="color:#000 !important;font-weight: bold;"></i> Reporte
+                                        <i class="fa-solid fa-file-pdf"></i> Reporte
                                     </button>
                                 </div>
                             </div>
@@ -232,7 +232,7 @@
                                     @else
                                         @foreach ($cvventas as $value)
                                             <tr data-valor-columna="{{$value->id}}" onclick="show_data_venta(this)">
-                                                <td>CV{{$value->codigo}}</td>
+                                                <td>VB{{$value->codigo}}</td>
                                                 <td>{{$value->comprador_nombreapellidos}}</td>
                                                 <td>{{$value->comprador_dni}}</td>
                                                 <td>{{date_format(date_create($value->fecharegistro),"d-m-Y H:i:s A")}}</td>
@@ -248,18 +248,18 @@
                         </div>
                         <div class="modal-body">
                             <div class="row">
-                                <div class="col-2">
-                                    TOTAL: <span id="total_venta">{{ $cvventas->sum('venta_precio_venta_descuento') ?? 0 }}</span>
+                                <div class="col-3">
+                                    TOTAL: <span id="total_venta" style="font-weight: normal;">{{ number_format($cvventas->sum('venta_precio_venta_descuento'), 2, '.', '') ?? 0 }}</span>
                                 </div>
-                                <div class="col-10 text-end">
-                                    <button type="button" class="btn btn-info" style="background-color: #FFC5C5 !important;" onclick="eliminar_venta()">
-                                        <i class="fa-solid fa-trash" style="color:#000 !important; font-weight: bold;"></i> Eliminar
+                                <div class="col-9 text-end">
+                                    <button type="button" class="btn btn-danger" onclick="eliminar_venta()">
+                                        <i class="fa-solid fa-trash"></i> Eliminar
                                     </button>
-                                    <button type="button" class="btn btn-info" style="background-color: #F9F3B5 !important;">
-                                        <i class="fa-solid fa-copy" style="color:#000 !important; font-weight: bold;"></i> Duplicar Váucher
+                                    <button type="button" class="btn btn-warning" style="background-color: #F9F3B5 !important;">
+                                        <i class="fa-solid fa-copy" style="color:#000 !important;"></i> Duplicar Váucher
                                     </button>
                                     <button type="button" class="btn btn-info" onclick="exportar_pdf()" style="font-weight: bold;">
-                                        <i class="fa-solid fa-file-pdf" style="color:#000 !important;font-weight: bold;"></i> Reporte
+                                        <i class="fa-solid fa-file-pdf"></i> Reporte
                                     </button>
                                 </div>
                             </div>

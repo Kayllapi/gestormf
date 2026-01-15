@@ -147,8 +147,8 @@
                                     <button type="button" class="btn btn-danger" onclick="eliminar_compra()">
                                         <i class="fa-solid fa-trash"></i> Eliminar
                                     </button>
-                                    <button type="button" class="btn btn-warning" style="background-color: #F9F3B5 !important;">
-                                        <i class="fa-solid fa-copy" style="color:#000 !important;"></i> Duplicar Váucher
+                                    <button type="button" class="btn btn-warning" style="background-color: #F9F3B5 !important;" onclick="vaucher_compra()">
+                                        <i class="fa-solid fa-copy" style="color:#000 !important;"></i> Duplicar Voucher
                                     </button>
                                     <button type="button" class="btn btn-info" onclick="exportar_pdf()" style="font-weight: bold;">
                                         <i class="fa-solid fa-file-pdf"></i> Reporte
@@ -253,8 +253,8 @@
                                     <button type="button" class="btn btn-danger" onclick="eliminar_venta()">
                                         <i class="fa-solid fa-trash"></i> Eliminar
                                     </button>
-                                    <button type="button" class="btn btn-warning" style="background-color: #F9F3B5 !important;">
-                                        <i class="fa-solid fa-copy" style="color:#000 !important;"></i> Duplicar Váucher
+                                    <button type="button" class="btn btn-warning" style="background-color: #F9F3B5 !important;" onclick="vaucher_venta()">
+                                        <i class="fa-solid fa-copy" style="color:#000 !important;"></i> Duplicar Voucher
                                     </button>
                                     <button type="button" class="btn btn-info" onclick="exportar_pdf()" style="font-weight: bold;">
                                         <i class="fa-solid fa-file-pdf"></i> Reporte
@@ -272,6 +272,7 @@
     sistema_select2({ input:'#id_agencia_compra', val:'{{$tienda->id}}' });
     sistema_select2({ input:'#id_agencia_venta', val:'{{$tienda->id}}' });
 
+    // Compra
     function search_compra() {
         $.ajax({
             url:"{{url('backoffice/0/compraventa/show_table_compra')}}",
@@ -290,8 +291,8 @@
     }
     function show_data_compra(e) {
         const $row = $(e);
-
         $('#table-lista-compra tbody tr').removeClass('selected');
+        $('#table-lista-venta tbody tr').removeClass('selected');
         $row.addClass('selected');
     }
     function editar_compra() {
@@ -316,6 +317,18 @@
         }
 
         const url = `{{ url('backoffice/'.$tienda->id) }}/compraventa/${id}/edit?view=eliminar_compra`;
+        modal({ route: url, size: 'modal-sm' });
+    }
+    function vaucher_compra() {
+        const $selectedRow = $('#table-lista-compra tbody tr.selected');
+        const id = $selectedRow.data('valor-columna');
+
+        if (!id) {
+            alert('Debe seleccionar un dato.');
+            return;
+        }
+
+        const url = `{{ url('backoffice/'.$tienda->id) }}/compraventa/${id}/edit?view=vaucher_compra`;
         modal({ route: url, size: 'modal-sm' });
     }
 
@@ -350,7 +363,7 @@
     }
     function show_data_venta(e) {
         const $row = $(e);
-
+        $('#table-lista-compra tbody tr').removeClass('selected');
         $('#table-lista-venta tbody tr').removeClass('selected');
         $row.addClass('selected');
     }
@@ -364,6 +377,18 @@
         }
 
         const url = `{{ url('backoffice/'.$tienda->id) }}/compraventa/${id}/edit?view=eliminar_venta`;
+        modal({ route: url, size: 'modal-sm' });
+    }
+    function vaucher_venta() {
+        const $selectedRow = $('#table-lista-venta tbody tr.selected');
+        const id = $selectedRow.data('valor-columna');
+
+        if (!id) {
+            alert('Debe seleccionar un dato.');
+            return;
+        }
+
+        const url = `{{ url('backoffice/'.$tienda->id) }}/compraventa/${id}/edit?view=vaucher_venta`;
         modal({ route: url, size: 'modal-sm' });
     }
 </script>

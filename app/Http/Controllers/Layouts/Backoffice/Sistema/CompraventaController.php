@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DB;
 use Illuminate\Support\Str;
+use PDF;
 
 class CompraventaController extends Controller
 {
@@ -358,13 +359,14 @@ class CompraventaController extends Controller
 
     public function edit(Request $request, $idtienda, $id)
     {
+        $tienda = DB::table('tienda')->whereId($idtienda)->first();
+
         if (request('view') == 'editar_compra') {
-            $tienda = DB::table('tienda')->whereId($idtienda)->first();
+            $cvcompra = DB::table('cvcompra')->whereId($id)->first();
             $agencias = DB::table('tienda')->get();
             $tipo_garantia = DB::table('tipo_garantia')->get();
             $estado_garantia = DB::table('estado_garantia')->get();
             $bancos = DB::table('banco')->get();
-            $cvcompra = DB::table('cvcompra')->whereId($id)->first();
 
             return view(sistema_view().'/compraventa/edit_compra', compact(
                 'tienda',
@@ -374,8 +376,22 @@ class CompraventaController extends Controller
                 'bancos',
                 'cvcompra',
             ));
+        } elseif (request('view') == 'vaucher_compra') {
+            $cvcompra = DB::table('cvcompra')->whereId($id)->first();
+
+            return view(sistema_view().'/compraventa/edit_vaucher_compra', compact(
+                'tienda',
+                'cvcompra',
+            ));
+        } elseif (request('view') == 'edit_vaucher_comprapdf' ) {
+            $cvcompra = DB::table('cvcompra')->whereId($id)->first();
+            $pdf = PDF::loadView(sistema_view().'/compraventa/edit_vaucher_comprapdf', compact(
+                'tienda',
+                'cvcompra',
+            ));
+            $pdf->setPaper('A4');
+            return $pdf->stream('VOUCHER_COMPRA.pdf');
         } elseif (request('view') == 'eliminar_compra') {
-            $tienda = DB::table('tienda')->whereId($idtienda)->first();
             $cvcompra = DB::table('cvcompra')->whereId($id)->first();
             $usuarios = DB::table('users')
                 ->join('users_permiso','users_permiso.idusers','users.id')
@@ -390,8 +406,30 @@ class CompraventaController extends Controller
                 'cvcompra',
                 'usuarios'
             ));
+        } elseif (request('view') == 'vaucher_venta') {
+            $cvventa = DB::table('cvventa')->whereId($id)->first();
+
+            return view(sistema_view().'/compraventa/edit_vaucher_venta', compact(
+                'tienda',
+                'cvventa',
+            ));
+        } elseif (request('view') == 'edit_vaucher_ventapdf' ) {
+            $cvventa = DB::table('cvventa')
+                ->join('cvcompra','cvcompra.id','cvventa.idcvcompra')
+                ->select(
+                    'cvventa.*',
+                    'cvcompra.descripcion as descripcioncvcompra',
+                    'cvcompra.serie_motor_partida as serie_motor_partidacvcompra'
+                )
+                ->where('cvventa.id',$id)
+                ->first();
+            $pdf = PDF::loadView(sistema_view().'/compraventa/edit_vaucher_ventapdf', compact(
+                'tienda',
+                'cvventa',
+            ));
+            $pdf->setPaper('A4');
+            return $pdf->stream('VOUCHER_VENTA.pdf');
         } elseif (request('view') == 'eliminar_venta') {
-            $tienda = DB::table('tienda')->whereId($idtienda)->first();
             $cvventa = DB::table('cvventa')->whereId($id)->first();
             $usuarios = DB::table('users')
                 ->join('users_permiso','users_permiso.idusers','users.id')

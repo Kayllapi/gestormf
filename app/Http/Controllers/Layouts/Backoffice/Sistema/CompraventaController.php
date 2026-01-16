@@ -323,7 +323,6 @@ class CompraventaController extends Controller
                             <td>{$value->chasis}</td>
                             <td>{$value->modelo_tipo}</td>
                             <td>{$value->otros}</td>
-                            <td style='text-align: right;'>{$value->valorcompra}</td>
                             <td style='text-align: right;'>{$value->valorcomercial}</td>
                             <td>{$value->estado}</td>
                             <td>{$value->color}</td>
@@ -344,7 +343,7 @@ class CompraventaController extends Controller
             }
 
             if(count($cvcompras)==0){
-                $html.= '<tr><td colspan="17" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
+                $html.= '<tr><td colspan="23" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
             }
 
             return array(
@@ -355,51 +354,92 @@ class CompraventaController extends Controller
             $where = [];
 
             if(request('id_agencia_venta') != ''){
-                $where[] = ['idtienda', '=', request('id_agencia_venta')];
+                $where[] = ['cvventa.idtienda', '=', request('id_agencia_venta')];
             }
             if(request('fecha_inicio_venta') != ''){
-                $where[] = ['fecharegistro','>=',request('fecha_inicio_venta').' 00:00:00'];
+                $where[] = ['cvventa.fecharegistro','>=',request('fecha_inicio_venta').' 00:00:00'];
             }
             if(request('fecha_fin_venta') != ''){
-                $where[] = ['fecharegistro','<=',request('fecha_fin_venta').' 23:59:59'];
+                $where[] = ['cvventa.fecharegistro','<=',request('fecha_fin_venta').' 23:59:59'];
             }
 
             $cvventas = DB::table('cvventa')
+                ->join('cvcompra', 'cvventa.idcvcompra', 'cvcompra.id')
+                ->join('estado_garantia','estado_garantia.id','cvcompra.idestado_garantia')
+                ->join('users','users.id','cvventa.venta_idresponsable')
+                ->leftJoin('users as u2', 'u2.id', 'cvventa.validar_responsable')
                 ->where($where)
-                ->where('idestadoeliminado',1)
-                ->orderByDesc('fecharegistro')
+                ->where('cvventa.idestadoeliminado',1)
+                ->select(
+                    'cvcompra.*',
+                    'estado_garantia.nombre as estado',
+                    'cvventa.id as idventa',
+                    'cvventa.codigo as codigoventa',
+                    'cvventa.comprador_nombreapellidos as comprador_nombreapellidos',
+                    'cvventa.comprador_dni as comprador_dni',
+                    'cvventa.venta_idformapago as venta_idformapago',
+                    'cvventa.venta_banco as venta_banco',
+                    'cvventa.venta_numerooperacion as venta_numerooperacion',
+                    'cvventa.fecharegistro as venta_fecharegistro',
+                    'cvventa.validar_estado as venta_validar_estado',
+                    'cvventa.venta_precio_venta_descuento as venta_precio_venta_descuento',
+                    'cvventa.venta_montoventa as venta_montoventa',
+                    'users.codigo as responsablecodigo',
+                    'u2.codigo as validar_responsablecodigo'
+                )
+                ->orderByDesc('cvventa.fecharegistro')
                 ->get();
 
             $total = 0;
             $html = '';
             foreach($cvventas as $value){
-                $fecharegistro = date_format(date_create($value->fecharegistro),"d-m-Y H:i:s A");
-                $comprador = Str::limit($value->comprador_nombreapellidos, 25);
+                $fecharegistro = date_format(date_create($value->venta_fecharegistro),"d-m-Y H:i:s A");
+                $origen = $value->idorigen == '1' ? 'SERFIP' : 'OTROS';
                 $lugar_pago = $value->venta_idformapago == '1' ? 'CAJA' : 'BANCO';
                 $validacion = '';
                 if ($value->venta_idformapago == '2') {
-                    $validacion = '<button type="button" class="btn btn-primary">
-                                    <i class="fa-solid fa-check"></i> Validar
-                                </button>';
+                    if ($value->venta_validar_estado == 1) {
+                        $validacion = '<i class="fa-solid fa-check"></i> ('.$value->validar_responsablecodigo.')';
+                    } else {
+                        $validacion = '<button type="button" class="btn btn-success" onclick="validar_venta('.$value->idventa.')">
+                                        <i class="fa-solid fa-check"></i> Validar
+                                    </button>';
+                    }
                 }
 
-                $html .= "<tr data-valor-columna='{$value->id}' onclick='show_data_venta(this)'>
-                            <td>VB{$value->codigo}</td>
-                            <td>{$comprador}</td>
-                            <td>{$value->comprador_dni}</td>
+                $descripcion = Str::limit($value->descripcion, 25);
+                $comprador = Str::limit($value->comprador_nombreapellidos, 25);
+
+                $html .= "<tr data-valor-columna='{$value->idventa}' onclick='show_data_venta(this)'>
+                            <td>VB{$value->codigoventa}</td>
+                            <td>{$descripcion}</td>
                             <td>{$fecharegistro}</td>
+                            <td>{$value->serie_motor_partida}</td>
+                            <td>{$value->chasis}</td>
+                            <td>{$value->modelo_tipo}</td>
+                            <td>{$value->otros}</td>
                             <td style='text-align: right;'>{$value->venta_precio_venta_descuento}</td>
                             <td style='text-align: right;'>{$value->venta_montoventa}</td>
+                            <td>{$value->estado}</td>
+                            <td>{$value->color}</td>
+                            <td>{$value->fabricacion}</td>
+                            <td>{$value->compra}</td>
+                            <td>{$value->placa}</td>
+                            <td>{$origen}</td>
+                            <td>{$value->numeroficha}</td>
+                            <td>{$comprador}</td>
+                            <td>{$value->comprador_dni}</td>
                             <td>{$lugar_pago}</td>
                             <td>{$validacion}</td>
                             <td>{$value->venta_banco}</td>
                             <td>{$value->venta_numerooperacion}</td>
+                            <td>{$value->responsablecodigo}</td>
                         </tr>";
                 $total = $total+$value->venta_precio_venta_descuento;
             }
 
             if(count($cvventas)==0){
-                $html.= '<tr><td colspan="10" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
+                $html.= '<tr><td colspan="23" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
             }
 
             return array(
@@ -510,6 +550,21 @@ class CompraventaController extends Controller
                 'cvcompra',
                 'usuarios'
             ));
+        } elseif (request('view') == 'edit_validar_venta') {
+            $cvventa = DB::table('cvventa')->whereId($id)->first();
+            $usuarios = DB::table('users')
+                ->join('users_permiso','users_permiso.idusers','users.id')
+                ->join('permiso','permiso.id','users_permiso.idpermiso')
+                ->whereIn('users_permiso.idpermiso',[1,2])
+                ->where('users_permiso.idtienda',$idtienda)
+                ->select('users.*','permiso.nombre as nombrepermiso','permiso.id as idpermiso')
+                ->get();
+
+            return view(sistema_view().'/compraventa/edit_validar_venta', compact(
+                'tienda',
+                'cvventa',
+                'usuarios',
+            ));
         } elseif (request('view') == 'vaucher_venta') {
             $cvventa = DB::table('cvventa')->whereId($id)->first();
 
@@ -555,8 +610,8 @@ class CompraventaController extends Controller
     {
         if (request('view') == 'update_validar_compra') {
             $rules = [
-                'idresponsable' => 'required',          
-                'responsableclave' => 'required',                 
+                'idresponsable' => 'required',
+                'responsableclave' => 'required',
             ];
             $messages = [
                 'idresponsable.required' => 'El "Responsable" es Obligatorio.',
@@ -591,8 +646,8 @@ class CompraventaController extends Controller
             ]);
         } elseif (request('view') == 'update_validar_editcompra') {
             $rules = [
-                'idresponsable' => 'required',          
-                'responsableclave' => 'required',                 
+                'idresponsable' => 'required',
+                'responsableclave' => 'required',
             ];
             $messages = [
                 'idresponsable.required' => 'El "Responsable" es Obligatorio.',
@@ -667,6 +722,42 @@ class CompraventaController extends Controller
                 'resultado' => 'CORRECTO',
                 'mensaje'   => 'Se ha actualizado correctamente.'
             ]); 
+        } elseif (request('view') == 'update_validar_venta') {
+            $rules = [
+                'idresponsable' => 'required',
+                'responsableclave' => 'required',
+            ];
+            $messages = [
+                'idresponsable.required' => 'El "Responsable" es Obligatorio.',
+                'responsableclave.required' => 'La "Contraseña" es Obligatorio.',
+            ];
+            $this->validate($request,$rules,$messages);
+
+            $usuario = DB::table('users')
+                ->where('users.id', request('idresponsable'))
+                ->where('users.clave', request('responsableclave'))
+                ->first();
+            $idresponsable = 0;
+            if($usuario!=''){
+                $idresponsable = $usuario->id;
+            }else{
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'El usuario y/o la contraseña es incorrecta!!.'
+                ]);
+            }
+
+            DB::table('cvventa')->whereId($id)->update([
+               'validar_estado' => 1,
+               'validar_responsable' => $idresponsable,
+               'validar_responsable_permiso' => request('idpermiso'),
+               'validar_fecha' => now(),
+            ]);
+
+            return response()->json([
+                'resultado' => 'CORRECTO',
+                'mensaje' => 'Se ha validado correctamente.',
+            ]);
         }
     } 
 
@@ -738,6 +829,11 @@ class CompraventaController extends Controller
                'eliminado_idresponsable' => $idresponsable,
                'eliminado_idresponsable_permiso' => request('idpermiso'),
                'idestadoeliminado' => 2,
+            ]);
+
+            $cvventa = DB::table('cvventa')->whereId($id)->first();
+            DB::table('cvcompra')->where('id',$cvventa->idcvcompra)->update([
+                'idestadocvcompra' => 1,
             ]);
 
             return response()->json([

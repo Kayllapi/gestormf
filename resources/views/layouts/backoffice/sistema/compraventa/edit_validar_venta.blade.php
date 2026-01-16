@@ -1,23 +1,22 @@
 <form action="javascript:;" 
     onsubmit="callback({
         route: '{{ url('backoffice/'.$tienda->id.'/compraventa/'.$cvventa->id) }}',
-        method: 'DELETE',
+        method: 'PUT',
         data:{
-            view: 'eliminar_venta'
+            view: 'update_validar_venta'
         }
     },
     function(resultado){
-        $('#modal-close-venta-eliminar').click(); 
+        $('#modal-close-venta-validar').click();
         search_venta();
-        search_compra();
     },this)">
     <div class="modal-header">
-        <h5 class="modal-title">Eliminar Venta</h5>
-        <button type="button" class="btn-close" id="modal-close-venta-eliminar" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h5 class="modal-title">Validar Venta</h5>
+        <button type="button" class="btn-close" id="modal-close-venta-validar" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <div class="modal-body">
         <div class="alert alert-danger">
-            <i class="fa-solid fa-triangle-exclamation"></i> ¿Esta seguro de eliminar la venta?<br>
+            <i class="fa-solid fa-triangle-exclamation"></i> ¿Está seguro de validar la venta por Banco?<br>
             <b>"VB{{$cvventa->codigo}}"</b>
         </div>
         <div class="mt-2 bg-primary subtitulo">Aprobación</div>
@@ -37,7 +36,9 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="submit" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Eliminar</button>
+        <button type="submit" class="btn btn-primary">
+            <i class="fa-solid fa-check" style="color:#000 !important; font-weight: bold;"></i> Validar
+        </button>
     </div>
 </form>   
 <script>

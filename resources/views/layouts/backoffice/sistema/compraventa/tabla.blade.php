@@ -94,7 +94,6 @@
                                         <td width="80px;">Chasis</td>
                                         <td width="90px;">Modelo/T.</td>
                                         <td width="90px;">Otros</td>
-                                        <td width="80px;">Valor Compra</td>
                                         <td width="80px;">Valor Comercial</td>
                                         <td width="80px;">Estado</td>
                                         <td width="80px;">Color</td>
@@ -115,7 +114,7 @@
                                 <tbody>
                                     @if (count($cvcompras) == 0)
                                         <tr>
-                                            <td colspan="17" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td>
+                                            <td colspan="23" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td>
                                         </tr>
                                     @else
                                         @foreach ($cvcompras as $value)
@@ -131,7 +130,6 @@
                                                 <td>{{ $value->chasis }}</td>
                                                 <td>{{ $value->modelo_tipo }}</td>
                                                 <td>{{ $value->otros }}</td>
-                                                <td style="text-align: right;">{{ $value->valorcompra }}</td>
                                                 <td style="text-align: right;">{{ $value->valorcomercial }}</td>
                                                 <td>{{ $value->estado }}</td>
                                                 <td>{{ $value->color }}</td>
@@ -257,15 +255,28 @@
                                 <thead class="table-dark" style="position: sticky;top: 0;">
                                     <tr style="font-weight: bold;">
                                         <td width="90px">Código</td>
+                                        <td width="190px;">Descripción</td>
+                                        <td width="155px;">Fecha Registro</td>
+                                        <td width="120px;">Serie/Motor/Nro.P.</td>
+                                        <td width="80px;">Chasis</td>
+                                        <td width="90px;">Modelo/T.</td>
+                                        <td width="90px;">Otros</td>
+                                        <td width="120px">Precio Venta Descuento</td>
+                                        <td width="80px">Precio Venta Final</td>
+                                        <td width="80px;">Estado</td>
+                                        <td width="80px;">Color</td>
+                                        <td width="80px;">Año de Fabricación</td>
+                                        <td width="80px;">Año de Compra</td>
+                                        <td width="80px;">Placa del Vehículo</td>
+                                        <td width="80px;">Origen</td>
+                                        <td width="150px;">N° Ficha/Comprobante</td>
                                         <td width="180px">Comprador</td>
                                         <td width="90px">RUC/DNI/CE</td>
-                                        <td width="180px">Fecha Registro</td>
-                                        <td width="120px">Precio Venta Descuento</td>
-                                        <td width="80px">Monto de Venta</td>
                                         <td width="80px;">Lugar de Pago</td>
-                                        <td width="90px;">Validación</td>
-                                        <td width="80px">Banco</td>
-                                        <td width="110px">Nro. Operación</td>
+                                        <td width="110px;">Validación</td>
+                                        <td width="80px;">Banco</td>
+                                        <td width="110px;">N° Operación</td>
+                                        <td width="90px;">Responsable</td>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -458,6 +469,10 @@
         }
 
         const url = `{{ url('backoffice/'.$tienda->id) }}/compraventa/${id}/edit?view=vaucher_venta`;
+        modal({ route: url, size: 'modal-sm' });
+    }
+    function validar_venta(id) {
+        const url = `{{ url('backoffice/'.$tienda->id) }}/compraventa/${id}/edit?view=edit_validar_venta`;
         modal({ route: url, size: 'modal-sm' });
     }
 </script>

@@ -32,7 +32,7 @@
                 </div>
             </div>
             <div class="col-sm-12 col-md-8 d-md-flex justify-content-md-end">
-                <button type="button" onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/usuario/create?view=autorizacion&idusuario='.$usuario->idcliente_modificacion)}}'})" class="btn btn-success"><i class="fa fa-pencil"></i> Editar</button></button>
+                <button type="button" onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/usuario/create?view=autorizacion&idusuario='.$usuario->idcliente_modificacion)}}',size:'modal-sm'})" class="btn btn-success"><i class="fa fa-pencil"></i> Editar</button></button>
             </div>
         </div>
         <div id="cont_tipoinformacion" style="display:none;">
@@ -289,7 +289,7 @@
                     <div class="mb-1">
                         <label>Telf./Celular de PAREJA 
                             <a href="javascript:;" onclick="agregar_cliente_financiera('celular-pareja')" class="btn-info" style="border-radius: 10px;padding: 2px;padding-bottom: 0px;">
-                                <i class="fa-solid fa-plus"></i>
+                                <i class="fa-solid fa-plus" style="color:#000"></i>
                             </a>
                         </label>
                         <table class="table tabla-interno" id="tabla-celular-pareja">
@@ -346,7 +346,7 @@
                         <div class="mb-1">
                             <label>Referencia telefónica <span class="text-danger">(*)</span>
                                 <a href="javascript:;" onclick="agregar_referencia()" class="btn-info" style="border-radius: 10px;padding: 2px;padding-bottom: 0px;">
-                                    <i class="fa-solid fa-plus"></i>
+                                    <i class="fa-solid fa-plus" style="color:#000"></i>
                                 </a>
                             </label>
                             <table class="table tabla-interno" id="tabla-referencia">
@@ -773,8 +773,8 @@
   
     $('#cont_centrolaboraldepareja').css('display','none');
     $('#cont_negociodepareja').css('display','none');
-    $('#cont_actividadeconomicadelcliente').css('display','none');
-    $('#cont_centrolaboraldelcliente').css('display','none');
+    //$('#cont_actividadeconomicadelcliente').css('display','none');
+    //$('#cont_centrolaboraldelcliente').css('display','none');
     $('div#cont_tipoinformacion').css('display','block');
 
     @if($users_prestamo)
@@ -800,8 +800,8 @@
    $("#idtipoinformacion").on("select2:select", function(e) {
         $('#cont_centrolaboraldepareja').css('display','none');
         $('#cont_negociodepareja').css('display','none');
-        $('#cont_actividadeconomicadelcliente').css('display','none');
-        $('#cont_centrolaboraldelcliente').css('display','none');
+        //$('#cont_actividadeconomicadelcliente').css('display','none');
+        //$('#cont_centrolaboraldelcliente').css('display','none');
         $('div#cont_tipoinformacion').css('display','block');
         /*if($("#idfuenteingreso").val()==1){
             $('#cont_actividadeconomicadelcliente').css('display','block');
@@ -812,13 +812,13 @@
             if($("#idestadocivil").val()==2 || $("#idestadocivil").val()==4){
                 $('#cont_centrolaboraldepareja').css('display','block');
             }
-            $('#cont_negociodepareja').css('display','block');
+            //$('#cont_negociodepareja').css('display','block');
         }
         if($("#idtipoinformacion").val()==1 && $("#idocupacion_pareja").val()==1){
             if(($("#idestadocivil").val()==2 || $("#idestadocivil").val()==4) && $("#idtipoinformacion").val()==2){
                 $('#cont_centrolaboraldepareja').css('display','block');
             }
-            $('#cont_negociodepareja').css('display','block');
+            //$('#cont_negociodepareja').css('display','block');
         }
         else if($("#idtipoinformacion").val()==2 && $("#idocupacion_pareja").val()==2){
             if($("#idestadocivil").val()==2 || $("#idestadocivil").val()==4){

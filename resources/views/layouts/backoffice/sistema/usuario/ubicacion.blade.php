@@ -22,7 +22,7 @@
                onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/usuario/'.$usuario->id.'/edit?view=imprimir_ubicacion')}}'})">
               <i class="fa-solid fa-file-pdf"></i> Imprimir
             </a>
-            <button type="button" onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/usuario/create?view=autorizacion')}}'})" class="btn btn-success"><i class="fa fa-pencil"></i> Editar</button></button>
+            <button type="button" onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/usuario/create?view=autorizacion')}}',size:'modal-sm'})" class="btn btn-success"><i class="fa fa-pencil"></i> Editar</button></button>
             </label>
             <div id="domicilio_mapa" class="mapa" style="height: 400px;"></div>
             <input type="hidden" class="form-control" id="domicilio_mapa_latitud" value="{{$usuario->mapa_latitud}}"/>

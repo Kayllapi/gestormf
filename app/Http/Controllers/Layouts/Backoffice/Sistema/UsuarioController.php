@@ -380,7 +380,7 @@ class UsuarioController extends Controller
                 }*/
             //}
             if($request->idestadocivil==2 || $request->idestadocivil==4  or ($request->idtipoinformacion==2 && $request->idfuenteingreso==1)){
-                if($request->idocupacion_pareja==2 or ($request->idtipoinformacion==2 && $request->idfuenteingreso==1) ){
+                if($request->idocupacion_pareja==2 && $request->idtipoinformacion==2){
                   
                     if($request->ruc_laboral_pareja!=''){
                         $rules['ruc_laboral_pareja'] = 'required|integer|numeric|digits:11';
@@ -607,7 +607,7 @@ class UsuarioController extends Controller
             if($usuario!='' and $identificacion!=0){
                 return response()->json([
                     'resultado' => 'ERROR',
-                    'mensaje'   => 'El "RUC/DNI" ya esta registrado, Ingrese Otro por favor.'
+                    'mensaje'   => 'El "RUC/DNI/CE" del cliente ya esta registrado, ingrese otro por favor.'
                 ]);
             }
 
@@ -1342,7 +1342,8 @@ class UsuarioController extends Controller
                 $rules['idtipocontrato_laboral_pareja'] = 'required';*/
           //dd($request->idocupacion_pareja);
             if($request->idestadocivil==2 || $request->idestadocivil==4  or ($request->idtipoinformacion==2 && $request->idfuenteingreso==1)){
-                if($request->idocupacion_pareja==2 or ($request->idtipoinformacion==2 && $request->idfuenteingreso==1) ){
+          
+                if($request->idocupacion_pareja==2 && $request->idtipoinformacion==2){
                   
                     if($request->ruc_laboral_pareja!=''){
                         $rules['ruc_laboral_pareja'] = 'required|integer|numeric|digits:11';

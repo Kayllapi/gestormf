@@ -52,7 +52,7 @@
             </tr>
             <tr>
                 <td>
-                    <b>COD</b>
+                    <b>CODIGO</b>
                 </td>
                 <td style="width:1px;">
                     <b>:</b>

@@ -18,7 +18,7 @@
     </div>
     <div class="modal-body">
       <div class="mb-1 mt-2">
-        <span class="badge d-block">CLIENTE: {{ $credito->nombreclientecredito }}</span>
+        <span class="badge d-block">CLIENTE: <span style="font-weight: normal;">{{ $credito->nombreclientecredito }}</span></span>
       </div>
       <div class="row mt-1">
         <div class="col-sm-12">
@@ -64,7 +64,7 @@
       @endif
       <br>
       <span class="badge bg-success">
-          TOTAL COBERTURA: <span id="total_cobertura_cliente" class="text-white fw-bold">{{ $credito->monto_cobertura_garantia }}</span>
+          <b>TOTAL COBERTURA:</b> S/. <span id="total_cobertura_cliente">{{ $credito->monto_cobertura_garantia }}</span>
       </span>
       @if($view_detalle!='false')
       <br>
@@ -89,7 +89,7 @@
             let valor_mercado = $(this).find('td[valor_mercado]').attr('value');
             let valor_comercial = $(this).find('td[valor_comercial]').attr('value');
             let valor_realizacion = $(this).find('td[valor_realizacion]').attr('value');
-            let estado_check = $(this).find('td[estado_check] > div > input:checkbox:checked').val();
+            let estado_check = $(this).find('td[estado_check] > label > input:checkbox:checked').val();
             
             if(estado_check == 'on'){
               
@@ -112,7 +112,7 @@
     let monto_cobertura = 0;
     $("table[garantias] > tbody > tr").each(function() {
       let valor_realizacion = $(this).find('td[valor_realizacion]').attr('value');
-      let estado_check = $(this).find('td[estado_check] > div > input:checkbox:checked').val();
+      let estado_check = $(this).find('td[estado_check] > label > input:checkbox:checked').val();
       let idgarantia = parseInt($(this).attr('idgarantia'));
       if(estado_check == 'on' && idgarantia > 0){
         monto_cobertura += parseFloat(valor_realizacion);

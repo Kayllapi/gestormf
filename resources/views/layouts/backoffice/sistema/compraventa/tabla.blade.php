@@ -12,7 +12,7 @@
             </h5>
             <div class="row">
                 <div class="col-sm-12">
-                    <form action="javascript:;" id="form_movimientointernodinero_retiro1"> 
+                    <form action="javascript:;" id="form_compra"> 
                         <div class="modal-body">
                             <div class="row ">
                                 <div class="col-sm-2">
@@ -74,28 +74,35 @@
                                 padding: 0;
                                 margin-top: 5px;
                                 overflow-x: scroll;">
-                            <table class="table table-striped table-hover table-bordered"
+                            <table class="table table-striped table-hover"
                                 id="table-lista-compra"
                                 style="table-layout: fixed; width: 100%;">
                                 <thead class="table-dark" style="position: sticky;top: 0;">
                                     <tr style="font-weight: bold;">
                                         <td width="20px;">E</td>
                                         <td width="90px;">Código</td>
-                                        <td width="180px;">Descripción</td>
-                                        <td width="80px;">Serie</td>
-                                        <td width="80px;">Tipo</td>
-                                        <td width="180px;">Fecha Registro</td>
+                                        <td width="190px;">Descripción</td>
+                                        <td width="155px;">Fecha Registro</td>
+                                        <td width="120px;">Serie/Motor/Nro.P.</td>
+                                        <td width="80px;">Chasis</td>
+                                        <td width="90px;">Modelo/T.</td>
+                                        <td width="90px;">Otros</td>
                                         <td width="80px;">Valor Compra</td>
                                         <td width="80px;">Valor Comercial</td>
-                                        <td width="80px;">Chasis</td>
+                                        <td width="80px;">Estado</td>
+                                        <td width="80px;">Color</td>
+                                        <td width="80px;">Año de Fabricación</td>
+                                        <td width="80px;">Año de Compra</td>
+                                        <td width="80px;">Placa del Vehículo</td>
                                         <td width="80px;">Origen</td>
-                                        <td width="80px;">Ficha</td>
+                                        <td width="150px;">N° Ficha/Comprobante</td>
                                         <td width="180px;">Vendedor</td>
-                                        <td width="80px;">DNI</td>
+                                        <td width="90px;">RUC/DNI/CE</td>
                                         <td width="80px;">Lugar de Pago</td>
                                         <td width="90px;">Validación</td>
                                         <td width="80px;">Banco</td>
-                                        <td width="110px;">Nro. Operación</td>
+                                        <td width="110px;">N° Operación</td>
+                                        <td width="90px;">Responsable</td>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -109,12 +116,18 @@
                                                 <td>{{ $value->idestadocvcompra == 1 ? 'P' : 'V' }}</td>
                                                 <td>{{ $value->idestadocvcompra == 1 ? 'CB' : 'VB' }}{{$value->codigo}}</td>
                                                 <td>{{ Str::limit($value->descripcion, 25) }}</td>
-                                                <td>{{ $value->serie_motor_partida }}</td>
-                                                <td>{{ $value->modelo_tipo }}</td>
                                                 <td>{{ date_format(date_create($value->fecharegistro),"d-m-Y H:i:s A") }}</td>
+                                                <td>{{ $value->serie_motor_partida }}</td>
+                                                <td>{{ $value->chasis }}</td>
+                                                <td>{{ $value->modelo_tipo }}</td>
+                                                <td>{{ $value->otros }}</td>
                                                 <td style="text-align: right;">{{ $value->valorcompra }}</td>
                                                 <td style="text-align: right;">{{ $value->valorcomercial }}</td>
-                                                <td>{{ $value->chasis }}</td>
+                                                <td>{{ $value->estado }}</td>
+                                                <td>{{ $value->color }}</td>
+                                                <td>{{ $value->fabricacion }}</td>
+                                                <td>{{ $value->compra }}</td>
+                                                <td>{{ $value->placa }}</td>
                                                 <td>{{ $value->idorigen == '1' ? 'SERFIP' : 'OTROS' }}</td>
                                                 <td>{{ $value->numeroficha }}</td>
                                                 <td>{{ Str::limit($value->vendedor_nombreapellidos, 25) }}</td>
@@ -122,13 +135,14 @@
                                                 <td>{{ $value->compra_idformapago == '1' ? 'CAJA' : 'BANCO' }}</td>
                                                 <td>
                                                     @if ($value->compra_idformapago == '2')
-                                                        <button type="button" class="btn btn-primary">
+                                                        <button type="button" class="btn btn-success" onclick="validar_compra({{ $value->id }})">
                                                             <i class="fa-solid fa-check"></i> Validar
                                                         </button>
                                                     @endif
                                                 </td>
                                                 <td>{{ $value->compra_banco }}</td>
                                                 <td>{{ $value->compra_numerooperacion }}</td>
+                                                <td>{{ $value->responsablecodigo }}</td>
                                             </tr>
                                         @endforeach
                                     @endif
@@ -141,7 +155,7 @@
                                     TOTAL: <span id="total_compra" style="font-weight: normal;">{{ number_format($cvcompras->sum('valorcompra'), 2, '.', '') ?? 0 }}</span>
                                 </div>
                                 <div class="col-9 text-end">
-                                    <button type="button" class="btn btn-success" onclick="editar_compra()">
+                                    <button type="button" class="btn btn-success" onclick="validar_editcompra()">
                                         <i class="fa-solid fa-pencil"></i> Editar
                                     </button>
                                     <button type="button" class="btn btn-danger" onclick="eliminar_compra()">
@@ -166,7 +180,7 @@
             </h5>
             <div class="row">
                 <div class="col-sm-12">
-                    <form action="javascript:;" id="form_movimientointernodinero_retiro1"> 
+                    <form action="javascript:;" id="form_venta"> 
                         <div class="modal-body">
                             <div class="row ">
                                 <div class="col-sm-2">
@@ -223,14 +237,14 @@
                                 padding: 0;
                                 margin-top: 5px;
                                 overflow-x: scroll;">
-                            <table class="table table-striped table-hover table-bordered"
+                            <table class="table table-striped table-hover"
                                 id="table-lista-venta"
                                 style="table-layout: fixed; width: 100%;">
                                 <thead class="table-dark" style="position: sticky;top: 0;">
                                     <tr style="font-weight: bold;">
                                         <td width="90px">Código</td>
                                         <td width="180px">Comprador</td>
-                                        <td width="80px">DNI</td>
+                                        <td width="90px">RUC/DNI/CE</td>
                                         <td width="180px">Fecha Registro</td>
                                         <td width="120px">Precio Venta Descuento</td>
                                         <td width="80px">Monto de Venta</td>
@@ -295,6 +309,22 @@
         $('#table-lista-venta tbody tr').removeClass('selected');
         $row.addClass('selected');
     }
+    function validar_compra(id) {
+        const url = `{{ url('backoffice/'.$tienda->id) }}/compraventa/${id}/edit?view=edit_validar_compra`;
+        modal({ route: url, size: 'modal-sm' });
+    }
+    function validar_editcompra() {
+        const $selectedRow = $('#table-lista-compra tbody tr.selected');
+        const id = $selectedRow.data('valor-columna');
+
+        if (!id) {
+            alert('Debe seleccionar un dato.');
+            return;
+        }
+
+        const url = `{{ url('backoffice/'.$tienda->id) }}/compraventa/${id}/edit?view=edit_validar_editcompra`;
+        modal({ route: url, size: 'modal-sm' });
+    }
     function editar_compra() {
         const $selectedRow = $('#table-lista-compra tbody tr.selected');
         const id = $selectedRow.data('valor-columna');
@@ -304,7 +334,7 @@
             return;
         }
 
-        const url = `{{ url('backoffice/'.$tienda->id) }}/compraventa/${id}/edit?view=editar_compra`;
+        const url = `{{ url('backoffice/'.$tienda->id) }}/compraventa/${id}/edit?view=edit_compra`;
         modal({ route: url });
     }
     function eliminar_compra() {

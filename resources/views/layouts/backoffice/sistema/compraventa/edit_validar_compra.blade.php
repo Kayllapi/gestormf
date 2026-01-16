@@ -1,22 +1,21 @@
 <form action="javascript:;" 
     onsubmit="callback({
         route: '{{ url('backoffice/'.$tienda->id.'/compraventa/'.$cvcompra->id) }}',
-        method: 'DELETE',
+        method: 'PUT',
         data:{
-            view: 'eliminar_compra'
+            view: 'update_validar_compra'
         }
     },
     function(resultado){
-        $('#modal-close-compra-eliminar').click(); 
-        search_compra();
+        $('#modal-close-compra-validar').click(); 
     },this)">
     <div class="modal-header">
-        <h5 class="modal-title">Eliminar Compra</h5>
-        <button type="button" class="btn-close" id="modal-close-compra-eliminar" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h5 class="modal-title">Validar Compra</h5>
+        <button type="button" class="btn-close" id="modal-close-compra-validar" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <div class="modal-body">
         <div class="alert alert-danger">
-            <i class="fa-solid fa-triangle-exclamation"></i> ¿Esta seguro de eliminar la compra?<br>
+            <i class="fa-solid fa-triangle-exclamation"></i> ¿Está seguro de validar la compra por Banco?<br>
             <b>"CB{{$cvcompra->codigo}}"</b>
         </div>
         <div class="mt-2 bg-primary subtitulo">Aprobación</div>
@@ -29,14 +28,15 @@
                 @endforeach
             </select>
         </div>
+        <input type="hidden" id="idpermiso">
         <div class="mb-1">
             <label>Contraseña *</label>
             <input type="password" class="form-control" id="responsableclave">
         </div>
     </div>
     <div class="modal-footer">
-        <button type="submit" class="btn btn-danger">
-            <i class="fa-solid fa-trash" style="color:#000 !important; font-weight: bold;"></i> Eliminar
+        <button type="submit" class="btn btn-primary">
+            <i class="fa-solid fa-check" style="color:#000 !important; font-weight: bold;"></i> Validar
         </button>
     </div>
 </form>   

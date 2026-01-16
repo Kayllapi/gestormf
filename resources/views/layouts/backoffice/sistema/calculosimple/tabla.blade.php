@@ -77,7 +77,7 @@
                     </div>
                   </div>
                   <div class="row">
-                    <label class="col-sm-5 col-form-label" style="text-align: right;">Servicios/Otros (%):</label>
+                    <label class="col-sm-5 col-form-label" style="text-align: right;">C. Ss./Otros (%):</label>
                     <div class="col-sm-7">
                       <input type="number" step="any" class="form-control" id="comision" value="" disabled>
                     </div>
@@ -139,7 +139,7 @@
                 <th>Capital</th>
                 <th>Amortización</th>
                 <th>Interes</th>
-                <th>Comisión de Ss.</th>
+                <th>C. Ss./Otros (%)</th>
                 <th>Cargo</th>
                 <th>Cuota</th>
               </thead>

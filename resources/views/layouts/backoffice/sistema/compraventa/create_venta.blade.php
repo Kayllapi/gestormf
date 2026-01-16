@@ -22,24 +22,35 @@
                 <input type="text" class="form-control" id="comprador_nombreapellidos">
             </div>
             <div class="col-sm-12">
-                <label class="col-form-label" style="text-align: right;">DNI (Comprador) *</label>
+                <label class="col-form-label" style="text-align: right;">RUC/DNI/CE (Comprador) *</label>
                 <input type="text" class="form-control" id="comprador_dni">
             </div>
             <div class="col-sm-12">
-                <label class="col-form-label" style="text-align: right;">Precio de Compra</label>
-                <input type="number" class="form-control" id="venta_precio_compra" value="{{ $cvcompra->valorcompra }}" disabled>
-            </div>
-            <div class="col-sm-12">
                 <label class="col-form-label" style="text-align: right;">Precio de Venta</label>
-                <input type="number" class="form-control" id="venta_precio_venta">
+                <input type="number"
+                    class="form-control"
+                    style="background-color: #cfecc5;"
+                    id="venta_precio_venta"
+                    value="{{ $cvcompra->valorcomercial }}" disabled>
+            </div>
+            @php
+                $descuento = configuracion($tienda->id,'valor_descuento')['valor'];
+                $precio_venta_descuento = $cvcompra->valorcomercial - ($cvcompra->valorcomercial * $descuento / 100);
+            @endphp
+            <div class="col-sm-12">
+                <label class="col-form-label" style="text-align: right;">Precio de Venta con Descuento</label>
+                <input type="number"
+                    class="form-control"
+                    style="background-color: #cfecc5;"
+                    id="venta_precio_venta_descuento"
+                    value="{{ number_format($precio_venta_descuento, 2, '.', '') }}" disabled>
             </div>
             <div class="col-sm-12">
-                <label class="col-form-label" style="text-align: right;">Precio de Venta con Descuento *</label>
-                <input type="number" class="form-control" id="venta_precio_venta_descuento">
-            </div>
-            <div class="col-sm-12">
-                <label class="col-form-label" style="text-align: right;">Monto de Venta *</label>
-                <input type="number" class="form-control" id="venta_montoventa">
+                <label class="col-form-label" style="text-align: right;">Precio de Venta Final *</label>
+                <input type="number"
+                    class="form-control"
+                    style="background-color: #cfecc5;"
+                    id="venta_montoventa">
             </div>
             <div class="col-sm-12">
                 <div class="row">
@@ -47,11 +58,7 @@
                         <input type="radio" name="venta_idformapago" id="venta_idformapago" value="1" checked> Caja
                         <input type="radio" name="venta_idformapago" id="venta_idformapago" value="2"> Banco
                     </div>
-                    <div class="col-sm-12">
-                        <label class="col-form-label" style="text-align: right;">N° Operación</label>
-                        <input type="text" class="form-control" id="venta_numerooperacion" disabled>
-                    </div>
-                    <div class="col-sm-12">
+                    <div class="col-sm-6">
                         <label class="col-form-label" style="text-align: right;">Bancos</label>
                         <select class="form-control" id="venta_idbanco" disabled>
                             <option></option>
@@ -59,6 +66,10 @@
                                 <option value="{{$value->id}}">{{$value->nombre}}</option>
                             @endforeach
                         </select>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-form-label" style="text-align: right;">N° Operación</label>
+                        <input type="text" class="form-control" id="venta_numerooperacion" disabled>
                     </div>
                 </div>
             </div>

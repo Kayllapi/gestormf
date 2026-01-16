@@ -211,11 +211,11 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
               height: 100%;
           }
           .modal-content  .modal-body {
-              height: calc(100vh - 38px);;
+              /*height: calc(100vh - 38px);*/
           }
           .modal-content  .modal-body > iframe.modal-1 {
               width: 100%;
-              height: calc(100vh - 54px);;
+              height: calc(100vh - 54px);
           }
         </style>
 </head>

@@ -4,18 +4,17 @@
         route: '{{ url('backoffice/'.$tienda->id.'/compraventa/'.$cvcompra->id) }}',
         method: 'PUT',
         data:{
-            view: 'editar_compra',
+            view: 'update_compra',
         }
     },
     function(resultado){
         $('#modal-close-edit-compraventa').click();
-        search_compra();
     },this)">
     <div class="modal-header">
         <h1 class="modal-title">Editar Compra de Bienes</h1>
         <button type="button" class="btn-close" id="modal-close-edit-compraventa" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
-    <div class="modal-body p-1">
+    <div class="modal-body">
         <div class="row">
             <label class="col-sm-4 col-form-label" style="text-align: right;">Agencia *</label>
             <div class="col-sm-8">
@@ -88,7 +87,7 @@
                 <div class="row">
                     <label class="col-sm-6 col-form-label" style="text-align: left;">Valor Compra (S/.) *</label>
                     <div class="col-sm-6">
-                        <input type="number" step="any" class="form-control" id="valorcompra" value="{{$cvcompra->valorcompra}}">
+                        <input type="number" step="any" class="form-control" id="valorcompra" value="{{$cvcompra->valorcompra}}" disabled>
                     </div>
                 </div>
             </div>
@@ -98,7 +97,7 @@
                         Valor Comercial <span style="color: #c40000;">(Mínimo {{ configuracion($tienda->id,'margen_previsto')['valor'] }}% del V.Compra)</span> *
                     </label>
                     <div class="col-sm-6">
-                        <input type="number" step="any" class="form-control" id="valorcomercial" value="{{$cvcompra->valorcomercial}}" disabled>
+                        <input type="number" step="any" class="form-control" id="valorcomercial" value="{{$cvcompra->valorcomercial}}">
                     </div>
                 </div>
             </div>
@@ -107,7 +106,7 @@
                 <input type="text" class="form-control" id="vendedor_nombreapellidos" value="{{$cvcompra->vendedor_nombreapellidos}}" disabled>
             </div>
             <div class="col-sm-6">
-                <label class="col-form-label" style="text-align: right;">DNI (Vendedor) *</label>
+                <label class="col-form-label" style="text-align: right;">RUC/DNI/CE (Vendedor) *</label>
                 <input type="text" class="form-control" id="vendedor_dni" value="{{$cvcompra->vendedor_dni}}" disabled>
             </div>
             <div class="col-sm-3">
@@ -129,23 +128,23 @@
                         <input type="radio" name="compra_idformapago" id="compra_idformapago" value="2" @if($cvcompra->compra_idformapago == 2) checked @endif disabled> Banco
                     </div>
                     <div class="col-sm-12">
-                        <label class="col-form-label" style="text-align: right;">N° Operación</label>
-                        <input type="text"
-                            class="form-control"
-                            id="compra_numerooperacion"
-                            value="{{$cvcompra->compra_numerooperacion}}"
-                            @if($cvcompra->compra_idformapago == 1) disabled @endif>
-                    </div>
-                    <div class="col-sm-12">
                         <label class="col-form-label" style="text-align: right;">Bancos</label>
                         <select class="form-control"
                             id="compra_idbanco"
-                            @if($cvcompra->compra_idformapago == 1) disabled @endif>
+                            disabled>
                             <option></option>
                             @foreach($bancos as $value)
                                 <option value="{{$value->id}}">{{$value->nombre}}</option>
                             @endforeach
                         </select>
+                    </div>
+                    <div class="col-sm-12">
+                        <label class="col-form-label" style="text-align: right;">N° Operación</label>
+                        <input type="text"
+                            class="form-control"
+                            id="compra_numerooperacion"
+                            value="{{$cvcompra->compra_numerooperacion}}"
+                            disabled>
                     </div>
                 </div>
             </div>

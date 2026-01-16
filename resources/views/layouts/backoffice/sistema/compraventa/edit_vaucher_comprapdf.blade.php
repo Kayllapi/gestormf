@@ -26,60 +26,15 @@
 </head>
 <body>
     <div class="ticket_contenedor">
-        <div class="cabecera">{{ $tienda->nombre }}</div>
-        <div class="cabecera">{{ $tienda->direccion }}</div>
+        <div class="cabecera">{{ $tienda->ticket_nombre }}</div>
+        <div class="cabecera">{{ $tienda->ticket_direccion }}</div>
         <div class="cabecera">{{ $tienda->nombreagencia }}</div>
         <div class="linea"></div>
-        <div class="titulo"><b>COMPRA</b></div>  
+        <div class="titulo" style="margin-top:5px;"><b>COMPRA</b></div>  
         <table style="width:100%;">
             <tr>
-                <td style="width:118px;">
-                    <b>AyN PROPIETARIO</b>
-                </td>
-                <td style="width:1px;">
-                    <b>:</b>
-                </td>
-                <td>{{ $cvcompra->vendedor_nombreapellidos }}</td>
-            </tr>
-            <tr>
-                <td>
-                    <b>DNI</b>
-                </td>
-                <td style="width:1px;">
-                    <b>:</b>
-                </td>
-                <td>{{ $cvcompra->vendedor_dni }}</td>
-            </tr>
-            <tr>
-                <td>
-                    <b>COD</b>
-                </td>
-                <td style="width:1px;">
-                    <b>:</b>
-                </td>
-                <td>{{ $cvcompra->idestadocvcompra == 1 ? 'CB' : 'VB' }}{{ $cvcompra->codigo }}</td>
-            </tr>
-            <tr>
-                <td>
-                    <b>DESCRIPCION</b>
-                </td>
-                <td style="width:1px;">
-                    <b>:</b>
-                </td>
-                <td>{{ $cvcompra->descripcion }}</td>
-            </tr>
-            <tr>
-                <td>
-                    <b>Serie/Motor/Nro Partida</b>
-                </td>
-                <td style="width:1px;">
-                    <b>:</b>
-                </td>
-                <td>{{ $cvcompra->serie_motor_partida }}</td>
-            </tr>
-            <tr>
-                <td>
-                    <b>FECHA</b>
+                <td style="width:105px;">
+                    <b>Fecha</b>
                 </td>
                 <td style="width:1px;">
                     <b>:</b>
@@ -88,7 +43,52 @@
             </tr>
             <tr>
                 <td>
-                    <b>PAGO</b>
+                    <b>A y N Propietario</b>
+                </td>
+                <td style="width:1px;">
+                    <b>:</b>
+                </td>
+                <td>{{ $cvcompra->vendedor_nombreapellidos }}</td>
+            </tr>
+            <tr>
+                <td>
+                    <b>RUC/DNI/CE</b>
+                </td>
+                <td style="width:1px;">
+                    <b>:</b>
+                </td>
+                <td>{{ $cvcompra->vendedor_dni }}</td>
+            </tr>
+            <tr>
+                <td>
+                    <b>Cod. Operación</b>
+                </td>
+                <td style="width:1px;">
+                    <b>:</b>
+                </td>
+                <td>{{ $cvcompra->idestadocvcompra == 1 ? 'CB' : 'VB' }}{{ $cvcompra->codigo }}</td>
+            </tr>
+            <tr>
+                <td>
+                    <b>Descripción</b>
+                </td>
+                <td style="width:1px;">
+                    <b>:</b>
+                </td>
+                <td>{{ $cvcompra->descripcion }}</td>
+            </tr>
+            <tr>
+                <td>
+                    <b>Serie/Motor/N° Partida</b>
+                </td>
+                <td style="width:1px;">
+                    <b>:</b>
+                </td>
+                <td>{{ $cvcompra->serie_motor_partida }}</td>
+            </tr>
+            <tr>
+                <td>
+                    <b>Lugar de pago</b>
                 </td>
                 <td style="width:1px;">
                     <b>:</b>
@@ -107,7 +107,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <b>N° Op./Dt.</b>
+                        <b>N° Oper./Desc.</b>
                     </td>
                     <td style="width:1px;">
                         <b>:</b>
@@ -119,8 +119,8 @@
         <div class="linea"></div>
         <table style="width:100%;">
             <tr>
-                <td style="width:65px;">
-                    <b>TOTAL PAGADO</b>
+                <td style="width:105px;">
+                    <b>TOTAL RECIBIDO</b>
                 </td>
                 <td style="width:1px;">
                     <b>:</b>
@@ -148,7 +148,7 @@
                 <td style="width:1px;">
                     <b>:</b>
                 </td>
-                <td></td>
+                <td>{{ $cvcompra->responsablecodigo }}</td>
             </tr>
             <tr>
                 <td></td>

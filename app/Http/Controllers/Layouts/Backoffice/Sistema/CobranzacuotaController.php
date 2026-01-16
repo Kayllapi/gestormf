@@ -1039,7 +1039,7 @@ class CobranzacuotaController extends Controller
                 <th>Fecha</th>
                 <th>Amort.</th>
                 <th>Interes</th>
-                <th>C. Ss./ <br>Desgr.</th>
+                <th>C. Ss./ <br>Otros.</th>
                 <th>Cargo</th>
                 <th>Cuota</th>
                 <th><span style="background-color: #cd0909 !important;font-weight: bold;">Atraso</span></th>

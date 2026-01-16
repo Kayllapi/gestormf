@@ -17,10 +17,17 @@ class CompraventaController extends Controller
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
         $agencias = DB::table('tienda')->get();
         $cvcompras = DB::table('cvcompra')
-            ->where('idtienda',$idtienda)
-            ->where('idestadoeliminado',1)
-            ->where('idestadocvcompra',1)
-            ->orderByDesc('fecharegistro')
+            ->join('estado_garantia','estado_garantia.id','cvcompra.idestado_garantia')
+            ->join('users','users.id','cvcompra.idresponsable')
+            ->where('cvcompra.idtienda',$idtienda)
+            ->where('cvcompra.idestadoeliminado',1)
+            ->where('cvcompra.idestadocvcompra',1)
+            ->select(
+                'cvcompra.*',
+                'estado_garantia.nombre as estado',
+                'users.codigo as responsablecodigo'
+            )
+            ->orderByDesc('cvcompra.fecharegistro')
             ->get();
         $cvventas = DB::table('cvventa')
             ->where('idtienda',$idtienda)
@@ -117,6 +124,15 @@ class CompraventaController extends Controller
             $compra_banco = $banco->nombre ?? '';
             $compra_cuenta = $banco->cuenta ?? '';
 
+            // Responsable
+            $responsable = DB::table('users')
+                ->join('users_permiso','users_permiso.idusers','users.id')
+                ->where('users.id',auth()->user()->id)
+                ->select('users.*','permiso.nombre as nombrepermiso', 'permiso.id as idpermiso')
+                ->first();
+            $compra_responsable = $responsable->nombrecompleto ?? '';
+
+
             DB::table('cvcompra')->insert([
                 'idtipogarantia' => request('idtipogarantia'),
                 'fecharegistro' => now(),
@@ -148,8 +164,8 @@ class CompraventaController extends Controller
                 'validar_responsable' => 0,
                 'validar_responsable_permiso' => 0,
                 'idcvarqueocaja_cierre' => 0,
-                'idresponsable' => auth()->user()->id,
-                'idresponsable_permiso' => 0,
+                'idresponsable' => $responsable->id,
+                'idresponsable_permiso' => $responsable->idpermiso,
                 'eliminado_idresponsable' => 0,
                 'eliminado_idresponsable_permiso' => 0,
                 'idestadocvcompra' => 1,
@@ -165,13 +181,11 @@ class CompraventaController extends Controller
             $rules = [
                 'comprador_nombreapellidos' => 'required',
                 'comprador_dni' => 'required',
-                'venta_precio_venta_descuento' => 'required',
                 'venta_montoventa' => 'required',
             ];
             $messages = [
                 'comprador_nombreapellidos.required' => 'El "Apellidos y Nombres (Vendedor)" es Obligatorio.',
                 'comprador_dni.required' => 'El "DNI (Vendedor)" es Obligatorio.',
-                'venta_precio_venta_descuento.required' => 'El "Precio de Venta con Descuento" es Obligatorio.',
                 'venta_montoventa.required' => 'El "Monto de Venta" es Obligatorio.',
             ];
 
@@ -183,6 +197,13 @@ class CompraventaController extends Controller
             }
 
             $this->validate($request,$rules,$messages);
+
+            if (request("venta_montoventa") < request('venta_precio_venta_descuento')) {
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'El "Monto de Venta" debe ser >= al "Precio de Venta con Descuento".'
+                ]);
+            }
 
             $cvcompra = DB::table('cvcompra')->whereId(request('idcvcompra'))->first();
 
@@ -229,25 +250,32 @@ class CompraventaController extends Controller
             $where = [];
 
             if(request('id_agencia_compra') != ''){
-                $where[] = ['idtienda', '=', request('id_agencia_compra')];
+                $where[] = ['cvcompra.idtienda', '=', request('id_agencia_compra')];
             }else {
-                $where[] = ['idtienda', '=', $idtienda];
+                $where[] = ['cvcompra.idtienda', '=', $idtienda];
             }
             if(request('fecha_inicio_compra') != ''){
-                $where[] = ['fecharegistro','>=',request('fecha_inicio_compra').' 00:00:00'];
+                $where[] = ['cvcompra.fecharegistro','>=',request('fecha_inicio_compra').' 00:00:00'];
             }
             if(request('fecha_fin_compra') != ''){
-                $where[] = ['fecharegistro','<=',request('fecha_fin_compra').' 23:59:59'];
+                $where[] = ['cvcompra.fecharegistro','<=',request('fecha_fin_compra').' 23:59:59'];
             }
 
             if (request('check_compra') == '0') {
-                $where[] = ['idestadocvcompra', '1'];
+                $where[] = ['cvcompra.idestadocvcompra', '1'];
             }
 
             $cvcompras = DB::table('cvcompra')
+                ->join('estado_garantia','estado_garantia.id','cvcompra.idestado_garantia')
+                ->join('users','users.id','cvcompra.idresponsable')
                 ->where($where)
-                ->where('idestadoeliminado',1)
-                ->orderByDesc('fecharegistro')
+                ->where('cvcompra.idestadoeliminado',1)
+                ->select(
+                    'cvcompra.*',
+                    'estado_garantia.nombre as estado',
+                    'users.codigo as responsablecodigo'
+                )
+                ->orderByDesc('cvcompra.fecharegistro')
                 ->get();
 
             $total = 0;
@@ -258,7 +286,7 @@ class CompraventaController extends Controller
                 $lugar_pago = $value->compra_idformapago == '1' ? 'CAJA' : 'BANCO';
                 $validacion = '';
                 if ($value->compra_idformapago == '2') {
-                    $validacion = '<button type="button" class="btn btn-primary">
+                    $validacion = '<button type="button" class="btn btn-success" onclick="validar_compra('.$value->id.')">
                                     <i class="fa-solid fa-check"></i> Validar
                                 </button>';
                 }
@@ -273,12 +301,18 @@ class CompraventaController extends Controller
                             <td>{$estado}</td>
                             <td>{$prefijo}{$value->codigo}</td>
                             <td>{$descripcion}</td>
-                            <td>{$value->serie_motor_partida}</td>
-                            <td>{$value->modelo_tipo}</td>
                             <td>{$fecharegistro}</td>
+                            <td>{$value->serie_motor_partida}</td>
+                            <td>{$value->chasis}</td>
+                            <td>{$value->modelo_tipo}</td>
+                            <td>{$value->otros}</td>
                             <td style='text-align: right;'>{$value->valorcompra}</td>
                             <td style='text-align: right;'>{$value->valorcomercial}</td>
-                            <td>{$value->chasis}</td>
+                            <td>{$value->estado}</td>
+                            <td>{$value->color}</td>
+                            <td>{$value->fabricacion}</td>
+                            <td>{$value->compra}</td>
+                            <td>{$value->placa}</td>
                             <td>{$origen}</td>
                             <td>{$value->numeroficha}</td>
                             <td>{$vendedor}</td>
@@ -287,6 +321,7 @@ class CompraventaController extends Controller
                             <td>{$validacion}</td>
                             <td>{$value->compra_banco}</td>
                             <td>{$value->compra_numerooperacion}</td>
+                            <td>{$value->responsablecodigo}</td>
                         </tr>";
                 $total = $total+$value->valorcompra;
             }
@@ -361,7 +396,7 @@ class CompraventaController extends Controller
     {
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
 
-        if (request('view') == 'editar_compra') {
+        if (request('view') == 'edit_compra') {
             $cvcompra = DB::table('cvcompra')->whereId($id)->first();
             $agencias = DB::table('tienda')->get();
             $tipo_garantia = DB::table('tipo_garantia')->get();
@@ -376,6 +411,36 @@ class CompraventaController extends Controller
                 'bancos',
                 'cvcompra',
             ));
+        } elseif (request('view') == 'edit_validar_compra') {
+            $cvcompra = DB::table('cvcompra')->whereId($id)->first();
+            $usuarios = DB::table('users')
+                ->join('users_permiso','users_permiso.idusers','users.id')
+                ->join('permiso','permiso.id','users_permiso.idpermiso')
+                ->whereIn('users_permiso.idpermiso',[1,2])
+                ->where('users_permiso.idtienda',$idtienda)
+                ->select('users.*','permiso.nombre as nombrepermiso','permiso.id as idpermiso')
+                ->get();
+
+            return view(sistema_view().'/compraventa/edit_validar_compra', compact(
+                'tienda',
+                'cvcompra',
+                'usuarios',
+            ));
+        } elseif (request('view') == 'edit_validar_editcompra') {
+            $cvcompra = DB::table('cvcompra')->whereId($id)->first();
+            $usuarios = DB::table('users')
+                ->join('users_permiso','users_permiso.idusers','users.id')
+                ->join('permiso','permiso.id','users_permiso.idpermiso')
+                ->whereIn('users_permiso.idpermiso',[1,2])
+                ->where('users_permiso.idtienda',$idtienda)
+                ->select('users.*','permiso.nombre as nombrepermiso','permiso.id as idpermiso')
+                ->get();
+
+            return view(sistema_view().'/compraventa/edit_validar_editcompra', compact(
+                'tienda',
+                'cvcompra',
+                'usuarios',
+            ));
         } elseif (request('view') == 'vaucher_compra') {
             $cvcompra = DB::table('cvcompra')->whereId($id)->first();
 
@@ -384,7 +449,14 @@ class CompraventaController extends Controller
                 'cvcompra',
             ));
         } elseif (request('view') == 'edit_vaucher_comprapdf' ) {
-            $cvcompra = DB::table('cvcompra')->whereId($id)->first();
+            $cvcompra = DB::table('cvcompra')
+                ->join('users','users.id','cvcompra.idresponsable')
+                ->where('cvcompra.id',$id)
+                ->select(
+                    'cvcompra.*',
+                    'users.codigo as responsablecodigo'
+                )
+                ->first();
             $pdf = PDF::loadView(sistema_view().'/compraventa/edit_vaucher_comprapdf', compact(
                 'tienda',
                 'cvcompra',
@@ -398,7 +470,7 @@ class CompraventaController extends Controller
                 ->join('permiso','permiso.id','users_permiso.idpermiso')
                 ->whereIn('users_permiso.idpermiso',[1,2])
                 ->where('users_permiso.idtienda',$idtienda)
-                ->select('users.*','permiso.nombre as nombrepermiso')
+                ->select('users.*','permiso.nombre as nombrepermiso', 'permiso.id as idpermiso')
                 ->get();
 
             return view(sistema_view().'/compraventa/delete_compra', compact(
@@ -436,7 +508,7 @@ class CompraventaController extends Controller
                 ->join('permiso','permiso.id','users_permiso.idpermiso')
                 ->whereIn('users_permiso.idpermiso',[1,2])
                 ->where('users_permiso.idtienda',$idtienda)
-                ->select('users.*','permiso.nombre as nombrepermiso')
+                ->select('users.*','permiso.nombre as nombrepermiso', 'permiso.id as idpermiso')
                 ->get();
 
             return view(sistema_view().'/compraventa/delete_venta', compact(
@@ -449,7 +521,66 @@ class CompraventaController extends Controller
 
     public function update(Request $request, $idtienda, $id)
     {
-        if (request('view') == 'editar_compra') {
+        if (request('view') == 'update_validar_compra') {
+            $rules = [
+                'idresponsable' => 'required',          
+                'responsableclave' => 'required',                 
+            ];
+            $messages = [
+                'idresponsable.required' => 'El "Responsable" es Obligatorio.',
+                'responsableclave.required' => 'La "Contraseña" es Obligatorio.',
+            ];
+            $this->validate($request,$rules,$messages);
+
+            $usuario = DB::table('users')
+                ->where('users.id', request('idresponsable'))
+                ->where('users.clave', request('responsableclave'))
+                ->first();
+            $idresponsable = 0;
+            if($usuario!=''){
+                $idresponsable = $usuario->id;
+            }else{
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'El usuario y/o la contraseña es incorrecta!!.'
+                ]);
+            }
+
+            DB::table('cvcompra')->whereId($id)->update([
+               'validar_responsable' => $idresponsable,
+               'validar_responsable_permiso' => request('idpermiso'),
+               'validar_fecha' => now(),
+            ]);
+
+            return response()->json([
+                'resultado' => 'CORRECTO',
+                'mensaje' => 'Se ha validado correctamente.',
+            ]);
+        } elseif (request('view') == 'update_validar_editcompra') {
+            $rules = [
+                'idresponsable' => 'required',          
+                'responsableclave' => 'required',                 
+            ];
+            $messages = [
+                'idresponsable.required' => 'El "Responsable" es Obligatorio.',
+                'responsableclave.required' => 'La "Contraseña" es Obligatorio.',
+            ];
+            $this->validate($request,$rules,$messages);
+
+            $usuario = DB::table('users')
+                ->where('users.id', request('idresponsable'))
+                ->where('users.clave', request('responsableclave'))
+                ->first();
+            $idresponsable = 0;
+            if($usuario!=''){
+                $idresponsable = $usuario->id;
+            }else{
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'El usuario y/o la contraseña es incorrecta!!.'
+                ]);
+            }
+        } elseif (request('view') == 'update_compra') {
             $rules = [
                 'idtienda' => 'required',
                 'idtipogarantia' => 'required',
@@ -496,41 +627,7 @@ class CompraventaController extends Controller
             $compra_cuenta = $banco->cuenta ?? '';
 
             DB::table('cvcompra')->whereId($id)->update([
-                'idtipogarantia' => request('idtipogarantia'),
-                'descripcion' => request('descripcion'),
-                'serie_motor_partida' => request('serie_motor_partida'),
-                'chasis' => request('chasis'),
-                'modelo_tipo' => request('modelo_tipo'),
-                'otros' => request('otros'),
-                'idestado_garantia' => request('idestado_garantia'),
-                'color' => request('color'),
-                'fabricacion' => request('fabricacion'),
-                'compra' => request('compra'),
-                'placa' => request('placa'),
-                'valorcompra' => request('valorcompra'),
                 'valorcomercial' => request('valorcomercial'),
-                'accesorio_doc' => '',
-                'detalle_garantia' => '',
-                'vendedor_nombreapellidos' => request('vendedor_nombreapellidos'),
-                'vendedor_dni' => request('vendedor_dni'),
-                'idorigen' => request('idorigen'),
-                'numeroficha' => request('numeroficha'),
-                'compra_numerooperacion' => request('compra_numerooperacion') ?? '',
-                'compra_banco' => $compra_banco,
-                'compra_cuenta' => $compra_cuenta,
-                'compra_idbanco' => request('compra_idbanco') ?? 0,
-                'compra_idformapago' => request('compra_idformapago'),
-                'validar_estado' => 0,
-                'validar_responsable' => 0,
-                'validar_responsable_permiso' => 0,
-                'idcvarqueocaja_cierre' => 0,
-                'idresponsable' => auth()->user()->id,
-                'idresponsable_permiso' => 0,
-                'eliminado_idresponsable' => 0,
-                'eliminado_idresponsable_permiso' => 0,
-                'idestadocvcompra' => 1,
-                'idestadoeliminado' => 1,
-                'idtienda' => request('idtienda'),
             ]);
 
             return response()->json([
@@ -570,6 +667,7 @@ class CompraventaController extends Controller
             DB::table('cvcompra')->whereId($id)->update([
                'fechaeliminado' => now(),
                'eliminado_idresponsable' => $idresponsable,
+               'eliminado_idresponsable_permiso' => request('idpermiso'),
                'idestadoeliminado' => 2,
             ]);
 
@@ -578,7 +676,7 @@ class CompraventaController extends Controller
                 'mensaje' => 'Se ha eliminado correctamente.',
             ]);
         } elseif (request('view') == 'eliminar_venta') {
-            $rules = [     
+            $rules = [
                 'idresponsable' => 'required',          
                 'responsableclave' => 'required',                 
             ];
@@ -605,6 +703,7 @@ class CompraventaController extends Controller
             DB::table('cvventa')->whereId($id)->update([
                'fechaeliminado' => now(),
                'eliminado_idresponsable' => $idresponsable,
+               'eliminado_idresponsable_permiso' => request('idpermiso'),
                'idestadoeliminado' => 2,
             ]);
 

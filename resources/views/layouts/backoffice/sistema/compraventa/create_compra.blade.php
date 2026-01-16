@@ -107,7 +107,7 @@
                 <input type="text" class="form-control" id="vendedor_nombreapellidos">
             </div>
             <div class="col-sm-6">
-                <label class="col-form-label" style="text-align: right;">DNI (Vendedor) *</label>
+                <label class="col-form-label" style="text-align: right;">RUC/DNI/CE (Vendedor) *</label>
                 <input type="text" class="form-control" id="vendedor_dni">
             </div>
             <div class="col-sm-3">
@@ -129,10 +129,6 @@
                         <input type="radio" name="compra_idformapago" id="compra_idformapago" value="2"> Banco
                     </div>
                     <div class="col-sm-12">
-                        <label class="col-form-label" style="text-align: right;">N° Operación</label>
-                        <input type="text" class="form-control" id="compra_numerooperacion" disabled>
-                    </div>
-                    <div class="col-sm-12">
                         <label class="col-form-label" style="text-align: right;">Bancos</label>
                         <select class="form-control" id="compra_idbanco" disabled>
                             <option></option>
@@ -140,6 +136,10 @@
                                 <option value="{{$value->id}}">{{$value->nombre}}</option>
                             @endforeach
                         </select>
+                    </div>
+                    <div class="col-sm-12">
+                        <label class="col-form-label" style="text-align: right;">N° Operación</label>
+                        <input type="text" class="form-control" id="compra_numerooperacion" disabled>
                     </div>
                 </div>
             </div>

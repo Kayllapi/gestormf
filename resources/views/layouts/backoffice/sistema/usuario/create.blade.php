@@ -210,8 +210,8 @@
                     <div class="col-sm-4">
                         <div class="mb-1">
                             <label>Telf./Celular <span class="text-danger">(*)</span>
-                                <a href="javascript:;" onclick="agregar_cliente_financiera('celular-cliente')">
-                                    <i class="fa-solid fa-circle-plus"></i>
+                                <a href="javascript:;" onclick="agregar_cliente_financiera('celular-cliente')" class="btn-info" style="border-radius: 10px;padding: 2px;padding-bottom: 0px;">
+                                    <i class="fa-solid fa-plus" style="color:#000"></i>
                                 </a>
                             </label>
                             <table class="table tabla-interno" id="tabla-celular-cliente">
@@ -284,8 +284,8 @@
                 <div class="col-sm-6">
                     <div class="mb-1">
                         <label>Telf./Celular de PAREJA 
-                            <a href="javascript:;" onclick="agregar_cliente_financiera('celular-pareja')">
-                                <i class="fa-solid fa-circle-plus"></i>
+                            <a href="javascript:;" onclick="agregar_cliente_financiera('celular-pareja')" class="btn-info" style="border-radius: 10px;padding: 2px;padding-bottom: 0px;">
+                                <i class="fa-solid fa-plus" style="color:#000"></i>
                             </a>
                         </label>
                         <table class="table tabla-interno" id="tabla-celular-pareja">
@@ -341,15 +341,15 @@
                     <div class="col-sm-12">
                         <div class="mb-1">
                             <label>Referencia telefónica <span class="text-danger">(*)</span>
-                                <a href="javascript:;" onclick="agregar_referencia()">
-                                    <i class="fa-solid fa-circle-plus"></i>
+                                <a href="javascript:;" onclick="agregar_referencia()" class="btn-info" style="border-radius: 10px;padding: 2px;padding-bottom: 0px;">
+                                    <i class="fa-solid fa-plus"></i>
                                 </a>
                             </label>
                             <table class="table tabla-interno" id="tabla-referencia">
                                 <thead>
-                                    <th class="text-white">Telf./Celular</th>
-                                    <th class="text-white">Nombres y Apellidos</th>
-                                    <th class="text-white">Vinculo Familiar/Personas/Otros</th>
+                                    <th>Telf./Celular</th>
+                                    <th>Nombres y Apellidos</th>
+                                    <th>Vinculo Familiar/Personas/Otros</th>
                                 </thead>
                                 <tbody num="0">
                                 </tbody>
@@ -737,8 +737,8 @@
    $("#idtipoinformacion").on("select2:select", function(e) {
         $('#cont_centrolaboraldepareja').css('display','none');
         $('#cont_negociodepareja').css('display','none');
-        $('#cont_actividadeconomicadelcliente').css('display','none');
-        $('#cont_centrolaboraldelcliente').css('display','none');
+        //$('#cont_actividadeconomicadelcliente').css('display','none');
+        //$('#cont_centrolaboraldelcliente').css('display','none');
         $('div#cont_tipoinformacion').css('display','block');
         /*if($("#idtipoinformacion").val()==1 && $("#idfuenteingreso").val()==1){
             $('#cont_actividadeconomicadelcliente').css('display','block');
@@ -751,13 +751,13 @@
                 $('#cont_centrolaboraldepareja').css('display','block');
             }
           
-            $('#cont_negociodepareja').css('display','block');
+            //$('#cont_negociodepareja').css('display','block');
         }
         if($("#idtipoinformacion").val()==1 && $("#idocupacion_pareja").val()==1){
             if(($("#idestadocivil").val()==2 || $("#idestadocivil").val()==4) && $("#idtipoinformacion").val()==2){
                 $('#cont_centrolaboraldepareja').css('display','block');
             }
-            $('#cont_negociodepareja').css('display','block');
+            //$('#cont_negociodepareja').css('display','block');
         }
         else if($("#idtipoinformacion").val()==2 && $("#idocupacion_pareja").val()==2){
             if($("#idestadocivil").val()==2 || $("#idestadocivil").val()==4){

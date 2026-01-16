@@ -961,9 +961,11 @@ class CreditoController extends Controller
                           if($est_garantia!=''){
                               $html .= '<div '.$color_garantia.'><b>'.$est_garantia.'</b></div>';
                           }elseif($est_garantia==''){
-                            $html .= "<div class='input-group-text'>
-                              <input class='form-check-input mt-0' type='checkbox' {$check_garantia} {$disabled_garantia} >
-                            </div>";
+                            $html .= '
+                              <label class="chk">
+                                  <input type="checkbox" '.$check_garantia.' '.$disabled_garantia.'>
+                                  <span class="checkmark"></span>
+                              </label>';
                           }
                  $html .= "</td>
                         </tr>";
@@ -3301,6 +3303,7 @@ class CreditoController extends Controller
               $garantias_placa = '';
               $garantias_accesorio_doc = '';
               $garantias_detalle_garantia = '';
+              $garantias_idestado_garantia = 0;
               $garantias_idestado_garantia_ref = '';
               $garantias_cobertura = '';
               $garantias_valorcomercial = '';
@@ -3340,14 +3343,15 @@ class CreditoController extends Controller
                   $garantias_placa = $garantias->placa;
                   $garantias_accesorio_doc = $garantias->accesorio_doc;
                   $garantias_detalle_garantia = $garantias->detalle_garantia;
+                  $garantias_idestado_garantia = $garantias->idestado_garantia;
                   $garantias_idestado_garantia_ref = $garantias->idestado_garantia_ref;
                   $garantias_cobertura = $garantias->cobertura;
                   $garantias_valorcomercial = $garantias->valorcomercial;
-                  $garantias_metodo_valorizacion = $metodo_valorizacion->nombre;
+                  $garantias_metodo_valorizacion = $metodo_valorizacion?$metodo_valorizacion->nombre:'';
                   $garantias_tipo_joyas = $tipo_joyas?$tipo_joyas->nombre:'';
-                  $garantias_tarifario_joya = $tarifario_joyas?$tarifario_joyas->nombre:'';
+                  $garantias_tarifario_joya = $tarifario_joyas?$tarifario_joyas->tipo:'';
                   $garantias_descuento_joya = $descuento_joya?$descuento_joya->nombre:'';
-                  $garantias_valorizacion_descuento = $descuento_joya?$descuento_joya->detalle_descuento:'';
+                  $garantias_valorizacion_descuento = $descuento_joya?$descuento_joya->nombre:'';
                 
                   $garantias_valor_mercado = $garantias->valor_mercado;
                   $garantias_valor_comercial = $garantias->valorcomercial;

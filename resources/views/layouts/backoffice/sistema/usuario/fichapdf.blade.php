@@ -487,7 +487,7 @@
             $users_prestamo->db_idubigeo_negocio_pareja!='' or 
             $users_prestamo->referencia_negocio_pareja!='' or 
             $users_prestamo->db_idlocalnegocio_negocio_pareja!='')
-        <h5 class="ficha-titulo">NEGOCIO DE: PAREJA/REPRESENTANTE LEG.</h5>
+        <h5 class="ficha-titulo">NEGOCIO DE PAREJA</h5>
         <table>
             <tbody>
                 <tr>

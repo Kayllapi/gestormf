@@ -10,6 +10,8 @@
     },
     function(resultado){
         $('#modal-close-cvventa').click();
+        search_venta();
+        search_compra();
     },this)">
     <div class="modal-header">
         <h1 class="modal-title">{{ $cvcompra->descripcion }}</h1>
@@ -63,7 +65,7 @@
                         <select class="form-control" id="venta_idbanco" disabled>
                             <option></option>
                             @foreach($bancos as $value)
-                                <option value="{{$value->id}}">{{$value->nombre}}</option>
+                                <option value="{{ $value->id }}">{{ $value->nombre }} - ***{{ substr($value->cuenta, -5) }}</option>
                             @endforeach
                         </select>
                     </div>

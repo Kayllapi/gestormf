@@ -26,61 +26,34 @@
 </head>
 <body>
     <div class="ticket_contenedor">
-        <div class="cabecera">{{ $tienda->ticket_nombre }}</div>
-        <div class="cabecera">{{ $tienda->ticket_direccion }}</div>
-        <div class="cabecera">{{ $tienda->nombreagencia }}</div>
+        <div class="cabecera">{{ $tienda->ticket_nombre }} / {{ $tienda->nombreagencia }} / {{ $cvcompra->responsablecodigo }}</div>
         <div class="linea"></div>
-        <div class="titulo" style="margin-top:5px;"><b>COMPRA</b></div>  
         <table width="100%">
             <tr>
                 <td>
                     <b>BIEN</b>
                 </td>
-                <td style="width:1px;">
-                    <b>:</b>
-                </td>
-                <td>{{ $cvcompra->descripcion }}</td>
             </tr>
             <tr>
-                <td>
-                    <b>APELLIDOS Y NOMBRES</b>
+                <td style="">
+                    <b>A y N (Propietario) :</b> {{ $cvcompra->vendedor_nombreapellidos }}
                 </td>
-                <td style="width:1px;">
-                    <b>:</b>
-                </td>
-                <td>{{ $cvcompra->vendedor_nombreapellidos }}</td>
             </tr><tr>
                 <td>
-                    <b>Código</b>
+                    <b>Código :</b> {{ $cvcompra->idestadocvcompra == 1 ? 'CB' : 'VB' }}{{ $cvcompra->codigo }}
                 </td>
-                <td style="width:1px;">
-                    <b>:</b>
-                </td>
-                <td>{{ $cvcompra->idestadocvcompra == 1 ? 'CB' : 'VB' }}{{ $cvcompra->codigo }}</td>
             </tr><tr>
                 <td>
-                    <b>Descripción</b>
+                    <b>Descripción :</b> {{ $cvcompra->descripcion }}
                 </td>
-                <td style="width:1px;">
-                    <b>:</b>
-                </td>
-                <td>{{ $cvcompra->descripcion }}</td>
             </tr><tr>
                 <td>
-                    <b>Serie/Motor/Nro Partida</b>
+                    <b>Serie/Motor/N° Partida :</b> {{ $cvcompra->serie_motor_partida }}
                 </td>
-                <td style="width:1px;">
-                    <b>:</b>
-                </td>
-                <td>{{ $cvcompra->serie_motor_partida }}</td>
             </tr><tr>
                 <td>
-                    <b>Color</b>
+                    <b>Color :</b> {{ $cvcompra->color }}
                 </td>
-                <td style="width:1px;">
-                    <b>:</b>
-                </td>
-                <td>{{ $cvcompra->color }}</td>
             </tr>
         </table>
     </div>

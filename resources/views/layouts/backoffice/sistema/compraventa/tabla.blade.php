@@ -18,17 +18,19 @@
                                 <div class="col-sm-2">
                                     <a href="javascript:;"
                                         class="btn btn-primary"
-                                        style="font-size: 15px;"
+                                        style="font-size: 15px; background-color: #FFBD81 !important;"
                                         onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/compraventa/create?view=create_compra')}}'})">
                                         Registrar <br> Compra
                                     </a>
+                                </div>
+                                <div class="col-sm-1 mt-3">
                                     <a href="javascript:;" 
                                         class="sistema-font" 
                                         onclick="search_compra()">
                                         <i class="fa-solid fa-arrows-rotate" style="color: #000;"></i>
                                     </a>
-                                </div>
-                                <div class="col-sm-10">
+                                </div> 
+                                <div class="col-sm-9">
                                     <div class="row">
                                         <label class="col-sm-3 col-form-label" style="text-align: right;">Agencia</label>
                                         <div class="col-sm-7">
@@ -199,7 +201,7 @@
                                     <button type="button"
                                         class="btn btn-primary"
                                         onclick="create_venta()"
-                                        style="font-size: 15px;">
+                                        style="font-size: 15px; background-color: #FFBD81 !important;">
                                         Registrar <br> Venta
                                     </button>
                                 </div>

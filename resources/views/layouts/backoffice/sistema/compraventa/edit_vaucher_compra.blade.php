@@ -13,11 +13,11 @@
         <div class="modal-body">
             <div class="col-sm-12 mt-2 text-center">
                 <div class="col-sm-12 mt-2">
-                    <button type="submit" class="btn btn-info" onclick="cargarPdf('ticket1')">
-                        Ticket
+                    <button type="submit" class="btn btn-primary" onclick="cargarPdf('voucher')">
+                        Voucher
                     </button>
-                    <button type="submit" class="btn btn-info" onclick="cargarPdf('ticket2')">
-                        Ticket 2
+                    <button type="submit" class="btn btn-info" onclick="cargarPdf('ticket')">
+                        Ticket
                     </button>
                 </div>
                 <div class="col-sm-12 mt-2">
@@ -36,10 +36,10 @@
 <script>
     function cargarPdf(tipo) {
         const iframe = document.getElementById('iframe_acta_aprobacion');
-        if (tipo === 'ticket1') {
+        if (tipo === 'voucher') {
             iframe.src = "{{ url('/backoffice/'.$tienda->id.'/compraventa/'.$cvcompra->id.'/edit?view=edit_vaucher_comprapdf') }}#zoom=100";
         }
-        if (tipo === 'ticket2') {
+        if (tipo === 'ticket') {
             iframe.src = "{{ url('/backoffice/'.$tienda->id.'/compraventa/'.$cvcompra->id.'/edit?view=edit_vaucher_compra2pdf') }}#zoom=100";
         }
     }

@@ -135,7 +135,7 @@
                         <select class="form-control" id="compra_idbanco" disabled>
                             <option></option>
                             @foreach($bancos as $value)
-                                <option value="{{$value->id}}">{{$value->nombre}}</option>
+                                <option value="{{ $value->id }}">{{ $value->nombre }} - ***{{ substr($value->cuenta, -5) }}</option>
                             @endforeach
                         </select>
                     </div>

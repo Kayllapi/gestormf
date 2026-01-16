@@ -120,7 +120,7 @@
         <table style="width:100%;">
             <tr>
                 <td style="width:105px;">
-                    <b>TOTAL RECIBIDO</b>
+                    <b>TOTAL PAGADO</b>
                 </td>
                 <td style="width:1px;">
                     <b>:</b>

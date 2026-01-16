@@ -241,6 +241,10 @@ class CompraventaController extends Controller
                 'idtienda' => $idtienda,
             ]);
 
+            DB::table('cvcompra')->where('id',$cvcompra->id)->update([
+                'idestadocvcompra' => 2,
+            ]);
+
             return response()->json([
                 'resultado' => 'CORRECTO',
                 'mensaje'   => 'Se ha registrado correctamente.'

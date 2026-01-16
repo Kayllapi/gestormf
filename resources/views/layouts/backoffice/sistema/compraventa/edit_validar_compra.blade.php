@@ -7,7 +7,8 @@
         }
     },
     function(resultado){
-        $('#modal-close-compra-validar').click(); 
+        $('#modal-close-compra-validar').click();
+        search_compra();
     },this)">
     <div class="modal-header">
         <h5 class="modal-title">Validar Compra</h5>

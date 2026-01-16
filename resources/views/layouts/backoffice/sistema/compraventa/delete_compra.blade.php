@@ -29,6 +29,7 @@
                 @endforeach
             </select>
         </div>
+        <input type="hidden" id="idpermiso">
         <div class="mb-1">
             <label>Contraseña *</label>
             <input type="password" class="form-control" id="responsableclave">
@@ -43,6 +44,7 @@
 <script>
     sistema_select2({ input:'#idresponsable' });
     $('#idresponsable').change(function(){
+        console.log($(this).find('option:selected').attr('idpermiso'));
         $('#idpermiso').val($(this).find('option:selected').attr('idpermiso'));
     });
 </script>

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Layouts\Backoffice\Sistema\BackupController;
 
 Route::resource('/', 'Layouts\InicioController');
 //Route::get('/login', 'Layouts\Buscador\Tienda\LoginController@index');
@@ -10,7 +11,9 @@ Route::resource('/inicio', 'Layouts\InicioController');
 Auth::routes(); //Auth::routes(['verify' => true]);
 
 Route::group(['middleware' => ['auth','verified']], function () {
-    
+
+    Route::get('/descargar-bd', [BackupController::class, 'descargar'])->name('bd.descargar');
+
     $modulos = Cache::remember('modulo', 1, function() {
         return DB::table('modulo')
             ->where('modulo.vista','<>','')
@@ -18,7 +21,7 @@ Route::group(['middleware' => ['auth','verified']], function () {
             ->where('modulo.idestado',1)
             ->get();
     });
-  
+
     //BACKOFFICE
     Route::resource('/backoffice/inicio', 'Layouts\Backoffice\InicioController');
     Route::resource('/backoffice/perfil', 'Layouts\Backoffice\PerfilController');

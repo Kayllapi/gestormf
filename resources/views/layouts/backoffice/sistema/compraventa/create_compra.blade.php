@@ -9,7 +9,9 @@
     },
     function(resultado){
         $('#modal-close-compraventa').click();
+        console.log(resultado);
         search_compra();
+        vaucher_compraCreate(resultado.idcvcompra);
     },this)">
     <div class="modal-header">
         <h1 class="modal-title">Registro de Compra de Bienes</h1>

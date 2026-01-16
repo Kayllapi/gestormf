@@ -29,6 +29,7 @@
                 @endforeach
             </select>
         </div>
+        <input type="hidden" id="idpermiso">
         <div class="mb-1">
             <label>Contraseña *</label>
             <input type="password" class="form-control" id="responsableclave">

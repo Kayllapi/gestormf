@@ -22,6 +22,11 @@
                                         onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/compraventa/create?view=create_compra')}}'})">
                                         Registrar <br> Compra
                                     </a>
+                                    <a href="javascript:;" 
+                                        class="sistema-font" 
+                                        onclick="search_compra()">
+                                        <i class="fa-solid fa-arrows-rotate" style="color: #000;"></i>
+                                    </a>
                                 </div>
                                 <div class="col-sm-10">
                                     <div class="row">
@@ -37,7 +42,7 @@
                                         <div class="col-sm-2">
                                             <button type="button"
                                                 class="btn btn-primary"
-                                                onclick="search_compra()"
+                                                onclick="search_compraFiltro()"
                                                 style="font-weight: bold;">
                                                 <i class="fa-solid fa-search"></i> Filtrar
                                             </button>
@@ -99,7 +104,7 @@
                                         <td width="180px;">Vendedor</td>
                                         <td width="90px;">RUC/DNI/CE</td>
                                         <td width="80px;">Lugar de Pago</td>
-                                        <td width="90px;">Validación</td>
+                                        <td width="110px;">Validación</td>
                                         <td width="80px;">Banco</td>
                                         <td width="110px;">N° Operación</td>
                                         <td width="90px;">Responsable</td>
@@ -112,7 +117,10 @@
                                         </tr>
                                     @else
                                         @foreach ($cvcompras as $value)
-                                            <tr data-valor-columna="{{$value->id}}" onclick="show_data_compra(this)">
+                                            <tr data-valor-columna="{{$value->id}}"
+                                                data-valor-compra_idformapago="{{$value->compra_idformapago}}"
+                                                data-valor-validar_estado="{{$value->validar_estado}}"
+                                                onclick="show_data_compra(this)">
                                                 <td>{{ $value->idestadocvcompra == 1 ? 'P' : 'V' }}</td>
                                                 <td>{{ $value->idestadocvcompra == 1 ? 'CB' : 'VB' }}{{$value->codigo}}</td>
                                                 <td>{{ Str::limit($value->descripcion, 25) }}</td>
@@ -135,9 +143,13 @@
                                                 <td>{{ $value->compra_idformapago == '1' ? 'CAJA' : 'BANCO' }}</td>
                                                 <td>
                                                     @if ($value->compra_idformapago == '2')
-                                                        <button type="button" class="btn btn-success" onclick="validar_compra({{ $value->id }})">
-                                                            <i class="fa-solid fa-check"></i> Validar
-                                                        </button>
+                                                        @if ($value->validar_estado == 1)
+                                                            <i class="fa-solid fa-check"></i> ({{ $value->validar_responsablecodigo }})
+                                                        @else
+                                                            <button type="button" class="btn btn-success" onclick="validar_compra({{ $value->id }})">
+                                                                <i class="fa-solid fa-check"></i> Validar
+                                                            </button>
+                                                        @endif
                                                     @endif
                                                 </td>
                                                 <td>{{ $value->compra_banco }}</td>
@@ -293,6 +305,21 @@
             type:'GET',
             data:{
                 id_agencia_compra: $('#id_agencia_compra').val(),
+                fecha_inicio_compra: null,
+                fecha_fin_compra: null,
+                check_compra: $('#check_compra').is(':checked') ? 1 : 0,
+            },
+            success: function (res){
+                $('#table-lista-compra > tbody').html(res.html);
+                $('#total_compra').html(res.total);
+            }
+        })
+    }function search_compraFiltro() {
+        $.ajax({
+            url:"{{url('backoffice/0/compraventa/show_table_compra')}}",
+            type:'GET',
+            data:{
+                id_agencia_compra: $('#id_agencia_compra').val(),
                 fecha_inicio_compra: $('#fecha_inicio_compra').val(),
                 fecha_fin_compra: $('#fecha_fin_compra').val(),
                 check_compra: $('#check_compra').is(':checked') ? 1 : 0,
@@ -361,15 +388,25 @@
         const url = `{{ url('backoffice/'.$tienda->id) }}/compraventa/${id}/edit?view=vaucher_compra`;
         modal({ route: url, size: 'modal-sm' });
     }
+    function vaucher_compraCreate(id) {
+        const url = `{{ url('backoffice/'.$tienda->id) }}/compraventa/${id}/edit?view=vaucher_compra`;
+        modal({ route: url, size: 'modal-sm' });
+    }
 
     // Venta
     search_venta();
     function create_venta() {
         const $selectedRow = $('#table-lista-compra tbody tr.selected');
         const id = $selectedRow.data('valor-columna');
+        const compra_idformapago = $selectedRow.data('valor-compra_idformapago');
+        const validar_estado = $selectedRow.data('valor-validar_estado');
 
         if (!id) {
             alert('Debe seleccionar una compra.');
+            return;
+        }
+        if (compra_idformapago == 2 && validar_estado != 1) {
+            alert('La compra debe ser validada.');
             return;
         }
 

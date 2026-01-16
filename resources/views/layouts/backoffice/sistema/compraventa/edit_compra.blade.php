@@ -9,6 +9,7 @@
     },
     function(resultado){
         $('#modal-close-edit-compraventa').click();
+        search_compra();
     },this)">
     <div class="modal-header">
         <h1 class="modal-title">Editar Compra de Bienes</h1>

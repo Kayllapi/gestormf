@@ -154,59 +154,6 @@
                 <td></td>
             </tr>
         </table>
-        <div class="linea"></div>
-        <table>
-            <tr>
-                <td>
-                    <b>BIEN</b>
-                </td>
-                <td style="width:1px;">
-                    <b>:</b>
-                </td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>
-                    <b>APELLIDOS Y NOMBRES</b>
-                </td>
-                <td style="width:1px;">
-                    <b>:</b>
-                </td>
-                <td></td>
-            </tr><tr>
-                <td>
-                    <b>Código</b>
-                </td>
-                <td style="width:1px;">
-                    <b>:</b>
-                </td>
-                <td>{{ $cvcompra->idestadocvcompra == 1 ? 'CB' : 'VB' }}{{ $cvcompra->codigo }}</td>
-            </tr><tr>
-                <td>
-                    <b>Descripción</b>
-                </td>
-                <td style="width:1px;">
-                    <b>:</b>
-                </td>
-                <td>{{ $cvcompra->descripcion }}</td>
-            </tr><tr>
-                <td>
-                    <b>Serie/Motor/Nro Partida</b>
-                </td>
-                <td style="width:1px;">
-                    <b>:</b>
-                </td>
-                <td>{{ $cvcompra->serie_motor_partida }}</td>
-            </tr><tr>
-                <td>
-                    <b>Color</b>
-                </td>
-                <td style="width:1px;">
-                    <b>:</b>
-                </td>
-                <td>{{ $cvcompra->color }}</td>
-            </tr>
-        </table>
     </div>
 </body>
 </html>

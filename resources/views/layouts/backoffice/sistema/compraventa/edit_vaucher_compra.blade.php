@@ -13,11 +13,34 @@
         <div class="modal-body">
             <div class="col-sm-12 mt-2 text-center">
                 <div class="col-sm-12 mt-2">
-                    <iframe id="iframe_acta_aprobacion"
-                    src="{{ url('/backoffice/'.$tienda->id.'/compraventa/'.$cvcompra->id.'/edit?view=edit_vaucher_comprapdf') }}#zoom=100" 
-                    frameborder="0" width="100%" height="600px"></iframe>
+                    <button type="submit" class="btn btn-info" onclick="cargarPdf('ticket1')">
+                        Ticket
+                    </button>
+                    <button type="submit" class="btn btn-info" onclick="cargarPdf('ticket2')">
+                        Ticket 2
+                    </button>
+                </div>
+                <div class="col-sm-12 mt-2">
+                    <iframe
+                        id="iframe_acta_aprobacion"
+                        src="{{ url('/backoffice/'.$tienda->id.'/compraventa/'.$cvcompra->id.'/edit?view=edit_vaucher_comprapdf') }}#zoom=100" 
+                        frameborder="0"
+                        width="100%"
+                        height="600px">
+                    </iframe>
                 </div>
             </div>
         </div>
     </form>
 </div>
+<script>
+    function cargarPdf(tipo) {
+        const iframe = document.getElementById('iframe_acta_aprobacion');
+        if (tipo === 'ticket1') {
+            iframe.src = "{{ url('/backoffice/'.$tienda->id.'/compraventa/'.$cvcompra->id.'/edit?view=edit_vaucher_comprapdf') }}#zoom=100";
+        }
+        if (tipo === 'ticket2') {
+            iframe.src = "{{ url('/backoffice/'.$tienda->id.'/compraventa/'.$cvcompra->id.'/edit?view=edit_vaucher_compra2pdf') }}#zoom=100";
+        }
+    }
+</script>

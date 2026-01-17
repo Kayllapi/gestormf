@@ -294,7 +294,7 @@
                         <div class="modal-body">
                             <div class="row">
                                 <div class="col-3">
-                                    TOTAL: <span id="total_venta" style="font-weight: normal;">{{ number_format($cvventas->sum('venta_precio_venta_descuento'), 2, '.', '') ?? 0 }}</span>
+                                    TOTAL: <span id="total_venta" style="font-weight: normal;">{{ number_format($cvventas->sum('venta_montoventa'), 2, '.', '') ?? 0 }}</span>
                                 </div>
                                 <div class="col-9 text-end">
                                     <button type="button" class="btn btn-danger" onclick="eliminar_venta()">

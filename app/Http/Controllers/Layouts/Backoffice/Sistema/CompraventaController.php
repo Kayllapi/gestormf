@@ -16,33 +16,11 @@ class CompraventaController extends Controller
 
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
         $agencias = DB::table('tienda')->get();
-        $cvcompras = DB::table('cvcompra')
-            ->join('estado_garantia','estado_garantia.id','cvcompra.idestado_garantia')
-            ->join('users','users.id','cvcompra.idresponsable')
-            ->leftJoin('users as u2', 'u2.id', 'cvcompra.validar_responsable')
-            ->where('cvcompra.idtienda',$idtienda)
-            ->where('cvcompra.idestadoeliminado',1)
-            ->where('cvcompra.idestadocvcompra',1)
-            ->select(
-                'cvcompra.*',
-                'estado_garantia.nombre as estado',
-                'users.codigo as responsablecodigo',
-                'u2.codigo as validar_responsablecodigo'
-            )
-            ->orderByDesc('cvcompra.fecharegistro')
-            ->get();
-        $cvventas = DB::table('cvventa')
-            ->where('idtienda',$idtienda)
-            ->where('idestadoeliminado',1)
-            ->orderByDesc('fecharegistro')
-            ->get();
 
         if(request('view') == 'tabla'){
             return view(sistema_view().'/compraventa/tabla', compact(
                 'tienda',
                 'agencias',
-                'cvcompras',
-                'cvventas',
             ));
         }
     }
@@ -440,7 +418,7 @@ class CompraventaController extends Controller
                             <td>{$value->venta_numerooperacion}</td>
                             <td>{$value->responsablecodigo}</td>
                         </tr>";
-                $total = $total+$value->venta_precio_venta_descuento;
+                $total = $total+$value->venta_montoventa;
             }
 
             if(count($cvventas)==0){
@@ -612,7 +590,7 @@ class CompraventaController extends Controller
                 'fecha_fin_compra',
                 'check_compra',
             ));
-            $pdf->setPaper('A4');
+            $pdf->setPaper('A4', 'landscape');
             return $pdf->stream('REPORTE_COMPRA.pdf');
         } elseif (request('view') == 'eliminar_compra') {
             $cvcompra = DB::table('cvcompra')->whereId($id)->first();
@@ -749,7 +727,7 @@ class CompraventaController extends Controller
                 'fecha_inicio_venta',
                 'fecha_fin_venta',
             ));
-            $pdf->setPaper('A4');
+            $pdf->setPaper('A4', 'landscape');
             return $pdf->stream('REPORTE_VENTA.pdf');
         } elseif (request('view') == 'eliminar_venta') {
             $cvventa = DB::table('cvventa')->whereId($id)->first();

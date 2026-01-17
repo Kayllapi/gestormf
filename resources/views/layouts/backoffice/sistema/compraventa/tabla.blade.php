@@ -53,7 +53,7 @@
                                     <div class="row">
                                         <label class="col-sm-3 col-form-label" style="text-align: right;">Periodo</label>
                                         <div class="col-sm-3">
-                                            <input type="date" class="form-control" id="fecha_inicio_compra" value="{{ date('Y-m-d') }}"> 
+                                            <input type="date" class="form-control" id="fecha_inicio_compra" value=""> 
                                         </div>
                                         <label class="col-sm-1 col-form-label" style="text-align: center;">al</label>
                                         <div class="col-sm-3">
@@ -112,59 +112,13 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if (count($cvcompras) == 0)
-                                        <tr>
-                                            <td colspan="23" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td>
-                                        </tr>
-                                    @else
-                                        @foreach ($cvcompras as $value)
-                                            <tr data-valor-columna="{{$value->id}}"
-                                                data-valor-compra_idformapago="{{$value->compra_idformapago}}"
-                                                data-valor-validar_estado="{{$value->validar_estado}}"
-                                                onclick="show_data_compra(this)">
-                                                <td>{{ $value->idestadocvcompra == 1 ? 'P' : 'V' }}</td>
-                                                <td>{{ $value->idestadocvcompra == 1 ? 'CB' : 'VB' }}{{$value->codigo}}</td>
-                                                <td>{{ date_format(date_create($value->fecharegistro),"d-m-Y H:i:s A") }}</td>
-                                                <td>{{ Str::limit($value->descripcion, 25) }}</td>
-                                                <td>{{ $value->serie_motor_partida }}</td>
-                                                <td>{{ $value->chasis }}</td>
-                                                <td>{{ $value->modelo_tipo }}</td>
-                                                <td>{{ $value->otros }}</td>
-                                                <td style="text-align: right;">{{ $value->valorcomercial }}</td>
-                                                <td>{{ $value->estado }}</td>
-                                                <td>{{ $value->color }}</td>
-                                                <td>{{ $value->fabricacion }}</td>
-                                                <td>{{ $value->compra }}</td>
-                                                <td>{{ $value->placa }}</td>
-                                                <td>{{ $value->idorigen == '1' ? 'SERFIP' : 'OTROS' }}</td>
-                                                <td>{{ $value->numeroficha }}</td>
-                                                <td>{{ Str::limit($value->vendedor_nombreapellidos, 25) }}</td>
-                                                <td>{{ $value->vendedor_dni }}</td>
-                                                <td>{{ $value->compra_idformapago == '1' ? 'CAJA' : 'BANCO' }}</td>
-                                                <td>
-                                                    @if ($value->compra_idformapago == '2')
-                                                        @if ($value->validar_estado == 1)
-                                                            <i class="fa-solid fa-check"></i> ({{ $value->validar_responsablecodigo }})
-                                                        @else
-                                                            <button type="button" class="btn btn-success" onclick="validar_compra({{ $value->id }})">
-                                                                <i class="fa-solid fa-check"></i> Validar
-                                                            </button>
-                                                        @endif
-                                                    @endif
-                                                </td>
-                                                <td>{{ $value->compra_banco }}</td>
-                                                <td>{{ $value->compra_numerooperacion }}</td>
-                                                <td>{{ $value->responsablecodigo }}</td>
-                                            </tr>
-                                        @endforeach
-                                    @endif
                                 </tbody>
                             </table>
                         </div>
                         <div class="modal-body">
                             <div class="row">
                                 <div class="col-3">
-                                    TOTAL: <span id="total_compra" style="font-weight: normal;">{{ number_format($cvcompras->sum('valorcompra'), 2, '.', '') ?? 0 }}</span>
+                                    TOTAL: <span id="total_compra" style="font-weight: normal;"></span>
                                 </div>
                                 <div class="col-9 text-end">
                                     <button type="button" class="btn btn-success" onclick="validar_editcompra()">
@@ -294,7 +248,7 @@
                         <div class="modal-body">
                             <div class="row">
                                 <div class="col-3">
-                                    TOTAL: <span id="total_venta" style="font-weight: normal;">{{ number_format($cvventas->sum('venta_montoventa'), 2, '.', '') ?? 0 }}</span>
+                                    TOTAL: <span id="total_venta" style="font-weight: normal;"></span>
                                 </div>
                                 <div class="col-9 text-end">
                                     <button type="button" class="btn btn-danger" onclick="eliminar_venta()">
@@ -320,6 +274,7 @@
     sistema_select2({ input:'#id_agencia_venta', val:'{{$tienda->id}}' });
 
     // Compra
+    search_compra();
     function search_compra() {
         $.ajax({
             url:"{{url('backoffice/0/compraventa/show_table_compra')}}",

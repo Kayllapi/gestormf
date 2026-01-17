@@ -33,7 +33,7 @@
         <div class="titulo" style="margin-top:5px;"><b>COMPRA</b></div>  
         <table style="width:100%;">
             <tr>
-                <td style="width:105px;">
+                <td style="width:110px;">
                     <b>Fecha</b>
                 </td>
                 <td style="width:1px;">
@@ -43,7 +43,7 @@
             </tr>
             <tr>
                 <td>
-                    <b>A y N Propietario</b>
+                    <b>A y N (Propietario)</b>
                 </td>
                 <td style="width:1px;">
                     <b>:</b>
@@ -119,7 +119,7 @@
         <div class="linea"></div>
         <table style="width:100%;">
             <tr>
-                <td style="width:105px;">
+                <td style="width:110px;">
                     <b>TOTAL PAGADO</b>
                 </td>
                 <td style="width:1px;">
@@ -143,15 +143,12 @@
         <table>
             <tr>
                 <td>
-                    <b>Usuario</b>
+                    <b>Cod. Us.</b>
                 </td>
                 <td style="width:1px;">
                     <b>:</b>
                 </td>
                 <td>{{ $cvcompra->responsablecodigo }}</td>
-            </tr>
-            <tr>
-                <td></td>
             </tr>
         </table>
     </div>

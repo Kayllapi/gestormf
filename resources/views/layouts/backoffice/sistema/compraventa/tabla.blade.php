@@ -87,10 +87,10 @@
                                 <thead class="table-dark" style="position: sticky;top: 0;">
                                     <tr style="font-weight: bold;">
                                         <td width="20px;">E</td>
-                                        <td width="90px;">Código</td>
-                                        <td width="190px;">Descripción</td>
+                                        <td width="90px;">Cod. Oper.</td>
                                         <td width="155px;">Fecha Registro</td>
-                                        <td width="120px;">Serie/Motor/Nro.P.</td>
+                                        <td width="190px;">Descripción</td>
+                                        <td width="120px;">Serie/Motor/N°.P.</td>
                                         <td width="80px;">Chasis</td>
                                         <td width="90px;">Modelo/T.</td>
                                         <td width="90px;">Otros</td>
@@ -124,8 +124,8 @@
                                                 onclick="show_data_compra(this)">
                                                 <td>{{ $value->idestadocvcompra == 1 ? 'P' : 'V' }}</td>
                                                 <td>{{ $value->idestadocvcompra == 1 ? 'CB' : 'VB' }}{{$value->codigo}}</td>
-                                                <td>{{ Str::limit($value->descripcion, 25) }}</td>
                                                 <td>{{ date_format(date_create($value->fecharegistro),"d-m-Y H:i:s A") }}</td>
+                                                <td>{{ Str::limit($value->descripcion, 25) }}</td>
                                                 <td>{{ $value->serie_motor_partida }}</td>
                                                 <td>{{ $value->chasis }}</td>
                                                 <td>{{ $value->modelo_tipo }}</td>
@@ -176,7 +176,7 @@
                                     <button type="button" class="btn btn-warning" style="background-color: #F9F3B5 !important;" onclick="vaucher_compra()">
                                         <i class="fa-solid fa-copy" style="color:#000 !important;"></i> Duplicar Voucher
                                     </button>
-                                    <button type="button" class="btn btn-info" onclick="exportar_pdf()" style="font-weight: bold;">
+                                    <button type="button" class="btn btn-info" onclick="reporte_compra()" style="font-weight: bold;">
                                         <i class="fa-solid fa-file-pdf"></i> Reporte
                                     </button>
                                 </div>
@@ -203,7 +203,14 @@
                                         Registrar <br> Venta
                                     </button>
                                 </div>
-                                <div class="col-sm-10">
+                                <div class="col-sm-1 mt-3">
+                                    <a href="javascript:;" 
+                                        class="sistema-font" 
+                                        onclick="search_venta()">
+                                        <i class="fa-solid fa-arrows-rotate" style="color: #000;"></i>
+                                    </a>
+                                </div> 
+                                <div class="col-sm-9">
                                     <div class="row">
                                         <label class="col-sm-3 col-form-label" style="text-align: right;">Agencia</label>
                                         <div class="col-sm-7">
@@ -217,7 +224,7 @@
                                         <div class="col-sm-2">
                                             <button type="button"
                                                 class="btn btn-primary"
-                                                onclick="search_venta()"
+                                                onclick="search_ventaFiltro()"
                                                 style="font-weight: bold;">
                                                 <i class="fa-solid fa-search"></i> Filtrar
                                             </button>
@@ -254,13 +261,14 @@
                                 style="table-layout: fixed; width: 100%;">
                                 <thead class="table-dark" style="position: sticky;top: 0;">
                                     <tr style="font-weight: bold;">
-                                        <td width="90px">Código</td>
-                                        <td width="190px;">Descripción</td>
+                                        <td width="90px">Cod. Oper.</td>
                                         <td width="155px;">Fecha Registro</td>
-                                        <td width="120px;">Serie/Motor/Nro.P.</td>
+                                        <td width="190px;">Descripción</td>
+                                        <td width="120px;">Serie/Motor/N°.P.</td>
                                         <td width="80px;">Chasis</td>
                                         <td width="90px;">Modelo/T.</td>
                                         <td width="90px;">Otros</td>
+                                        <td width="80px">Valor Comercial</td>
                                         <td width="120px">Precio Venta Descuento</td>
                                         <td width="80px">Precio Venta Final</td>
                                         <td width="80px;">Estado</td>
@@ -295,7 +303,7 @@
                                     <button type="button" class="btn btn-warning" style="background-color: #F9F3B5 !important;" onclick="vaucher_venta()">
                                         <i class="fa-solid fa-copy" style="color:#000 !important;"></i> Duplicar Voucher
                                     </button>
-                                    <button type="button" class="btn btn-info" onclick="exportar_pdf()" style="font-weight: bold;">
+                                    <button type="button" class="btn btn-info" onclick="reporte_venta()" style="font-weight: bold;">
                                         <i class="fa-solid fa-file-pdf"></i> Reporte
                                     </button>
                                 </div>
@@ -320,14 +328,15 @@
                 id_agencia_compra: $('#id_agencia_compra').val(),
                 fecha_inicio_compra: null,
                 fecha_fin_compra: null,
-                check_compra: $('#check_compra').is(':checked') ? 1 : 0,
+                check_compra: 0,
             },
             success: function (res){
                 $('#table-lista-compra > tbody').html(res.html);
                 $('#total_compra').html(res.total);
             }
         })
-    }function search_compraFiltro() {
+    }
+    function search_compraFiltro() {
         $.ajax({
             url:"{{url('backoffice/0/compraventa/show_table_compra')}}",
             type:'GET',
@@ -389,6 +398,10 @@
         const url = `{{ url('backoffice/'.$tienda->id) }}/compraventa/${id}/edit?view=eliminar_compra`;
         modal({ route: url, size: 'modal-sm' });
     }
+    function reporte_compra() {
+        const url = `{{ url('backoffice/'.$tienda->id) }}/compraventa/0/edit?view=edit_reporte_compra`;
+        modal({ route: url, size: 'modal-sm' });
+    }
     function vaucher_compra() {
         const $selectedRow = $('#table-lista-compra tbody tr.selected');
         const id = $selectedRow.data('valor-columna');
@@ -432,6 +445,21 @@
             type:'GET',
             data:{
                 id_agencia_venta: $('#id_agencia_venta').val(),
+                fecha_inicio_venta: '',
+                fecha_fin_venta: '',
+            },
+            success: function (res){
+                $('#table-lista-venta > tbody').html(res.html);
+                $('#total_venta').html(res.total);
+            }
+        })
+    }
+    function search_ventaFiltro() {
+        $.ajax({
+            url:"{{url('backoffice/0/compraventa/show_table_venta')}}",
+            type:'GET',
+            data:{
+                id_agencia_venta: $('#id_agencia_venta').val(),
                 fecha_inicio_venta: $('#fecha_inicio_venta').val(),
                 fecha_fin_venta: $('#fecha_fin_venta').val(),
             },
@@ -459,6 +487,10 @@
         const url = `{{ url('backoffice/'.$tienda->id) }}/compraventa/${id}/edit?view=eliminar_venta`;
         modal({ route: url, size: 'modal-sm' });
     }
+    function reporte_venta() {
+        const url = `{{ url('backoffice/'.$tienda->id) }}/compraventa/0/edit?view=edit_reporte_venta`;
+        modal({ route: url, size: 'modal-sm' });
+    }
     function vaucher_venta() {
         const $selectedRow = $('#table-lista-venta tbody tr.selected');
         const id = $selectedRow.data('valor-columna');
@@ -468,6 +500,10 @@
             return;
         }
 
+        const url = `{{ url('backoffice/'.$tienda->id) }}/compraventa/${id}/edit?view=vaucher_venta`;
+        modal({ route: url, size: 'modal-sm' });
+    }
+    function vaucher_ventaCreate(id) {
         const url = `{{ url('backoffice/'.$tienda->id) }}/compraventa/${id}/edit?view=vaucher_venta`;
         modal({ route: url, size: 'modal-sm' });
     }

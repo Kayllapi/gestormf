@@ -1,24 +1,21 @@
 <form action="javascript:;" 
     onsubmit="callback({
-        route: '{{ url('backoffice/'.$tienda->id.'/compraventa/'.$cvventa->id) }}',
-        method: 'DELETE',
+        route: '{{ url('backoffice/'.$tienda->id.'/compraventa/0') }}',
+        method: 'PUT',
         data:{
-            view: 'eliminar_venta'
+            view: 'update_reporte_venta'
         }
     },
     function(resultado){
-        $('#modal-close-venta-eliminar').click(); 
-        search_venta();
-        search_compra();
+        $('#modal-close-venta-reporte').click(); 
     },this)">
     <div class="modal-header">
-        <h5 class="modal-title">Eliminar Venta</h5>
-        <button type="button" class="btn-close" id="modal-close-venta-eliminar" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h5 class="modal-title">Reporte de Venta</h5>
+        <button type="button" class="btn-close" id="modal-close-venta-reporte" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <div class="modal-body">
         <div class="alert alert-danger">
-            <i class="fa-solid fa-triangle-exclamation"></i> ¿Esta seguro de eliminar la venta?<br>
-            <b>"VB{{$cvventa->codigo}}"</b>
+            <i class="fa-solid fa-triangle-exclamation"></i> ¿Está seguro ver el reporte de la venta?<br>
         </div>
         <div class="mt-2 bg-primary subtitulo">Aprobación</div>
         <div class="mb-1">
@@ -37,8 +34,8 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="submit" class="btn btn-danger">
-            <i class="fa-solid fa-trash" style="color:#000 !important; font-weight: bold;"></i> Eliminar
+        <button type="submit" class="btn btn-primary">
+            <i class="fa-solid fa-file-pdf" style="color:#000 !important; font-weight: bold;"></i> Ver Reporte
         </button>
     </div>
 </form>   

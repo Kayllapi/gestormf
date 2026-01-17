@@ -216,7 +216,7 @@ class CompraventaController extends Controller
             $venta_banco = $banco->nombre ?? '';
             $venta_cuenta = $banco->cuenta ?? '';
 
-            DB::table('cvventa')->insert([
+            $idcvventa = DB::table('cvventa')->insertGetId([
                 'fecharegistro' => now(),
                 'codigo' => $cvcompra->codigo,
                 'venta_precio_venta_descuento' => request('venta_precio_venta_descuento'),
@@ -247,7 +247,8 @@ class CompraventaController extends Controller
 
             return response()->json([
                 'resultado' => 'CORRECTO',
-                'mensaje'   => 'Se ha registrado correctamente.'
+                'mensaje'   => 'Se ha registrado correctamente.',
+                'idcvventa' => $idcvventa,
             ]); 
         }
     }
@@ -317,8 +318,8 @@ class CompraventaController extends Controller
                             onclick='show_data_compra(this)'>
                             <td>{$estado}</td>
                             <td>{$prefijo}{$value->codigo}</td>
-                            <td>{$descripcion}</td>
                             <td>{$fecharegistro}</td>
+                            <td>{$descripcion}</td>
                             <td>{$value->serie_motor_partida}</td>
                             <td>{$value->chasis}</td>
                             <td>{$value->modelo_tipo}</td>
@@ -358,9 +359,13 @@ class CompraventaController extends Controller
             }
             if(request('fecha_inicio_venta') != ''){
                 $where[] = ['cvventa.fecharegistro','>=',request('fecha_inicio_venta').' 00:00:00'];
+            } else {
+                $where[] = ['cvventa.fecharegistro','>=',date('Y-m-d').' 00:00:00'];
             }
             if(request('fecha_fin_venta') != ''){
                 $where[] = ['cvventa.fecharegistro','<=',request('fecha_fin_venta').' 23:59:59'];
+            } else {
+                $where[] = ['cvventa.fecharegistro','<=',date('Y-m-d').' 23:59:59'];
             }
 
             $cvventas = DB::table('cvventa')
@@ -412,12 +417,13 @@ class CompraventaController extends Controller
 
                 $html .= "<tr data-valor-columna='{$value->idventa}' onclick='show_data_venta(this)'>
                             <td>VB{$value->codigoventa}</td>
-                            <td>{$descripcion}</td>
                             <td>{$fecharegistro}</td>
+                            <td>{$descripcion}</td>
                             <td>{$value->serie_motor_partida}</td>
                             <td>{$value->chasis}</td>
                             <td>{$value->modelo_tipo}</td>
                             <td>{$value->otros}</td>
+                            <td style='text-align: right;'>{$value->valorcomercial}</td>
                             <td style='text-align: right;'>{$value->venta_precio_venta_descuento}</td>
                             <td style='text-align: right;'>{$value->venta_montoventa}</td>
                             <td>{$value->estado}</td>
@@ -439,7 +445,7 @@ class CompraventaController extends Controller
             }
 
             if(count($cvventas)==0){
-                $html.= '<tr><td colspan="23" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
+                $html.= '<tr><td colspan="26" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
             }
 
             return array(
@@ -535,6 +541,19 @@ class CompraventaController extends Controller
             ));
             $pdf->setPaper('A4');
             return $pdf->stream('VOUCHER_COMPRA.pdf');
+        } elseif (request('view') == 'edit_reporte_compra') {
+            $usuarios = DB::table('users')
+                ->join('users_permiso','users_permiso.idusers','users.id')
+                ->join('permiso','permiso.id','users_permiso.idpermiso')
+                ->whereIn('users_permiso.idpermiso',[1,2])
+                ->where('users_permiso.idtienda',$idtienda)
+                ->select('users.*','permiso.nombre as nombrepermiso', 'permiso.id as idpermiso')
+                ->get();
+
+            return view(sistema_view().'/compraventa/edit_reporte_compra', compact(
+                'tienda',
+                'usuarios'
+            ));
         } elseif (request('view') == 'eliminar_compra') {
             $cvcompra = DB::table('cvcompra')->whereId($id)->first();
             $usuarios = DB::table('users')
@@ -575,10 +594,13 @@ class CompraventaController extends Controller
         } elseif (request('view') == 'edit_vaucher_ventapdf' ) {
             $cvventa = DB::table('cvventa')
                 ->join('cvcompra','cvcompra.id','cvventa.idcvcompra')
+                ->join('users','users.id','cvventa.venta_idresponsable')
                 ->select(
                     'cvventa.*',
                     'cvcompra.descripcion as descripcioncvcompra',
-                    'cvcompra.serie_motor_partida as serie_motor_partidacvcompra'
+                    'cvcompra.serie_motor_partida as serie_motor_partidacvcompra',
+                    'users.codigo as responsablecodigo',
+                    'users.nombrecompleto as responsable_nombrecompleto',
                 )
                 ->where('cvventa.id',$id)
                 ->first();
@@ -588,6 +610,19 @@ class CompraventaController extends Controller
             ));
             $pdf->setPaper('A4');
             return $pdf->stream('VOUCHER_VENTA.pdf');
+        } elseif (request('view') == 'edit_reporte_venta') {
+            $usuarios = DB::table('users')
+                ->join('users_permiso','users_permiso.idusers','users.id')
+                ->join('permiso','permiso.id','users_permiso.idpermiso')
+                ->whereIn('users_permiso.idpermiso',[1,2])
+                ->where('users_permiso.idtienda',$idtienda)
+                ->select('users.*','permiso.nombre as nombrepermiso', 'permiso.id as idpermiso')
+                ->get();
+
+            return view(sistema_view().'/compraventa/edit_reporte_venta', compact(
+                'tienda',
+                'usuarios'
+            ));
         } elseif (request('view') == 'eliminar_venta') {
             $cvventa = DB::table('cvventa')->whereId($id)->first();
             $usuarios = DB::table('users')
@@ -758,6 +793,54 @@ class CompraventaController extends Controller
                 'resultado' => 'CORRECTO',
                 'mensaje' => 'Se ha validado correctamente.',
             ]);
+        } elseif (request('view') == 'update_reporte_compra') {
+            $rules = [
+                'idresponsable' => 'required',
+                'responsableclave' => 'required',
+            ];
+            $messages = [
+                'idresponsable.required' => 'El "Responsable" es Obligatorio.',
+                'responsableclave.required' => 'La "Contraseña" es Obligatorio.',
+            ];
+            $this->validate($request,$rules,$messages);
+
+            $usuario = DB::table('users')
+                ->where('users.id', request('idresponsable'))
+                ->where('users.clave', request('responsableclave'))
+                ->first();
+            $idresponsable = 0;
+            if($usuario!=''){
+                $idresponsable = $usuario->id;
+            }else{
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'El usuario y/o la contraseña es incorrecta!!.'
+                ]);
+            }
+        } elseif (request('view') == 'update_reporte_venta') {
+            $rules = [
+                'idresponsable' => 'required',
+                'responsableclave' => 'required',
+            ];
+            $messages = [
+                'idresponsable.required' => 'El "Responsable" es Obligatorio.',
+                'responsableclave.required' => 'La "Contraseña" es Obligatorio.',
+            ];
+            $this->validate($request,$rules,$messages);
+
+            $usuario = DB::table('users')
+                ->where('users.id', request('idresponsable'))
+                ->where('users.clave', request('responsableclave'))
+                ->first();
+            $idresponsable = 0;
+            if($usuario!=''){
+                $idresponsable = $usuario->id;
+            }else{
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'El usuario y/o la contraseña es incorrecta!!.'
+                ]);
+            }
         }
     } 
 

@@ -26,60 +26,15 @@
 </head>
 <body>
     <div class="ticket_contenedor">
-        <div class="cabecera">{{ $tienda->nombre }}</div>
-        <div class="cabecera">{{ $tienda->direccion }}</div>
+        <div class="cabecera">{{ $tienda->ticket_nombre }}</div>
+        <div class="cabecera">{{ $tienda->ticket_direccion }}</div>
         <div class="cabecera">{{ $tienda->nombreagencia }}</div>
         <div class="linea"></div>
         <div class="titulo"><b>VENTA</b></div>  
         <table style="width:100%;">
             <tr>
-                <td style="width:118px;">
-                    <b>AyN COMPRADOR</b>
-                </td>
-                <td style="width:1px;">
-                    <b>:</b>
-                </td>
-                <td>{{ $cvventa->comprador_nombreapellidos }}</td>
-            </tr>
-            <tr>
-                <td>
-                    <b>DNI</b>
-                </td>
-                <td style="width:1px;">
-                    <b>:</b>
-                </td>
-                <td>{{ $cvventa->comprador_dni }}</td>
-            </tr>
-            <tr>
-                <td>
-                    <b>CODIGO</b>
-                </td>
-                <td style="width:1px;">
-                    <b>:</b>
-                </td>
-                <td>VB{{ $cvventa->codigo }}</td>
-            </tr>
-            <tr>
-                <td>
-                    <b>DESCRIPCION</b>
-                </td>
-                <td style="width:1px;">
-                    <b>:</b>
-                </td>
-                <td>{{ $cvventa->descripcioncvcompra }}</td>
-            </tr>
-            <tr>
-                <td>
-                    <b>Serie/Motor/Nro Partida</b>
-                </td>
-                <td style="width:1px;">
-                    <b>:</b>
-                </td>
-                <td>{{ $cvventa->serie_motor_partidacvcompra }}</td>
-            </tr>
-            <tr>
-                <td>
-                    <b>FECHA</b>
+                <td style="width:110px;">
+                    <b>Fecha</b>
                 </td>
                 <td style="width:1px;">
                     <b>:</b>
@@ -88,7 +43,52 @@
             </tr>
             <tr>
                 <td>
-                    <b>PAGO</b>
+                    <b>A y N (Comprador)</b>
+                </td>
+                <td style="width:1px;">
+                    <b>:</b>
+                </td>
+                <td>{{ $cvventa->comprador_nombreapellidos }}</td>
+            </tr>
+            <tr>
+                <td>
+                    <b>RUC/DNI/CE</b>
+                </td>
+                <td style="width:1px;">
+                    <b>:</b>
+                </td>
+                <td>{{ $cvventa->comprador_dni }}</td>
+            </tr>
+            <tr>
+                <td>
+                    <b>Cod. Operación</b>
+                </td>
+                <td style="width:1px;">
+                    <b>:</b>
+                </td>
+                <td>VB{{ $cvventa->codigo }}</td>
+            </tr>
+            <tr>
+                <td>
+                    <b>Descripción</b>
+                </td>
+                <td style="width:1px;">
+                    <b>:</b>
+                </td>
+                <td>{{ $cvventa->descripcioncvcompra }}</td>
+            </tr>
+            <tr>
+                <td>
+                    <b>Serie/Motor/N° Partida</b>
+                </td>
+                <td style="width:1px;">
+                    <b>:</b>
+                </td>
+                <td>{{ $cvventa->serie_motor_partidacvcompra }}</td>
+            </tr>
+            <tr>
+                <td>
+                    <b>Pago</b>
                 </td>
                 <td style="width:1px;">
                     <b>:</b>
@@ -107,7 +107,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <b>N° Op./Dt.</b>
+                        <b>N° Oper./Desc.</b>
                     </td>
                     <td style="width:1px;">
                         <b>:</b>
@@ -119,7 +119,7 @@
         <div class="linea"></div>
         <table style="width:100%;">
             <tr>
-                <td style="width:65px;">
+                <td style="width:110px;">
                     <b>TOTAL RECIBIDO</b>
                 </td>
                 <td style="width:1px;">
@@ -137,21 +137,18 @@
                 <td>FIRMA</td>
             </tr>
             <tr>
-                <td><b>{{ $cvventa->comprador_nombreapellidos }}</b></td>
+                <td><b>{{ $cvventa->responsable_nombrecompleto }}</b></td>
             </tr>
         </table>
         <table>
             <tr>
                 <td>
-                    <b>Usuario</b>
+                    <b>Cod. Us.</b>
                 </td>
                 <td style="width:1px;">
                     <b>:</b>
                 </td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
+                <td>{{ $cvventa->responsablecodigo }}</td>
             </tr>
         </table>
     </div>

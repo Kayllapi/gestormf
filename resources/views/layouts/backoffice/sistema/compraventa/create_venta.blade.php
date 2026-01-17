@@ -12,6 +12,7 @@
         $('#modal-close-cvventa').click();
         search_venta();
         search_compra();
+        vaucher_ventaCreate(resultado.idcvventa);
     },this)">
     <div class="modal-header">
         <h1 class="modal-title">{{ $cvcompra->descripcion }}</h1>

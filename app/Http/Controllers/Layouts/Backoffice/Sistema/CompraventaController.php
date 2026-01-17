@@ -269,7 +269,6 @@ class CompraventaController extends Controller
             if(request('fecha_fin_compra') != ''){
                 $where[] = ['cvcompra.fecharegistro','<=',request('fecha_fin_compra').' 23:59:59'];
             }
-
             if (request('check_compra') == '0') {
                 $where[] = ['cvcompra.idestadocvcompra', '1'];
             }
@@ -554,6 +553,67 @@ class CompraventaController extends Controller
                 'tienda',
                 'usuarios'
             ));
+        } elseif (request('view') == 'exportar_compra') {
+            $id_agencia_compra = request('id_agencia_compra');
+            $fecha_inicio_compra = request('fecha_inicio_compra');
+            $fecha_fin_compra = request('fecha_fin_compra');
+            $check_compra = request('check_compra');
+
+            return view(sistema_view().'/compraventa/exportar_compra', compact(
+                'tienda',
+                'id_agencia_compra',
+                'fecha_inicio_compra',
+                'fecha_fin_compra',
+                'check_compra',
+            ));
+        } elseif (request('view') == 'exportar_comprapdf') {
+            $id_agencia_compra = request('id_agencia_compra');
+            $fecha_inicio_compra = request('fecha_inicio_compra');
+            $fecha_fin_compra = request('fecha_fin_compra');
+            $check_compra = request('check_compra');
+
+            $where = [];
+
+            if($id_agencia_compra != ''){
+                $where[] = ['cvcompra.idtienda', '=', $id_agencia_compra];
+            }else {
+                $where[] = ['cvcompra.idtienda', '=', $idtienda];
+            }
+            if($fecha_inicio_compra != ''){
+                $where[] = ['cvcompra.fecharegistro','>=',$fecha_inicio_compra.' 00:00:00'];
+            }
+            if($fecha_fin_compra != ''){
+                $where[] = ['cvcompra.fecharegistro','<=',$fecha_fin_compra.' 23:59:59'];
+            }
+            if ($check_compra == '0') {
+                $where[] = ['cvcompra.idestadocvcompra', '1'];
+            }
+
+            $cvcompras = DB::table('cvcompra')
+                ->join('estado_garantia','estado_garantia.id','cvcompra.idestado_garantia')
+                ->join('users','users.id','cvcompra.idresponsable')
+                ->leftJoin('users as u2', 'u2.id', 'cvcompra.validar_responsable')
+                ->where($where)
+                ->where('cvcompra.idestadoeliminado',1)
+                ->select(
+                    'cvcompra.*',
+                    'estado_garantia.nombre as estado',
+                    'users.codigo as responsablecodigo',
+                    'u2.codigo as validar_responsablecodigo'
+                )
+                ->orderByDesc('cvcompra.fecharegistro')
+                ->get();
+
+            $pdf = PDF::loadView(sistema_view().'/compraventa/exportar_comprapdf', compact(
+                'tienda',
+                'cvcompras',
+                'id_agencia_compra',
+                'fecha_inicio_compra',
+                'fecha_fin_compra',
+                'check_compra',
+            ));
+            $pdf->setPaper('A4');
+            return $pdf->stream('REPORTE_COMPRA.pdf');
         } elseif (request('view') == 'eliminar_compra') {
             $cvcompra = DB::table('cvcompra')->whereId($id)->first();
             $usuarios = DB::table('users')
@@ -623,6 +683,74 @@ class CompraventaController extends Controller
                 'tienda',
                 'usuarios'
             ));
+        } elseif (request('view') == 'exportar_venta') {
+            $id_agencia_venta = request('id_agencia_venta');
+            $fecha_inicio_venta = request('fecha_inicio_venta');
+            $fecha_fin_venta = request('fecha_fin_venta');
+
+            return view(sistema_view().'/compraventa/exportar_venta', compact(
+                'tienda',
+                'id_agencia_venta',
+                'fecha_inicio_venta',
+                'fecha_fin_venta',
+            ));
+        } elseif (request('view') == 'exportar_ventapdf') {
+            $id_agencia_venta = request('id_agencia_venta');
+            $fecha_inicio_venta = request('fecha_inicio_venta');
+            $fecha_fin_venta = request('fecha_fin_venta');
+
+            $where = [];
+
+            if($id_agencia_venta != ''){
+                $where[] = ['cvventa.idtienda', '=', $id_agencia_venta];
+            }
+            if($fecha_inicio_venta != ''){
+                $where[] = ['cvventa.fecharegistro','>=',$fecha_inicio_venta.' 00:00:00'];
+            } else {
+                $where[] = ['cvventa.fecharegistro','>=',date('Y-m-d').' 00:00:00'];
+            }
+            if($fecha_fin_venta != ''){
+                $where[] = ['cvventa.fecharegistro','<=',$fecha_fin_venta.' 23:59:59'];
+            } else {
+                $where[] = ['cvventa.fecharegistro','<=',date('Y-m-d').' 23:59:59'];
+            }
+
+            $cvventas = DB::table('cvventa')
+                ->join('cvcompra', 'cvventa.idcvcompra', 'cvcompra.id')
+                ->join('estado_garantia','estado_garantia.id','cvcompra.idestado_garantia')
+                ->join('users','users.id','cvventa.venta_idresponsable')
+                ->leftJoin('users as u2', 'u2.id', 'cvventa.validar_responsable')
+                ->where($where)
+                ->where('cvventa.idestadoeliminado',1)
+                ->select(
+                    'cvcompra.*',
+                    'estado_garantia.nombre as estado',
+                    'cvventa.id as idventa',
+                    'cvventa.codigo as codigoventa',
+                    'cvventa.comprador_nombreapellidos as comprador_nombreapellidos',
+                    'cvventa.comprador_dni as comprador_dni',
+                    'cvventa.venta_idformapago as venta_idformapago',
+                    'cvventa.venta_banco as venta_banco',
+                    'cvventa.venta_numerooperacion as venta_numerooperacion',
+                    'cvventa.fecharegistro as venta_fecharegistro',
+                    'cvventa.validar_estado as venta_validar_estado',
+                    'cvventa.venta_precio_venta_descuento as venta_precio_venta_descuento',
+                    'cvventa.venta_montoventa as venta_montoventa',
+                    'users.codigo as responsablecodigo',
+                    'u2.codigo as validar_responsablecodigo'
+                )
+                ->orderByDesc('cvventa.fecharegistro')
+                ->get();
+
+            $pdf = PDF::loadView(sistema_view().'/compraventa/exportar_ventapdf', compact(
+                'tienda',
+                'cvventas',
+                'id_agencia_venta',
+                'fecha_inicio_venta',
+                'fecha_fin_venta',
+            ));
+            $pdf->setPaper('A4');
+            return $pdf->stream('REPORTE_VENTA.pdf');
         } elseif (request('view') == 'eliminar_venta') {
             $cvventa = DB::table('cvventa')->whereId($id)->first();
             $usuarios = DB::table('users')

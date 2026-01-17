@@ -7,7 +7,8 @@
         }
     },
     function(resultado){
-        $('#modal-close-venta-reporte').click(); 
+        $('#modal-close-venta-reporte').click();
+        exportar_venta();
     },this)">
     <div class="modal-header">
         <h5 class="modal-title">Reporte de Venta</h5>

@@ -44,7 +44,6 @@
 <script>
     sistema_select2({ input:'#idresponsable' });
     $('#idresponsable').change(function(){
-        console.log($(this).find('option:selected').attr('idpermiso'));
         $('#idpermiso').val($(this).find('option:selected').attr('idpermiso'));
     });
 </script>

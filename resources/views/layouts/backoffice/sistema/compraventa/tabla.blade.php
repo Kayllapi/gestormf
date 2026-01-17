@@ -402,6 +402,14 @@
         const url = `{{ url('backoffice/'.$tienda->id) }}/compraventa/0/edit?view=edit_reporte_compra`;
         modal({ route: url, size: 'modal-sm' });
     }
+    function exportar_compra() {
+        const url = `{{ url('backoffice/'.$tienda->id) }}/compraventa/0/edit?view=exportar_compra
+                &id_agencia_compra=${$('#id_agencia_compra').val()}
+                &fecha_inicio_compra=${$('#fecha_inicio_compra').val()}
+                &fecha_fin_compra=${$('#fecha_fin_compra').val()}
+                &check_compra=${$('#check_compra').is(':checked') ? 1 : 0}`;
+        modal({ route: url, size: 'modal-fullscreen' });
+    }
     function vaucher_compra() {
         const $selectedRow = $('#table-lista-compra tbody tr.selected');
         const id = $selectedRow.data('valor-columna');
@@ -490,6 +498,13 @@
     function reporte_venta() {
         const url = `{{ url('backoffice/'.$tienda->id) }}/compraventa/0/edit?view=edit_reporte_venta`;
         modal({ route: url, size: 'modal-sm' });
+    }
+    function exportar_venta() {
+        const url = `{{ url('backoffice/'.$tienda->id) }}/compraventa/0/edit?view=exportar_venta
+                &id_agencia_venta=${$('#id_agencia_venta').val()}
+                &fecha_inicio_venta=${$('#fecha_inicio_venta').val()}
+                &fecha_fin_venta=${$('#fecha_fin_venta').val()}`;
+        modal({ route: url, size: 'modal-fullscreen' });
     }
     function vaucher_venta() {
         const $selectedRow = $('#table-lista-venta tbody tr.selected');

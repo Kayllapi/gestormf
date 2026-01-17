@@ -7,7 +7,8 @@
         }
     },
     function(resultado){
-        $('#modal-close-compra-reporte').click(); 
+        $('#modal-close-compra-reporte').click();
+        exportar_compra();
     },this)">
     <div class="modal-header">
         <h5 class="modal-title">Reporte de Compra</h5>
@@ -42,7 +43,6 @@
 <script>
     sistema_select2({ input:'#idresponsable' });
     $('#idresponsable').change(function(){
-        console.log($(this).find('option:selected').attr('idpermiso'));
         $('#idpermiso').val($(this).find('option:selected').attr('idpermiso'));
     });
 </script>

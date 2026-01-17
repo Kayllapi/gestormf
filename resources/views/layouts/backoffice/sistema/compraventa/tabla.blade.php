@@ -288,6 +288,7 @@
             success: function (res){
                 $('#table-lista-compra > tbody').html(res.html);
                 $('#total_compra').html(res.total);
+                $('#fecha_inicio_compra').val('');
             }
         })
     }
@@ -414,6 +415,8 @@
             success: function (res){
                 $('#table-lista-venta > tbody').html(res.html);
                 $('#total_venta').html(res.total);
+                $('#fecha_inicio_venta').val('{{ date('Y-m-d') }}');
+                
             }
         })
     }

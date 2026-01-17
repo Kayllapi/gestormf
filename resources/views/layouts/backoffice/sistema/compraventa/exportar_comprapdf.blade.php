@@ -126,7 +126,7 @@
         <div class="container">
             <h4 align="center">REPORTE DE COMPRA</h4>
             <b>AGENCIA: </b>{{ $tienda->nombreagencia }}<br>
-            <b>PERIODO: </b>{{ $fecha_inicio_compra }} - {{ $fecha_fin_compra }}<br>
+            <b>PERIODO: </b>{{ $fecha_inicio_compra }} al {{ $fecha_fin_compra }}<br>
             <table style="width:100%;">
                 <thead class="table-dark">
                     <tr>
@@ -170,7 +170,6 @@
                                         <td>{$descripcion}</td>
                                         <td>{$value->serie_motor_partida}</td>
                                         <td>{$value->modelo_tipo}</td>
-                                        <td>{$value->otros}</td>
                                         <td style='text-align: right;'>{$value->valorcompra}</td>
                                         <td style='text-align: right;'>{$value->valorcomercial}</td>
                                         <td>{$value->estado}</td>

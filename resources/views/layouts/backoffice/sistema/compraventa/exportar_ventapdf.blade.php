@@ -126,7 +126,7 @@
         <div class="container">
             <h4 align="center">REPORTE DE VENTA</h4>
             <b>AGENCIA: </b>{{ $tienda->nombreagencia }}<br>
-            <b>PERIODO: </b>{{ $fecha_inicio_venta }} - {{ $fecha_fin_venta }}<br>
+            <b>PERIODO: </b>{{ $fecha_inicio_venta }} al {{ $fecha_fin_venta }}<br>
             <table style="width:100%;">
                 <thead class="table-dark">
                     <tr>

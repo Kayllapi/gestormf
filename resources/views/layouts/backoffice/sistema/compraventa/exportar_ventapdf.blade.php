@@ -139,10 +139,10 @@
                         <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Descripción</td>
                         <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Serie/Motor/N° P.</td>
                         <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Modelo/T.</td>
-                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Valor Compra</td>
-                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Valor Comercial</td>
-                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Precio Venta Descuento</td>
-                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Precio Venta Final</td>
+                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" width="80px">Valor Compra</td>
+                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" width="80px">Valor Comercial</td>
+                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" width="80px">Precio Venta Descuento</td>
+                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" width="80px">Precio Venta Final</td>
                         <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Estado</td>
                         <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Placa de Vehículo</td>
                         <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Origen</td>
@@ -155,7 +155,7 @@
                     <?php
                         $html = '';
                         foreach($cvventas as $key => $value){
-                            $fecharegistro = date_format(date_create($value->venta_fecharegistro),"d-m-Y H:i:s A");
+                            $fecharegistro = date_format(date_create($value->venta_fecharegistro),"d-m-Y h:i:s A");
                             $tienda = DB::table('tienda')->where('id',$value->idorigen)->first();
                             $origen = $value->idorigen == '0' ? 'OTROS' : ($tienda->nombre??'');
                             $lugar_pago = $value->venta_idformapago == '1' ? 'CAJA' : 'BANCO';
@@ -189,7 +189,7 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right; font-weight: bold;" colspan="6">Total:</td>
+                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right; font-weight: bold;" colspan="6">Total S/.:</td>
                         <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right; font-weight: bold;">{{ number_format($cvventas->sum('valorcompra'), 2, '.', ',') }}</td>
                         <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right; font-weight: bold;">{{ number_format($cvventas->sum('valorcomercial'), 2, '.', ',') }}</td>
                         <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right; font-weight: bold;">{{ number_format($cvventas->sum('venta_precio_venta_descuento'), 2, '.', ',') }}</td>

@@ -140,13 +140,13 @@
                         <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Descripción</td>
                         <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Serie/Motor/N° P.</td>
                         <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Modelo/T.</td>
-                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Valor Compra</td>
-                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Valor Comercial</td>
+                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" width="80px">Valor Compra</td>
+                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" width="80px">Valor Comercial</td>
                         <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Estado</td>
                         <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Color</td>
                         <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Placa</td>
                         <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Origen</td>
-                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">N° Ficha/Comprobante</td>
+                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">N° Ficha/Comprob.</td>
                         <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Vendedor</td>
                         <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Lugar de Pago</td>
                         <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Banco</td>
@@ -161,7 +161,7 @@
                             $prefijo = $value->idestadocvcompra == '1' ? 'CB' : 'VB';
                             $descripcion = Str::limit($value->descripcion, 25);
                             $vendedor = Str::limit($value->vendedor_nombreapellidos, 25);
-                            $fecharegistro = date_format(date_create($value->fecharegistro),"d-m-Y H:i:s A");
+                            $fecharegistro = date_format(date_create($value->fecharegistro),"d-m-Y h:i:s A");
                             $tienda = DB::table('tienda')->where('id',$value->idorigen)->first();
                             $origen = $value->idorigen == '0' ? 'OTROS' : ($tienda->nombre??'');
                             $lugar_pago = $value->compra_idformapago == '1' ? 'CAJA' : 'BANCO';
@@ -195,7 +195,7 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right; font-weight: bold;" colspan="7">Total:</td>
+                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right; font-weight: bold;" colspan="7">Total S/.:</td>
                         <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right; font-weight: bold;">{{ number_format($cvcompras->sum('valorcompra'), 2, '.', ',') }}</td>
                         <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right; font-weight: bold;">{{ number_format($cvcompras->sum('valorcomercial'), 2, '.', ',') }}</td>
                         <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" colspan="9"></td>

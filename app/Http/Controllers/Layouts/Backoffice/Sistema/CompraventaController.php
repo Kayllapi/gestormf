@@ -269,7 +269,7 @@ class CompraventaController extends Controller
             $total = 0;
             $html = '';
             foreach($cvcompras as $value){
-                $fecharegistro = date_format(date_create($value->fecharegistro),"d-m-Y H:i:s A");
+                $fecharegistro = date_format(date_create($value->fecharegistro),"d-m-Y h:i:s A");
                 $tienda = DB::table('tienda')->where('id',$value->idorigen)->first();
                 $origen = $value->idorigen == '0' ? 'OTROS' : ($tienda->nombre??'');
                 $lugar_pago = $value->compra_idformapago == '1' ? 'CAJA' : 'BANCO';
@@ -376,7 +376,7 @@ class CompraventaController extends Controller
             $total = 0;
             $html = '';
             foreach($cvventas as $value){
-                $fecharegistro = date_format(date_create($value->venta_fecharegistro),"d-m-Y H:i:s A");
+                $fecharegistro = date_format(date_create($value->venta_fecharegistro),"d-m-Y h:i:s A");
                 $tienda = DB::table('tienda')->where('id',$value->idorigen)->first();
                 $origen = $value->idorigen == '0' ? 'OTROS' : ($tienda->nombre??'');
                 $lugar_pago = $value->venta_idformapago == '1' ? 'CAJA' : 'BANCO';

@@ -55,7 +55,9 @@
           font-size:11px;
       }
       /** Definir las reglas de numeracion de página **/ 
-      footer > .page:after { content: counter(page, decimal-leading-zero); }
+      footer > .page:after {
+        content: counter(page, decimal-leading-zero);
+      }
 
       .saltopagina{
         display:block;
@@ -119,7 +121,7 @@
     <header>
         <div style="float:left;font-size:18px;">{{ $tienda->ticket_nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
     </header>
-    <footer>
+    <footer style="text-align:right;">
         <p class="page">Página </p>
     </footer>
     <main>

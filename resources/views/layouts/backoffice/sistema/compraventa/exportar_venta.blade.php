@@ -19,7 +19,9 @@
                 <iframe 
                     id="iframe_exportar_venta" 
                     src="{{ $url }}#zoom=100"
-                    frameborder="0" width="100%" height="400px">
+                    frameborder="0"
+                    width="100%"
+                    style="height: calc(100vh - 62px);">
                 </iframe>
             </div>
         </div>

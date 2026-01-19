@@ -13,9 +13,13 @@
         <div class="modal-body">
             <div class="col-sm-12 mt-2 text-center">
                 <div class="col-sm-12 mt-2">
-                    <iframe id="iframe_acta_aprobacion"
-                    src="{{ url('/backoffice/'.$tienda->id.'/compraventa/'.$cvventa->id.'/edit?view=edit_vaucher_ventapdf') }}#zoom=100" 
-                    frameborder="0" width="100%" height="600px"></iframe>
+                    <iframe
+                        id="iframe_acta_aprobacion"
+                        src="{{ url('/backoffice/'.$tienda->id.'/compraventa/'.$cvventa->id.'/edit?view=edit_vaucher_ventapdf') }}#zoom=100" 
+                        frameborder="0"
+                        width="100%"
+                        style="height: calc(100vh - 62px);">
+                    </iframe>
                 </div>
             </div>
         </div>

@@ -323,7 +323,8 @@
         const id = $selectedRow.data('valor-columna');
 
         if (!id) {
-            alert('Debe seleccionar un dato.');
+            mensaje = 'Debe seleccionar un dato.';
+            modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
             return;
         }
 
@@ -335,7 +336,8 @@
         const id = $selectedRow.data('valor-columna');
 
         if (!id) {
-            alert('Debe seleccionar un dato.');
+            mensaje = 'Debe seleccionar un dato.';
+            modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
             return;
         }
 
@@ -347,7 +349,8 @@
         const id = $selectedRow.data('valor-columna');
 
         if (!id) {
-            alert('Debe seleccionar un dato.');
+            mensaje = 'Debe seleccionar un dato.';
+            modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
             return;
         }
 
@@ -371,7 +374,8 @@
         const id = $selectedRow.data('valor-columna');
 
         if (!id) {
-            alert('Debe seleccionar un dato.');
+            mensaje = 'Debe seleccionar un dato.';
+            modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
             return;
         }
 
@@ -392,11 +396,13 @@
         const validar_estado = $selectedRow.data('valor-validar_estado');
 
         if (!id) {
-            alert('Debe seleccionar una compra.');
+            mensaje = 'Debe seleccionar una compra.';
+            modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
             return;
         }
         if (compra_idformapago == 2 && validar_estado != 1) {
-            alert('La compra debe ser validada.');
+            mensaje = 'La compra debe ser validada.';
+            modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
             return;
         }
 
@@ -446,7 +452,8 @@
         const id = $selectedRow.data('valor-columna');
 
         if (!id) {
-            alert('Debe seleccionar un dato.');
+            mensaje = 'Debe seleccionar un dato.';
+            modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
             return;
         }
 
@@ -469,7 +476,8 @@
         const id = $selectedRow.data('valor-columna');
 
         if (!id) {
-            alert('Debe seleccionar un dato.');
+            mensaje = 'Debe seleccionar un dato.';
+            modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
             return;
         }
 

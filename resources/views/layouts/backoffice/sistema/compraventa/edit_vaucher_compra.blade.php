@@ -26,7 +26,7 @@
                         src="{{ url('/backoffice/'.$tienda->id.'/compraventa/'.$cvcompra->id.'/edit?view=edit_vaucher_comprapdf') }}#zoom=100" 
                         frameborder="0"
                         width="100%"
-                        height="600px">
+                        style="height: calc(100vh - 62px);">
                     </iframe>
                 </div>
             </div>

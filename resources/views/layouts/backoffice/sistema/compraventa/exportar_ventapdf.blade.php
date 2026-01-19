@@ -156,7 +156,8 @@
                         $html = '';
                         foreach($cvventas as $key => $value){
                             $fecharegistro = date_format(date_create($value->venta_fecharegistro),"d-m-Y H:i:s A");
-                            $origen = $value->idorigen == '1' ? 'SERFIP' : 'OTROS';
+                            $tienda = DB::table('tienda')->where('id',$value->idorigen)->first();
+                            $origen = $value->idorigen == '0' ? 'OTROS' : ($tienda->nombre??'');
                             $lugar_pago = $value->venta_idformapago == '1' ? 'CAJA' : 'BANCO';
                             $descripcion = Str::limit($value->descripcion, 25);
                             $comprador = Str::limit($value->comprador_nombreapellidos, 25);
@@ -186,6 +187,16 @@
                         echo $html;
                     ?>
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right; font-weight: bold;" colspan="6">Total:</td>
+                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right; font-weight: bold;">{{ number_format($cvventas->sum('valorcompra'), 2, '.', ',') }}</td>
+                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right; font-weight: bold;">{{ number_format($cvventas->sum('valorcomercial'), 2, '.', ',') }}</td>
+                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right; font-weight: bold;">{{ number_format($cvventas->sum('venta_precio_venta_descuento'), 2, '.', ',') }}</td>
+                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right; font-weight: bold;">{{ number_format($cvventas->sum('venta_montoventa'), 2, '.', ',') }}</td>
+                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" colspan="6"></td>
+                    </tr>
+                </tfoot>
             </table>
         </div>
     </main>

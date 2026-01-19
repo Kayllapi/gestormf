@@ -115,8 +115,8 @@
                 <label class="col-form-label" style="text-align: right;">Origen *</label>
                 <select class="form-control" id="idorigen">
                     <option></option>
-                    <option value="1">SERFIP</option>
-                    <option value="2">OTROS</option>
+                    <option value="{{ $tienda->id }}">{{ $tienda->nombre }}</option>
+                    <option value="0">OTROS</option>
                 </select>
             </div>
             <div class="col-sm-5">

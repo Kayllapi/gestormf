@@ -162,7 +162,8 @@
                             $descripcion = Str::limit($value->descripcion, 25);
                             $vendedor = Str::limit($value->vendedor_nombreapellidos, 25);
                             $fecharegistro = date_format(date_create($value->fecharegistro),"d-m-Y H:i:s A");
-                            $origen = $value->idorigen == '1' ? 'SERFIP' : 'OTROS';
+                            $tienda = DB::table('tienda')->where('id',$value->idorigen)->first();
+                            $origen = $value->idorigen == '0' ? 'OTROS' : ($tienda->nombre??'');
                             $lugar_pago = $value->compra_idformapago == '1' ? 'CAJA' : 'BANCO';
 
                             $html .= "<tr id='show_data_select' idcredito='{$value->id}'>
@@ -194,7 +195,10 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="19" style="border-bottom: 2px solid #000;text-align: center;font-weight: bold;">Total: {{ $cvcompras->sum('valorcompra') }}</td>
+                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right; font-weight: bold;" colspan="7">Total:</td>
+                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right; font-weight: bold;">{{ number_format($cvcompras->sum('valorcompra'), 2, '.', ',') }}</td>
+                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right; font-weight: bold;">{{ number_format($cvcompras->sum('valorcomercial'), 2, '.', ',') }}</td>
+                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" colspan="9"></td>
                     </tr>
                 </tfoot>
             </table>

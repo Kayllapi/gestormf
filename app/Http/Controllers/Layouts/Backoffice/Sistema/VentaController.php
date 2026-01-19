@@ -6,9 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DB;
 use Auth;
-use Carbon\Carbon;
 
-class CompraController extends Controller
+class VentaController extends Controller
 {
     public function index(Request $request,$idtienda)
     {
@@ -16,7 +15,7 @@ class CompraController extends Controller
         $agencias = DB::table('tienda')->get();
       
         if($request->input('view') == 'tabla'){
-            return view(sistema_view().'/compra/tabla', compact('tienda','agencias'));
+            return view(sistema_view().'/venta/tabla', compact('tienda','agencias'));
         }
     }
 

@@ -126,7 +126,8 @@
     </footer>
     <main>
         <div class="container">
-            <h4 align="center">REPORTE DE VENTA</h4>
+            <h4 align="center" style="margin-bottom: 0px;">REPORTE DE VENTA DE BIENES</h4>
+            <h4 align="center" style="margin-top: 0px;">(EN SOLES)</h4>
             <b>AGENCIA: </b>{{ $tienda->nombreagencia }}<br>
             <b>PERIODO: </b>{{ $fecha_inicio_venta }} al {{ $fecha_fin_venta }}<br>
             <table style="width:100%;">

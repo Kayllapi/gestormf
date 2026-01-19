@@ -126,7 +126,8 @@
     </footer>
     <main>
         <div class="container">
-            <h4 align="center">REPORTE DE COMPRA</h4>
+            <h4 align="center" style="margin-bottom: 0px;">REPORTE DE COMPRA DE BIENES</h4>
+            <h4 align="center" style="margin-top: 0px;">(EN SOLES)</h4>
             <b>AGENCIA: </b>{{ $tienda->nombreagencia }}<br>
             <b>PERIODO: </b>{{ $fecha_inicio_compra }} al {{ $fecha_fin_compra }}<br>
             <table style="width:100%;">
@@ -191,6 +192,11 @@
                         echo $html;
                     ?>
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="19" style="border-bottom: 2px solid #000;text-align: center;font-weight: bold;">Total: {{ $cvcompras->sum('valorcompra') }}</td>
+                    </tr>
+                </tfoot>
             </table>
         </div>
     </main>

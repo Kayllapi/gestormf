@@ -579,7 +579,7 @@ class CompraventaController extends Controller
                     'users.codigo as responsablecodigo',
                     'u2.codigo as validar_responsablecodigo'
                 )
-                ->orderByDesc('cvcompra.fecharegistro')
+                ->orderBy('cvcompra.fecharegistro')
                 ->get();
 
             $pdf = PDF::loadView(sistema_view().'/compraventa/exportar_comprapdf', compact(
@@ -717,7 +717,7 @@ class CompraventaController extends Controller
                     'users.codigo as responsablecodigo',
                     'u2.codigo as validar_responsablecodigo'
                 )
-                ->orderByDesc('cvventa.fecharegistro')
+                ->orderBy('cvventa.fecharegistro')
                 ->get();
 
             $pdf = PDF::loadView(sistema_view().'/compraventa/exportar_ventapdf', compact(

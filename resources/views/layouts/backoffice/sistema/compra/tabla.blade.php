@@ -1,12 +1,12 @@
 <div class="modal-header">
     <h5 class="modal-title">
-        Compra de Bienes
+        Compra y Venta de Bienes
     </h5>
     <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>
 <div class="modal-body">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-6">
             <h5 class="modal-title text-center">
                 COMPRAS
             </h5>
@@ -130,9 +130,116 @@
                                     <button type="button" class="btn btn-warning" style="background-color: #F9F3B5 !important;" onclick="vaucher_compra()">
                                         <i class="fa-solid fa-copy" style="color:#000 !important;"></i> Duplicar Voucher
                                     </button>
-                                    <button type="button" class="btn btn-info" onclick="reporte_compra()" style="font-weight: bold;">
-                                        <i class="fa-solid fa-file-pdf"></i> Reporte
-                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h5 class="modal-title text-center">
+                VENTAS
+            </h5>
+            <div class="row">
+                <div class="col-sm-12">
+                    <form action="javascript:;" id="form_venta"> 
+                        <div class="modal-body">
+                            <div class="row ">
+                                <div class="col-sm-2 mt-3 text-center">
+                                    <a href="javascript:;" 
+                                        class="sistema-font" 
+                                        onclick="search_venta()">
+                                        <i class="fa-solid fa-arrows-rotate" style="color: #000;"></i>
+                                    </a>
+                                </div>
+                                <div class="col-sm-10">
+                                    <div class="row">
+                                        <label class="col-sm-3 col-form-label" style="text-align: right;">Agencia</label>
+                                        <div class="col-sm-7">
+                                            <select class="form-select" id="id_agencia_venta">
+                                                <option></option>
+                                                @foreach($agencias as $value)
+                                                    <option value="{{$value->id}}">{{$value->nombreagencia}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <button type="button"
+                                                class="btn btn-primary"
+                                                onclick="search_ventaFiltro()"
+                                                style="font-weight: bold;">
+                                                <i class="fa-solid fa-search"></i> Filtrar
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label class="col-sm-3 col-form-label" style="text-align: right;">Periodo</label>
+                                        <div class="col-sm-3">
+                                            <input type="date" class="form-control" id="fecha_inicio_venta" value="{{ date('Y-m-d') }}"> 
+                                        </div>
+                                        <label class="col-sm-1 col-form-label" style="text-align: center;">al</label>
+                                        <div class="col-sm-3">
+                                            <input type="date" class="form-control" id="fecha_fin_venta" value="{{ date('Y-m-d') }}">
+                                        </div>
+                                        <div class="col-sm-2">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-body" 
+                            style="
+                                overflow-y: scroll;
+                                height: calc(100vh - 266px);
+                                padding: 0;
+                                margin-top: 5px;
+                                overflow-x: scroll;">
+                            <table class="table table-striped table-hover"
+                                id="table-lista-venta"
+                                style="table-layout: fixed; width: 100%;">
+                                <thead class="table-dark" style="position: sticky;top: 0;">
+                                    <tr style="font-weight: bold;">
+                                        <td width="90px">Cod. Oper.</td>
+                                        <td width="155px;">Fecha Registro</td>
+                                        <td width="190px;">Descripción</td>
+                                        <td width="120px;">Serie/Motor/N°.P.</td>
+                                        <td width="80px;">Chasis</td>
+                                        <td width="90px;">Modelo/T.</td>
+                                        <td width="90px;">Otros</td>
+                                        <td width="80px">Valor Comercial</td>
+                                        <td width="120px">Precio Venta Descuento</td>
+                                        <td width="80px">Precio Venta Final</td>
+                                        <td width="80px;">Estado</td>
+                                        <td width="80px;">Color</td>
+                                        <td width="80px;">Año de Fabricación</td>
+                                        <td width="80px;">Año de Compra</td>
+                                        <td width="80px;">Placa del Vehículo</td>
+                                        <td width="80px;">Origen</td>
+                                        <td width="150px;">N° Ficha/Comprobante</td>
+                                        <td width="180px">Comprador</td>
+                                        <td width="90px">RUC/DNI/CE</td>
+                                        <td width="80px;">Lugar de Pago</td>
+                                        <td width="110px;">Validación</td>
+                                        <td width="80px;">Banco</td>
+                                        <td width="110px;">N° Operación</td>
+                                        <td width="90px;">Responsable</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-3">
+                                    TOTAL: <span id="total_venta" style="font-weight: normal;"></span>
+                                </div>
+                                <div class="col-9 text-end">
                                 </div>
                             </div>
                         </div>
@@ -144,6 +251,7 @@
 </div>
 <script>
     sistema_select2({ input:'#id_agencia_compra', val:'{{$tienda->id}}' });
+    sistema_select2({ input:'#id_agencia_venta', val:'{{$tienda->id}}' });
 
     // Compra
     search_compra();
@@ -183,6 +291,7 @@
     function show_data_compra(e) {
         const $row = $(e);
         $('#table-lista-compra tbody tr').removeClass('selected');
+        $('#table-lista-venta tbody tr').removeClass('selected');
         $row.addClass('selected');
     }
     function validar_compra(id) {
@@ -228,10 +337,6 @@
         const url = `{{ url('backoffice/'.$tienda->id) }}/compraventa/${id}/edit?view=eliminar_compra`;
         modal({ route: url, size: 'modal-sm' });
     }
-    function reporte_compra() {
-        const url = `{{ url('backoffice/'.$tienda->id) }}/compraventa/0/edit?view=edit_reporte_compra`;
-        modal({ route: url, size: 'modal-sm' });
-    }
     function exportar_compra() {
         const url = `{{ url('backoffice/'.$tienda->id) }}/compraventa/0/edit?view=exportar_compra
                 &id_agencia_compra=${$('#id_agencia_compra').val()}
@@ -255,6 +360,51 @@
     }
     function vaucher_compraCreate(id) {
         const url = `{{ url('backoffice/'.$tienda->id) }}/compraventa/${id}/edit?view=vaucher_compra`;
+        modal({ route: url, size: 'modal-sm' });
+    }
+
+    // Venta
+    search_venta();
+    function search_venta() {
+        $.ajax({
+            url:"{{url('backoffice/0/compraventa/show_table_venta')}}",
+            type:'GET',
+            data:{
+                id_agencia_venta: $('#id_agencia_venta').val(),
+                fecha_inicio_venta: '',
+                fecha_fin_venta: '',
+            },
+            success: function (res){
+                $('#table-lista-venta > tbody').html(res.html);
+                $('#total_venta').html(res.total);
+                $('#fecha_inicio_venta').val('{{ date('Y-m-d') }}');
+                
+            }
+        })
+    }
+    function search_ventaFiltro() {
+        $.ajax({
+            url:"{{url('backoffice/0/compraventa/show_table_venta')}}",
+            type:'GET',
+            data:{
+                id_agencia_venta: $('#id_agencia_venta').val(),
+                fecha_inicio_venta: $('#fecha_inicio_venta').val(),
+                fecha_fin_venta: $('#fecha_fin_venta').val(),
+            },
+            success: function (res){
+                $('#table-lista-venta > tbody').html(res.html);
+                $('#total_venta').html(res.total);
+            }
+        })
+    }
+    function show_data_venta(e) {
+        const $row = $(e);
+        $('#table-lista-compra tbody tr').removeClass('selected');
+        $('#table-lista-venta tbody tr').removeClass('selected');
+        $row.addClass('selected');
+    }
+    function validar_venta(id) {
+        const url = `{{ url('backoffice/'.$tienda->id) }}/compraventa/${id}/edit?view=edit_validar_venta`;
         modal({ route: url, size: 'modal-sm' });
     }
 </script>

@@ -96,7 +96,7 @@
                 <div class="row">
                   <label class="col-sm-5 col-form-label" style="text-align: right;">C. Ss./Otros (%):</label>
                   <div class="col-sm-7">
-                    <input type="number" step="any" class="form-control" id="comision" value="0." disabled>
+                    <input type="number" step="any" class="form-control" id="comision" value="0.00" disabled>
                   </div>
                 </div>
                 <div class="row">
@@ -105,11 +105,12 @@
                     <input type="number" step="any" class="form-control" {{ $view_detalle=='false' ? 'disabled' : '' }} id="cargo" value="{{ $credito->cargo }}">
                   </div>
                 </div>
+                @if($usuario->custodiagarantia_id==1)
                 <div class="row">
-                  <label class="col-sm-5 col-form-label" style="text-align: right;"></label>
-                  <div class="col-sm-7 mt-3">
-                  </div>
+                  <label class="col-sm-2"></label>
+                  <label class="col-sm-10" style="color: #b32121;">Comisión por custodia de garantia para cargo: ({{ configuracion($tienda->id,'comision_gestion_garantia_cargo')['valor'] }}% Mensual)</label>
                 </div>
+                @endif
                 @if($view_detalle!='false')
                 <div class="row">
                   <label class="col-sm-5 col-form-label" style="text-align: right;"></label>
@@ -209,20 +210,24 @@
           let tipotasa    = "{{$credito->modalidad_calculo}}" == 'Interes Simple' ? 1 : 2;
           
           if(monto<=0){
-              alert("Monto de Prestamo debe ser mayor a 0.00.");
+              var mensaje = "Monto de Prestamo debe ser mayor a 0.00.";
+              modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });  
               return false;
           }
           if(numerocuota<=0){
-              alert("El Número de Cuotas debe ser mayor a 0.");
+              var mensaje = "El Número de Cuotas debe ser mayor a 0.";
+              modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });  
               return false;
           }
           
           if(dia_gracia<0){
-              alert("El día de gracia debe ser mayor o igual a 0!!.");
+              var mensaje = "El día de gracia debe ser mayor o igual a 0!!.";
+              modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });  
               return false;
           }
           if(dia_gracia > {{$diasdegracia}}){
-              alert("Máximo puede poner {{$diasdegracia}} días de gracia!!.");
+              var mensaje = "Máximo puede poner {{$diasdegracia}} días de gracia!!.";
+              modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });  
               return false;
           }
 
@@ -255,7 +260,8 @@
                       $('#tasa_tip').val('0.00');
                       $('#tasa_tcem').val('0.00');
                       $('#comision').val('0.00');
-                      alert(res.mensaje);
+                      var mensaje = res.mensaje;
+                      modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });  
                   }else{
                       $('#table-cronograma > tbody').html(res.cronograma);
                       $('#interes_total').html(res.interes_total);

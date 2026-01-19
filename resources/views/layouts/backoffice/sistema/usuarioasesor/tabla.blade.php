@@ -40,11 +40,11 @@
             [
                 'data' => [
                     [
-                        'id' => 'NATURAL',
+                        'id' => 1,
                         'text' => 'NATURAL'
                     ],
                     [
-                        'id' => 'JURÍDICA',
+                        'id' => 2,
                         'text' => 'JURÍDICA'
                     ]
                 ],
@@ -53,15 +53,15 @@
             [
                 'data' => [
                     [
-                        'id' => 'DNI',
+                        'id' => 1,
                         'text' => 'DNI'
                     ],
                     [
-                        'id' => 'RUC',
+                        'id' => 2,
                         'text' => 'RUC'
                     ],
                     [
-                        'id' => 'CE',
+                        'id' => 3,
                         'text' => 'CE'
                     ]
                 ],

@@ -83,7 +83,7 @@
                             <p><b>Cliente:</b> {{ $usuario->nombrecompleto }}</p>
                             @endif
                             @if($usuario->identificacion!='')
-                            <p><b>DNI/RUC:</b> {{ $usuario->identificacion }}</p>
+                            <p><b>DNI/RUC/CE:</b> {{ $usuario->identificacion }}</p>
                             @endif
                             <!--p><b>Nacionalidad:</b></p-->
                             @if($usuario->db_idgenero!='')
@@ -201,14 +201,15 @@
                         </div>
                     </td>
                     @endif
-                      
+                    <?php
+                        $telefono_pareja = $users_prestamo ? ( is_null($users_prestamo->telefono_pareja) ? [] : json_decode($users_prestamo->telefono_pareja) ) : [];
+                        $i = 0;
+                    ?>
+                    @if($users_prestamo->telefono_pareja!='')
+                    @if($telefono_pareja[0]->valor != '')
                     <td width="33%" style="padding:10px;">
                         <div class="container-informacion">
                             <p><b>Teléfono:</b>
-                            <?php
-                               $telefono_pareja = $users_prestamo ? ( is_null($users_prestamo->telefono_pareja) ? [] : json_decode($users_prestamo->telefono_pareja) ) : [];
-                               $i = 0;
-                            ?>
                             @foreach($telefono_pareja as $value)
                                 <?php $coma = ''; ?>
                                 @if($i > 0)
@@ -220,6 +221,8 @@
                             </p>
                         </div>
                     </td>
+                    @endif
+                    @endif
                 </tr>
             </tbody>
         </table>

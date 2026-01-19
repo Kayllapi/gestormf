@@ -18,7 +18,7 @@
           
           
           <div class="mb-1">
-            <span class="badge d-block">Penalidad por custodia x día</span>
+            <span class="badge d-block">Penalidad por custodia x día (al vencimiento del período crédito)</span>
           </div>
           <table class="table" id="table-penalidad">
             <tbody>
@@ -94,6 +94,15 @@
             <label class="col-sm-8 col-form-label" style="text-align: right;">Tipo de Cambio ($):</label>
             <div class="col-sm-4">
               <input type="number" class="form-control" step="any" id="tipo_cambio_dolar" value="{{ configuracion($tienda->id,'tipo_cambio_dolar')['valor'] }}">
+            </div>
+          </div>
+          <div class="mb-1">
+            <span class="badge d-block">Comisión por gestión de garantia (Custodia de garantia del ACREEDOR)</span>
+          </div>
+          <div class="row mt-1">
+            <label class="col-sm-8 col-form-label" style="text-align: right;">Comisión Mensual (%):</label>
+            <div class="col-sm-4">
+              <input type="number" class="form-control" step="any" id="comision_gestion_garantia_cargo" value="{{ configuracion($tienda->id,'comision_gestion_garantia_cargo')['valor'] }}">
             </div>
           </div>
          

@@ -716,6 +716,14 @@
     @foreach($referencia_cliente as $value)
         agregar_referencia('{{ $value->referencia }}', '{{ $value->vinculo }}', '{{ $value->celular }}');
     @endforeach
+
+    @if(count($telefono_cliente)==0)
+        agregar_cliente_financiera('celular-cliente');
+    @endif
+
+    @if(count($telefono_pareja)==0)
+        agregar_cliente_financiera('celular-pareja');
+    @endif
   
     // DATOS DEL CLIENTE
     @include('app.nuevosistema.select2',['input'=>'#idtipoinformacion' , 'val' =>  $users_prestamo ? $users_prestamo->idtipoinformacion:0 ]);
@@ -809,7 +817,7 @@
             $('#cont_centrolaboraldelcliente').css('display','block');
         }*/
         if($("#idtipoinformacion").val()==2 && $("#idfuenteingreso").val()==1){
-            if($("#idestadocivil").val()==2 || $("#idestadocivil").val()==4){
+            if($("#idestadocivil").val()==2 || $("#idestadocivil").val()==4 || $("#idtipopersona").val()==2){
                 $('#cont_centrolaboraldepareja').css('display','block');
             }
             //$('#cont_negociodepareja').css('display','block');
@@ -1154,7 +1162,12 @@
                     }else{
                         $('#nombrecomercial').val(respuesta.nombreComercial);
                         $('#razonsocial').val(respuesta.razonSocial);
-                        $('#idubigeo').html('<option value="'+respuesta.idubigeo+'">'+respuesta.ubigeo+'</option>');
+                        if(respuesta.ubigeo!=''){
+                            $('#idubigeo').val(respuesta.idubigeo).trigger("change");
+                            //$('#idubigeo').html('<option value="'+respuesta.idubigeo+'">'+respuesta.ubigeo+'</option>');
+                        }else{
+                            $('#idubigeo').val(null).trigger("change");
+                        }
                         $('#direccion').val(respuesta.direccion);
                     }  
                 }

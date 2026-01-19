@@ -380,7 +380,7 @@ class UsuarioController extends Controller
                 }*/
             //}
             if($request->idestadocivil==2 || $request->idestadocivil==4  or ($request->idtipoinformacion==2 && $request->idfuenteingreso==1)){
-                if($request->idocupacion_pareja==2 && $request->idtipoinformacion==2){
+                if(($request->idocupacion_pareja==2 && $request->idtipoinformacion==2) || ($request->idtipopersona==2 && $request->idtipoinformacion==2)){
                   
                     if($request->ruc_laboral_pareja!=''){
                         $rules['ruc_laboral_pareja'] = 'required|integer|numeric|digits:11';
@@ -1343,7 +1343,7 @@ class UsuarioController extends Controller
           //dd($request->idocupacion_pareja);
             if($request->idestadocivil==2 || $request->idestadocivil==4  or ($request->idtipoinformacion==2 && $request->idfuenteingreso==1)){
           
-                if($request->idocupacion_pareja==2 && $request->idtipoinformacion==2){
+                if(($request->idocupacion_pareja==2 && $request->idtipoinformacion==2) || ($request->idtipopersona==2 && $request->idtipoinformacion==2)){
                   
                     if($request->ruc_laboral_pareja!=''){
                         $rules['ruc_laboral_pareja'] = 'required|integer|numeric|digits:11';

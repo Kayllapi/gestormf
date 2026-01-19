@@ -105,6 +105,7 @@ class PenalidadComisionController extends Controller
             configuracion_update($idtienda,'dias_tolerancia_garantia',$request->dias_tolerancia_garantia);
             configuracion_update($idtienda,'tasa_moratoria',$request->tasa_moratoria);
             configuracion_update($idtienda,'tipo_cambio_dolar',$request->tipo_cambio_dolar);
+            configuracion_update($idtienda,'comision_gestion_garantia_cargo',$request->comision_gestion_garantia_cargo);
             return response()->json([
                 'resultado' => 'CORRECTO',
                 'mensaje'   => 'Se ha actualizado correctamente.'

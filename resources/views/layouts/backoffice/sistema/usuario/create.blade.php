@@ -746,8 +746,7 @@
             $('#cont_centrolaboraldelcliente').css('display','block');
         }*/
         if($("#idtipoinformacion").val()==2 && $("#idfuenteingreso").val()==1){
-            
-            if($("#idestadocivil").val()==2 || $("#idestadocivil").val()==4){
+            if($("#idestadocivil").val()==2 || $("#idestadocivil").val()==4 || $("#idtipopersona").val()==2){
                 $('#cont_centrolaboraldepareja').css('display','block');
             }
           
@@ -1029,7 +1028,12 @@
                     }else{
                         $('#nombrecomercial').val(respuesta.nombreComercial);
                         $('#razonsocial').val(respuesta.razonSocial);
-                        $('#idubigeo').html('<option value="'+respuesta.idubigeo+'">'+respuesta.ubigeo+'</option>');
+                        if(respuesta.ubigeo!=''){
+                            $('#idubigeo').val(respuesta.idubigeo).trigger("change");
+                            //$('#idubigeo').html('<option value="'+respuesta.idubigeo+'">'+respuesta.ubigeo+'</option>');
+                        }else{
+                            $('#idubigeo').val(null).trigger("change");
+                        }
                         $('#direccion').val(respuesta.direccion);
                     }  
                 }

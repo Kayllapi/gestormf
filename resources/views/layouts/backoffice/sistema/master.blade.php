@@ -86,7 +86,7 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
           .badge {
               background-color: #a6a9ab;
               text-align: left;
-              font-size: 12px;
+              font-size: 14px;
               color: #000;
           }
           .modal-header .fa-plus {

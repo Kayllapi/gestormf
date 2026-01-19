@@ -68,6 +68,13 @@ class MasterController extends Controller
             ]);
 
         }
+        elseif($request->input('view') == 'alerta'){
+
+            return view('app/nuevosistema/alerta',[
+                'mensaje' => $request->mensaje,
+            ]);
+
+        }
     }
     
     public function store(Request $request)

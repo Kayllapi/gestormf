@@ -346,9 +346,9 @@ class CvasignacioncapitalController extends Controller
                
               $html .= '
                 <tr style="position: sticky;bottom: 0;">
-                  <td colspan="5" style="background-color: #c2c0c2 !important;text-align:right;">Total (S/.)</td>
-                  <td style="background-color: #c2c0c2 !important;text-align:right;">'.number_format($total_suma-$total_resta, 2, '.', '').'</td>
-                  <td colspan="6" style="background-color: #c2c0c2 !important;text-align:right;"></td>
+                  <td colspan="5" style="background-color: #c2c0c2 !important;text-align:right; font-weight: bold;">Total (S/.)</td>
+                  <td style="background-color: #c2c0c2 !important;text-align:right; font-weight: bold;">'.number_format($total_suma-$total_resta, 2, '.', '').'</td>
+                  <td colspan="6" style="background-color: #c2c0c2 !important;text-align:right; font-weight: bold;"></td>
                 </tr>'; 
             return array(
               'html' => $html

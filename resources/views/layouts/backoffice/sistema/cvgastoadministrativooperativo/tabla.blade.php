@@ -7,7 +7,7 @@
             <i class="fa-solid fa-plus"></i> Nuevo
         </a>
     </h5>
-    <button type="button" class="btn-close" onclick="ir_inicio()" style="font-size: 20px;"></button>
+    <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>
 
 <div class="modal-body">
@@ -45,24 +45,24 @@
             <div class="card">
                 <div class="card-body" style="overflow-y: scroll;height: 300px;padding: 0;margin-top: 5px;overflow-x: scroll;">
                 
-                <table class="table table-striped table-hover table-bordered" id="table-lista-gastoadministrativooperativo">
-                    <thead class="table-dark" style="position: sticky;top: 0;">
-                    <tr>
-                        <td rowspan="2" width="10px">N°</td>
-                        <td rowspan="2">Operación</td>
-                        <td rowspan="2">Monto (S/.)</td>
-                        <td rowspan="2">Fecha de gasto</td>
-                        <td rowspan="2">Descripción</td>
-                        <td style="text-align: center;" colspan="2">Sustento</td>
-                        <td rowspan="2">F. Pago</td>
-                        <td rowspan="2">Banco</td>
-                        <td rowspan="2">Validación</td>
-                        <td rowspan="2">Usuario</td>
-                    </tr>
-                    <tr>
-                        <td>Comprobante</td>
-                        <td>N° y Detalle de Comp.</td>
-                    </tr>
+                <table class="table table-striped table-hover" id="table-lista-gastoadministrativooperativo">
+                    <thead class="table-dark" style="position: sticky;top: 0; font-weight: bold;">
+                        <tr>
+                            <td rowspan="2" width="10px" >N°</td>
+                            <td rowspan="2" >Operación</td>
+                            <td rowspan="2" >Monto (S/.)</td>
+                            <td rowspan="2" >Fecha de gasto</td>
+                            <td rowspan="2" >Descripción</td>
+                            <td colspan="2" style="text-align: center;">Sustento</td>
+                            <td rowspan="2" >F. Pago</td>
+                            <td rowspan="2" >Banco</td>
+                            <td rowspan="2" >Validación</td>
+                            <td rowspan="2" >Usuario</td>
+                        </tr>
+                        <tr>
+                            <td >Comprobante</td>
+                            <td >N° y Detalle de Comp.</td>
+                        </tr>
                     </thead>
                     <tbody>
                     

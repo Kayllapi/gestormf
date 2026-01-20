@@ -97,7 +97,7 @@ class CvingresoextraordinarioController extends Controller
           
             DB::table('cvingresoextraordinario')->insert([
                 'fecharegistro' => now(),
-                'codigoprefijo' => 'OI',
+                'codigoprefijo' => 'IV',
                 'codigo' => $codigo,
                 'monto' => $request->input('monto'),
                 'descripcion' => $request->input('descripcion'),
@@ -124,12 +124,11 @@ class CvingresoextraordinarioController extends Controller
     public function show(Request $request, $idtienda, $id)
     {
         if($id=='show_table'){
-dd($request->fechainicio);
-            if($request->input('fechainicio') != ''){
-                $where[] = ['cvingresoextraordinario.fechapago','>=',$request->fechainicio.' 00:00:00'];
+            if($request->fechainicio != ''){
+                $where[] = ['cvingresoextraordinario.fecharegistro','>=',$request->fechainicio.' 00:00:00'];
             }
-            if($request->input('fechafin') != ''){
-                $where[] = ['cvingresoextraordinario.fechapago','<=',$request->fechafin.' 23:59:59']; 
+            if($request->fechafin != ''){
+                $where[] = ['cvingresoextraordinario.fecharegistro','<=',$request->fechafin.' 23:59:59']; 
             }
           
             $ingresoextraordinario = DB::table('cvingresoextraordinario')
@@ -146,7 +145,6 @@ dd($request->fechainicio);
                 )
                 ->orderBy('cvingresoextraordinario.id','ASC')
                 ->get();
-                dd($ingresoextraordinario);
   
             $total = 0;
             $total_caja = 0;
@@ -190,13 +188,13 @@ dd($request->fechainicio);
           }
               $html .= '
                 <tr style="position: sticky;bottom: 0;">
-                  <td colspan="2" style="background-color: #144081 !important;text-align:right;color:#fff !important;">Total (S/.)</td>
-                  <td style="background-color: #144081 !important;text-align:right;color:#fff !important;">'.number_format($total, 2, '.', '').'</td>
-                  <td style="background-color: #144081 !important;text-align:right;color:#fff !important;">Caja (S/.)</td>
-                  <td style="background-color: #144081 !important;text-align:right;color:#fff !important;">'.number_format($total_caja, 2, '.', '').'</td>
-                  <td style="background-color: #144081 !important;text-align:right;color:#fff !important;">Banco (S/.)</td>
-                  <td style="background-color: #144081 !important;text-align:right;color:#fff !important;">'.number_format($total_banco, 2, '.', '').'</td>
-                  <td colspan="4" style="background-color: #144081 !important;text-align:right;color:#fff !important;"></td>
+                  <td colspan="2" style="background-color: #c2c0c2 !important;text-align:right; font-weight: bold;">Total (S/.)</td>
+                  <td style="background-color: #c2c0c2 !important;text-align:right; font-weight: bold;">'.number_format($total, 2, '.', '').'</td>
+                  <td style="background-color: #c2c0c2 !important;text-align:right; font-weight: bold;">Caja (S/.)</td>
+                  <td style="background-color: #c2c0c2 !important;text-align:right; font-weight: bold;">'.number_format($total_caja, 2, '.', '').'</td>
+                  <td style="background-color: #c2c0c2 !important;text-align:right; font-weight: bold;">Banco (S/.)</td>
+                  <td style="background-color: #c2c0c2 !important;text-align:right; font-weight: bold;">'.number_format($total_banco, 2, '.', '').'</td>
+                  <td colspan="4" style="background-color: #c2c0c2 !important;text-align:right; font-weight: bold;"></td>
                 </tr>';
             return array(
               'html' => $html
@@ -261,10 +259,10 @@ dd($request->fechainicio);
         else if( $request->input('view') == 'exportar_pdf' ){
               
             if($request->input('fechainicio') != ''){
-                $where[] = ['cvingresoextraordinario.fechapago','>=',$request->fechainicio.' 00:00:00'];
+                $where[] = ['cvingresoextraordinario.fecharegistro','>=',$request->fechainicio.' 00:00:00'];
             }
             if($request->input('fechafin') != ''){
-                $where[] = ['cvingresoextraordinario.fechapago','<=',$request->fechafin.' 23:59:59']; 
+                $where[] = ['cvingresoextraordinario.fecharegistro','<=',$request->fechafin.' 23:59:59']; 
             }
           
             $ingresoextraordinario = DB::table('cvingresoextraordinario')

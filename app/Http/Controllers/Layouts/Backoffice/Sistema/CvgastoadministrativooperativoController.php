@@ -85,7 +85,7 @@ class CvgastoadministrativooperativoController extends Controller
             }
           
             $consolidadooperaciones = consolidadooperaciones($tienda,$idtienda,now()->format('Y-m-d'));
-            if($request->idformapago==1){
+            /*if($request->idformapago==1){
                 if($consolidadooperaciones['saldos_caja']<$request->monto){
                     return response()->json([
                         'resultado' => 'ERROR',
@@ -102,7 +102,7 @@ class CvgastoadministrativooperativoController extends Controller
                         ]);
                     }
                 }  
-            }
+            }*/
           
             $gastoadministrativooperativo = DB::table('cvgastoadministrativooperativo')
                 ->orderBy('cvgastoadministrativooperativo.codigo','desc')
@@ -124,7 +124,7 @@ class CvgastoadministrativooperativoController extends Controller
           
             DB::table('cvgastoadministrativooperativo')->insert([
                 'fecharegistro' => now(),
-                'codigoprefijo' => 'OG',
+                'codigoprefijo' => 'GV',
                 'codigo' => $codigo,
                 //'fechapago' => now(),
                 'monto' => $request->input('monto'),
@@ -154,12 +154,11 @@ class CvgastoadministrativooperativoController extends Controller
     public function show(Request $request, $idtienda, $id)
     {
         if($id=='show_table'){
-
-            if($request->input('fechainicio') != ''){
-                $where[] = ['cvgastoadministrativooperativo.fechapago','>=',$request->fechainicio.' 00:00:00'];
+            if($request->fechainicio != ''){
+                $where[] = ['cvgastoadministrativooperativo.fecharegistro','>=',$request->fechainicio.' 00:00:00'];
             }
-            if($request->input('fechafin') != ''){
-                $where[] = ['cvgastoadministrativooperativo.fechapago','<=',$request->fechafin.' 23:59:59']; 
+            if($request->fechafin != ''){
+                $where[] = ['cvgastoadministrativooperativo.fecharegistro','<=',$request->fechafin.' 23:59:59']; 
             }
           
             $gastoadministrativooperativo = DB::table('cvgastoadministrativooperativo')
@@ -220,13 +219,13 @@ class CvgastoadministrativooperativoController extends Controller
           }
               $html .= '
                 <tr style="position: sticky;bottom: 0;">
-                  <td colspan="2" style="background-color: #144081 !important;text-align:right;color:#fff !important;">Total (S/.)</td>
-                  <td style="background-color: #144081 !important;text-align:right;color:#fff !important;">'.number_format($total, 2, '.', '').'</td>
-                  <td style="background-color: #144081 !important;text-align:right;color:#fff !important;">Caja (S/.)</td>
-                  <td style="background-color: #144081 !important;text-align:right;color:#fff !important;">'.number_format($total_caja, 2, '.', '').'</td>
-                  <td style="background-color: #144081 !important;text-align:right;color:#fff !important;">Banco (S/.)</td>
-                  <td style="background-color: #144081 !important;text-align:right;color:#fff !important;">'.number_format($total_banco, 2, '.', '').'</td>
-                  <td colspan="4" style="background-color: #144081 !important;text-align:right;color:#fff !important;"></td>
+                  <td colspan="2" style="background-color: #c2c0c2 !important;text-align:right; font-weight: bold;">Total (S/.)</td>
+                  <td style="background-color: #c2c0c2 !important;text-align:right; font-weight: bold;">'.number_format($total, 2, '.', '').'</td>
+                  <td style="background-color: #c2c0c2 !important;text-align:right; font-weight: bold;">Caja (S/.)</td>
+                  <td style="background-color: #c2c0c2 !important;text-align:right; font-weight: bold;">'.number_format($total_caja, 2, '.', '').'</td>
+                  <td style="background-color: #c2c0c2 !important;text-align:right; font-weight: bold;">Banco (S/.)</td>
+                  <td style="background-color: #c2c0c2 !important;text-align:right; font-weight: bold;">'.number_format($total_banco, 2, '.', '').'</td>
+                  <td colspan="4" style="background-color: #c2c0c2 !important;text-align:right; font-weight: bold;"></td>
                 </tr>';
             return array(
               'html' => $html
@@ -291,10 +290,10 @@ class CvgastoadministrativooperativoController extends Controller
         else if( $request->input('view') == 'exportar_pdf' ){
               
             if($request->input('fechainicio') != ''){
-                $where[] = ['cvgastoadministrativooperativo.fechapago','>=',$request->fechainicio.' 00:00:00'];
+                $where[] = ['cvgastoadministrativooperativo.fecharegistro','>=',$request->fechainicio.' 00:00:00'];
             }
             if($request->input('fechafin') != ''){
-                $where[] = ['cvgastoadministrativooperativo.fechapago','<=',$request->fechafin.' 23:59:59']; 
+                $where[] = ['cvgastoadministrativooperativo.fecharegistro','<=',$request->fechafin.' 23:59:59']; 
             }
           
             $gastoadministrativooperativo = DB::table('cvgastoadministrativooperativo')

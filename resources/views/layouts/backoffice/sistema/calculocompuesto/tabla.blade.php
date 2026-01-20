@@ -21,7 +21,7 @@
                     </div>
                   </div>
                   <div class="row">
-                    <label class="col-sm-5 col-form-label" style="text-align: right;">Monto de Prestamo</label>
+                    <label class="col-sm-5 col-form-label" style="text-align: right;">Monto de Préstamo</label>
                     <div class="col-sm-7">
                       <input type="number" step="any" class="form-control" id="monto_solicitado" value="0.00" onkeyup="showtasa();" onkeydown="showtasa();">
                     </div>
@@ -88,13 +88,18 @@
                   <div class="row">
                     <label class="col-sm-5 col-form-label" style="text-align: right;">Cargo:</label>
                     <div class="col-sm-7">
-                      <input type="number" step="any" class="form-control" id="cargo" value="0.00">
+                      <input type="number" step="any" class="form-control" id="cargo" value="0.00" disabled>
                     </div>
                   </div>
                   <div class="row">
-                    <label class="col-sm-5 col-form-label" style="text-align: right;"></label>
-                    <div class="col-sm-7 mt-3">
-                    </div>
+                    <label class="col-sm-5"></label>
+                    <label class="col-sm-7">
+                    <label class="chk" style="width: 100%;">
+                        <input type="checkbox" id="cargo_check" checked>
+                        <span class="checkmark"></span>
+                        <span style="color: #b32121;">Costo por custodia de garantia para cargo: ({{ configuracion($tienda->id,'comision_gestion_garantia_cargo')['valor'] }}% Mensual)</span>
+                    </label>
+                    </label>
                   </div>
                   <div class="row">
                     <label class="col-sm-5 col-form-label" style="text-align: right;"></label>
@@ -138,7 +143,7 @@
                 <th>Fecha de Pago</th>
                 <th>Capital</th>
                 <th>Amortización</th>
-                <th>Interes</th>
+                <th>Interés</th>
                 <th>C. Ss./Otros (%)</th>
                 <th>Cargo</th>
                 <th>Cuota</th>
@@ -154,14 +159,14 @@
             </table>
           </div>
           <div class="col-sm-12 col-md-5">
-            <table class="table" id="table-tarifario-producto">
-              <thead class="text-white">
+            <table class="table table-bordered" id="table-tarifario-producto">
+              <thead>
                 <tr>
-                  <td>FRECUENCIA</td>
-                  <td>MONTO</td>
-                  <td>CUOTAS</td>
-                  <td>TEM</td>
-                  <td>PRODUCTO</td>
+                  <th>FRECUENCIA</th>
+                  <th>MONTO</th>
+                  <th>CUOTAS</th>
+                  <th>TEM</th>
+                  <th>PRODUCTO</th>
                 </tr>
               </thead>
               <tbody>
@@ -179,6 +184,17 @@
 
 <script>
   @include('app.nuevosistema.select2',['input'=>'#idforma_pago_credito'])
+
+  $('#cargo_check').on('change', function () {
+    if ($(this).is(':checked')) {
+        $('#cargo').prop('disabled',true);
+        showtasa();
+    } else {
+        $('#cargo').removeAttr('disabled');
+        $('#cargo').val('0.00');
+    }
+  });
+
   show_producto_credito()
   function show_producto_credito(){
     $.ajax({
@@ -214,7 +230,7 @@
     let tipotasa    = 2;
 
     if(monto<=0){
-        alert("Monto de Prestamo debe ser mayor a 0.00.");
+        alert("Monto de Préstamo debe ser mayor a 0.00.");
         return false;
     }
     if(numerocuota<=0){
@@ -293,6 +309,24 @@
     let numerocuota = parseFloat($('#cuotas').val());
     let frecuencia  = $('#idforma_pago_credito').val();
     let idproducto = $('#idcredito_prendatario').val();
+
+    var comision_gestion_garantia_cargo = parseFloat({{ configuracion($tienda->id,'comision_gestion_garantia_cargo')['valor'] }});
+    var cargocom = 0;
+    if(frecuencia==1){
+        cargocom = ((comision_gestion_garantia_cargo/26)*numerocuota)/100;
+    }
+    else if(frecuencia==2){
+        cargocom = ((comision_gestion_garantia_cargo/4)*numerocuota)/100;
+    }
+    else if(frecuencia==3){
+        cargocom = ((comision_gestion_garantia_cargo/2)*numerocuota)/100;
+    }
+    else if(frecuencia==4){
+        cargocom = ((comision_gestion_garantia_cargo/1)*numerocuota)/100;
+    }
+    var cargo = cargocom*monto;
+    $('#cargo').val(cargo.toFixed(2));
+
     $.ajax({
       url:"{{url('backoffice/0/calculocompuesto/showtasa')}}",
       type:'GET',

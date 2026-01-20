@@ -147,12 +147,16 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
               font-weight: bold;
               color: #000000;
           }
-          thead > tr > th, 
+          .table > thead > tr > th, 
+          .table > tbody > tr > th, 
           .table-dark > tr > th, 
           .table-dark > tr > td, 
           .table.dataTable tfoot th {
               background-color: #c2c0c2 !important;
               color: #000000 !important;
+          }
+          .table > tbody > tr:hover > th {
+              background-color: #c2c0c2 !important;
           }
           .bg-primary,
           .btn-primary,

@@ -99,16 +99,23 @@
                     <input type="number" step="any" class="form-control" id="comision" value="0.00" disabled>
                   </div>
                 </div>
+                @if($usuario->custodiagarantia_id==1)
+                <div class="row">
+                  <label class="col-sm-5 col-form-label" style="text-align: right;">Cargo S/.:</label>
+                  <div class="col-sm-7">
+                    <input type="number" step="any" class="form-control" {{ $view_detalle=='false' ? 'disabled' : '' }} id="cargo" value="{{ $credito->cargo }}" disabled>
+                  </div>
+                </div>
+                <div class="row">
+                  <label class="col-sm-2"></label>
+                  <label class="col-sm-10" style="color: #b32121;">Costo por custodia de garantia para cargo: ({{ configuracion($tienda->id,'comision_gestion_garantia_cargo')['valor'] }}% Mensual)</label>
+                </div>
+                @else
                 <div class="row">
                   <label class="col-sm-5 col-form-label" style="text-align: right;">Cargo S/.:</label>
                   <div class="col-sm-7">
                     <input type="number" step="any" class="form-control" {{ $view_detalle=='false' ? 'disabled' : '' }} id="cargo" value="{{ $credito->cargo }}">
                   </div>
-                </div>
-                @if($usuario->custodiagarantia_id==1)
-                <div class="row">
-                  <label class="col-sm-2"></label>
-                  <label class="col-sm-10" style="color: #b32121;">Comisión por custodia de garantia para cargo: ({{ configuracion($tienda->id,'comision_gestion_garantia_cargo')['valor'] }}% Mensual)</label>
                 </div>
                 @endif
                 @if($view_detalle!='false')
@@ -384,6 +391,25 @@
     if(numerocuota==''){
         return false;
     }
+
+    var comision_gestion_garantia_cargo = parseFloat({{ configuracion($tienda->id,'comision_gestion_garantia_cargo')['valor'] }});
+    var monto_cobertura_garantia =  parseFloat($('#monto_cobertura_garantia').val());
+    var cargocom = 0;
+    if(frecuencia==1){
+        cargocom = ((comision_gestion_garantia_cargo/26)*numerocuota)/100;
+    }
+    else if(frecuencia==2){
+        cargocom = ((comision_gestion_garantia_cargo/4)*numerocuota)/100;
+    }
+    else if(frecuencia==3){
+        cargocom = ((comision_gestion_garantia_cargo/2)*numerocuota)/100;
+    }
+    else if(frecuencia==4){
+        cargocom = ((comision_gestion_garantia_cargo/1)*numerocuota)/100;
+    }
+    var cargo = cargocom*monto_cobertura_garantia;
+    $('#cargo').val(cargo.toFixed(2));
+
     $.ajax({
       url:"{{url('backoffice/0/credito/showtasa')}}",
       type:'GET',

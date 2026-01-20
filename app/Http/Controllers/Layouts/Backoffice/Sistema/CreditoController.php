@@ -1184,14 +1184,14 @@ class CreditoController extends Controller
                       </tr>';
           }
           $html .= '<tr>
-                        <td style="background-color: #144081;"></td>
-                        <td style="background-color: #144081;"></td>
-                        <td style="background-color: #144081;color: white;font-weight: bold;">TOTAL</td>
-                        <td style="background-color: #144081;color: white;font-weight: bold;">'.$cronograma['total_amortizacion'].'</td>
-                        <td style="background-color: #144081;color: white;font-weight: bold;">'.$cronograma['total_interes'].'</td>
-                        <td style="background-color: #144081;color: white;font-weight: bold;">'.$cronograma['total_comision'].'</td>
-                        <td style="background-color: #144081;color: white;font-weight: bold;">'.$cronograma['total_cargo'].'</td>
-                        <td style="background-color: #144081;color: white;font-weight: bold;">'.$cronograma['total_cuotafinal'].'</td>
+                        <th></th>
+                        <th></th>
+                        <th>TOTAL</th>
+                        <th>'.$cronograma['total_amortizacion'].'</th>
+                        <th>'.$cronograma['total_interes'].'</th>
+                        <th>'.$cronograma['total_comision'].'</th>
+                        <th>'.$cronograma['total_cargo'].'</th>
+                        <th>'.$cronograma['total_cuotafinal'].'</th>
                       </tr>';
           return array(
             'cronograma' => $html,

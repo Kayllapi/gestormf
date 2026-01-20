@@ -35,10 +35,8 @@
                 <div class="col-sm-2">
                   <input type="number" class="form-control" id="monto" step="any">
                 </div>
-              </div>
-              <div class="row">
-                <label class="col-sm-3 col-form-label" style="text-align: right;">Descripción:</label>
-                <div class="col-sm-9">
+                <label class="col-sm-2 col-form-label" style="text-align: right;">Descripción:</label>
+                <div class="col-sm-5">
                   <input type="text" class="form-control" id="descripcion">
                 </div>
               </div>
@@ -118,7 +116,7 @@
     function valid_registro(){
         var idtipooperacion = $('#idtipooperacion').val();
         callback({
-            route: '{{ url('backoffice/'.$tienda->id.'/asignacioncapital') }}',
+            route: '{{ url('backoffice/'.$tienda->id.'/cvasignacioncapital') }}',
             method: 'POST',
             form: '#form_asignacioncapital',
             data:{
@@ -132,7 +130,7 @@
   
     function submit_registro(){
         callback({
-            route: '{{ url('backoffice/'.$tienda->id.'/asignacioncapital') }}',
+            route: '{{ url('backoffice/'.$tienda->id.'/cvasignacioncapital') }}',
             method: 'POST',
             form: '#form_asignacioncapital',
             data:{

@@ -229,7 +229,7 @@ class CvasignacioncapitalController extends Controller
           
             DB::table('cvasignacioncapital')->insert([
                 'fecharegistro' => now(),
-                'codigoprefijo' => 'OK',
+                'codigoprefijo' => 'OV',
                 'codigo' => $codigo,
                 'monto' => $request->input('monto'),
                 'descripcion' => $request->input('descripcion'),
@@ -330,7 +330,7 @@ class CvasignacioncapitalController extends Controller
                               <td>{$numerooperacion}</td>
                               <td>{$value->descripcion}</td>
                               <td>{$value->codigo_responsable}</td>
-                              <td>{$value->codigo_responsable_recfinal}</td>
+                              <td style='".($value->codigo_responsable_recfinal == '' ? 'background-color: #ffd374ff !important;' : '')."'>{$value->codigo_responsable_recfinal}</td>
                           </tr>";
                 $total = $total+$value->monto;
                 if($value->idtipooperacion==1 or $value->idtipooperacion==4){
@@ -345,7 +345,7 @@ class CvasignacioncapitalController extends Controller
             }
                
               $html .= '
-                <tr style="position: sticky;bottom: 0;">
+                <tr style="bottom: 0;">
                   <td colspan="5" style="background-color: #c2c0c2 !important;text-align:right; font-weight: bold;">Total (S/.)</td>
                   <td style="background-color: #c2c0c2 !important;text-align:right; font-weight: bold;">'.number_format($total_suma-$total_resta, 2, '.', '').'</td>
                   <td colspan="6" style="background-color: #c2c0c2 !important;text-align:right; font-weight: bold;"></td>

@@ -126,7 +126,7 @@
     <div class="container">
       <h4 align="center" style="font-size:16px;">MOVIMIENTO Y SALDO DE  CAPITAL ASIGNADO</h4>
             <div style="float:left;"><b>AGENCIA: </b>{{ $agencia->nombreagencia }}  </div>     
-            <div style="margin-left:50px;float:left;"><b>A FECHA: </b>{{ now()->format('d-m-Y H:i:s A') }}</div>    <br>
+            <div style="margin-left:50px;float:left;"><b>A FECHA: </b>{{ now()->format('d-m-Y h:i:s A') }}</div>    <br>
             
             <table style="width:100%;">
               <thead class="table-dark">

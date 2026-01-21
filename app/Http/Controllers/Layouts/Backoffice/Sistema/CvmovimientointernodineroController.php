@@ -168,7 +168,7 @@ class CvmovimientointernodineroController extends Controller
           
             $idmovimientointernodinero = DB::table('cvmovimientointernodinero')->insertGetId([
                 'fecharegistro' => now(),
-                'codigoprefijo' => 'OMR',
+                'codigoprefijo' => 'MRV',
                 'codigo' => $codigo,
                 'monto' => $request->input('monto_retiro1'),
                 'descripcion' => $request->input('descripcion_retiro1'),
@@ -186,19 +186,21 @@ class CvmovimientointernodineroController extends Controller
             ]);
           
             // DEPOSITO
-            $movimientointernodinero = DB::table('cvmovimientointernodinero')
-                ->where('cvmovimientointernodinero.idtipomovimientointerno',2)
-                ->orderBy('cvmovimientointernodinero.codigo','desc')
-                ->limit(1)
-                ->first();
-            $codigo = 1;
-            if($movimientointernodinero!=''){
-                $codigo = $movimientointernodinero->codigo+1;
-            }
+            // $movimientointernodinero = DB::table('cvmovimientointernodinero')
+            //     ->where('cvmovimientointernodinero.idtipomovimientointerno',2)
+            //     ->orderBy('cvmovimientointernodinero.codigo','desc')
+            //     ->limit(1)
+            //     ->first();
+            // $codigo = 1;
+            // if($movimientointernodinero!=''){
+            //     $codigo = $movimientointernodinero->codigo+1;
+            // }
+            $movimientointernodinero = DB::table('cvmovimientointernodinero')->where('id', $idmovimientointernodinero)->first();
+            $codigo = $movimientointernodinero->codigo;
           
             DB::table('cvmovimientointernodinero')->insert([
                 'fecharegistro' => now(),
-                'codigoprefijo' => 'OMD',
+                'codigoprefijo' => 'MDV',
                 'codigo' => $codigo,
                 'monto' => $request->input('monto_retiro1'),
                 'descripcion' => $request->input('descripcion_retiro1'),
@@ -208,7 +210,7 @@ class CvmovimientointernodineroController extends Controller
                 'idbanco' => $request->idbanco_retiro1!=''?$request->idbanco_retiro1:0,
                 'idfuenteretiro' => $request->idfuenteretiro_retiro1-5,
                 'idtipomovimientointerno' => 2, 
-                'idmovimientointernodinero' => $idmovimientointernodinero, 
+                'idcvmovimientointernodinero' => $idmovimientointernodinero, 
                 'idtienda' => user_permiso()->idtienda,
                 'idestadoeliminado' => 1,
                 'idestado' => 1,
@@ -352,7 +354,7 @@ class CvmovimientointernodineroController extends Controller
           
             $idmovimientointernodinero = DB::table('cvmovimientointernodinero')->insertGetId([
                 'fecharegistro' => now(),
-                'codigoprefijo' => 'OACR',
+                'codigoprefijo' => 'ACRV',
                 'codigo' => $codigo,
                 'monto' => $request->input('monto_retiro3'),
                 'descripcion' => $request->input('descripcion_retiro3'),
@@ -382,7 +384,7 @@ class CvmovimientointernodineroController extends Controller
 
             DB::table('cvmovimientointernodinero')->insert([
                 'fecharegistro' => now(),
-                'codigoprefijo' => 'OACD',
+                'codigoprefijo' => 'ACDV',
                 'codigo' => $codigo,
                 'monto' => $request->input('monto_retiro3'),
                 'descripcion' => $request->input('descripcion_retiro3'),
@@ -392,7 +394,7 @@ class CvmovimientointernodineroController extends Controller
                 'idbanco' => 0,
                 'idfuenteretiro' => $request->idfuenteretiro_retiro3-5,
                 'idtipomovimientointerno' => 6, 
-                'idmovimientointernodinero' => $idmovimientointernodinero, 
+                'idcvmovimientointernodinero' => $idmovimientointernodinero, 
                 'idtienda' => user_permiso()->idtienda,
                 'idestadoeliminado' => 1,
                 'idestado' => 1,
@@ -505,14 +507,14 @@ class CvmovimientointernodineroController extends Controller
             }
           
             if(count($movimientointernodinero)==0){
-                $html.= '<tr><td colspan="7" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
+                $html.= '<tr><td colspan="8" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
             }
                
             $html .= '
                 <tr style="position: sticky;bottom: 0;">
-                  <td colspan="2" style="background-color: #144081 !important;text-align:right;color:#fff !important;">Total Retiros (S/.)</td>
-                  <td style="background-color: #144081 !important;text-align:right;color:#fff !important;">'.number_format($total, 2, '.', '').'</td>
-                  <td colspan="5" style="background-color: #144081 !important;text-align:right;color:#fff !important;"></td>
+                  <td colspan="2" style="background-color: #c2c0c2 !important; font-weight: bold; text-align:right;">Total Retiros (S/.)</td>
+                  <td style="background-color: #c2c0c2 !important; font-weight: bold; text-align:right;">'.number_format($total, 2, '.', '').'</td>
+                  <td colspan="5" style="background-color: #c2c0c2 !important; font-weight: bold; text-align:right;"></td>
                 </tr>'; 
           
             return array(
@@ -567,14 +569,14 @@ class CvmovimientointernodineroController extends Controller
             }
           
             if(count($movimientointernodinero)==0){
-                $html.= '<tr><td colspan="7" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
+                $html.= '<tr><td colspan="8" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
             }
                
             $html .= '
                 <tr style="position: sticky;bottom: 0;">
-                  <td colspan="2" style="background-color: #144081 !important;text-align:right;color:#fff !important;">Total Depósitos (S/.)</td>
-                  <td style="background-color: #144081 !important;text-align:right;color:#fff !important;">'.number_format($total, 2, '.', '').'</td>
-                  <td colspan="5" style="background-color: #144081 !important;text-align:right;color:#fff !important;"></td>
+                  <td colspan="2" style="background-color: #c2c0c2 !important; font-weight: bold; text-align:right;">Total Depósitos (S/.)</td>
+                  <td style="background-color: #c2c0c2 !important; font-weight: bold; text-align:right;">'.number_format($total, 2, '.', '').'</td>
+                  <td colspan="5" style="background-color: #c2c0c2 !important; font-weight: bold; text-align:right;"></td>
                 </tr>'; 
           
             return array(
@@ -626,9 +628,9 @@ class CvmovimientointernodineroController extends Controller
                
             $html .= '
                 <tr style="position: sticky;bottom: 0;">
-                  <td colspan="2" style="background-color: #144081 !important;text-align:right;color:#fff !important;">Total Retiros (S/.)</td>
-                  <td style="background-color: #144081 !important;text-align:right;color:#fff !important;">'.number_format($total, 2, '.', '').'</td>
-                  <td colspan="3" style="background-color: #144081 !important;text-align:right;color:#fff !important;"></td>
+                  <td colspan="2" style="background-color: #c2c0c2 !important; font-weight: bold; text-align:right;">Total Retiros (S/.)</td>
+                  <td style="background-color: #c2c0c2 !important; font-weight: bold; text-align:right;">'.number_format($total, 2, '.', '').'</td>
+                  <td colspan="3" style="background-color: #c2c0c2 !important; font-weight: bold; text-align:right;"></td>
                 </tr>'; 
           
             return array(
@@ -684,9 +686,9 @@ class CvmovimientointernodineroController extends Controller
                
             $html .= '
                 <tr style="position: sticky;bottom: 0;">
-                  <td colspan="2" style="background-color: #144081 !important;text-align:right;color:#fff !important;">Total Depósitos (S/.)</td>
-                  <td style="background-color: #144081 !important;text-align:right;color:#fff !important;">'.number_format($total, 2, '.', '').'</td>
-                  <td colspan="3" style="background-color: #144081 !important;text-align:right;color:#fff !important;"></td>
+                  <td colspan="2" style="background-color: #c2c0c2 !important; font-weight: bold; text-align:right;">Total Depósitos (S/.)</td>
+                  <td style="background-color: #c2c0c2 !important; font-weight: bold; text-align:right;">'.number_format($total, 2, '.', '').'</td>
+                  <td colspan="3" style="background-color: #c2c0c2 !important; font-weight: bold; text-align:right;"></td>
                 </tr>'; 
           
             return array(
@@ -1404,7 +1406,7 @@ class CvmovimientointernodineroController extends Controller
                 ->whereId($id)
                 ->first();
           
-            DB::table('cvmovimientointernodinero')->where('idmovimientointernodinero',$movimientointernodinero->id)->delete();
+            DB::table('cvmovimientointernodinero')->where('idcvmovimientointernodinero',$movimientointernodinero->id)->delete();
             DB::table('cvmovimientointernodinero')->whereId($id)->delete();
           
             return response()->json([
@@ -1482,7 +1484,7 @@ class CvmovimientointernodineroController extends Controller
                 ->whereId($id)
                 ->first();
 
-            DB::table('cvmovimientointernodinero')->where('idmovimientointernodinero',$movimientointernodinero->id)->delete();
+            DB::table('cvmovimientointernodinero')->where('idcvmovimientointernodinero',$movimientointernodinero->id)->delete();
             DB::table('cvmovimientointernodinero')->whereId($id)->delete();
             return response()->json([
               'resultado' => 'CORRECTO',

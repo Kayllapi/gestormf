@@ -2,7 +2,7 @@
     <h5 class="modal-title">
      Movimiento Interno de Efectivo
     </h5>
-    <button type="button" class="btn-close" onclick="ir_inicio()" style="font-size: 20px;"></button>
+    <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>
 
 <div class="modal-body">
@@ -66,8 +66,8 @@
             <div class="card">
               <div class="card-body" style="overflow-y: scroll;height: 150px;padding: 0;margin-top: 5px;overflow-x: scroll;">
 
-                <table class="table table-striped table-hover table-bordered" id="table-lista-movimientointernodinero_retiro1">
-                  <thead class="table-dark" style="position: sticky;top: 0;">
+                <table class="table table-striped table-hover" id="table-lista-movimientointernodinero_retiro1">
+                  <thead class="table-dark" style="position: sticky;top: 0; font-weight: bold;">
                     <tr>
                       <td>Código</td>
                       <td>Fuente de Retiro</td>
@@ -105,8 +105,8 @@
             <div class="card">
               <div class="card-body" style="overflow-y: scroll;height: 150px;padding: 0;margin-top: 5px;overflow-x: scroll;">
 
-                <table class="table table-striped table-hover table-bordered" id="table-lista-movimientointernodinero_deposito1">
-                  <thead class="table-dark" style="position: sticky;top: 0;">
+                <table class="table table-striped table-hover" id="table-lista-movimientointernodinero_deposito1">
+                  <thead class="table-dark" style="position: sticky;top: 0; font-weight: bold;">
                     <tr>
                       <td>Código</td>
                       <td>Destino de Depósito</td>
@@ -129,7 +129,7 @@
     </div>
   </div>
   <div class="mb-1">
-    <span class="badge d-block" style="margin-top: 10px;text-align:center;background-color: #c59d25;
+    <span class="badge d-block" style="margin-top: 10px;text-align:center;background-color: #ebbe3a;
     font-size: 18px;">CIERRE Y APERTURA DE CAJA</span>
   </div>
   <div class="row">
@@ -156,8 +156,8 @@
             <div class="card">
               <div class="card-body" style="overflow-y: scroll;height: 150px;padding: 0;margin-top: 5px;overflow-x: scroll;">
 
-                <table class="table table-striped table-hover table-bordered" id="table-lista-movimientointernodinero_retiro3">
-                  <thead class="table-dark" style="position: sticky;top: 0;">
+                <table class="table table-striped table-hover" id="table-lista-movimientointernodinero_retiro3">
+                  <thead class="table-dark" style="position: sticky;top: 0; font-weight: bold;">
                     <tr>
                       <td>Código</td>
                       <td>Fuente de Retiro</td>
@@ -216,8 +216,8 @@
             <div class="card">
               <div class="card-body" style="overflow-y: scroll;height: 150px;padding: 0;margin-top: 5px;overflow-x: scroll;">
 
-                <table class="table table-striped table-hover table-bordered" id="table-lista-movimientointernodinero_deposito3">
-                  <thead class="table-dark" style="position: sticky;top: 0;">
+                <table class="table table-striped table-hover" id="table-lista-movimientointernodinero_deposito3">
+                  <thead class="table-dark" style="position: sticky;top: 0; font-weight: bold;">
                     <tr>
                       <td>Código</td>
                       <td>Destino de Depósito</td>

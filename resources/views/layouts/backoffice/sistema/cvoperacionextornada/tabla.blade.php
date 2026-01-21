@@ -1,7 +1,7 @@
 <div class="modal-header">
   <h5 class="modal-title">Historial de Operaciones Extornadas</h5>
   
-  <button type="button" class="btn-close" onclick="ir_inicio()" style="font-size: 20px;"></button>
+  <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>
 <div class="modal-body">
   <div class="row">
@@ -70,7 +70,7 @@ function verpdf(){
     let fecha_inicio = $('#fecha_inicio').val();
     let fecha_fin = $('#fecha_fin').val();
     let idagencia = $('#idagencia').val();
-    $('#iframe_acta_aprobacion').attr('src','{{ url('/backoffice/'.$tienda->id.'/cvoperacionextornada/0/edit?view=pdf_extorno') }}&fecha_inicio='+fecha_inicio+'&fecha_fin='+fecha_fin+'&idagencia='+idagencia+'#zoom=90');
+    $('#iframe_acta_aprobacion').attr('src','{{ url('/backoffice/'.$tienda->id.'/cvoperacionextornada/0/edit?view=pdf_extorno') }}&fecha_inicio='+fecha_inicio+'&fecha_fin='+fecha_fin+'&idagencia='+idagencia+'#zoom=100');
 }
 </script>  
 

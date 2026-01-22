@@ -14,7 +14,7 @@
       },this)" id="form-editar-garantia">
     <input type="hidden" id="idresponsable_modificado">
     <div class="modal-header">
-        <h5 class="modal-title">Garantia No Prendaria</h5>
+        <h5 class="modal-title">Garantía No Prendaria</h5>
     </div>
     <div class="modal-body">
       <div class="row">
@@ -27,7 +27,7 @@
 
 
         <div class="col-sm-12 col-md-4">
-          <label>Tipo Garantia No Prendaria</label>
+          <label>Tipo Garantía No Prendaria</label>
           <select class="form-control" id="idtipo_garantia_noprendaria">
             <option></option>
             @foreach($tipo_garantia_noprendaria as $value)
@@ -150,7 +150,7 @@
                 <thead>
                   <tr>
                     <th width="10px">Nro</th>
-                    <th>DNI - Apellidos y Nombres</th>
+                    <th>RUC/DNI/CE - Apellidos y Nombres</th>
                     <th width="80px">Cuenta</th>
                     <th width="80px">Desembolso</th>
                     <th width="80px">Saldo</th>
@@ -219,7 +219,7 @@
               </table>
     </div>
     <div class="modal-footer">
-        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Guardar Cambios</button>
+        <button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i> Guardar Cambios</button>
     </div>
 </form> 
 <script>

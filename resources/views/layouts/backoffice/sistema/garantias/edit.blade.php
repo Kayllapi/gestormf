@@ -51,13 +51,13 @@
               <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h1 class="modal-title fs-5 text-white" id="modalValorizacionLabel">Modal title</h1>
+                    <h1 class="modal-title fs-5" id="modalValorizacionLabel">Modal title</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
                     <div class="row">
                       <div class="col-sm-12 col-md-6 d-none option-tipo-general">
-                        <label>Método Valorizacion</label>
+                        <label>Método Valorización</label>
                         <select class="form-control" id="idmetodo_valorizacion" >
                            <option ></option>
                           <?php $i=1 ?>
@@ -76,7 +76,8 @@
                       </div>
                       <div class="col-sm-12 col-md-4 d-none option-tipo-general">
                         <label>Valor Mercado</label>
-                        <input type="text" class="form-control bg-warning" id="valor_mercado" onkeyup="calc_montos()" onkeydown="calc_montos()" onchange="calc_montos()" value="{{ $garantias->valor_mercado }}" disabled>
+                        <input type="text" class="form-control bg-warning" id="valor_mercado" onkeyup="calc_montos()" onkeydown="calc_montos()" onchange="calc_montos()">
+                        <input type="hidden" class="form-control bg-warning" id="valor_mercado_inicial" value="{{$garantias->valor_mercado}}">
                       </div>
                       
                       <div class="col-sm-12 col-md-6 d-none option-tipo-joya">
@@ -134,7 +135,7 @@
                     </div>
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-success" data-bs-dismiss="modal">Guardar</button>
+                    <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="guardar()">Guardar</button>
                   </div>
                 </div>
               </div>
@@ -239,7 +240,7 @@
                 <thead>
                   <tr>
                     <th width="10px">Nro</th>
-                    <th>DNI - Apellidos y Nombres</th>
+                    <th>RUC/DNI/CE - Apellidos y Nombres</th>
                     <th width="80px">Cuenta</th>
                     <th width="80px">Desembolso</th>
                     <th width="80px">Saldo</th>
@@ -308,7 +309,7 @@
               </table>
     </div>
     <div class="modal-footer d-none" id="cont-btnguardar">
-        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Guardar Cambios</button>
+        <button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i> Guardar Cambios</button>
     </div>
 </form> 
 <script>
@@ -327,8 +328,10 @@
     $('#cont-btnguardar').removeClass("d-none");
     if(val==1){
     $('#idtipogarantia').removeAttr('disabled');
-    $('#button-modal-tipo-garantia').removeAttr('disabled');
-
+    var textTipoGarantia_id = $("#idtipogarantia :selected").val();
+    if(textTipoGarantia_id!=0){
+        $('#button-modal-tipo-garantia').removeAttr('disabled');
+    }
     $('#otros').removeAttr('disabled');
     $('#accesorio_doc').removeAttr('disabled');
     $('#detalle_garantia').removeAttr('disabled');
@@ -392,68 +395,134 @@
   @include('app.nuevosistema.select2',['input'=>'#idestado_garantia_ref','val'=> $garantias->idestado_garantia_ref ])
   @include('app.nuevosistema.select2',['input'=>'#idtipo_joyas','val'=> $garantias->idtipo_joyas ])
   @include('app.nuevosistema.select2',['input'=>'#iddescuento_joya' ])
+
+  sistema_select2({ input:'#idmetodo_valorizacion' });
+  sistema_select2({ input:'#idtipo_garantia_detalle' });
+
+  @if($garantias->idtipogarantia!=0)
+      $('#idtipogarantia').val({{$garantias->idtipogarantia}}).trigger('change');
+  @endif  
+  
+  $("#button-modal-tipo-garantia").on("click", function(e) {
+      tipo_garantia();
+  });
+
+  $("#idtipogarantia").on("select2:select", function(e) {
+      limpiar();
+      tipo_garantia();
+      $('#button-modal-tipo-garantia').removeAttr('disabled');
+  });
+
+  $("#idmetodo_valorizacion").on("select2:select", function(e) {
+      metodo_valorizacion();
+  })
+
+  $("#idtipo_garantia_detalle").on("select2:select", function(e) {
+      calc_montos();
+  });
+  
+  function tipo_garantia(){
+      var textTipoGarantia = $("#idtipogarantia").find('option:selected').text();
+      var idtipogarantia = $("#idtipogarantia :selected");
+      let titleAntiguedad = idtipogarantia.attr('antiguedad');
+      let titleValor = idtipogarantia.attr('valor');
+      let titleCobertura = idtipogarantia.attr('cobertura');
+      
+      $('#title-antiguedad').text(titleAntiguedad);
+      $('#title-valor').text(titleValor);
+      $('#title-cobertura').text(titleCobertura);
+      $('#modalValorizacionLabel').text(textTipoGarantia);
+      $("#modalValorizacion").modal('show');
+      if(idtipogarantia.val() == 6){
+          $('.option-tipo-general').addClass('d-none');
+          $('.option-tipo-joya').removeClass('d-none');
+          //tarifario_joyas(e.currentTarget.value);  
+      }else{
+          $('.option-tipo-general').removeClass('d-none');
+          $('.option-tipo-joya').addClass('d-none');
+          //tipo_garantia(e.currentTarget.value);
+      }
+
+      if({{$garantias->idtipogarantia}}==idtipogarantia.val()){
+          var valor_mercado_inicial = parseFloat($('#valor_mercado_inicial').val());
+          $('#valor_mercado').val(valor_mercado_inicial.toFixed(2));
+          @if($garantias->idmetodo_valorizacion!=0)
+              $('#idmetodo_valorizacion').val({{$garantias->idmetodo_valorizacion}}).trigger('change');
+              metodo_valorizacion();
+          @endif
+      } 
+  }
+  function metodo_valorizacion(){
+    var num = $("#idmetodo_valorizacion").find('option:selected').attr('num');
+    var idmetodo_valorizacion = $("#idmetodo_valorizacion :selected").val();
+    let idtipogarantia = $("#idtipogarantia").find('option:selected').val();
+    $('#idtipo_garantia_detalle').removeAttr('disabled',false)
+    $.ajax({
+      url:"{{url('backoffice/0/garantias/showtipogarantia')}}",
+      type:'GET',
+      data: {
+          idtipogarantia      : idtipogarantia,
+          idmetodovalorizacion : idmetodo_valorizacion
+      },
+      success: function (res){
+          let option_select = `<option></option>`;
+          var i = 1;
+          $.each(res, function( key, value ) {
+              option_select += `<option value="${value.id}" cobertura="${value.cobertura}" valor_comercial="${value.valor_comercial}" >${num}.${i}.- ${value.antiguedad}</option>`;
+              i++;
+          });
+          $('#idtipo_garantia_detalle').html(option_select);
+          sistema_select2({ input:'#idtipo_garantia_detalle', val:"{{ $garantias->idtipo_garantia_detalle }}"});
+          calc_montos();
+      }
+    })
     
+  }
+  function calc_montos(){
+
+      var idtipo_garantia_detalle = $("#idtipo_garantia_detalle").find('option:selected');
+      let cobertura = idtipo_garantia_detalle.attr('cobertura');
+      let valor_comercial = idtipo_garantia_detalle.attr('valor_comercial');
+      let valor_mercado = $('#valor_mercado').val();    
+      let monto_valorcomercial = (parseFloat(valor_mercado) * parseFloat(valor_comercial)) / 100;
+      let monto_cobertura = (parseFloat(monto_valorcomercial) * parseFloat(cobertura)) / 100;
+      
+      $('#porcentajecobertura').val(cobertura);
+      $('#porcentajevalorcomercial').val(valor_comercial);
+      $('#val-view-cobertura').val(monto_cobertura.toFixed(2));
+      $('#val-view-valorcomercial').val(monto_valorcomercial.toFixed(2));
+    
+  }
+  function guardar(){
+      let valor_mercado = parseFloat($('#valor_mercado').val());   
+      let monto_cobertura = parseFloat($('#val-view-cobertura').val());    
+      let monto_valorcomercial = parseFloat($('#val-view-valorcomercial').val());
+      $('#valor_mercado_inicial').val(valor_mercado.toFixed(2));    
+      $('#cobertura').val(monto_cobertura.toFixed(2));
+      $('#valorcomercial').val(monto_valorcomercial.toFixed(2));
+  }
+
+  function limpiar(){
+      $('#idmetodo_valorizacion').val(null).trigger('change');
+      $('#idtipo_garantia_detalle').val(null).trigger('change');
+      $('#valor_mercado').val('0.00');
+      $('#val-view-cobertura').val('0.00');
+      $('#val-view-valorcomercial').val('0.00');
+      
+      $('#cobertura').val('0.00');
+      $('#valorcomercial').val('0.00');
+      $('#porcentajevalorcomercial').val('0.00');
+  }
+
+  //.val('{{ $garantias->idmetodo_valorizacion }}').trigger('change');
+
 //   $("#idtipogarantia").on("select2:select", function(e) {
 //         if(e.params.data.id==1){
             
 //         }
 //     })
   
-  var selectChanged = false;
-  $("#idtipogarantia").on("change", function(e) {
-    var textTipoGarantia = $("#idtipogarantia").find('option:selected').text();
-    
-    
-    var optionSelected = $("#idtipogarantia").find('option:selected');
-    let titleAntiguedad = optionSelected.attr('antiguedad');
-    let titleValor = optionSelected.attr('valor');
-    let titleCobertura = optionSelected.attr('cobertura');
-    
-    $('#title-antiguedad').text(titleAntiguedad);
-    $('#title-valor').text(titleValor);
-    $('#title-cobertura').text(titleCobertura);
-    
-    $('#modalValorizacionLabel').text(textTipoGarantia);
-    if (selectChanged) {
-        $("#modalValorizacion").modal('show');
-    }
-    
-    if(e.currentTarget.value == 6){
-      $('.option-tipo-general').addClass('d-none');
-      $('.option-tipo-joya').removeClass('d-none');
-      tarifario_joyas(e.currentTarget.value);  
-    }else{
-      $('.option-tipo-general').removeClass('d-none');
-      $('.option-tipo-joya').addClass('d-none');
-//       tipo_garantia(e.currentTarget.value);
-    }
-    selectChanged = true;
-    
-  }).val('{{ $garantias->idtipogarantia }}').trigger('change');
-  
-  function tipo_garantia(idmetodovalorizacion,num){
-    let idtipogarantia = $("#idtipogarantia").find('option:selected').val();
-    $.ajax({
-      url:"{{url('backoffice/0/garantias/showtipogarantia')}}",
-      type:'GET',
-      data: {
-          idtipogarantia      : idtipogarantia,
-          idmetodovalorizacion : idmetodovalorizacion
-      },
-      success: function (res){
-        let option_select = `<option></option>`;
-        var i = 1;
-        $.each(res, function( key, value ) {
-          option_select += `<option value="${value.id}" cobertura="${value.cobertura}" valor_comercial="${value.valor_comercial}" >${num}.${i}.- ${value.antiguedad}</option>`;
-          i++;
-        });
-        $('#idtipo_garantia_detalle').html(option_select);
-        sistema_select2({ input:'#idtipo_garantia_detalle', val:"{{ $garantias->idtipo_garantia_detalle }}"});
 
-      }
-    })
-    
-  }
   
   function tarifario_joyas(idtarifario){
     $.ajax({
@@ -476,59 +545,14 @@
   }
   
   
-  @include('app.nuevosistema.select2',['input'=>'#idmetodo_valorizacion'])
-  
-  $("#idmetodo_valorizacion").on("change", function(e) {
-    
-    
-    var num = $("#idmetodo_valorizacion").find('option:selected').attr('num');
-    $('#idtipo_garantia_detalle').removeAttr('disabled',false)
-    tipo_garantia(e.currentTarget.value,num);
-    
-  }).val('{{ $garantias->idmetodo_valorizacion }}').trigger('change');
+
   
 
-  $("#idtipo_garantia_detalle").on("select2:select", function(e) {
-    $('#valor_mercado').removeAttr('disabled', false);
-    calc_montos();
-  });
-  var changeTarifario = false;
   $("#idtarifario_joya").on("select2:select", function(e) {
     $('#peso_gramos').removeAttr('disabled', false);
-    
-    if(changeTarifario){   
-      calc_tarifa_joya();
-    }
-    changeTarifario = true;
+    calc_tarifa_joya();
   });
-  var changeStatusCalMonto = false;
-  function calc_montos(){
-    var opcionSeleccionada = $("#idtipo_garantia_detalle").find('option:selected');
-
-    // Agregar atributos adicionales a la opción seleccionada
-    let cobertura = opcionSeleccionada.attr('cobertura');
-    let valor_comercial = opcionSeleccionada.attr('valor_comercial');
-    let valor_mercado = $('#valor_mercado').val();
-    
-
-    $('#porcentajecobertura').val(cobertura);
-    $('#porcentajevalorcomercial').val(valor_comercial);
-    
-    let monto_valorcomercial = (parseFloat(valor_mercado) * parseFloat(valor_comercial)) / 100;
-    let monto_cobertura = (parseFloat(monto_valorcomercial) * parseFloat(cobertura)) / 100;
-    
-    if(changeStatusCalMonto){
-      $('#cobertura').val(monto_cobertura.toFixed(2));
-      $('#valorcomercial').val(monto_valorcomercial.toFixed(2));
-      $('#val-view-cobertura').val(monto_cobertura.toFixed(2));
-      $('#val-view-valorcomercial').val(monto_valorcomercial.toFixed(2));
-    }else{
-      $('#val-view-cobertura').val('{{ $garantias->cobertura }}');
-      $('#val-view-valorcomercial').val('{{ $garantias->valorcomercial }}');
-    }
-    changeStatusCalMonto = true;
-    
-  }
+  //var changeStatusCalMonto = false;
 
   var changeStatusCaldJoya = false;
   function calc_tarifa_joya(){

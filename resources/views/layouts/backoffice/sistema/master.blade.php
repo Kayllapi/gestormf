@@ -207,7 +207,7 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
               color: #000;
           }
 
-          .mx-subcuerpo .modal-body {
+          #cuerposistema > .modal-body {
               padding: 0px;
               padding-top: 5px;
           }

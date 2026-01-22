@@ -208,7 +208,7 @@
             <tr>
               <td></td>
               <td></td>
-              <td colspan="4" style="text-align:left;">Bienes Comprados (stock)</td>
+              <td colspan="4" style="text-align:left;">Bienes Comprados (En Stock)</td>
               <td colspan="2"></td>
               <td></td>
               <td style="border-bottom: 1px solid #000;text-align:right;"><b>{{$co_actual['saldos_creditovigente']}}</b></td>
@@ -226,6 +226,66 @@
               <td style="border-bottom: 2px solid #000;"></td>
             </tr>
             <tr>
+              <td rowspan="3" style="text-align:left;"><b>Ingreso y Egreso por 
+                <span style="border-bottom: 1px solid #000;">Caja</span></b>
+              </td>
+              <td style="text-align:left;"><b>Ingreso</b></td>
+              <td colspan="4" style="text-align:left;">Venta de Bienes</td>
+              <td colspan="2"></td>
+              <td></td>
+              <td style="text-align:right;"><b>{{$co_actual['ingresoyegresocaja_egreso_ahorro']}}</b></td>
+              <td></td>
+              <td style="text-align:right;"><b>{{$co_anterior?$co_anterior->ingresoyegresocaja_egreso_ahorro:'0.00'}}</b></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td colspan="4" style="text-align:left;">Incremento de Capital</td>
+              <td colspan="2"></td>
+              <td></td>
+              <td style="text-align:right;"><b>{{$co_actual['ingresoyegresocaja_ingreso_ingresosextraordinarios']}}</b></td>
+              <td></td>
+              <td style="text-align:right;"><b>{{$co_anterior?$co_anterior->ingresoyegresocaja_ingreso_ingresosextraordinarios:'0.00'}}</b></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td colspan="4" style="border-bottom: 2px solid #000;text-align:left;">Ingresos Extraordinarios</td>
+              <td style="border-bottom: 2px solid #000;" colspan="2"></td>
+              <td style="border-bottom: 2px solid #000;"></td>
+              <td style="border-bottom: 2px solid #000;text-align:right;"><b>{{$co_actual['ingresoyegresocaja_ingreso_ingresosextraordinarios']}}</b></td>
+              <td style="border-bottom: 2px solid #000;"></td>
+              <td style="border-bottom: 2px solid #000;text-align:right;"><b>{{$co_anterior?$co_anterior->ingresoyegresocaja_ingreso_ingresosextraordinarios:'0.00'}}</b></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td style="text-align:left;"><b>Egreso</b></td>
+              <td colspan="4" style="text-align:left;">Compra de Bienes</td>
+              <td colspan="2"></td>
+              <td></td>
+              <td style="text-align:right;"><b>{{$co_actual['ingresoyegresocaja_egreso_ahorro']}}</b></td>
+              <td></td>
+              <td style="text-align:right;"><b>{{$co_anterior?$co_anterior->ingresoyegresocaja_egreso_ahorro:'0.00'}}</b></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td colspan="4" style="text-align:left;">Reducción de Capital</td>
+              <td colspan="2"></td>
+              <td></td>
+              <td style="text-align:right;">{{$co_actual['ingresoyegresocaja_egreso_ahorro_plazofijo']}}</td>
+              <td></td>
+              <td style="text-align:right;">{{$co_anterior?$co_anterior->ingresoyegresocaja_egreso_ahorro_plazofijo:'0.00'}}</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td colspan="4" style="text-align:left;">Gastos admistrativos y operativos</td>
+              <td colspan="2"></td>
+              <td></td>
+              <td style="text-align:right;">{{$co_actual['ingresoyegresocaja_egreso_ahorro_intplazofijo']}}</td>
+              <td></td>
+              <td style="text-align:right;">{{$co_anterior?$co_anterior->ingresoyegresocaja_egreso_ahorro_intplazofijo:'0.00'}}</td>
+            </tr>
+            <tr>
               <td style="border-bottom: 2px solid #000;"></td>
               <td style="border-bottom: 2px solid #000;"></td>
               <td colspan="4" style="border-bottom: 2px solid #000;"></td>
@@ -236,266 +296,10 @@
               <td style="border-bottom: 2px solid #000;"></td>
             </tr>
             <tr>
-              <td rowspan="2" style="text-align:left;"><b>Ingreso y Egreso por 
-                <span style="border-bottom: 1px solid #000;">Caja</span></b></td>
-              <td style="text-align:left;"><b>Ingreso</b></td>
-              <td colspan="4" style="text-align:left;">Oper. Crediticias</td>
-              <td></td>
-              <td style="text-align:right;">{{$co_actual['ingresoyegresocaja_ingreso_crediticio_transitorio']}}</td>
-              <td></td>
-              <td style="text-align:right;"><b>{{$co_actual['ingresoyegresocaja_ingreso_crediticio']}}</b></td>
-              <td></td>
-              <td style="text-align:right;"><b>{{$co_anterior?$co_anterior->ingresoyegresocaja_ingreso_crediticio:'0.00'}}</b></td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td colspan="5" style="text-align:left;">CNP</td>
-              <td></td>
-              <td style="text-align:right;"><b>{{$co_actual['ingresoyegresocaja_ingreso_crediticio_cnp']}}</b></td>
-              <td></td>
-              <td style="text-align:right;"><b>{{$co_anterior?$co_anterior->ingresoyegresocaja_ingreso_crediticio_cnp:'0.00'}}</b></td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td style="width:50px;"></td>
-              <td colspan="4">Capital</td>
-              <td></td>
-              <td style="text-align:right;">{{$co_actual['ingresoyegresocaja_ingreso_crediticio_cnp_capital']}}</td>
-              <td></td>
-              <td style="text-align:right;">{{$co_anterior?$co_anterior->ingresoyegresocaja_ingreso_crediticio_cnp_capital:'0.00'}}</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td colspan="4">Interés</td>
-              <td></td>
-              <td style="text-align:right;">{{$co_actual['ingresoyegresocaja_ingreso_crediticio_cnp_interes']}}</td>
-              <td></td>
-              <td style="text-align:right;">{{$co_anterior?$co_anterior->ingresoyegresocaja_ingreso_crediticio_cnp_interes:'0.00'}}</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td colspan="4">C. SS/Desgrav., Cargo</td>
-              <td></td>
-              <td style="text-align:right;">{{$co_actual['ingresoyegresocaja_ingreso_crediticio_cnp_desgravcargo']}}</td>
-              <td></td>
-              <td style="text-align:right;">{{$co_anterior?$co_anterior->ingresoyegresocaja_ingreso_crediticio_cnp_desgravcargo:'0.00'}}</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td colspan="4">Tenen. CxC, Ic, IM. </td>
-              <td></td>
-              <td style="text-align:right;">{{$co_actual['ingresoyegresocaja_ingreso_crediticio_cnp_tenencxc']}}</td>
-              <td></td>
-              <td style="text-align:right;">{{$co_anterior?$co_anterior->ingresoyegresocaja_ingreso_crediticio_cnp_tenencxc:'0.00'}}</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td colspan="5" style="text-align:left;">CP</td>
-              <td></td>
-              <td style="text-align:right;"><b>{{$co_actual['ingresoyegresocaja_ingreso_crediticio_cp']}}</b></td>
-              <td></td>
-              <td style="text-align:right;"><b>{{$co_anterior?$co_anterior->ingresoyegresocaja_ingreso_crediticio_cp:'0.00'}}</b></td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td style="width:50px;"></td>
-              <td colspan="4">Capital</td>
-              <td></td>
-              <td style="text-align:right;">{{$co_actual['ingresoyegresocaja_ingreso_crediticio_cp_capital']}}</td>
-              <td></td>
-              <td style="text-align:right;">{{$co_anterior?$co_anterior->ingresoyegresocaja_ingreso_crediticio_cp_capital:'0.00'}}</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td colspan="4">Interés</td>
-              <td></td>
-              <td style="text-align:right;">{{$co_actual['ingresoyegresocaja_ingreso_crediticio_cp_interes']}}</td>
-              <td></td>
-              <td style="text-align:right;">{{$co_anterior?$co_anterior->ingresoyegresocaja_ingreso_crediticio_cp_interes:'0.00'}}</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td colspan="4">C. SS/Desgrav., Cargo</td>
-              <td></td>
-              <td style="text-align:right;">{{$co_actual['ingresoyegresocaja_ingreso_crediticio_cp_desgravcargo']}}</td>
-              <td></td>
-              <td style="text-align:right;">{{$co_anterior?$co_anterior->ingresoyegresocaja_ingreso_crediticio_cp_desgravcargo:'0.00'}}</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td colspan="4">Tenen. CxC, Ic, IM. </td>
-              <td></td>
-              <td style="text-align:right;">{{$co_actual['ingresoyegresocaja_ingreso_crediticio_cp_tenencxc']}}</td>
-              <td></td>
-              <td style="text-align:right;">{{$co_anterior?$co_anterior->ingresoyegresocaja_ingreso_crediticio_cp_tenencxc:'0.00'}}</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td colspan="4" style="text-align:left;">Oper. Ahorro</td>
-              <td colspan="2"></td>
-              <td></td>
-              <td style="text-align:right;"><b>{{$co_actual['ingresoyegresocaja_ingreso_ahorro']}}</b></td>
-              <td></td>
-              <td style="text-align:right;"><b>{{$co_anterior?$co_anterior->ingresoyegresocaja_ingreso_ahorro:'0.00'}}</b></td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td colspan="3" style="text-align:left;">A. Plazo F.</td>
-              <td colspan="2"></td>
-              <td></td>
-              <td style="text-align:right;">{{$co_actual['ingresoyegresocaja_ingreso_ahorro_plazofijo']}}</td>
-              <td></td>
-              <td style="text-align:right;">{{$co_anterior?$co_anterior->ingresoyegresocaja_ingreso_ahorro_plazofijo:'0.00'}}</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td colspan="3" style="text-align:left;">Ahorro C.</td>
-              <td colspan="2"></td>
-              <td></td>
-              <td style="text-align:right;">{{$co_actual['ingresoyegresocaja_ingreso_ahorro_ahorroc']}}</td>
-              <td></td>
-              <td style="text-align:right;">{{$co_anterior?$co_anterior->ingresoyegresocaja_ingreso_ahorro_ahorroc:'0.00'}}</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td colspan="4" style="text-align:left;">Incremento de Capital</td>
-              <td colspan="2"></td>
-              <td></td>
-              <td style="text-align:right;"><b>{{$co_actual['ingresoyegresocaja_ingreso_incrementocapital']}}</b></td>
-              <td></td>
-              <td style="text-align:right;"><b>{{$co_anterior?$co_anterior->ingresoyegresocaja_ingreso_incrementocapital:'0.00'}}</b></td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td colspan="4" style="border-bottom: 2px solid #000;text-align:left;">Ingresos Extraordinarios</td>
-              <td colspan="2" style="border-bottom: 2px solid #000;"></td>
-              <td style="border-bottom: 2px solid #000;"></td>
-              <td style="border-bottom: 2px solid #000;text-align:right;"><b>{{$co_actual['ingresoyegresocaja_ingreso_ingresosextraordinarios']}}</b></td>
-              <td style="border-bottom: 2px solid #000;"></td>
-              <td style="border-bottom: 2px solid #000;text-align:right;"><b>{{$co_anterior?$co_anterior->ingresoyegresocaja_ingreso_ingresosextraordinarios:'0.00'}}</b></td>
-            </tr>
-            <tr>
-              <td></td>
-              <td style="text-align:left;"><b>Egreso</b></td>
-              <td colspan="4" style="text-align:left;">Oper. Crediticia</td>
-              <td></td>
-              <td style="text-align:right;">{{$co_actual['ingresoyegresocaja_ingreso_crediticio_transitorio']}}</td>
-              <td></td>
-              <td style="text-align:right;"><b>{{$co_actual['ingresoyegresocaja_egreso_crediticio']}}</b></td>
-              <td></td>
-              <td style="text-align:right;"><b>{{$co_anterior?$co_anterior->ingresoyegresocaja_egreso_crediticio:'0.00'}}</b></td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td colspan="4" style="text-align:left;">Oper. Ahorro</td>
-              <td colspan="2"></td>
-              <td></td>
-              <td style="text-align:right;"><b>{{$co_actual['ingresoyegresocaja_egreso_ahorro']}}</b></td>
-              <td></td>
-              <td style="text-align:right;"><b>{{$co_anterior?$co_anterior->ingresoyegresocaja_egreso_ahorro:'0.00'}}</b></td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td colspan="3" style="text-align:left;">A. Plazo F.</td>
-              <td colspan="2"></td>
-              <td></td>
-              <td style="text-align:right;">{{$co_actual['ingresoyegresocaja_egreso_ahorro_plazofijo']}}</td>
-              <td></td>
-              <td style="text-align:right;">{{$co_anterior?$co_anterior->ingresoyegresocaja_egreso_ahorro_plazofijo:'0.00'}}</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td colspan="3" style="text-align:left;">Int. PF</td>
-              <td colspan="2"></td>
-              <td></td>
-              <td style="text-align:right;">{{$co_actual['ingresoyegresocaja_egreso_ahorro_intplazofijo']}}</td>
-              <td></td>
-              <td style="text-align:right;">{{$co_anterior?$co_anterior->ingresoyegresocaja_egreso_ahorro_intplazofijo:'0.00'}}</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td colspan="3" style="text-align:left;">Ahorro Cte.</td>
-              <td colspan="2"></td>
-              <td></td>
-              <td style="text-align:right;">{{$co_actual['ingresoyegresocaja_egreso_ahorro_ahorrocte']}}</td>
-              <td></td>
-              <td style="text-align:right;">{{$co_anterior?$co_anterior->ingresoyegresocaja_egreso_ahorro_ahorrocte:'0.00'}}</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td colspan="3" style="text-align:left;">Int. A. Cte</td>
-              <td colspan="2"></td>
-              <td></td>
-              <td style="text-align:right;">{{$co_actual['ingresoyegresocaja_egreso_ahorro_intcte']}}</td>
-              <td></td>
-              <td style="text-align:right;">{{$co_anterior?$co_anterior->ingresoyegresocaja_egreso_ahorro_intcte:'0.00'}}</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td colspan="4" style="text-align:left;">Reducción de Capital</td>
-              <td colspan="2"></td>
-              <td></td>
-              <td style="text-align:right;"><b>{{$co_actual['ingresoyegresocaja_egreso_reduccioncapital']}}</b></td>
-              <td></td>
-              <td style="text-align:right;"><b>{{$co_anterior?$co_anterior->ingresoyegresocaja_egreso_reduccioncapital:'0.00'}}</b></td>
-            </tr>
-            <tr>
-              <td style="border-bottom: 2px solid #000;"></td>
-              <td style="border-bottom: 2px solid #000;"></td>
-              <td colspan="4" style="border-bottom: 2px solid #000;text-align:left;">Gastos admistrativos y operativos</td>
-              <td colspan="2" style="border-bottom: 2px solid #000;"></td>
-              <td style="border-bottom: 2px solid #000;"></td>
-              <td style="border-bottom: 2px solid #000;text-align:right;"><b>{{$co_actual['ingresoyegresocaja_egreso_gastosadministrativosyoperativos']}}</b></td>
-              <td style="border-bottom: 2px solid #000;"></td>
-              <td style="border-bottom: 2px solid #000;text-align:right;"><b>{{$co_anterior?$co_anterior->ingresoyegresocaja_egreso_gastosadministrativosyoperativos:'0.00'}}</b></td>
-            </tr>
-            <tr>
               <td rowspan="3" style="text-align:left;"><b>Ingreso y Egreso por Cuenta 
                 <span style="border-bottom: 1px solid #000;">Banco</span></b></td>
               <td style="text-align:left;"><b>Ingreso</b></td>
-              <td colspan="4" style="text-align:left;">Oper. Crediticia (CNP, CP)</td>
+              <td colspan="4" style="text-align:left;">Venta de Bienes</td>
               <td></td>
               <td></td>
               <td></td>
@@ -617,7 +421,7 @@
             <tr>
               <td></td>
               <td style="border-top: 2px solid #000;text-align:left;"><b>Egreso</b></td>
-              <td colspan="4" style="border-top: 2px solid #000;text-align:left;">Oper. Crediticia</td>
+              <td colspan="4" style="border-top: 2px solid #000;text-align:left;">Compra de Bienes</td>
               <td colspan="2" style="border-top: 2px solid #000;"></td>
               <td style="border-top: 2px solid #000;"></td>
               <td style="border-top: 2px solid #000;text-align:right;"><b>{{$co_actual['ingresoyegresobanco_egreso_crediticio']}}</b></td>

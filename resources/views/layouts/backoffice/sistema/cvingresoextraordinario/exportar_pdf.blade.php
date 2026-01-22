@@ -117,14 +117,15 @@
 </head>
 <body>
   <header>
-    <div style="float:left;font-size:18px;">{{ $tienda->ticket_nombre }} | {{ $agencia->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
+    <div style="float:left;font-size:18px;">{{ $tienda->ticket_nombre }} | {{ $tienda->nombre }}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
   </header>
   <footer>
     <p class="page">Página </p>
   </footer>
   <main>
     <div class="container">
-      <h4 align="center" style="font-size:16px;">INGRESOS EXTRAORDINARIOS</h4>
+      <h4 align="center" style="font-size:16px; margin:0px;">INGRESOS EXTRAORDINARIOS</h4>
+      <h4 align="center" style="font-size:16px; margin:0px;">COMPRA Y VENTA DE BIENES</h4>
            <b>DE: </b>{{ $fechainicio }}<br>
            <b>HASTA: </b>{{ $fechafin }}<br>
             

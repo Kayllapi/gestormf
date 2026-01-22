@@ -167,7 +167,7 @@ class CvmovimientointernodineroinstiController extends Controller
                 'idbanco' => $request->idbanco_retiro2!=''?$request->idbanco_retiro2:0,
                 'idfuenteretiro' => $request->idfuenteretiro_retiro2-5,
                 'idtipomovimientointerno' => 4, 
-                'idmovimientointernodinero' => $idmovimientointernodinero, 
+                'idcvmovimientointernodinero' => $idmovimientointernodinero, 
                 'idtienda' => user_permiso()->idtienda,
                 'idestadoeliminado' => 1,
                 'idestado' => 1,
@@ -738,7 +738,7 @@ class CvmovimientointernodineroinstiController extends Controller
                 ->whereId($id)
                 ->first();
 
-            DB::table('cvmovimientointernodinero')->where('idmovimientointernodinero',$movimientointernodinero->id)->delete();
+            DB::table('cvmovimientointernodinero')->where('idcvmovimientointernodinero',$movimientointernodinero->id)->delete();
             DB::table('cvmovimientointernodinero')->whereId($id)->delete();
           
             return response()->json([

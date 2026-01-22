@@ -124,7 +124,8 @@
   </footer>
   <main>
     <div class="container">
-      <h4 align="center" style="font-size:16px;margin-bottom:10px;">OPERACIONES DE MOVIMIENTO INTERNO DE EFECTIVO</h4>
+      <h4 align="center" style="font-size:16px;margin:0px;">OPERACIONES DE MOVIMIENTO INTERNO DE EFECTIVO</h4>
+      <h4 align="center" style="font-size:16px;margin:0px;">COMPRA Y VENTA DE BIENES</h4>
       <div style="width:100%; height: 20px;">
             <div style="margin-left:265px;float:left;font-size: 13px;"><b>AGENCIA: </b>{{ $agencia->nombreagencia }}  </div>     
             <div style="margin-left:50px;float:left;font-size: 13px;"><b>FECHA INICIO: </b>{{ date_format(date_create($fechainicio),'d/m/Y') }}</div>   

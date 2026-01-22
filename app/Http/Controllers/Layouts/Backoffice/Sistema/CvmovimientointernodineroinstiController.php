@@ -127,7 +127,7 @@ class CvmovimientointernodineroinstiController extends Controller
           
             $idmovimientointernodinero = DB::table('cvmovimientointernodinero')->insertGetId([
                 'fecharegistro' => now(),
-                'codigoprefijo' => 'OMIR',
+                'codigoprefijo' => 'MRIV',
                 'codigo' => $codigo,
                 'monto' => $request->input('monto_retiro2'),
                 'descripcion' => $request->input('descripcion_retiro2'),
@@ -157,7 +157,7 @@ class CvmovimientointernodineroinstiController extends Controller
           
             DB::table('cvmovimientointernodinero')->insert([
                 'fecharegistro' => now(),
-                'codigoprefijo' => 'OMID',
+                'codigoprefijo' => 'MDIV',
                 'codigo' => $codigo,
                 'monto' => $request->input('monto_retiro2'),
                 'descripcion' => $request->input('descripcion_retiro2'),

@@ -124,7 +124,8 @@
   </footer>
   <main>
     <div class="container">
-      <h4 align="center">REPORTE CONSOLIDADO DE OPERACIONES INSTITUCIONAL</h4>
+      <h4 align="center" style="margin: 0px;">REPORTE CONSOLIDADO DE OPERACIONES INSTITUCIONAL</h4>
+      <h4 align="center" style="margin: 0px;">COMPRA Y VENTA DE BIENES</h4>
             <div ><b>AGENCIA: </b>{{ $co_actual['agencia']->nombreagencia }}  </div>
           <table style="width:100%;">
             <tr>
@@ -139,7 +140,7 @@
               <th style="border-bottom: 2px solid #000;">Arqueo</th>
               <th style="border-bottom: 2px solid #000;">{{$co_actual['corte']}}</th>
               <th style="border-bottom: 2px solid #000;">Arqueo</th>
-              <th style="border-bottom: 2px solid #000;">{{$co_anterior?date("d-m-Y",strtotime(date($co_anterior->corte))):'0.00'}}</th>
+              <th style="border-bottom: 2px solid #000;text-align:right;">{{$co_anterior?date("d-m-Y",strtotime(date($co_anterior->corte))):'0.00'}}</th>
             </tr>
             <tr>
               <td style="text-align:left;width:80px;"><b>Saldos</b></td>
@@ -207,140 +208,12 @@
             <tr>
               <td></td>
               <td></td>
-              <td colspan="4" style="text-align:left;">Créditos Vigentes</td>
+              <td colspan="4" style="text-align:left;">Bienes Comprados (stock)</td>
               <td colspan="2"></td>
               <td></td>
               <td style="border-bottom: 1px solid #000;text-align:right;"><b>{{$co_actual['saldos_creditovigente']}}</b></td>
               <td></td>
               <td style="border-bottom: 1px solid #000;text-align:right;"><b>{{$co_anterior?$co_anterior->saldos_creditovigente:'0.00'}}</b></td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td colspan="3" style="text-align:left;">CNP</td>
-              <td colspan="2"></td>
-              <td></td>
-              <td style="text-align:right;">{{$co_actual['saldos_creditovigente_cnp']}}</td>
-              <td></td>
-              <td style="text-align:right;">{{$co_anterior?$co_anterior->saldos_creditovigente_cnp:'0.00'}}</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td colspan="3" style="text-align:left;">CP</td>
-              <td colspan="2"></td>
-              <td></td>
-              <td style="text-align:right;">{{$co_actual['saldos_creditovigente_cp']}}</td>
-              <td></td>
-              <td style="text-align:right;">{{$co_anterior?$co_anterior->saldos_creditovigente_cp:'0.00'}}</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td colspan="4" style="text-align:left;">Interes de Créditos Vigentes por Cobrar</td>
-              <td colspan="2"></td>
-              <td></td>
-              <td style="border-bottom: 1px solid #000;text-align:right;"><b>{{$co_actual['saldos_interescreditovigentexcobrar']}}</b></td>
-              <td></td>
-              <td style="border-bottom: 1px solid #000;text-align:right;"><b>{{$co_anterior?$co_anterior->saldos_interescreditovigentexcobrar:'0.00'}}</b></td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td colspan="3" style="text-align:left;">CNP</td>
-              <td colspan="2"></td>
-              <td></td>
-              <td style="text-align:right;">{{$co_actual['saldos_interescreditovigentexcobrar_cnp']}}</td>
-              <td></td>
-              <td style="text-align:right;">{{$co_anterior?$co_anterior->saldos_interescreditovigentexcobrar_cnp:'0.00'}}</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td colspan="3" style="text-align:left;">CP</td>
-              <td colspan="2"></td>
-              <td></td>
-              <td style="text-align:right;">{{$co_actual['saldos_interescreditovigentexcobrar_cp']}}</td>
-              <td></td>
-              <td style="text-align:right;">{{$co_anterior?$co_anterior->saldos_interescreditovigentexcobrar_cp:'0.00'}}</td>
-            </tr>
-            <tr>
-              <td style="border-bottom: 2px solid #000;"></td>
-              <td style="border-bottom: 2px solid #000;"></td>
-              <td colspan="4" style="border-bottom: 2px solid #000;"></td>
-              <td colspan="2" style="border-bottom: 2px solid #000;"></td>
-              <td style="border-bottom: 2px solid #000;"></td>
-              <td style="border-bottom: 2px solid #000;"></td>
-              <td style="border-bottom: 2px solid #000;"></td>
-              <td style="border-bottom: 2px solid #000;"></td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td colspan="4" style="text-align:left;">Ahorros</td>
-              <td colspan="2"></td>
-              <td></td>
-              <td style="text-align:right;"><b>{{$co_actual['saldos_ahorros']}}</b></td>
-              <td></td>
-              <td style="text-align:right;"><b>{{$co_anterior?$co_anterior->saldos_ahorros:'0.00'}}</b></td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td colspan="4" style="text-align:left;">Intereses generados x Pagar</td>
-              <td colspan="2"></td>
-              <td></td>
-              <td style="text-align:right;"><b>{{$co_actual['saldos_interesgeneradosxpagar']}}</b></td>
-              <td></td>
-              <td style="text-align:right;"><b>{{$co_anterior?$co_anterior->saldos_interesgeneradosxpagar:'0.00'}}</b></td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td colspan="3" style="text-align:left;">Ahorro PF</td>
-              <td colspan="2"></td>
-              <td></td>
-              <td style="text-align:right;">{{$co_actual['saldos_interesgeneradosxpagar_ahorropf']}}</td>
-              <td></td>
-              <td style="text-align:right;">{{$co_anterior?$co_anterior->saldos_interesgeneradosxpagar_ahorropf:'0.00'}}</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td colspan="3" style="text-align:left;">Interés de Cuentas de ahorro PF programadas x Pagar</td>
-              <td colspan="2"></td>
-              <td></td>
-              <td style="text-align:right;">{{$co_actual['saldos_interesgeneradosxpagar_interescuentaahorropdfprogramadas']}}</td>
-              <td></td>
-              <td style="text-align:right;">{{$co_anterior?$co_anterior->saldos_interesgeneradosxpagar_interescuentaahorropdfprogramadas:'0.00'}}</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td colspan="3" style="text-align:left;">Ahorro Corriente</td>
-              <td colspan="2"></td>
-              <td></td>
-              <td style="text-align:right;">{{$co_actual['saldos_interesgeneradosxpagar_ahorrocorriente']}}</td>
-              <td></td>
-              <td style="text-align:right;">{{$co_anterior?$co_anterior->saldos_interesgeneradosxpagar_ahorrocorriente:'0.00'}}</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td colspan="3" style="text-align:left;">Interés de Cnta de Ahorro C. Generadas x pagar</td>
-              <td colspan="2"></td>
-              <td></td>
-              <td style="text-align:right;">{{$co_actual['saldos_interesgeneradosxpagar_interescuentaahorrocgeneradas']}}</td>
-              <td></td>
-              <td style="text-align:right;">{{$co_anterior?$co_anterior->saldos_interesgeneradosxpagar_interescuentaahorrocgeneradas:'0.00'}}</td>
             </tr>
             <tr>
               <td style="border-bottom: 2px solid #000;"></td>

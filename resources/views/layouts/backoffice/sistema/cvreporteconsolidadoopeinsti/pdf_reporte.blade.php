@@ -120,21 +120,20 @@
     <div style="float:left;font-size:18px;">{{ $co_actual['tienda']->ticket_nombre }} | {{ $co_actual['agencia']->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
   </header>
   <footer>
-    <p class="page">Página </p>
+    <p class="page" style="text-align:right;">Página </p>
   </footer>
   <main>
     <div class="container">
-      <h4 align="center" style="margin: 0px;">REPORTE CONSOLIDADO DE OPERACIONES INSTITUCIONAL</h4>
-      <h4 align="center" style="margin: 0px;">COMPRA Y VENTA DE BIENES</h4>
+      <h4 align="center" style="margin: 0px;">REPORTE CONSOLIDADO DE OPERACIONES INSTITUCIONAL - COMPRA Y VENTA DE BIENES</h4>
             <div ><b>AGENCIA: </b>{{ $co_actual['agencia']->nombreagencia }}  </div>
           <table style="width:100%;">
             <tr>
               <th colspan="6" rowspan="2" style="border-bottom: 2px solid #000;border-top: 2px solid #000;">Saldos y Operaciones de Efectivo</th>
-              <th colspan="2" rowspan="2" style="border-bottom: 2px solid #000;border-top: 2px solid #000;">Operac. Transitorio</th>
-              <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;width:60px;"></th>
+              <th colspan="2" rowspan="2" style="border-bottom: 2px solid #000;border-top: 2px solid #000;"></th>
+              <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;width:50px;"></th>
               <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;width:80px;">Corte</th>
               <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;width:60px;"></th>
-              <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;width:80px;">Cierre Anterior</th>
+              <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;width:90px;">Cierre Anterior</th>
             </tr>
             <tr>
               <th style="border-bottom: 2px solid #000;">Arqueo</th>
@@ -247,7 +246,7 @@
               <td style="text-align:right;"><b>{{$co_anterior?$co_anterior->ingresoyegresocaja_ingreso_ingresosextraordinarios:'0.00'}}</b></td>
             </tr>
             <tr>
-              <td></td>
+              <td style="border-bottom: 2px solid #000;"></td>
               <td colspan="4" style="border-bottom: 2px solid #000;text-align:left;">Ingresos Extraordinarios</td>
               <td style="border-bottom: 2px solid #000;" colspan="2"></td>
               <td style="border-bottom: 2px solid #000;"></td>
@@ -271,9 +270,9 @@
               <td colspan="4" style="text-align:left;">Reducción de Capital</td>
               <td colspan="2"></td>
               <td></td>
-              <td style="text-align:right;">{{$co_actual['ingresoyegresocaja_egreso_ahorro_plazofijo']}}</td>
+              <td style="text-align:right;"><b>{{$co_actual['ingresoyegresocaja_egreso_ahorro_plazofijo']}}</b></td>
               <td></td>
-              <td style="text-align:right;">{{$co_anterior?$co_anterior->ingresoyegresocaja_egreso_ahorro_plazofijo:'0.00'}}</td>
+              <td style="text-align:right;"><b>{{$co_anterior?$co_anterior->ingresoyegresocaja_egreso_ahorro_plazofijo:'0.00'}}</b></td>
             </tr>
             <tr>
               <td></td>
@@ -281,9 +280,9 @@
               <td colspan="4" style="text-align:left;">Gastos admistrativos y operativos</td>
               <td colspan="2"></td>
               <td></td>
-              <td style="text-align:right;">{{$co_actual['ingresoyegresocaja_egreso_ahorro_intplazofijo']}}</td>
+              <td style="text-align:right;"><b>{{$co_actual['ingresoyegresocaja_egreso_ahorro_intplazofijo']}}</b></td>
               <td></td>
-              <td style="text-align:right;">{{$co_anterior?$co_anterior->ingresoyegresocaja_egreso_ahorro_intplazofijo:'0.00'}}</td>
+              <td style="text-align:right;"><b>{{$co_anterior?$co_anterior->ingresoyegresocaja_egreso_ahorro_intplazofijo:'0.00'}}</b></td>
             </tr>
             <tr>
               <td style="border-bottom: 2px solid #000;"></td>
@@ -296,7 +295,7 @@
               <td style="border-bottom: 2px solid #000;"></td>
             </tr>
             <tr>
-              <td rowspan="3" style="text-align:left;"><b>Ingreso y Egreso por Cuenta 
+              <td rowspan="5" style="text-align:left;"><b>Ingreso y Egreso por Cuenta 
                 <span style="border-bottom: 1px solid #000;">Banco</span></b></td>
               <td style="text-align:left;"><b>Ingreso</b></td>
               <td colspan="4" style="text-align:left;">Venta de Bienes</td>
@@ -307,68 +306,17 @@
               <td></td>
               <td style="text-align:right;"><b>{{$co_anterior?$co_anterior->ingresoyegresobanco_ingreso_crediticio_cnpcp:'0.00'}}</b></td>
             </tr>
-            <?php $i = 0 ?>
             @foreach($co_actual['ingresoyegresobanco_ingreso_crediticio_cnpcps_bancos'] as $value)
             <tr>
-              @if($i>0)
-              <td></td>
-              @endif
               <td></td>
               <td></td>
               <td colspan="4" style="text-align:left;">{{ $value['banco_nombre'] }}: {{ $value['banco_cuenta'] }}</td>
               <td></td>
               <td></td>
-              <td style="text-align:right;"><b>{{ $value['banco'] }}</b></td>
-              <td></td>
-              <td style="text-align:right;"><b>0.00</b></td>
-            </tr>
-            <tr>
-              @if($i>0)
-              <td></td>
-              @endif
-              <td></td>
-              <td></td>
-              <td></td>
-              <td colspan="4">Capital</td>
-              <td></td>
-              <td style="text-align:right;">{{ $value['banco_capital'] }}</td>
+              <td style="text-align:right;">{{ $value['banco'] }}</td>
               <td></td>
               <td style="text-align:right;">0.00</td>
             </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td colspan="4">Interés</td>
-              <td></td>
-              <td style="text-align:right;">{{ $value['banco_interes'] }}</td>
-              <td></td>
-              <td style="text-align:right;">0.00</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td colspan="4">C. SS/Desgrav., Cargo</td>
-              <td></td>
-              <td style="text-align:right;">{{ $value['banco_desgravcargo'] }}</td>
-              <td></td>
-              <td style="text-align:right;">0.00</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td colspan="4">Tenen. CxC, Ic, IM. </td>
-              <td></td>
-              <td style="text-align:right;">{{ $value['banco_tenencxc'] }}</td>
-              <td></td>
-              <td style="text-align:right;">0.00</td>
-            </tr>
-            <?php $i++ ?>
             @endforeach
             <tr>
               <td></td>
@@ -438,7 +386,7 @@
               <td></td>
               <td style="text-align:right;">{{ $value['banco'] }}</td>
               <td></td>
-              <td style="text-align:right;"><b>0.00</b></td>
+              <td style="text-align:right;">0.00</td>
             </tr>
             @endforeach
             <tr>
@@ -628,7 +576,7 @@
             <tr>
               <td></td>
               <td></td>
-              <td colspan="3" style="text-align:left;"><b>I*.</b> Ret. de Reserva CF para Caja</td>
+              <td colspan="3" style="text-align:left;"><b>I.</b> Ret. de Reserva CF para Caja</td>
               <td style="text-align:right;padding-right:30px;"><b>{{$co_actual['ret_reservacf_caja_total']}}</b></td>
               <td colspan="2"><b>I.</b> Dep. a Caja desde Reserva CF</td>
               <td style="text-align:right;"><b>{{$co_actual['dep_caja_reservacf_total']}}</b></td>
@@ -640,7 +588,7 @@
             <tr>
               <td></td>
               <td></td>
-              <td colspan="3" style="text-align:left;"><b>III*.</b> Ret. de Caja para Reserva CF</td>
+              <td colspan="3" style="text-align:left;"><b>III.</b> Ret. de Caja para Reserva CF</td>
               <td style="text-align:right;padding-right:30px;"><b>{{$co_actual['ret_caja_reservacf_total']}}</b></td>
               <td colspan="2"><b>III.</b> Dep. a Reserva CF desde Caja</td>
               <td style="text-align:right;"><b>{{$co_actual['dep_reservacf_caja_total']}}</b></td>
@@ -700,47 +648,6 @@
               <td style="border-bottom: 2px solid #000;"></td>
               <td style="border-bottom: 2px solid #000;"></td>
             </tr><tr>
-              <td style="border-bottom: 2px solid #000;"></td>
-              <td style="border-bottom: 2px solid #000;"></td>
-              <td colspan="4" style="border-bottom: 2px solid #000;"></td>
-              <td colspan="2" style="border-bottom: 2px solid #000;"></td>
-              <td style="border-bottom: 2px solid #000;"></td>
-              <td style="border-bottom: 2px solid #000;"></td>
-              <td style="border-bottom: 2px solid #000;"></td>
-              <td style="border-bottom: 2px solid #000;"></td>
-            </tr>
-            <tr>
-              <td colspan="11"></td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td colspan="4" style="text-align:left;">Spread Financiero Proyectado (S/.)</td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td style="text-align:right;border-bottom: 1px solid #000;border-top: 1px solid #000;"><b>{{$co_actual['spread_financiero_proyectado']}}</b></td>
-              <td></td>
-              <td style="text-align:right;border-bottom: 1px solid #000;border-top: 1px solid #000;"><b>{{$co_anterior?$co_anterior->spread_financiero_proyectado:'0.00'}}</b></td>
-            </tr>
-            <tr>
-              <td colspan="11"></td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td colspan="4" style="text-align:left;">Indicador de Reserva Legal (Encaje bancario) (%)</td>
-              <td>5.00%</td>
-              <td></td>
-              <td></td>
-              <td style="text-align:right;border-bottom: 1px solid #000;border-top: 1px solid #000;"><b>{{$co_actual['indicador_reserva_legal']}}</b></td>
-              <td></td>
-              <td style="text-align:right;border-bottom: 1px solid #000;border-top: 1px solid #000;"><b>{{$co_anterior?$co_anterior->indicador_reserva_legal:'0.00'}}</b></td>
-            </tr>
-            <tr>
-              <td colspan="11"></td>
-            </tr>
-            <tr>
               <td style="border-bottom: 2px solid #000;"></td>
               <td style="border-bottom: 2px solid #000;"></td>
               <td colspan="4" style="border-bottom: 2px solid #000;"></td>

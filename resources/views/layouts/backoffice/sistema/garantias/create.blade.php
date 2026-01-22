@@ -12,7 +12,7 @@
         lista_garantias_cliente({{ $idcliente }});
     },this)"> 
     <div class="modal-header">
-        <h5 class="modal-title">Registrar Garantia Prendaria</h5>
+        <h5 class="modal-title">Registrar Garantía Prendaria</h5>
     </div>
     <div class="modal-body">
         <div class="row">
@@ -23,7 +23,7 @@
             </select>
           </div>
           <div class="col-sm-12 col-md-6">
-            <label>Tipo de Garantia *</label>
+            <label>Tipo de Garantía *</label>
             <select class="form-control" id="idtipogarantia">
               <option></option>
                @foreach($tipo_garantia as $value)
@@ -149,7 +149,7 @@
           
           
           <div class="mb-1 mt-2">
-          <span class="badge d-block">DETALLE GARANTIA</span>
+          <span class="badge d-block">DETALLE GARANTÍA</span>
           </div>
           <div class="col-sm-12 col-md-12">
             <label>Descripción *</label>

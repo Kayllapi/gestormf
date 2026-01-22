@@ -1,7 +1,7 @@
 <div class="modal-header">
   <h5 class="modal-title">Generación de Crédito <button type="button" class="btn btn-primary" id="btn-create-cliente" onclick="load_nuevo_credito()"><i class="fa-solid fa-plus"></i> Nuevo</button></h5>
   
-  <button type="button" class="btn-close" onclick="ir_inicio()" style="font-size: 20px;"></button>
+  <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>
 <div class="modal-body">
   <div class="row">
@@ -12,21 +12,21 @@
         </div>
       </div>
       <div class="col-sm-12">
-            <h5 class="modal-title" style="margin-top: 10px;text-align: center;">Prestamos en Procesos</h5>
+            <h5 class="modal-title" style="margin-top: 10px;text-align: center;">Préstamos en Procesos</h5>
         <div class="card">
           <div class="card-body">
 
             <table class="table table-striped table-hover" id="table-lista-credito">
               <thead class="table-dark">
                 <tr>
-                  <td>N°</td>
-                  <td>CLIENTE</td>
-                  <td>AVAL</td>
-                  <td>PRODUCTO</td>
-                  <td>PRESTAMO</td>
-                  <td>ESTADO</td>
-                  <td>FECHA</td>
-                  <td width="10px"></td>
+                  <th>N°</th>
+                  <th>CLIENTE</th>
+                  <th>AVAL</th>
+                  <th>PRODUCTO</th>
+                  <th>PRÉSTAMO</th>
+                  <th>ESTADO</th>
+                  <th>FECHA</th>
+                  <th width="10px"></th>
                 </tr>
               </thead>
               <tbody>
@@ -39,16 +39,8 @@
   </div>
 </div>
 <style>
-  #menu-opcion ul {
-      background-color: #0a58ca;
-  }
-  #menu-opcion ul li a.dropdown-item {
-      color: #fff;
-  }
-  #menu-opcion ul li a.dropdown-item:hover {
-      color: #181818 !important;
-      background-color: #dfdf79;
-  }
+ 
+  
 </style>
 <script>
   

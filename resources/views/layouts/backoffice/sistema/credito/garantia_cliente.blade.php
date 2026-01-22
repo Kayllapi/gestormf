@@ -27,10 +27,11 @@
               <tr>
                 <th width="90px">Tipo</th>
                 <th>Descripción</th>
+                <th width="90px">Días de Registro</th>
                 <th width="90px">Valor Mercado</th>
                 <th width="90px">Valor Comercial<br>(Tasador)</th>
                 <th width="90px">Cobertura<br>(Valor Realización)</th>
-                <th width="10px"></th>
+                <th width="90px"></th>
               </tr>
             </thead>
             <tbody>
@@ -41,7 +42,7 @@
       </div>
       @if($credito->idaval != 0)
       <div class="mb-1 mt-2">
-        <span class="badge d-block">AVAL: {{ $credito->nombreavalcredito }}</span>
+        <span class="badge d-block">AVAL: <span style="font-weight: normal;">{{ $credito->nombreavalcredito }}</span></span>
       </div>
       <div class="row mt-1">
         <div class="col-sm-12">
@@ -50,10 +51,11 @@
               <tr>
                 <th width="90px">Tipo</th>
                 <th>Descripción</th>
+                <th width="90px">Días de Registro</th>
                 <th width="90px">Valor Mercado</th>
                 <th width="90px">Valor Comercial<br>(Tasador)</th>
                 <th width="90px">Cobertura<br>(Valor Realización)</th>
-                <th width="10px"></th>
+                <th width="90px"></th>
               </tr>
             </thead>
             <tbody>
@@ -64,7 +66,7 @@
       @endif
       <br>
       <span class="badge bg-success">
-          <b>TOTAL COBERTURA:</b> S/. <span id="total_cobertura_cliente">{{ $credito->monto_cobertura_garantia }}</span>
+          <b>TOTAL COBERTURA:</b><span style="font-weight: normal;"> S/. <span id="total_cobertura_cliente">{{ $credito->monto_cobertura_garantia }}</span></span>
       </span>
       @if($view_detalle!='false')
       <br>

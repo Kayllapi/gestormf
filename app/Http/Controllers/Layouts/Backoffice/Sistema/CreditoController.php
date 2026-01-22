@@ -834,6 +834,7 @@ class CreditoController extends Controller
           $garantia_prendaria = DB::table('garantias')
                                 ->select(
                                   'garantias.id',
+                                  'garantias.fecharegistro as fecharegistro',
                                   'garantias.idcliente as idclientegarantia',
                                   'garantias.descripcion',
                                   'garantias.valor_mercado',
@@ -849,6 +850,7 @@ class CreditoController extends Controller
           $garantia_noprendaria = DB::table('garantias_noprendarias')
                                   ->select(
                                     'garantias_noprendarias.id',
+                                    DB::raw('CONCAT("") as fecharegistro'),
                                     'garantias_noprendarias.idcliente as idclientegarantia',
                                     'garantias_noprendarias.descripcion',
                                     'garantias_noprendarias.valor_mercado',
@@ -943,7 +945,16 @@ class CreditoController extends Controller
               }
               }
               // fin valid garantia
-            
+              $dias = '--';
+              if($value->fecharegistro!=''){
+                $dias = "<div style='margin-top: 6px;
+    background-color: #ffd100;
+    float: left;
+    padding-left: 3px;
+    padding-right: 3px;
+    border-radius: 3px;padding-top: 2px;
+    padding-bottom: 2px;'>".calcularDiasPasados($value->fecharegistro).' DIA(S)</div>';
+              }
               $html .= "<tr idgarantia='{$idgarantia_prendaria}' idgarantianoprendataria='{$idgarantia_noprendaria}' idcliente='{$value->idclientegarantia}'>
                           <td value='{$value->tipo_garantia}' tipo_garantia>{$value->tipo_garantia}</td>
                           <td value='{$value->descripcion}' descripcion>
@@ -954,6 +965,7 @@ class CreditoController extends Controller
                               ".substr($descripcion, 0, 100)."
                           </label>
                           </td>
+                          <td>{$dias}</td>
                           <td value='{$value->valor_mercado}' valor_mercado>{$value->valor_mercado}</td>
                           <td value='{$value->gvalor_comercial}' valor_comercial>{$value->gvalor_comercial}</td>
                           <td value='{$value->gcobertura}' valor_realizacion>{$value->gcobertura}</td>

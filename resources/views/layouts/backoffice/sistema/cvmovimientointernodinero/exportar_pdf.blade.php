@@ -117,7 +117,7 @@
 </head>
 <body>
   <header>
-    <div style="float:left;font-size:18px;">{{ $tienda->nombre }} | {{ $agencia->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
+    <div style="float:left;font-size:18px;">{{ $tienda->ticket_nombre }} | {{ $agencia->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
   </header>
   <footer>
     <p class="page">Página </p>
@@ -168,7 +168,7 @@
             }
           
             if(count($movimientointernodinero_retiro1)==0){
-                $html.= '<tr><td colspan="7" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
+                $html.= '<tr><td colspan="8" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
             }
                
             $html .= '
@@ -220,7 +220,7 @@
             }
           
             if(count($movimientointernodinero_deposito1)==0){
-                $html.= '<tr><td colspan="7" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
+                $html.= '<tr><td colspan="8" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
             }
                
             $html .= '
@@ -269,7 +269,7 @@
             }
           
             if(count($movimientointernodinero_retiro3)==0){
-                $html.= '<tr><td colspan="7" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
+                $html.= '<tr><td colspan="8" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
             }
                
             $html .= '
@@ -316,7 +316,7 @@
             }
           
             if(count($movimientointernodinero_deposito3)==0){
-                $html.= '<tr><td colspan="7" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
+                $html.= '<tr><td colspan="8" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
             }
                
             $html .= '

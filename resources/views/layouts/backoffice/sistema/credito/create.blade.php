@@ -16,7 +16,6 @@
           <div class="row">
             <label class="col-sm-4 col-form-label" style="text-align: right;">Nombre del Titular / Razón Social:</label>
             <div class="col-sm-8">
-              <i class="fa fa-search" style="float: right;margin-right: -16px;margin-top: 10px;"></i>
               <select class="form-control" id="idcliente">
                 <option></option>
               </select>
@@ -35,7 +34,6 @@
           <div class="row">
             <label class="col-sm-4 col-form-label" style="text-align: right;">Aval:</label>
             <div class="col-sm-8">
-              <i class="fa fa-search" style="float: right;margin-right: -16px;margin-top: 10px;"></i>
               <select class="form-control" id="idaval">
                 <option></option>
               </select>
@@ -112,7 +110,7 @@
           <div class="row mt-1">
             <label class="col-sm-4"></label>
             <div class="col-sm-8">
-              <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Generar Crédito</button>
+              <button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i> Generar Crédito</button>
             </div>
           </div>
           

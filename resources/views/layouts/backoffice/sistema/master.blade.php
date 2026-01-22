@@ -164,7 +164,7 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
           .btn-primary:active,
           .btn-primary:focus {    
               background-color: #d4d4d4 !important;
-              border: 1px solid #919191 !important;
+              border: 1px solid #727171 !important;
               color: #000 !important;
           }
           .btn-primary  .fa-solid:before {    

@@ -115,7 +115,7 @@
           <div class="row mt-1">
             <label class="col-sm-4"></label>
             <div class="col-sm-8">
-              <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> GUARDAR CRÉDITO</button>
+              <button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i> GUARDAR CRÉDITO</button>
 <!--               <button type="button" class="btn btn-danger me-1" onclick="eliminar_credito('eliminar')">ELIMINAR CRÉDITO</button> -->
             </div>
           </div>

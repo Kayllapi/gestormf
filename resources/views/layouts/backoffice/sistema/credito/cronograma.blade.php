@@ -18,12 +18,10 @@
         <h5 class="modal-title">CRONOGRAMA </h5>
         <button type="button" class="btn-close text-white" id="modal-close-garantia-cliente" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
-      <div class="row" style="background-color: #198754;
-    color: #fffdfd;
-    font-size: 14px;padding: 7px;">
-          <div class="col-md-4"><b>CLIENTE:</b> {{ $usuario->nombrecompleto }}</div>
-          <div class="col-md-4">@if($credito->idaval != 0) <b>AVAL:</b> {{ $credito->nombreavalcredito }} @endif</div>
-          <div class="col-md-4"><b>PRODUCTO:</b> {{ $credito->nombreproductocredito }}</div>
+      <div class="row bg-success pt-2 pb-2">
+          <div class="col-md-4"><b>CLIENTE:</b> <span style="font-weight: normal;">{{ $usuario->nombrecompleto }}</span></div>
+          <div class="col-md-4">@if($credito->idaval != 0) <b>AVAL:</b> <span style="font-weight: normal;">{{ $credito->nombreavalcredito }}</span> @endif</div>
+          <div class="col-md-4"><b>PRODUCTO:</b> <span style="font-weight: normal;">{{ $credito->nombreproductocredito }}</span></div>
       </div>
     <div class="modal-body">
       <div class="row">
@@ -31,7 +29,7 @@
               <div class="row">
               <div class="col-md-6">
                 <div class="row">
-                  <label class="col-sm-5 col-form-label" style="text-align: right;">Monto de Prestamo</label>
+                  <label class="col-sm-5 col-form-label" style="text-align: right;">Monto de Préstamo</label>
                   <div class="col-sm-7">
                     <input type="number" step="any" class="form-control" {{ $view_detalle=='false' ? 'disabled' : ($credito->idestadorefinanciamiento==1?'disabled':'') }} id="monto_solicitado" value="{{ $credito->monto_solicitado }}" onclick="showtasa()" onkeyup="showtasa()">
                   </div>
@@ -130,7 +128,7 @@
               </div>
           </div>
           <div class="col-md-5">
-          <h6>LISTA DE GARANTIAS</h6>
+          <h6 class="text-center"><b>LISTA DE GARANTIAS</b></h6>
           <div class="table-responsive">
             <table class="table table-striped" id="table-garantia-cliente">
               <thead>
@@ -168,34 +166,33 @@
         </div>
       </div>
       
-      <div class="row mt-3" style="background-color: #198754;">
+      <div class="row mt-3 bg-success">
         <div class="col-sm-12 col-md-3">
           <div class="row">
             <input type="hidden" id="monto_cobertura_garantia" value="{{ $credito->monto_cobertura_garantia }}">
             @if($credito->idforma_credito==1)
-            <label class="col-sm-12 col-form-label" ><span class="bg-light text-dark" style="padding: 4px;
-    border-radius: 4px;"><b>COBERTURA GARANTIA:</b> {{ $credito->monto_cobertura_garantia }} SOLES</span></label>
+            <label class="col-sm-12 col-form-label" ><b>COBERTURA GARANTIA:</b> <span style="font-weight: normal;">{{ $credito->monto_cobertura_garantia }} SOLES</span></label>
             @endif
           </div>
         </div>
         <div class="col-sm-12 col-md-3 d-none">
           <div class="row">
-            <label class="col-sm-12 col-form-label text-white text-center"><b>CRONOGRAMA DE PAGOS</b></label>
+            <label class="col-sm-12 col-form-label text-center"><b>CRONOGRAMA DE PAGOS</b></label>
           </div>
           
         </div>
         <div class="col-sm-12 col-md-9">
           <div class="row">
-            <label class="col-sm-2 col-form-label text-white" style="text-align: right;"><b>Interes Total (S/):</b></label>
-            <div class="col-sm-2 col-form-label text-white" id="interes_total">
+            <label class="col-sm-2 col-form-label" style="text-align: right;"><b>Interés Total (S/):</b></label>
+            <div class="col-sm-2 col-form-label" id="interes_total" style="font-weight: normal;">
               {{ $credito->interes_total }}
             </div>
-            <label class="col-sm-2 col-form-label text-white" style="text-align: right;"><b>Cargos y otros (S/):</b></label>
-            <div class="col-sm-2 col-form-label text-white" id="cargo_total">
+            <label class="col-sm-2 col-form-label" style="text-align: right;"><b>Cargos y otros (S/):</b></label>
+            <div class="col-sm-2 col-form-label" id="cargo_total" style="font-weight: normal;">
               0.00
             </div>
-            <label class="col-sm-2 col-form-label text-white" style="text-align: right;"><b>Total a Pagar (S/):</b></label>
-            <div class="col-sm-2 col-form-label text-white" id="total_pagar">
+            <label class="col-sm-2 col-form-label" style="text-align: right;"><b>Total a Pagar (S/):</b></label>
+            <div class="col-sm-2 col-form-label" id="total_pagar" style="font-weight: normal;">
               {{ $credito->total_pagar }}
             </div>
           </div>
@@ -294,7 +291,7 @@
               <th>Fecha de Pago</th>
               <th>Capital</th>
               <th>Amortización</th>
-              <th>Interes</th>
+              <th>Interés</th>
               <th>C. Ss./Otros (%)</th>
               <th>Cargo</th>
               <th>Cuota</th>

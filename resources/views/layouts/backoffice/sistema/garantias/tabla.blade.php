@@ -1,6 +1,6 @@
 <div class="modal-header">
     <h5 class="modal-title">
-      Garantia Prendaria
+      Garantía Prendaria
       
 <!--       <a href="javascript:;" 
          class="btn btn-primary" 
@@ -11,9 +11,9 @@
         <i class="fa fa-user"></i> Buscar Cliente
       </button>
       
-      <button type="button" class="btn btn-primary d-none" id="btn-create-cliente" onclick="load_create_garantia()"><i class="fa-solid fa-plus"></i> NUEVA GARANTIA</button>
+      <button type="button" class="btn btn-primary d-none" id="btn-create-cliente" onclick="load_create_garantia()"><i class="fa-solid fa-plus"></i> NUEVA GARANTÍA</button>
       <button type="button" class="btn btn-primary d-none" id="btn-create-depositario" onclick="load_create_depositario()">
-        <i class="fa-solid fa-list"></i> Gestión de Depósitario y Poliza de Seguros</button>
+        <i class="fa-solid fa-list"></i> Gestión de Depósitario y Póliza de Seguros</button>
 
       <!-- Modal -->
       <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -53,7 +53,7 @@
         </div>
         
       </div>
-      <label>Garantias: </label>
+      <label>Garantías: </label>
       <table class="table table-striped table-hover" id="table-detalle-garantia">
         <thead class="table-dark">
           <tr>
@@ -83,11 +83,11 @@
       </div>
           <div class="alert mb-1 text-start py-0 d-none" id="cont-ultimamodificacion" 
                style="background-color: #ffffff;border: 1px solid grey;">
-              <b>MODIFICADO POR:</b> <span id="alert-ultimamodificacion"></span>
+              <b>MODIFICADO POR:</b> <span id="alert-ultimamodificacion" style="font-weight: normal;"></span>
           </div>
-      <button type="button" class="btn btn-danger mt-2 d-none" id="btn-delete-garantia" onclick="eliminar_garantia()"><i class="fa-solid fa-trash"></i> Eliminar Garantia</button>
-      <button type="button" class="btn btn-success mt-2 d-none" id="btn-autorizar-garantia" onclick="modificar_garantia(1)"><i class="fa-solid fa-pencil"></i> Editar Garantia</button>
-      <button type="button" class="btn btn-success mt-2 d-none" id="btn-autorizar-depositario" onclick="modificar_garantia(2)"><i class="fa-solid fa-pencil"></i> Editar Gestión de Depósitario y Poliza de Seguros</button>
+      <button type="button" class="btn btn-danger mt-2 d-none" id="btn-delete-garantia" onclick="eliminar_garantia()"><i class="fa-solid fa-trash"></i> Eliminar Garantía</button>
+      <button type="button" class="btn btn-success mt-2 d-none" id="btn-autorizar-garantia" onclick="modificar_garantia(1)"><i class="fa-solid fa-pencil"></i> Editar Garantía</button>
+      <button type="button" class="btn btn-success mt-2 d-none" id="btn-autorizar-depositario" onclick="modificar_garantia(2)"><i class="fa-solid fa-pencil"></i> Editar Gestión de Depósitario y Póliza de Seguros</button>
     </div>
     <div class="col-sm-12 col-md-8">
       <div class="card">

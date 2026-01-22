@@ -15,20 +15,15 @@
           $('#btn-delete-garantia').addClass('d-none');
       },this)">
     <div class="modal-header">
-        <h5 class="modal-title">Eliminar Garantia</h5>
+        <h5 class="modal-title">Eliminar Garantía</h5>
         <button type="button" class="btn-close" id="modal-close-garantias-eliminar" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <div class="modal-body">
         <div class="alert alert-danger">
-          <i class="fa-solid fa-triangle-exclamation"></i> ¿Esta seguro de eliminar la garantia?<br>
+          <i class="fa-solid fa-triangle-exclamation"></i> ¿Esta seguro de eliminar la garantía?<br>
           <b>"{{$garantias->descripcion}}"</b>
         </div>
-        <label class="mt-1" style="background-color: #636363;
-          color: #fff;
-          width: 100%;
-          border-radius: 5px;
-          padding: 0px 5px;
-          margin-bottom: 5px;">Aprobación</label>
+                <div class="mt-2 bg-primary subtitulo">Aprobación</div>
               <div class="mb-1">
                   <label>Responsable *</label>
                   <select class="form-select" id="idresponsable">

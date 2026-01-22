@@ -18,7 +18,7 @@
   
     <input type="hidden" id="idresponsable_modificado">
     <div class="modal-header">
-        <h5 class="modal-title">Garantia Prendaria</h5>
+        <h5 class="modal-title">Garantía Prendaria</h5>
     </div>
     <div class="modal-body">
         <div class="row">
@@ -26,7 +26,12 @@
             <input type="text" style="font-size: 15px;" class="form-control" value="CÓDIGO: GP{{ str_pad($garantias->id, 8, '0', STR_PAD_LEFT)  }}" disabled>
           </div>
           <div class="col-sm-6">
-            <input type="text" class="form-control" value="{{ calcularDiasPasados($garantias->fecharegistro) }} DIA(S)" disabled>
+            <div style="margin-top: 6px;
+    background-color: #ffd100;
+    float: left;
+    padding-left: 3px;
+    padding-right: 3px;
+    border-radius: 3px;">{{ calcularDiasPasados($garantias->fecharegistro) }} DIA(S)</div>
           </div>
           <div class="col-sm-12 col-md-12 d-none">
             <label>Cliente</label>
@@ -35,7 +40,7 @@
             </select>
           </div>
           <div class="col-sm-12 col-md-5">
-            <label>Tipo de Garantia *</label>
+            <label>Tipo de Garantía *</label>
             <select class="form-control" id="idtipogarantia" disabled>
               <option></option>
                @foreach($tipo_garantia as $value)
@@ -161,7 +166,7 @@
           </div>
           
           <div class="mb-1 mt-2">
-            <span class="badge d-block">DETALLE GARANTIA</span>
+            <span class="badge d-block">DETALLE GARANTÍA</span>
           </div>
           <div class="col-sm-12 col-md-12">
             <label>Descripción *</label>

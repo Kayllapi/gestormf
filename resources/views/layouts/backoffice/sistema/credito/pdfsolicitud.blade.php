@@ -130,7 +130,7 @@
     
     <div class="header">
         <div class="header_agencia_informacion">
-            <div class="header_agencia_nombrecomercial"><div style="float:left;font-size:18px;">{{ $tienda->nombre }}</div> | {{ Auth::user()->usuario }} | {{ date('d-m-Y H:iA') }}</div>
+            <div class="header_agencia_nombrecomercial"><div style="float:left;font-size:18px;">{{ $tienda->nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->usuario }} | {{ date('d-m-Y H:iA') }}</div>
         </div>
     </div>
     <div class="footer">
@@ -218,7 +218,7 @@
             $users_prestamo->referencia_ac_economica!='' or 
             $users_prestamo->ruc_ac_economica!='' or 
             $users_prestamo->db_idlocalnegocio_ac_economica!='')
-        <h6 class="ficha-titulo">ACTIVIDAD ECONÓMICA CLIENTE</h6>
+        <h5 class="ficha-titulo">ACTIVIDAD ECONÓMICA CLIENTE</h5>
         <table>
             <tbody>
                 <tr>
@@ -284,7 +284,7 @@
             $users_prestamo->cargo_laboral_cliente!='' or
             $users_prestamo->area_laboral_cliente!='' or 
             $users_prestamo->db_idtipocontrato_laboral_cliente!='')
-        <h6 class="ficha-titulo">CENTRO LABORAL CLIENTE</h6>
+        <h5 class="ficha-titulo">CENTRO LABORAL CLIENTE</h5>
         <table>
             <tbody>
                 <tr>
@@ -467,14 +467,14 @@
       @endif
       <br>
       <h5 style="margin-bottom:10px;">GARANTÍAS DEL CLIENTE:</h5>
-      <table border=1>
+      <table>
         @if(count($garantia_cliente)>0)
         <thead>
-          <th width="70px">Tipo</th>
-          <th>Descripción</th>
-          <th width="120px">Valor de Mercado</th>
-          <th width="120px">Valor Comercial (Tasador)</th>
-          <th width="120px">Valor de realización(Tasador)</th>
+          <th width="70px" class="border-td">Tipo</th>
+          <th class="border-td">Descripción</th>
+          <th width="120px" class="border-td">Valor de Mercado</th>
+          <th width="120px" class="border-td">Valor Comercial (Tasador)</th>
+          <th width="120px" class="border-td">Valor de realización(Tasador)</th>
         </thead>
         <tbody>
           <tr>
@@ -485,29 +485,29 @@
             @endphp
             @foreach($garantia_cliente as $value)
               <tr>
-                 <td>
+                 <td class="border-td">
                    @if($value->idgarantias!=0)
                       Prendario
                    @else
                       No Prendario
                    @endif
                  </td>
-                 <td>{{ $value->descripcion }}</td>
-                 <td align="right">
+                 <td class="border-td">{{ $value->descripcion }}</td>
+                 <td class="border-td" align="right">
                    @if($value->idgarantias!=0)
                       --
                    @else
                       {{ $value->valor_mercado }}
                    @endif
                  </td>
-                 <td align="right">
+                 <td class="border-td" align="right">
                    @if($value->idgarantias!=0)
                       --
                    @else
                       {{ $value->valor_comercial }}
                    @endif
                  </td>
-                 <td align="right">{{ $value->valor_realizacion }}</td>
+                 <td class="border-td" align="right">{{ $value->valor_realizacion }}</td>
               </tr>
               @php
                 $total_valor_mercado += $value->idgarantias==0?$value->valor_mercado:0;
@@ -620,10 +620,10 @@
       </table>
       @endif
       <p>La presente Información tiene carácter de Declaración Jurada. Donde la información proporcionada es verídica y autorizo a {{$tienda->nombre}} verifique los datos consignados en la presente Declaración Jurada.</p>
-      <table style="margin-top:50px">
+      <table style="margin-top:60px">
           <tr>
               <td style="padding:0px; width:33%;" align="center">
-                  <hr style="border:solid 1px #ccc;margin-left:20px;margin-right:20px;">
+                  <div style="border-top:solid 1px #000;margin-left:20px;margin-right:20px;"></div>
                   <p style="padding-top:10px;">Firma del Cliente</p>
               </td>
             @if($users_prestamo->dni_pareja!='' or
@@ -632,14 +632,14 @@
             $users_prestamo->db_idocupacion_pareja!='' or 
             $users_prestamo->profesion_pareja!='')
               <td style="padding:0px; width:33%;" align="center">
-                  <hr style="border:solid 1px #ccc;margin-left:20px;margin-right:20px;">
+                  <div style="border-top:solid 1px #000;margin-left:20px;margin-right:20px;"></div>
                   <p style="padding-top:10px;">Firma de pareja del Cliente</p>
               </td>
             @endif
             @if($credito->idaval != 0)
               @if($usuario_aval->nombrecompleto!='')
                 <td style="padding:0px; width:33%;" align="center">
-                    <hr style="border:solid 1px #ccc;margin-left:20px;margin-right:20px;">
+                    <div style="border-top:solid 1px #000;margin-left:20px;margin-right:20px;"></div>
                     <p style="padding-top:10px;">Firma de Aval</p>
                 </td>
               @endif

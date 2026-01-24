@@ -1226,1217 +1226,1262 @@ function consolidadooperaciones($tienda,$idagencia,$fechacorte){
     return $data;
 }
 function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
-           
-          $agencia = DB::table('tienda')->whereId($idagencia)->first();
-          $bancos = DB::table('banco')->where('estado','ACTIVO')->get();
-          
-          // Ingreso y Egreso por Caja
-          $where = [];
-          if($idagencia!=''){
-              $where[] = ['credito.idtienda',$idagencia];
-          }
-          if($fechacorte!=''){
-              $where[] = ['credito_cobranzacuota.fecharegistro','>=',$fechacorte.' 00:00:00'];
-              $where[] = ['credito_cobranzacuota.fecharegistro','<=',$fechacorte.' 23:59:59'];
-          }
-          $ingresoyegresocaja_ingreso_crediticio_cnps = DB::table('credito_cobranzacuota')
-              ->join('credito','credito.id','credito_cobranzacuota.idcredito')
-              ->where('credito_cobranzacuota.idestadocredito_cobranzacuota',1)
-              ->where('credito_cobranzacuota.idestadoextorno',0)
-              ->where('credito.idforma_credito',2)
-              ->where('credito_cobranzacuota.idformapago',1)
-              ->where($where)
-              ->select(
-                  'credito_cobranzacuota.*',
-              )
-              ->orderBy('credito_cobranzacuota.id','asc')
-              ->get();
-          
-          $ingresoyegresocaja_ingreso_crediticio_cnp_capital = 0;
-          $ingresoyegresocaja_ingreso_crediticio_cnp_interes = 0;
-          $ingresoyegresocaja_ingreso_crediticio_cnp_desgravcargo = 0;
-          $ingresoyegresocaja_ingreso_crediticio_cnp_tenencxc = 0;
-          $ingresoyegresocaja_ingreso_crediticio_cnp = 0;
-          $ingresoyegresocaja_ingreso_crediticio = 0;
-          
-          foreach($ingresoyegresocaja_ingreso_crediticio_cnps as $value){
-              $ingresoyegresocaja_ingreso_crediticio_cnp_capital += $value->total_pagar_amortizacion;
-              $ingresoyegresocaja_ingreso_crediticio_cnp_interes += $value->total_pagar_interes;
-              $ingresoyegresocaja_ingreso_crediticio_cnp_desgravcargo += $value->total_pagar_comision+$value->total_pagar_cargo;
-              $ingresoyegresocaja_ingreso_crediticio_cnp_tenencxc += $value->total_pagar_tenencia+$value->total_pagar_penalidad+$value->total_pagar_compensatorio;
-          }
-          
-            $ingresoyegresocaja_ingreso_crediticio_cnp = $ingresoyegresocaja_ingreso_crediticio_cnp_capital+
-            $ingresoyegresocaja_ingreso_crediticio_cnp_interes+
-            $ingresoyegresocaja_ingreso_crediticio_cnp_desgravcargo+
-            $ingresoyegresocaja_ingreso_crediticio_cnp_tenencxc;
-          
-          
-          $where = [];
-          if($idagencia!=''){
-              $where[] = ['credito.idtienda',$idagencia];
-          }
-          if($fechacorte!=''){
-              $where[] = ['credito_cobranzacuota.fecharegistro','>=',$fechacorte.' 00:00:00'];
-              $where[] = ['credito_cobranzacuota.fecharegistro','<=',$fechacorte.' 23:59:59'];
-          }
-          
-          $ingresoyegresocaja_ingreso_crediticio_cps = DB::table('credito_cobranzacuota')
-              ->join('credito','credito.id','credito_cobranzacuota.idcredito')
-              ->where('credito_cobranzacuota.idestadocredito_cobranzacuota',1)
-              ->where('credito_cobranzacuota.idestadoextorno',0)
-              ->where('credito.idforma_credito',1)
-              ->where('credito_cobranzacuota.idformapago',1)
-              ->where($where)
-              ->select(
-                  'credito_cobranzacuota.*',
-              )
-              ->orderBy('credito_cobranzacuota.id','asc')
-              ->get();
-          
-          $ingresoyegresocaja_ingreso_crediticio_cp_capital = 0;
-          $ingresoyegresocaja_ingreso_crediticio_cp_interes = 0;
-          $ingresoyegresocaja_ingreso_crediticio_cp_desgravcargo = 0;
-          $ingresoyegresocaja_ingreso_crediticio_cp_tenencxc = 0;
-          $ingresoyegresocaja_ingreso_crediticio_cp = 0;
-          
-          foreach($ingresoyegresocaja_ingreso_crediticio_cps as $value){
-              $ingresoyegresocaja_ingreso_crediticio_cp_capital += $value->total_pagar_amortizacion;
-              $ingresoyegresocaja_ingreso_crediticio_cp_interes += $value->total_pagar_interes;
-              $ingresoyegresocaja_ingreso_crediticio_cp_desgravcargo += $value->total_pagar_comision+$value->total_pagar_cargo;
-              $ingresoyegresocaja_ingreso_crediticio_cp_tenencxc += $value->total_pagar_tenencia+$value->total_pagar_penalidad+$value->total_pagar_compensatorio;
-          }
-          
-          $ingresoyegresocaja_ingreso_crediticio_cp = $ingresoyegresocaja_ingreso_crediticio_cp_capital+
-                                              $ingresoyegresocaja_ingreso_crediticio_cp_interes+
-                                              $ingresoyegresocaja_ingreso_crediticio_cp_desgravcargo+
-                                              $ingresoyegresocaja_ingreso_crediticio_cp_tenencxc;
-          
-          $ingresoyegresocaja_ingreso_crediticio = $ingresoyegresocaja_ingreso_crediticio_cnp+
-                                                    $ingresoyegresocaja_ingreso_crediticio_cp;
-          
-          $where = [];
-          if($idagencia!=''){
-              $where[] = ['credito.idtienda',$idagencia];
-          }
-          if($fechacorte!=''){
-              //$where[] = ['credito_formapago.fechapago','>=',$fechacorte.' 00:00:00'];
-              $where[] = ['credito_formapago.fechapago','<=',$fechacorte.' 23:59:59'];
-          }
-          $ingresoyegresocaja_ingreso_crediticio_transitorio = DB::table('credito_formapago')
-              ->join('credito','credito.id','credito_formapago.idcredito')
-              ->where('credito.estado','DESEMBOLSADO')
-              ->where('credito.idestadorefinanciamiento',1)
-              ->where($where)
-              ->sum('credito.monto_solicitado');
-          
-          $ingresoyegresocaja_ingreso_ahorro_plazofijo = 0;
-          $ingresoyegresocaja_ingreso_ahorro_ahorroc = 0;
-          
-          $ingresoyegresocaja_ingreso_ahorro = $ingresoyegresocaja_ingreso_ahorro_plazofijo+
-                                                $ingresoyegresocaja_ingreso_ahorro_ahorroc;
-          
-          $where = [];
-          if($idagencia!=''){
-              $where[] = ['cvasignacioncapital.idtienda',$idagencia];
-          }
-          if($fechacorte!=''){
-              $where[] = ['cvasignacioncapital.fecharegistro','>=',$fechacorte.' 00:00:00'];
-              $where[] = ['cvasignacioncapital.fecharegistro','<=',$fechacorte.' 23:59:59'];
-          }
-          $ingresoyegresocaja_ingreso_incrementocapital = DB::table('cvasignacioncapital')
-                ->where('cvasignacioncapital.idtipodestino',1)
-                ->where('cvasignacioncapital.idestadoeliminado',1)
-                ->where('cvasignacioncapital.idtipooperacion',1)
-                ->where($where)
-                ->sum('cvasignacioncapital.monto');
-            
-          $where = [];
-          if($idagencia!=''){
-              $where[] = ['cvingresoextraordinario.idtienda',$idagencia];
-          }
-          if($fechacorte!=''){
-              $where[] = ['cvingresoextraordinario.fechapago','>=',$fechacorte.' 00:00:00'];
-              $where[] = ['cvingresoextraordinario.fechapago','<=',$fechacorte.' 23:59:59'];
-          }
-          $ingresoyegresocaja_ingreso_ingresosextraordinarios = DB::table('cvingresoextraordinario')
-                ->where('cvingresoextraordinario.idformapago',1) 
-                ->where('cvingresoextraordinario.idestadoeliminado',1) 
-                ->where($where)
-                ->sum('cvingresoextraordinario.monto');
-          
-          //-------
-            
-          $where = [];
-          if($idagencia!=''){
-              $where[] = ['credito.idtienda',$idagencia];
-          }
-          if($fechacorte!=''){
-              $where[] = ['credito_formapago.fechapago','>=',$fechacorte.' 00:00:00'];
-              $where[] = ['credito_formapago.fechapago','<=',$fechacorte.' 23:59:59'];
-          }
-          $ingresoyegresocaja_egreso_crediticio = DB::table('credito_formapago')
-              ->join('credito','credito.id','credito_formapago.idcredito')
-              ->where('credito_formapago.idformapago',1)
-              ->where('credito.estado','DESEMBOLSADO')
-              ->where($where)
-              ->sum('credito.monto_solicitado');
-          
-          $ingresoyegresocaja_egreso_ahorro_plazofijo = 0;
-          $ingresoyegresocaja_egreso_ahorro_intplazofijo = 0;
-          $ingresoyegresocaja_egreso_ahorro_ahorrocte = 0;
-          $ingresoyegresocaja_egreso_ahorro_intcte = 0;
-          
-          $ingresoyegresocaja_egreso_ahorro = $ingresoyegresocaja_egreso_ahorro_plazofijo+
-                                                $ingresoyegresocaja_egreso_ahorro_intplazofijo+
-                                                $ingresoyegresocaja_egreso_ahorro_ahorrocte+
-                                                $ingresoyegresocaja_egreso_ahorro_intcte;
-          
-          $where = [];
-          if($idagencia!=''){
-              $where[] = ['cvasignacioncapital.idtienda',$idagencia];
-          }
-          if($fechacorte!=''){
-              $where[] = ['cvasignacioncapital.fecharegistro','>=',$fechacorte.' 00:00:00'];
-              $where[] = ['cvasignacioncapital.fecharegistro','<=',$fechacorte.' 23:59:59'];
-          }
-          $ingresoyegresocaja_egreso_reduccioncapital = DB::table('cvasignacioncapital')
-                ->whereIn('cvasignacioncapital.idtipodestino',[0,1])
-                ->where('cvasignacioncapital.idestadoeliminado',1)
-                ->where('cvasignacioncapital.idtipooperacion',2)
-                ->where($where)
-                ->sum('cvasignacioncapital.monto');
-          
-          $where = [];
-          if($idagencia!=''){
-              $where[] = ['cvgastoadministrativooperativo.idtienda',$idagencia];
-          }
-          if($fechacorte!=''){
-              $where[] = ['cvgastoadministrativooperativo.fechapago','>=',$fechacorte.' 00:00:00'];
-              $where[] = ['cvgastoadministrativooperativo.fechapago','<=',$fechacorte.' 23:59:59'];
-          }
-          $ingresoyegresocaja_egreso_gastosadministrativosyoperativos = DB::table('cvgastoadministrativooperativo')
-                ->where('cvgastoadministrativooperativo.idformapago',1) 
-                ->where('cvgastoadministrativooperativo.idestadoeliminado',1) 
-                ->where($where)
-                ->sum('cvgastoadministrativooperativo.monto');
-          
-          // Ingreso y Egreso por Cuenta Banco
-          $validacion_operaciones_cuenta_banco_cant = 0;
-  
-          $where = [];
-          if($idagencia!=''){
-              $where[] = ['credito.idtienda',$idagencia];
-          }
-          if($fechacorte!=''){
-              $where[] = ['credito_cobranzacuota.fecharegistro','>=',$fechacorte.' 00:00:00'];
-              $where[] = ['credito_cobranzacuota.fecharegistro','<=',$fechacorte.' 23:59:59'];
-          }
-          $ingresoyegresobanco_ingreso_crediticio_cnpcp = 0;
-          $ingresoyegresobanco_ingreso_crediticio_cnpcps_bancos = [];
-          $ingresoyegresobanco_ingreso_crediticio_cnpcps_validacion = '';
-          $validacion_0 = '';
-          $validacion_cantidad = 0;
-          $ingresoyegresobanco_ingreso_crediticio_cnpcps_validacion_cantidad = 0;
-          foreach($bancos as $valuebancos){
-              $bancosdatas = DB::table('credito_cobranzacuota')
-                  ->join('credito','credito.id','credito_cobranzacuota.idcredito')
-                  ->where('credito_cobranzacuota.idestadocredito_cobranzacuota',1)
-                  ->where('credito_cobranzacuota.idestadoextorno',0)
-                  ->where('credito_cobranzacuota.idformapago',2)
-                  ->where('credito_cobranzacuota.idbanco',$valuebancos->id)
-                  ->where($where)
-                  ->select(
-                      'credito_cobranzacuota.*',
-                  )
-                  ->orderBy('credito_cobranzacuota.id','asc')
-                  ->get();  
-          
-              $banco_capital = 0;
-              $banco_interes = 0;
-              $banco_desgravcargo = 0;
-              $banco_tenencxc = 0;
-              $banco = 0;
-              $validacion_1 = '';
-              foreach($bancosdatas as $value){
-                  if($value->validar_estado==1 && $validacion_1 == ''){
-                      $validacion_1 = 'CHECK';
-                  }
-                  $banco_capital += $value->total_pagar_amortizacion;
-                  $banco_interes += $value->total_pagar_interes;
-                  $banco_desgravcargo += $value->total_pagar_comision+$value->total_pagar_cargo;
-                  $banco_tenencxc += $value->total_pagar_tenencia+$value->total_pagar_penalidad+$value->total_pagar_compensatorio;
-              }
-                  
-              if($validacion_1=='CHECK' && $validacion_0 == ''){
-                  $validacion_0 = 'CHECK';  
-                  $validacion_operaciones_cuenta_banco_cant += 1;
-              }
-            
-              if(count($bancosdatas)>0){
-                  $validacion_cantidad += 1;
-                  $ingresoyegresobanco_ingreso_crediticio_cnpcps_validacion_cantidad += 1;
-              }
-            
-              $ingresoyegresobanco_ingreso_crediticio_cnpcp += number_format($banco_capital+$banco_interes+$banco_desgravcargo+$banco_tenencxc, 2, '.', '');
-            
-              $ingresoyegresobanco_ingreso_crediticio_cnpcps_bancos[] = [
-                  'banco_nombre' => $valuebancos->nombre,
-                  'banco_cuenta' => '(******'.substr($valuebancos->cuenta, -5).')',
-                  'banco_capital' => number_format($banco_capital, 2, '.', ''),
-                  'banco_interes' => number_format($banco_interes, 2, '.', ''),
-                  'banco_desgravcargo' => number_format($banco_desgravcargo, 2, '.', ''),
-                  'banco_tenencxc' => number_format($banco_tenencxc, 2, '.', ''),
-                  'banco' => number_format($banco_capital+$banco_interes+$banco_desgravcargo+$banco_tenencxc, 2, '.', ''),
-                  'validacion' => $validacion_1
-              ];
-          }
-          $ingresoyegresobanco_ingreso_crediticio_cnpcps_validacion = $validacion_0;
-          
-          $where = [];
-          if($idagencia!=''){
-              $where[] = ['cvasignacioncapital.idtienda',$idagencia];
-          }
-          if($fechacorte!=''){
-              $where[] = ['cvasignacioncapital.fecharegistro','>=',$fechacorte.' 00:00:00'];
-              $where[] = ['cvasignacioncapital.fecharegistro','<=',$fechacorte.' 23:59:59'];
-          }
-          $ingresoyegresobanco_ingreso_incrementocapital = 0;
-          $ingresoyegresobanco_ingreso_incrementocapital_bancos = [];
-          $ingresoyegresobanco_ingreso_incrementocapital_validacion = '';
-          $validacion_0 = '';
-          $ingresoyegresobanco_ingreso_incrementocapital_validacion_cantidad = 0;
-          foreach($bancos as $valuebancos){
-            
-              $db_ingresoyegresobanco_ingreso_incrementocapital = DB::table('cvasignacioncapital')
-                  ->where('cvasignacioncapital.idtipodestino',3)
-                  ->where('cvasignacioncapital.idestadoeliminado',1)
-                  ->where('cvasignacioncapital.idtipooperacion',1)
-                  ->where('cvasignacioncapital.idbanco',$valuebancos->id)
-                  ->where($where)
-                  ->get();
-            
-              $validacion_1 = '';
-              $ingresoyegresobanco_ingreso_incrementocapital_monto = 0;
-              foreach($db_ingresoyegresobanco_ingreso_incrementocapital as $valuecrediticio){
-                  if($valuecrediticio->validar_estado==1 && $validacion_1 == ''){
-                      $validacion_1 = 'CHECK';
-                  }
-                  $ingresoyegresobanco_ingreso_incrementocapital_monto += $valuecrediticio->monto;
-              }
-                  
-              if($validacion_1=='CHECK' && $validacion_0 == ''){
-                  $validacion_0 = 'CHECK';
-                  $validacion_operaciones_cuenta_banco_cant += 1;
-              }
-            
-              if(count($db_ingresoyegresobanco_ingreso_incrementocapital)>0){
-                  $validacion_cantidad += 1;
-                  $ingresoyegresobanco_ingreso_incrementocapital_validacion_cantidad += 1;
-              }
-            
-              $ingresoyegresobanco_ingreso_incrementocapital += number_format($ingresoyegresobanco_ingreso_incrementocapital_monto, 2, '.', '');
-            
-              $ingresoyegresobanco_ingreso_incrementocapital_bancos[] = [
-                  'banco_nombre' => $valuebancos->nombre,
-                  'banco_cuenta' => '(******'.substr($valuebancos->cuenta, -5).')',
-                  'banco' => number_format($ingresoyegresobanco_ingreso_incrementocapital_monto, 2, '.', ''),
-                  'validacion' => $validacion_1
-              ];
-          }
-          $ingresoyegresobanco_ingreso_incrementocapital_validacion = $validacion_0;
-          
-          $where = [];
-          if($idagencia!=''){
-              $where[] = ['cvingresoextraordinario.idtienda',$idagencia];
-          }
-          if($fechacorte!=''){
-              $where[] = ['cvingresoextraordinario.fechapago','>=',$fechacorte.' 00:00:00'];
-              $where[] = ['cvingresoextraordinario.fechapago','<=',$fechacorte.' 23:59:59'];
-          }
-          $ingresoyegresobanco_ingreso_ingresosextraordinarios = 0;
-          $ingresoyegresobanco_ingreso_ingresosextraordinarios_bancos = [];
-          $ingresoyegresobanco_ingreso_ingresosextraordinarios_validacion = '';
-          $validacion_0 = '';
-          $ingresoyegresobanco_ingreso_ingresosextraordinarios_validacion_cantidad = 0;
-          foreach($bancos as $valuebancos){
-            
-              $db_ingresoyegresobanco_ingreso_ingresosextraordinarios = DB::table('cvingresoextraordinario')
-                  ->where('cvingresoextraordinario.idformapago',2) 
-                  ->where('cvingresoextraordinario.idestadoeliminado',1) 
-                  ->where('cvingresoextraordinario.idbanco',$valuebancos->id)
-                  ->where($where)
-                  ->get();
-            
-              $validacion_1 = '';
-              $ingresoyegresobanco_ingreso_ingresosextraordinarios_monto = 0;
-              foreach($db_ingresoyegresobanco_ingreso_ingresosextraordinarios as $valuecrediticio){
-                  if($valuecrediticio->validar_estado==1 && $validacion_1 == ''){
-                      $validacion_1 = 'CHECK';
-                  }
-                  $ingresoyegresobanco_ingreso_ingresosextraordinarios_monto += $valuecrediticio->monto;
-              }
-                  
-              if($validacion_1=='CHECK' && $validacion_0 == ''){
-                  $validacion_0 = 'CHECK';
-                  $validacion_operaciones_cuenta_banco_cant += 1;
-              }
-            
-              if(count($db_ingresoyegresobanco_ingreso_ingresosextraordinarios)>0){
-                  $validacion_cantidad += 1;
-                  $ingresoyegresobanco_ingreso_ingresosextraordinarios_validacion_cantidad += 1;
-              }
-            
-              $ingresoyegresobanco_ingreso_ingresosextraordinarios += number_format($ingresoyegresobanco_ingreso_ingresosextraordinarios_monto, 2, '.', '');
-            
-              $ingresoyegresobanco_ingreso_ingresosextraordinarios_bancos[] = [
-                  'banco_nombre' => $valuebancos->nombre,
-                  'banco_cuenta' => '(******'.substr($valuebancos->cuenta, -5).')',
-                  'banco' => number_format($ingresoyegresobanco_ingreso_ingresosextraordinarios_monto, 2, '.', ''),
-                  'validacion' => $validacion_1
-              ];
-          }
-          $ingresoyegresobanco_ingreso_ingresosextraordinarios_validacion = $validacion_0;
-          
-          //-------
-          
-          $where = [];
-          if($idagencia!=''){
-              $where[] = ['credito.idtienda',$idagencia];
-          }
-          if($fechacorte!=''){
-              $where[] = ['credito_formapago.fechapago','>=',$fechacorte.' 00:00:00'];
-              $where[] = ['credito_formapago.fechapago','<=',$fechacorte.' 23:59:59'];
-          }
-          $ingresoyegresobanco_egreso_crediticio = 0;
-          $ingresoyegresobanco_egreso_crediticio_bancos = [];
-          $ingresoyegresobanco_egreso_crediticio_validacion = '';
-          $validacion_0 = '';
-          $ingresoyegresobanco_egreso_crediticio_validacion_cantidad = 0;
-          foreach($bancos as $valuebancos){
-            
-              $db_desembolsos_ingresoyegresobanco_egreso_crediticio = DB::table('credito_formapago')
-                  ->join('credito','credito.id','credito_formapago.idcredito')
-                  ->where('credito_formapago.idformapago',2)
-                  ->where('credito.estado','DESEMBOLSADO')
-                  ->where('credito_formapago.idbanco',$valuebancos->id)
-                  ->where($where)
-                  ->get();
-            
-              $validacion_1 = '';
-              $desembolsos_ingresoyegresobanco_egreso_crediticio = 0;
-              foreach($db_desembolsos_ingresoyegresobanco_egreso_crediticio as $valuecrediticio){
-                  if($valuecrediticio->validar_estado==1 && $validacion_1 == ''){
-                      $validacion_1 = 'CHECK';
-                  }
-                  $desembolsos_ingresoyegresobanco_egreso_crediticio += $valuecrediticio->monto_solicitado;
-              }
-                  
-              if($validacion_1=='CHECK' && $validacion_0 == ''){
-                  $validacion_0 = 'CHECK';
-                  $validacion_operaciones_cuenta_banco_cant += 1;
-              }
-            
-              if(count($db_desembolsos_ingresoyegresobanco_egreso_crediticio)>0){
-                  $validacion_cantidad += 1;
-                  $ingresoyegresobanco_egreso_crediticio_validacion_cantidad += 1;
-              }
-            
-              $ingresoyegresobanco_egreso_crediticio += number_format($desembolsos_ingresoyegresobanco_egreso_crediticio, 2, '.', '');
-              
-              $ingresoyegresobanco_egreso_crediticio_bancos[] = [
-                  'banco_nombre' => $valuebancos->nombre,
-                  'banco_cuenta' => '(******'.substr($valuebancos->cuenta, -5).')',
-                  'banco' => number_format($desembolsos_ingresoyegresobanco_egreso_crediticio, 2, '.', ''),
-                  'validacion' => $validacion_1,
-              ];
-          }
-          $ingresoyegresobanco_egreso_crediticio_validacion = $validacion_0;
-          
-          $where = [];
-          if($idagencia!=''){
-              $where[] = ['cvasignacioncapital.idtienda',$idagencia];
-          }
-          if($fechacorte!=''){
-              $where[] = ['cvasignacioncapital.fecharegistro','>=',$fechacorte.' 00:00:00'];
-              $where[] = ['cvasignacioncapital.fecharegistro','<=',$fechacorte.' 23:59:59'];
-          }
-          $ingresoyegresobanco_egreso_reduccioncapital = 0;
-          $ingresoyegresobanco_egreso_reduccioncapital_bancos = [];
-          $ingresoyegresobanco_egreso_reduccioncapital_validacion = '';
-          $validacion_0 = '';
-          $ingresoyegresobanco_egreso_reduccioncapital_validacion_cantidad = 0;
-          foreach($bancos as $valuebancos){
-            
-              $db_ingresoyegresobanco_egreso_reduccioncapital = DB::table('cvasignacioncapital')
-                  ->where('cvasignacioncapital.idtipodestino',3)
-                  ->where('cvasignacioncapital.idestadoeliminado',1)
-                  ->where('cvasignacioncapital.idtipooperacion',2)
-                  ->where('cvasignacioncapital.idbanco',$valuebancos->id)
-                  ->where($where)
-                  ->get();
-            
-              $validacion_1 = '';
-              $ingresoyegresobanco_egreso_reduccioncapital_monto = 0;
-              foreach($db_ingresoyegresobanco_egreso_reduccioncapital as $valuecrediticio){
-                  if($valuecrediticio->validar_estado==1 && $validacion_1 == ''){
-                      $validacion_1 = 'CHECK';
-                  }
-                  $ingresoyegresobanco_egreso_reduccioncapital_monto += $valuecrediticio->monto;
-              }
-                  
-              if($validacion_1=='CHECK' && $validacion_0 == ''){
-                  $validacion_0 = 'CHECK';
-                  $validacion_operaciones_cuenta_banco_cant += 1;
-              }
-            
-              if(count($db_ingresoyegresobanco_egreso_reduccioncapital)>0){
-                  $validacion_cantidad += 1;
-                  $ingresoyegresobanco_egreso_reduccioncapital_validacion_cantidad += 1;
-              }
-            
-              $ingresoyegresobanco_egreso_reduccioncapital += number_format($ingresoyegresobanco_egreso_reduccioncapital_monto, 2, '.', '');
-            
-              $ingresoyegresobanco_egreso_reduccioncapital_bancos[] = [
-                  'banco_nombre' => $valuebancos->nombre,
-                  'banco_cuenta' => '(******'.substr($valuebancos->cuenta, -5).')',
-                  'banco' => number_format($ingresoyegresobanco_egreso_reduccioncapital_monto, 2, '.', ''),
-                  'validacion' => $validacion_1,
-              ];
-          }
-          $ingresoyegresobanco_egreso_reduccioncapital_validacion = $validacion_0;
-          
-          $where = [];
-          if($idagencia!=''){
-              $where[] = ['cvgastoadministrativooperativo.idtienda',$idagencia];
-          }
-          if($fechacorte!=''){
-              $where[] = ['cvgastoadministrativooperativo.fechapago','>=',$fechacorte.' 00:00:00'];
-              $where[] = ['cvgastoadministrativooperativo.fechapago','<=',$fechacorte.' 23:59:59'];
-          }
-          $ingresoyegresobanco_egreso_gastosadministrativosyoperativos = 0;
-          $ingresoyegresobanco_egreso_gastosadministrativosyoperativos_bancos = [];
-          $ingresoyegresobanco_egreso_gastosadministrativosyoperativos_validacion = '';
-          $validacion_0 = '';
-          $ingresoyegresobanco_egreso_gastosadministrativosyoperativos_validacion_cantidad = 0;
-          foreach($bancos as $valuebancos){
-            
-              $db_ingresoyegresocaja_egreso_gastosadministrativosyoperativos = DB::table('cvgastoadministrativooperativo')
-                  ->where('cvgastoadministrativooperativo.idformapago',2) 
-                  ->where('cvgastoadministrativooperativo.idestadoeliminado',1) 
-                  ->where('cvgastoadministrativooperativo.idbanco',$valuebancos->id)
-                  ->where($where)
-                  ->get();
-            
-              $validacion_1 = '';
-              $ingresoyegresocaja_egreso_gastosadministrativosyoperativos_monto = 0;
-              foreach($db_ingresoyegresocaja_egreso_gastosadministrativosyoperativos as $valuecrediticio){
-                  if($valuecrediticio->validar_estado==1 && $validacion_1 == ''){
-                      $validacion_1 = 'CHECK';
-                  }
-                  $ingresoyegresocaja_egreso_gastosadministrativosyoperativos_monto += $valuecrediticio->monto;
-              }
-                  
-              if($validacion_1=='CHECK' && $validacion_0 == ''){
-                  $validacion_0 = 'CHECK';
-                  $validacion_operaciones_cuenta_banco_cant += 1;
-              }
-            
-              if(count($db_ingresoyegresocaja_egreso_gastosadministrativosyoperativos)>0){
-                  $validacion_cantidad += 1;
-                  $ingresoyegresobanco_egreso_gastosadministrativosyoperativos_validacion_cantidad += 1;
-              }
-            
-              $ingresoyegresobanco_egreso_gastosadministrativosyoperativos += number_format($ingresoyegresocaja_egreso_gastosadministrativosyoperativos_monto, 2, '.', '');
-            
-              $ingresoyegresobanco_egreso_gastosadministrativosyoperativos_bancos[] = [
-                  'banco_nombre' => $valuebancos->nombre,
-                  'banco_cuenta' => '(******'.substr($valuebancos->cuenta, -5).')',
-                  'banco' => number_format($ingresoyegresocaja_egreso_gastosadministrativosyoperativos_monto, 2, '.', ''),
-                  'validacion' => $validacion_1,
-              ];
-          }
-          $ingresoyegresobanco_egreso_gastosadministrativosyoperativos_validacion = $validacion_0;
-  
-          // HABILITACIÓN Y GESTIÓN DE LIQUIDEZ ( I )
-          $valid_habilitacion = 0;
-          
-          $where = [];
-          if($idagencia!=''){
-              $where[] = ['cvmovimientointernodinero.idtienda',$idagencia];
-          }
-          if($fechacorte!=''){
-              $where[] = ['cvmovimientointernodinero.fecharegistro','<=',$fechacorte.' 23:59:59'];
-          }
-          
-          $ret_reservacf_caja = DB::table('cvmovimientointernodinero')
-             ->where('cvmovimientointernodinero.idestadoeliminado',1)
-              ->where('cvmovimientointernodinero.idfuenteretiro',6)
-              ->where($where)
-              ->select(
-                  'cvmovimientointernodinero.*',
-              )
-              ->sum('cvmovimientointernodinero.monto');
-          
-          $ret_banco_caja = 0;
-          $ret_banco_caja_bancos = [];
-          $dep_caja_banco = 0;
-          $dep_caja_banco_bancos = [];
-          foreach($bancos as $valuebancos){
-              $movimientointernodineros = DB::table('cvmovimientointernodinero')
-                  ->where('cvmovimientointernodinero.idestadoeliminado',1)
-                  ->where('cvmovimientointernodinero.idfuenteretiro',7)
-                  ->where('cvmovimientointernodinero.idtipomovimientointerno',1)
-                  ->where('cvmovimientointernodinero.idbanco',$valuebancos->id)
-                  ->where($where)
-                  ->sum('cvmovimientointernodinero.monto');
-              $movimientointernodineros1 = DB::table('cvmovimientointernodinero')
-                  ->where('cvmovimientointernodinero.idestadoeliminado',1)
-                  ->where('cvmovimientointernodinero.idfuenteretiro',2)
-                  ->where('cvmovimientointernodinero.idtipomovimientointerno',2)
-                  ->where('cvmovimientointernodinero.idresponsable','<>',0)
-                  ->where('cvmovimientointernodinero.idbanco',$valuebancos->id)
-                  ->where($where)
-                  ->sum('cvmovimientointernodinero.monto');
-              $ret_banco_caja += number_format($movimientointernodineros, 2, '.', '');
-              $dep_caja_banco += number_format($movimientointernodineros1, 2, '.', '');
-            
-              $ret_banco_caja_bancos[] = [
-                  'banco_id' => $valuebancos->id,
-                  'banco_nombre' => $valuebancos->nombre,
-                  'banco_cuenta' => '(******'.substr($valuebancos->cuenta, -5).')',
-                  'banco' => number_format($movimientointernodineros, 2, '.', ''),
-                  'banco_dep' => number_format($movimientointernodineros1, 2, '.', ''),
-              ];
-            
-              if($ret_banco_caja!=$dep_caja_banco){
-                  $valid_habilitacion++;
-              }
-          }
-          
-          $ret_caja_reservacf = DB::table('cvmovimientointernodinero')
-              ->where('cvmovimientointernodinero.idestadoeliminado',1)
-              ->where('cvmovimientointernodinero.idfuenteretiro',8)
-              ->where($where)
-              ->sum('cvmovimientointernodinero.monto');
-          
-          $ret_caja_banco = 0;
-          $ret_caja_banco_bancos = [];
-          $dep_banco_caja = 0;
-          $dep_banco_caja_bancos = [];
-          foreach($bancos as $valuebancos){
-              $movimientointernodineros = DB::table('cvmovimientointernodinero')
-                  ->where('cvmovimientointernodinero.idestadoeliminado',1)
-                  ->where('cvmovimientointernodinero.idfuenteretiro',9)
-                  ->where('cvmovimientointernodinero.idtipomovimientointerno',1)
-                  ->where('cvmovimientointernodinero.idbanco',$valuebancos->id)
-                  ->where($where)
-                  ->sum('cvmovimientointernodinero.monto');
-              $movimientointernodineros1 = DB::table('cvmovimientointernodinero')
-                  ->where('cvmovimientointernodinero.idestadoeliminado',1)
-                  ->where('cvmovimientointernodinero.idfuenteretiro',4)
-                  ->where('cvmovimientointernodinero.idtipomovimientointerno',2)
-                  ->where('cvmovimientointernodinero.idresponsable','<>',0)
-                  ->where('cvmovimientointernodinero.idbanco',$valuebancos->id)
-                  ->where($where)
-                  ->sum('cvmovimientointernodinero.monto');
-            
-              $ret_caja_banco += number_format($movimientointernodineros, 2, '.', '');
-              $dep_banco_caja += number_format($movimientointernodineros1, 2, '.', '');
-              $ret_caja_banco_bancos[] = [
-                  'banco_nombre' => $valuebancos->nombre,
-                  'banco_cuenta' => '(******'.substr($valuebancos->cuenta, -5).')',
-                  'banco' => number_format($movimientointernodineros, 2, '.', ''),
-                  'banco_dep' => number_format($movimientointernodineros1, 2, '.', ''),
-              ];
-            
-              if($ret_caja_banco!=$dep_banco_caja){
-                  $valid_habilitacion++;
-              }
-          }
-          //----
-          $dep_caja_reservacf = DB::table('cvmovimientointernodinero')
-              ->where('cvmovimientointernodinero.idestadoeliminado',1)
-              ->where('cvmovimientointernodinero.idfuenteretiro',1)
-              ->where('cvmovimientointernodinero.idresponsable','<>',0)
-              ->where($where)
-              ->sum('cvmovimientointernodinero.monto');
-            
-          if($ret_reservacf_caja!=$dep_caja_reservacf){
-              $valid_habilitacion++;
-          }
-          
-          $dep_reservacf_caja = DB::table('cvmovimientointernodinero')
-              ->where('cvmovimientointernodinero.idestadoeliminado',1)
-              ->where('cvmovimientointernodinero.idfuenteretiro',3)
-              ->where('cvmovimientointernodinero.idresponsable','<>',0)
-              ->where($where)
-              ->sum('cvmovimientointernodinero.monto');
-  
-          if($ret_caja_reservacf!=$dep_reservacf_caja){
-              $valid_habilitacion++;
-          }
-          
-          $habilitacion_gestion_liquidez1 = $ret_reservacf_caja+
-                                            $ret_banco_caja+
-                                            $ret_caja_reservacf+
-                                            $ret_caja_banco-
-                                            $dep_caja_reservacf-
-                                            $dep_caja_banco-
-                                            $dep_reservacf_caja-
-                                            $dep_banco_caja;
-          
-          // HABILITACIÓN Y GESTIÓN DE LIQUIDEZ ( II )
-          
-          $ret_banco_reservacf = 0;
-          $ret_banco_reservacf_bancos = [];
-          $dep_reservacf_banco = 0;
-          $dep_reservacf_banco_bancos = [];
-          foreach($bancos as $valuebancos){
-              $movimientointernodineros = DB::table('cvmovimientointernodinero')
-                  ->where('cvmovimientointernodinero.idestadoeliminado',1)
-                  ->where('cvmovimientointernodinero.idfuenteretiro',10)
-                  ->where('cvmovimientointernodinero.idtipomovimientointerno',3)
-                  ->where('cvmovimientointernodinero.idbanco',$valuebancos->id)
-                  ->where($where)
-                  ->sum('cvmovimientointernodinero.monto');
-              $movimientointernodineros1 = DB::table('cvmovimientointernodinero')
-                  ->where('cvmovimientointernodinero.idestadoeliminado',1)
-                  ->where('cvmovimientointernodinero.idfuenteretiro',5)
-                  ->where('cvmovimientointernodinero.idtipomovimientointerno',4)
-                  ->where('cvmovimientointernodinero.idresponsable','<>',0)
-                  ->where('cvmovimientointernodinero.idbanco',$valuebancos->id)
-                  ->where($where)
-                  ->sum('cvmovimientointernodinero.monto');
-              $ret_banco_reservacf += number_format($movimientointernodineros, 2, '.', '');
-              $dep_reservacf_banco += number_format($movimientointernodineros1, 2, '.', '');
-              $ret_banco_reservacf_bancos[] = [
-                  'banco_nombre' => $valuebancos->nombre,
-                  'banco_cuenta' => '(******'.substr($valuebancos->cuenta, -5).')',
-                  'banco' => number_format($movimientointernodineros, 2, '.', ''),
-                  'banco_dep' => number_format($movimientointernodineros1, 2, '.', ''),
-              ];
-            
-              if($ret_banco_reservacf!=$dep_reservacf_banco){
-                  $valid_habilitacion++;
-              }
-          }
-          
-          $habilitacion_gestion_liquidez2 = $ret_banco_reservacf-$dep_reservacf_banco;
-          
-          // CIERRE Y APERTURA DE CAJA
-          
-          $ret_reservacf_caja_total = DB::table('cvmovimientointernodinero')
-              ->where('cvmovimientointernodinero.idestadoeliminado',1)
-              ->where('cvmovimientointernodinero.idfuenteretiro',6)
-              ->where('cvmovimientointernodinero.idtipomovimientointerno',5)
-              ->where($where)
-              ->sum('cvmovimientointernodinero.monto');
-          $ret_caja_reservacf_total = DB::table('cvmovimientointernodinero')
-              ->where('cvmovimientointernodinero.idestadoeliminado',1)
-              ->where('cvmovimientointernodinero.idfuenteretiro',8)
-              ->where('cvmovimientointernodinero.idtipomovimientointerno',5)
-              ->where($where)
-              ->sum('cvmovimientointernodinero.monto');
-          
-          $dep_caja_reservacf_total = DB::table('cvmovimientointernodinero')
-              ->where('cvmovimientointernodinero.idestadoeliminado',1)
-              ->where('cvmovimientointernodinero.idfuenteretiro',1)
-              ->where('cvmovimientointernodinero.idtipomovimientointerno',6)
-              ->where('cvmovimientointernodinero.idresponsable','<>',0)
-              ->where($where)
-              ->sum('cvmovimientointernodinero.monto');
-          $dep_reservacf_caja_total = DB::table('cvmovimientointernodinero')
-              ->where('cvmovimientointernodinero.idestadoeliminado',1)
-              ->where('cvmovimientointernodinero.idfuenteretiro',3)
-              ->where('cvmovimientointernodinero.idtipomovimientointerno',6)
-              ->where('cvmovimientointernodinero.idresponsable','<>',0)
-              ->where($where)
-              ->sum('cvmovimientointernodinero.monto');
-  
-  
-          if($ret_reservacf_caja_total!=$dep_caja_reservacf_total){
-              $valid_habilitacion++;
-          }
-          if($ret_caja_reservacf_total!=$dep_reservacf_caja_total){
-              $valid_habilitacion++;
-          }
-          
-          $cierre_caja_apertura = $ret_reservacf_caja_total+
-                                  $ret_caja_reservacf_total-
-                                  $dep_caja_reservacf_total-
-                                  $dep_reservacf_caja_total;
-          
-          // --------------------------------------- //
-          // ----------- SALDOS  FINALES ----------- //
-          // --------------------------------------- //
-          
-          $where = [];
-          if($idagencia!=''){
-              $where[] = ['arqueocaja.idagencia',$idagencia];
-          }
-          if($fechacorte!=''){
-              $where[] = ['arqueocaja.corte',$fechacorte];
-          }
-          $arqueo_caja = DB::table('arqueocaja')
-              ->where('arqueocaja.idestado',1)
-              ->where($where)
-              ->sum('arqueocaja.total');
-  
-          $where1 = [];
-          $where2 = [];
-          $where3 = [];
-          $where4 = [];
-          $where5 = [];
-          $where6 = [];
-          if($idagencia!=''){
-              $where1[] = ['credito_cobranzacuota.idtienda',$idagencia];
-              $where2[] = ['credito.idtienda',$idagencia];
-              $where3[] = ['cvasignacioncapital.idtienda',$idagencia];
-              $where4[] = ['cvmovimientointernodinero.idtienda',$idagencia];
-              $where5[] = ['cvgastoadministrativooperativo.idtienda',$idagencia];
-              $where6[] = ['cvingresoextraordinario.idtienda',$idagencia];
-          }
-          if($fechacorte!=''){
-              $where1[] = ['credito_cobranzacuota.fecharegistro','<=',$fechacorte.' 23:59:59'];
-              $where2[] = ['credito_formapago.fechapago','<=',$fechacorte.' 23:59:59'];
-              $where3[] = ['cvasignacioncapital.fecharegistro','<=',$fechacorte.' 23:59:59'];
-              $where4[] = ['cvmovimientointernodinero.fecharegistro','<=',$fechacorte.' 23:59:59'];
-              $where5[] = ['cvgastoadministrativooperativo.fechapago','<=',$fechacorte.' 23:59:59'];
-              $where6[] = ['cvingresoextraordinario.fechapago','<=',$fechacorte.' 23:59:59'];
-          }
+    $agencia = DB::table('tienda')->whereId($idagencia)->first();
+    $bancos = DB::table('banco')->where('estado','ACTIVO')->get();
 
-          $saldos_cuentabanco = 0;
-          $saldos_cuentabanco_bancos = [];
-          foreach($bancos as $valuebancos){
+    // Ingreso y Egreso por Caja
+    $where = [];
+    if($idagencia!=''){
+        $where[] = ['credito.idtienda',$idagencia];
+    }
+    if($fechacorte!=''){
+        $where[] = ['credito_cobranzacuota.fecharegistro','>=',$fechacorte.' 00:00:00'];
+        $where[] = ['credito_cobranzacuota.fecharegistro','<=',$fechacorte.' 23:59:59'];
+    }
+    $ingresoyegresocaja_ingreso_crediticio_cnps = DB::table('credito_cobranzacuota')
+        ->join('credito','credito.id','credito_cobranzacuota.idcredito')
+        ->where('credito_cobranzacuota.idestadocredito_cobranzacuota',1)
+        ->where('credito_cobranzacuota.idestadoextorno',0)
+        ->where('credito.idforma_credito',2)
+        ->where('credito_cobranzacuota.idformapago',1)
+        ->where($where)
+        ->select(
+            'credito_cobranzacuota.*',
+        )
+        ->orderBy('credito_cobranzacuota.id','asc')
+        ->get();
+    
+    $ingresoyegresocaja_ingreso_crediticio_cnp_capital = 0;
+    $ingresoyegresocaja_ingreso_crediticio_cnp_interes = 0;
+    $ingresoyegresocaja_ingreso_crediticio_cnp_desgravcargo = 0;
+    $ingresoyegresocaja_ingreso_crediticio_cnp_tenencxc = 0;
+    $ingresoyegresocaja_ingreso_crediticio_cnp = 0;
+    $ingresoyegresocaja_ingreso_crediticio = 0;
+    
+    foreach($ingresoyegresocaja_ingreso_crediticio_cnps as $value){
+        $ingresoyegresocaja_ingreso_crediticio_cnp_capital += $value->total_pagar_amortizacion;
+        $ingresoyegresocaja_ingreso_crediticio_cnp_interes += $value->total_pagar_interes;
+        $ingresoyegresocaja_ingreso_crediticio_cnp_desgravcargo += $value->total_pagar_comision+$value->total_pagar_cargo;
+        $ingresoyegresocaja_ingreso_crediticio_cnp_tenencxc += $value->total_pagar_tenencia+$value->total_pagar_penalidad+$value->total_pagar_compensatorio;
+    }
+    
+    $ingresoyegresocaja_ingreso_crediticio_cnp = $ingresoyegresocaja_ingreso_crediticio_cnp_capital+
+    $ingresoyegresocaja_ingreso_crediticio_cnp_interes+
+    $ingresoyegresocaja_ingreso_crediticio_cnp_desgravcargo+
+    $ingresoyegresocaja_ingreso_crediticio_cnp_tenencxc;
+    
+    
+    $where = [];
+    if($idagencia!=''){
+        $where[] = ['credito.idtienda',$idagencia];
+    }
+    if($fechacorte!=''){
+        $where[] = ['credito_cobranzacuota.fecharegistro','>=',$fechacorte.' 00:00:00'];
+        $where[] = ['credito_cobranzacuota.fecharegistro','<=',$fechacorte.' 23:59:59'];
+    }
+    
+    $ingresoyegresocaja_ingreso_crediticio_cps = 0;
+    /* DB::table('credito_cobranzacuota')
+        ->join('credito','credito.id','credito_cobranzacuota.idcredito')
+        ->where('credito_cobranzacuota.idestadocredito_cobranzacuota',1)
+        ->where('credito_cobranzacuota.idestadoextorno',0)
+        ->where('credito.idforma_credito',1)
+        ->where('credito_cobranzacuota.idformapago',1)
+        ->where($where)
+        ->select(
+            'credito_cobranzacuota.*',
+        )
+        ->orderBy('credito_cobranzacuota.id','asc')
+        ->get(); */
+    
+    $ingresoyegresocaja_ingreso_crediticio_cp_capital = 0;
+    $ingresoyegresocaja_ingreso_crediticio_cp_interes = 0;
+    $ingresoyegresocaja_ingreso_crediticio_cp_desgravcargo = 0;
+    $ingresoyegresocaja_ingreso_crediticio_cp_tenencxc = 0;
+    $ingresoyegresocaja_ingreso_crediticio_cp = 0;
+    
+    /* foreach($ingresoyegresocaja_ingreso_crediticio_cps as $value){
+        $ingresoyegresocaja_ingreso_crediticio_cp_capital += $value->total_pagar_amortizacion;
+        $ingresoyegresocaja_ingreso_crediticio_cp_interes += $value->total_pagar_interes;
+        $ingresoyegresocaja_ingreso_crediticio_cp_desgravcargo += $value->total_pagar_comision+$value->total_pagar_cargo;
+        $ingresoyegresocaja_ingreso_crediticio_cp_tenencxc += $value->total_pagar_tenencia+$value->total_pagar_penalidad+$value->total_pagar_compensatorio;
+    } */
+    
+    $ingresoyegresocaja_ingreso_crediticio_cp = $ingresoyegresocaja_ingreso_crediticio_cp_capital+
+                                        $ingresoyegresocaja_ingreso_crediticio_cp_interes+
+                                        $ingresoyegresocaja_ingreso_crediticio_cp_desgravcargo+
+                                        $ingresoyegresocaja_ingreso_crediticio_cp_tenencxc;
+    
+    $ingresoyegresocaja_ingreso_crediticio = $ingresoyegresocaja_ingreso_crediticio_cnp+
+                                            $ingresoyegresocaja_ingreso_crediticio_cp;
+    
+    $where = [];
+    if($idagencia!=''){
+        $where[] = ['credito.idtienda',$idagencia];
+    }
+    if($fechacorte!=''){
+        //$where[] = ['credito_formapago.fechapago','>=',$fechacorte.' 00:00:00'];
+        $where[] = ['credito_formapago.fechapago','<=',$fechacorte.' 23:59:59'];
+    }
+    $ingresoyegresocaja_ingreso_crediticio_transitorio = 0;
+    /*DB::table('credito_formapago')
+        ->join('credito','credito.id','credito_formapago.idcredito')
+        ->where('credito.estado','DESEMBOLSADO')
+        ->where('credito.idestadorefinanciamiento',1)
+        ->where($where)
+        ->sum('credito.monto_solicitado');*/
+
+    $ingresoyegresocaja_ingreso_cvventa = 0;
+    $ingresoyegresocaja_egreso_cvcompra = 0;
+    
+    $ingresoyegresocaja_ingreso_ahorro_plazofijo = 0;
+    $ingresoyegresocaja_ingreso_ahorro_ahorroc = 0;
+    
+    $ingresoyegresocaja_ingreso_ahorro = $ingresoyegresocaja_ingreso_ahorro_plazofijo+
+                                        $ingresoyegresocaja_ingreso_ahorro_ahorroc;
+    
+    $where = [];
+    if($idagencia!=''){
+        $where[] = ['cvasignacioncapital.idtienda',$idagencia];
+    }
+    if($fechacorte!=''){
+        $where[] = ['cvasignacioncapital.fecharegistro','>=',$fechacorte.' 00:00:00'];
+        $where[] = ['cvasignacioncapital.fecharegistro','<=',$fechacorte.' 23:59:59'];
+    }
+    $ingresoyegresocaja_ingreso_incrementocapital = DB::table('cvasignacioncapital')
+        ->where('cvasignacioncapital.idtipodestino',1)
+        ->where('cvasignacioncapital.idestadoeliminado',1)
+        ->where('cvasignacioncapital.idresponsable_recfinal', '<>', 0)
+        ->where('cvasignacioncapital.idtipooperacion',1)
+        ->where($where)
+        ->sum('cvasignacioncapital.monto');
+
+    $where = [];
+    if($idagencia!=''){
+        $where[] = ['cvingresoextraordinario.idtienda',$idagencia];
+    }
+    if($fechacorte!=''){
+        $where[] = ['cvingresoextraordinario.fechapago','>=',$fechacorte.' 00:00:00'];
+        $where[] = ['cvingresoextraordinario.fechapago','<=',$fechacorte.' 23:59:59'];
+    }
+    $ingresoyegresocaja_ingreso_ingresosextraordinarios = DB::table('cvingresoextraordinario')
+        ->where('cvingresoextraordinario.idformapago',1) 
+        ->where('cvingresoextraordinario.idestadoeliminado',1) 
+        ->where($where)
+        ->sum('cvingresoextraordinario.monto');
+    
+    //-------
+    
+    $where = [];
+    if($idagencia!=''){
+        $where[] = ['credito.idtienda',$idagencia];
+    }
+    if($fechacorte!=''){
+        $where[] = ['credito_formapago.fechapago','>=',$fechacorte.' 00:00:00'];
+        $where[] = ['credito_formapago.fechapago','<=',$fechacorte.' 23:59:59'];
+    }
+    $ingresoyegresocaja_egreso_crediticio = DB::table('credito_formapago')
+        ->join('credito','credito.id','credito_formapago.idcredito')
+        ->where('credito_formapago.idformapago',1)
+        ->where('credito.estado','DESEMBOLSADO')
+        ->where($where)
+        ->sum('credito.monto_solicitado');
+    
+    $ingresoyegresocaja_egreso_ahorro_plazofijo = 0;
+    $ingresoyegresocaja_egreso_ahorro_intplazofijo = 0;
+    $ingresoyegresocaja_egreso_ahorro_ahorrocte = 0;
+    $ingresoyegresocaja_egreso_ahorro_intcte = 0;
+    
+    $ingresoyegresocaja_egreso_ahorro = $ingresoyegresocaja_egreso_ahorro_plazofijo+
+                                        $ingresoyegresocaja_egreso_ahorro_intplazofijo+
+                                        $ingresoyegresocaja_egreso_ahorro_ahorrocte+
+                                        $ingresoyegresocaja_egreso_ahorro_intcte;
+    
+    $where = [];
+    if($idagencia!=''){
+        $where[] = ['cvasignacioncapital.idtienda',$idagencia];
+    }
+    if($fechacorte!=''){
+        $where[] = ['cvasignacioncapital.fecharegistro','>=',$fechacorte.' 00:00:00'];
+        $where[] = ['cvasignacioncapital.fecharegistro','<=',$fechacorte.' 23:59:59'];
+    }
+    $ingresoyegresocaja_egreso_reduccioncapital = DB::table('cvasignacioncapital')
+        ->whereIn('cvasignacioncapital.idtipodestino',[0,1])
+        ->where('cvasignacioncapital.idestadoeliminado',1)
+        ->where('cvasignacioncapital.idresponsable_recfinal', '<>', 0)
+        ->where('cvasignacioncapital.idtipooperacion',2)
+        ->where($where)
+        ->sum('cvasignacioncapital.monto');
+    
+    $where = [];
+    if($idagencia!=''){
+        $where[] = ['cvgastoadministrativooperativo.idtienda',$idagencia];
+    }
+    if($fechacorte!=''){
+        $where[] = ['cvgastoadministrativooperativo.fechapago','>=',$fechacorte.' 00:00:00'];
+        $where[] = ['cvgastoadministrativooperativo.fechapago','<=',$fechacorte.' 23:59:59'];
+    }
+    $ingresoyegresocaja_egreso_gastosadministrativosyoperativos = DB::table('cvgastoadministrativooperativo')
+        ->where('cvgastoadministrativooperativo.idformapago',1) 
+        ->where('cvgastoadministrativooperativo.idestadoeliminado',1) 
+        ->where($where)
+        ->sum('cvgastoadministrativooperativo.monto');
+    
+    // Ingreso y Egreso por Cuenta Banco
+    $validacion_operaciones_cuenta_banco_cant = 0;
+
+    $where = [];
+    if($idagencia!=''){
+        $where[] = ['credito.idtienda',$idagencia];
+    }
+    if($fechacorte!=''){
+        $where[] = ['credito_cobranzacuota.fecharegistro','>=',$fechacorte.' 00:00:00'];
+        $where[] = ['credito_cobranzacuota.fecharegistro','<=',$fechacorte.' 23:59:59'];
+    }
+    $ingresoyegresobanco_ingreso_crediticio_cnpcp = 0;
+    $ingresoyegresobanco_ingreso_crediticio_cnpcps_bancos = [];
+    $ingresoyegresobanco_ingreso_crediticio_cnpcps_validacion = '';
+    $validacion_0 = '';
+    $validacion_cantidad = 0;
+    $ingresoyegresobanco_ingreso_crediticio_cnpcps_validacion_cantidad = 0;
+    foreach($bancos as $valuebancos){
+        $bancosdatas = DB::table('credito_cobranzacuota')
+            ->join('credito','credito.id','credito_cobranzacuota.idcredito')
+            ->where('credito_cobranzacuota.idestadocredito_cobranzacuota',1)
+            ->where('credito_cobranzacuota.idestadoextorno',0)
+            ->where('credito_cobranzacuota.idformapago',2)
+            ->where('credito_cobranzacuota.idbanco',$valuebancos->id)
+            ->where($where)
+            ->select(
+                'credito_cobranzacuota.*',
+            )
+            ->orderBy('credito_cobranzacuota.id','asc')
+            ->get();  
+    
+        $banco_capital = 0;
+        $banco_interes = 0;
+        $banco_desgravcargo = 0;
+        $banco_tenencxc = 0;
+        $banco = 0;
+        $validacion_1 = '';
+        foreach($bancosdatas as $value){
+            if($value->validar_estado==1 && $validacion_1 == ''){
+                $validacion_1 = 'CHECK';
+            }
+            $banco_capital += $value->total_pagar_amortizacion;
+            $banco_interes += $value->total_pagar_interes;
+            $banco_desgravcargo += $value->total_pagar_comision+$value->total_pagar_cargo;
+            $banco_tenencxc += $value->total_pagar_tenencia+$value->total_pagar_penalidad+$value->total_pagar_compensatorio;
+        }
             
-              $saldos_capitalasignada_1 = DB::table('cvasignacioncapital')
-                  ->where('cvasignacioncapital.idestadoeliminado',1)
-                  ->whereIn('cvasignacioncapital.idtipooperacion',[1,4])
-                  ->where('cvasignacioncapital.idbanco',$valuebancos->id)
-                  ->where($where3)
-                  ->sum('cvasignacioncapital.monto');
-            
-              $saldos_capitalasignada_2 = DB::table('cvasignacioncapital')
-                  ->where('cvasignacioncapital.idestadoeliminado',1)
-                  ->whereIn('cvasignacioncapital.idtipooperacion',[2])
-                  ->where('cvasignacioncapital.idbanco',$valuebancos->id)
-                  ->where($where3)
-                  ->sum('cvasignacioncapital.monto'); 
-            
-              $cobranzas = 0; 
-              $desembolsos = 0;
-            
-              $movimientointernodineros1 = DB::table('cvmovimientointernodinero')
-                  ->where('cvmovimientointernodinero.idestadoeliminado',1)
-                  ->where('cvmovimientointernodinero.idfuenteretiro',7)
-                  ->where('cvmovimientointernodinero.idbanco',$valuebancos->id)
-                  ->where($where4)
-                  ->sum('cvmovimientointernodinero.monto');
-            
-              $movimientointernodineros2 = DB::table('cvmovimientointernodinero')
-                  ->where('cvmovimientointernodinero.idestadoeliminado',1)
-                  ->where('cvmovimientointernodinero.idfuenteretiro',9)
-                  ->where('cvmovimientointernodinero.idbanco',$valuebancos->id)
-                  ->where($where4)
-                  ->sum('cvmovimientointernodinero.monto');
-            
-              $movimientointernodineros5 = DB::table('cvmovimientointernodinero')
-                  ->where('cvmovimientointernodinero.idestadoeliminado',1)
-                  ->where('cvmovimientointernodinero.idfuenteretiro',10)
-                  ->where('cvmovimientointernodinero.idbanco',$valuebancos->id)
-                  ->where($where4)
-                  ->sum('cvmovimientointernodinero.monto');
-            
-              $gastosadministrativosyoperativos_monto = DB::table('cvgastoadministrativooperativo')
-                  ->where('cvgastoadministrativooperativo.idformapago',2) 
-                  ->where('cvgastoadministrativooperativo.idestadoeliminado',1) 
-                  ->where('cvgastoadministrativooperativo.idbanco',$valuebancos->id)
-                  ->where($where5)
-                  ->sum('cvgastoadministrativooperativo.monto');
-            
-              $ingresosextraordinarios_monto = DB::table('cvingresoextraordinario')
-                  ->where('cvingresoextraordinario.idformapago',2) 
-                  ->where('cvingresoextraordinario.idestadoeliminado',1) 
-                  ->where('cvingresoextraordinario.idbanco',$valuebancos->id)
-                  ->where($where6)
-                  ->sum('cvingresoextraordinario.monto');
-            
-              $saldos_cuentabanco += number_format($saldos_capitalasignada_1-
-                                                   $saldos_capitalasignada_2+
-                                                   $cobranzas-
-                                                   $desembolsos-
-                                                   $movimientointernodineros1+
-                                                   $movimientointernodineros2-
-                                                   $movimientointernodineros5-
-                                                   $gastosadministrativosyoperativos_monto+
-                                                   $ingresosextraordinarios_monto
-                                                   , 2, '.', '');
+        if($validacion_1=='CHECK' && $validacion_0 == ''){
+            $validacion_0 = 'CHECK';  
+            $validacion_operaciones_cuenta_banco_cant += 1;
+        }
+    
+        if(count($bancosdatas)>0){
+            $validacion_cantidad += 1;
+            $ingresoyegresobanco_ingreso_crediticio_cnpcps_validacion_cantidad += 1;
+        }
+    
+        $ingresoyegresobanco_ingreso_crediticio_cnpcp += number_format($banco_capital+$banco_interes+$banco_desgravcargo+$banco_tenencxc, 2, '.', '');
+    
+        $ingresoyegresobanco_ingreso_crediticio_cnpcps_bancos[] = [
+            'banco_nombre' => $valuebancos->nombre,
+            'banco_cuenta' => '(******'.substr($valuebancos->cuenta, -5).')',
+            'banco_capital' => number_format($banco_capital, 2, '.', ''),
+            'banco_interes' => number_format($banco_interes, 2, '.', ''),
+            'banco_desgravcargo' => number_format($banco_desgravcargo, 2, '.', ''),
+            'banco_tenencxc' => number_format($banco_tenencxc, 2, '.', ''),
+            'banco' => number_format($banco_capital+$banco_interes+$banco_desgravcargo+$banco_tenencxc, 2, '.', ''),
+            'validacion' => $validacion_1
+        ];
+    }
+    $ingresoyegresobanco_ingreso_crediticio_cnpcps_validacion = $validacion_0;
 
 
-                $saldos_cuentabanco_bancos[] = [
-                  'banco_id' => $valuebancos->id,
-                  'banco_nombre' => $valuebancos->nombre,
-                  'banco_cuenta' => '(******'.substr($valuebancos->cuenta, -5).')',
-                  'banco' => number_format($saldos_capitalasignada_1-
-                                           $saldos_capitalasignada_2+
-                                           $cobranzas-$desembolsos-
-                                           $movimientointernodineros1+
-                                           $movimientointernodineros2-
-                                           $movimientointernodineros5-
-                                           $gastosadministrativosyoperativos_monto+
-                                           $ingresosextraordinarios_monto
-                                           , 2, '.', ''),
-              ];
-          }
-          
-          $where = [];
-          $where1 = [];
-          $where2 = [];
-          $where3 = [];
-          $where4 = [];
-          if($idagencia!=''){
-              $where[] = ['cvasignacioncapital.idtienda',$idagencia];
-              $where1[] = ['credito.idtienda',$idagencia];
-              $where2[] = ['cvingresoextraordinario.idtienda',$idagencia];
-              $where3[] = ['credito.idtienda',$idagencia];
-              $where4[] = ['cvgastoadministrativooperativo.idtienda',$idagencia];
-          }
-          if($fechacorte!=''){
-              $where[] = ['cvasignacioncapital.fecharegistro','<=',$fechacorte.' 23:59:59'];
-              $where1[] = ['credito_cobranzacuota.fecharegistro','<=',$fechacorte.' 23:59:59'];
-              $where2[] = ['cvingresoextraordinario.fechapago','<=',$fechacorte.' 23:59:59'];
-              $where3[] = ['credito_formapago.fechapago','<=',$fechacorte.' 23:59:59'];
-              $where4[] = ['cvgastoadministrativooperativo.fechapago','<=',$fechacorte.' 23:59:59'];
-          }
- 
-          $asignacioncapital_deposito_reserva = DB::table('cvasignacioncapital')
-              ->where('cvasignacioncapital.idtipodestino',2)
-              ->where('cvasignacioncapital.idestadoeliminado',1)
-              ->whereIn('cvasignacioncapital.idtipooperacion',[1,4])
-              ->where($where)
-              ->sum('cvasignacioncapital.monto');
-          $asignacioncapital_retiro_reserva = DB::table('cvasignacioncapital')
-              ->where('cvasignacioncapital.idtipodestino',2)
-              ->where('cvasignacioncapital.idestadoeliminado',1)
-              ->where('cvasignacioncapital.idtipooperacion',2)
-              ->where($where)
-              ->sum('cvasignacioncapital.monto');
-          $saldos_reserva = $asignacioncapital_deposito_reserva-
-              $asignacioncapital_retiro_reserva-
-              $ret_reservacf_caja+
-              $ret_caja_reservacf+
-              $ret_banco_reservacf;
-       
-          $asignacioncapital_deposito_caja = DB::table('cvasignacioncapital')
-              ->where('cvasignacioncapital.idtipodestino',1)
-              ->where('cvasignacioncapital.idestadoeliminado',1)
-              ->whereIn('cvasignacioncapital.idtipooperacion',[1,4])
-              ->where($where)
-              ->sum('cvasignacioncapital.monto');
-          $asignacioncapital_retiro_caja = DB::table('cvasignacioncapital')
-              ->where('cvasignacioncapital.idtipodestino',1)
-              ->where('cvasignacioncapital.idestadoeliminado',1)
-              ->where('cvasignacioncapital.idtipooperacion',2)
-              ->where($where)
-              ->sum('cvasignacioncapital.monto');
-          $ingresoyegresocaja_ingreso_crediticio_cps = DB::table('credito_cobranzacuota')
-              ->join('credito','credito.id','credito_cobranzacuota.idcredito')
-              ->where('credito_cobranzacuota.idestadocredito_cobranzacuota',1)
-              ->where('credito_cobranzacuota.idestadoextorno',0)
-              ->where('credito_cobranzacuota.idformapago',1)
-              ->where($where1)
-              ->select(
-                  'credito_cobranzacuota.*',
-              )
-              ->get();
-          $ingresoyegresocaja_ingreso_crediticio_saldofinal = 0;
-          foreach($ingresoyegresocaja_ingreso_crediticio_cps as $value){
-              $ingresoyegresocaja_ingreso_crediticio_saldofinal += $value->total_pagar_amortizacion+
-                  $value->total_pagar_interes+
-                  $value->total_pagar_comision+$value->total_pagar_cargo+
-                  $value->total_pagar_tenencia+$value->total_pagar_penalidad+$value->total_pagar_compensatorio;
-          }
-          $ingresoyegresocaja_ingreso_incrementocapital_saldofinal = DB::table('cvasignacioncapital')
-                ->where('cvasignacioncapital.idtipodestino',1)
-                ->where('cvasignacioncapital.idestadoeliminado',1)
-                ->where('cvasignacioncapital.idtipooperacion',1)
-                ->where($where)
-                ->sum('cvasignacioncapital.monto');
-          $ingresoyegresocaja_ingreso_ingresosextraordinarios_saldofinal = DB::table('cvingresoextraordinario')
-                ->where('cvingresoextraordinario.idformapago',1) 
-                ->where('cvingresoextraordinario.idestadoeliminado',1) 
-                ->where($where2)
-                ->sum('cvingresoextraordinario.monto');
-          $ingresoyegresocaja_egreso_crediticio_saldofinal = DB::table('credito_formapago')
-              ->join('credito','credito.id','credito_formapago.idcredito')
-              ->where('credito_formapago.idformapago',1)
-              ->where('credito.estado','DESEMBOLSADO')
-              ->where($where3)
-              ->sum('credito.monto_solicitado');
-          $ingresoyegresocaja_egreso_reduccioncapital_saldocapital = DB::table('cvasignacioncapital')
-                ->whereIn('cvasignacioncapital.idtipodestino',[0,1])
-                ->where('cvasignacioncapital.idestadoeliminado',1)
-                ->where('cvasignacioncapital.idtipooperacion',2)
-                ->where($where)
-                ->sum('cvasignacioncapital.monto');
-          $ingresoyegresocaja_egreso_gastosadministrativosyoperativos_saldocapital = DB::table('cvgastoadministrativooperativo')
-                ->where('cvgastoadministrativooperativo.idformapago',1) 
-                ->where('cvgastoadministrativooperativo.idestadoeliminado',1) 
-                ->where($where4)
-                ->sum('cvgastoadministrativooperativo.monto');
-  
-          $saldos_caja = $asignacioncapital_deposito_caja-
-              $asignacioncapital_retiro_caja+
-              $ret_reservacf_caja+
-              $ret_banco_caja-
-              $ret_caja_reservacf-
-              $ret_caja_banco+
-              $ingresoyegresocaja_ingreso_crediticio_saldofinal+
-              $ingresoyegresocaja_ingreso_ahorro+
-              $ingresoyegresocaja_ingreso_incrementocapital_saldofinal+
-              $ingresoyegresocaja_ingreso_ingresosextraordinarios_saldofinal-
-              $ingresoyegresocaja_egreso_crediticio_saldofinal-
-              $ingresoyegresocaja_egreso_ahorro-
-              $ingresoyegresocaja_egreso_reduccioncapital_saldocapital-
-              $ingresoyegresocaja_egreso_gastosadministrativosyoperativos_saldocapital;
-              /*+
-              $dep_caja_reservacf+
-              $dep_caja_banco-
-              $dep_reservacf_caja-
-              $dep_banco_caja;*/
-          
-          
-          $where = [];
-          if($idagencia!=''){
-              $where[] = ['credito.idtienda',$idagencia];
-          }
-          if($fechacorte!=''){
-              $where[] = ['credito.fecha_desembolso','<=',$fechacorte];
-          }
-          
-          $saldos_creditovigente_cnp = DB::table('credito')
-              ->where('credito.estado','DESEMBOLSADO')
-              ->where('credito.idestadocredito',1)
-              ->where('credito.idforma_credito',2)
-              ->where($where)
-              ->sum('credito.saldo_pendientepago');
-          $saldos_creditovigente_cp = DB::table('credito')
-              ->where('credito.estado','DESEMBOLSADO')
-              ->where('credito.idestadocredito',1)
-              ->where('credito.idforma_credito',1)
-              ->where($where)
-              ->sum('credito.saldo_pendientepago');
-          $saldos_creditovigente = $saldos_creditovigente_cnp+
-                                    $saldos_creditovigente_cp;
-          
-          $saldos_interescreditovigentexcobrar_cnp = DB::table('credito_cronograma')
-              ->join('credito','credito.id','credito_cronograma.idcredito')
-              ->where('credito_cronograma.idestadocronograma_pago',0)
-              ->where('credito.estado','DESEMBOLSADO')
-              ->where('credito.idestadocredito',1)
-              ->where('credito.idforma_credito',2)
-              ->where($where)
-              ->sum('credito_cronograma.interes');
-          $saldos_interescreditovigentexcobrar_cp = DB::table('credito_cronograma')
-              ->join('credito','credito.id','credito_cronograma.idcredito')
-              ->where('credito_cronograma.idestadocronograma_pago',0)
-              ->where('credito.estado','DESEMBOLSADO')
-              ->where('credito.idestadocredito',1)
-              ->where('credito.idforma_credito',1)
-              ->where($where)
-              ->sum('credito_cronograma.interes');
-          $saldos_interescreditovigentexcobrar = $saldos_interescreditovigentexcobrar_cnp+
-                                                  $saldos_interescreditovigentexcobrar_cp;
-          $saldos_ahorros = 0;
-          $saldos_interesgeneradosxpagar_ahorropf = 0;
-          $saldos_interesgeneradosxpagar_interescuentaahorropdfprogramadas = 0;
-          $saldos_interesgeneradosxpagar_ahorrocorriente = 0;
-          $saldos_interesgeneradosxpagar_interescuentaahorrocgeneradas = 0;
-          $saldos_interesgeneradosxpagar = $saldos_interesgeneradosxpagar_ahorropf+
-                                            $saldos_interesgeneradosxpagar_interescuentaahorropdfprogramadas+
-                                            $saldos_interesgeneradosxpagar_ahorrocorriente+
-                                            $saldos_interesgeneradosxpagar_interescuentaahorrocgeneradas;
-          
-          $where = [];
-          if($idagencia!=''){
-              $where[] = ['cvasignacioncapital.idtienda',$idagencia];
-          }
-          if($fechacorte!=''){
-              $where[] = ['cvasignacioncapital.fecharegistro','<=',$fechacorte.' 23:59:59'];
-          }
-          /*$ret_correc = DB::table('asignacioncapital')
-              ->where('asignacioncapital.idestadoeliminado',1)
-              ->where('asignacioncapital.idtipooperacion',3)
-              ->where($where)
-              ->sum('asignacioncapital.monto');
-          $saldos_capitalasignada = $saldos_cuentabanco+$saldos_reserva+$saldos_caja-$ret_correc;*/
-          
-          $monto_suma = DB::table('cvasignacioncapital')
-              ->where('cvasignacioncapital.idestadoeliminado',1)
-              ->whereIn('cvasignacioncapital.idtipooperacion',[1,4])
-              ->where('cvasignacioncapital.idresponsable_recfinal','<>',0)
-              ->where('cvasignacioncapital.idtienda',$idagencia)
-              ->where($where)
-              ->sum('cvasignacioncapital.monto');
+    $ingresoyegresobanco_ingreso_cvventa = 0;
+    $ingresoyegresobanco_egreso_cvcompra = 0;
+    
+    $where = [];
+    if($idagencia!=''){
+        $where[] = ['cvasignacioncapital.idtienda',$idagencia];
+    }
+    if($fechacorte!=''){
+        $where[] = ['cvasignacioncapital.fecharegistro','>=',$fechacorte.' 00:00:00'];
+        $where[] = ['cvasignacioncapital.fecharegistro','<=',$fechacorte.' 23:59:59'];
+    }
+    $ingresoyegresobanco_ingreso_incrementocapital = 0;
+    $ingresoyegresobanco_ingreso_incrementocapital_bancos = [];
+    $ingresoyegresobanco_ingreso_incrementocapital_validacion = '';
+    $validacion_0 = '';
+    $ingresoyegresobanco_ingreso_incrementocapital_validacion_cantidad = 0;
+    foreach($bancos as $valuebancos){
+    
+        $db_ingresoyegresobanco_ingreso_incrementocapital = DB::table('cvasignacioncapital')
+            ->where('cvasignacioncapital.idtipodestino',3)
+            ->where('cvasignacioncapital.idresponsable_recfinal', '<>', 0)
+            ->where('cvasignacioncapital.idestadoeliminado',1)
+            ->where('cvasignacioncapital.idtipooperacion',1)
+            ->where('cvasignacioncapital.idbanco',$valuebancos->id)
+            ->where($where)
+            ->get();
+    
+        $validacion_1 = '';
+        $ingresoyegresobanco_ingreso_incrementocapital_monto = 0;
+        foreach($db_ingresoyegresobanco_ingreso_incrementocapital as $valuecrediticio){
+            if($valuecrediticio->validar_estado==1 && $validacion_1 == ''){
+                $validacion_1 = 'CHECK';
+            }
+            $ingresoyegresobanco_ingreso_incrementocapital_monto += $valuecrediticio->monto;
+        }
+            
+        if($validacion_1=='CHECK' && $validacion_0 == ''){
+            $validacion_0 = 'CHECK';
+            $validacion_operaciones_cuenta_banco_cant += 1;
+        }
+    
+        if(count($db_ingresoyegresobanco_ingreso_incrementocapital)>0){
+            $validacion_cantidad += 1;
+            $ingresoyegresobanco_ingreso_incrementocapital_validacion_cantidad += 1;
+        }
+    
+        $ingresoyegresobanco_ingreso_incrementocapital += number_format($ingresoyegresobanco_ingreso_incrementocapital_monto, 2, '.', '');
+    
+        $ingresoyegresobanco_ingreso_incrementocapital_bancos[] = [
+            'banco_nombre' => $valuebancos->nombre,
+            'banco_cuenta' => '(******'.substr($valuebancos->cuenta, -5).')',
+            'banco' => number_format($ingresoyegresobanco_ingreso_incrementocapital_monto, 2, '.', ''),
+            'validacion' => $validacion_1
+        ];
+    }
+    $ingresoyegresobanco_ingreso_incrementocapital_validacion = $validacion_0;
+    
+    $where = [];
+    if($idagencia!=''){
+        $where[] = ['cvingresoextraordinario.idtienda',$idagencia];
+    }
+    if($fechacorte!=''){
+        $where[] = ['cvingresoextraordinario.fechapago','>=',$fechacorte.' 00:00:00'];
+        $where[] = ['cvingresoextraordinario.fechapago','<=',$fechacorte.' 23:59:59'];
+    }
+    $ingresoyegresobanco_ingreso_ingresosextraordinarios = 0;
+    $ingresoyegresobanco_ingreso_ingresosextraordinarios_bancos = [];
+    $ingresoyegresobanco_ingreso_ingresosextraordinarios_validacion = '';
+    $validacion_0 = '';
+    $ingresoyegresobanco_ingreso_ingresosextraordinarios_validacion_cantidad = 0;
+    foreach($bancos as $valuebancos){
+    
+        $db_ingresoyegresobanco_ingreso_ingresosextraordinarios = DB::table('cvingresoextraordinario')
+            ->where('cvingresoextraordinario.idformapago',2) 
+            ->where('cvingresoextraordinario.idestadoeliminado',1) 
+            ->where('cvingresoextraordinario.idbanco',$valuebancos->id)
+            ->where($where)
+            ->get();
+    
+        $validacion_1 = '';
+        $ingresoyegresobanco_ingreso_ingresosextraordinarios_monto = 0;
+        foreach($db_ingresoyegresobanco_ingreso_ingresosextraordinarios as $valuecrediticio){
+            if($valuecrediticio->validar_estado==1 && $validacion_1 == ''){
+                $validacion_1 = 'CHECK';
+            }
+            $ingresoyegresobanco_ingreso_ingresosextraordinarios_monto += $valuecrediticio->monto;
+        }
+            
+        if($validacion_1=='CHECK' && $validacion_0 == ''){
+            $validacion_0 = 'CHECK';
+            $validacion_operaciones_cuenta_banco_cant += 1;
+        }
+    
+        if(count($db_ingresoyegresobanco_ingreso_ingresosextraordinarios)>0){
+            $validacion_cantidad += 1;
+            $ingresoyegresobanco_ingreso_ingresosextraordinarios_validacion_cantidad += 1;
+        }
+    
+        $ingresoyegresobanco_ingreso_ingresosextraordinarios += number_format($ingresoyegresobanco_ingreso_ingresosextraordinarios_monto, 2, '.', '');
+    
+        $ingresoyegresobanco_ingreso_ingresosextraordinarios_bancos[] = [
+            'banco_nombre' => $valuebancos->nombre,
+            'banco_cuenta' => '(******'.substr($valuebancos->cuenta, -5).')',
+            'banco' => number_format($ingresoyegresobanco_ingreso_ingresosextraordinarios_monto, 2, '.', ''),
+            'validacion' => $validacion_1
+        ];
+    }
+    $ingresoyegresobanco_ingreso_ingresosextraordinarios_validacion = $validacion_0;
+    
+    //-------
+    
+    $where = [];
+    if($idagencia!=''){
+        $where[] = ['credito.idtienda',$idagencia];
+    }
+    if($fechacorte!=''){
+        $where[] = ['credito_formapago.fechapago','>=',$fechacorte.' 00:00:00'];
+        $where[] = ['credito_formapago.fechapago','<=',$fechacorte.' 23:59:59'];
+    }
+    $ingresoyegresobanco_egreso_crediticio = 0;
+    $ingresoyegresobanco_egreso_crediticio_bancos = [];
+    $ingresoyegresobanco_egreso_crediticio_validacion = '';
+    $validacion_0 = '';
+    $ingresoyegresobanco_egreso_crediticio_validacion_cantidad = 0;
+    foreach($bancos as $valuebancos){
+    
+        $db_desembolsos_ingresoyegresobanco_egreso_crediticio = DB::table('credito_formapago')
+            ->join('credito','credito.id','credito_formapago.idcredito')
+            ->where('credito_formapago.idformapago',2)
+            ->where('credito.estado','DESEMBOLSADO')
+            ->where('credito_formapago.idbanco',$valuebancos->id)
+            ->where($where)
+            ->get();
+    
+        $validacion_1 = '';
+        $desembolsos_ingresoyegresobanco_egreso_crediticio = 0;
+        foreach($db_desembolsos_ingresoyegresobanco_egreso_crediticio as $valuecrediticio){
+            if($valuecrediticio->validar_estado==1 && $validacion_1 == ''){
+                $validacion_1 = 'CHECK';
+            }
+            $desembolsos_ingresoyegresobanco_egreso_crediticio += $valuecrediticio->monto_solicitado;
+        }
+            
+        if($validacion_1=='CHECK' && $validacion_0 == ''){
+            $validacion_0 = 'CHECK';
+            $validacion_operaciones_cuenta_banco_cant += 1;
+        }
+    
+        if(count($db_desembolsos_ingresoyegresobanco_egreso_crediticio)>0){
+            $validacion_cantidad += 1;
+            $ingresoyegresobanco_egreso_crediticio_validacion_cantidad += 1;
+        }
+    
+        $ingresoyegresobanco_egreso_crediticio += number_format($desembolsos_ingresoyegresobanco_egreso_crediticio, 2, '.', '');
+        
+        $ingresoyegresobanco_egreso_crediticio_bancos[] = [
+            'banco_nombre' => $valuebancos->nombre,
+            'banco_cuenta' => '(******'.substr($valuebancos->cuenta, -5).')',
+            'banco' => number_format($desembolsos_ingresoyegresobanco_egreso_crediticio, 2, '.', ''),
+            'validacion' => $validacion_1,
+        ];
+    }
+    $ingresoyegresobanco_egreso_crediticio_validacion = $validacion_0;
+    
+    $where = [];
+    if($idagencia!=''){
+        $where[] = ['cvasignacioncapital.idtienda',$idagencia];
+    }
+    if($fechacorte!=''){
+        $where[] = ['cvasignacioncapital.fecharegistro','>=',$fechacorte.' 00:00:00'];
+        $where[] = ['cvasignacioncapital.fecharegistro','<=',$fechacorte.' 23:59:59'];
+    }
+    $ingresoyegresobanco_egreso_reduccioncapital = 0;
+    $ingresoyegresobanco_egreso_reduccioncapital_bancos = [];
+    $ingresoyegresobanco_egreso_reduccioncapital_validacion = '';
+    $validacion_0 = '';
+    $ingresoyegresobanco_egreso_reduccioncapital_validacion_cantidad = 0;
+    foreach($bancos as $valuebancos){
+    
+        $db_ingresoyegresobanco_egreso_reduccioncapital = DB::table('cvasignacioncapital')
+            ->where('cvasignacioncapital.idtipodestino',3)
+            ->where('cvasignacioncapital.idestadoeliminado',1)
+            ->where('cvasignacioncapital.idresponsable_recfinal', '<>', 0)
+            ->where('cvasignacioncapital.idtipooperacion',2)
+            ->where('cvasignacioncapital.idbanco',$valuebancos->id)
+            ->where($where)
+            ->get();
+    
+        $validacion_1 = '';
+        $ingresoyegresobanco_egreso_reduccioncapital_monto = 0;
+        foreach($db_ingresoyegresobanco_egreso_reduccioncapital as $valuecrediticio){
+            if($valuecrediticio->validar_estado==1 && $validacion_1 == ''){
+                $validacion_1 = 'CHECK';
+            }
+            $ingresoyegresobanco_egreso_reduccioncapital_monto += $valuecrediticio->monto;
+        }
+            
+        if($validacion_1=='CHECK' && $validacion_0 == ''){
+            $validacion_0 = 'CHECK';
+            $validacion_operaciones_cuenta_banco_cant += 1;
+        }
+    
+        if(count($db_ingresoyegresobanco_egreso_reduccioncapital)>0){
+            $validacion_cantidad += 1;
+            $ingresoyegresobanco_egreso_reduccioncapital_validacion_cantidad += 1;
+        }
+    
+        $ingresoyegresobanco_egreso_reduccioncapital += number_format($ingresoyegresobanco_egreso_reduccioncapital_monto, 2, '.', '');
+    
+        $ingresoyegresobanco_egreso_reduccioncapital_bancos[] = [
+            'banco_nombre' => $valuebancos->nombre,
+            'banco_cuenta' => '(******'.substr($valuebancos->cuenta, -5).')',
+            'banco' => number_format($ingresoyegresobanco_egreso_reduccioncapital_monto, 2, '.', ''),
+            'validacion' => $validacion_1,
+        ];
+    }
+    $ingresoyegresobanco_egreso_reduccioncapital_validacion = $validacion_0;
+    
+    $where = [];
+    if($idagencia!=''){
+        $where[] = ['cvgastoadministrativooperativo.idtienda',$idagencia];
+    }
+    if($fechacorte!=''){
+        $where[] = ['cvgastoadministrativooperativo.fechapago','>=',$fechacorte.' 00:00:00'];
+        $where[] = ['cvgastoadministrativooperativo.fechapago','<=',$fechacorte.' 23:59:59'];
+    }
+    $ingresoyegresobanco_egreso_gastosadministrativosyoperativos = 0;
+    $ingresoyegresobanco_egreso_gastosadministrativosyoperativos_bancos = [];
+    $ingresoyegresobanco_egreso_gastosadministrativosyoperativos_validacion = '';
+    $validacion_0 = '';
+    $ingresoyegresobanco_egreso_gastosadministrativosyoperativos_validacion_cantidad = 0;
+    foreach($bancos as $valuebancos){
+    
+        $db_ingresoyegresocaja_egreso_gastosadministrativosyoperativos = DB::table('cvgastoadministrativooperativo')
+            ->where('cvgastoadministrativooperativo.idformapago',2) 
+            ->where('cvgastoadministrativooperativo.idestadoeliminado',1) 
+            ->where('cvgastoadministrativooperativo.idbanco',$valuebancos->id)
+            ->where($where)
+            ->get();
+    
+        $validacion_1 = '';
+        $ingresoyegresocaja_egreso_gastosadministrativosyoperativos_monto = 0;
+        foreach($db_ingresoyegresocaja_egreso_gastosadministrativosyoperativos as $valuecrediticio){
+            if($valuecrediticio->validar_estado==1 && $validacion_1 == ''){
+                $validacion_1 = 'CHECK';
+            }
+            $ingresoyegresocaja_egreso_gastosadministrativosyoperativos_monto += $valuecrediticio->monto;
+        }
+            
+        if($validacion_1=='CHECK' && $validacion_0 == ''){
+            $validacion_0 = 'CHECK';
+            $validacion_operaciones_cuenta_banco_cant += 1;
+        }
+    
+        if(count($db_ingresoyegresocaja_egreso_gastosadministrativosyoperativos)>0){
+            $validacion_cantidad += 1;
+            $ingresoyegresobanco_egreso_gastosadministrativosyoperativos_validacion_cantidad += 1;
+        }
+    
+        $ingresoyegresobanco_egreso_gastosadministrativosyoperativos += number_format($ingresoyegresocaja_egreso_gastosadministrativosyoperativos_monto, 2, '.', '');
+    
+        $ingresoyegresobanco_egreso_gastosadministrativosyoperativos_bancos[] = [
+            'banco_nombre' => $valuebancos->nombre,
+            'banco_cuenta' => '(******'.substr($valuebancos->cuenta, -5).')',
+            'banco' => number_format($ingresoyegresocaja_egreso_gastosadministrativosyoperativos_monto, 2, '.', ''),
+            'validacion' => $validacion_1,
+        ];
+    }
+    $ingresoyegresobanco_egreso_gastosadministrativosyoperativos_validacion = $validacion_0;
 
-          $monto_resta = DB::table('cvasignacioncapital')
-              ->where('cvasignacioncapital.idestadoeliminado',1)
-              ->whereIn('cvasignacioncapital.idtipooperacion',[2,3])
-              ->where('cvasignacioncapital.idresponsable_recfinal','<>',0)
-              ->where('cvasignacioncapital.idtienda',$idagencia)
-              ->where($where)
-              ->sum('cvasignacioncapital.monto');
-          $saldos_capitalasignada = $monto_suma-$monto_resta;
-          
-          $total_efectivo_ejercicio = $saldos_cuentabanco+$saldos_reserva+$saldos_caja+$saldos_creditovigente;
-          $incremental_capital_asignado = $total_efectivo_ejercicio-$saldos_capitalasignada;
-          
-          $spread_financiero_proyectado = $saldos_interesgeneradosxpagar;
-          $indicador_reserva_legal = ($saldos_cuentabanco+$saldos_caja);
-  
-          $validacion_operaciones_cuenta_banco = '';
-          //dd($validacion_operaciones_cuenta_banco_cant);
-          if($validacion_operaciones_cuenta_banco_cant==0 && 
-              $validacion_cantidad==0){
-              //dd($valid_habilitacion);
-              if($valid_habilitacion>0){
-                  $validacion_operaciones_cuenta_banco = 'PENDIENTE';
-              }else{
-                  $validacion_operaciones_cuenta_banco = 'SIN OPERACIONES';
-              }
-          }
-          /*elseif(($validacion_operaciones_cuenta_banco_cant>0 && 
-                 $validacion_operaciones_cuenta_banco_cant<$validacion_cantidad) ||
-                ){*/
-          elseif($validacion_operaciones_cuenta_banco_cant!=$validacion_cantidad){
-              $validacion_operaciones_cuenta_banco = 'PENDIENTE';
-          }
-          elseif($validacion_operaciones_cuenta_banco_cant==$validacion_cantidad){
-              $validacion_operaciones_cuenta_banco = 'VERIFICADO';
-          }
-  
-          $efectivo_caja_corte = $saldos_caja;
-          $efectivo_caja_arqueo = 0;
-          $resultado = $efectivo_caja_arqueo-$efectivo_caja_corte;
-          
-          $data = [
-              'tienda' => $tienda,
-              'agencia' => $agencia,
-              'bancos' => $bancos,
-              'corte' => date("d-m-Y",strtotime(date($fechacorte))),
-            
-              'ingresoyegresocaja_ingreso_crediticio_cnp_capital' => number_format($ingresoyegresocaja_ingreso_crediticio_cnp_capital, 2, '.', ''),
-              'ingresoyegresocaja_ingreso_crediticio_cnp_interes' => number_format($ingresoyegresocaja_ingreso_crediticio_cnp_interes, 2, '.', ''),
-              'ingresoyegresocaja_ingreso_crediticio_cnp_desgravcargo' => number_format($ingresoyegresocaja_ingreso_crediticio_cnp_desgravcargo, 2, '.', ''),
-              'ingresoyegresocaja_ingreso_crediticio_cnp_tenencxc' => number_format($ingresoyegresocaja_ingreso_crediticio_cnp_tenencxc, 2, '.', ''),
-              'ingresoyegresocaja_ingreso_crediticio_cnp' => number_format($ingresoyegresocaja_ingreso_crediticio_cnp, 2, '.', ''),   
-              'ingresoyegresocaja_ingreso_crediticio_cp_capital' => number_format($ingresoyegresocaja_ingreso_crediticio_cp_capital, 2, '.', ''),
-              'ingresoyegresocaja_ingreso_crediticio_cp_interes' => number_format($ingresoyegresocaja_ingreso_crediticio_cp_interes, 2, '.', ''),
-              'ingresoyegresocaja_ingreso_crediticio_cp_desgravcargo' => number_format($ingresoyegresocaja_ingreso_crediticio_cp_desgravcargo, 2, '.', ''),
-              'ingresoyegresocaja_ingreso_crediticio_cp_tenencxc' => number_format($ingresoyegresocaja_ingreso_crediticio_cp_tenencxc, 2, '.', ''),
-              'ingresoyegresocaja_ingreso_crediticio_cp' => number_format($ingresoyegresocaja_ingreso_crediticio_cp, 2, '.', ''),
-              'ingresoyegresocaja_ingreso_ahorro_plazofijo' => number_format($ingresoyegresocaja_ingreso_ahorro_plazofijo, 2, '.', ''),
-              'ingresoyegresocaja_ingreso_ahorro_ahorroc' => number_format($ingresoyegresocaja_ingreso_ahorro_ahorroc, 2, '.', ''),
-              'ingresoyegresocaja_ingreso_ahorro' => number_format($ingresoyegresocaja_ingreso_ahorro, 2, '.', ''),
-              'ingresoyegresocaja_ingreso_incrementocapital' => number_format($ingresoyegresocaja_ingreso_incrementocapital, 2, '.', ''),
-              'ingresoyegresocaja_ingreso_ingresosextraordinarios' => number_format($ingresoyegresocaja_ingreso_ingresosextraordinarios, 2, '.', ''),
-              'ingresoyegresocaja_ingreso_crediticio' => number_format($ingresoyegresocaja_ingreso_crediticio, 2, '.', ''),
-              'ingresoyegresocaja_ingreso_crediticio_transitorio' => number_format($ingresoyegresocaja_ingreso_crediticio_transitorio, 2, '.', ''),
-            
-              'ingresoyegresocaja_egreso_crediticio' => number_format($ingresoyegresocaja_egreso_crediticio, 2, '.', ''),
-              'ingresoyegresocaja_egreso_ahorro_plazofijo' => number_format($ingresoyegresocaja_egreso_ahorro_plazofijo, 2, '.', ''),
-              'ingresoyegresocaja_egreso_ahorro_intplazofijo' => number_format($ingresoyegresocaja_egreso_ahorro_intplazofijo, 2, '.', ''),
-              'ingresoyegresocaja_egreso_ahorro_ahorrocte' => number_format($ingresoyegresocaja_egreso_ahorro_ahorrocte, 2, '.', ''),
-              'ingresoyegresocaja_egreso_ahorro_intcte' => number_format($ingresoyegresocaja_egreso_ahorro_intcte, 2, '.', ''),
-              'ingresoyegresocaja_egreso_ahorro' => number_format($ingresoyegresocaja_egreso_ahorro, 2, '.', ''),
-              'ingresoyegresocaja_egreso_reduccioncapital' => number_format($ingresoyegresocaja_egreso_reduccioncapital, 2, '.', ''),
-              'ingresoyegresocaja_egreso_gastosadministrativosyoperativos' => number_format($ingresoyegresocaja_egreso_gastosadministrativosyoperativos, 2, '.', ''),
+    // HABILITACIÓN Y GESTIÓN DE LIQUIDEZ ( I )
+    $valid_habilitacion = 0;
+    
+    $where = [];
+    if($idagencia!=''){
+        $where[] = ['cvmovimientointernodinero.idtienda',$idagencia];
+    }
+    if($fechacorte!=''){
+        $where[] = ['cvmovimientointernodinero.fecharegistro','<=',$fechacorte.' 23:59:59'];
+    }
+    
+    $ret_reservacf_caja = DB::table('cvmovimientointernodinero')
+        ->where('cvmovimientointernodinero.idestadoeliminado',1)
+        ->where('cvmovimientointernodinero.idfuenteretiro',6)
+        ->where($where)
+        ->select(
+            'cvmovimientointernodinero.*',
+        )
+        ->sum('cvmovimientointernodinero.monto');
+    
+    $ret_banco_caja = 0;
+    $ret_banco_caja_bancos = [];
+    $dep_caja_banco = 0;
+    $dep_caja_banco_bancos = [];
+    foreach($bancos as $valuebancos){
+        $movimientointernodineros = DB::table('cvmovimientointernodinero')
+            ->where('cvmovimientointernodinero.idestadoeliminado',1)
+            ->where('cvmovimientointernodinero.idfuenteretiro',7)
+            ->where('cvmovimientointernodinero.idtipomovimientointerno',1)
+            ->where('cvmovimientointernodinero.idbanco',$valuebancos->id)
+            ->where($where)
+            ->sum('cvmovimientointernodinero.monto');
+        $movimientointernodineros1 = DB::table('cvmovimientointernodinero')
+            ->where('cvmovimientointernodinero.idestadoeliminado',1)
+            ->where('cvmovimientointernodinero.idfuenteretiro',2)
+            ->where('cvmovimientointernodinero.idtipomovimientointerno',2)
+            ->where('cvmovimientointernodinero.idresponsable','<>',0)
+            ->where('cvmovimientointernodinero.idbanco',$valuebancos->id)
+            ->where($where)
+            ->sum('cvmovimientointernodinero.monto');
+        $ret_banco_caja += number_format($movimientointernodineros, 2, '.', '');
+        $dep_caja_banco += number_format($movimientointernodineros1, 2, '.', '');
+    
+        $ret_banco_caja_bancos[] = [
+            'banco_id' => $valuebancos->id,
+            'banco_nombre' => $valuebancos->nombre,
+            'banco_cuenta' => '(******'.substr($valuebancos->cuenta, -5).')',
+            'banco' => number_format($movimientointernodineros, 2, '.', ''),
+            'banco_dep' => number_format($movimientointernodineros1, 2, '.', ''),
+        ];
+    
+        if($ret_banco_caja!=$dep_caja_banco){
+            $valid_habilitacion++;
+        }
+    }
+    
+    $ret_caja_reservacf = DB::table('cvmovimientointernodinero')
+        ->where('cvmovimientointernodinero.idestadoeliminado',1)
+        ->where('cvmovimientointernodinero.idfuenteretiro',8)
+        ->where($where)
+        ->sum('cvmovimientointernodinero.monto');
+    
+    $ret_caja_banco = 0;
+    $ret_caja_banco_bancos = [];
+    $dep_banco_caja = 0;
+    $dep_banco_caja_bancos = [];
+    foreach($bancos as $valuebancos){
+        $movimientointernodineros = DB::table('cvmovimientointernodinero')
+            ->where('cvmovimientointernodinero.idestadoeliminado',1)
+            ->where('cvmovimientointernodinero.idfuenteretiro',9)
+            ->where('cvmovimientointernodinero.idtipomovimientointerno',1)
+            ->where('cvmovimientointernodinero.idbanco',$valuebancos->id)
+            ->where($where)
+            ->sum('cvmovimientointernodinero.monto');
+        $movimientointernodineros1 = DB::table('cvmovimientointernodinero')
+            ->where('cvmovimientointernodinero.idestadoeliminado',1)
+            ->where('cvmovimientointernodinero.idfuenteretiro',4)
+            ->where('cvmovimientointernodinero.idtipomovimientointerno',2)
+            ->where('cvmovimientointernodinero.idresponsable','<>',0)
+            ->where('cvmovimientointernodinero.idbanco',$valuebancos->id)
+            ->where($where)
+            ->sum('cvmovimientointernodinero.monto');
+    
+        $ret_caja_banco += number_format($movimientointernodineros, 2, '.', '');
+        $dep_banco_caja += number_format($movimientointernodineros1, 2, '.', '');
+        $ret_caja_banco_bancos[] = [
+            'banco_nombre' => $valuebancos->nombre,
+            'banco_cuenta' => '(******'.substr($valuebancos->cuenta, -5).')',
+            'banco' => number_format($movimientointernodineros, 2, '.', ''),
+            'banco_dep' => number_format($movimientointernodineros1, 2, '.', ''),
+        ];
+    
+        if($ret_caja_banco!=$dep_banco_caja){
+            $valid_habilitacion++;
+        }
+    }
+    //----
+    $dep_caja_reservacf = DB::table('cvmovimientointernodinero')
+        ->where('cvmovimientointernodinero.idestadoeliminado',1)
+        ->where('cvmovimientointernodinero.idfuenteretiro',1)
+        ->where('cvmovimientointernodinero.idresponsable','<>',0)
+        ->where($where)
+        ->sum('cvmovimientointernodinero.monto');
+    
+    if($ret_reservacf_caja!=$dep_caja_reservacf){
+        $valid_habilitacion++;
+    }
+    
+    $dep_reservacf_caja = DB::table('cvmovimientointernodinero')
+        ->where('cvmovimientointernodinero.idestadoeliminado',1)
+        ->where('cvmovimientointernodinero.idfuenteretiro',3)
+        ->where('cvmovimientointernodinero.idresponsable','<>',0)
+        ->where($where)
+        ->sum('cvmovimientointernodinero.monto');
 
-              'ingresoyegresobanco_ingreso_crediticio_cnpcp' => number_format($ingresoyegresobanco_ingreso_crediticio_cnpcp, 2, '.', ''),
-              'ingresoyegresobanco_ingreso_crediticio_cnpcps_bancos' => $ingresoyegresobanco_ingreso_crediticio_cnpcps_bancos,
-              'ingresoyegresobanco_ingreso_crediticio_cnpcps_validacion' => $ingresoyegresobanco_ingreso_crediticio_cnpcps_validacion,
-              'ingresoyegresobanco_ingreso_crediticio_cnpcps_validacion_cantidad' => $ingresoyegresobanco_ingreso_crediticio_cnpcps_validacion_cantidad,
-              'ingresoyegresobanco_ingreso_incrementocapital' => number_format($ingresoyegresobanco_ingreso_incrementocapital, 2, '.', ''),
-              'ingresoyegresobanco_ingreso_incrementocapital_bancos' => $ingresoyegresobanco_ingreso_incrementocapital_bancos,
-              'ingresoyegresobanco_ingreso_incrementocapital_validacion' => $ingresoyegresobanco_ingreso_incrementocapital_validacion,
-              'ingresoyegresobanco_ingreso_incrementocapital_validacion_cantidad' => $ingresoyegresobanco_ingreso_incrementocapital_validacion_cantidad,
-              'ingresoyegresobanco_ingreso_ingresosextraordinarios' => number_format($ingresoyegresobanco_ingreso_ingresosextraordinarios, 2, '.', ''),
-              'ingresoyegresobanco_ingreso_ingresosextraordinarios_bancos' => $ingresoyegresobanco_ingreso_ingresosextraordinarios_bancos,
-              'ingresoyegresobanco_ingreso_ingresosextraordinarios_validacion' => $ingresoyegresobanco_ingreso_ingresosextraordinarios_validacion,
-              'ingresoyegresobanco_ingreso_ingresosextraordinarios_validacion_cantidad' => $ingresoyegresobanco_ingreso_ingresosextraordinarios_validacion_cantidad,
+    if($ret_caja_reservacf!=$dep_reservacf_caja){
+        $valid_habilitacion++;
+    }
+    
+    $habilitacion_gestion_liquidez1 = $ret_reservacf_caja+
+                                    $ret_banco_caja+
+                                    $ret_caja_reservacf+
+                                    $ret_caja_banco-
+                                    $dep_caja_reservacf-
+                                    $dep_caja_banco-
+                                    $dep_reservacf_caja-
+                                    $dep_banco_caja;
+    
+    // HABILITACIÓN Y GESTIÓN DE LIQUIDEZ ( II )
+    
+    $ret_banco_reservacf = 0;
+    $ret_banco_reservacf_bancos = [];
+    $dep_reservacf_banco = 0;
+    $dep_reservacf_banco_bancos = [];
+    foreach($bancos as $valuebancos){
+        $movimientointernodineros = DB::table('cvmovimientointernodinero')
+            ->where('cvmovimientointernodinero.idestadoeliminado',1)
+            ->where('cvmovimientointernodinero.idfuenteretiro',10)
+            ->where('cvmovimientointernodinero.idtipomovimientointerno',3)
+            ->where('cvmovimientointernodinero.idbanco',$valuebancos->id)
+            ->where($where)
+            ->sum('cvmovimientointernodinero.monto');
+        $movimientointernodineros1 = DB::table('cvmovimientointernodinero')
+            ->where('cvmovimientointernodinero.idestadoeliminado',1)
+            ->where('cvmovimientointernodinero.idfuenteretiro',5)
+            ->where('cvmovimientointernodinero.idtipomovimientointerno',4)
+            ->where('cvmovimientointernodinero.idresponsable','<>',0)
+            ->where('cvmovimientointernodinero.idbanco',$valuebancos->id)
+            ->where($where)
+            ->sum('cvmovimientointernodinero.monto');
+        $ret_banco_reservacf += number_format($movimientointernodineros, 2, '.', '');
+        $dep_reservacf_banco += number_format($movimientointernodineros1, 2, '.', '');
+        $ret_banco_reservacf_bancos[] = [
+            'banco_nombre' => $valuebancos->nombre,
+            'banco_cuenta' => '(******'.substr($valuebancos->cuenta, -5).')',
+            'banco' => number_format($movimientointernodineros, 2, '.', ''),
+            'banco_dep' => number_format($movimientointernodineros1, 2, '.', ''),
+        ];
+    
+        if($ret_banco_reservacf!=$dep_reservacf_banco){
+            $valid_habilitacion++;
+        }
+    }
+    
+    $habilitacion_gestion_liquidez2 = $ret_banco_reservacf-$dep_reservacf_banco;
+    
+    // CIERRE Y APERTURA DE CAJA
+    
+    $ret_reservacf_caja_total = DB::table('cvmovimientointernodinero')
+        ->where('cvmovimientointernodinero.idestadoeliminado',1)
+        ->where('cvmovimientointernodinero.idfuenteretiro',6)
+        ->where('cvmovimientointernodinero.idtipomovimientointerno',5)
+        ->where($where)
+        ->sum('cvmovimientointernodinero.monto');
+    $ret_caja_reservacf_total = DB::table('cvmovimientointernodinero')
+        ->where('cvmovimientointernodinero.idestadoeliminado',1)
+        ->where('cvmovimientointernodinero.idfuenteretiro',8)
+        ->where('cvmovimientointernodinero.idtipomovimientointerno',5)
+        ->where($where)
+        ->sum('cvmovimientointernodinero.monto');
+    
+    $dep_caja_reservacf_total = DB::table('cvmovimientointernodinero')
+        ->where('cvmovimientointernodinero.idestadoeliminado',1)
+        ->where('cvmovimientointernodinero.idfuenteretiro',1)
+        ->where('cvmovimientointernodinero.idtipomovimientointerno',6)
+        ->where('cvmovimientointernodinero.idresponsable','<>',0)
+        ->where($where)
+        ->sum('cvmovimientointernodinero.monto');
+    $dep_reservacf_caja_total = DB::table('cvmovimientointernodinero')
+        ->where('cvmovimientointernodinero.idestadoeliminado',1)
+        ->where('cvmovimientointernodinero.idfuenteretiro',3)
+        ->where('cvmovimientointernodinero.idtipomovimientointerno',6)
+        ->where('cvmovimientointernodinero.idresponsable','<>',0)
+        ->where($where)
+        ->sum('cvmovimientointernodinero.monto');
 
-            
-              'ingresoyegresobanco_egreso_crediticio' => number_format($ingresoyegresobanco_egreso_crediticio, 2, '.', ''),
-              'ingresoyegresobanco_egreso_crediticio_bancos' => $ingresoyegresobanco_egreso_crediticio_bancos,
-              'ingresoyegresobanco_egreso_crediticio_validacion' => $ingresoyegresobanco_egreso_crediticio_validacion,
-              'ingresoyegresobanco_egreso_crediticio_validacion_cantidad' => $ingresoyegresobanco_egreso_crediticio_validacion_cantidad,
-              'ingresoyegresobanco_egreso_reduccioncapital' => number_format($ingresoyegresobanco_egreso_reduccioncapital, 2, '.', ''),
-              'ingresoyegresobanco_egreso_reduccioncapital_bancos' => $ingresoyegresobanco_egreso_reduccioncapital_bancos,
-              'ingresoyegresobanco_egreso_reduccioncapital_validacion' => $ingresoyegresobanco_egreso_reduccioncapital_validacion,
-              'ingresoyegresobanco_egreso_reduccioncapital_validacion_cantidad' => $ingresoyegresobanco_egreso_reduccioncapital_validacion_cantidad,
-              'ingresoyegresobanco_egreso_gastosadministrativosyoperativos' => number_format($ingresoyegresobanco_egreso_gastosadministrativosyoperativos, 2, '.', ''),
-              'ingresoyegresobanco_egreso_gastosadministrativosyoperativos_bancos' => $ingresoyegresobanco_egreso_gastosadministrativosyoperativos_bancos,
-              'ingresoyegresobanco_egreso_gastosadministrativosyoperativos_validacion' => $ingresoyegresobanco_egreso_gastosadministrativosyoperativos_validacion,
-              'ingresoyegresobanco_egreso_gastosadministrativosyoperativos_validacion_cantidad' => $ingresoyegresobanco_egreso_gastosadministrativosyoperativos_validacion_cantidad,
-            
-              'ret_reservacf_caja' => number_format($ret_reservacf_caja, 2, '.', ''),
-              'ret_banco_caja' => number_format($ret_banco_caja, 2, '.', ''),
-              'ret_banco_caja_bancos' => $ret_banco_caja_bancos,
-              'ret_caja_reservacf' => number_format($ret_caja_reservacf, 2, '.', ''),
-              'ret_caja_banco' => number_format($ret_caja_banco, 2, '.', ''),
-              'ret_caja_banco_bancos' => $ret_caja_banco_bancos,
-              'ret_banco_reservacf' => number_format($ret_banco_reservacf, 2, '.', ''),
-              'ret_banco_reservacf_bancos' => $ret_banco_reservacf_bancos,
-              'ret_reservacf_caja_total' => number_format($ret_reservacf_caja_total, 2, '.', ''),
-              'ret_caja_reservacf_total' => number_format($ret_caja_reservacf_total, 2, '.', ''),
 
-              'dep_caja_reservacf' => number_format($dep_caja_reservacf, 2, '.', ''),
-              'dep_caja_banco' => number_format($dep_caja_banco, 2, '.', ''),
-              'dep_caja_banco_bancos' => $dep_caja_banco_bancos,
-              'dep_reservacf_caja' => number_format($dep_reservacf_caja, 2, '.', ''),
-              'dep_banco_caja' => number_format($dep_banco_caja, 2, '.', ''),
-              'dep_banco_caja_bancos' => $dep_banco_caja_bancos,
-              'dep_reservacf_banco' => number_format($dep_reservacf_banco, 2, '.', ''),
-              'dep_reservacf_banco_bancos' => $dep_reservacf_banco_bancos,
-              'dep_caja_reservacf_total' => number_format($dep_caja_reservacf_total, 2, '.', ''),
-              'dep_reservacf_caja_total' => number_format($dep_reservacf_caja_total, 2, '.', ''),
-            
-              'habilitacion_gestion_liquidez1' => number_format($habilitacion_gestion_liquidez1, 2, '.', ''),
-              'habilitacion_gestion_liquidez2' => number_format($habilitacion_gestion_liquidez2, 2, '.', ''),
-              'cierre_caja_apertura' => number_format($cierre_caja_apertura, 2, '.', ''),
-     
-              'saldos_capitalasignada' => number_format($saldos_capitalasignada, 2, '.', ''),
-              'saldos_cuentabanco' => number_format($saldos_cuentabanco, 2, '.', ''),
-              'saldos_cuentabanco_bancos' => $saldos_cuentabanco_bancos,
-              'saldos_reserva' => number_format($saldos_reserva, 2, '.', ''),
-              'saldos_caja' => number_format($saldos_caja, 2, '.', ''),
-              'arqueo_caja' => number_format($arqueo_caja, 2, '.', ''),
-              'saldos_creditovigente_cnp' => number_format($saldos_creditovigente_cnp, 2, '.', ''),
-              'saldos_creditovigente_cp' => number_format($saldos_creditovigente_cp, 2, '.', ''),
-              'saldos_creditovigente' => number_format($saldos_creditovigente, 2, '.', ''),
-              'saldos_interescreditovigentexcobrar_cnp' => number_format($saldos_interescreditovigentexcobrar_cnp, 2, '.', ''),
-              'saldos_interescreditovigentexcobrar_cp' => number_format($saldos_interescreditovigentexcobrar_cp, 2, '.', ''),
-              'saldos_interescreditovigentexcobrar' => number_format($saldos_interescreditovigentexcobrar, 2, '.', ''),
-              'saldos_ahorros' => number_format($saldos_ahorros, 2, '.', ''),
-              'saldos_interesgeneradosxpagar_ahorropf' => number_format($saldos_interesgeneradosxpagar_ahorropf, 2, '.', ''),
-              'saldos_interesgeneradosxpagar_interescuentaahorropdfprogramadas' => number_format($saldos_interesgeneradosxpagar_interescuentaahorropdfprogramadas, 2, '.', ''),
-              'saldos_interesgeneradosxpagar_ahorrocorriente' => number_format($saldos_interesgeneradosxpagar_ahorrocorriente, 2, '.', ''),
-              'saldos_interesgeneradosxpagar_interescuentaahorrocgeneradas' => number_format($saldos_interesgeneradosxpagar_interescuentaahorrocgeneradas, 2, '.', ''),
-              'saldos_interesgeneradosxpagar' => number_format($saldos_interesgeneradosxpagar, 2, '.', ''),
+    if($ret_reservacf_caja_total!=$dep_caja_reservacf_total){
+        $valid_habilitacion++;
+    }
+    if($ret_caja_reservacf_total!=$dep_reservacf_caja_total){
+        $valid_habilitacion++;
+    }
+    
+    $cierre_caja_apertura = $ret_reservacf_caja_total+
+                            $ret_caja_reservacf_total-
+                            $dep_caja_reservacf_total-
+                            $dep_reservacf_caja_total;
+    
+    // --------------------------------------- //
+    // ----------- SALDOS  FINALES ----------- //
+    // --------------------------------------- //
+    
+    $where = [];
+    if($idagencia!=''){
+        $where[] = ['arqueocaja.idagencia',$idagencia];
+    }
+    if($fechacorte!=''){
+        $where[] = ['arqueocaja.corte',$fechacorte];
+    }
+    $arqueo_caja = DB::table('arqueocaja')
+        ->where('arqueocaja.idestado',1)
+        ->where($where)
+        ->sum('arqueocaja.total');
 
-              'total_efectivo_ejercicio' => number_format($total_efectivo_ejercicio, 2, '.', ''),
-              'incremental_capital_asignado' => number_format($incremental_capital_asignado, 2, '.', ''),
-            
-              'spread_financiero_proyectado' => number_format($spread_financiero_proyectado, 2, '.', ''),
-              'indicador_reserva_legal' => number_format($indicador_reserva_legal, 2, '.', ''),
-            
-              'validacion_operaciones_cuenta_banco' => $validacion_operaciones_cuenta_banco,
-              'efectivo_caja_corte' => number_format($efectivo_caja_corte, 2, '.', ''),
-              'efectivo_caja_arqueo' => number_format($efectivo_caja_arqueo, 2, '.', ''),
-              'resultado' => number_format($resultado, 2, '.', ''),
-   
-          ];
+    $where1 = [];
+    $where2 = [];
+    $where3 = [];
+    $where4 = [];
+    $where5 = [];
+    $where6 = [];
+    if($idagencia!=''){
+        $where1[] = ['credito_cobranzacuota.idtienda',$idagencia];
+        $where2[] = ['credito.idtienda',$idagencia];
+        $where3[] = ['cvasignacioncapital.idtienda',$idagencia];
+        $where4[] = ['cvmovimientointernodinero.idtienda',$idagencia];
+        $where5[] = ['cvgastoadministrativooperativo.idtienda',$idagencia];
+        $where6[] = ['cvingresoextraordinario.idtienda',$idagencia];
+    }
+    if($fechacorte!=''){
+        $where1[] = ['credito_cobranzacuota.fecharegistro','<=',$fechacorte.' 23:59:59'];
+        $where2[] = ['credito_formapago.fechapago','<=',$fechacorte.' 23:59:59'];
+        $where3[] = ['cvasignacioncapital.fecharegistro','<=',$fechacorte.' 23:59:59'];
+        $where4[] = ['cvmovimientointernodinero.fecharegistro','<=',$fechacorte.' 23:59:59'];
+        $where5[] = ['cvgastoadministrativooperativo.fechapago','<=',$fechacorte.' 23:59:59'];
+        $where6[] = ['cvingresoextraordinario.fechapago','<=',$fechacorte.' 23:59:59'];
+    }
+
+    $saldos_cuentabanco = 0;
+    $saldos_cuentabanco_bancos = [];
+    foreach($bancos as $valuebancos){
+    
+        $saldos_capitalasignada_1 = DB::table('cvasignacioncapital')
+            ->where('cvasignacioncapital.idestadoeliminado',1)
+            ->where('cvasignacioncapital.idresponsable_recfinal', '<>', 0)
+            ->whereIn('cvasignacioncapital.idtipooperacion',[1,4])
+            ->where('cvasignacioncapital.idbanco',$valuebancos->id)
+            ->where($where3)
+            ->sum('cvasignacioncapital.monto');
+    
+        $saldos_capitalasignada_2 = DB::table('cvasignacioncapital')
+            ->where('cvasignacioncapital.idestadoeliminado',1)
+            ->where('cvasignacioncapital.idresponsable_recfinal', '<>', 0)
+            ->whereIn('cvasignacioncapital.idtipooperacion',[2])
+            ->where('cvasignacioncapital.idbanco',$valuebancos->id)
+            ->where($where3)
+            ->sum('cvasignacioncapital.monto'); 
+    
+        $cobranzas = 0; 
+        $desembolsos = 0;
+    
+        $movimientointernodineros1 = DB::table('cvmovimientointernodinero')
+            ->where('cvmovimientointernodinero.idestadoeliminado',1)
+            ->where('cvmovimientointernodinero.idfuenteretiro',7)
+            ->where('cvmovimientointernodinero.idbanco',$valuebancos->id)
+            ->where($where4)
+            ->sum('cvmovimientointernodinero.monto');
+    
+        $movimientointernodineros2 = DB::table('cvmovimientointernodinero')
+            ->where('cvmovimientointernodinero.idestadoeliminado',1)
+            ->where('cvmovimientointernodinero.idfuenteretiro',9)
+            ->where('cvmovimientointernodinero.idbanco',$valuebancos->id)
+            ->where($where4)
+            ->sum('cvmovimientointernodinero.monto');
+    
+        $movimientointernodineros5 = DB::table('cvmovimientointernodinero')
+            ->where('cvmovimientointernodinero.idestadoeliminado',1)
+            ->where('cvmovimientointernodinero.idfuenteretiro',10)
+            ->where('cvmovimientointernodinero.idbanco',$valuebancos->id)
+            ->where($where4)
+            ->sum('cvmovimientointernodinero.monto');
+    
+        $gastosadministrativosyoperativos_monto = DB::table('cvgastoadministrativooperativo')
+            ->where('cvgastoadministrativooperativo.idformapago',2) 
+            ->where('cvgastoadministrativooperativo.idestadoeliminado',1) 
+            ->where('cvgastoadministrativooperativo.idbanco',$valuebancos->id)
+            ->where($where5)
+            ->sum('cvgastoadministrativooperativo.monto');
+    
+        $ingresosextraordinarios_monto = DB::table('cvingresoextraordinario')
+            ->where('cvingresoextraordinario.idformapago',2) 
+            ->where('cvingresoextraordinario.idestadoeliminado',1) 
+            ->where('cvingresoextraordinario.idbanco',$valuebancos->id)
+            ->where($where6)
+            ->sum('cvingresoextraordinario.monto');
+    
+        $saldos_cuentabanco += number_format($saldos_capitalasignada_1-
+                                            $saldos_capitalasignada_2+
+                                            $cobranzas-
+                                            $desembolsos-
+                                            $movimientointernodineros1+
+                                            $movimientointernodineros2-
+                                            $movimientointernodineros5-
+                                            $gastosadministrativosyoperativos_monto+
+                                            $ingresosextraordinarios_monto
+                                            , 2, '.', '');
+
+
+        $saldos_cuentabanco_bancos[] = [
+            'banco_id' => $valuebancos->id,
+            'banco_nombre' => $valuebancos->nombre,
+            'banco_cuenta' => '(******'.substr($valuebancos->cuenta, -5).')',
+            'banco' => number_format($saldos_capitalasignada_1-
+                                    $saldos_capitalasignada_2+
+                                    $cobranzas-$desembolsos-
+                                    $movimientointernodineros1+
+                                    $movimientointernodineros2-
+                                    $movimientointernodineros5-
+                                    $gastosadministrativosyoperativos_monto+
+                                    $ingresosextraordinarios_monto
+                                    , 2, '.', ''),
+        ];
+    }
+    
+    $where = [];
+    $where1 = [];
+    $where2 = [];
+    $where3 = [];
+    $where4 = [];
+    if($idagencia!=''){
+        $where[] = ['cvasignacioncapital.idtienda',$idagencia];
+        $where1[] = ['credito.idtienda',$idagencia];
+        $where2[] = ['cvingresoextraordinario.idtienda',$idagencia];
+        $where3[] = ['credito.idtienda',$idagencia];
+        $where4[] = ['cvgastoadministrativooperativo.idtienda',$idagencia];
+    }
+    if($fechacorte!=''){
+        $where[] = ['cvasignacioncapital.fecharegistro','<=',$fechacorte.' 23:59:59'];
+        $where1[] = ['credito_cobranzacuota.fecharegistro','<=',$fechacorte.' 23:59:59'];
+        $where2[] = ['cvingresoextraordinario.fechapago','<=',$fechacorte.' 23:59:59'];
+        $where3[] = ['credito_formapago.fechapago','<=',$fechacorte.' 23:59:59'];
+        $where4[] = ['cvgastoadministrativooperativo.fechapago','<=',$fechacorte.' 23:59:59'];
+    }
+
+    $asignacioncapital_deposito_reserva = DB::table('cvasignacioncapital')
+        ->where('cvasignacioncapital.idtipodestino',2)
+        ->where('cvasignacioncapital.idestadoeliminado',1)
+        ->where('cvasignacioncapital.idresponsable_recfinal', '<>', 0)
+        ->whereIn('cvasignacioncapital.idtipooperacion',[1,4])
+        ->where($where)
+        ->sum('cvasignacioncapital.monto');
+    $asignacioncapital_retiro_reserva = DB::table('cvasignacioncapital')
+        ->where('cvasignacioncapital.idtipodestino',2)
+        ->where('cvasignacioncapital.idestadoeliminado',1)
+        ->where('cvasignacioncapital.idresponsable_recfinal', '<>', 0)
+        ->where('cvasignacioncapital.idtipooperacion',2)
+        ->where($where)
+        ->sum('cvasignacioncapital.monto');
+    $saldos_reserva = $asignacioncapital_deposito_reserva-
+        $asignacioncapital_retiro_reserva-
+        $ret_reservacf_caja+
+        $ret_caja_reservacf+
+        $ret_banco_reservacf;
+
+    $asignacioncapital_deposito_caja = DB::table('cvasignacioncapital')
+        ->where('cvasignacioncapital.idtipodestino',1)
+        ->where('cvasignacioncapital.idestadoeliminado',1)
+        ->where('cvasignacioncapital.idresponsable_recfinal', '<>', 0)
+        ->where('cvasignacioncapital.idtipooperacion',4)
+        ->where($where)
+        ->sum('cvasignacioncapital.monto');
+    $asignacioncapital_retiro_caja = DB::table('cvasignacioncapital')
+        ->where('cvasignacioncapital.idtipodestino',1)
+        ->where('cvasignacioncapital.idestadoeliminado',1)
+        ->where('cvasignacioncapital.idresponsable_recfinal', '<>', 0)
+        ->where('cvasignacioncapital.idtipooperacion',2)
+        ->where($where)
+        ->sum('cvasignacioncapital.monto');
+    /* $ingresoyegresocaja_ingreso_crediticio_cps = DB::table('credito_cobranzacuota')
+        ->join('credito','credito.id','credito_cobranzacuota.idcredito')
+        ->where('credito_cobranzacuota.idestadocredito_cobranzacuota',1)
+        ->where('credito_cobranzacuota.idestadoextorno',0)
+        ->where('credito_cobranzacuota.idformapago',1)
+        ->where($where1)
+        ->select(
+            'credito_cobranzacuota.*',
+        )
+        ->get(); */
+    $ingresoyegresocaja_ingreso_crediticio_saldofinal = 0;
+    /* foreach($ingresoyegresocaja_ingreso_crediticio_cps as $value){
+        $ingresoyegresocaja_ingreso_crediticio_saldofinal += $value->total_pagar_amortizacion+
+            $value->total_pagar_interes+
+            $value->total_pagar_comision+$value->total_pagar_cargo+
+            $value->total_pagar_tenencia+$value->total_pagar_penalidad+$value->total_pagar_compensatorio;
+    } */
+    $ingresoyegresocaja_ingreso_incrementocapital_saldofinal = DB::table('cvasignacioncapital')
+        ->where('cvasignacioncapital.idtipodestino',1)
+        ->where('cvasignacioncapital.idestadoeliminado',1)
+        ->where('cvasignacioncapital.idresponsable_recfinal', '<>', 0)
+        ->where('cvasignacioncapital.idtipooperacion',1)
+        ->where($where)
+        ->sum('cvasignacioncapital.monto');
+    $ingresoyegresocaja_ingreso_ingresosextraordinarios_saldofinal = DB::table('cvingresoextraordinario')
+        ->where('cvingresoextraordinario.idformapago',1) 
+        ->where('cvingresoextraordinario.idestadoeliminado',1) 
+        ->where($where2)
+        ->sum('cvingresoextraordinario.monto');
+    $ingresoyegresocaja_egreso_crediticio_saldofinal = 0;
+    /* DB::table('credito_formapago')
+        ->join('credito','credito.id','credito_formapago.idcredito')
+        ->where('credito_formapago.idformapago',1)
+        ->where('credito.estado','DESEMBOLSADO')
+        ->where($where3)
+        ->sum('credito.monto_solicitado'); */
+    $ingresoyegresocaja_egreso_reduccioncapital_saldocapital = DB::table('cvasignacioncapital')
+        ->whereIn('cvasignacioncapital.idtipodestino',[0,1])
+        ->where('cvasignacioncapital.idestadoeliminado',1)
+        ->where('cvasignacioncapital.idresponsable_recfinal', '<>', 0)
+        ->where('cvasignacioncapital.idtipooperacion',2)
+        ->where($where)
+        ->sum('cvasignacioncapital.monto');
+    $ingresoyegresocaja_egreso_gastosadministrativosyoperativos_saldocapital = DB::table('cvgastoadministrativooperativo')
+        ->where('cvgastoadministrativooperativo.idformapago',1) 
+        ->where('cvgastoadministrativooperativo.idestadoeliminado',1) 
+        ->where($where4)
+        ->sum('cvgastoadministrativooperativo.monto');
+
+    /* dd($asignacioncapital_deposito_caja,
+        $asignacioncapital_retiro_caja,
+        $ret_reservacf_caja,
+        $ret_banco_caja,
+        $ret_caja_reservacf,
+        $ret_caja_banco,
+        $ingresoyegresocaja_ingreso_crediticio_saldofinal,
+        $ingresoyegresocaja_ingreso_ahorro,
+        $ingresoyegresocaja_ingreso_incrementocapital_saldofinal,
+        $ingresoyegresocaja_ingreso_ingresosextraordinarios_saldofinal,
+        $ingresoyegresocaja_egreso_crediticio_saldofinal,
+        $ingresoyegresocaja_egreso_ahorro,
+        $ingresoyegresocaja_egreso_reduccioncapital_saldocapital,
+        $ingresoyegresocaja_egreso_gastosadministrativosyoperativos_saldocapital); */
+    $saldos_caja = $asignacioncapital_deposito_caja-
+        $asignacioncapital_retiro_caja+
+        $ret_reservacf_caja+
+        $ret_banco_caja-
+        $ret_caja_reservacf-
+        $ret_caja_banco+
+        $ingresoyegresocaja_ingreso_crediticio_saldofinal+
+        $ingresoyegresocaja_ingreso_ahorro+
+        $ingresoyegresocaja_ingreso_incrementocapital_saldofinal+
+        $ingresoyegresocaja_ingreso_ingresosextraordinarios_saldofinal-
+        $ingresoyegresocaja_egreso_crediticio_saldofinal-
+        $ingresoyegresocaja_egreso_ahorro-
+        $ingresoyegresocaja_egreso_reduccioncapital_saldocapital-
+        $ingresoyegresocaja_egreso_gastosadministrativosyoperativos_saldocapital;
+        /*+
+        $dep_caja_reservacf+
+        $dep_caja_banco-
+        $dep_reservacf_caja-
+        $dep_banco_caja;*/
+    
+    
+    $where = [];
+    if($idagencia!=''){
+        $where[] = ['credito.idtienda',$idagencia];
+    }
+    if($fechacorte!=''){
+        $where[] = ['credito.fecha_desembolso','<=',$fechacorte];
+    }
+    
+    $saldos_creditovigente_cnp = 0;
+    /*DB::table('credito')
+        ->where('credito.estado','DESEMBOLSADO')
+        ->where('credito.idestadocredito',1)
+        ->where('credito.idforma_credito',2)
+        ->where($where)
+        ->sum('credito.saldo_pendientepago');*/
+    $saldos_creditovigente_cp = 0;
+    /*DB::table('credito')
+        ->where('credito.estado','DESEMBOLSADO')
+        ->where('credito.idestadocredito',1)
+        ->where('credito.idforma_credito',1)
+        ->where($where)
+        ->sum('credito.saldo_pendientepago');*/
+    $saldos_creditovigente = $saldos_creditovigente_cnp+
+                            $saldos_creditovigente_cp;
+    
+    $saldos_bienescomprados = 0;
+    
+    $saldos_interescreditovigentexcobrar_cnp = 0;
+    /*DB::table('credito_cronograma')
+        ->join('credito','credito.id','credito_cronograma.idcredito')
+        ->where('credito_cronograma.idestadocronograma_pago',0)
+        ->where('credito.estado','DESEMBOLSADO')
+        ->where('credito.idestadocredito',1)
+        ->where('credito.idforma_credito',2)
+        ->where($where)
+        ->sum('credito_cronograma.interes');*/
+    $saldos_interescreditovigentexcobrar_cp = 0;
+    /* DB::table('credito_cronograma')
+        ->join('credito','credito.id','credito_cronograma.idcredito')
+        ->where('credito_cronograma.idestadocronograma_pago',0)
+        ->where('credito.estado','DESEMBOLSADO')
+        ->where('credito.idestadocredito',1)
+        ->where('credito.idforma_credito',1)
+        ->where($where)
+        ->sum('credito_cronograma.interes'); */
+    $saldos_interescreditovigentexcobrar = $saldos_interescreditovigentexcobrar_cnp+
+                                            $saldos_interescreditovigentexcobrar_cp;
+    $saldos_ahorros = 0;
+    $saldos_interesgeneradosxpagar_ahorropf = 0;
+    $saldos_interesgeneradosxpagar_interescuentaahorropdfprogramadas = 0;
+    $saldos_interesgeneradosxpagar_ahorrocorriente = 0;
+    $saldos_interesgeneradosxpagar_interescuentaahorrocgeneradas = 0;
+    $saldos_interesgeneradosxpagar = $saldos_interesgeneradosxpagar_ahorropf+
+                                    $saldos_interesgeneradosxpagar_interescuentaahorropdfprogramadas+
+                                    $saldos_interesgeneradosxpagar_ahorrocorriente+
+                                    $saldos_interesgeneradosxpagar_interescuentaahorrocgeneradas;
+    
+    $where = [];
+    if($idagencia!=''){
+        $where[] = ['cvasignacioncapital.idtienda',$idagencia];
+    }
+    if($fechacorte!=''){
+        $where[] = ['cvasignacioncapital.fecharegistro','<=',$fechacorte.' 23:59:59'];
+    }
+    /*$ret_correc = DB::table('asignacioncapital')
+        ->where('asignacioncapital.idestadoeliminado',1)
+        ->where('asignacioncapital.idtipooperacion',3)
+        ->where($where)
+        ->sum('asignacioncapital.monto');
+    $saldos_capitalasignada = $saldos_cuentabanco+$saldos_reserva+$saldos_caja-$ret_correc;*/
+    
+    $monto_suma = DB::table('cvasignacioncapital')
+        ->where('cvasignacioncapital.idestadoeliminado',1)
+        ->whereIn('cvasignacioncapital.idtipooperacion',[1,4])
+        ->where('cvasignacioncapital.idresponsable_recfinal','<>',0)
+        ->where('cvasignacioncapital.idtienda',$idagencia)
+        ->where($where)
+        ->sum('cvasignacioncapital.monto');
+
+    $monto_resta = DB::table('cvasignacioncapital')
+        ->where('cvasignacioncapital.idestadoeliminado',1)
+        ->whereIn('cvasignacioncapital.idtipooperacion',[2,3])
+        ->where('cvasignacioncapital.idresponsable_recfinal','<>',0)
+        ->where('cvasignacioncapital.idtienda',$idagencia)
+        ->where($where)
+        ->sum('cvasignacioncapital.monto');
+    $saldos_capitalasignada = $monto_suma-$monto_resta;
+    
+    $total_efectivo_ejercicio = $saldos_cuentabanco+$saldos_reserva+$saldos_caja+$saldos_creditovigente;
+    $incremental_capital_asignado = $total_efectivo_ejercicio-$saldos_capitalasignada;
+    
+    $spread_financiero_proyectado = $saldos_interesgeneradosxpagar;
+    $indicador_reserva_legal = ($saldos_cuentabanco+$saldos_caja);
+
+    $validacion_operaciones_cuenta_banco = '';
+    //dd($validacion_operaciones_cuenta_banco_cant);
+    if($validacion_operaciones_cuenta_banco_cant==0 && 
+        $validacion_cantidad==0){
+        //dd($valid_habilitacion);
+        if($valid_habilitacion>0){
+            $validacion_operaciones_cuenta_banco = 'PENDIENTE';
+        }else{
+            $validacion_operaciones_cuenta_banco = 'SIN OPERACIONES';
+        }
+    }
+    /*elseif(($validacion_operaciones_cuenta_banco_cant>0 && 
+            $validacion_operaciones_cuenta_banco_cant<$validacion_cantidad) ||
+        ){*/
+    elseif($validacion_operaciones_cuenta_banco_cant!=$validacion_cantidad){
+        $validacion_operaciones_cuenta_banco = 'PENDIENTE';
+    }
+    elseif($validacion_operaciones_cuenta_banco_cant==$validacion_cantidad){
+        $validacion_operaciones_cuenta_banco = 'VERIFICADO';
+    }
+
+    $efectivo_caja_corte = $saldos_caja;
+    $efectivo_caja_arqueo = 0;
+    $resultado = $efectivo_caja_arqueo-$efectivo_caja_corte;
+    
+    $data = [
+        'tienda' => $tienda,
+        'agencia' => $agencia,
+        'bancos' => $bancos,
+        'corte' => date("d-m-Y",strtotime(date($fechacorte))),
+    
+        'ingresoyegresocaja_ingreso_crediticio_cnp_capital' => number_format($ingresoyegresocaja_ingreso_crediticio_cnp_capital, 2, '.', ''),
+        'ingresoyegresocaja_ingreso_crediticio_cnp_interes' => number_format($ingresoyegresocaja_ingreso_crediticio_cnp_interes, 2, '.', ''),
+        'ingresoyegresocaja_ingreso_crediticio_cnp_desgravcargo' => number_format($ingresoyegresocaja_ingreso_crediticio_cnp_desgravcargo, 2, '.', ''),
+        'ingresoyegresocaja_ingreso_crediticio_cnp_tenencxc' => number_format($ingresoyegresocaja_ingreso_crediticio_cnp_tenencxc, 2, '.', ''),
+        'ingresoyegresocaja_ingreso_crediticio_cnp' => number_format($ingresoyegresocaja_ingreso_crediticio_cnp, 2, '.', ''),   
+        'ingresoyegresocaja_ingreso_crediticio_cp_capital' => number_format($ingresoyegresocaja_ingreso_crediticio_cp_capital, 2, '.', ''),
+        'ingresoyegresocaja_ingreso_crediticio_cp_interes' => number_format($ingresoyegresocaja_ingreso_crediticio_cp_interes, 2, '.', ''),
+        'ingresoyegresocaja_ingreso_crediticio_cp_desgravcargo' => number_format($ingresoyegresocaja_ingreso_crediticio_cp_desgravcargo, 2, '.', ''),
+        'ingresoyegresocaja_ingreso_crediticio_cp_tenencxc' => number_format($ingresoyegresocaja_ingreso_crediticio_cp_tenencxc, 2, '.', ''),
+        'ingresoyegresocaja_ingreso_crediticio_cp' => number_format($ingresoyegresocaja_ingreso_crediticio_cp, 2, '.', ''),
+        'ingresoyegresocaja_ingreso_ahorro_plazofijo' => number_format($ingresoyegresocaja_ingreso_ahorro_plazofijo, 2, '.', ''),
+        'ingresoyegresocaja_ingreso_ahorro_ahorroc' => number_format($ingresoyegresocaja_ingreso_ahorro_ahorroc, 2, '.', ''),
+        'ingresoyegresocaja_ingreso_ahorro' => number_format($ingresoyegresocaja_ingreso_ahorro, 2, '.', ''),
+        'ingresoyegresocaja_ingreso_incrementocapital' => number_format($ingresoyegresocaja_ingreso_incrementocapital, 2, '.', ''),
+        'ingresoyegresocaja_ingreso_ingresosextraordinarios' => number_format($ingresoyegresocaja_ingreso_ingresosextraordinarios, 2, '.', ''),
+        'ingresoyegresocaja_ingreso_crediticio' => number_format($ingresoyegresocaja_ingreso_crediticio, 2, '.', ''),
+        'ingresoyegresocaja_ingreso_crediticio_transitorio' => number_format($ingresoyegresocaja_ingreso_crediticio_transitorio, 2, '.', ''),
+        'ingresoyegresocaja_ingreso_cvventa' => number_format($ingresoyegresocaja_ingreso_cvventa, 2, '.', ''),
+        
+        'ingresoyegresocaja_egreso_crediticio' => number_format($ingresoyegresocaja_egreso_crediticio, 2, '.', ''),
+        'ingresoyegresocaja_egreso_ahorro_plazofijo' => number_format($ingresoyegresocaja_egreso_ahorro_plazofijo, 2, '.', ''),
+        'ingresoyegresocaja_egreso_ahorro_intplazofijo' => number_format($ingresoyegresocaja_egreso_ahorro_intplazofijo, 2, '.', ''),
+        'ingresoyegresocaja_egreso_ahorro_ahorrocte' => number_format($ingresoyegresocaja_egreso_ahorro_ahorrocte, 2, '.', ''),
+        'ingresoyegresocaja_egreso_ahorro_intcte' => number_format($ingresoyegresocaja_egreso_ahorro_intcte, 2, '.', ''),
+        'ingresoyegresocaja_egreso_ahorro' => number_format($ingresoyegresocaja_egreso_ahorro, 2, '.', ''),
+        'ingresoyegresocaja_egreso_reduccioncapital' => number_format($ingresoyegresocaja_egreso_reduccioncapital, 2, '.', ''),
+        'ingresoyegresocaja_egreso_gastosadministrativosyoperativos' => number_format($ingresoyegresocaja_egreso_gastosadministrativosyoperativos, 2, '.', ''),
+        'ingresoyegresocaja_egreso_cvcompra' => number_format($ingresoyegresocaja_egreso_cvcompra, 2, '.', ''),
+
+        'ingresoyegresobanco_ingreso_crediticio_cnpcp' => number_format($ingresoyegresobanco_ingreso_crediticio_cnpcp, 2, '.', ''),
+        'ingresoyegresobanco_ingreso_crediticio_cnpcps_bancos' => $ingresoyegresobanco_ingreso_crediticio_cnpcps_bancos,
+        'ingresoyegresobanco_ingreso_crediticio_cnpcps_validacion' => $ingresoyegresobanco_ingreso_crediticio_cnpcps_validacion,
+        'ingresoyegresobanco_ingreso_crediticio_cnpcps_validacion_cantidad' => $ingresoyegresobanco_ingreso_crediticio_cnpcps_validacion_cantidad,
+        'ingresoyegresobanco_ingreso_incrementocapital' => number_format($ingresoyegresobanco_ingreso_incrementocapital, 2, '.', ''),
+        'ingresoyegresobanco_ingreso_incrementocapital_bancos' => $ingresoyegresobanco_ingreso_incrementocapital_bancos,
+        'ingresoyegresobanco_ingreso_incrementocapital_validacion' => $ingresoyegresobanco_ingreso_incrementocapital_validacion,
+        'ingresoyegresobanco_ingreso_incrementocapital_validacion_cantidad' => $ingresoyegresobanco_ingreso_incrementocapital_validacion_cantidad,
+        'ingresoyegresobanco_ingreso_ingresosextraordinarios' => number_format($ingresoyegresobanco_ingreso_ingresosextraordinarios, 2, '.', ''),
+        'ingresoyegresobanco_ingreso_ingresosextraordinarios_bancos' => $ingresoyegresobanco_ingreso_ingresosextraordinarios_bancos,
+        'ingresoyegresobanco_ingreso_ingresosextraordinarios_validacion' => $ingresoyegresobanco_ingreso_ingresosextraordinarios_validacion,
+        'ingresoyegresobanco_ingreso_ingresosextraordinarios_validacion_cantidad' => $ingresoyegresobanco_ingreso_ingresosextraordinarios_validacion_cantidad,
+        'ingresoyegresobanco_ingreso_cvventa' => number_format($ingresoyegresobanco_ingreso_cvventa, 2, '.', ''),
+
+        'ingresoyegresobanco_egreso_crediticio' => number_format($ingresoyegresobanco_egreso_crediticio, 2, '.', ''),
+        'ingresoyegresobanco_egreso_crediticio_bancos' => $ingresoyegresobanco_egreso_crediticio_bancos,
+        'ingresoyegresobanco_egreso_crediticio_validacion' => $ingresoyegresobanco_egreso_crediticio_validacion,
+        'ingresoyegresobanco_egreso_crediticio_validacion_cantidad' => $ingresoyegresobanco_egreso_crediticio_validacion_cantidad,
+        'ingresoyegresobanco_egreso_reduccioncapital' => number_format($ingresoyegresobanco_egreso_reduccioncapital, 2, '.', ''),
+        'ingresoyegresobanco_egreso_reduccioncapital_bancos' => $ingresoyegresobanco_egreso_reduccioncapital_bancos,
+        'ingresoyegresobanco_egreso_reduccioncapital_validacion' => $ingresoyegresobanco_egreso_reduccioncapital_validacion,
+        'ingresoyegresobanco_egreso_reduccioncapital_validacion_cantidad' => $ingresoyegresobanco_egreso_reduccioncapital_validacion_cantidad,
+        'ingresoyegresobanco_egreso_gastosadministrativosyoperativos' => number_format($ingresoyegresobanco_egreso_gastosadministrativosyoperativos, 2, '.', ''),
+        'ingresoyegresobanco_egreso_gastosadministrativosyoperativos_bancos' => $ingresoyegresobanco_egreso_gastosadministrativosyoperativos_bancos,
+        'ingresoyegresobanco_egreso_gastosadministrativosyoperativos_validacion' => $ingresoyegresobanco_egreso_gastosadministrativosyoperativos_validacion,
+        'ingresoyegresobanco_egreso_gastosadministrativosyoperativos_validacion_cantidad' => $ingresoyegresobanco_egreso_gastosadministrativosyoperativos_validacion_cantidad,
+        'ingresoyegresobanco_egreso_cvcompra' => number_format($ingresoyegresobanco_egreso_cvcompra, 2, '.', ''),
+    
+        'ret_reservacf_caja' => number_format($ret_reservacf_caja, 2, '.', ''),
+        'ret_banco_caja' => number_format($ret_banco_caja, 2, '.', ''),
+        'ret_banco_caja_bancos' => $ret_banco_caja_bancos,
+        'ret_caja_reservacf' => number_format($ret_caja_reservacf, 2, '.', ''),
+        'ret_caja_banco' => number_format($ret_caja_banco, 2, '.', ''),
+        'ret_caja_banco_bancos' => $ret_caja_banco_bancos,
+        'ret_banco_reservacf' => number_format($ret_banco_reservacf, 2, '.', ''),
+        'ret_banco_reservacf_bancos' => $ret_banco_reservacf_bancos,
+        'ret_reservacf_caja_total' => number_format($ret_reservacf_caja_total, 2, '.', ''),
+        'ret_caja_reservacf_total' => number_format($ret_caja_reservacf_total, 2, '.', ''),
+
+        'dep_caja_reservacf' => number_format($dep_caja_reservacf, 2, '.', ''),
+        'dep_caja_banco' => number_format($dep_caja_banco, 2, '.', ''),
+        'dep_caja_banco_bancos' => $dep_caja_banco_bancos,
+        'dep_reservacf_caja' => number_format($dep_reservacf_caja, 2, '.', ''),
+        'dep_banco_caja' => number_format($dep_banco_caja, 2, '.', ''),
+        'dep_banco_caja_bancos' => $dep_banco_caja_bancos,
+        'dep_reservacf_banco' => number_format($dep_reservacf_banco, 2, '.', ''),
+        'dep_reservacf_banco_bancos' => $dep_reservacf_banco_bancos,
+        'dep_caja_reservacf_total' => number_format($dep_caja_reservacf_total, 2, '.', ''),
+        'dep_reservacf_caja_total' => number_format($dep_reservacf_caja_total, 2, '.', ''),
+    
+        'habilitacion_gestion_liquidez1' => number_format($habilitacion_gestion_liquidez1, 2, '.', ''),
+        'habilitacion_gestion_liquidez2' => number_format($habilitacion_gestion_liquidez2, 2, '.', ''),
+        'cierre_caja_apertura' => number_format($cierre_caja_apertura, 2, '.', ''),
+
+        'saldos_capitalasignada' => number_format($saldos_capitalasignada, 2, '.', ''),
+        'saldos_cuentabanco' => number_format($saldos_cuentabanco, 2, '.', ''),
+        'saldos_cuentabanco_bancos' => $saldos_cuentabanco_bancos,
+        'saldos_reserva' => number_format($saldos_reserva, 2, '.', ''),
+        'saldos_caja' => number_format($saldos_caja, 2, '.', ''),
+        'arqueo_caja' => number_format($arqueo_caja, 2, '.', ''),
+        'saldos_creditovigente_cnp' => number_format($saldos_creditovigente_cnp, 2, '.', ''),
+        'saldos_creditovigente_cp' => number_format($saldos_creditovigente_cp, 2, '.', ''),
+        'saldos_creditovigente' => number_format($saldos_creditovigente, 2, '.', ''),
+        'saldos_bienescomprados' => number_format($saldos_bienescomprados, 2, '.', ''),
+        'saldos_interescreditovigentexcobrar_cnp' => number_format($saldos_interescreditovigentexcobrar_cnp, 2, '.', ''),
+        'saldos_interescreditovigentexcobrar_cp' => number_format($saldos_interescreditovigentexcobrar_cp, 2, '.', ''),
+        'saldos_interescreditovigentexcobrar' => number_format($saldos_interescreditovigentexcobrar, 2, '.', ''),
+        'saldos_ahorros' => number_format($saldos_ahorros, 2, '.', ''),
+        'saldos_interesgeneradosxpagar_ahorropf' => number_format($saldos_interesgeneradosxpagar_ahorropf, 2, '.', ''),
+        'saldos_interesgeneradosxpagar_interescuentaahorropdfprogramadas' => number_format($saldos_interesgeneradosxpagar_interescuentaahorropdfprogramadas, 2, '.', ''),
+        'saldos_interesgeneradosxpagar_ahorrocorriente' => number_format($saldos_interesgeneradosxpagar_ahorrocorriente, 2, '.', ''),
+        'saldos_interesgeneradosxpagar_interescuentaahorrocgeneradas' => number_format($saldos_interesgeneradosxpagar_interescuentaahorrocgeneradas, 2, '.', ''),
+        'saldos_interesgeneradosxpagar' => number_format($saldos_interesgeneradosxpagar, 2, '.', ''),
+
+        'total_efectivo_ejercicio' => number_format($total_efectivo_ejercicio, 2, '.', ''),
+        'incremental_capital_asignado' => number_format($incremental_capital_asignado, 2, '.', ''),
+    
+        'spread_financiero_proyectado' => number_format($spread_financiero_proyectado, 2, '.', ''),
+        'indicador_reserva_legal' => number_format($indicador_reserva_legal, 2, '.', ''),
+    
+        'validacion_operaciones_cuenta_banco' => $validacion_operaciones_cuenta_banco,
+        'efectivo_caja_corte' => number_format($efectivo_caja_corte, 2, '.', ''),
+        'efectivo_caja_arqueo' => number_format($efectivo_caja_arqueo, 2, '.', ''),
+        'resultado' => number_format($resultado, 2, '.', ''),
+
+    ];
     return $data;
 }
 function generateRandomString($length = 10) {

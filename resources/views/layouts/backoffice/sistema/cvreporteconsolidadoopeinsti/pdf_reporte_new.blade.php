@@ -139,7 +139,7 @@
               <th style="border-bottom: 2px solid #000;">Arqueo</th>
               <th style="border-bottom: 2px solid #000;">{{$co_actual['corte']}}</th>
               <th style="border-bottom: 2px solid #000;">Arqueo</th>
-              <th style="border-bottom: 2px solid #000;">{{$co_anterior?date("d-m-Y",strtotime(date($co_anterior->corte))):'0.00'}}</th>
+              <th style="border-bottom: 2px solid #000;text-align:right;">{{$co_anterior?date("d-m-Y",strtotime(date($co_anterior->corte))):'0.00'}}</th>
             </tr>
             <tr>
               <td style="text-align:left;width:80px;"><b>Saldos</b></td>
@@ -147,9 +147,9 @@
               <td colspan="4" style="border-bottom: 2px solid #000;text-align:left;">Capital Asignada</td>
               <td colspan="2" style="border-bottom: 2px solid #000;"></td>
               <td style="border-bottom: 2px solid #000;"></td>
-              <td style="border-bottom: 2px solid #000;text-align:right;"><b>{{$co_actual['saldos_capitalasignada']}}</b></td>
+              <td style="border-bottom: 2px solid #000;text-align:right;"><b>{{ $cvasignacioncapital }}</b></td>
               <td style="border-bottom: 2px solid #000;"></td>
-              <td style="border-bottom: 2px solid #000;text-align:right;"><b>{{$co_anterior?$co_anterior->saldos_capitalasignada:'0.00'}}</b></td>
+              <td style="border-bottom: 2px solid #000;text-align:right;"><b>0.00</b></td>
             </tr>
             <tr>
               <td></td>
@@ -157,19 +157,19 @@
               <td colspan="4" style="text-align:left;">Cuenta Banco</td>
               <td colspan="2"></td>
               <td></td>
-              <td style="border-bottom: 1px solid #000;text-align:right;"><b>{{$co_actual['saldos_cuentabanco']}}</b></td>
+              <td style="border-bottom: 1px solid #000;text-align:right;"><b>{{ $cvasignacioncapital_banco }}</b></td>
               <td></td>
-              <td style="border-bottom: 1px solid #000;text-align:right;"><b>{{$co_anterior?$co_anterior->saldos_cuentabanco:'0.00'}}</b></td>
+              <td style="border-bottom: 1px solid #000;text-align:right;"><b>0.00</b></td>
             </tr>
-            @foreach($co_actual['saldos_cuentabanco_bancos'] as $value)
+            @foreach($cvasignacioncapital_bancos as $value)
             <tr>
               <td></td>
               <td></td>
               <td style="width:50px;"></td>
-              <td colspan="4" style="text-align:left;">{{ $value['banco_nombre'] }}: {{ $value['banco_cuenta'] }}</td>
+              <td colspan="4" style="text-align:left;">{{ $value->banco }}: {{ $value->cuenta }}</td>
               <td></td>
               <td></td>
-              <td style="text-align:right;">{{ $value['banco'] }}</td>
+              <td style="text-align:right;">{{ $value->monto }}</td>
               <td></td>
               <td style="text-align:right;">0.00</td>
             </tr>
@@ -180,19 +180,19 @@
               <td colspan="4" style="text-align:left;">Reserva CF</td>
               <td colspan="2"></td>
               <td></td>
-              <td style="border-bottom: 1px solid #000;text-align:right;"><b>{{$co_actual['saldos_reserva']}}</b></td>
+              <td style="border-bottom: 1px solid #000;text-align:right;"><b>{{ $cvasignacioncapital_cf }}</b></td>
               <td></td>
-              <td style="border-bottom: 1px solid #000;text-align:right;"><b>{{$co_anterior?$co_anterior->saldos_reserva:'0.00'}}</b></td>
+              <td style="border-bottom: 1px solid #000;text-align:right;"><b>0.00</b></td>
             </tr>
             <tr>
               <td></td>
               <td></td>
               <td colspan="4" style="text-align:left;">Caja</td>
               <td colspan="2"></td>
-              <td style="text-align:right;"><b>{{$co_actual['arqueo_caja']}}</b></td>
-              <td style="border-bottom: 1px solid #000;text-align:right;"><b>{{$co_actual['saldos_caja']}}</b></td>
-              <td style="border-bottom: 2px solid #000;text-align:right;"><b>{{$co_anterior?$co_anterior->arqueo_caja:'0.00'}}</b></td>
-              <td style="border-bottom: 2px solid #000;text-align:right;"><b>{{$co_anterior?$co_anterior->saldos_caja:'0.00'}}</b></td>
+              <td style="text-align:right;"><b>0.00</b></td>
+              <td style="border-bottom: 1px solid #000;text-align:right;"><b>{{ $cvasignacioncapital_caja }}</b></td>
+              <td style="border-bottom: 2px solid #000;text-align:right;"><b>0.00</b></td>
+              <td style="border-bottom: 2px solid #000;text-align:right;"><b>0.00</b></td>
             </tr>
             <tr>
               <td></td>
@@ -210,7 +210,7 @@
               <td colspan="4" style="text-align:left;">Bienes Comprados (En Stock)</td>
               <td colspan="2"></td>
               <td></td>
-              <td style="border-bottom: 1px solid #000;text-align:right;"><b>{{$co_actual['saldos_bienescomprados']}}</b></td>
+              <td style="border-bottom: 1px solid #000;text-align:right;"><b>0.00</b></td>
               <td></td>
               <td style="border-bottom: 1px solid #000;text-align:right;"><b>0.00</b></td>
             </tr>
@@ -226,12 +226,13 @@
             </tr>
             <tr>
               <td rowspan="3" style="text-align:left;"><b>Ingreso y Egreso por 
-                <span style="border-bottom: 1px solid #000;">Caja</span></b></td>
+                <span style="border-bottom: 1px solid #000;">Caja</span></b>
+              </td>
               <td style="text-align:left;"><b>Ingreso</b></td>
               <td colspan="4" style="text-align:left;">Venta de Bienes</td>
               <td colspan="2"></td>
               <td></td>
-              <td style="text-align:right;"><b>0.00</b></td>
+              <td style="text-align:right;"><b>{{ $caja_cvventa }}</b></td>
               <td></td>
               <td style="text-align:right;"><b>0.00</b></td>
             </tr>
@@ -240,27 +241,26 @@
               <td colspan="4" style="text-align:left;">Incremento de Capital</td>
               <td colspan="2"></td>
               <td></td>
-              <td style="text-align:right;"><b>{{$co_actual['ingresoyegresocaja_ingreso_incrementocapital']}}</b></td>
+              <td style="text-align:right;"><b>{{ $caja_cvasignacioncapital_dep }}</b></td>
               <td></td>
-              <td style="text-align:right;"><b>{{$co_anterior?$co_anterior->ingresoyegresocaja_ingreso_incrementocapital:'0.00'}}</b></td>
+              <td style="text-align:right;"><b>0.00</b></td>
             </tr>
             <tr>
               <td style="border-bottom: 2px solid #000;"></td>
               <td colspan="4" style="border-bottom: 2px solid #000;text-align:left;">Ingresos Extraordinarios</td>
-              <td colspan="2" style="border-bottom: 2px solid #000;"></td>
+              <td style="border-bottom: 2px solid #000;" colspan="2"></td>
               <td style="border-bottom: 2px solid #000;"></td>
-              <td style="border-bottom: 2px solid #000;text-align:right;"><b>{{$co_actual['ingresoyegresocaja_ingreso_ingresosextraordinarios']}}</b></td>
+              <td style="border-bottom: 2px solid #000;text-align:right;"><b>{{ $caja_cvingresoextraordinario }}</b></td>
               <td style="border-bottom: 2px solid #000;"></td>
-              <td style="border-bottom: 2px solid #000;text-align:right;"><b>{{$co_anterior?$co_anterior->ingresoyegresocaja_ingreso_ingresosextraordinarios:'0.00'}}</b></td>
+              <td style="border-bottom: 2px solid #000;text-align:right;"><b>0.00</b></td>
             </tr>
             <tr>
               <td></td>
               <td style="text-align:left;"><b>Egreso</b></td>
               <td colspan="4" style="text-align:left;">Compra de Bienes</td>
+              <td colspan="2"></td>
               <td></td>
-              <td style="text-align:right;">{{$co_actual['ingresoyegresocaja_egreso_cvcompra']}}</td>
-              <td></td>
-              <td style="text-align:right;"><b>0.00</b></td>
+              <td style="text-align:right;"><b>{{ $caja_cvcompra }}</b></td>
               <td></td>
               <td style="text-align:right;"><b>0.00</b></td>
             </tr>
@@ -270,19 +270,29 @@
               <td colspan="4" style="text-align:left;">Reducción de Capital</td>
               <td colspan="2"></td>
               <td></td>
-              <td style="text-align:right;"><b>{{$co_actual['ingresoyegresocaja_egreso_reduccioncapital']}}</b></td>
+              <td style="text-align:right;"><b>{{ $caja_cvasignacioncapital_ret }}</b></td>
               <td></td>
-              <td style="text-align:right;"><b>{{$co_anterior?$co_anterior->ingresoyegresocaja_egreso_reduccioncapital:'0.00'}}</b></td>
+              <td style="text-align:right;"><b>0.00</b></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td colspan="4" style="text-align:left;">Gastos admistrativos y operativos</td>
+              <td colspan="2"></td>
+              <td></td>
+              <td style="text-align:right;"><b>{{ $caja_cvgastoadministrativooperativo }}</b></td>
+              <td></td>
+              <td style="text-align:right;"><b>0.00</b></td>
             </tr>
             <tr>
               <td style="border-bottom: 2px solid #000;"></td>
               <td style="border-bottom: 2px solid #000;"></td>
-              <td colspan="4" style="border-bottom: 2px solid #000;text-align:left;">Gastos admistrativos y operativos</td>
+              <td colspan="4" style="border-bottom: 2px solid #000;"></td>
               <td colspan="2" style="border-bottom: 2px solid #000;"></td>
               <td style="border-bottom: 2px solid #000;"></td>
-              <td style="border-bottom: 2px solid #000;text-align:right;"><b>{{$co_actual['ingresoyegresocaja_egreso_gastosadministrativosyoperativos']}}</b></td>
               <td style="border-bottom: 2px solid #000;"></td>
-              <td style="border-bottom: 2px solid #000;text-align:right;"><b>{{$co_anterior?$co_anterior->ingresoyegresocaja_egreso_gastosadministrativosyoperativos:'0.00'}}</b></td>
+              <td style="border-bottom: 2px solid #000;"></td>
+              <td style="border-bottom: 2px solid #000;"></td>
             </tr>
             <tr>
               <td rowspan="5" style="text-align:left;"><b>Ingreso y Egreso por Cuenta 
@@ -292,18 +302,18 @@
               <td></td>
               <td></td>
               <td></td>
-              <td style="text-align:right;"><b>{{$co_actual['ingresoyegresobanco_ingreso_cvventa']}}</b></td>
+              <td style="text-align:right;"><b>{{ $banco_cvventa }}</b></td>
               <td></td>
               <td style="text-align:right;"><b>0.00</b></td>
             </tr>
-            @foreach($co_actual['ingresoyegresobanco_ingreso_crediticio_cnpcps_bancos'] as $value)
+            @foreach($co_actual['ingresoyegresobanco_ingreso_incrementocapital_bancos'] as $value)
             <tr>
               <td></td>
               <td></td>
               <td colspan="4" style="text-align:left;">{{ $value['banco_nombre'] }}: {{ $value['banco_cuenta'] }}</td>
               <td></td>
               <td></td>
-              <td style="text-align:right;">{{ $value['banco'] }}</td>
+              <td style="text-align:right;">0.00</td>
               <td></td>
               <td style="text-align:right;">0.00</td>
             </tr>
@@ -315,19 +325,19 @@
               <td></td>
               <td></td>
               <td></td>
-              <td style="text-align:right;"><b>{{$co_actual['ingresoyegresobanco_ingreso_incrementocapital']}}</b></td>
+              <td style="text-align:right;"><b>{{ $banco_cvasignacioncapital_dep }}</b></td>
               <td></td>
-              <td style="text-align:right;"><b>{{$co_anterior?$co_anterior->ingresoyegresobanco_ingreso_incrementocapital:'0.00'}}</b></td>
+              <td style="text-align:right;"><b>0.00</b></td>
             </tr>
-            @foreach($co_actual['ingresoyegresobanco_ingreso_incrementocapital_bancos'] as $value)
+            @foreach($banco_cvasignacioncapital_deps as $value)
             <tr>
               <td></td>
               <td></td>
               <td></td>
-              <td colspan="4" style="text-align:left;">{{ $value['banco_nombre'] }}: {{ $value['banco_cuenta'] }}</td>
+              <td colspan="4" style="text-align:left;">{{ $value->banco }}: {{ $value->cuenta }}</td>
               <td></td>
               <td></td>
-              <td style="text-align:right;">{{ $value['banco'] }}</td>
+              <td style="text-align:right;">{{ $value->monto }}</td>
               <td></td>
               <td style="text-align:right;">0.00</td>
             </tr>
@@ -339,9 +349,9 @@
               <td></td>
               <td></td>
               <td></td>
-              <td style="text-align:right;"><b>{{$co_actual['ingresoyegresobanco_ingreso_ingresosextraordinarios']}}</b></td>
+              <td style="text-align:right;"><b>{{ $banco_cvingresoextraordinario }}</b></td>
               <td></td>
-              <td style="text-align:right;"><b>{{$co_anterior?$co_anterior->ingresoyegresobanco_ingreso_ingresosextraordinarios:'0.00'}}</b></td>
+              <td style="text-align:right;"><b>0.00</b></td>
             </tr>
             @foreach($co_actual['ingresoyegresobanco_ingreso_ingresosextraordinarios_bancos'] as $value)
             <tr>
@@ -351,7 +361,7 @@
               <td colspan="4" style="text-align:left;">{{ $value['banco_nombre'] }}: {{ $value['banco_cuenta'] }}</td>
               <td></td>
               <td></td>
-              <td style="text-align:right;">{{ $value['banco'] }}</td>
+              <td style="text-align:right;">0.00</td>
               <td></td>
               <td style="text-align:right;">0.00</td>
             </tr>
@@ -359,10 +369,10 @@
             <tr>
               <td></td>
               <td style="border-top: 2px solid #000;text-align:left;"><b>Egreso</b></td>
-              <td colspan="4" style="border-top: 2px solid #000;text-align:left;">Oper. Crediticia</td>
+              <td colspan="4" style="border-top: 2px solid #000;text-align:left;">Compra de Bienes</td>
               <td colspan="2" style="border-top: 2px solid #000;"></td>
               <td style="border-top: 2px solid #000;"></td>
-              <td style="border-top: 2px solid #000;text-align:right;"><b>{{$co_actual['ingresoyegresobanco_egreso_cvcompra']}}</b></td>
+              <td style="border-top: 2px solid #000;text-align:right;"><b>{{ $banco_cvcompra }}</b></td>
               <td style="border-top: 2px solid #000;"></td>
               <td style="border-top: 2px solid #000;text-align:right;"><b>0.00</b></td>
             </tr>
@@ -374,9 +384,9 @@
               <td colspan="4" style="text-align:left;">{{ $value['banco_nombre'] }}: {{ $value['banco_cuenta'] }}</td>
               <td></td>
               <td></td>
-              <td style="text-align:right;">{{ $value['banco'] }}</td>
+              <td style="text-align:right;">0.00</td>
               <td></td>
-              <td style="text-align:right;"><b>0.00</b></td>
+              <td style="text-align:right;">0.00</td>
             </tr>
             @endforeach
             <tr>
@@ -386,19 +396,19 @@
               <td></td>
               <td></td>
               <td></td>
-              <td style="text-align:right;"><b>{{$co_actual['ingresoyegresobanco_egreso_reduccioncapital']}}</b></td>
+              <td style="text-align:right;"><b>{{ $banco_cvasignacioncapital_ret }}</b></td>
               <td></td>
-              <td style="text-align:right;"><b>{{$co_anterior?$co_anterior->ingresoyegresobanco_egreso_reduccioncapital:'0.00'}}</b></td>
+              <td style="text-align:right;"><b>0.00</b></td>
             </tr>
-            @foreach($co_actual['ingresoyegresobanco_egreso_reduccioncapital_bancos'] as $value)
+            @foreach($banco_cvasignacioncapital_rets as $value)
             <tr>
               <td></td>
               <td></td>
               <td></td>
-              <td colspan="4" style="text-align:left;">{{ $value['banco_nombre'] }}: {{ $value['banco_cuenta'] }}</td>
+              <td colspan="4" style="text-align:left;">{{ $value->banco }}: {{ $value->cuenta }}</td>
               <td></td>
               <td></td>
-              <td style="text-align:right;">{{ $value['banco'] }}</td>
+              <td style="text-align:right;">{{ $value->monto }}</td>
               <td></td>
               <td style="text-align:right;">0.00</td>
             </tr>
@@ -410,9 +420,9 @@
               <td></td>
               <td></td>
               <td></td>
-              <td style="text-align:right;"><b>{{$co_actual['ingresoyegresobanco_egreso_gastosadministrativosyoperativos']}}</b></td>
+              <td style="text-align:right;"><b>{{ $banco_cvgastoadministrativooperativo }}</b></td>
               <td></td>
-              <td style="text-align:right;"><b>{{$co_anterior?$co_anterior->ingresoyegresobanco_egreso_gastosadministrativosyoperativos:'0.00'}}</b></td>
+              <td style="text-align:right;"><b>0.00</b></td>
             </tr>
             @foreach($co_actual['ingresoyegresobanco_egreso_gastosadministrativosyoperativos_bancos'] as $value)
             <tr>
@@ -422,7 +432,7 @@
               <td colspan="4" style="text-align:left;">{{ $value['banco_nombre'] }}: {{ $value['banco_cuenta'] }}</td>
               <td></td>
               <td></td>
-              <td style="text-align:right;">{{ $value['banco'] }}</td>
+              <td style="text-align:right;">0.00</td>
               <td></td>
               <td style="text-align:right;">0.00</td>
             </tr>

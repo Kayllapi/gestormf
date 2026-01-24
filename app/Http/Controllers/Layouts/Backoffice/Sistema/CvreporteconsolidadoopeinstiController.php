@@ -44,8 +44,8 @@ class CvreporteconsolidadoopeinstiController extends Controller
     {
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
         if($request->input('view') == 'pdf_reporte'){
-            $co_actual = consolidadooperaciones($tienda,$request->idagencia,$request->corte);
-            //$co_actual = cvconsolidadooperaciones($tienda,$request->idagencia,$request->corte);
+            // $co_actual = consolidadooperaciones($tienda,$request->idagencia,$request->corte);
+            $co_actual = cvconsolidadooperaciones($tienda,$request->idagencia,$request->corte);
             $date = Carbon::createFromFormat('Y-m-d', $request->corte);
             $date->subDay(); // Subtracts 1 day
             //$co_anterior = consolidadooperaciones($tienda,$request->idagencia,$date->format('Y-m-d'));

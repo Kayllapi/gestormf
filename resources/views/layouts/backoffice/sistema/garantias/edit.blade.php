@@ -25,7 +25,7 @@
           <div class="col-sm-6">
             <input type="text" style="font-size: 15px;" class="form-control" value="CÓDIGO: GP{{ str_pad($garantias->id, 8, '0', STR_PAD_LEFT)  }}" disabled>
           </div>
-          <div class="col-sm-6">
+          <div class="col-sm-2">
             <div style="margin-top: 6px;
     background-color: #ffd100;
     float: left;
@@ -33,13 +33,17 @@
     padding-right: 3px;
     border-radius: 3px;">{{ calcularDiasPasados($garantias->fecharegistro) }} DIA(S)</div>
           </div>
+          <div class="col-sm-4">
+            <label>Fecha de Registro</label>
+            <input type="date" class="form-control" id="fecharegistro" value="{{ $garantias->fecharegistro }}" disabled>
+          </div> 
           <div class="col-sm-12 col-md-12 d-none">
             <label>Cliente</label>
             <select class="form-control" id="idcliente" disabled>
               <option></option>
             </select>
           </div>
-          <div class="col-sm-12 col-md-5">
+          <div class="col-sm-12 col-md-3">
             <label>Tipo de Garantía *</label>
             <select class="form-control" id="idtipogarantia" disabled>
               <option></option>
@@ -97,7 +101,7 @@
                       </div>
                       <div class="col-sm-4 d-none option-tipo-joya">
                         <label>Peso en Gramos</label>
-                        <input type="number" step="any" id="peso_gramos" class="form-control text-center bg-warning" value="{{ $garantias->peso_gramos }}" onkeyup="calc_tarifa_joya()" onkeydown="calc_tarifa_joya()" onchange="calc_tarifa_joya()" disabled >
+                        <input type="number" step="any" id="peso_gramos" class="form-control text-center bg-warning" value="{{ $garantias->peso_gramos }}" onkeyup="calc_tarifa_joya()" onkeydown="calc_tarifa_joya()" onchange="calc_tarifa_joya()">
                       </div>
                       <div class="mb-1 mt-2 d-none option-tipo-joya">
                         <span class="badge d-block">DESCUENTOS</span>
@@ -147,10 +151,17 @@
               <i class="fa-solid fa-dice-three"></i>
             </button>
           </div>
-          <div class="col-sm-12 col-md-6">
-            <label>Fecha de Registro</label>
-            <input type="date" class="form-control" id="fecharegistro" value="{{ $garantias->fecharegistro }}" disabled>
-          </div>    
+          
+          <div class="col-sm-12 col-md-4">
+            <label>Tipo de Joya</label>
+            <?php $tipo_joyas = DB::table('tipo_joyas')->whereId($garantias->idtipo_joyas)->first(); ?>
+            <input type="text" class="form-control" id="idtipo_joyas_nombre" value="{{$tipo_joyas?$tipo_joyas->nombre:''}}" disabled>
+          </div>
+          <div class="col-sm-12 col-md-4">
+            <label>Tipo de Oro</label>
+            <?php $tarifario_joyas = DB::table('tarifario_joyas')->whereId($garantias->idtarifario_joya)->first(); ?>
+            <input type="text" class="form-control" id="idtarifario_joya_nombre" value="{{$tarifario_joyas?$tarifario_joyas->tipo:''}}" disabled>
+          </div>   
           
           <div class="mb-1 mt-2">
             <span class="badge d-block">VALORIZACIÓN</span>
@@ -313,6 +324,14 @@
     </div>
 </form> 
 <script>
+  var html = '<ul class="text-danger" style="margin-top: 10px;">';
+  @foreach($credito_polizaseguro as $value)
+      @if($value->vigencia_hasta<now()->format('Y-m-d'))
+      html += '<li>Póliza de Garantía "{{$value->asegurado}}", venció el {{Carbon\Carbon::parse($value->vigencia_hasta)->format('d/m/Y')}}</li>';
+      @endif
+  @endforeach
+  $('#alert-garantia-poliza').html(html+'</ul>');
+  
   $('#btn-delete-garantia').css("display","inline-block");
   $('#cont-btnguardar').addClass("d-none");
   $('#btn-autorizar-depositario').addClass("d-none");
@@ -394,13 +413,21 @@
   @include('app.nuevosistema.select2',['input'=>'#idestado_garantia','val'=> $garantias->idestado_garantia ])
   @include('app.nuevosistema.select2',['input'=>'#idestado_garantia_ref','val'=> $garantias->idestado_garantia_ref ])
   @include('app.nuevosistema.select2',['input'=>'#idtipo_joyas','val'=> $garantias->idtipo_joyas ])
-  @include('app.nuevosistema.select2',['input'=>'#iddescuento_joya' ])
+  @include('app.nuevosistema.select2',['input'=>'#iddescuento_joya','val'=> $garantias->iddescuento_joya ])
 
   sistema_select2({ input:'#idmetodo_valorizacion' });
   sistema_select2({ input:'#idtipo_garantia_detalle' });
+  sistema_select2({ input:'#idtarifario_joya' });
+  sistema_select2({ input:'#idvalorizacion_descuento' });
 
   @if($garantias->idtipogarantia!=0)
       $('#idtipogarantia').val({{$garantias->idtipogarantia}}).trigger('change');
+  @endif  
+  @if($garantias->idtipo_joyas!=0)
+      tipo_joyas();
+  @endif  
+  @if($garantias->iddescuento_joya!=0)
+      descuento_joya();
   @endif  
   
   $("#button-modal-tipo-garantia").on("click", function(e) {
@@ -419,6 +446,23 @@
 
   $("#idtipo_garantia_detalle").on("select2:select", function(e) {
       calc_montos();
+  });
+
+  //joya
+  $("#idtipo_joyas").on("select2:select", function(e) {
+      tipo_joyas();
+  });
+  
+  $("#idtarifario_joya").on("select2:select", function(e) {
+      calc_tarifa_joya();
+  });
+  
+  $("#iddescuento_joya").on("select2:select", function(e) {
+      descuento_joya();
+  });
+
+  $("#idvalorizacion_descuento").on("select2:select", function(e) {
+      calc_tarifa_joya(); 
   });
   
   function tipo_garantia(){
@@ -500,8 +544,10 @@
       $('#valor_mercado_inicial').val(valor_mercado.toFixed(2));    
       $('#cobertura').val(monto_cobertura.toFixed(2));
       $('#valorcomercial').val(monto_valorcomercial.toFixed(2));
+      $('#idtipo_joyas_nombre').val($('#idtipo_joyas :selected').html());
+      $('#idtarifario_joya_nombre').val($('#idtarifario_joya :selected').html());
+      
   }
-
   function limpiar(){
       $('#idmetodo_valorizacion').val(null).trigger('change');
       $('#idtipo_garantia_detalle').val(null).trigger('change');
@@ -512,6 +558,69 @@
       $('#cobertura').val('0.00');
       $('#valorcomercial').val('0.00');
       $('#porcentajevalorcomercial').val('0.00');
+  }
+  function tipo_joyas(){
+      var idtipo_joyas = $("#idtipo_joyas :selected").val();
+      $.ajax({
+          url:"{{url('backoffice/0/garantias/showtarifario')}}",
+          type:'GET',
+          data: {
+              idtipo_joyas : idtipo_joyas
+          },
+          success: function (res){
+              let option_select = `<option></option>`;
+              $.each(res, function( key, value ) {
+                option_select += `<option value="${value.id}" cobertura="${value.cobertura}" preciogramo="${value.precio}" >${value.tipo} </option>`;
+              });
+              $('#idtarifario_joya').html(option_select);
+              sistema_select2({ input:'#idtarifario_joya', val:'{{ $garantias->idtarifario_joya }}'});
+              calc_tarifa_joya();
+          }
+      })
+  }
+  function descuento_joya(){
+    $('#idvalorizacion_descuento').removeAttr('disabled',false);
+    var iddescuento_joya = $("#iddescuento_joya").find('option:selected').val();
+    $.ajax({
+        url:"{{url('backoffice/0/garantias/showdescuentojoya')}}",
+        type:'GET',
+        data: {
+            iddescuento_joya : iddescuento_joya
+        },
+        success: function (res){
+            let option_select = `<option></option>`;
+            $.each(res, function( key, value ) {
+              option_select += `<option value="${value.id}" descuento="${value.descuento}" >${value.descuento}(${value.val}) - ${value.detalle_descuento}</option>`;
+            });
+            $('#idvalorizacion_descuento').html(option_select);
+            sistema_select2({ input:'#idvalorizacion_descuento', val:'{{ $garantias->idvalorizacion_descuento }}'});
+        }
+    })
+  }
+  function calc_tarifa_joya(){
+      let optionTarifaJoya = $("#idtarifario_joya").find('option:selected'); 
+      let cobertura = optionTarifaJoya.attr('cobertura');
+      let preciogramo = optionTarifaJoya.attr('preciogramo');
+      let peso = $('#peso_neto').val();
+      let monto_valorcomercial = parseFloat(peso)*parseFloat(preciogramo);
+      let monto_cobertura = (parseFloat(monto_valorcomercial)*parseFloat(cobertura))/100;  
+
+      $('#porcentajecobertura').val(cobertura);
+      $('#porcentajevalorcomercial').val('0.00');
+      $('#val-view-cobertura').val(monto_cobertura.toFixed(2));
+      $('#val-view-valorcomercial').val(monto_valorcomercial.toFixed(2));
+      
+      
+      /*if(changeStatusCaldJoya){
+        $('#cobertura').val(monto_cobertura.toFixed(2));
+        $('#valorcomercial').val(monto_valorcomercial.toFixed(2));
+
+        $('#val-view-cobertura').val(monto_cobertura.toFixed(2));
+        $('#val-view-valorcomercial').val(monto_valorcomercial.toFixed(2));
+      }else{
+        $('#val-view-cobertura').val('{{ $garantias->cobertura }}');
+        $('#val-view-valorcomercial').val('{{ $garantias->valorcomercial }}');
+      }*/
   }
 
   //.val('{{ $garantias->idmetodo_valorizacion }}').trigger('change');
@@ -524,102 +633,11 @@
   
 
   
-  function tarifario_joyas(idtarifario){
-    $.ajax({
-      url:"{{url('backoffice/0/garantias/showtarifario')}}",
-      type:'GET',
-      data: {
-          idtarifario : idtarifario
-      },
-      success: function (res){
-        console.log(3);
-          let option_select = `<option></option>`;
-          $.each(res, function( key, value ) {
-            option_select += `<option value="${value.id}" cobertura="${value.cobertura}" preciogramo="${value.precio}" >${value.tipo} </option>`;
-          });
-        $('#idtarifario_joya').html(option_select);
-        sistema_select2({ input:'#idtarifario_joya', val:'{{ $garantias->idtarifario_joya }}'});
-
-      }
-    })
-  }
   
   
 
-  
-
-  $("#idtarifario_joya").on("select2:select", function(e) {
-    $('#peso_gramos').removeAttr('disabled', false);
-    calc_tarifa_joya();
-  });
   //var changeStatusCalMonto = false;
 
-  var changeStatusCaldJoya = false;
-  function calc_tarifa_joya(){
-    
-    calc_desc_peso();
-    let optionTarifaJoya = $("#idtarifario_joya").find('option:selected'); 
-    let cobertura = optionTarifaJoya.attr('cobertura');
-    
-    let preciogramo = optionTarifaJoya.attr('preciogramo');
-
-    let peso = $('#peso_neto').val();
-    $('#porcentajecobertura').val(cobertura);
-    $('#porcentajevalorcomercial').val('0.00');
-    let cargaValores = false;
-    
-    let monto_valorcomercial = parseFloat(peso)*parseFloat(preciogramo);
-    
-    let monto_cobertura = (parseFloat(monto_valorcomercial)*parseFloat(cobertura))/100;   
-     
-    
-    if(changeStatusCaldJoya){
-      $('#cobertura').val(monto_cobertura.toFixed(2));
-      $('#valorcomercial').val(monto_valorcomercial.toFixed(2));
-
-      $('#val-view-cobertura').val(monto_cobertura.toFixed(2));
-      $('#val-view-valorcomercial').val(monto_valorcomercial.toFixed(2));
-    }else{
-      $('#val-view-cobertura').val('{{ $garantias->cobertura }}');
-      $('#val-view-valorcomercial').val('{{ $garantias->valorcomercial }}');
-    }
-    changeStatusCaldJoya = true;
-    
-    
-  }
-  
-  $("#iddescuento_joya").on("select2:select", function(e) {
-    $('#idvalorizacion_descuento').removeAttr('disabled',false)
-    descuento_joya(e.params.data.id);
-  }).val('{{ $garantias->iddescuento_joya }}').trigger('change');
-  
-  
-
-  
-  function descuento_joya(iddescuento_joya){
-    
-//     var iddescuento_joya = $("#iddescuento_joya").find('option:selected').val();
-    $.ajax({
-      url:"{{url('backoffice/0/garantias/showdescuentojoya')}}",
-      type:'GET',
-      data: {
-          iddescuento_joya : iddescuento_joya
-      },
-      success: function (res){
-        
-        let option_select = `<option></option>`;
-        $.each(res, function( key, value ) {
-          option_select += `<option value="${value.id}" descuento="${value.descuento}" >${value.descuento}(${value.val}) - ${value.detalle_descuento}</option>`;
-        });
-        $('#idvalorizacion_descuento').html(option_select);
-        sistema_select2({ input:'#idvalorizacion_descuento', val:'{{ $garantias->idvalorizacion_descuento }}'});
-        
-      }
-    })
-  }
-  $("#idvalorizacion_descuento").on("select2:select", function(e) {
-    calc_tarifa_joya(); 
-  });
   function calc_desc_peso(){
     let iddescuento_joya = $("#iddescuento_joya").find('option:selected').val();
     

@@ -1266,10 +1266,10 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
               $ingresoyegresocaja_ingreso_crediticio_cnp_tenencxc += $value->total_pagar_tenencia+$value->total_pagar_penalidad+$value->total_pagar_compensatorio;
           }
           
-          $ingresoyegresocaja_ingreso_crediticio_cnp = $ingresoyegresocaja_ingreso_crediticio_cnp_capital+
-                                              $ingresoyegresocaja_ingreso_crediticio_cnp_interes+
-                                              $ingresoyegresocaja_ingreso_crediticio_cnp_desgravcargo+
-                                              $ingresoyegresocaja_ingreso_crediticio_cnp_tenencxc;
+            $ingresoyegresocaja_ingreso_crediticio_cnp = $ingresoyegresocaja_ingreso_crediticio_cnp_capital+
+            $ingresoyegresocaja_ingreso_crediticio_cnp_interes+
+            $ingresoyegresocaja_ingreso_crediticio_cnp_desgravcargo+
+            $ingresoyegresocaja_ingreso_crediticio_cnp_tenencxc;
           
           
           $where = [];
@@ -2024,22 +2024,8 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
                   ->where($where3)
                   ->sum('cvasignacioncapital.monto'); 
             
-              $cobranzas = DB::table('credito_cobranzacuota')
-                  ->join('credito','credito.id','credito_cobranzacuota.idcredito')
-                  ->where('credito_cobranzacuota.idestadocredito_cobranzacuota',1)
-                  ->where('credito_cobranzacuota.idestadoextorno',0)
-                  ->where('credito_cobranzacuota.idformapago',2)
-                  ->where('credito_cobranzacuota.idbanco',$valuebancos->id)
-                  ->where($where1)
-                  ->sum('credito_cobranzacuota.total_recibido'); 
-            
-              $desembolsos = DB::table('credito_formapago')
-                  ->join('credito','credito.id','credito_formapago.idcredito')
-                  ->where('credito_formapago.idformapago',2)
-                  ->where('credito.estado','DESEMBOLSADO')
-                  ->where('credito_formapago.idbanco',$valuebancos->id)
-                  ->where($where2)
-                  ->sum('credito.monto_solicitado');
+              $cobranzas = 0; 
+              $desembolsos = 0;
             
               $movimientointernodineros1 = DB::table('cvmovimientointernodinero')
                   ->where('cvmovimientointernodinero.idestadoeliminado',1)
@@ -2086,7 +2072,9 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
                                                    $gastosadministrativosyoperativos_monto+
                                                    $ingresosextraordinarios_monto
                                                    , 2, '.', '');
-              $saldos_cuentabanco_bancos[] = [
+
+
+                $saldos_cuentabanco_bancos[] = [
                   'banco_id' => $valuebancos->id,
                   'banco_nombre' => $valuebancos->nombre,
                   'banco_cuenta' => '(******'.substr($valuebancos->cuenta, -5).')',
@@ -2272,10 +2260,10 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
           
           $where = [];
           if($idagencia!=''){
-              $where[] = ['asignacioncapital.idtienda',$idagencia];
+              $where[] = ['cvasignacioncapital.idtienda',$idagencia];
           }
           if($fechacorte!=''){
-              $where[] = ['asignacioncapital.fecharegistro','<=',$fechacorte.' 23:59:59'];
+              $where[] = ['cvasignacioncapital.fecharegistro','<=',$fechacorte.' 23:59:59'];
           }
           /*$ret_correc = DB::table('asignacioncapital')
               ->where('asignacioncapital.idestadoeliminado',1)

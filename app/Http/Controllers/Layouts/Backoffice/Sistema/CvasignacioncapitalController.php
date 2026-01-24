@@ -160,7 +160,7 @@ class CvasignacioncapitalController extends Controller
                 ]);
             }
           
-            $consolidadooperaciones = consolidadooperaciones($tienda,$idtienda,now()->format('Y-m-d'));
+            $consolidadooperaciones = cvconsolidadooperaciones($tienda,$idtienda,now()->format('Y-m-d'));
             if($request->idtipooperacion==2){
                 if($request->idtipodestino==1){
                     if($consolidadooperaciones['saldos_caja']<$request->monto){

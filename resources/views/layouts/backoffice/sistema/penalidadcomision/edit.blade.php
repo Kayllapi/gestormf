@@ -100,7 +100,7 @@
             <span class="badge d-block">Costo por gestión de garantia (Custodia de garantia del ACREEDOR)</span>
           </div>
           <div class="row mt-1">
-            <label class="col-sm-8 col-form-label" style="text-align: right;">Comisión Mensual (%):</label>
+            <label class="col-sm-8 col-form-label" style="text-align: right;">Costo Mensual (%):</label>
             <div class="col-sm-4">
               <input type="number" class="form-control" step="any" id="comision_gestion_garantia_cargo" value="{{ configuracion($tienda->id,'comision_gestion_garantia_cargo')['valor'] }}">
             </div>

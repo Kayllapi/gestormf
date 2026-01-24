@@ -14,7 +14,7 @@
   
     <input type="hidden" id="idresponsable_modificado">
     <div class="modal-header">
-        <h5 class="modal-title">Gestión de Depósitario y Poliza de Seguros</h5>
+        <h5 class="modal-title">Gestión de Depósitario y Póliza de Seguros</h5>
     </div>
     <div class="modal-body">
           <div class="mb-1 mt-2">
@@ -47,7 +47,7 @@
               <input type="text" class="form-control" value="{{$cliente->gd_nombre}}" id="gd_nombre" disabled>
             </div>
             <div class="col-sm-6">
-              <label>DOI/RUC</label>
+              <label>DNI/RUC</label>
               <input type="text" class="form-control" value="{{$cliente->gd_doeruc}}" id="gd_doeruc" disabled>
             </div>
             <div class="col-sm-12">
@@ -55,7 +55,7 @@
               <input type="text" class="form-control" value="{{$cliente->gd_direccion}}" id="gd_direccion" disabled>
             </div>
             <div class="col-sm-6">
-              <label>Reprentante Legal (DOI)</label>
+              <label>Reprentante Legal (DNI)</label>
               <input type="text" class="form-control" value="{{$cliente->gd_representante_doeruc}}" id="gd_representante_doeruc" disabled>
             </div>
             <div class="col-sm-6">
@@ -88,11 +88,18 @@
               </table>
     </div>
     <div class="modal-footer d-none" id="cont-btnguardar">
-        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Guardar Cambios</button>
+        <button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i> Guardar Cambios</button>
     </div>
 </form> 
 <script>
-  
+  var html = '<ul class="text-danger" style="margin-top: 10px;">';
+  @foreach($credito_polizaseguro as $value)
+      @if($value->vigencia_hasta<now()->format('Y-m-d'))
+      html += '<li>Póliza de Garantía "{{$value->asegurado}}", venció el {{Carbon\Carbon::parse($value->vigencia_hasta)->format('d/m/Y')}}</li>';
+      @endif
+  @endforeach
+  $('#alert-garantia-poliza').html(html+'</ul>');
+          
   $('#cont-btnguardar').addClass("d-none");
     $('#btn-autorizar-garantia').addClass("d-none");
     $('#btn-autorizar-depositario').removeClass("d-none")
@@ -146,7 +153,7 @@
         //$('#custodiagarantia_id').removeAttr('disabled',false)
         let option_select = `<option></option>`;
         $.each(res, function( key, value ) {
-          var persona = value.doeruc!=''?`- (DOI: ${value.doeruc}) ${value.nombre}`:'';
+          var persona = value.doeruc!=''?`- (DNI/RUC: ${value.doeruc}) ${value.nombre}`:'';
           option_select += `<option value="${value.custodiagarantia_id}" custodiagarantia_nombre="${value.custodiagarantia_nombre}" doeruc="${value.doeruc}" nombre="${value.nombre}">${value.custodiagarantia_nombre} ${persona}</option>`;
         });
         $('#custodiagarantia_id').html(option_select);
@@ -237,8 +244,8 @@
                   <td><input type="text" class="form-control" id="polizaseguro_beneficiario${num}" value="${beneficiario}" ${disabled}></td>
                   <td><input type="text" class="form-control" id="polizaseguro_asegurado${num}" value="${asegurado}" ${disabled}></td>
                   <td><input type="text" class="form-control" id="polizaseguro_tomador${num}" value="${tomador}" ${disabled}></td>
-                  <td><input type="text" class="form-control" id="polizaseguro_vigencia_desde${num}" value="${vigencia_desde}" ${disabled}></td>
-                  <td><input type="text" class="form-control" id="polizaseguro_vigencia_hasta${num}" value="${vigencia_hasta}" ${disabled}></td>
+                  <td><input type="date" class="form-control" id="polizaseguro_vigencia_desde${num}" value="${vigencia_desde}" ${disabled}></td>
+                  <td><input type="date" class="form-control" id="polizaseguro_vigencia_hasta${num}" value="${vigencia_hasta}" ${disabled}></td>
                   <td ${disabled=='disabled'?'style="display:none;"':''} id="polizaseguro_td_eliminar${num}"><button type="button" onclick="eliminar_polizaseguro(${num})" class="btn btn-danger "><i class="fa-solid fa-trash"></i></button></td>
                 </tr>`;
 

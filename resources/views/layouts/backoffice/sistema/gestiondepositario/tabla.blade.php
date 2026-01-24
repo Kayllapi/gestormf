@@ -2,7 +2,7 @@
     <h5 class="modal-title">
       Gestion de Depositario y Rep. Común
     </h5>
-    <button type="button" class="btn-close" onclick="ir_inicio()" style="font-size: 20px;"></button>
+    <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>
 <div class="modal-body">
   <form action="javascript:;" 
@@ -36,12 +36,12 @@
               <tr>
                 <th rowspan=2 style="text-align:center;width:170px;">Custodia de Garantía </th>
                 <th rowspan=2 style="text-align:center;">Nombre/Rason S.</th>
-                <th rowspan=2 style="text-align:center;width:100px;">DOI/RUC</th>
+                <th rowspan=2 style="text-align:center;width:100px;">DNI/RUC</th>
                 <th rowspan=2 style="text-align:center;">Dirección</th>
                 <th colspan=2 style="text-align:center;">Reprentante Legal</th>
               </tr>
               <tr>
-                <th style="width:80px;">DOI</th>
+                <th style="width:80px;">DNI</th>
                 <th style="width:200px;">Apellidos y Nombres</th>
               </tr>
             </thead>
@@ -65,12 +65,12 @@
               <tr>
                 <th rowspan=2 style="text-align:center;width:170px;">Custodia de Garantía </th>
                 <th rowspan=2 style="text-align:center;">Nombre/Rason S.</th>
-                <th rowspan=2 style="text-align:center;width:100px;">DOI/RUC</th>
+                <th rowspan=2 style="text-align:center;width:100px;">DNI/RUC</th>
                 <th rowspan=2 style="text-align:center;">Dirección</th>
                 <th colspan=2 style="text-align:center;">Reprentante Legal</th>
               </tr>
               <tr>
-                <th style="width:80px;">DOI</th>
+                <th style="width:80px;">DNI</th>
                 <th style="width:200px;">Apellidos y Nombres</th>
               </tr>
             </thead>
@@ -84,7 +84,7 @@
             <thead>
               <tr>
                 <th rowspan=2 style="text-align:center;">Nombre y Apellidos</th>
-                <th rowspan=2 style="width:100px;text-align:center;">DOI</th>
+                <th rowspan=2 style="width:100px;text-align:center;">DNI</th>
                 <th colspan=2 style="text-align:center;">Domicilio</th>
                 <th rowspan=2 style="width:100px;text-align:center;">Estado</th>
                 <th rowspan=2 style="width:10px;"><button type="button" class="btn btn-success" onclick="agrega_representantecomun()"><i class="fa fa-plus"></i></button></th>

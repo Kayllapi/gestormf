@@ -74,23 +74,27 @@ class CvreporteconsolidadoopeinstiController extends Controller
             // ASIGNACION 
             $cvasignacioncapital = DB::table('cvasignacioncapital')
                 ->where('idestadoeliminado',1)
+                ->where('idresponsable_recfinal', '<>', 0)
                 ->where('idtipooperacion', 4) // asignación
                 ->where($where)
                 ->sum('monto');
             $cvasignacioncapital_caja = DB::table('cvasignacioncapital')
                 ->where('idestadoeliminado',1)
+                ->where('idresponsable_recfinal', '<>', 0)
                 ->where('idtipodestino',1) // caja
                 ->where('idtipooperacion', 4) // asignación
                 ->where($where)
                 ->sum('monto');
             $cvasignacioncapital_cf = DB::table('cvasignacioncapital')
                 ->where('idestadoeliminado',1)
+                ->where('idresponsable_recfinal', '<>', 0)
                 ->where('idtipodestino',2) // caja fuerte
                 ->where('idtipooperacion', 4) // asignación
                 ->where($where)
                 ->sum('monto');
             $cvasignacioncapital_banco = DB::table('cvasignacioncapital')
                 ->where('idestadoeliminado',1)
+                ->where('idresponsable_recfinal', '<>', 0)
                 ->where('idtipodestino',3) // banco
                 ->where('idtipooperacion', 4) // asignación
                 ->where($where)
@@ -100,6 +104,7 @@ class CvreporteconsolidadoopeinstiController extends Controller
                 ->leftJoin('cvasignacioncapital as c', function ($join) use ($idagencia, $fechacorte) {
                     $join->on('c.idbanco', '=', 'b.id')
                         ->where('c.idestadoeliminado', 1)
+                        ->where('c.idresponsable_recfinal', '<>', 0)
                         ->where('c.idtipodestino', 3) // banco
                         ->whereIn('c.idtipooperacion', [1,2,4]) // deposito, retiro, asignación
                         ->where('c.idtienda',$idagencia)
@@ -117,12 +122,14 @@ class CvreporteconsolidadoopeinstiController extends Controller
             // CAJA 
             $caja_cvasignacioncapital_dep = DB::table('cvasignacioncapital')
                 ->where('idestadoeliminado',1)
+                ->where('idresponsable_recfinal', '<>', 0)
                 ->where('idtipodestino', 1) // caja
                 ->where('idtipooperacion', 1) // Deposito
                 ->where($where)
                 ->sum('monto');
             $caja_cvasignacioncapital_ret = DB::table('cvasignacioncapital')
                 ->where('idestadoeliminado',1)
+                ->where('idresponsable_recfinal', '<>', 0)
                 ->where('idtipodestino', 1) // caja
                 ->where('idtipooperacion', 2) // Retiro
                 ->where($where)
@@ -136,12 +143,14 @@ class CvreporteconsolidadoopeinstiController extends Controller
             // CAJA FUERTE
             $cajafuerte_cvasignacioncapital_dep = DB::table('cvasignacioncapital')
                 ->where('idestadoeliminado',1)
+                ->where('idresponsable_recfinal', '<>', 0)
                 ->where('idtipodestino', 2) // caja fuerte
                 ->where('idtipooperacion', 1) // Deposito
                 ->where($where)
                 ->sum('monto');
             $cajafuerte_cvasignacioncapital_ret = DB::table('cvasignacioncapital')
                 ->where('idestadoeliminado',1)
+                ->where('idresponsable_recfinal', '<>', 0)
                 ->where('idtipodestino', 2) // caja fuerte
                 ->where('idtipooperacion', 2) // Retiro
                 ->where($where)
@@ -155,12 +164,14 @@ class CvreporteconsolidadoopeinstiController extends Controller
             // BANCO 
             $banco_cvasignacioncapital_dep = DB::table('cvasignacioncapital')
                 ->where('idestadoeliminado',1)
-                ->where('idtipodestino', 3) // banco 
+                ->where('idresponsable_recfinal', '<>', 0)
+                ->where('idtipodestino', 3) // banco
                 ->where('idtipooperacion', 1) // Deposito
                 ->where($where)
                 ->sum('monto');
             $banco_cvasignacioncapital_ret = DB::table('cvasignacioncapital')
                 ->where('idestadoeliminado',1)
+                ->where('idresponsable_recfinal', '<>', 0)
                 ->where('idtipodestino', 3) // banco
                 ->where('idtipooperacion', 2) // Retiro
                 ->where($where)
@@ -175,6 +186,7 @@ class CvreporteconsolidadoopeinstiController extends Controller
                 ->leftJoin('cvasignacioncapital as c', function ($join) use ($idagencia, $fechacorte) {
                     $join->on('c.idbanco', '=', 'b.id')
                         ->where('c.idestadoeliminado', 1)
+                        ->where('c.idresponsable_recfinal', '<>', 0)
                         ->where('c.idtipodestino', 3) // banco
                         ->where('c.idtipooperacion', 1) // deposito
                         ->where('c.idtienda',$idagencia)
@@ -192,6 +204,7 @@ class CvreporteconsolidadoopeinstiController extends Controller
                 ->leftJoin('cvasignacioncapital as c', function ($join) use ($idagencia, $fechacorte) {
                     $join->on('c.idbanco', '=', 'b.id')
                         ->where('c.idestadoeliminado', 1)
+                        ->where('c.idresponsable_recfinal', '<>', 0)
                         ->where('c.idtipodestino', 3) // banco
                         ->where('c.idtipooperacion', 2) // retiro
                         ->where('c.idtienda',$idagencia)

@@ -88,6 +88,8 @@
       <button type="button" class="btn btn-danger mt-2 d-none" id="btn-delete-garantia" onclick="eliminar_garantia()"><i class="fa-solid fa-trash"></i> Eliminar Garantía</button>
       <button type="button" class="btn btn-success mt-2 d-none" id="btn-autorizar-garantia" onclick="modificar_garantia(1)"><i class="fa-solid fa-pencil"></i> Editar Garantía</button>
       <button type="button" class="btn btn-success mt-2 d-none" id="btn-autorizar-depositario" onclick="modificar_garantia(2)"><i class="fa-solid fa-pencil"></i> Editar Gestión de Depósitario y Póliza de Seguros</button>
+
+          <div id="alert-garantia-poliza"></div>
     </div>
     <div class="col-sm-12 col-md-8">
       <div class="card">
@@ -127,6 +129,8 @@
         load_create_garantia(res.cliente.id);
         $('#btn-create-cliente').removeClass('d-none');
         $('#btn-create-depositario').removeClass('d-none');
+        
+        $('#alert-garantia-poliza').html(res.credito_polizaseguro);
       }
     })
   }

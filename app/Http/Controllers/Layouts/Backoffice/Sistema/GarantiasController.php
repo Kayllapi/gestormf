@@ -256,9 +256,20 @@ class GarantiasController extends Controller
                             <td>S/ {$value->cobertura}</td>
                         </tr>";
           }
+          
+            $credito_polizaseguro = DB::table('credito_polizaseguro')->where('id_cliente',$request->idcliente)->get();
+          
+            $html_1 = '<ul class="text-danger" style="margin-top: 10px;">';
+            foreach($credito_polizaseguro as $value){
+                if($value->vigencia_hasta<now()->format('Y-m-d')){
+                    $html_1 .= '<li>Póliza de Garantía "'.$value->asegurado.'", venció el '.Carbon::parse($value->vigencia_hasta)->format('d/m/Y').'</li>';
+                }
+            }
+              
           return array(
             'cliente' => $cliente,
-            'html' => $html
+            'html' => $html,
+            'credito_polizaseguro' => $html_1
           );
           
         }
@@ -403,6 +414,7 @@ class GarantiasController extends Controller
               ->whereIn('credito.estado',['PENDIENTE','PROCESO','APROBADO','DESEMBOLSADO'])
               ->first();
         }
+        $credito_polizaseguro = DB::table('credito_polizaseguro')->where('id_cliente',$garantias->idcliente)->get();
 
         return view(sistema_view().'/garantias/edit',[
           'tienda' => $tienda,
@@ -416,6 +428,7 @@ class GarantiasController extends Controller
           'descuento_joya' => $descuento_joya,
           'propios' => $propios,
           'idtienda' => $idtienda,
+          'credito_polizaseguro' => $credito_polizaseguro,
         ]);
       }
       else if($request->input('view') == 'modificar'){

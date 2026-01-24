@@ -1332,7 +1332,19 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
         ->sum('credito.monto_solicitado');*/
 
     $ingresoyegresocaja_ingreso_cvventa = 0;
-    $ingresoyegresocaja_egreso_cvcompra = 0;
+
+    $where = [];
+    if($idagencia!=''){
+        $where[] = ['cvcompra.idtienda',$idagencia];
+    }
+    if($fechacorte!=''){
+        $where[] = ['cvcompra.fecharegistro','<=',$fechacorte.' 23:59:59'];
+    }
+    $ingresoyegresocaja_egreso_cvcompra = DB::table('cvcompra')
+        ->where('cvcompra.idestadoeliminado',1)
+        ->where('cvcompra.compra_idformapago', 1) // caja
+        ->where($where)
+        ->sum('cvcompra.valorcompra');
     
     $ingresoyegresocaja_ingreso_ahorro_plazofijo = 0;
     $ingresoyegresocaja_ingreso_ahorro_ahorroc = 0;

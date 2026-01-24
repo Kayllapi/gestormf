@@ -258,9 +258,9 @@
               <td style="text-align:left;"><b>Egreso</b></td>
               <td colspan="4" style="text-align:left;">Compra de Bienes</td>
               <td></td>
-              <td style="text-align:right;">{{$co_actual['ingresoyegresocaja_egreso_cvcompra']}}</td>
+              <td style="text-align:right;"></td>
               <td></td>
-              <td style="text-align:right;"><b>0.00</b></td>
+              <td style="text-align:right;"><b>{{$co_actual['ingresoyegresocaja_egreso_cvcompra']}}</b></td>
               <td></td>
               <td style="text-align:right;"><b>0.00</b></td>
             </tr>

@@ -94,6 +94,8 @@
     sistema_select2({ input:'#idbanco' });
 
   $("#idtipodestino").on("change", function(e) {
+      $('#idbanco').val('').trigger('change');
+      $('#numerooperacion').val('');
     
       $('#cont_banco_n').css('display','none');
       $('#numerooperacion').attr('disabled',true);

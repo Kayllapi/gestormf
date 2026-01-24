@@ -2194,13 +2194,14 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
         ->where('credito.estado','DESEMBOLSADO')
         ->where($where3)
         ->sum('credito.monto_solicitado'); */
-    $ingresoyegresocaja_egreso_reduccioncapital_saldocapital = DB::table('cvasignacioncapital')
+    $ingresoyegresocaja_egreso_reduccioncapital_saldocapital = 0;
+    /* DB::table('cvasignacioncapital')
         ->whereIn('cvasignacioncapital.idtipodestino',[0,1])
         ->where('cvasignacioncapital.idestadoeliminado',1)
         ->where('cvasignacioncapital.idresponsable_recfinal', '<>', 0)
         ->where('cvasignacioncapital.idtipooperacion',2)
         ->where($where)
-        ->sum('cvasignacioncapital.monto');
+        ->sum('cvasignacioncapital.monto'); */
     $ingresoyegresocaja_egreso_gastosadministrativosyoperativos_saldocapital = DB::table('cvgastoadministrativooperativo')
         ->where('cvgastoadministrativooperativo.idformapago',1) 
         ->where('cvgastoadministrativooperativo.idestadoeliminado',1) 

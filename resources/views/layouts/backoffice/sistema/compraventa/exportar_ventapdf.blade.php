@@ -138,7 +138,6 @@
                         <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Fecha Registro</td>
                         <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Descripción</td>
                         <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Serie/Motor/N° P.</td>
-                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Modelo/T.</td>
                         <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" width="80px">Valor Compra</td>
                         <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" width="80px">Valor Comercial</td>
                         <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" width="80px">Precio Venta Descuento</td>
@@ -148,6 +147,7 @@
                         <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Origen</td>
                         <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Comprador</td>
                         <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Lugar de Pago</td>
+                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Banco</td>
                         <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Responsable</td>
                     </tr>
                 </thead>
@@ -168,7 +168,6 @@
                                         <td>{$fecharegistro}</td>
                                         <td>{$descripcion}</td>
                                         <td>{$value->serie_motor_partida}</td>
-                                        <td>{$value->modelo_tipo}</td>
                                         <td style='text-align: right;'>{$value->valorcompra}</td>
                                         <td style='text-align: right;'>{$value->valorcomercial}</td>
                                         <td style='text-align: right;'>{$value->venta_precio_venta_descuento}</td>
@@ -178,6 +177,7 @@
                                         <td>{$origen}</td>
                                         <td>{$comprador}</td>
                                         <td>{$lugar_pago}</td>
+                                        <td>{$value->venta_banco}</td>
                                         <td>{$value->responsablecodigo}</td>
                                     </tr>";
                         }

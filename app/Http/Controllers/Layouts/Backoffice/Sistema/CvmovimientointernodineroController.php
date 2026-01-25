@@ -117,9 +117,8 @@ class CvmovimientointernodineroController extends Controller
             ]);
         }
         elseif($request->input('view') == 'registrar_retiro1_insert') {
-          
             // --- RETIRO
-            $consolidadooperaciones = consolidadooperaciones($tienda,$idtienda,now()->format('Y-m-d'));
+            $consolidadooperaciones = cvconsolidadooperaciones($tienda,$idtienda,now()->format('Y-m-d'));
             if($request->idfuenteretiro_retiro1==6){
                 if($consolidadooperaciones['saldos_reserva']<$request->monto_retiro1){
                     return response()->json([
@@ -146,7 +145,7 @@ class CvmovimientointernodineroController extends Controller
                     ]);
                 }
             }
-          
+
             $bancoo = DB::table('banco')->where('banco.id',$request->idbanco_retiro1)->first();
           
             $movimientointernodinero = DB::table('cvmovimientointernodinero')
@@ -313,16 +312,14 @@ class CvmovimientointernodineroController extends Controller
             ];
             $this->validate($request,$rules,$messages);
           
-          
             return response()->json([
                 'resultado' => 'CORRECTO',
                 'mensaje'   => 'Se ha validado correctamente.'
             ]);
         }
         elseif($request->input('view') == 'registrar_retiro3_insert') {    
-          
             // --- RETIRO
-            $consolidadooperaciones = consolidadooperaciones($tienda,$idtienda,now()->format('Y-m-d'));
+            $consolidadooperaciones = cvconsolidadooperaciones($tienda,$idtienda,now()->format('Y-m-d'));
             if($request->idfuenteretiro_retiro3==6){
                 if($consolidadooperaciones['saldos_reserva']<$request->monto_retiro3){
                     return response()->json([

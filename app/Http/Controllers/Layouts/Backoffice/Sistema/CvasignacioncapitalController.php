@@ -160,26 +160,26 @@ class CvasignacioncapitalController extends Controller
                 ]);
             }
           
-            $consolidadooperaciones = cvconsolidadooperaciones($tienda,$idtienda,now()->format('Y-m-d'));
+            $cvconsolidadooperaciones = cvconsolidadooperaciones($tienda,$idtienda,now()->format('Y-m-d'));
             if($request->idtipooperacion==2){
                 if($request->idtipodestino==1){
-                    if($consolidadooperaciones['saldos_caja']<$request->monto){
+                    if($cvconsolidadooperaciones['saldos_caja']<$request->monto){
                         return response()->json([
                             'resultado' => 'ERROR',
-                            'mensaje'   => 'No hay saldo suficiente en CAJA.<br><b>Saldo Actual: S/. '.$consolidadooperaciones['saldos_caja'].'.</b>'
+                            'mensaje'   => 'No hay saldo suficiente en CAJA.<br><b>Saldo Actual: S/. '.$cvconsolidadooperaciones['saldos_caja'].'.</b>'
                         ]);
                     }
                 }
                 elseif($request->idtipodestino==2){
-                    if($consolidadooperaciones['saldos_reserva']<$request->monto){
+                    if($cvconsolidadooperaciones['saldos_reserva']<$request->monto){
                         return response()->json([
                             'resultado' => 'ERROR',
-                            'mensaje'   => 'No hay saldo suficiente en RESERVA CF.<br><b>Saldo Actual: S/. '.$consolidadooperaciones['saldos_reserva'].'.</b>'
+                            'mensaje'   => 'No hay saldo suficiente en RESERVA CF.<br><b>Saldo Actual: S/. '.$cvconsolidadooperaciones['saldos_reserva'].'.</b>'
                         ]);
                     }
                 }
                 elseif($request->idtipodestino==3){
-                    foreach($consolidadooperaciones['saldos_cuentabanco_bancos'] as $value){
+                    foreach($cvconsolidadooperaciones['saldos_cuentabanco_bancos'] as $value){
                         if($value['banco_id']==$request->idbanco && $value['banco']<$request->monto){
                             return response()->json([
                                 'resultado' => 'ERROR',
@@ -190,10 +190,10 @@ class CvasignacioncapitalController extends Controller
                 }
             }
             elseif($request->idtipooperacion==3){
-                if($consolidadooperaciones['saldos_capitalasignada']<$request->monto){
+                if($cvconsolidadooperaciones['saldos_capitalasignada']<$request->monto){
                     return response()->json([
                         'resultado' => 'ERROR',
-                        'mensaje'   => 'No hay saldo suficiente en Capital Asignado.<br><b>Saldo Actual: S/. '.$consolidadooperaciones['saldos_capitalasignada'].'.</b>'
+                        'mensaje'   => 'No hay saldo suficiente en Capital Asignado.<br><b>Saldo Actual: S/. '.$cvconsolidadooperaciones['saldos_capitalasignada'].'.</b>'
                     ]);
                 }
             }

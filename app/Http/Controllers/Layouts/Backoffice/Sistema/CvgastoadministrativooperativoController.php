@@ -84,25 +84,25 @@ class CvgastoadministrativooperativoController extends Controller
                 $this->validate($request,$rules,$messages);
             }
           
-            $consolidadooperaciones = consolidadooperaciones($tienda,$idtienda,now()->format('Y-m-d'));
-            /*if($request->idformapago==1){
-                if($consolidadooperaciones['saldos_caja']<$request->monto){
+            $cvconsolidadooperaciones = cvconsolidadooperaciones($tienda,$idtienda,now()->format('Y-m-d'));
+            if($request->idformapago==1){
+                if((float)$cvconsolidadooperaciones['saldos_caja']<=(float)$request->monto){
                     return response()->json([
                         'resultado' => 'ERROR',
-                        'mensaje'   => 'No hay saldo suficiente en CAJA.<br><b>Saldo Actual: S/. '.$consolidadooperaciones['saldos_caja'].'.</b>'
+                        'mensaje'   => 'No hay saldo suficiente en CAJA.<br><b>Saldo Actual: S/. '.$cvconsolidadooperaciones['saldos_caja'].'.</b>'
                     ]);
                 }
             }
             elseif($request->idformapago==2){
-                foreach($consolidadooperaciones['saldos_cuentabanco_bancos'] as $value){
-                    if($value['banco_id']==$request->idbanco && $value['banco']<$request->monto){
+                foreach($cvconsolidadooperaciones['saldos_cuentabanco_bancos'] as $value){
+                    if($value['banco_id']==$request->idbanco && (float)$value['banco']<=(float)$request->monto){
                         return response()->json([
                             'resultado' => 'ERROR',
                             'mensaje'   => 'No hay saldo suficiente en Cuenta Bancaria.'
                         ]);
                     }
                 }  
-            }*/
+            }
           
             $gastoadministrativooperativo = DB::table('cvgastoadministrativooperativo')
                 ->orderBy('cvgastoadministrativooperativo.codigo','desc')

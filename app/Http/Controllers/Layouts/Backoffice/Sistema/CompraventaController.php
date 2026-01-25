@@ -97,6 +97,28 @@ class CompraventaController extends Controller
 
             $this->validate($request,$rules,$messages);
 
+            $tienda = DB::table('tienda')->whereId($idtienda)->first();
+            $cvconsolidadooperaciones = cvconsolidadooperaciones($tienda,$idtienda,now()->format('Y-m-d'));
+            if(request('compra_idformapago')==1){
+                if($cvconsolidadooperaciones['saldos_caja'] < request('valorcompra')){
+                    return response()->json([
+                        'resultado' => 'ERROR',
+                        'mensaje'   => 'No hay saldo suficiente en CAJA.<br><b>Saldo Actual: S/. '.$cvconsolidadooperaciones['saldos_caja'].'.</b>'
+                    ]);
+                }
+            }
+            elseif(request('compra_idformapago') == 2){
+                foreach($cvconsolidadooperaciones['saldos_cuentabanco_bancos'] as $value){
+                    if($value['banco_id'] == request('compra_idbanco') && $value['banco'] < request('valorcompra')){
+                        return response()->json([
+                            'resultado' => 'ERROR',
+                            // 'mensaje'   => 'No hay saldo suficiente en Cuenta Bancaria.<br><b>Saldo Actual: S/. '.$value['banco'].'.</b>'
+                            'mensaje'   => 'No hay saldo suficiente en Cuenta Bancaria.'
+                        ]);
+                    }
+                }
+            }
+
             $codigo = DB::table('cvcompra')->max('codigo') + 1;
 
             // Banco
@@ -170,14 +192,12 @@ class CompraventaController extends Controller
                 'comprador_dni.required' => 'El "DNI (Vendedor)" es Obligatorio.',
                 'venta_montoventa.required' => 'El "Monto de Venta" es Obligatorio.',
             ];
-
             if (request('venta_idformapago') == 2) {
                 $rules['venta_numerooperacion'] = 'required';
                 $rules['venta_idbanco'] = 'required';
                 $messages['venta_numerooperacion.required'] = 'El "N° de Operación" es Obligatorio.';
                 $messages['venta_idbanco.required'] = 'El "Banco" es Obligatorio.';
             }
-
             $this->validate($request,$rules,$messages);
 
             if (request("venta_montoventa") < request('venta_precio_venta_descuento')) {

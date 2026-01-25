@@ -26,7 +26,7 @@
                                     <div class="row">
                                         <label class="col-sm-3 col-form-label" style="text-align: right;">Agencia</label>
                                         <div class="col-sm-7">
-                                            <select class="form-control" id="id_agencia_compra">
+                                            <select class="form-control" id="id_agencia_compra" disabled>
                                                 <option></option>
                                                 @foreach($agencias as $value)
                                                     <option value="{{$value->id}}">{{$value->nombreagencia}}</option>
@@ -148,7 +148,7 @@
                                     <div class="row">
                                         <label class="col-sm-3 col-form-label" style="text-align: right;">Agencia</label>
                                         <div class="col-sm-7">
-                                            <select class="form-select" id="id_agencia_venta">
+                                            <select class="form-select" id="id_agencia_venta" disabled>
                                                 <option></option>
                                                 @foreach($agencias as $value)
                                                     <option value="{{$value->id}}">{{$value->nombreagencia}}</option>

@@ -94,7 +94,7 @@ class CvmovimientointernodineroinstiController extends Controller
         }
         elseif($request->input('view') == 'registrar_retiro2_insert') {
             // --- RETIRO
-            $consolidadooperaciones = consolidadooperaciones($tienda,$idtienda,now()->format('Y-m-d'));
+            $consolidadooperaciones = cvconsolidadooperaciones($tienda,$idtienda,now()->format('Y-m-d'));
             if($request->idfuenteretiro_retiro2==10){
                 foreach($consolidadooperaciones['saldos_cuentabanco_bancos'] as $value){
                     if($value['banco_id']==$request->idbanco_retiro2 && $value['banco']<$request->monto_retiro2){

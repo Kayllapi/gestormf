@@ -231,7 +231,7 @@
               <td colspan="4" style="text-align:left;">Venta de Bienes</td>
               <td colspan="2"></td>
               <td></td>
-              <td style="text-align:right;"><b>0.00</b></td>
+              <td style="text-align:right;"><b>{{$co_actual['ingresoyegresocaja_ingreso_cvventa']}}</b></td>
               <td></td>
               <td style="text-align:right;"><b>0.00</b></td>
             </tr>
@@ -296,7 +296,7 @@
               <td></td>
               <td style="text-align:right;"><b>0.00</b></td>
             </tr>
-            @foreach($co_actual['ingresoyegresobanco_ingreso_crediticio_cnpcps_bancos'] as $value)
+            @foreach($co_actual['ingresoyegresobanco_ingreso_cvventas'] as $value)
             <tr>
               <td></td>
               <td></td>
@@ -359,14 +359,14 @@
             <tr>
               <td></td>
               <td style="border-top: 2px solid #000;text-align:left;"><b>Egreso</b></td>
-              <td colspan="4" style="border-top: 2px solid #000;text-align:left;">Oper. Crediticia</td>
+              <td colspan="4" style="border-top: 2px solid #000;text-align:left;">Compra de Bienes</td>
               <td colspan="2" style="border-top: 2px solid #000;"></td>
               <td style="border-top: 2px solid #000;"></td>
               <td style="border-top: 2px solid #000;text-align:right;"><b>{{$co_actual['ingresoyegresobanco_egreso_cvcompra']}}</b></td>
               <td style="border-top: 2px solid #000;"></td>
               <td style="border-top: 2px solid #000;text-align:right;"><b>0.00</b></td>
             </tr>
-            @foreach($co_actual['ingresoyegresobanco_egreso_crediticio_bancos'] as $value)
+            @foreach($co_actual['ingresoyegresobanco_egreso_cvcompras'] as $value)
             <tr>
               <td></td>
               <td></td>

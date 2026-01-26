@@ -86,7 +86,7 @@ class CvreporteconsolidadoopecajaController extends Controller
         }
         elseif($request->input('view') == 'submit_registro_arqueocaja'){
 
-            $co = consolidadooperaciones($tienda,$request->idagencia_arqueocaja,$request->corte_arqueocaja);
+            $co = cvconsolidadooperaciones($tienda,$request->idagencia_arqueocaja,$request->corte_arqueocaja);
           
             $idarqueocaja = DB::table('arqueocaja')->insertGetId([
                 'fecharegistro' => now(),
@@ -323,7 +323,7 @@ class CvreporteconsolidadoopecajaController extends Controller
     {
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
         if($request->input('view') == 'pdf_reporte'){
-          $co_actual = consolidadooperaciones($tienda,$request->idagencia,$request->corte);
+          $co_actual = cvconsolidadooperaciones($tienda,$request->idagencia,$request->corte);
           $date = Carbon::createFromFormat('Y-m-d', $request->corte);
           $date->subDay(); // Subtracts 1 day
           //$co_anterior = consolidadooperaciones($tienda,$request->idagencia,$date->format('Y-m-d'));
@@ -361,7 +361,7 @@ class CvreporteconsolidadoopecajaController extends Controller
           
             $agencias = DB::table('tienda')->get();
             $agencia = DB::table('tienda')->whereId($request->idagencia)->first();
-            $consolidadooperaciones = consolidadooperaciones($tienda,$request->idagencia,$request->corte);
+            $consolidadooperaciones = cvconsolidadooperaciones($tienda,$request->idagencia,$request->corte);
             $arqueocaja = DB::table('arqueocaja')->where('idagencia',$request->idagencia)->where('corte',$request->corte)->first();
             $resposanble = DB::table('users')->where('id',$arqueocaja?$arqueocaja->idresponsable:0)->first();
             return view(sistema_view().'/cvreporteconsolidadoopecaja/arqueocaja',[

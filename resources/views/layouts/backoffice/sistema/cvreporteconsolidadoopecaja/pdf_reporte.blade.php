@@ -124,7 +124,7 @@
   </footer>
   <main>
     <div class="container">
-      <h4 align="center">REPORTE CONSOLIDADO DE OPERACIONES DE CAJA</h4>
+      <h4 align="center">REPORTE CONSOLIDADO DE OPERACIONES DE COMPRA Y VENTAS DE BIENES - INSTITUCIONAL</h4>
             <div style="margin-top:-5px;"><b>AGENCIA: </b>{{ $co_actual['agencia']->nombreagencia }}  </div>
           <table style="width:100%;">
             <tr>
@@ -162,10 +162,10 @@
               <td style="border-bottom: 2px solid #000;"></td>
             </tr>
             <tr>
-              <td rowspan="2" style="text-align:left;"><b>Ingreso y Egreso por 
+              <td rowspan="3" style="text-align:left;"><b>Ingreso y Egreso por 
                 <span style="border-bottom: 1px solid #000;">Caja</span></b></td>
               <td style="text-align:left;"><b>Ingreso</b></td>
-              <td colspan="4" style="text-align:left;">Oper. Crediticias</td>
+              <td colspan="4" style="text-align:left;">Venta de Bienes</td>
               <td></td>
               <td style="text-align:right;">{{$co_actual['ingresoyegresocaja_ingreso_crediticio_transitorio']}}</td>
               <td></td>
@@ -173,7 +173,7 @@
               <td></td>
               <td style="text-align:right;"><b>{{$co_anterior?$co_anterior->ingresoyegresocaja_ingreso_crediticio:'0.00'}}</b></td>
             </tr>
-            <tr>
+            {{-- <tr>
               <td></td>
               <td style="width:50px;"></td>
               <td colspan="5" style="text-align:left;">CNP</td>
@@ -279,8 +279,8 @@
               <td style="text-align:right;">{{$co_actual['ingresoyegresocaja_ingreso_crediticio_cp_tenencxc']}}</td>
               <td></td>
               <td style="text-align:right;">{{$co_anterior?$co_anterior->ingresoyegresocaja_ingreso_crediticio_cp_tenencxc:'0.00'}}</td>
-            </tr>
-            <tr>
+            </tr> --}}
+            {{-- <tr>
               <td></td>
               <td></td>
               <td colspan="4" style="text-align:left;">Oper. Ahorro</td>
@@ -311,9 +311,8 @@
               <td style="text-align:right;">{{$co_actual['ingresoyegresocaja_ingreso_ahorro_ahorroc']}}</td>
               <td></td>
               <td style="text-align:right;">{{$co_anterior?$co_anterior->ingresoyegresocaja_ingreso_ahorro_ahorroc:'0.00'}}</td>
-            </tr>
+            </tr> --}}
             <tr>
-              <td></td>
               <td></td>
               <td colspan="4" style="text-align:left;">Incremento de Capital</td>
               <td colspan="2"></td>
@@ -323,7 +322,6 @@
               <td style="text-align:right;"><b>{{$co_anterior?$co_anterior->ingresoyegresocaja_ingreso_incrementocapital:'0.00'}}</b></td>
             </tr>
             <tr>
-              <td></td>
               <td></td>
               <td colspan="4" style="border-bottom: 2px solid #000;text-align:left;">Ingresos Extraordinarios</td>
               <td colspan="2" style="border-bottom: 2px solid #000;"></td>
@@ -335,7 +333,7 @@
             <tr>
               <td></td>
               <td style="text-align:left;"><b>Egreso</b></td>
-              <td colspan="4" style="text-align:left;">Oper. Crediticia</td>
+              <td colspan="4" style="text-align:left;">Compra de Bienes</td>
               <td></td>
               <td style="text-align:right;">{{$co_actual['ingresoyegresocaja_ingreso_crediticio_transitorio']}}</td>
               <td></td>
@@ -343,7 +341,7 @@
               <td></td>
               <td style="text-align:right;"><b>{{$co_anterior?$co_anterior->ingresoyegresocaja_egreso_crediticio:'0.00'}}</b></td>
             </tr>
-            <tr>
+            {{-- <tr>
               <td></td>
               <td></td>
               <td colspan="4" style="text-align:left;">Oper. Ahorro</td>
@@ -396,7 +394,7 @@
               <td style="text-align:right;">{{$co_actual['ingresoyegresocaja_egreso_ahorro_intcte']}}</td>
               <td></td>
               <td style="text-align:right;">{{$co_anterior?$co_anterior->ingresoyegresocaja_egreso_ahorro_intcte:'0.00'}}</td>
-            </tr>
+            </tr> --}}
             <tr>
               <td></td>
               <td></td>
@@ -418,10 +416,10 @@
               <td style="border-bottom: 2px solid #000;text-align:right;"><b>{{$co_anterior?$co_anterior->ingresoyegresocaja_egreso_gastosadministrativosyoperativos:'0.00'}}</b></td>
             </tr>
             <tr>
-              <td rowspan="3" style="text-align:left;"><b>Ingreso y Egreso por Cuenta 
+              <td rowspan="5" style="text-align:left;"><b>Ingreso y Egreso por Cuenta 
                 <span style="border-bottom: 1px solid #000;">Banco</span></b></td>
               <td style="text-align:left;"><b>Ingreso</b></td>
-              <td colspan="4" style="text-align:left;">Oper. Crediticia (CNP, CP)</td>
+              <td colspan="4" style="text-align:left;">Venta de Bienes</td>
               <td></td>
               <td>
                 @if($co_actual['ingresoyegresobanco_ingreso_crediticio_cnpcps_validacion_cantidad']>0)
@@ -437,12 +435,8 @@
               <td></td>
               <td style="text-align:right;"><b>{{$co_anterior?$co_anterior->ingresoyegresobanco_ingreso_crediticio_cnpcp:'0.00'}}</b></td>
             </tr>
-            <?php $i = 0 ?>
-            @foreach($co_actual['ingresoyegresobanco_ingreso_crediticio_cnpcps_bancos'] as $value)
+            @foreach($co_actual['ingresoyegresobanco_ingreso_incrementocapital_bancos'] as $value)
             <tr>
-              @if($i>0)
-              <td></td>
-              @endif
               <td></td>
               <td></td>
               <td colspan="4" style="text-align:left;">{{ $value['banco_nombre'] }}: {{ $value['banco_cuenta'] }}</td>
@@ -452,57 +446,10 @@
                 @endif
               </td>
               <td></td>
-              <td style="text-align:right;"><b>{{ $value['banco'] }}</b></td>
-              <td></td>
-              <td style="text-align:right;"><b>0.00</b></td>
-            </tr>
-            <tr>
-              @if($i>0)
-              <td></td>
-              @endif
-              <td></td>
-              <td></td>
-              <td></td>
-              <td colspan="4">Capital</td>
-              <td></td>
-              <td style="text-align:right;">{{ $value['banco_capital'] }}</td>
+              <td style="text-align:right;">{{ $value['banco'] }}</td>
               <td></td>
               <td style="text-align:right;">0.00</td>
             </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td colspan="4">Interés</td>
-              <td></td>
-              <td style="text-align:right;">{{ $value['banco_interes'] }}</td>
-              <td></td>
-              <td style="text-align:right;">0.00</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td colspan="4">C. SS/Desgrav., Cargo</td>
-              <td></td>
-              <td style="text-align:right;">{{ $value['banco_desgravcargo'] }}</td>
-              <td></td>
-              <td style="text-align:right;">0.00</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td colspan="4">Tenen. CxC, Ic, IM. </td>
-              <td></td>
-              <td style="text-align:right;">{{ $value['banco_tenencxc'] }}</td>
-              <td></td>
-              <td style="text-align:right;">0.00</td>
-            </tr>
-            <?php $i++ ?>
             @endforeach
             <tr>
               <td></td>
@@ -579,7 +526,7 @@
             <tr>
               <td></td>
               <td style="border-top: 2px solid #000;text-align:left;"><b>Egreso</b></td>
-              <td colspan="4" style="border-top: 2px solid #000;text-align:left;">Oper. Crediticia</td>
+              <td colspan="4" style="border-top: 2px solid #000;text-align:left;">Compra de Bienes</td>
               <td style="border-top: 2px solid #000;"></td>
               <td style="border-top: 2px solid #000;">
                 @if($co_actual['ingresoyegresobanco_egreso_crediticio_validacion_cantidad']>0)

@@ -129,7 +129,7 @@
           <table style="width:100%;">
             <tr>
               <th colspan="6" rowspan="2" style="border-bottom: 2px solid #000;border-top: 2px solid #000;">Saldos y Operaciones de Efectivo</th>
-              <th colspan="2" rowspan="2" style="border-bottom: 2px solid #000;border-top: 2px solid #000;">Operac. Transitorio</th>
+              <th colspan="2" rowspan="2" style="border-bottom: 2px solid #000;border-top: 2px solid #000;"></th>
               <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;width:60px;"></th>
               <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;width:80px;">Corte</th>
               <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;width:60px;"></th>

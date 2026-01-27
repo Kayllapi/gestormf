@@ -26,8 +26,12 @@
               <input type="number" class="form-control" value="0.00" id="precio" step="any">
           </div>
           <div class="col-sm-12">
-              <label>Cobertura de C.(%)</label>
+              <label>Cobertura de C. (%)</label>
               <input type="number" class="form-control" value="0.00" id="cobertura" step="any">
+          </div>
+          <div class="col-sm-12">
+              <label>Valor de Mercado (%)</label>
+              <input type="number" class="form-control" value="0.00" id="valormercado" step="any">
           </div>
         </div>
     </div>

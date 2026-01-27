@@ -20,13 +20,15 @@
           ['data' => 'Precio x Gramo (S/.)' ],
           ['data' => 'Cobertura (%)' ],
           ['data' => 'F. Actualización' ],
+          ['data' => 'Para considerar Valor de Mercado (%)', 'style' => 'text-decoration: underline;' ],
           ['data' => ''],
       ],
       'tbody' => [
           ['data' => 'tipo','type'=>'text'],
           ['data' => 'precio','type'=>'text'],
           ['data' => 'cobertura','type'=>'text'],
-          ['data' => 'fecha','type'=>'date'],
+          ['data' => 'fecha','type'=>'text'],
+          ['data' => 'valormercado','type'=>'text'],
           ['data' => 'opcion','type'=>'btn'],
       ]
     ])

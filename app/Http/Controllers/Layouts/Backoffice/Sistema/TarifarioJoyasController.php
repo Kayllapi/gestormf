@@ -44,13 +44,15 @@ class TarifarioJoyasController extends Controller
             $rules = [
                 'tipo' => 'required',         
                 'cobertura' => 'required',         
-                'precio' => 'required',         
+                'precio' => 'required',          
+                'valormercado' => 'required',         
             ];
           
             $messages = [
                 'tipo.required' => 'El "Tipo de Oro" es Obligatorio.',
                 'cobertura.required' => 'La "Cobertura de C.(%)" es Obligatorio.',
                 'precio.required' => 'El "Precio Por Gramo (S/)" es Obligatorio.',
+                'valormercado.required' => 'El "Valor de mercado (S/)" es Obligatorio.',
             ];
             $this->validate($request,$rules,$messages);
           
@@ -58,6 +60,7 @@ class TarifarioJoyasController extends Controller
                'tipo'        => $request->input('tipo'),
                'cobertura'   => $request->input('cobertura'),
                'precio'      => $request->input('precio'),
+               'valormercado'      => $request->input('valormercado'),
                
             ]);
 
@@ -89,6 +92,7 @@ class TarifarioJoyasController extends Controller
                   'id'        => $value->id,
                   'tipo'      => $value->tipo,
                   'cobertura' => $value->cobertura,
+                  'valormercado' => $value->valormercado,
                   'precio'    => $value->precio,
                   'fecha'    => $value->fecha_actualizacion,
                   'opcion' => [
@@ -159,13 +163,15 @@ class TarifarioJoyasController extends Controller
             $rules = [
                 'tipo' => 'required',         
                 'cobertura' => 'required',         
-                'precio' => 'required',         
+                'precio' => 'required', 
+                'valormercado' => 'required',           
             ];
           
             $messages = [
                 'tipo.required' => 'El "Tipo de Oro" es Obligatorio.',
                 'cobertura.required' => 'La "Cobertura de C.(%)" es Obligatorio.',
                 'precio.required' => 'El "Precio Por Gramo (S/)" es Obligatorio.',
+                'valormercado.required' => 'El "Valor de mercado (S/)" es Obligatorio.',
             ];
             $this->validate($request,$rules,$messages);
           
@@ -174,6 +180,7 @@ class TarifarioJoyasController extends Controller
                'tipo'        => $request->input('tipo'),
                'cobertura'   => $request->input('cobertura'),
                'precio'      => $request->input('precio'),
+               'valormercado'      => $request->input('valormercado'),
                'fecha_actualizacion' => Carbon::now()
             ]);
           

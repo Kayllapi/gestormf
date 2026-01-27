@@ -26,8 +26,12 @@
               <input type="number" class="form-control" value="{{ $tarifario->precio }}" id="precio" step="any">
           </div>
           <div class="col-sm-12">
-              <label>Cobertura de C.(%)</label>
+              <label>Cobertura de C. (%)</label>
               <input type="number" class="form-control" value="{{ $tarifario->cobertura }}" id="cobertura" step="any">
+          </div>
+          <div class="col-sm-12">
+              <label>Valor de Mercado (%)</label>
+              <input type="number" class="form-control" value="{{ $tarifario->valormercado }}" id="valormercado" step="any">
           </div>
         </div>
     </div>

@@ -136,10 +136,15 @@
                         <label>Valor Comercial S/</label>
                         <input type="text" class="form-control" id="val-view-valorcomercial" disabled>
                       </div>
+                      <div class="col-sm-4">
+                        <label>Valor de Mercado S/</label>
+                        <input type="number" class="form-control" id="val-view-valormercado" onclick="calc_valormercado()" onkeyup="calc_valormercado()">
+                        <span id="cont_mensaje_valormercado" style="color: #c52525;font-size: 12px;"></span>
+                      </div>
                     </div>
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="guardar()">Guardar</button>
+                    <button type="button" class="btn btn-success" onclick="guardar()">Guardar</button>
                   </div>
                 </div>
               </div>
@@ -404,7 +409,6 @@
     modal({ route:"{{url('backoffice/'.$tienda->id.'/garantias/'.$garantias->id.'/edit?view=modificar')}}&val="+val,  size: 'modal-sm' });  
   }
   function load_edit_garantia(){
-
     pagina({ route:"{{url('backoffice')}}/{{$tienda->id}}/garantias/{{$garantias->id}}/edit?view=editar", result:'#form-garantias-result'});  
   }
   @include('app.nuevosistema.select2',['json'=>'tienda:usuario','input'=>'#idcliente','val'=>$garantias->idcliente])
@@ -538,14 +542,23 @@
     
   }
   function guardar(){
+    
       let valor_mercado = parseFloat($('#valor_mercado').val());   
       let monto_cobertura = parseFloat($('#val-view-cobertura').val());    
       let monto_valorcomercial = parseFloat($('#val-view-valorcomercial').val());
+      let valormercado =  parseFloat($("#val-view-valormercado").val());
+    
+      if(valormercado<monto_valorcomercial){
+          return false;
+      }
+    
       $('#valor_mercado_inicial').val(valor_mercado.toFixed(2));    
       $('#cobertura').val(monto_cobertura.toFixed(2));
       $('#valorcomercial').val(monto_valorcomercial.toFixed(2));
       $('#idtipo_joyas_nombre').val($('#idtipo_joyas :selected').html());
       $('#idtarifario_joya_nombre').val($('#idtarifario_joya :selected').html());
+    
+      $('#modalValorizacion').modal('hide');
       
   }
   function limpiar(){
@@ -570,7 +583,7 @@
           success: function (res){
               let option_select = `<option></option>`;
               $.each(res, function( key, value ) {
-                option_select += `<option value="${value.id}" cobertura="${value.cobertura}" preciogramo="${value.precio}" >${value.tipo} </option>`;
+                option_select += `<option value="${value.id}" cobertura="${value.cobertura}" preciogramo="${value.precio}" valormercado="${value.valormercado}">${value.tipo} </option>`;
               });
               $('#idtarifario_joya').html(option_select);
               sistema_select2({ input:'#idtarifario_joya', val:'{{ $garantias->idtarifario_joya }}'});
@@ -594,21 +607,51 @@
             });
             $('#idvalorizacion_descuento').html(option_select);
             sistema_select2({ input:'#idvalorizacion_descuento', val:'{{ $garantias->idvalorizacion_descuento }}'});
+            calc_tarifa_joya();
         }
     })
   }
   function calc_tarifa_joya(){
+      let iddescuento_joya = $("#iddescuento_joya").find('option:selected').val();
+      let selectDescuento = $("#idvalorizacion_descuento").find('option:selected'); 
+      let descuento = selectDescuento.attr('descuento');
+      let pesogramo = $('#peso_gramos').val();
+    
+      let peso_neto = 0;
+      if(descuento === undefined){
+          peso_neto = parseFloat(pesogramo);
+      }else{
+          let neto_descuento = 0;
+          if(iddescuento_joya == 1 ){
+              neto_descuento = (parseFloat(pesogramo) * parseFloat(descuento) ) / 100;
+          }
+          else{
+              neto_descuento = parseFloat(descuento);
+          }
+
+          peso_neto = parseFloat(pesogramo) - parseFloat(neto_descuento);
+      }
+
+      $('#peso_neto').val(peso_neto.toFixed(2));
+    
       let optionTarifaJoya = $("#idtarifario_joya").find('option:selected'); 
-      let cobertura = optionTarifaJoya.attr('cobertura');
-      let preciogramo = optionTarifaJoya.attr('preciogramo');
-      let peso = $('#peso_neto').val();
-      let monto_valorcomercial = parseFloat(peso)*parseFloat(preciogramo);
-      let monto_cobertura = (parseFloat(monto_valorcomercial)*parseFloat(cobertura))/100;  
+      let cobertura = parseFloat(optionTarifaJoya.attr('cobertura'));
+      let preciogramo = parseFloat(optionTarifaJoya.attr('preciogramo'));
+      let peso = parseFloat($('#peso_neto').val());
+      let monto_valorcomercial = peso*preciogramo;
+      let monto_cobertura = (monto_valorcomercial*cobertura)/100;  
 
       $('#porcentajecobertura').val(cobertura);
       $('#porcentajevalorcomercial').val('0.00');
       $('#val-view-cobertura').val(monto_cobertura.toFixed(2));
       $('#val-view-valorcomercial').val(monto_valorcomercial.toFixed(2));
+      @if($garantias->valorcomercial>0)
+      $('#val-view-valormercado').val({{$garantias->valorcomercial}});
+      @else
+      $('#val-view-valormercado').val(monto_valorcomercial.toFixed(2));
+      @endif
+    
+    
       
       
       /*if(changeStatusCaldJoya){
@@ -622,44 +665,51 @@
         $('#val-view-valorcomercial').val('{{ $garantias->valorcomercial }}');
       }*/
   }
-
-  //.val('{{ $garantias->idmetodo_valorizacion }}').trigger('change');
-
-//   $("#idtipogarantia").on("select2:select", function(e) {
-//         if(e.params.data.id==1){
-            
-//         }
-//     })
-  
-
-  
-  
-  
-
-  //var changeStatusCalMonto = false;
-
-  function calc_desc_peso(){
-    let iddescuento_joya = $("#iddescuento_joya").find('option:selected').val();
+  function calc_valormercado(){
+      let valormercado =  parseFloat($("#val-view-valormercado").val());
+      let optionTarifaJoya = $("#idtarifario_joya").find('option:selected'); 
+      let valormercado_porcentaje = parseFloat(optionTarifaJoya.attr('valormercado'));
+      let cobertura = parseFloat(optionTarifaJoya.attr('cobertura'));
+      let preciogramo = parseFloat(optionTarifaJoya.attr('preciogramo'));
+      let peso = parseFloat($('#peso_neto').val());
+      let monto_valorcomercial = peso*preciogramo;
+      //let monto_cobertura = (monto_valorcomercial*cobertura)/100; 
     
+      $('#cont_mensaje_valormercado').html('');
+      if(valormercado<monto_valorcomercial){
+          $('#cont_mensaje_valormercado').html('El Valor de Mercado debe ser mayor o igual a Valor Comercial');
+      }
+    
+      var new_valorcomercial = (((valormercado-monto_valorcomercial)*(valormercado_porcentaje/100))+monto_valorcomercial);
+      var new_cobertura = new_valorcomercial*(cobertura/100);
+
+      $('#porcentajecobertura').val(cobertura);
+      $('#porcentajevalorcomercial').val('0.00');
+      $('#val-view-cobertura').val(new_cobertura.toFixed(2));
+      $('#val-view-valorcomercial').val(new_valorcomercial.toFixed(2));
+  }
+  /*function calc_desc_peso(){
+    let iddescuento_joya = $("#iddescuento_joya").find('option:selected').val();
     let selectDescuento = $("#idvalorizacion_descuento").find('option:selected'); 
     let pesogramo = $('#peso_gramos').val();
     let descuento = selectDescuento.attr('descuento');
     let peso_neto = 0;
     if(descuento === undefined){
-      peso_neto = parseFloat(pesogramo);
+        peso_neto = parseFloat(pesogramo);
     }else{
-      let neto_descuento = 0;
-      if(iddescuento_joya == 1 ){
-         neto_descuento = (parseFloat(pesogramo) * parseFloat(descuento) ) / 100;
-      }
-      else{
-        neto_descuento = parseFloat(descuento);
-      }
+        let neto_descuento = 0;
+        if(iddescuento_joya == 1 ){
+            neto_descuento = (parseFloat(pesogramo) * parseFloat(descuento) ) / 100;
+        }
+        else{
+            neto_descuento = parseFloat(descuento);
+        }
       
-      peso_neto = parseFloat(pesogramo) - parseFloat(neto_descuento);
+        peso_neto = parseFloat(pesogramo) - parseFloat(neto_descuento);
     }
     
     $('#peso_neto').val(peso_neto.toFixed(2));
     
-  }
+  }*/
+
 </script>     

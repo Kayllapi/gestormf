@@ -1987,7 +1987,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
             'banco_id' => $valuebancos->id,
             'banco_nombre' => $valuebancos->nombre,
             'banco_cuenta' => '(******'.substr($valuebancos->cuenta, -5).')',
-            'banco' => number_format($movimientointernodineros, 2, '.', ''),
+            'banco' => number_format($movimientointernodineros_sum, 2, '.', ''),
             'banco_dep' => number_format($movimientointernodineros1, 2, '.', ''),
         ];
     
@@ -2046,7 +2046,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
         $ret_caja_banco_bancos[] = [
             'banco_nombre' => $valuebancos->nombre,
             'banco_cuenta' => '(******'.substr($valuebancos->cuenta, -5).')',
-            'banco' => number_format($movimientointernodineros, 2, '.', ''),
+            'banco' => number_format($movimientointernodineros_sum, 2, '.', ''),
             'banco_dep' => number_format($movimientointernodineros1, 2, '.', ''),
         ];
     
@@ -2089,11 +2089,21 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
     // HABILITACIÓN Y GESTIÓN DE LIQUIDEZ ( II )
     
     $ret_banco_reservacf = 0;
+    $ret_banco_reservacf_sum = 0;
     $ret_banco_reservacf_bancos = [];
     $dep_reservacf_banco = 0;
     $dep_reservacf_banco_bancos = [];
     foreach($bancos as $valuebancos){
         $movimientointernodineros = DB::table('cvmovimientointernodinero')
+            ->join('cvmovimientointernodinero as cvm', 'cvmovimientointernodinero.id', 'cvm.idcvmovimientointernodinero')
+            ->where('cvmovimientointernodinero.idestadoeliminado',1)
+            ->where('cvmovimientointernodinero.idfuenteretiro',10)
+            ->where('cvmovimientointernodinero.idtipomovimientointerno',3)
+            ->where('cvmovimientointernodinero.idbanco',$valuebancos->id)
+            ->where('cvm.idresponsable','<>',0)
+            ->where($where)
+            ->sum('cvmovimientointernodinero.monto');
+        $movimientointernodineros_sum = DB::table('cvmovimientointernodinero')
             ->where('cvmovimientointernodinero.idestadoeliminado',1)
             ->where('cvmovimientointernodinero.idfuenteretiro',10)
             ->where('cvmovimientointernodinero.idtipomovimientointerno',3)
@@ -2109,11 +2119,12 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
             ->where($where)
             ->sum('cvmovimientointernodinero.monto');
         $ret_banco_reservacf += number_format($movimientointernodineros, 2, '.', '');
+        $ret_banco_reservacf_sum += number_format($movimientointernodineros_sum, 2, '.', '');
         $dep_reservacf_banco += number_format($movimientointernodineros1, 2, '.', '');
         $ret_banco_reservacf_bancos[] = [
             'banco_nombre' => $valuebancos->nombre,
             'banco_cuenta' => '(******'.substr($valuebancos->cuenta, -5).')',
-            'banco' => number_format($movimientointernodineros, 2, '.', ''),
+            'banco' => number_format($movimientointernodineros_sum, 2, '.', ''),
             'banco_dep' => number_format($movimientointernodineros1, 2, '.', ''),
         ];
     
@@ -2234,23 +2245,29 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
         $desembolsos = 0;
     
         $movimientointernodineros1 = DB::table('cvmovimientointernodinero')
+            ->join('cvmovimientointernodinero as cvm', 'cvmovimientointernodinero.id', 'cvm.idcvmovimientointernodinero')
             ->where('cvmovimientointernodinero.idestadoeliminado',1)
             ->where('cvmovimientointernodinero.idfuenteretiro',7)
             ->where('cvmovimientointernodinero.idbanco',$valuebancos->id)
+            ->where('cvm.idresponsable','<>',0)
             ->where($where4)
             ->sum('cvmovimientointernodinero.monto');
     
         $movimientointernodineros2 = DB::table('cvmovimientointernodinero')
+            ->join('cvmovimientointernodinero as cvm', 'cvmovimientointernodinero.id', 'cvm.idcvmovimientointernodinero')
             ->where('cvmovimientointernodinero.idestadoeliminado',1)
             ->where('cvmovimientointernodinero.idfuenteretiro',9)
             ->where('cvmovimientointernodinero.idbanco',$valuebancos->id)
+            ->where('cvm.idresponsable','<>',0)
             ->where($where4)
             ->sum('cvmovimientointernodinero.monto');
     
         $movimientointernodineros5 = DB::table('cvmovimientointernodinero')
+            ->join('cvmovimientointernodinero as cvm', 'cvmovimientointernodinero.id', 'cvm.idcvmovimientointernodinero')
             ->where('cvmovimientointernodinero.idestadoeliminado',1)
             ->where('cvmovimientointernodinero.idfuenteretiro',10)
             ->where('cvmovimientointernodinero.idbanco',$valuebancos->id)
+            ->where('cvm.idresponsable','<>',0)
             ->where($where4)
             ->sum('cvmovimientointernodinero.monto');
     
@@ -2690,6 +2707,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
         'ret_caja_banco_sum' => number_format($ret_caja_banco_sum, 2, '.', ''),
         'ret_caja_banco_bancos' => $ret_caja_banco_bancos,
         'ret_banco_reservacf' => number_format($ret_banco_reservacf, 2, '.', ''),
+        'ret_banco_reservacf_sum' => number_format($ret_banco_reservacf_sum, 2, '.', ''),
         'ret_banco_reservacf_bancos' => $ret_banco_reservacf_bancos,
         'ret_reservacf_caja_total' => number_format($ret_reservacf_caja_total, 2, '.', ''),
         'ret_caja_reservacf_total' => number_format($ret_caja_reservacf_total, 2, '.', ''),

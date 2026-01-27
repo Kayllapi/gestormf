@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>REPORTE CONSOLIDADO DE OPERACIONES INSTITUCIONAL</title>
+    <title>REPORTE CONSOLIDADO DE OPERACIONES DE RESERVA CF</title>
     <style>
       *{
         font-family:helvetica;
@@ -120,20 +120,20 @@
     <div style="float:left;font-size:18px;">{{ $co_actual['tienda']->ticket_nombre }} | {{ $co_actual['agencia']->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
   </header>
   <footer>
-    <p class="page" style="text-align:right;">Página </p>
+    <p class="page">Página </p>
   </footer>
   <main>
     <div class="container">
-      <h4 align="center" style="margin: 0px;">REPORTE CONSOLIDADO DE OPERACIONES INSTITUCIONAL - COMPRA Y VENTA DE BIENES</h4>
-            <div ><b>AGENCIA: </b>{{ $co_actual['agencia']->nombreagencia }}  </div>
+      <h4 align="center">REPORTE CONSOLIDADO DE OPERACIONES DE COMPRA Y VENTAS DE BIENES</h4>
+            <div style="margin-top:-5px;"><b>AGENCIA: </b>{{ $co_actual['agencia']->nombreagencia }}</div>
           <table style="width:100%;">
             <tr>
               <th colspan="6" rowspan="2" style="border-bottom: 2px solid #000;border-top: 2px solid #000;">Saldos y Operaciones de Efectivo</th>
               <th colspan="2" rowspan="2" style="border-bottom: 2px solid #000;border-top: 2px solid #000;"></th>
-              <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;width:50px;"></th>
+              <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;width:60px;"></th>
               <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;width:80px;">Corte</th>
               <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;width:60px;"></th>
-              <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;width:90px;">Cierre Anterior</th>
+              <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;width:80px;">Cierre Ant.</th>
             </tr>
             <tr>
               <th style="border-bottom: 2px solid #000;">Arqueo</th>
@@ -144,75 +144,22 @@
             <tr>
               <td style="text-align:left;width:80px;"><b>Saldos</b></td>
               <td style="width:80px;"></td>
-              <td colspan="4" style="border-bottom: 2px solid #000;text-align:left;">Capital Asignada</td>
+              <td colspan="4" style="border-bottom: 2px solid #000;text-align:left;">Reserva CF</td>
               <td colspan="2" style="border-bottom: 2px solid #000;"></td>
-              <td style="border-bottom: 2px solid #000;"></td>
-              <td style="border-bottom: 2px solid #000;text-align:right;"><b>{{$co_actual['saldos_capitalasignada']}}</b></td>
-              <td style="border-bottom: 2px solid #000;"></td>
-              <td style="border-bottom: 2px solid #000;text-align:right;"><b>{{$co_anterior?$co_anterior->saldos_capitalasignada:'0.00'}}</b></td>
+              <td style="border-bottom: 2px solid #000;text-align:right;"></td>
+              <td style="border-bottom: 2px solid #000;text-align:right;"><b>{{$co_actual['saldos_reserva']}}</b></td>
+              <td style="border-bottom: 2px solid #000;text-align:right;"></td>
+              <td style="border-bottom: 2px solid #000;text-align:right;"><b>{{$co_anterior?$co_anterior->saldos_reserva:'0.00'}}</b></td>
             </tr>
             <tr>
-              <td></td>
-              <td></td>
-              <td colspan="4" style="text-align:left;">Cuenta Banco</td>
-              <td colspan="2"></td>
-              <td></td>
-              <td style="border-bottom: 1px solid #000;text-align:right;"><b>{{$co_actual['saldos_cuentabanco']}}</b></td>
-              <td></td>
-              <td style="border-bottom: 1px solid #000;text-align:right;"><b>{{$co_anterior?$co_anterior->saldos_cuentabanco:'0.00'}}</b></td>
-            </tr>
-            @foreach($co_actual['saldos_cuentabanco_bancos'] as $value)
-            <tr>
-              <td></td>
-              <td></td>
-              <td style="width:50px;"></td>
-              <td colspan="4" style="text-align:left;">{{ $value['banco_nombre'] }}: {{ $value['banco_cuenta'] }}</td>
-              <td></td>
-              <td></td>
-              <td style="text-align:right;">{{ $value['banco'] }}</td>
-              <td></td>
-              <td style="text-align:right;">0.00</td>
-            </tr>
-            @endforeach
-            <tr>
-              <td></td>
-              <td></td>
-              <td colspan="4" style="text-align:left;">Reserva CF</td>
-              <td colspan="2"></td>
-              <td></td>
-              <td style="border-bottom: 1px solid #000;text-align:right;"><b>{{$co_actual['saldos_reserva']}}</b></td>
-              <td></td>
-              <td style="border-bottom: 1px solid #000;text-align:right;"><b>{{$co_anterior?$co_anterior->saldos_reserva:'0.00'}}</b></td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td colspan="4" style="text-align:left;">Caja</td>
-              <td colspan="2"></td>
-              <td style="text-align:right;"><b>{{$co_actual['arqueo_caja']}}</b></td>
-              <td style="border-bottom: 1px solid #000;text-align:right;"><b>{{$co_actual['saldos_caja']}}</b></td>
+              <td style="text-align:left;width:80px;"></td>
+              <td ></td>
+              <td colspan="4" style="border-bottom: 2px solid #000;text-align:left;">Caja</td>
+              <td colspan="2" style="border-bottom: 2px solid #000;"></td>
+              <td style="border-bottom: 2px solid #000;text-align:right;"><b>{{$co_actual['arqueo_caja']}}</b></td>
+              <td style="border-bottom: 2px solid #000;text-align:right;"><b>{{$co_actual['saldos_caja']}}</b></td>
               <td style="border-bottom: 2px solid #000;text-align:right;"><b>{{$co_anterior?$co_anterior->arqueo_caja:'0.00'}}</b></td>
               <td style="border-bottom: 2px solid #000;text-align:right;"><b>{{$co_anterior?$co_anterior->saldos_caja:'0.00'}}</b></td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td colspan="4" style="border-bottom: 2px solid #000;"></td>
-              <td colspan="2" style="border-bottom: 2px solid #000;"></td>
-              <td style="border-bottom: 2px solid #000;"></td>
-              <td style="border-bottom: 2px solid #000;"></td>
-              <td style="border-bottom: 2px solid #000;"></td>
-              <td style="border-bottom: 2px solid #000;"></td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td colspan="4" style="text-align:left;">Bienes Comprados (En Stock)</td>
-              <td colspan="2"></td>
-              <td></td>
-              <td style="border-bottom: 1px solid #000;text-align:right;"><b>{{$co_actual['saldos_bienescomprados']}}</b></td>
-              <td></td>
-              <td style="border-bottom: 1px solid #000;text-align:right;"><b>0.00</b></td>
             </tr>
             <tr>
               <td style="border-bottom: 2px solid #000;"></td>
@@ -229,7 +176,8 @@
                 <span style="border-bottom: 1px solid #000;">Caja</span></b></td>
               <td style="text-align:left;"><b>Ingreso</b></td>
               <td colspan="4" style="text-align:left;">Venta de Bienes</td>
-              <td colspan="2"></td>
+              <td></td>
+              <td style="text-align:right;"></td>
               <td></td>
               <td style="text-align:right;"><b>{{$co_actual['ingresoyegresocaja_ingreso_cvventa']}}</b></td>
               <td></td>
@@ -245,7 +193,7 @@
               <td style="text-align:right;"><b>{{$co_anterior?$co_anterior->ingresoyegresocaja_ingreso_incrementocapital:'0.00'}}</b></td>
             </tr>
             <tr>
-              <td style="border-bottom: 2px solid #000;"></td>
+              <td></td>
               <td colspan="4" style="border-bottom: 2px solid #000;text-align:left;">Ingresos Extraordinarios</td>
               <td colspan="2" style="border-bottom: 2px solid #000;"></td>
               <td style="border-bottom: 2px solid #000;"></td>
@@ -290,7 +238,15 @@
               <td style="text-align:left;"><b>Ingreso</b></td>
               <td colspan="4" style="text-align:left;">Venta de Bienes</td>
               <td></td>
-              <td></td>
+              <td>
+                @if($co_actual['ingresoyegresobanco_ingreso_cvventa_validacion_cantidad']>0)
+                  @if($co_actual['ingresoyegresobanco_ingreso_cvventa_validacion']=='CHECK')
+                    <img src="{{url('public/backoffice/sistema/icono_check.png')}}" width="20px">
+                  @else
+                    <img src="{{url('public/backoffice/sistema/icono_close.png')}}" width="20px">
+                  @endif
+                @endif
+              </td>
               <td></td>
               <td style="text-align:right;"><b>{{$co_actual['ingresoyegresobanco_ingreso_cvventa']}}</b></td>
               <td></td>
@@ -301,7 +257,11 @@
               <td></td>
               <td></td>
               <td colspan="4" style="text-align:left;">{{ $value['banco_nombre'] }}: {{ $value['banco_cuenta'] }}</td>
-              <td></td>
+              <td>
+                @if($value['validacion']=='CHECK')
+                <img src="{{url('public/backoffice/sistema/icono_check.png')}}" width="20px">
+                @endif
+              </td>
               <td></td>
               <td style="text-align:right;">{{ $value['banco'] }}</td>
               <td></td>
@@ -313,7 +273,15 @@
               <td></td>
               <td colspan="4" style="text-align:left;">Incremento de Capital</td>
               <td></td>
-              <td></td>
+              <td>
+                @if($co_actual['ingresoyegresobanco_ingreso_incrementocapital_validacion_cantidad']>0)
+                  @if($co_actual['ingresoyegresobanco_ingreso_incrementocapital_validacion']=='CHECK')
+                    <img src="{{url('public/backoffice/sistema/icono_check.png')}}" width="20px">
+                  @else
+                    <img src="{{url('public/backoffice/sistema/icono_close.png')}}" width="20px">
+                  @endif
+                @endif
+              </td>
               <td></td>
               <td style="text-align:right;"><b>{{$co_actual['ingresoyegresobanco_ingreso_incrementocapital']}}</b></td>
               <td></td>
@@ -325,7 +293,11 @@
               <td></td>
               <td></td>
               <td colspan="4" style="text-align:left;">{{ $value['banco_nombre'] }}: {{ $value['banco_cuenta'] }}</td>
-              <td></td>
+              <td>
+                @if($value['validacion']=='CHECK')
+                <img src="{{url('public/backoffice/sistema/icono_check.png')}}" width="20px">
+                @endif
+              </td>
               <td></td>
               <td style="text-align:right;">{{ $value['banco'] }}</td>
               <td></td>
@@ -337,7 +309,15 @@
               <td></td>
               <td colspan="4" style="text-align:left;">Ingresos Extraordinarios</td>
               <td></td>
-              <td></td>
+              <td>
+                @if($co_actual['ingresoyegresobanco_ingreso_ingresosextraordinarios_validacion_cantidad']>0)
+                @if($co_actual['ingresoyegresobanco_ingreso_ingresosextraordinarios_validacion']=='CHECK')
+                <img src="{{url('public/backoffice/sistema/icono_check.png')}}" width="20px">
+                @else
+                <img src="{{url('public/backoffice/sistema/icono_close.png')}}" width="20px">
+                @endif
+                @endif
+              </td>
               <td></td>
               <td style="text-align:right;"><b>{{$co_actual['ingresoyegresobanco_ingreso_ingresosextraordinarios']}}</b></td>
               <td></td>
@@ -349,7 +329,11 @@
               <td></td>
               <td></td>
               <td colspan="4" style="text-align:left;">{{ $value['banco_nombre'] }}: {{ $value['banco_cuenta'] }}</td>
-              <td></td>
+              <td>
+                @if($value['validacion']=='CHECK')
+                <img src="{{url('public/backoffice/sistema/icono_check.png')}}" width="20px">
+                @endif
+              </td>
               <td></td>
               <td style="text-align:right;">{{ $value['banco'] }}</td>
               <td></td>
@@ -360,7 +344,16 @@
               <td></td>
               <td style="border-top: 2px solid #000;text-align:left;"><b>Egreso</b></td>
               <td colspan="4" style="border-top: 2px solid #000;text-align:left;">Compra de Bienes</td>
-              <td colspan="2" style="border-top: 2px solid #000;"></td>
+              <td style="border-top: 2px solid #000;"></td>
+              <td style="border-top: 2px solid #000;">
+                @if($co_actual['ingresoyegresobanco_egreso_cvcompra_validacion_cantidad']>0)
+                  @if($co_actual['ingresoyegresobanco_egreso_cvcompra_validacion']=='CHECK')
+                    <img src="{{url('public/backoffice/sistema/icono_check.png')}}" width="20px">
+                  @else
+                    <img src="{{url('public/backoffice/sistema/icono_close.png')}}" width="20px">
+                  @endif
+                @endif
+              </td>
               <td style="border-top: 2px solid #000;"></td>
               <td style="border-top: 2px solid #000;text-align:right;"><b>{{$co_actual['ingresoyegresobanco_egreso_cvcompra']}}</b></td>
               <td style="border-top: 2px solid #000;"></td>
@@ -372,7 +365,11 @@
               <td></td>
               <td></td>
               <td colspan="4" style="text-align:left;">{{ $value['banco_nombre'] }}: {{ $value['banco_cuenta'] }}</td>
-              <td></td>
+              <td>
+                {{-- @if($value['validacion']=='CHECK')
+                <img src="{{url('public/backoffice/sistema/icono_check.png')}}" width="20px">
+                @endif --}}
+              </td>
               <td></td>
               <td style="text-align:right;">{{ $value['banco'] }}</td>
               <td></td>
@@ -384,7 +381,15 @@
               <td></td>
               <td colspan="4" style="text-align:left;">Reducción de Capital</td>
               <td></td>
-              <td></td>
+              <td>
+                @if($co_actual['ingresoyegresobanco_egreso_reduccioncapital_validacion_cantidad']>0)
+                @if($co_actual['ingresoyegresobanco_egreso_reduccioncapital_validacion']=='CHECK')
+                <img src="{{url('public/backoffice/sistema/icono_check.png')}}" width="20px">
+                @else
+                <img src="{{url('public/backoffice/sistema/icono_close.png')}}" width="20px">
+                @endif
+                @endif
+              </td>
               <td></td>
               <td style="text-align:right;"><b>{{$co_actual['ingresoyegresobanco_egreso_reduccioncapital']}}</b></td>
               <td></td>
@@ -396,7 +401,11 @@
               <td></td>
               <td></td>
               <td colspan="4" style="text-align:left;">{{ $value['banco_nombre'] }}: {{ $value['banco_cuenta'] }}</td>
-              <td></td>
+              <td>
+                @if($value['validacion']=='CHECK')
+                <img src="{{url('public/backoffice/sistema/icono_check.png')}}" width="20px">
+                @endif
+              </td>
               <td></td>
               <td style="text-align:right;">{{ $value['banco'] }}</td>
               <td></td>
@@ -408,7 +417,15 @@
               <td></td>
               <td colspan="4" style="text-align:left;">Gastos administrativos y operativos</td>
               <td></td>
-              <td></td>
+              <td>
+                @if($co_actual['ingresoyegresobanco_egreso_gastosadministrativosyoperativos_validacion_cantidad']>0)
+                @if($co_actual['ingresoyegresobanco_egreso_gastosadministrativosyoperativos_validacion']=='CHECK')
+                <img src="{{url('public/backoffice/sistema/icono_check.png')}}" width="20px">
+                @else
+                <img src="{{url('public/backoffice/sistema/icono_close.png')}}" width="20px">
+                @endif
+                @endif
+              </td>
               <td></td>
               <td style="text-align:right;"><b>{{$co_actual['ingresoyegresobanco_egreso_gastosadministrativosyoperativos']}}</b></td>
               <td></td>
@@ -420,7 +437,11 @@
               <td></td>
               <td></td>
               <td colspan="4" style="text-align:left;">{{ $value['banco_nombre'] }}: {{ $value['banco_cuenta'] }}</td>
-              <td></td>
+              <td>
+                @if($value['validacion']=='CHECK')
+                <img src="{{url('public/backoffice/sistema/icono_check.png')}}" width="20px">
+                @endif
+              </td>
               <td></td>
               <td style="text-align:right;">{{ $value['banco'] }}</td>
               <td></td>
@@ -529,7 +550,7 @@
               <td></td>
               <td></td>
               <td colspan="3" style="text-align:left;"><b>V.</b> Ret. de Banco para Reserva CF</td>
-              <td style="text-align:right;padding-right:30px;"><b>{{$co_actual['ret_banco_reservacf_sum']}}</b></td>
+              <td style="text-align:right;padding-right:30px;"><b>{{$co_actual['ret_banco_reservacf']}}</b></td>
               <td colspan="2"><b>V.</b> Dep. a Reserva CF desde Banco</td>
               <td style="text-align:right;"><b>{{$co_actual['dep_reservacf_banco']}}</b></td>
               <td></td>
@@ -603,27 +624,20 @@
             <tr>
               <td></td>
               <td></td>
-              <td colspan="4" style="text-align:left;">Total de Efectivo en Ejercicio (S/.)</td>
+              <td colspan="4" style="text-align:left;">Validación de Operaciones por Cuenta Banco: 
+              <img src="{{url('public/backoffice/sistema/icono_check.png')}}" width="20px"></td>
               <td></td>
               <td></td>
               <td></td>
-              <td style="text-align:right;border-bottom: 1px solid #000;border-top: 1px solid #000;"><b>{{$co_actual['total_efectivo_ejercicio']}}</b></td>
+              <td style="text-align:center;"><b>
+                @if($co_actual['validacion_operaciones_cuenta_banco']=='SIN OPERACIONES')
+                SIN OPERAC.
+                @else
+                {{$co_actual['validacion_operaciones_cuenta_banco']}}
+                @endif
+                </b></td>
               <td></td>
-              <td style="text-align:right;border-bottom: 1px solid #000;border-top: 1px solid #000;"><b>{{$co_anterior?$co_anterior->total_efectivo_ejercicio:'0.00'}}</b></td>
-            </tr>
-            <tr>
-              <td colspan="11"></td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td colspan="4" style="text-align:left;">Incremental  del Capital Asignado (S/.)</td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td style="text-align:right;border-bottom: 1px solid #000;border-top: 1px solid #000;"><b>{{$co_actual['incremental_capital_asignado']}}</b></td>
-              <td></td>
-              <td style="text-align:right;border-bottom: 1px solid #000;border-top: 1px solid #000;"><b>{{$co_anterior?$co_anterior->incremental_capital_asignado:'0.00'}}</b></td>
+              <td style="text-align:right;"><b></b></td>
             </tr>
             <tr>
               <td colspan="11"></td>
@@ -647,7 +661,62 @@
               <td style="border-bottom: 2px solid #000;"></td>
               <td style="border-bottom: 2px solid #000;"></td>
             </tr>
-          </table>
+            <tr>
+              <td colspan="11"></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td colspan="4" style="text-align:left;">Efectivo en Caja al Corte (S/.):</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td style="text-align:right;border-bottom: 1px solid #000;border-top: 1px solid #000;"><b>{{$co_actual['efectivo_caja_corte']}}</b></td>
+              <td></td>
+              <td style="text-align:right;border-bottom: 1px solid #000;border-top: 1px solid #000;"><b>{{$co_anterior?$co_anterior->efectivo_caja_corte:'0.00'}}</b></td>
+            </tr>
+            <tr>
+              <td colspan="11"></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td colspan="4" style="text-align:left;">Efectivo en Caja al Arqueo (S/.):</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td style="text-align:right;border-bottom: 1px solid #000;border-top: 1px solid #000;"><b>{{$co_actual['efectivo_caja_arqueo']}}</b></td>
+              <td></td>
+              <td style="text-align:right;border-bottom: 1px solid #000;border-top: 1px solid #000;"><b>{{$co_anterior?$co_anterior->efectivo_caja_arqueo:'0.00'}}</b></td>
+            </tr>
+            <tr>
+              <td colspan="11"></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td colspan="4" style="text-align:left;">Resultado:</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td style="text-align:right;border-bottom: 1px solid #000;border-top: 1px solid #000;"><b>{{$co_actual['resultado']}}</b></td>
+              <td></td>
+              <td style="text-align:right;border-bottom: 1px solid #000;border-top: 1px solid #000;"><b>{{$co_anterior?$co_anterior->resultado:'0.00'}}</b></td>
+            </tr>
+            <tr>
+              <td colspan="11"></td>
+            </tr>
+            <tr>
+              <td style="border-bottom: 2px solid #000;"></td>
+              <td style="border-bottom: 2px solid #000;"></td>
+              <td colspan="4" style="border-bottom: 2px solid #000;"></td>
+              <td colspan="2" style="border-bottom: 2px solid #000;"></td>
+              <td style="border-bottom: 2px solid #000;"></td>
+              <td style="border-bottom: 2px solid #000;"></td>
+              <td style="border-bottom: 2px solid #000;"></td>
+              <td style="border-bottom: 2px solid #000;"></td>
+            </tr>
+          </table> 
           @if($data_actual)
           <br><br><br>
           <?php $resposanble = DB::table('users')->where('id',$data_actual->idresponsable_registro)->first(); ?>

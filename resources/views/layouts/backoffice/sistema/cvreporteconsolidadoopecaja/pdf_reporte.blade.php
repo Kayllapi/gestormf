@@ -452,7 +452,7 @@
             <tr>
               <td></td>
               <td colspan="3" style="text-align:left;"><b>I.</b> Ret. de Reserva CF para Caja</td>
-              <td style="text-align:right;padding-right:30px;"><b>{{$co_actual['ret_reservacf_caja']}}</b></td>
+              <td style="text-align:right;padding-right:30px;"><b>{{$co_actual['ret_reservacf_caja_sum']}}</b></td>
               <td colspan="2" ><b>I.</b> Dep. a Caja desde Reserva CF </td>
               <td style="text-align:right;"><b>{{$co_actual['dep_caja_reservacf']}}</b></td>
               <td></td>
@@ -463,7 +463,7 @@
             <tr>
               <td></td>
               <td colspan="3" style="text-align:left;"><b>II.</b> Ret. de Banco para Caja</td>
-              <td style="text-align:right;padding-right:30px;"><b>{{$co_actual['ret_banco_caja']}}</b></td>
+              <td style="text-align:right;padding-right:30px;"><b>{{$co_actual['ret_banco_caja_sum']}}</b></td>
               <td colspan="2"><b>II.</b> Dep.  a Caja desde Banco </td>
               <td style="text-align:right;"><b>{{$co_actual['dep_caja_banco']}}</b></td>
               <td></td>
@@ -490,7 +490,7 @@
               <td></td>
               <td></td>
               <td colspan="3" style="text-align:left;"><b>III.</b> Ret. de Caja para Reserva CF</td>
-              <td style="text-align:right;padding-right:30px;"><b>{{$co_actual['ret_caja_reservacf']}}</b></td>
+              <td style="text-align:right;padding-right:30px;"><b>{{$co_actual['ret_caja_reservacf_sum']}}</b></td>
               <td colspan="2"><b>III.</b> Dep.  a Reserva CF desde Caja</td>
               <td style="text-align:right;"><b>{{$co_actual['dep_reservacf_caja']}}</b></td>
               <td></td>
@@ -502,7 +502,7 @@
               <td></td>
               <td></td>
               <td colspan="3" style="text-align:left;"><b>IV.</b> Ret. de Caja para Banco</td>
-              <td style="text-align:right;padding-right:30px;"><b>{{$co_actual['ret_caja_banco']}}</b></td>
+              <td style="text-align:right;padding-right:30px;"><b>{{$co_actual['ret_caja_banco_sum']}}</b></td>
               <td colspan="2"><b>IV.</b> Dep. a Banco desde Caja</td>
               <td style="text-align:right;"><b>{{$co_actual['dep_banco_caja']}}</b></td>
               <td></td>
@@ -577,7 +577,7 @@
             <tr>
               <td></td>
               <td></td>
-              <td colspan="3" style="text-align:left;"><b>I*.</b> Ret. de Reserva CF para Caja</td>
+              <td colspan="3" style="text-align:left;"><b>I.</b> Ret. de Reserva CF para Caja</td>
               <td style="text-align:right;padding-right:30px;"><b>{{$co_actual['ret_reservacf_caja_total']}}</b></td>
               <td colspan="2"><b>I.</b> Dep. a Caja desde Reserva CF</td>
               <td style="text-align:right;"><b>{{$co_actual['dep_caja_reservacf_total']}}</b></td>
@@ -589,7 +589,7 @@
             <tr>
               <td></td>
               <td></td>
-              <td colspan="3" style="text-align:left;"><b>III*.</b> Ret. de Caja para Reserva CF</td>
+              <td colspan="3" style="text-align:left;"><b>III.</b> Ret. de Caja para Reserva CF</td>
               <td style="text-align:right;padding-right:30px;"><b>{{$co_actual['ret_caja_reservacf_total']}}</b></td>
               <td colspan="2"><b>III.</b> Dep. a Reserva CF desde Caja</td>
               <td style="text-align:right;"><b>{{$co_actual['dep_reservacf_caja_total']}}</b></td>

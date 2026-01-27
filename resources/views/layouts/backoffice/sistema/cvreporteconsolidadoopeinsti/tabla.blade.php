@@ -50,18 +50,18 @@
       </div>
   </div>
       <div class="col-sm-12">
-        <div class="card">
+        <div class="card" id="cont_iframe_acta_aprobacion">
         <iframe id="iframe_acta_aprobacion" frameborder="0" width="100%" height="600px"></iframe>
         </div>
       </div>
 </div>
 <script>
   sistema_select2({ input:'#idagencia',val:'{{$tienda->id}}' });
-verpdf();
-function verpdf(){
-    let corte = $('#corte').val();
-    let idagencia = $('#idagencia').val();
-    $('#iframe_acta_aprobacion').attr('src','{{ url('/backoffice/'.$tienda->id.'/cvreporteconsolidadoopeinsti/0/edit?view=pdf_reporte') }}&corte='+corte+'&idagencia='+idagencia+'#zoom=100');
-}
+  verpdf();
+  function verpdf(){
+      let corte = $('#corte').val();
+      let idagencia = $('#idagencia').val();
+      $('#cont_iframe_acta_aprobacion').html(' <iframe id="iframe_acta_aprobacion" src="{{ url('/backoffice/'.$tienda->id.'/cvreporteconsolidadoopeinsti/0/edit?view=pdf_reporte') }}&corte='+corte+'&idagencia='+idagencia+'#zoom=100" frameborder="0" width="100%" height="600px"></iframe>');
+  }
 </script>  
 

@@ -1928,8 +1928,8 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
         $where[] = ['cvmovimientointernodinero.fecharegistro','>=',$fechacorte.' 00:00:00'];
         $where[] = ['cvmovimientointernodinero.fecharegistro','<=',$fechacorte.' 23:59:59'];
     }
-    
-    $ret_reservacf_caja = DB::table('cvmovimientointernodinero')
+
+    $ret_reservacf_caja_sum = DB::table('cvmovimientointernodinero')
         ->where('cvmovimientointernodinero.idestadoeliminado',1)
         ->where('cvmovimientointernodinero.idfuenteretiro',6)
         ->where($where)
@@ -1938,12 +1938,33 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
         )
         ->sum('cvmovimientointernodinero.monto');
     
+    $ret_reservacf_caja = DB::table('cvmovimientointernodinero')
+        ->join('cvmovimientointernodinero as cvm', 'cvmovimientointernodinero.id', 'cvm.idcvmovimientointernodinero')
+        ->where('cvmovimientointernodinero.idestadoeliminado',1)
+        ->where('cvmovimientointernodinero.idfuenteretiro',6)
+        ->where('cvm.idresponsable','<>',0)
+        ->where($where)
+        ->select(
+            'cvmovimientointernodinero.*',
+        )
+        ->sum('cvmovimientointernodinero.monto');
+    
     $ret_banco_caja = 0;
+    $ret_banco_caja_sum = 0;
     $ret_banco_caja_bancos = [];
     $dep_caja_banco = 0;
     $dep_caja_banco_bancos = [];
     foreach($bancos as $valuebancos){
         $movimientointernodineros = DB::table('cvmovimientointernodinero')
+            ->join('cvmovimientointernodinero as cvm', 'cvmovimientointernodinero.id', 'cvm.idcvmovimientointernodinero')
+            ->where('cvmovimientointernodinero.idestadoeliminado',1)
+            ->where('cvmovimientointernodinero.idfuenteretiro',7)
+            ->where('cvmovimientointernodinero.idtipomovimientointerno',1)
+            ->where('cvmovimientointernodinero.idbanco',$valuebancos->id)
+            ->where('cvm.idresponsable','<>',0)
+            ->where($where)
+            ->sum('cvmovimientointernodinero.monto');
+        $movimientointernodineros_sum = DB::table('cvmovimientointernodinero')
             ->where('cvmovimientointernodinero.idestadoeliminado',1)
             ->where('cvmovimientointernodinero.idfuenteretiro',7)
             ->where('cvmovimientointernodinero.idtipomovimientointerno',1)
@@ -1959,6 +1980,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
             ->where($where)
             ->sum('cvmovimientointernodinero.monto');
         $ret_banco_caja += number_format($movimientointernodineros, 2, '.', '');
+        $ret_banco_caja_sum += number_format($movimientointernodineros_sum, 2, '.', '');
         $dep_caja_banco += number_format($movimientointernodineros1, 2, '.', '');
     
         $ret_banco_caja_bancos[] = [
@@ -1973,19 +1995,36 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
             $valid_habilitacion++;
         }
     }
-    
-    $ret_caja_reservacf = DB::table('cvmovimientointernodinero')
+    $ret_caja_reservacf_sum = DB::table('cvmovimientointernodinero')
         ->where('cvmovimientointernodinero.idestadoeliminado',1)
         ->where('cvmovimientointernodinero.idfuenteretiro',8)
         ->where($where)
         ->sum('cvmovimientointernodinero.monto');
+
+    $ret_caja_reservacf = DB::table('cvmovimientointernodinero')
+        ->join('cvmovimientointernodinero as cvm', 'cvmovimientointernodinero.id', 'cvm.idcvmovimientointernodinero')
+        ->where('cvmovimientointernodinero.idestadoeliminado',1)
+        ->where('cvmovimientointernodinero.idfuenteretiro',8)
+        ->where('cvm.idresponsable','<>',0)
+        ->where($where)
+        ->sum('cvmovimientointernodinero.monto');
     
     $ret_caja_banco = 0;
+    $ret_caja_banco_sum = 0;
     $ret_caja_banco_bancos = [];
     $dep_banco_caja = 0;
     $dep_banco_caja_bancos = [];
     foreach($bancos as $valuebancos){
         $movimientointernodineros = DB::table('cvmovimientointernodinero')
+            ->join('cvmovimientointernodinero as cvm', 'cvmovimientointernodinero.id', 'cvm.idcvmovimientointernodinero')
+            ->where('cvmovimientointernodinero.idestadoeliminado',1)
+            ->where('cvmovimientointernodinero.idfuenteretiro',9)
+            ->where('cvmovimientointernodinero.idtipomovimientointerno',1)
+            ->where('cvmovimientointernodinero.idbanco',$valuebancos->id)
+            ->where('cvm.idresponsable','<>',0)
+            ->where($where)
+            ->sum('cvmovimientointernodinero.monto');
+        $movimientointernodineros_sum = DB::table('cvmovimientointernodinero')
             ->where('cvmovimientointernodinero.idestadoeliminado',1)
             ->where('cvmovimientointernodinero.idfuenteretiro',9)
             ->where('cvmovimientointernodinero.idtipomovimientointerno',1)
@@ -2002,6 +2041,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
             ->sum('cvmovimientointernodinero.monto');
     
         $ret_caja_banco += number_format($movimientointernodineros, 2, '.', '');
+        $ret_caja_banco_sum += number_format($movimientointernodineros_sum, 2, '.', '');
         $dep_banco_caja += number_format($movimientointernodineros1, 2, '.', '');
         $ret_caja_banco_bancos[] = [
             'banco_nombre' => $valuebancos->nombre,
@@ -2640,10 +2680,14 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
         'ingresoyegresobanco_egreso_cvcompra_validacion' => $ingresoyegresobanco_egreso_cvcompra_validacion,
     
         'ret_reservacf_caja' => number_format($ret_reservacf_caja, 2, '.', ''),
+        'ret_reservacf_caja_sum' => number_format($ret_reservacf_caja_sum, 2, '.', ''),
         'ret_banco_caja' => number_format($ret_banco_caja, 2, '.', ''),
+        'ret_banco_caja_sum' => number_format($ret_banco_caja_sum, 2, '.', ''),
         'ret_banco_caja_bancos' => $ret_banco_caja_bancos,
         'ret_caja_reservacf' => number_format($ret_caja_reservacf, 2, '.', ''),
+        'ret_caja_reservacf_sum' => number_format($ret_caja_reservacf_sum, 2, '.', ''),
         'ret_caja_banco' => number_format($ret_caja_banco, 2, '.', ''),
+        'ret_caja_banco_sum' => number_format($ret_caja_banco_sum, 2, '.', ''),
         'ret_caja_banco_bancos' => $ret_caja_banco_bancos,
         'ret_banco_reservacf' => number_format($ret_banco_reservacf, 2, '.', ''),
         'ret_banco_reservacf_bancos' => $ret_banco_reservacf_bancos,

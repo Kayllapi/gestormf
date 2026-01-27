@@ -70,7 +70,7 @@
     function arqueocaja(){
         let corte = $('#corte').val();
         let idagencia = $('#idagencia').val();
-        let url = "{{ url('backoffice/'.$tienda->id) }}/cvreporteconsolidadoopeadmin/0/edit?view=arqueocaja&corte="+corte+"&idagencia="+idagencia;
+        let url = "{{ url('backoffice/'.$tienda->id) }}/cvreporteconsolidadoopecaja/0/edit?view=arqueocaja&corte="+corte+"&idagencia="+idagencia;
         modal({ route: url })
     }
 </script>  

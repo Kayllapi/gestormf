@@ -49,7 +49,7 @@
                          value="{{$arqueocaja->total}}" disabled>
               </div>
               @else
-              <label for="fecha_inicio" class="col-sm-3 col-form-label">Saldo en Caja (S/.):</label>
+              <label for="fecha_inicio" class="col-sm-3 col-form-label">Saldo Contable en Caja (S/.):</label>
               <div class="col-sm-4">
                   <input type="text" class="form-control" 
                          value="{{$consolidadooperaciones['saldos_caja']}}" id="saldocaja_arqueocaja" disabled>
@@ -202,16 +202,18 @@
                           <img src="{{url('public/backoffice/sistema/icono_check.png')}}" width="20px" style="margin-top:-5px;">
                       </div>
                       <div class="col-sm-3">
+                        <span style="background-color: #fcc292;">
                           {{$consolidadooperaciones['validacion_operaciones_cuenta_banco']}}
+                        </span>
                       </div>
                   </div>
                   <div class="row">
                       <label for="fecha_inicio" class="col-sm-2 col-form-label"></label>
                       <div class="col-sm-7">
-                          II. Total de Efectivo en Caja al Arqueo:
+                          II. Total de Efectivo Físico en Caja al Arqueo:
                       </div>
-                      <div class="col-sm-3">S/. 
-                          <span id="total_efectivo_caja_arqueo">0.00</span>
+                      <div class="col-sm-3">
+                          <input type="text" id="total_efectivo_caja_arqueo" class="form-control" value="S/. 0.00" disabled>
                       </div>
                   </div>
               </div>
@@ -229,7 +231,6 @@
 </div>
 <script>
     sistema_select2({ input:'#idagencia_arqueocaja',val:'{{$agencia->id}}' });
-  
 
     function valid_registro_arqueocaja(){
         callback({
@@ -310,7 +311,7 @@
       $('#moneda_9_total').html(moneda_9.toFixed(2));
       $('#moneda_10_total').html(moneda_10.toFixed(2));
       $('#moneda_11_total').html(moneda_11.toFixed(2));
-      $('#total_efectivo_caja_arqueo').html(total_efectivo_caja_arqueo.toFixed(2));
+      $('#total_efectivo_caja_arqueo').val('S/. '+total_efectivo_caja_arqueo.toFixed(2));
       $('#total_arqueocaja').val(total_efectivo_caja_arqueo.toFixed(2));
     }
 </script> 

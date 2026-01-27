@@ -124,7 +124,7 @@
   </footer>
   <main>
     <div class="container">
-      <h4 align="center">REPORTE CONSOLIDADO DE OPERACIONES DE COMPRA Y VENTAS DE BIENES - INSTITUCIONAL</h4>
+      <h4 align="center" style="margin:0px;">REPORTE CONSOLIDADO DE OPERACIONES DE COMPRA Y VENTAS DE BIENES - INSTITUCIONAL</h4>
             <div style="margin-top:-5px;"><b>AGENCIA: </b>{{ $co_actual['agencia']->nombreagencia }}</div>
           <table style="width:100%;">
             <tr>
@@ -708,7 +708,7 @@
             </tr>
           </table> 
           @if($data_actual)
-          <br><br><br>
+          <br><br>
           <?php $resposanble = DB::table('users')->where('id',$data_actual->idresponsable_registro)->first(); ?>
           <?php $permiso = DB::table('permiso')->where('id',$data_actual->idresponsable_registro_idpermiso)->first(); ?>
           <table class="tabla_informativa" style="text-align:center;margin-left:560px;">

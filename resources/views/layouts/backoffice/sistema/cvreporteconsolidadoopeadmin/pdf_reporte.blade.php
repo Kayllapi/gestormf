@@ -124,7 +124,7 @@
   </footer>
   <main>
     <div class="container">
-      <h4 align="center">REPORTE CONSOLIDADO DE OPERACIONES DE COMPRA Y VENTAS DE BIENES</h4>
+      <h4 align="center" style="margin:0px;">REPORTE CONSOLIDADO DE OPERACIONES DE COMPRA Y VENTAS DE BIENES</h4>
             <div style="margin-top:-5px;"><b>AGENCIA: </b>{{ $co_actual['agencia']->nombreagencia }}</div>
           <table style="width:100%;">
             <tr>
@@ -154,12 +154,12 @@
             <tr>
               <td style="text-align:left;width:80px;"></td>
               <td ></td>
-              <td colspan="4" style="border-bottom: 2px solid #000;text-align:left;">Caja</td>
-              <td colspan="2" style="border-bottom: 2px solid #000;"></td>
-              <td style="border-bottom: 2px solid #000;text-align:right;"><b>{{$co_actual['arqueo_caja']}}</b></td>
-              <td style="border-bottom: 2px solid #000;text-align:right;"><b>{{$co_actual['saldos_caja']}}</b></td>
-              <td style="border-bottom: 2px solid #000;text-align:right;"><b>{{$co_anterior?$co_anterior->arqueo_caja:'0.00'}}</b></td>
-              <td style="border-bottom: 2px solid #000;text-align:right;"><b>{{$co_anterior?$co_anterior->saldos_caja:'0.00'}}</b></td>
+              <td colspan="4" style="text-align:left;">Caja</td>
+              <td colspan="2"></td>
+              <td style="text-align:right;"><b>{{$co_actual['arqueo_caja']}}</b></td>
+              <td style="text-align:right;"><b>{{$co_actual['saldos_caja']}}</b></td>
+              <td style="text-align:right;"><b>{{$co_anterior?$co_anterior->arqueo_caja:'0.00'}}</b></td>
+              <td style="text-align:right;"><b>{{$co_anterior?$co_anterior->saldos_caja:'0.00'}}</b></td>
             </tr>
             <tr>
               <td style="border-bottom: 2px solid #000;"></td>
@@ -718,7 +718,7 @@
             </tr>
           </table> 
           @if($data_actual)
-          <br><br><br>
+          <br><br>
           <?php $resposanble = DB::table('users')->where('id',$data_actual->idresponsable_registro)->first(); ?>
           <?php $permiso = DB::table('permiso')->where('id',$data_actual->idresponsable_registro_idpermiso)->first(); ?>
           <table class="tabla_informativa" style="text-align:center;margin-left:560px;">

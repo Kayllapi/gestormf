@@ -131,7 +131,6 @@
               <th style="border-bottom: 2px solid #000;">FECHA Y HORA</th>
               <th style="border-bottom: 2px solid #000;">CUENTA</th>
               <th style="border-bottom: 2px solid #000;">OPERACIÓN</th>
-              <th style="border-bottom: 2px solid #000;">SUB OPERACIÓN</th>
               <th style="border-bottom: 2px solid #000;">DESCRIPCIÓN/CLIENTES</th>
               <th style="border-bottom: 2px solid #000;">BANCO</th>
               <th style="border-bottom: 2px solid #000;">MONTO</th>
@@ -151,7 +150,6 @@
               <td>{{$value->fechaextorno}}</td>
               <td>{{str_pad($value->cuenta, 8, "0", STR_PAD_LEFT)}}</td>
               <td>{{$value->operacion}}</td>
-              <td>{{$value->operacion=='ELIM. CRÉDITO'?'':$coutas}}</td>
               <td>{{$value->nombrecliente}}</td>
               <td>{{$cuenta}}</td>
               <td style="text-align: right;">S/. {{$value->total_pagar}}</td>
@@ -160,7 +158,7 @@
             </tr>
             @endforeach
             <tr>
-              <th style="border-top: 2px solid #000;" colspan="9"></th>
+              <th style="border-top: 2px solid #000;" colspan="8"></th>
             </tr>
             <!--tr>
               <th style="border-top: 2px solid #000;"></th>

@@ -141,7 +141,7 @@
             <?php
             $totalpago = 0;
             ?>
-            @foreach($creditos_extornados as $value)
+            @foreach($gastoadministrativooperativos as $value)
             <?php
               $coutas = str_replace(',',', ',$value->pago_cuota);
               $totalpago += $value->total_pagar;

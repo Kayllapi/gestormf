@@ -71,17 +71,17 @@ class GarantiarecogerController extends Controller
           $html = '<table class="table table-striped table-hover" id="table-lista-credito">
               <thead class="table-dark" style="position: sticky;top: 0;">
                 <tr>
-                  <td style="text-align:center">N°</td>
-                  <td style="text-align:center">FECHA</td>
-                  <td style="text-align:center">CLIENTE</td>
-                  <td style="text-align:center">DNI</td>
-                  <td style="text-align:center">GARANTIA</td>
-                  <td style="text-align:center">MONTO</td>
-                  <td style="text-align:center">TIPO DE GARANTIA</td>
-                  <td style="text-align:center">SERIE</td>
-                  <td style="text-align:center">PLACA</td>
-                  <td style="text-align:center">MODELO</td>
-                  <td style="text-align:center">VALOR COMERCIAL</td>
+                  <th style="text-align:center">N°</th>
+                  <th style="text-align:center">FECHA</th>
+                  <th style="text-align:center">CLIENTE</th>
+                  <th style="text-align:center">RUC/DNI/CE</th>
+                  <th style="text-align:center">GARANTIA</th>
+                  <th style="text-align:center">MONTO</th>
+                  <th style="text-align:center">TIPO DE GARANTIA</th>
+                  <th style="text-align:center">SERIE</th>
+                  <th style="text-align:center">PLACA</th>
+                  <th style="text-align:center">MODELO</th>
+                  <th style="text-align:center">VALOR COMERCIAL</th>
                 </tr>
               </thead>
               <tbody>';

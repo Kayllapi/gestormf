@@ -171,6 +171,17 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
           .btn-primary  .fa-solid:before {    
               color: #000;
           }
+          .bg-warning,
+          .btn-warning,
+          .btn-warning:hover,
+          .btn-warning:active,
+          .btn-warning:focus {    
+              background-color: #ffdf7d !important;
+              color: #000 !important;
+          }
+          .btn-warning  .fa-solid:before {    
+              color: #000;
+          }
           .bg-success,
           .btn-success,
           .btn-success:hover,

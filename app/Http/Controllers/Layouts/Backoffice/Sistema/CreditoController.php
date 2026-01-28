@@ -850,7 +850,7 @@ class CreditoController extends Controller
           $garantia_noprendaria = DB::table('garantias_noprendarias')
                                   ->select(
                                     'garantias_noprendarias.id',
-                                    DB::raw('CONCAT("") as fecharegistro'),
+                                    'garantias_noprendarias.fecharegistro as fecharegistro',
                                     'garantias_noprendarias.idcliente as idclientegarantia',
                                     'garantias_noprendarias.descripcion',
                                     'garantias_noprendarias.valor_mercado',

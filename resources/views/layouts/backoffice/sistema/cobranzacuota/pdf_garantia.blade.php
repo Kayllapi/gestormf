@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>V. ENTREGA DE GARANTÍA</title>
+    <title>ENTREGA DE GARANTÍA</title>
     <style>
       *{
         font-family:helvetica;
@@ -20,15 +20,20 @@
         text-align: center;
         
       }
+      .linea {
+          border-top: 1px solid #000;
+          width:100%;
+      }
     </style>
 </head>
 <body>
     <div class="ticket_contenedor">  
+      <div><b>ENTREGA DE GARANTÍA</b></div><div class="linea"></div>
      
           <table class="tabla_informativa">
               <tr>
                   <td>
-                    <b>N° PRÉSTAMO:</b> C{{ str_pad($credito_cobranzacuota->creditocuenta, 8, "0", STR_PAD_LEFT) }}</td>
+                    <b>N° DE CUOTA:</b> C{{ str_pad($credito_cobranzacuota->creditocuenta, 8, "0", STR_PAD_LEFT) }}</td>
               </tr>
               <tr>
                   <td><b>FECHA:</b> {{ date_format(date_create($credito_cobranzacuota->fecharegistro),'d-m-Y H:i:s A') }}</td>
@@ -49,21 +54,17 @@
             @endforeach
           </table> 
       
+      
       <br><br>
-          <table class="tabla_informativa">
+          <table class="tabla_informativa" width="100%">
               <tr>
-                  <td style="text-align:center;"> ________________________________________<br><b>FIRMA DE CONFORMIDAD DE RECEPCIÓN:</b></td>
+                  <td style="text-align:left;"><br><br><div class="linea"></div><b>FIRMA Y HUELLA DE CONFOR. DE RECEPCIÓN:</b><br>
+                <b>A. N. CLIENTE:</b> {{ strtoupper($usuario->nombrecompleto) }}<br>
+                <b>DNI:</b> {{ strtoupper($usuario->identificacion) }}<br>
+                 <b>USUARIO:</b> {{ strtoupper($cajero->codigo) }}
+                </td>
               </tr>
-              <tr>
-                  <td><b>APELLIDOS Y NOMBRES:</b> {{ strtoupper($usuario->nombrecompleto) }}</td>
-              </tr>
-              <tr>
-                  <td><b>DNI:</b> {{ strtoupper($usuario->identificacion) }}</td>
-              </tr>
-              <tr>
-                  <td><b>USUARIO:</b> {{ strtoupper($cajero->codigo) }}</td>
-              </tr>
-          </table>  
+          </table> 
       
     </div>
 </body>

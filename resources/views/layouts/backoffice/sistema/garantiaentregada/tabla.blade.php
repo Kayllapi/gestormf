@@ -1,7 +1,7 @@
 <div class="modal-header">
   <h5 class="modal-title">Lista de Garantias Prend. Entregadas</h5>
   
-  <button type="button" class="btn-close" onclick="ir_inicio()" style="font-size: 20px;"></button>
+  <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>
 <div class="modal-body">
   <div class="row">
@@ -97,11 +97,12 @@
       let idcredito_garantia = $('#table-lista-credito > tbody > tr.selected').attr('idcredito_garantia');
                         
       if(idcredito_garantia == "" || idcredito_garantia == undefined ){
-        alert('Debe de seleccionar un crédito.');   
+        var mensaje = "Debe de seleccionar un registro.";
+        modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
         return false;
       }
       let url = "{{ url('backoffice/'.$tienda->id) }}/garantiarecoger/"+idcredito_garantia+"/edit?view=ticket_garantia";
-      modal({ route: url })
+      modal({ route: url, size: 'modal-sm' })
    }
 </script>  
 

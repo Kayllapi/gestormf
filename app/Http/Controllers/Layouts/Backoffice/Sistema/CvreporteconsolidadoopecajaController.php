@@ -88,7 +88,7 @@ class CvreporteconsolidadoopecajaController extends Controller
 
             $co = cvconsolidadooperaciones($tienda,$request->idagencia_arqueocaja,$request->corte_arqueocaja);
           
-            $idarqueocaja = DB::table('arqueocaja')->insertGetId([
+            $idarqueocaja = DB::table('cvarqueocaja')->insertGetId([
                 'fecharegistro' => now(),
                 'total' => $request->total_arqueocaja,
                 'corte' => $request->corte_arqueocaja,
@@ -207,7 +207,7 @@ class CvreporteconsolidadoopecajaController extends Controller
                 'idestado' => 1,
             ]);
           
-            DB::table('arqueocaja_denominacion')->insert([
+            DB::table('cvarqueocaja_denominacion')->insert([
                 'denominacion' => 0.10,
                 'cantidad' => $request->moneda_1,
                 'total' => $request->moneda_1*0.10,
@@ -216,7 +216,7 @@ class CvreporteconsolidadoopecajaController extends Controller
                 'idtienda' => user_permiso()->idtienda,
             ]);
           
-            DB::table('arqueocaja_denominacion')->insert([
+            DB::table('cvarqueocaja_denominacion')->insert([
                 'denominacion' => 0.20,
                 'cantidad' => $request->moneda_2,
                 'total' => $request->moneda_2*0.20,
@@ -225,7 +225,7 @@ class CvreporteconsolidadoopecajaController extends Controller
                 'idtienda' => user_permiso()->idtienda,
             ]);
           
-            DB::table('arqueocaja_denominacion')->insert([
+            DB::table('cvarqueocaja_denominacion')->insert([
                 'denominacion' => 0.50,
                 'cantidad' => $request->moneda_3,
                 'total' => $request->moneda_3*0.50,
@@ -234,7 +234,7 @@ class CvreporteconsolidadoopecajaController extends Controller
                 'idtienda' => user_permiso()->idtienda,
             ]);
           
-            DB::table('arqueocaja_denominacion')->insert([
+            DB::table('cvarqueocaja_denominacion')->insert([
                 'denominacion' => 1.00,
                 'cantidad' => $request->moneda_4,
                 'total' => $request->moneda_4*1.00,
@@ -243,7 +243,7 @@ class CvreporteconsolidadoopecajaController extends Controller
                 'idtienda' => user_permiso()->idtienda,
             ]);
           
-            DB::table('arqueocaja_denominacion')->insert([
+            DB::table('cvarqueocaja_denominacion')->insert([
                 'denominacion' => 2.00,
                 'cantidad' => $request->moneda_5,
                 'total' => $request->moneda_5*2.00,
@@ -252,7 +252,7 @@ class CvreporteconsolidadoopecajaController extends Controller
                 'idtienda' => user_permiso()->idtienda,
             ]);
           
-            DB::table('arqueocaja_denominacion')->insert([
+            DB::table('cvarqueocaja_denominacion')->insert([
                 'denominacion' => 5.00,
                 'cantidad' => $request->moneda_6,
                 'total' => $request->moneda_6*5.00,
@@ -261,7 +261,7 @@ class CvreporteconsolidadoopecajaController extends Controller
                 'idtienda' => user_permiso()->idtienda,
             ]);
           
-            DB::table('arqueocaja_denominacion')->insert([
+            DB::table('cvarqueocaja_denominacion')->insert([
                 'denominacion' => 10.00,
                 'cantidad' => $request->moneda_7,
                 'total' => $request->moneda_7*10.00,
@@ -270,7 +270,7 @@ class CvreporteconsolidadoopecajaController extends Controller
                 'idtienda' => user_permiso()->idtienda,
             ]);
           
-            DB::table('arqueocaja_denominacion')->insert([
+            DB::table('cvarqueocaja_denominacion')->insert([
                 'denominacion' => 20.00,
                 'cantidad' => $request->moneda_8,
                 'total' => $request->moneda_8*20.00,
@@ -279,7 +279,7 @@ class CvreporteconsolidadoopecajaController extends Controller
                 'idtienda' => user_permiso()->idtienda,
             ]);
           
-            DB::table('arqueocaja_denominacion')->insert([
+            DB::table('cvarqueocaja_denominacion')->insert([
                 'denominacion' => 50.00,
                 'cantidad' => $request->moneda_9,
                 'total' => $request->moneda_9*50.00,
@@ -288,7 +288,7 @@ class CvreporteconsolidadoopecajaController extends Controller
                 'idtienda' => user_permiso()->idtienda,
             ]);
           
-            DB::table('arqueocaja_denominacion')->insert([
+            DB::table('cvarqueocaja_denominacion')->insert([
                 'denominacion' => 100.00,
                 'cantidad' => $request->moneda_10,
                 'total' => $request->moneda_10*100.00,
@@ -297,7 +297,7 @@ class CvreporteconsolidadoopecajaController extends Controller
                 'idtienda' => user_permiso()->idtienda,
             ]);
           
-            DB::table('arqueocaja_denominacion')->insert([
+            DB::table('cvarqueocaja_denominacion')->insert([
                 'denominacion' => 200.00,
                 'cantidad' => $request->moneda_11,
                 'total' => $request->moneda_11*200.00,
@@ -327,11 +327,11 @@ class CvreporteconsolidadoopecajaController extends Controller
           $date = Carbon::createFromFormat('Y-m-d', $request->corte);
           $date->subDay(); // Subtracts 1 day
           //$co_anterior = consolidadooperaciones($tienda,$request->idagencia,$date->format('Y-m-d'));
-          $co_anterior = DB::table('arqueocaja')
+          $co_anterior = DB::table('cvarqueocaja')
               ->where('idagencia',$request->idagencia)
               ->where('corte',$date->format('Y-m-d'))
               ->first();
-          $data_actual = DB::table('arqueocaja')
+          $data_actual = DB::table('cvarqueocaja')
               ->where('idagencia',$request->idagencia)
               ->where('corte',$request->corte)
               ->first();
@@ -362,7 +362,7 @@ class CvreporteconsolidadoopecajaController extends Controller
             $agencias = DB::table('tienda')->get();
             $agencia = DB::table('tienda')->whereId($request->idagencia)->first();
             $consolidadooperaciones = cvconsolidadooperaciones($tienda,$request->idagencia,$request->corte);
-            $arqueocaja = DB::table('arqueocaja')->where('idagencia',$request->idagencia)->where('corte',$request->corte)->first();
+            $arqueocaja = DB::table('cvarqueocaja')->where('idagencia',$request->idagencia)->where('corte',$request->corte)->first();
             $resposanble = DB::table('users')->where('id',$arqueocaja?$arqueocaja->idresponsable:0)->first();
             return view(sistema_view().'/cvreporteconsolidadoopecaja/arqueocaja',[
                 'tienda' => $tienda,
@@ -386,13 +386,13 @@ class CvreporteconsolidadoopecajaController extends Controller
         }
         else if($request->input('view') == 'reporte_arqueocaja_pdf'){
             $agencia = DB::table('tienda')->whereId($request->idagencia_reporte_arqueocaja)->first();
-            $arqueocaja = DB::table('arqueocaja')
-                ->join('users','users.id','arqueocaja.idresponsable_registro')
-                ->join('permiso','permiso.id','arqueocaja.idresponsable_registro_idpermiso')
+            $arqueocaja = DB::table('cvarqueocaja')
+                ->join('users','users.id','cvarqueocaja.idresponsable_registro')
+                ->join('permiso','permiso.id','cvarqueocaja.idresponsable_registro_idpermiso')
                 ->where('idagencia',$request->idagencia_reporte_arqueocaja)
                 ->where('corte',$request->fecha_reporte_arqueocaja)
                 ->select(
-                    'arqueocaja.*',
+                    'cvarqueocaja.*',
                     'users.nombrecompleto as nombrecompleto_responsable',
                     'users.codigo as codigo_responsable',
                     'permiso.nombre as nombre_permiso',
@@ -402,57 +402,57 @@ class CvreporteconsolidadoopecajaController extends Controller
             if($arqueocaja){
                 $idarqueocaja = $arqueocaja->id;
             }
-            $arqueocaja_denominacion_1 = DB::table('arqueocaja_denominacion')
+            $arqueocaja_denominacion_1 = DB::table('cvarqueocaja_denominacion')
                 ->where('idarqueocaja',$idarqueocaja)
                 ->where('denominacion','0.10')
                 ->first();
           
-            $arqueocaja_denominacion_2 = DB::table('arqueocaja_denominacion')
+            $arqueocaja_denominacion_2 = DB::table('cvarqueocaja_denominacion')
                 ->where('idarqueocaja',$idarqueocaja)
                 ->where('denominacion','0.20')
                 ->first();
           
-            $arqueocaja_denominacion_3 = DB::table('arqueocaja_denominacion')
+            $arqueocaja_denominacion_3 = DB::table('cvarqueocaja_denominacion')
                 ->where('idarqueocaja',$idarqueocaja)
                 ->where('denominacion','0.50')
                 ->first();
           
-            $arqueocaja_denominacion_4 = DB::table('arqueocaja_denominacion')
+            $arqueocaja_denominacion_4 = DB::table('cvarqueocaja_denominacion')
                 ->where('idarqueocaja',$idarqueocaja)
                 ->where('denominacion','1.00')
                 ->first();
           
-            $arqueocaja_denominacion_5 = DB::table('arqueocaja_denominacion')
+            $arqueocaja_denominacion_5 = DB::table('cvarqueocaja_denominacion')
                 ->where('idarqueocaja',$idarqueocaja)
                 ->where('denominacion','2.00')
                 ->first();
           
-            $arqueocaja_denominacion_6 = DB::table('arqueocaja_denominacion')
+            $arqueocaja_denominacion_6 = DB::table('cvarqueocaja_denominacion')
                 ->where('idarqueocaja',$idarqueocaja)
                 ->where('denominacion','5.00')
                 ->first();
           
-            $arqueocaja_denominacion_7 = DB::table('arqueocaja_denominacion')
+            $arqueocaja_denominacion_7 = DB::table('cvarqueocaja_denominacion')
                 ->where('idarqueocaja',$idarqueocaja)
                 ->where('denominacion','10.00')
                 ->first();
           
-            $arqueocaja_denominacion_8 = DB::table('arqueocaja_denominacion')
+            $arqueocaja_denominacion_8 = DB::table('cvarqueocaja_denominacion')
                 ->where('idarqueocaja',$idarqueocaja)
                 ->where('denominacion','20.00')
                 ->first();
           
-            $arqueocaja_denominacion_9 = DB::table('arqueocaja_denominacion')
+            $arqueocaja_denominacion_9 = DB::table('cvarqueocaja_denominacion')
                 ->where('idarqueocaja',$idarqueocaja)
                 ->where('denominacion','50.00')
                 ->first();
           
-            $arqueocaja_denominacion_10 = DB::table('arqueocaja_denominacion')
+            $arqueocaja_denominacion_10 = DB::table('cvarqueocaja_denominacion')
                 ->where('idarqueocaja',$idarqueocaja)
                 ->where('denominacion','100.00')
                 ->first();
           
-            $arqueocaja_denominacion_11 = DB::table('arqueocaja_denominacion')
+            $arqueocaja_denominacion_11 = DB::table('cvarqueocaja_denominacion')
                 ->where('idarqueocaja',$idarqueocaja)
                 ->where('denominacion','200.00')
                 ->first();
@@ -479,7 +479,7 @@ class CvreporteconsolidadoopecajaController extends Controller
         }
         else if($request->input('view') == 'valid_eliminar_arqueocaja') {
           
-            $arqueocaja = DB::table('arqueocaja')->where('corte',$request->corte)->first();
+            $arqueocaja = DB::table('cvarqueocaja')->where('corte',$request->corte)->first();
             $usuarios = DB::table('users')
                 ->join('users_permiso','users_permiso.idusers','users.id')
                 ->join('permiso','permiso.id','users_permiso.idpermiso')

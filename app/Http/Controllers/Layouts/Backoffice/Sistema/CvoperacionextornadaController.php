@@ -94,7 +94,7 @@ class CvoperacionextornadaController extends Controller
                 ->where($where2)
                 ->select(
                     DB::raw('CONCAT("ELIM. VENTA") as operacion'),
-                    'cvcompra.compra_cuenta as cuenta',
+                    'cvventa.venta_cuenta as cuenta',
                     'cvventa.fechaeliminado as fechaextorno',
                     DB::raw('CONCAT("--") as pago_cuota'),
                     'cvventa.venta_montoventa as total_pagar',

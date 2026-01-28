@@ -64,7 +64,7 @@
           </div>
           <div class="col-sm-12">
             <div class="card">
-              <div class="card-body" style="overflow-y: scroll;height: 150px;padding: 0;margin-top: 5px;overflow-x: scroll;">
+              <div class="card-body" style="overflow-y: scroll;height: 210px;padding: 0;margin-top: 5px;overflow-x: scroll;">
 
                 <table class="table table-striped table-hover" id="table-lista-movimientointernodinero_retiro1">
                   <thead class="table-dark" style="position: sticky;top: 0; font-weight: bold;">
@@ -103,7 +103,7 @@
           </div>
           <div class="col-sm-12">
             <div class="card">
-              <div class="card-body" style="overflow-y: scroll;height: 150px;padding: 0;margin-top: 5px;overflow-x: scroll;">
+              <div class="card-body" style="overflow-y: scroll;height: 210px;padding: 0;margin-top: 5px;overflow-x: scroll;">
 
                 <table class="table table-striped table-hover" id="table-lista-movimientointernodinero_deposito1">
                   <thead class="table-dark" style="position: sticky;top: 0; font-weight: bold;">
@@ -154,7 +154,7 @@
           </div>
           <div class="col-sm-12">
             <div class="card">
-              <div class="card-body" style="overflow-y: scroll;height: 150px;padding: 0;margin-top: 5px;overflow-x: scroll;">
+              <div class="card-body" style="overflow-y: scroll;height: 180px;padding: 0;margin-top: 5px;overflow-x: scroll;">
 
                 <table class="table table-striped table-hover" id="table-lista-movimientointernodinero_retiro3">
                   <thead class="table-dark" style="position: sticky;top: 0; font-weight: bold;">

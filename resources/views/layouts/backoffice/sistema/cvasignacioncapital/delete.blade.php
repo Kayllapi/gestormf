@@ -12,12 +12,12 @@
           $('#modal-close-asignacioncapital-eliminar').click();
       },this)">
     <div class="modal-header">
-        <h5 class="modal-title">Eliminar Gasto Administrativo y Operativo</h5>
+        <h5 class="modal-title">Eliminar Asignación</h5>
         <button type="button" class="btn-close" id="modal-close-asignacioncapital-eliminar" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <div class="modal-body">
         <div class="alert alert-danger">
-          <i class="fa-solid fa-triangle-exclamation"></i> ¿Esta seguro de eliminar el  Gasto Administrativo y Operativo?<br>
+          <i class="fa-solid fa-triangle-exclamation"></i> ¿Esta seguro de eliminar la Asignación?<br>
         </div>
         <div class="mt-2 bg-primary subtitulo">Aprobación</div>
               <div class="mb-1">

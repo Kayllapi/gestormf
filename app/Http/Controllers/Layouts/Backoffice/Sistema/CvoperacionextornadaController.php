@@ -49,23 +49,31 @@ class CvoperacionextornadaController extends Controller
             $where2 = [];
             $where3 = [];
             $where4 = [];
+            $where5 = [];
+            $where6 = [];
             if($request->idagencia!=''){
                 $where1[] = ['cvcompra.idtienda',$request->idagencia];
                 $where2[] = ['cvventa.idtienda',$request->idagencia];
                 $where3[] = ['cvgastoadministrativooperativo.idtienda',$request->idagencia];
                 $where4[] = ['cvingresoextraordinario.idtienda',$request->idagencia];
+                $where5[] = ['cvasignacioncapital.idtienda',$request->idagencia];
+                $where6[] = ['cvmovimientointernodinero.idtienda',$request->idagencia];
             }
             if($request->fecha_inicio!=''){
                 $where1[] = ['cvcompra.fechaeliminado','>=',$request->fecha_inicio.' 00:00:00'];
                 $where2[] = ['cvventa.fechaeliminado','>=',$request->fecha_inicio.' 00:00:00'];
                 $where3[] = ['cvgastoadministrativooperativo.fecha_eliminado','>=',$request->fecha_inicio.' 00:00:00'];
                 $where4[] = ['cvingresoextraordinario.fecha_eliminado','>=',$request->fecha_inicio.' 00:00:00'];
+                $where5[] = ['cvasignacioncapital.fecha_eliminado','>=',$request->fecha_inicio.' 00:00:00'];
+                $where6[] = ['cvmovimientointernodinero.fecha_eliminado','>=',$request->fecha_inicio.' 00:00:00'];
             }
             if($request->fecha_fin!=''){
                 $where1[] = ['cvcompra.fechaeliminado','<=',$request->fecha_fin.' 23:59:59'];
                 $where2[] = ['cvventa.fechaeliminado','<=',$request->fecha_fin.' 23:59:59'];
                 $where3[] = ['cvgastoadministrativooperativo.fecha_eliminado','<=',$request->fecha_fin.' 23:59:59'];
                 $where4[] = ['cvingresoextraordinario.fecha_eliminado','<=',$request->fecha_fin.' 23:59:59'];
+                $where5[] = ['cvasignacioncapital.fecha_eliminado','<=',$request->fecha_fin.' 23:59:59'];
+                $where6[] = ['cvmovimientointernodinero.fecha_eliminado','<=',$request->fecha_fin.' 23:59:59'];
             }
 
             $cvcompras = DB::table('cvcompra')
@@ -138,6 +146,54 @@ class CvoperacionextornadaController extends Controller
                     'tienda.nombre as tiendanombre',
                 )
                 ->orderBy('fechaextorno','asc');
+
+            $asignacioncapital = DB::table('cvasignacioncapital')
+                ->join('credito_tipooperacion','credito_tipooperacion.id','cvasignacioncapital.idtipooperacion')
+                ->leftJoin('users as responsable','responsable.id','cvasignacioncapital.idresponsable')
+                ->leftJoin('users as responsableeliminado','responsableeliminado.id','cvasignacioncapital.idresponsble_eliminado')
+                ->leftJoin('tienda','tienda.id','cvasignacioncapital.idtienda')
+                ->where('cvasignacioncapital.idestadoeliminado',2)
+                ->where($where5)
+                ->select(
+                    DB::raw('CONCAT("ELIM. ASIGNACION") as operacion'),
+                    DB::raw('CONCAT(cvasignacioncapital.codigoprefijo, cvasignacioncapital.codigo) as codigo'),
+                    'cvasignacioncapital.cuenta as cuenta',
+                    'cvasignacioncapital.fecha_eliminado as fechaextorno',
+                    DB::raw('CONCAT("--") as pago_cuota'),
+                    'credito_tipooperacion.nombre as detalleoperacion',
+                    'cvasignacioncapital.descripcion as descripcion',
+                    'cvasignacioncapital.monto as total_pagar',
+                    'cvasignacioncapital.banco as banco',
+                    'cvasignacioncapital.numerooperacion as numerooperacion',
+                    'responsable.codigo as codigoresponsable',
+                    'responsableeliminado.codigo as codigoresponsableeliminado',
+                    'tienda.nombre as tiendanombre',
+                )
+                ->orderBy('fechaextorno','asc');
+
+            $movimientointernodinero = DB::table('cvmovimientointernodinero')
+                ->join('credito_fuenteretiro','credito_fuenteretiro.id','cvmovimientointernodinero.idfuenteretiro')
+                ->leftJoin('users as responsable','responsable.id','cvmovimientointernodinero.idresponsable')
+                ->leftJoin('users as responsableeliminado','responsableeliminado.id','cvmovimientointernodinero.idresponsble_eliminado')
+                ->leftJoin('tienda','tienda.id','cvmovimientointernodinero.idtienda')
+                ->where('cvmovimientointernodinero.idestadoeliminado',2)
+                ->where($where6)
+                ->select(
+                    DB::raw('CONCAT("ELIM. MOVIMIENTO") as operacion'),
+                    DB::raw('CONCAT(cvmovimientointernodinero.codigoprefijo, cvmovimientointernodinero.codigo) as codigo'),
+                    'cvmovimientointernodinero.cuenta as cuenta',
+                    'cvmovimientointernodinero.fecha_eliminado as fechaextorno',
+                    DB::raw('CONCAT("--") as pago_cuota'),
+                    'credito_fuenteretiro.nombre as detalleoperacion',
+                    'cvmovimientointernodinero.descripcion as descripcion',
+                    'cvmovimientointernodinero.monto as total_pagar',
+                    'cvmovimientointernodinero.banco as banco',
+                    'cvmovimientointernodinero.numerooperacion as numerooperacion',
+                    'responsable.codigo as codigoresponsable',
+                    'responsableeliminado.codigo as codigoresponsableeliminado',
+                    'tienda.nombre as tiendanombre',
+                )
+                ->orderBy('fechaextorno','asc');
             
             $gastoadministrativooperativos = DB::table('cvgastoadministrativooperativo')
                 ->leftJoin('users as responsable','responsable.id','cvgastoadministrativooperativo.idresponsable')
@@ -147,6 +203,8 @@ class CvoperacionextornadaController extends Controller
                 ->union($cvcompras)
                 ->union($cvventas)
                 ->union($ingresoextraordinarios)
+                ->union($asignacioncapital)
+                ->union($movimientointernodinero)
                 ->where($where3)
                 ->select(
                     DB::raw('CONCAT("ELIM. GASTO") as operacion'),

@@ -795,20 +795,17 @@ class CvasignacioncapitalController extends Controller
 
     public function destroy(Request $request, $idtienda, $id)
     {
-//         $request->user()->authorizeRoles($request->path(),$idtienda);
-      if( $request->input('view') == 'eliminar' ){
+        if( $request->input('view') == 'eliminar' ){
             $rules = [
-                'idresponsable' => 'required',          
-                'responsableclave' => 'required',              
+                'idresponsable' => 'required',
+                'responsableclave' => 'required',
             ];
-          
             $messages = [
                 'idresponsable.required' => 'El "Responsable" es Obligatorio.',
                 'responsableclave.required' => 'La "Contraseña" es Obligatorio.',
             ];
-
             $this->validate($request,$rules,$messages);
-          
+
             $usuario = DB::table('users')
                 ->where('users.id',$request->idresponsable)
                 ->where('users.clave',$request->responsableclave)
@@ -822,20 +819,18 @@ class CvasignacioncapitalController extends Controller
                     'mensaje'   => 'El usuario y/o la contraseña es incorrecta!!.'
                 ]);
             }
-        
-            /*DB::table('asignacioncapital')->whereId($id)->update([
+
+            DB::table('cvasignacioncapital')->whereId($id)->update([
                'fecha_eliminado' => now(),
                'idestadoeliminado' => 2,
                'idresponsble_eliminado' => Auth::user()->id,
-            ]);*/
-        
-            DB::table('cvasignacioncapital')->whereId($id)->delete();
+            ]);
+
+            // DB::table('cvasignacioncapital')->whereId($id)->delete();
             return response()->json([
               'resultado' => 'CORRECTO',
               'mensaje'   => 'Se ha elimino correctamente.'
             ]);
-      }
-      
-    
+        }
     }
 }

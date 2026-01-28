@@ -727,19 +727,23 @@ class CvmovimientointernodineroinstiController extends Controller
                 ]);
             }
 
-            /*DB::table('movimientointernodinero')->whereId($id)->update([
+            DB::table('cvmovimientointernodinero')->whereId($id)->update([
                'fecha_eliminado' => now(),
                'idestadoeliminado' => 2,
                'idresponsble_eliminado' => Auth::user()->id,
-            ]);*/
+            ]);
 
 
-            $movimientointernodinero = DB::table('cvmovimientointernodinero')
+            /* $movimientointernodinero = DB::table('cvmovimientointernodinero')
                 ->whereId($id)
-                ->first();
+                ->first(); */
 
-            DB::table('cvmovimientointernodinero')->where('idcvmovimientointernodinero',$movimientointernodinero->id)->delete();
-            DB::table('cvmovimientointernodinero')->whereId($id)->delete();
+            DB::table('cvmovimientointernodinero')->where('idcvmovimientointernodinero',$id)->update([
+                'fecha_eliminado' => now(),
+                'idestadoeliminado' => 2,
+                'idresponsble_eliminado' => Auth::user()->id,
+            ]);
+            // DB::table('cvmovimientointernodinero')->whereId($id)->delete();
           
             return response()->json([
               'resultado' => 'CORRECTO',
@@ -773,13 +777,13 @@ class CvmovimientointernodineroinstiController extends Controller
                 ]);
             }
 
-            /*DB::table('movimientointernodinero')->whereId($id)->update([
+            DB::table('cvmovimientointernodinero')->whereId($id)->update([
                'fecha_eliminado' => now(),
                'idestadoeliminado' => 2,
                'idresponsble_eliminado' => Auth::user()->id,
-            ]);*/
+            ]);
 
-            DB::table('cvmovimientointernodinero')->whereId($id)->delete();
+            // DB::table('cvmovimientointernodinero')->whereId($id)->delete();
             return response()->json([
               'resultado' => 'CORRECTO',
               'mensaje'   => 'Se ha elimino correctamente.'

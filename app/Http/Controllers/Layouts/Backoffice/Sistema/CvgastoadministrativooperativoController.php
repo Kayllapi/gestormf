@@ -441,7 +441,7 @@ class CvgastoadministrativooperativoController extends Controller
                 DB::table('cvgastoadministrativooperativo')->whereId($id)->update([
                 'fecha_eliminado' => now(),
                 'idestadoeliminado' => 2,
-                'idresponsble_eliminado' => Auth::user()->id,
+                'idresponsble_eliminado' => $idresponsable,
                 ]);
             
                 //DB::table('cvgastoadministrativooperativo')->whereId($id)->delete();

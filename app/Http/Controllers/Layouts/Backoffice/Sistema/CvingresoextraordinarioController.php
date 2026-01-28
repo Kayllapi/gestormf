@@ -410,7 +410,7 @@ class CvingresoextraordinarioController extends Controller
             DB::table('cvingresoextraordinario')->whereId($id)->update([
                'fecha_eliminado' => now(),
                'idestadoeliminado' => 2,
-               'idresponsble_eliminado' => Auth::user()->id,
+               'idresponsble_eliminado' => $idresponsable,
             ]);
         
             //DB::table('cvingresoextraordinario')->whereId($id)->delete();

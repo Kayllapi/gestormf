@@ -249,7 +249,11 @@
               <td colspan="4" style="text-align:left;">{{ $value['banco_nombre'] }}: {{ $value['banco_cuenta'] }}</td>
               <td>
                 @if($value['validacion']=='CHECK')
-                <img src="{{url('public/backoffice/sistema/icono_check.png')}}" width="20px">
+                  <img src="{{url('public/backoffice/sistema/icono_check.png')}}" width="20px">
+                @else
+                  @if($value['banco']>0)
+                    <img src="{{url('public/backoffice/sistema/icono_close.png')}}" width="20px">
+                  @endif
                 @endif
               </td>
               <td></td>
@@ -285,7 +289,11 @@
               <td colspan="4" style="text-align:left;">{{ $value['banco_nombre'] }}: {{ $value['banco_cuenta'] }}</td>
               <td>
                 @if($value['validacion']=='CHECK')
-                <img src="{{url('public/backoffice/sistema/icono_check.png')}}" width="20px">
+                  <img src="{{url('public/backoffice/sistema/icono_check.png')}}" width="20px">
+                @else
+                  @if($value['banco']>0)
+                    <img src="{{url('public/backoffice/sistema/icono_close.png')}}" width="20px">
+                  @endif
                 @endif
               </td>
               <td></td>
@@ -321,7 +329,11 @@
               <td colspan="4" style="text-align:left;">{{ $value['banco_nombre'] }}: {{ $value['banco_cuenta'] }}</td>
               <td>
                 @if($value['validacion']=='CHECK')
-                <img src="{{url('public/backoffice/sistema/icono_check.png')}}" width="20px">
+                  <img src="{{url('public/backoffice/sistema/icono_check.png')}}" width="20px">
+                @else
+                  @if($value['banco']>0)
+                    <img src="{{url('public/backoffice/sistema/icono_close.png')}}" width="20px">
+                  @endif
                 @endif
               </td>
               <td></td>
@@ -356,9 +368,13 @@
               <td></td>
               <td colspan="4" style="text-align:left;">{{ $value['banco_nombre'] }}: {{ $value['banco_cuenta'] }}</td>
               <td>
-                {{-- @if($value['validacion']=='CHECK')
-                <img src="{{url('public/backoffice/sistema/icono_check.png')}}" width="20px">
-                @endif --}}
+                @if($value['validacion']=='CHECK')
+                  <img src="{{url('public/backoffice/sistema/icono_check.png')}}" width="20px">
+                @else
+                  @if($value['banco']>0)
+                    <img src="{{url('public/backoffice/sistema/icono_close.png')}}" width="20px">
+                  @endif
+                @endif
               </td>
               <td></td>
               <td style="text-align:right;">{{ $value['banco'] }}</td>
@@ -393,7 +409,11 @@
               <td colspan="4" style="text-align:left;">{{ $value['banco_nombre'] }}: {{ $value['banco_cuenta'] }}</td>
               <td>
                 @if($value['validacion']=='CHECK')
-                <img src="{{url('public/backoffice/sistema/icono_check.png')}}" width="20px">
+                  <img src="{{url('public/backoffice/sistema/icono_check.png')}}" width="20px">
+                @else
+                  @if($value['banco']>0)
+                    <img src="{{url('public/backoffice/sistema/icono_close.png')}}" width="20px">
+                  @endif
                 @endif
               </td>
               <td></td>
@@ -429,7 +449,11 @@
               <td colspan="4" style="text-align:left;">{{ $value['banco_nombre'] }}: {{ $value['banco_cuenta'] }}</td>
               <td>
                 @if($value['validacion']=='CHECK')
-                <img src="{{url('public/backoffice/sistema/icono_check.png')}}" width="20px">
+                  <img src="{{url('public/backoffice/sistema/icono_check.png')}}" width="20px">
+                @else
+                  @if($value['banco']>0)
+                    <img src="{{url('public/backoffice/sistema/icono_close.png')}}" width="20px">
+                  @endif
                 @endif
               </td>
               <td></td>

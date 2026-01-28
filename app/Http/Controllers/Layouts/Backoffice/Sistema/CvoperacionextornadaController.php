@@ -69,7 +69,8 @@ class CvoperacionextornadaController extends Controller
             }
 
             $cvcompras = DB::table('cvcompra')
-                ->leftJoin('users as responsable','responsable.id','cvcompra.eliminado_idresponsable')
+                ->leftJoin('users as responsable','responsable.id','cvcompra.idresponsable')
+                ->leftJoin('users as responsableeliminado','responsableeliminado.id','cvcompra.eliminado_idresponsable')
                 ->leftJoin('tienda','tienda.id','cvcompra.idtienda')
                 ->where('cvcompra.idestadoeliminado',2)
                 ->where($where1)
@@ -78,19 +79,22 @@ class CvoperacionextornadaController extends Controller
                     DB::raw('CONCAT(IF(cvcompra.idestadocvcompra = 1, "CB", "VB"), cvcompra.codigo) as codigo'),
                     'cvcompra.compra_cuenta as cuenta',
                     'cvcompra.fechaeliminado as fechaextorno',
-                    DB::raw('CONCAT("") as detalleoperacion'),
                     DB::raw('CONCAT("--") as pago_cuota'),
+                    'cvcompra.serie_motor_partida as detalleoperacion',
+                    'cvcompra.descripcion as descripcion',
                     'cvcompra.valorcompra as total_pagar',
                     'cvcompra.compra_banco as banco',
                     'cvcompra.compra_numerooperacion as numerooperacion',
-                    'cvcompra.descripcion as nombrecliente',
                     'responsable.codigo as codigoresponsable',
+                    'responsableeliminado.codigo as codigoresponsableeliminado',
                     'tienda.nombre as tiendanombre',
                 )
                 ->orderBy('fechaextorno','asc');
 
             $cvventas = DB::table('cvventa')
-                ->leftJoin('users as responsable','responsable.id','cvventa.eliminado_idresponsable')
+                ->join('cvcompra','cvcompra.id','cvventa.idcvcompra')
+                ->leftJoin('users as responsable','responsable.id','cvventa.venta_idresponsable')
+                ->leftJoin('users as responsableeliminado','responsableeliminado.id','cvventa.eliminado_idresponsable')
                 ->leftJoin('tienda','tienda.id','cvventa.idtienda')
                 ->where('cvventa.idestadoeliminado',2)
                 ->where($where2)
@@ -100,12 +104,13 @@ class CvoperacionextornadaController extends Controller
                     'cvventa.venta_cuenta as cuenta',
                     'cvventa.fechaeliminado as fechaextorno',
                     DB::raw('CONCAT("--") as pago_cuota'),
-                    DB::raw('CONCAT("") as detalleoperacion'),
+                    'cvcompra.serie_motor_partida as detalleoperacion',
+                    'cvcompra.descripcion as descripcion',
                     'cvventa.venta_montoventa as total_pagar',
                     'cvventa.venta_banco as banco',
                     'cvventa.venta_numerooperacion as numerooperacion',
-                    DB::raw('CONCAT("") as nombrecliente'),
                     'responsable.codigo as codigoresponsable',
+                    'responsableeliminado.codigo as codigoresponsableeliminado',
                     'tienda.nombre as tiendanombre',
                 )
                 ->orderBy('fechaextorno','asc');
@@ -113,6 +118,7 @@ class CvoperacionextornadaController extends Controller
             $ingresoextraordinarios = DB::table('cvingresoextraordinario')
                 ->join('s_sustento_comprobante','s_sustento_comprobante.id','cvingresoextraordinario.s_idsustento_comprobante')
                 ->leftJoin('users as responsable','responsable.id','cvingresoextraordinario.idresponsable')
+                ->leftJoin('users as responsableeliminado','responsableeliminado.id','cvingresoextraordinario.idresponsble_eliminado')
                 ->leftJoin('tienda','tienda.id','cvingresoextraordinario.idtienda')
                 ->where('cvingresoextraordinario.idestadoeliminado',2)
                 ->where($where4)
@@ -123,17 +129,19 @@ class CvoperacionextornadaController extends Controller
                     'cvingresoextraordinario.fecha_eliminado as fechaextorno',
                     DB::raw('CONCAT("--") as pago_cuota'),
                     's_sustento_comprobante.nombre as detalleoperacion',
+                    'cvingresoextraordinario.descripcion as descripcion',
                     'cvingresoextraordinario.monto as total_pagar',
                     'cvingresoextraordinario.banco as banco',
                     'cvingresoextraordinario.numerooperacion as numerooperacion',
-                    'cvingresoextraordinario.descripcion as nombrecliente',
                     'responsable.codigo as codigoresponsable',
+                    'responsableeliminado.codigo as codigoresponsableeliminado',
                     'tienda.nombre as tiendanombre',
                 )
                 ->orderBy('fechaextorno','asc');
             
             $gastoadministrativooperativos = DB::table('cvgastoadministrativooperativo')
                 ->leftJoin('users as responsable','responsable.id','cvgastoadministrativooperativo.idresponsable')
+                ->leftJoin('users as responsableeliminado','responsableeliminado.id','cvgastoadministrativooperativo.idresponsble_eliminado')
                 ->leftJoin('tienda','tienda.id','cvgastoadministrativooperativo.idtienda')
                 ->where('cvgastoadministrativooperativo.idestadoeliminado',2)
                 ->union($cvcompras)
@@ -147,11 +155,12 @@ class CvoperacionextornadaController extends Controller
                     'cvgastoadministrativooperativo.fecha_eliminado as fechaextorno',
                     DB::raw('CONCAT("--") as pago_cuota'),
                     'cvgastoadministrativooperativo.sustento_descripcion as detalleoperacion',
+                    'cvgastoadministrativooperativo.descripcion as descripcion',
                     'cvgastoadministrativooperativo.monto as total_pagar',
                     'cvgastoadministrativooperativo.banco as banco',
                     'cvgastoadministrativooperativo.numerooperacion as numerooperacion',
-                    'cvgastoadministrativooperativo.descripcion as nombrecliente',
                     'responsable.codigo as codigoresponsable',
+                    'responsableeliminado.codigo as codigoresponsableeliminado',
                     'tienda.nombre as tiendanombre',
                 )
                 ->orderBy('fechaextorno','asc')

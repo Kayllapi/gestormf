@@ -1562,7 +1562,10 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
             ->where($where)
             ->where('cvventa.venta_idbanco',$valuebancos->id)
             ->get();
-
+        // dump($db_cvventa);
+        // $todos_validados = $db_cvventa->isNotEmpty() && $db_cvventa->every('validar_estado', 1);
+        // dump($todos_validados);
+        
         $validacion_1 = '';
         $compra_ingresoyegresobanco_egreso_cvventa = 0;
         foreach($db_cvventa as $valueventa){
@@ -1590,6 +1593,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
         ];
     }
     $ingresoyegresobanco_ingreso_cvventa_validacion = $validacion_0;
+    // dd(123);
 
     $where = [];
     if($idagencia!=''){

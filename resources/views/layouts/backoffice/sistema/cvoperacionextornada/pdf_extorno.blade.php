@@ -133,9 +133,10 @@
               <th style="border-bottom: 2px solid #000;">TIPO/OPER.</th>
               <th style="border-bottom: 2px solid #000;">N° DETALLE COMPRO.</th>
               <th style="border-bottom: 2px solid #000;">DESCRIPCIÓN/CLIENTES</th>
-              <th style="border-bottom: 2px solid #000;">BANCO/OPER.</th>
+              <th style="border-bottom: 2px solid #000;">BANCO(OPER.)</th>
               <th style="border-bottom: 2px solid #000;">MONTO</th>
-              <th style="border-bottom: 2px solid #000;">USUARIO</th>
+              <th style="border-bottom: 2px solid #000;">US.(EMISOR)</th>
+              <th style="border-bottom: 2px solid #000;">US.(EXTORNO)</th>
               <th style="border-bottom: 2px solid #000;">SUCURSAL</th>
             </tr>
             <?php
@@ -152,26 +153,17 @@
               <td>{{$value->codigo}}</td>
               <td>{{$value->operacion}}</td>
               <td>{{$value->detalleoperacion}}</td>
-              <td>{{$value->nombrecliente}}</td>
+              <td>{{$value->descripcion}}</td>
               <td>{{$cuenta}}</td>
               <td style="text-align: right;">S/. {{$value->total_pagar}}</td>
               <td>{{$value->codigoresponsable}}</td>
+              <td>{{$value->codigoresponsableeliminado}}</td>
               <td>{{$value->tiendanombre}}</td>
             </tr>
             @endforeach
             <tr>
               <th style="border-top: 2px solid #000;" colspan="9"></th>
             </tr>
-            <!--tr>
-              <th style="border-top: 2px solid #000;"></th>
-              <th style="border-top: 2px solid #000;"></th>
-              <th style="border-top: 2px solid #000;"></th>
-              <th style="border-top: 2px solid #000;"></th>
-              <th style="border-top: 2px solid #000;"></th>
-              <th style="border-top: 2px solid #000;text-align: right;">S/. {{number_format($totalpago, 2, '.', '')}}</th>
-              <th style="border-top: 2px solid #000;"></th>
-              <th style="border-top: 2px solid #000;"></th>
-            </tr-->
           </table>
 
     </div>

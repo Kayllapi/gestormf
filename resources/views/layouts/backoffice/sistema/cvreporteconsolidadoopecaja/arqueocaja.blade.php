@@ -223,7 +223,7 @@
                           II. Total de Efectivo Físico en Caja al Arqueo:
                       </div>
                       <div class="col-sm-3">
-                          <input type="text" style="border: 2px solid #000;" id="total_efectivo_caja_arqueo" class="form-control" value="S/. 0.00" disabled>
+                          <input type="text" style="border: 1px solid #000;" id="total_efectivo_caja_arqueo" class="form-control" value="S/. 0.00" disabled>
                       </div>
                   </div>
               </div>

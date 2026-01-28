@@ -75,7 +75,7 @@ class CvoperacionextornadaController extends Controller
                 ->where($where1)
                 ->select(
                     DB::raw('CONCAT("ELIM. COMPRA") as operacion'),
-                    DB::raw('CONCAT(IF(cvcompra.idestadocvcompra = 1, "CB", "VB"), cvcompra.codigo) as cuenta'),
+                    'cvcompra.compra_cuenta as cuenta',
                     'cvcompra.fechaeliminado as fechaextorno',
                     DB::raw('CONCAT("--") as pago_cuota'),
                     'cvcompra.valorcompra as total_pagar',
@@ -94,7 +94,7 @@ class CvoperacionextornadaController extends Controller
                 ->where($where2)
                 ->select(
                     DB::raw('CONCAT("ELIM. VENTA") as operacion'),
-                    DB::raw('CONCAT("VB", cvventa.codigo) as cuenta'),
+                    'cvcompra.compra_cuenta as cuenta',
                     'cvventa.fechaeliminado as fechaextorno',
                     DB::raw('CONCAT("--") as pago_cuota'),
                     'cvventa.venta_montoventa as total_pagar',
@@ -113,7 +113,7 @@ class CvoperacionextornadaController extends Controller
                 ->where($where4)
                 ->select(
                     DB::raw('CONCAT("ELIM. INGRESO") as operacion'),
-                    DB::raw('CONCAT(cvingresoextraordinario.codigoprefijo,cvingresoextraordinario.codigo) as cuenta'),
+                    'cvingresoextraordinario.cuenta as cuenta',
                     'cvingresoextraordinario.fecha_eliminado as fechaextorno',
                     DB::raw('CONCAT("--") as pago_cuota'),
                     'cvingresoextraordinario.monto as total_pagar',
@@ -135,7 +135,7 @@ class CvoperacionextornadaController extends Controller
                 ->where($where3)
                 ->select(
                     DB::raw('CONCAT("ELIM. GASTO") as operacion'),
-                    DB::raw('CONCAT(cvgastoadministrativooperativo.codigoprefijo,cvgastoadministrativooperativo.codigo) as cuenta'),
+                    'cvgastoadministrativooperativo.cuenta as cuenta',
                     'cvgastoadministrativooperativo.fecha_eliminado as fechaextorno',
                     DB::raw('CONCAT("--") as pago_cuota'),
                     'cvgastoadministrativooperativo.monto as total_pagar',

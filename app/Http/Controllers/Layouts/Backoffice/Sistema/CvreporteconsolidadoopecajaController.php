@@ -69,13 +69,13 @@ class CvreporteconsolidadoopecajaController extends Controller
             if($request->total_arqueocaja<=0){
                 return response()->json([
                     'resultado' => 'ERROR',
-                    'mensaje'   => 'El TOTAL DE EFECTIVO EN CAJA AL ARQUEO debe ser mayor a S/. 0.00.'
+                    'mensaje'   => 'El TOTAL DE EFECTIVO FÍSICO EN CAJA AL ARQUEO debe ser mayor a S/. 0.00.'
                 ]);
             }
             if($request->total_arqueocaja<$request->saldocaja_arqueocaja){
                 return response()->json([
                     'resultado' => 'ERROR',
-                    'mensaje'   => 'El TOTAL DE EFECTIVO EN CAJA AL ARQUEO debe ser mayor o igual a SALDO EN CAJA.'
+                    'mensaje'   => 'El TOTAL DE EFECTIVO FÍSICO EN CAJA AL ARQUEO debe ser mayor o igual a SALDO CONTABLE EN CAJA.'
                 ]);
             }
           

@@ -84,7 +84,7 @@
             <thead>
               <tr>
                 <th rowspan=2 style="text-align:center;">Nombre y Apellidos</th>
-                <th rowspan=2 style="width:100px;text-align:center;">DNI</th>
+                <th rowspan=2 style="width:100px;text-align:center;">DNI/RUC</th>
                 <th colspan=2 style="text-align:center;">Domicilio</th>
                 <th rowspan=2 style="width:100px;text-align:center;">Estado</th>
                 <th rowspan=2 style="width:10px;"><button type="button" class="btn btn-success" onclick="agrega_representantecomun()"><i class="fa fa-plus"></i></button></th>
@@ -104,11 +104,7 @@
       </div>
   </form>
 </div>
-<style>
-.select2-container--bootstrap-5 .select2-selection {
-    background-color: #dfdf79;
-}
-</style>
+
 <script>
   
   @foreach($credito_gestiondepositario1 as $value)
@@ -126,19 +122,19 @@
     let tabla = `
                 <tr id="${num}">
                   <td>
-                    <select class="form-control color_cajatexto" id="conposesion_custodiagarantia${num}">
+                    <select class="form-control" id="conposesion_custodiagarantia${num}">
                       <option value=""></option>
                       <option value="1" nombre="ACREEDOR" ${custodiagarantia=='1'?'selected':''}>ACREEDOR</option>
                       <option value="2" nombre="Convenio con ACREEDOR" ${custodiagarantia=='2'?'selected':''}>Convenio con ACREEDOR</option>
                     </select>
                   </td>
-                  <td><input type="text" class="form-control color_cajatexto" id="conposesion_nombre${num}" value="${nombre}"></td>
-                  <td><input type="text" class="form-control color_cajatexto" id="conposesion_doeruc${num}" value="${doeruc}"></td>
-                  <td><input type="text" class="form-control color_cajatexto" id="conposesion_direccion${num}" value="${direccion}"></td>
-                  <td><input type="text" class="form-control color_cajatexto" id="conposesion_representante_doeruc${num}" value="${representante_doeruc}"></td>
-                  <td><input type="text" class="form-control color_cajatexto" id="conposesion_representante_nombre${num}" value="${representante_nombre}"></td>
+                  <td><input type="text" class="form-control" id="conposesion_nombre${num}" value="${nombre}"></td>
+                  <td><input type="text" class="form-control" id="conposesion_doeruc${num}" value="${doeruc}"></td>
+                  <td><input type="text" class="form-control" id="conposesion_direccion${num}" value="${direccion}"></td>
+                  <td><input type="text" class="form-control" id="conposesion_representante_doeruc${num}" value="${representante_doeruc}"></td>
+                  <td><input type="text" class="form-control" id="conposesion_representante_nombre${num}" value="${representante_nombre}"></td>
                   <td>
-                    <select class="form-control color_cajatexto" id="conposesion_estado${num}">
+                    <select class="form-control" id="conposesion_estado${num}">
                       <option value=""></option>
                       <option value="1" nombre="Activo" ${estado=='1'?'selected':''}>Activo</option>
                       <option value="2" nombre="Inactivo" ${estado=='2'?'selected':''}>Inactivo</option>
@@ -148,7 +144,10 @@
                 </tr>`;
 
       $("#table-conentregaposesion > tbody").append(tabla);
-      $("#table-conentregaposesion > tbody").attr('num',parseInt(num)+1); 
+      $("#table-conentregaposesion > tbody").attr('num',parseInt(num)+1);
+    
+          sistema_select2({ input:'#conposesion_custodiagarantia'+num});
+          sistema_select2({ input:'#conposesion_estado'+num}); 
   }
   function eliminar_conentregaposesion(num){
       $("#table-conentregaposesion > tbody > tr#"+num).remove();
@@ -189,20 +188,20 @@
     let tabla = `
                 <tr id="${num}">
                   <td>
-                    <select class="form-control color_cajatexto" id="sinposesion_custodiagarantia${num}">
+                    <select class="form-control" id="sinposesion_custodiagarantia${num}">
                       <option value=""></option>
                       <option value="2" nombre="Convenio con ACREEDOR" ${custodiagarantia=='2'?'selected':''}>Convenio con ACREEDOR</option>
                       <option value="3" nombre="Otro" ${custodiagarantia=='3'?'selected':''}>Otro</option>
                       <option value="4" nombre="EL/LOS PRESTATARIO(S)" ${custodiagarantia=='4'?'selected':''}>EL/LOS PRESTATARIO(S)</option>
                     </select>
                   </td>
-                  <td><input type="text" class="form-control color_cajatexto" id="sinposesion_nombre${num}" value="${nombre}"></td>
-                  <td><input type="text" class="form-control color_cajatexto" id="sinposesion_doeruc${num}" value="${doeruc}"></td>
-                  <td><input type="text" class="form-control color_cajatexto" id="sinposesion_direccion${num}" value="${direccion}"></td>
-                  <td><input type="text" class="form-control color_cajatexto" id="sinposesion_representante_doeruc${num}" value="${representante_doeruc}"></td>
-                  <td><input type="text" class="form-control color_cajatexto" id="sinposesion_representante_nombre${num}" value="${representante_nombre}"></td>
+                  <td><input type="text" class="form-control" id="sinposesion_nombre${num}" value="${nombre}"></td>
+                  <td><input type="text" class="form-control" id="sinposesion_doeruc${num}" value="${doeruc}"></td>
+                  <td><input type="text" class="form-control" id="sinposesion_direccion${num}" value="${direccion}"></td>
+                  <td><input type="text" class="form-control" id="sinposesion_representante_doeruc${num}" value="${representante_doeruc}"></td>
+                  <td><input type="text" class="form-control" id="sinposesion_representante_nombre${num}" value="${representante_nombre}"></td>
                   <td>
-                    <select class="form-control color_cajatexto" id="sinposesion_estado${num}">
+                    <select class="form-control" id="sinposesion_estado${num}">
                       <option value=""></option>
                       <option value="1" nombre="Activo" ${estado=='1'?'selected':''}>Activo</option>
                       <option value="2" nombre="Inactivo" ${estado=='2'?'selected':''}>Inactivo</option>
@@ -213,6 +212,9 @@
 
       $("#table-sinentregaposesion > tbody").append(tabla);
       $("#table-sinentregaposesion > tbody").attr('num',parseInt(num)+1); 
+    
+          sistema_select2({ input:'#sinposesion_custodiagarantia'+num});
+          sistema_select2({ input:'#sinposesion_estado'+num});
   }
   function eliminar_sinentregaposesion(num){
       $("#table-sinentregaposesion > tbody > tr#"+num).remove();
@@ -253,17 +255,17 @@
     var num   = $("#table-representantecomun > tbody").attr('num');
     let tabla = `
                 <tr id="${num}">
-                  <td><input type="text" class="form-control color_cajatexto" id="representantecomun_nombre${num}" value="${nombre}"></td>
-                  <td><input type="text" class="form-control color_cajatexto" id="representantecomun_doi${num}" value="${doi}"></td>
-                  <td><input type="text" class="form-control color_cajatexto" id="representantecomun_direccion${num}" value="${direccion}"></td>
+                  <td><input type="text" class="form-control" id="representantecomun_nombre${num}" value="${nombre}"></td>
+                  <td><input type="text" class="form-control" id="representantecomun_doi${num}" value="${doi}"></td>
+                  <td><input type="text" class="form-control" id="representantecomun_direccion${num}" value="${direccion}"></td>
                   <td>
-                    <select class="form-control color_cajatexto" id="representantecomun_ubigeo${num}">
+                    <select class="form-control" id="representantecomun_ubigeo${num}">
                       <option value=""></option>
                     </select>
                     <input type="hidden" value="${ubigeonombre}" id="representantecomun_ubigeo_nombre${num}">
                   </td>
                   <td>
-                    <select class="form-control color_cajatexto" id="representantecomun_estado${num}">
+                    <select class="form-control" id="representantecomun_estado${num}">
                       <option value=""></option>
                       <option value="1" nombre="Activo" ${estado=='1'?'selected':''}>Activo</option>
                       <option value="2" nombre="Inactivo" ${estado=='2'?'selected':''}>Inactivo</option>
@@ -280,6 +282,7 @@
       }else{
           sistema_select2({ json:'ubigeo', input:'#representantecomun_ubigeo'+num, val:ubigeo});
       }
+          sistema_select2({ input:'#representantecomun_estado'+num});
     
       
        $('#representantecomun_ubigeo'+num).on("select2:select", function(e) {

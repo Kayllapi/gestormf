@@ -66,7 +66,7 @@ select+.select2-container--bootstrap-5 {
     border-color: #ffffff !important;
 }
 .mx-contenedor-subcarga .fa-solid {
-    color: #e34e4e !important;
+    color: #b02a37 !important;
 }
 .mensaje-danger {
     background-color: #fb175b;
@@ -505,7 +505,7 @@ section.hero-section {
 }
 /* =========== carga ============ */
 .mx-subcarga .alert-danger {
-  background-color: #ffc9ca;
+  background-color: #f8d7da;
   padding: 5px;
 }
 .mx-subcarga .alert-primary {
@@ -543,8 +543,7 @@ section.hero-section {
   position:relative;
   cursor: pointer;
   border-color: transparent;
-  color: #000;
-  font-weight: normal;
+  color: #93222c;
 }
 .mx-contenedor-subcarga svg {
   color: #680b0b;    

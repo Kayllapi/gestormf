@@ -14,7 +14,8 @@
             font-size:12px;
         }
         .container{
-            padding:5px 10px;
+            padding-left:32px;
+            padding-right:32px;
         }
         table{
             width:100%;
@@ -117,15 +118,7 @@
     </style>
 </head>
 <body>
-    
-    <div class="header">
-        <div class="header_agencia_informacion">
-            <div class="header_agencia_nombrecomercial">{{ $tienda->nombre }} - {{ $tienda->nombreagencia }} | {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}</div>
-        </div>
-    </div>
-    <div class="footer">
-        <p class="page">Página </p>
-    </div>
+    @include('app/nuevosistema/cabecerapdf_a4')
     <div class="container">
         <h3 align="center">LISTA NEGRA</h3>
         <br>
@@ -136,8 +129,8 @@
                     <th width="80px">DNI/CE/RUC</th>
                     <th width="350px">CLIENTE</th>
                     <th>MOTIVO</th>
-                    <th width="100px">RESPOSANBLE</th>
-                    <th width="120px">F.REGISTRO</th>
+                    <th width="100px">REG. POR</th>
+                    <th width="120px">F. REGISTRO</th>
                 </tr>
             </thead>
             <tbody>

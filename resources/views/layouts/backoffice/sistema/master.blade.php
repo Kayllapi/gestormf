@@ -107,6 +107,7 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
             padding: 0px !important;
             height: 25px;
     width: 25px;
+            font-size: 12px;
           }
           #cuerposistema .modal-title {
               color: #000000;
@@ -176,7 +177,7 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
           .btn-success:active,
           .btn-success:focus {    
               background-color: #cfecc5 !important;
-              border: 1px solid #6fa35e !important;
+              border: 1px solid #326222 !important;
               color: #000 !important;
           }
           .btn-success  .fa-solid:before {    

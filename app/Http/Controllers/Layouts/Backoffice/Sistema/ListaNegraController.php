@@ -85,11 +85,27 @@ class ListaNegraController extends Controller
             $tienda = DB::table('tienda')->whereId($idtienda)->first(); 
             $idsucursal = Auth::user()->idsucursal;
  
+            /*$where = [];
+            if($request->input('columns')[4]['search']['value']!=''){
+                $where[] = ['tipopersona.id',$request->input('columns')[4]['search']['value']];
+            }
+            if($request->input('columns')[5]['search']['value']!=''){
+                $where[] = ['s_users_prestamo.idtipodocumento',$request->input('columns')[5]['search']['value']];
+            }*/
+          
             $listanegra = DB::table('s_listanegra')
                     ->join('users', 'users.id','s_listanegra.idcliente')
+                    ->join('users as usuario', 'usuario.id','s_listanegra.idresponsable')
+                    ->where('users.identificacion','LIKE','%'.$request->input('columns')[0]['search']['value'].'%')
+                    ->where('users.nombrecompleto','LIKE','%'.$request->input('columns')[1]['search']['value'].'%')
+                    ->where('s_listanegra.motivo','LIKE','%'.$request->input('columns')[2]['search']['value'].'%')
+                    ->where('s_listanegra.fecharegistro','LIKE','%'.$request->input('columns')[4]['search']['value'].'%')
+                    ->where('usuario.codigo','LIKE','%'.$request->input('columns')[3]['search']['value'].'%')
+                    //->where($where)
                     ->select(
                         's_listanegra.*',
-                        'users.identificacion'
+                        'users.identificacion',
+                        'usuario.codigo as usuariocodigo'
                     )
                     ->orderBy('s_listanegra.id','desc')
                     ->paginate($request->length,'*',null,($request->start/$request->length)+1);
@@ -115,6 +131,7 @@ class ListaNegraController extends Controller
                   'motivo'          => $value->motivo,
                   'fecha'           => date_format(date_create($value->fecharegistro),'d-m-Y'),
                   'estado'          => $estado,
+                  'usuariocodigo'          => $value->usuariocodigo,
                   'opcion' => [
                      [
                       'nombre' => 'Retirar de Lista Negra',
@@ -173,7 +190,7 @@ class ListaNegraController extends Controller
         } 
         else if( $request->input('view') == 'reportepdf'){
             $listanegra = DB::table('s_listanegra')
-                    ->join('users', 'users.id','s_listanegra.idcliente')
+                    ->join('users', 'users.id','s_listanegra.idresponsable')
                     ->where('s_listanegra.idtienda', $idtienda)
                     ->select(
                         's_listanegra.*',

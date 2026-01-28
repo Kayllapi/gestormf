@@ -48,7 +48,7 @@
           <input type="hidden" value="" class="form-control" id="data-cliente-id">
         </div>
         <div class="col-sm-12">
-          <label>Documento de Identidad(DNI/CE): </label>
+          <label>Documento de Identidad (RUC/DNI/CE): </label>
           <input type="text" disabled value="" class="form-control" id="data-cliente-documento">
         </div>
         
@@ -70,7 +70,7 @@
       <hr>
       <div class="row">
         <div class="col-md-6">
-          <div class="alert alert-light mb-1 mt-1 py-0 text-start d-none" id="alert-garantia-1">
+          <div class="alert alert-light mb-1 mt-1 py-0 text-start d-none" id="alert-garantia-1" style="color: #000;">
             Garantía sin Préstamo
           </div>
           <div class="alert mb-1 text-start py-0 d-none" style="background-color: #6bc5ff;" id="alert-garantia-2">

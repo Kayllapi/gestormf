@@ -20,12 +20,7 @@
           <i class="fa-solid fa-triangle-exclamation"></i> ¿Esta seguro de modificar la garantia?<br>
           <b>"{{$garantias->descripcion}}"</b>
         </div>
-        <label class="mt-1" style="background-color: #636363;
-          color: #fff;
-          width: 100%;
-          border-radius: 5px;
-          padding: 0px 5px;
-          margin-bottom: 5px;">Aprobación</label>
+                <div class="mt-2 bg-primary subtitulo">Aprobación</div>
               <div class="mb-1">
                   <label>Responsable *</label>
                   <select class="form-select" id="idresponsable">
@@ -41,7 +36,7 @@
               </div>
     </div>
     <div class="modal-footer">
-        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-trash"></i> Modificar</button>
+        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-check"></i> Modificar</button>
     </div>
 </form>   
 <script>

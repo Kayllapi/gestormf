@@ -14,7 +14,7 @@
       },this)" id="form-editar-garantia">
     <input type="hidden" id="idresponsable_modificado">
     <div class="modal-header">
-        <h5 class="modal-title">Garantía No Prendaria</h5>
+        <h5 class="modal-title">Garantía Regular</h5>
     </div>
     <div class="modal-body">
       <div class="row">
@@ -24,10 +24,25 @@
             <option></option>
           </select>
         </div>
+      </div>
+      <div class="row">
+          <div class="col-sm-2">
+            <div style="margin-top: 21px;
+    background-color: #ffd100;
+    float: left;
+    padding-left: 3px;
+    padding-right: 3px;
+    border-radius: 3px;">{{ calcularDiasPasados($garantias->fecharegistro) }} DIA(S)</div>
+          </div>
 
-
+          <div class="col-sm-4">
+            <label>Fecha de Registro</label>
+            <input type="date" class="form-control" id="fecharegistro" value="{{ $garantias->fecharegistro }}" disabled>
+          </div> 
+      </div>
+      <div class="row">
         <div class="col-sm-12 col-md-4">
-          <label>Tipo Garantía No Prendaria</label>
+          <label>Tipo Garantía Regular</label>
           <select class="form-control" id="idtipo_garantia_noprendaria">
             <option></option>
             @foreach($tipo_garantia_noprendaria as $value)
@@ -76,7 +91,7 @@
                 <thead>
                   <tr>
                     <th width="10px">Nro</th>
-                    <th>DNI - Apellidos y Nombres</th>
+                    <th>RUC/DNI/CE - Apellidos y Nombres</th>
                     <th width="80px">Cuenta</th>
                     <th width="80px">Desembolso</th>
                     <th width="80px">Saldo</th>

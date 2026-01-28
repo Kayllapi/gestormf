@@ -259,12 +259,14 @@ class GarantiasController extends Controller
           
             $credito_polizaseguro = DB::table('credito_polizaseguro')->where('id_cliente',$request->idcliente)->get();
           
-            $html_1 = '<ul class="text-danger" style="margin-top: 10px;">';
+            $html_1 = '<div  class="text-danger" style="margin-top: 10px;">';
             foreach($credito_polizaseguro as $value){
                 if($value->vigencia_hasta<now()->format('Y-m-d')){
-                    $html_1 .= '<li>Póliza de Garantía "'.$value->asegurado.'", venció el '.Carbon::parse($value->vigencia_hasta)->format('d/m/Y').'</li>';
+                    $html_1 .= '<div><img src="'.url('public/backoffice/sistema/icongarantia.png').'" style="height: 15px;"> Póliza de Garantía "'.$value->asegurado.'", venció el '.Carbon::parse($value->vigencia_hasta)->format('d/m/Y').'</div>';
                 }
             }
+            $html_1 .= '</div>';
+            
               
           return array(
             'cliente' => $cliente,

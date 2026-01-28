@@ -8,7 +8,7 @@
         </a>
         <a href="javascript:;" 
             class="btn btn-info" 
-            onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/listanegra/create?view=reporte')}}'})">
+            onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/listanegra/create?view=reporte')}}',size:'modal-fullscreen'})">
             <i class="fa-solid fa-file-pdf"></i> Reporte
         </a>
         
@@ -24,23 +24,23 @@
             ['data' => 'RUC/DNI/CE'],
             ['data' => 'Cliente'],
             ['data' => 'Motivo'],
+            ['data' => 'Registrado por'],
             ['data' => 'Fecha'],
-            ['data' => 'Estado'],
             ['data' => ''],
         ],
         'tbody' => [
             ['data' => 'identificacion','type'=>'code'],
             ['data' => 'cliente','type'=>'text'],
             ['data' => 'motivo','type'=>'text'],
+            ['data' => 'usuariocodigo','type'=>'text'],
             ['data' => 'fecha','type'=>'date'],
-            ['data' => 'estado','type'=>'text'],
             ['data' => 'opcion','type'=>'btn'],
         ],
         'tfoot' => [
             ['type' => 'text'],
             ['type' => 'text'],
             ['type' => 'text'],
-            ['type' => 'date'],
+            ['type' => 'text'],
             ['type' => 'text'],
             ['type' => ''],
         ]

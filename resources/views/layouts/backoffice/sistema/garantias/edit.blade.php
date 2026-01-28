@@ -123,7 +123,7 @@
                       </div>
                       <div class="col-sm-4 d-none option-tipo-joya">
                         <label>Peso Neto (g)</label>
-                        <input type="number" step="any" class="form-control text-center bg-warning" id="peso_neto" value="{{ $garantias->peso_neto }}" disabled>
+                        <input type="number" step="any" class="form-control text-center" id="peso_neto" value="{{ $garantias->peso_neto }}" style="background-color: #e9ecef;" disabled>
                       </div>
                       <div class="mb-1 mt-2">
                         <span class="badge d-block">TASACIÓN</span>
@@ -136,9 +136,9 @@
                         <label>Valor Comercial S/</label>
                         <input type="text" class="form-control" id="val-view-valorcomercial" disabled>
                       </div>
-                      <div class="col-sm-4">
+                      <div class="col-sm-4 d-none" id="cont_valormercado_joya">
                         <label>Valor de Mercado S/</label>
-                        <input type="number" class="form-control" id="val-view-valormercado" onclick="calc_valormercado()" onkeyup="calc_valormercado()" value="{{$garantias->valor_mercado}}">
+                        <input type="text" class="form-control" id="val-view-valormercado" onclick="calc_valormercado()" onkeyup="calc_valormercado()" value="{{$garantias->valor_mercado}}">
                         <span id="cont_mensaje_valormercado" style="color: #c52525;font-size: 12px;"></span>
                       </div>
                     </div>
@@ -329,13 +329,7 @@
     </div>
 </form> 
 <script>
-  var html = '<ul class="text-danger" style="margin-top: 10px;">';
-  @foreach($credito_polizaseguro as $value)
-      @if($value->vigencia_hasta<now()->format('Y-m-d'))
-      html += '<li>Póliza de Garantía "{{$value->asegurado}}", venció el {{Carbon\Carbon::parse($value->vigencia_hasta)->format('d/m/Y')}}</li>';
-      @endif
-  @endforeach
-  $('#alert-garantia-poliza').html(html+'</ul>');
+
   
   $('#btn-delete-garantia').css("display","inline-block");
   $('#cont-btnguardar').addClass("d-none");
@@ -484,10 +478,12 @@
       if(idtipogarantia.val() == 6){
           $('.option-tipo-general').addClass('d-none');
           $('.option-tipo-joya').removeClass('d-none');
+          $('#cont_valormercado_joya').removeClass('d-none');
           //tarifario_joyas(e.currentTarget.value);  
       }else{
           $('.option-tipo-general').removeClass('d-none');
           $('.option-tipo-joya').addClass('d-none');
+          $('#cont_valormercado_joya').addClass('d-none');
           //tipo_garantia(e.currentTarget.value);
       }
 
@@ -547,8 +543,9 @@
       let monto_cobertura = parseFloat($('#val-view-cobertura').val());    
       let monto_valorcomercial = parseFloat($('#val-view-valorcomercial').val());
       let valormercado =  parseFloat($("#val-view-valormercado").val());
+      var idtipogarantia = $("#idtipogarantia :selected").val();
     
-      if(valormercado<monto_valorcomercial){
+      if(idtipogarantia == 6 && valormercado<monto_valorcomercial){
           return false;
       }
     

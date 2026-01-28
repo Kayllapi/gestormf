@@ -100,6 +100,7 @@ class GarantiasNoPrendarioController extends Controller
             }
           
             DB::table('garantias_noprendarias')->insert([
+               'fecharegistro'          => Carbon::now(),
                'idcliente'                          => $request->input('idcliente'),
                'idtipo_garantia_noprendaria'        => $request->input('idtipo_garantia_noprendaria'),
                'idsubtipo_garantia_noprendaria'     => $request->input('idsubtipo_garantia_noprendaria'),
@@ -107,7 +108,7 @@ class GarantiasNoPrendarioController extends Controller
                'descripcion'                        => $request->input('descripcion'),
                'valor_mercado'                      => $request->input('valor_mercado'),
                'valor_comercial'                    => $request->input('valor_comercial')!=''? $request->input('valor_comercial'): '0.00',
-               'valor_realizacion'                  => $request->input('valor_realizacion')!=''? $request->input('valor_comercial'): '0.00',              
+               'valor_realizacion'                  => $request->input('valor_realizacion')!=''? $request->input('valor_realizacion'): '0.00',              
                'idresponsable'            => Auth::user()->id,
                
             ]);
@@ -410,13 +411,14 @@ class GarantiasNoPrendarioController extends Controller
             }
           
             DB::table('garantias_noprendarias')->whereId($id)->update([
+               'fecharegistro'          => Carbon::now(),
                'idtipo_garantia_noprendaria'        => $request->input('idtipo_garantia_noprendaria'),
                'idsubtipo_garantia_noprendaria'     => $request->input('idsubtipo_garantia_noprendaria'),
                'idsubtipo_garantia_noprendaria_ii'  => $request->input('idsubtipo_garantia_noprendaria_ii'),
                'descripcion'                        => $request->input('descripcion'),
                'valor_mercado'                      => $request->input('valor_mercado'),
                'valor_comercial'                    => $request->input('valor_comercial')!=''? $request->input('valor_comercial'): '0.00',
-               'valor_realizacion'                  => $request->input('valor_realizacion')!=''? $request->input('valor_comercial'): '0.00',
+               'valor_realizacion'                  => $request->input('valor_realizacion')!=''? $request->input('valor_realizacion'): '0.00',
                'idresponsable'                      => $request->idresponsable_modificado,
             ]);
           

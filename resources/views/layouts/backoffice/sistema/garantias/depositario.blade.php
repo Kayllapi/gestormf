@@ -92,14 +92,8 @@
     </div>
 </form> 
 <script>
-  var html = '<ul class="text-danger" style="margin-top: 10px;">';
-  @foreach($credito_polizaseguro as $value)
-      @if($value->vigencia_hasta<now()->format('Y-m-d'))
-      html += '<li>Póliza de Garantía "{{$value->asegurado}}", venció el {{Carbon\Carbon::parse($value->vigencia_hasta)->format('d/m/Y')}}</li>';
-      @endif
-  @endforeach
-  $('#alert-garantia-poliza').html(html+'</ul>');
           
+  $('tr.selected').removeClass('selected');
   $('#cont-btnguardar').addClass("d-none");
     $('#btn-autorizar-garantia').addClass("d-none");
     $('#btn-autorizar-depositario').removeClass("d-none")

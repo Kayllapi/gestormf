@@ -12,7 +12,7 @@
         lista_garantias_cliente({{ $idcliente }});
     },this)"> 
     <div class="modal-header">
-        <h5 class="modal-title">Registrar Garantía No Prendaria</h5>
+        <h5 class="modal-title">Registrar Garantía Regular</h5>
     </div>
     <div class="modal-body">
         <div class="row">
@@ -25,7 +25,7 @@
           
           
           <div class="col-sm-12 col-md-4">
-            <label>Tipo Garantía No Prendaria</label>
+            <label>Tipo Garantía Regular</label>
             <select class="form-control" id="idtipo_garantia_noprendaria">
               <option></option>
               @foreach($tipo_garantia_noprendaria as $value)
@@ -73,6 +73,9 @@
     </div>
 </form>  
 <script>
+  $('tr.selected').removeClass('selected');
+          $('#cont-ultimamodificacion').addClass('d-none');
+    $('#btn-autorizar-garantia').addClass("d-none");
   $('#btn-delete-garantia').addClass("d-none");
   sistema_select2({ idtienda:{{$tienda->id}}, json:'tienda:usuario', input:'#idcliente', val: '{{ $idcliente }}' });
   @include('app.nuevosistema.select2',['input'=>'#idtipo_garantia_noprendaria']);

@@ -102,7 +102,7 @@
                       </div>
                       <div class="col-sm-4 d-none option-tipo-joya">
                         <label>Peso Neto (g)</label>
-                        <input type="number" step="any" class="form-control text-center bg-warning" id="peso_neto" value="0.00" readonly>
+                        <input type="number" step="any" class="form-control text-center" id="peso_neto" value="0.00" style="background-color: #e9ecef;" readonly>
                       </div>
                       <div class="mb-1 mt-2">
                         <span class="badge d-block">TASACIÓN</span>
@@ -115,9 +115,9 @@
                         <label>Valor Comercial S/</label>
                         <input type="text" class="form-control" id="val-view-valorcomercial" disabled>
                       </div>
-                      <div class="col-sm-4">
+                      <div class="col-sm-4 d-none" id="cont_valormercado_joya">
                         <label>Valor de Mercado S/</label>
-                        <input type="number" class="form-control" id="val-view-valormercado" onclick="calc_valormercado()" onkeyup="calc_valormercado()">
+                        <input type="text" class="form-control" id="val-view-valormercado" onclick="calc_valormercado()" onkeyup="calc_valormercado()">
                         <span id="cont_mensaje_valormercado" style="color: #c52525;font-size: 12px;"></span>
                       </div>
                     </div>
@@ -236,6 +236,8 @@
     </div>
 </form>  
 <script>
+  $('tr.selected').removeClass('selected');
+          $('#cont-ultimamodificacion').addClass('d-none');
     $('#btn-autorizar-garantia').addClass("d-none");
     $('#btn-autorizar-depositario').addClass("d-none");
   
@@ -306,10 +308,12 @@
       if(idtipogarantia.val() == 6){
           $('.option-tipo-general').addClass('d-none');
           $('.option-tipo-joya').removeClass('d-none');
+          $('#cont_valormercado_joya').removeClass('d-none');
           //tarifario_joyas(e.currentTarget.value);  
       }else{
           $('.option-tipo-general').removeClass('d-none');
           $('.option-tipo-joya').addClass('d-none');
+          $('#cont_valormercado_joya').addClass('d-none');
           //tipo_garantia(e.currentTarget.value);
       }
   }
@@ -357,8 +361,9 @@
       let monto_cobertura = parseFloat($('#val-view-cobertura').val());    
       let monto_valorcomercial = parseFloat($('#val-view-valorcomercial').val());
       let valormercado =  parseFloat($("#val-view-valormercado").val());
+      var idtipogarantia = $("#idtipogarantia :selected").val();
     
-      if(valormercado<monto_valorcomercial){
+      if(idtipogarantia == 6 && valormercado<monto_valorcomercial){
           return false;
       }
       $('#valor_mercado_inicial').val(valor_mercado.toFixed(2));    

@@ -1553,7 +1553,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
 
     $ingresoyegresobanco_ingreso_cvventas = [];
     $ingresoyegresobanco_ingreso_cvventa_validacion = '';
-    $validacion_0 = '';
+    $validacion_0 = 'CHECK';
     $ingresoyegresobanco_ingreso_cvventa_validacion_cantidad = 0;
     foreach($bancos as $valuebancos){
         $db_cvventa = DB::table('cvventa')
@@ -1562,9 +1562,6 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
             ->where($where)
             ->where('cvventa.venta_idbanco',$valuebancos->id)
             ->get();
-        // dump($db_cvventa);
-        // $todos_validados = $db_cvventa->isNotEmpty() && $db_cvventa->every('validar_estado', 1);
-        // dump($todos_validados);
         
         $validacion_1 = '';
         $compra_ingresoyegresobanco_egreso_cvventa = 0;
@@ -1592,8 +1589,14 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
             'validacion' => $validacion_1,
         ];
     }
+    $faltantes = array_filter(
+        $ingresoyegresobanco_ingreso_cvventas,
+        fn($b) => $b['banco'] > 0 && $b['validacion'] !== 'CHECK'
+    );
+    if (!empty($faltantes)) {
+        $validacion_0 = '';
+    }
     $ingresoyegresobanco_ingreso_cvventa_validacion = $validacion_0;
-    // dd(123);
 
     $where = [];
     if($idagencia!=''){
@@ -1612,7 +1615,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
     // $ingresoyegresobanco_egreso_crediticio = 0;
     $ingresoyegresobanco_egreso_cvcompras = [];
     $ingresoyegresobanco_egreso_cvcompra_validacion = '';
-    $validacion_0 = '';
+    $validacion_0 = 'CHECK';
     $ingresoyegresobanco_egreso_cvcompra_validacion_cantidad = 0;
 
     foreach($bancos as $valuebancos){
@@ -1651,6 +1654,13 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
             'validacion' => $validacion_1,
         ];
     }
+    $faltantes = array_filter(
+        $ingresoyegresobanco_egreso_cvcompras,
+        fn($b) => $b['banco'] > 0 && $b['validacion'] !== 'CHECK'
+    );
+    if (!empty($faltantes)) {
+        $validacion_0 = '';
+    }
     $ingresoyegresobanco_egreso_cvcompra_validacion = $validacion_0;
     // === FIN VENTA
     
@@ -1665,7 +1675,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
     $ingresoyegresobanco_ingreso_incrementocapital = 0;
     $ingresoyegresobanco_ingreso_incrementocapital_bancos = [];
     $ingresoyegresobanco_ingreso_incrementocapital_validacion = '';
-    $validacion_0 = '';
+    $validacion_0 = 'CHECK';
     $ingresoyegresobanco_ingreso_incrementocapital_validacion_cantidad = 0;
     foreach($bancos as $valuebancos){
     
@@ -1686,7 +1696,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
             }
             $ingresoyegresobanco_ingreso_incrementocapital_monto += $valuecrediticio->monto;
         }
-            
+
         if($validacion_1=='CHECK' && $validacion_0 == ''){
             $validacion_0 = 'CHECK';
             $validacion_operaciones_cuenta_banco_cant += 1;
@@ -1706,6 +1716,13 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
             'validacion' => $validacion_1
         ];
     }
+    $faltantes = array_filter(
+        $ingresoyegresobanco_ingreso_incrementocapital_bancos,
+        fn($b) => $b['banco'] > 0 && $b['validacion'] !== 'CHECK'
+    );
+    if (!empty($faltantes)) {
+        $validacion_0 = '';
+    }
     $ingresoyegresobanco_ingreso_incrementocapital_validacion = $validacion_0;
     
     $where = [];
@@ -1719,10 +1736,9 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
     $ingresoyegresobanco_ingreso_ingresosextraordinarios = 0;
     $ingresoyegresobanco_ingreso_ingresosextraordinarios_bancos = [];
     $ingresoyegresobanco_ingreso_ingresosextraordinarios_validacion = '';
-    $validacion_0 = '';
+    $validacion_0 = 'CHECK';
     $ingresoyegresobanco_ingreso_ingresosextraordinarios_validacion_cantidad = 0;
     foreach($bancos as $valuebancos){
-    
         $db_ingresoyegresobanco_ingreso_ingresosextraordinarios = DB::table('cvingresoextraordinario')
             ->where('cvingresoextraordinario.idformapago',2) 
             ->where('cvingresoextraordinario.idestadoeliminado',1) 
@@ -1738,7 +1754,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
             }
             $ingresoyegresobanco_ingreso_ingresosextraordinarios_monto += $valuecrediticio->monto;
         }
-            
+
         if($validacion_1=='CHECK' && $validacion_0 == ''){
             $validacion_0 = 'CHECK';
             $validacion_operaciones_cuenta_banco_cant += 1;
@@ -1757,6 +1773,13 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
             'banco' => number_format($ingresoyegresobanco_ingreso_ingresosextraordinarios_monto, 2, '.', ''),
             'validacion' => $validacion_1
         ];
+    }
+    $faltantes = array_filter(
+        $ingresoyegresobanco_ingreso_ingresosextraordinarios_bancos,
+        fn($b) => $b['banco'] > 0 && $b['validacion'] !== 'CHECK'
+    );
+    if (!empty($faltantes)) {
+        $validacion_0 = '';
     }
     $ingresoyegresobanco_ingreso_ingresosextraordinarios_validacion = $validacion_0;
     
@@ -1826,7 +1849,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
     $ingresoyegresobanco_egreso_reduccioncapital = 0;
     $ingresoyegresobanco_egreso_reduccioncapital_bancos = [];
     $ingresoyegresobanco_egreso_reduccioncapital_validacion = '';
-    $validacion_0 = '';
+    $validacion_0 = 'CHECK';
     $ingresoyegresobanco_egreso_reduccioncapital_validacion_cantidad = 0;
     foreach($bancos as $valuebancos){
     
@@ -1847,7 +1870,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
             }
             $ingresoyegresobanco_egreso_reduccioncapital_monto += $valuecrediticio->monto;
         }
-            
+
         if($validacion_1=='CHECK' && $validacion_0 == ''){
             $validacion_0 = 'CHECK';
             $validacion_operaciones_cuenta_banco_cant += 1;
@@ -1867,6 +1890,13 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
             'validacion' => $validacion_1,
         ];
     }
+    $faltantes = array_filter(
+        $ingresoyegresobanco_egreso_reduccioncapital_bancos,
+        fn($b) => $b['banco'] > 0 && $b['validacion'] !== 'CHECK'
+    );
+    if (!empty($faltantes)) {
+        $validacion_0 = '';
+    }
     $ingresoyegresobanco_egreso_reduccioncapital_validacion = $validacion_0;
     
     $where = [];
@@ -1880,7 +1910,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
     $ingresoyegresobanco_egreso_gastosadministrativosyoperativos = 0;
     $ingresoyegresobanco_egreso_gastosadministrativosyoperativos_bancos = [];
     $ingresoyegresobanco_egreso_gastosadministrativosyoperativos_validacion = '';
-    $validacion_0 = '';
+    $validacion_0 = 'CHECK';
     $ingresoyegresobanco_egreso_gastosadministrativosyoperativos_validacion_cantidad = 0;
     foreach($bancos as $valuebancos){
     
@@ -1899,7 +1929,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
             }
             $ingresoyegresocaja_egreso_gastosadministrativosyoperativos_monto += $valuecrediticio->monto;
         }
-            
+
         if($validacion_1=='CHECK' && $validacion_0 == ''){
             $validacion_0 = 'CHECK';
             $validacion_operaciones_cuenta_banco_cant += 1;
@@ -1918,6 +1948,13 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
             'banco' => number_format($ingresoyegresocaja_egreso_gastosadministrativosyoperativos_monto, 2, '.', ''),
             'validacion' => $validacion_1,
         ];
+    }
+    $faltantes = array_filter(
+        $ingresoyegresobanco_egreso_gastosadministrativosyoperativos_bancos,
+        fn($b) => $b['banco'] > 0 && $b['validacion'] !== 'CHECK'
+    );
+    if (!empty($faltantes)) {
+        $validacion_0 = '';
     }
     $ingresoyegresobanco_egreso_gastosadministrativosyoperativos_validacion = $validacion_0;
 

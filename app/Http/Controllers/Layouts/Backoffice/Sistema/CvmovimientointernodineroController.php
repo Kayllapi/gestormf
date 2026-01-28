@@ -1394,7 +1394,7 @@ class CvmovimientointernodineroController extends Controller
             DB::table('cvmovimientointernodinero')->whereId($id)->update([
                'fecha_eliminado' => now(),
                'idestadoeliminado' => 2,
-               'idresponsble_eliminado' => Auth::user()->id,
+               'idresponsble_eliminado' => $idresponsable,
             ]);
 
             /* $movimientointernodinero = DB::table('cvmovimientointernodinero')
@@ -1404,7 +1404,7 @@ class CvmovimientointernodineroController extends Controller
             DB::table('cvmovimientointernodinero')->where('idcvmovimientointernodinero',$id)->update([
                 'fecha_eliminado' => now(),
                 'idestadoeliminado' => 2,
-                'idresponsble_eliminado' => Auth::user()->id,
+                'idresponsble_eliminado' => $idresponsable,
             ]);
             // DB::table('cvmovimientointernodinero')->whereId($id)->delete();
           
@@ -1476,7 +1476,7 @@ class CvmovimientointernodineroController extends Controller
             DB::table('cvmovimientointernodinero')->whereId($id)->update([
                'fecha_eliminado' => now(),
                'idestadoeliminado' => 2,
-               'idresponsble_eliminado' => Auth::user()->id,
+               'idresponsble_eliminado' => $idresponsable,
             ]);
 
             /* $movimientointernodinero = DB::table('cvmovimientointernodinero')
@@ -1486,7 +1486,7 @@ class CvmovimientointernodineroController extends Controller
             DB::table('cvmovimientointernodinero')->where('idcvmovimientointernodinero',$id)->update([
                 'fecha_eliminado' => now(),
                 'idestadoeliminado' => 2,
-                'idresponsble_eliminado' => Auth::user()->id,
+                'idresponsble_eliminado' => $idresponsable,
             ]);
             // DB::table('cvmovimientointernodinero')->whereId($id)->delete();
             return response()->json([
@@ -1524,7 +1524,7 @@ class CvmovimientointernodineroController extends Controller
             DB::table('cvmovimientointernodinero')->whereId($id)->update([
                'fecha_eliminado' => now(),
                'idestadoeliminado' => 2,
-               'idresponsble_eliminado' => Auth::user()->id,
+               'idresponsble_eliminado' => $idresponsable,
             ]);
 
             // DB::table('cvmovimientointernodinero')->whereId($id)->delete();

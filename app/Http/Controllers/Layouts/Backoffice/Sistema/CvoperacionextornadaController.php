@@ -95,7 +95,7 @@ class CvoperacionextornadaController extends Controller
                     'cvcompra.compra_numerooperacion as numerooperacion',
                     'responsable.codigo as codigoresponsable',
                     'responsableeliminado.codigo as codigoresponsableeliminado',
-                    'tienda.nombre as tiendanombre',
+                    'tienda.nombreagencia as tiendanombre',
                 )
                 ->orderBy('fechaextorno','asc');
 
@@ -119,7 +119,7 @@ class CvoperacionextornadaController extends Controller
                     'cvventa.venta_numerooperacion as numerooperacion',
                     'responsable.codigo as codigoresponsable',
                     'responsableeliminado.codigo as codigoresponsableeliminado',
-                    'tienda.nombre as tiendanombre',
+                    'tienda.nombreagencia as tiendanombre',
                 )
                 ->orderBy('fechaextorno','asc');
             
@@ -143,7 +143,7 @@ class CvoperacionextornadaController extends Controller
                     'cvingresoextraordinario.numerooperacion as numerooperacion',
                     'responsable.codigo as codigoresponsable',
                     'responsableeliminado.codigo as codigoresponsableeliminado',
-                    'tienda.nombre as tiendanombre',
+                    'tienda.nombreagencia as tiendanombre',
                 )
                 ->orderBy('fechaextorno','asc');
 
@@ -167,7 +167,7 @@ class CvoperacionextornadaController extends Controller
                     'cvasignacioncapital.numerooperacion as numerooperacion',
                     'responsable.codigo as codigoresponsable',
                     'responsableeliminado.codigo as codigoresponsableeliminado',
-                    'tienda.nombre as tiendanombre',
+                    'tienda.nombreagencia as tiendanombre',
                 )
                 ->orderBy('fechaextorno','asc');
 
@@ -191,7 +191,7 @@ class CvoperacionextornadaController extends Controller
                     'cvmovimientointernodinero.numerooperacion as numerooperacion',
                     'responsable.codigo as codigoresponsable',
                     'responsableeliminado.codigo as codigoresponsableeliminado',
-                    'tienda.nombre as tiendanombre',
+                    'tienda.nombreagencia as tiendanombre',
                 )
                 ->orderBy('fechaextorno','asc');
             
@@ -219,7 +219,7 @@ class CvoperacionextornadaController extends Controller
                     'cvgastoadministrativooperativo.numerooperacion as numerooperacion',
                     'responsable.codigo as codigoresponsable',
                     'responsableeliminado.codigo as codigoresponsableeliminado',
-                    'tienda.nombre as tiendanombre',
+                    'tienda.nombreagencia as tiendanombre',
                 )
                 ->orderBy('fechaextorno','asc')
                 ->get();

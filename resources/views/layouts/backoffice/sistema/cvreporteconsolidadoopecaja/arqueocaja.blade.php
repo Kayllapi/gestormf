@@ -202,9 +202,19 @@
                           <img src="{{url('public/backoffice/sistema/icono_check.png')}}" width="20px" style="margin-top:-5px;">
                       </div>
                       <div class="col-sm-3">
-                        <span style="background-color: #fcc292;">
-                          {{$consolidadooperaciones['validacion_operaciones_cuenta_banco']}}
-                        </span>
+                        @if ($consolidadooperaciones['validacion_operaciones_cuenta_banco']=='VERIFICADO')
+                          <span style="background-color: #aaffa7;">
+                            {{$consolidadooperaciones['validacion_operaciones_cuenta_banco']}}
+                          </span>
+                        @elseif($consolidadooperaciones['validacion_operaciones_cuenta_banco']=='PENDIENTE')
+                          <span style="background-color: #ff8a8a;">
+                            {{$consolidadooperaciones['validacion_operaciones_cuenta_banco']}}
+                          </span>
+                        @elseif($consolidadooperaciones['validacion_operaciones_cuenta_banco']=='SIN OPERACIONES')
+                          <span style="background-color: #fce092;">
+                            {{$consolidadooperaciones['validacion_operaciones_cuenta_banco']}}
+                          </span>
+                        @endif
                       </div>
                   </div>
                   <div class="row">
@@ -213,7 +223,7 @@
                           II. Total de Efectivo Físico en Caja al Arqueo:
                       </div>
                       <div class="col-sm-3">
-                          <input type="text" id="total_efectivo_caja_arqueo" class="form-control" value="S/. 0.00" disabled>
+                          <input type="text" style="border: 2px solid #000;" id="total_efectivo_caja_arqueo" class="form-control" value="S/. 0.00" disabled>
                       </div>
                   </div>
               </div>

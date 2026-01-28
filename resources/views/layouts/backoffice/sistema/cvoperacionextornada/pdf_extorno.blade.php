@@ -129,10 +129,10 @@
           <table style="width:100%;">
             <tr>
               <th style="border-bottom: 2px solid #000;">FECHA Y HORA</th>
-              <th style="border-bottom: 2px solid #000;">COD/OPERACIÓN</th>
-              <th style="border-bottom: 2px solid #000;">TIPO/OPERACIÓN</th>
+              <th style="border-bottom: 2px solid #000;">COD/OPER.</th>
+              <th style="border-bottom: 2px solid #000;">TIPO/OPER.</th>
               <th style="border-bottom: 2px solid #000;">DESCRIPCIÓN/CLIENTES</th>
-              <th style="border-bottom: 2px solid #000;">BANCO</th>
+              <th style="border-bottom: 2px solid #000;">BANCO/OPER.</th>
               <th style="border-bottom: 2px solid #000;">MONTO</th>
               <th style="border-bottom: 2px solid #000;">USUARIO</th>
               <th style="border-bottom: 2px solid #000;">SUCURSAL</th>

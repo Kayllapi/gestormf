@@ -75,6 +75,7 @@ class CvoperacionextornadaController extends Controller
                 ->where($where1)
                 ->select(
                     DB::raw('CONCAT("ELIM. COMPRA") as operacion'),
+                    DB::raw('CONCAT(IF(cvcompra.idestadocvcompra = 1, "CB", "VB"), cvcompra.codigo) as codigo'),
                     'cvcompra.compra_cuenta as cuenta',
                     'cvcompra.fechaeliminado as fechaextorno',
                     DB::raw('CONCAT("") as detalleoperacion'),
@@ -95,6 +96,7 @@ class CvoperacionextornadaController extends Controller
                 ->where($where2)
                 ->select(
                     DB::raw('CONCAT("ELIM. VENTA") as operacion'),
+                    DB::raw('CONCAT("VB", cvventa.codigo) as codigo'),
                     'cvventa.venta_cuenta as cuenta',
                     'cvventa.fechaeliminado as fechaextorno',
                     DB::raw('CONCAT("--") as pago_cuota'),
@@ -109,16 +111,18 @@ class CvoperacionextornadaController extends Controller
                 ->orderBy('fechaextorno','asc');
             
             $ingresoextraordinarios = DB::table('cvingresoextraordinario')
+                ->join('s_sustento_comprobante','s_sustento_comprobante.id','cvingresoextraordinario.s_idsustento_comprobante')
                 ->leftJoin('users as responsable','responsable.id','cvingresoextraordinario.idresponsable')
                 ->leftJoin('tienda','tienda.id','cvingresoextraordinario.idtienda')
                 ->where('cvingresoextraordinario.idestadoeliminado',2)
                 ->where($where4)
                 ->select(
                     DB::raw('CONCAT("ELIM. INGRESO") as operacion'),
+                    DB::raw('CONCAT(cvingresoextraordinario.codigoprefijo,cvingresoextraordinario.codigo) as codigo'),
                     'cvingresoextraordinario.cuenta as cuenta',
                     'cvingresoextraordinario.fecha_eliminado as fechaextorno',
                     DB::raw('CONCAT("--") as pago_cuota'),
-                    DB::raw('CONCAT("") as detalleoperacion'),
+                    's_sustento_comprobante.nombre as detalleoperacion',
                     'cvingresoextraordinario.monto as total_pagar',
                     'cvingresoextraordinario.banco as banco',
                     'cvingresoextraordinario.numerooperacion as numerooperacion',
@@ -138,6 +142,7 @@ class CvoperacionextornadaController extends Controller
                 ->where($where3)
                 ->select(
                     DB::raw('CONCAT("ELIM. GASTO") as operacion'),
+                    DB::raw('CONCAT(cvgastoadministrativooperativo.codigoprefijo,cvgastoadministrativooperativo.codigo) as codigo'),
                     'cvgastoadministrativooperativo.cuenta as cuenta',
                     'cvgastoadministrativooperativo.fecha_eliminado as fechaextorno',
                     DB::raw('CONCAT("--") as pago_cuota'),

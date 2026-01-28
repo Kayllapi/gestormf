@@ -149,7 +149,7 @@
             ?>
             <tr>
               <td>{{$value->fechaextorno}}</td>
-              <td>{{str_pad($value->cuenta, 8, "0", STR_PAD_LEFT)}}</td>
+              <td>{{$value->codigo}}</td>
               <td>{{$value->operacion}}</td>
               <td>{{$value->detalleoperacion}}</td>
               <td>{{$value->nombrecliente}}</td>

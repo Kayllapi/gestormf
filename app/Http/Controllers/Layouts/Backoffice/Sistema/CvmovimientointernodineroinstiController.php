@@ -780,7 +780,7 @@ class CvmovimientointernodineroinstiController extends Controller
             DB::table('cvmovimientointernodinero')->whereId($id)->update([
                'fecha_eliminado' => now(),
                'idestadoeliminado' => 2,
-               'idresponsble_eliminado' => Auth::user()->id,
+               'idresponsble_eliminado' => $idresponsable,
             ]);
 
             // DB::table('cvmovimientointernodinero')->whereId($id)->delete();

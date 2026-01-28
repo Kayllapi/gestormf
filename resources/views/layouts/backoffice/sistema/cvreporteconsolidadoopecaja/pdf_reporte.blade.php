@@ -657,7 +657,7 @@
             <tr>
               <td></td>
               <td></td>
-              <td colspan="4" style="text-align:left;">Efectivo en Caja al Corte (S/.):</td>
+              <td colspan="4" style="text-align:left;">Efectivo Físico en Caja al Corte (S/.):</td>
               <td></td>
               <td></td>
               <td></td>
@@ -671,7 +671,7 @@
             <tr>
               <td></td>
               <td></td>
-              <td colspan="4" style="text-align:left;">Efectivo en Caja al Arqueo (S/.):</td>
+              <td colspan="4" style="text-align:left;">Efectivo Físico en Caja al Arqueo (S/.):</td>
               <td></td>
               <td></td>
               <td></td>

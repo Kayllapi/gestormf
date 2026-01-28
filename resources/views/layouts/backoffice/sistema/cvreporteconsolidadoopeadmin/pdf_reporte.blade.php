@@ -667,7 +667,7 @@
             <tr>
               <td></td>
               <td></td>
-              <td colspan="4" style="text-align:left;">Efectivo en Caja al Corte (S/.):</td>
+              <td colspan="4" style="text-align:left;">Efectivo Físico en Caja al Corte (S/.):</td>
               <td></td>
               <td></td>
               <td></td>
@@ -681,7 +681,7 @@
             <tr>
               <td></td>
               <td></td>
-              <td colspan="4" style="text-align:left;">Efectivo en Caja al Arqueo (S/.):</td>
+              <td colspan="4" style="text-align:left;">Efectivo Físico en Caja al Arqueo (S/.):</td>
               <td></td>
               <td></td>
               <td></td>
@@ -719,8 +719,8 @@
           </table> 
           @if($data_actual)
           <br><br>
-          <?php $resposanble = DB::table('users')->where('id',$data_actual->idresponsable_registro)->first(); ?>
-          <?php $permiso = DB::table('permiso')->where('id',$data_actual->idresponsable_registro_idpermiso)->first(); ?>
+          <?php $resposanble = DB::table('users')->where('id',$data_actual->idresponsable)->first(); ?>
+          <?php $permiso = DB::table('permiso')->where('id',$data_actual->idresponsable_permiso)->first(); ?>
           <table class="tabla_informativa" style="text-align:center;margin-left:560px;">
               <tr>
                   <td>______________________________<br>

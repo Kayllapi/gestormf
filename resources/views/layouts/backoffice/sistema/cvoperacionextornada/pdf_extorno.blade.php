@@ -162,7 +162,7 @@
             </tr>
             @endforeach
             <tr>
-              <th style="border-top: 2px solid #000;" colspan="9"></th>
+              <th style="border-top: 2px solid #000;" colspan="10"></th>
             </tr>
           </table>
 

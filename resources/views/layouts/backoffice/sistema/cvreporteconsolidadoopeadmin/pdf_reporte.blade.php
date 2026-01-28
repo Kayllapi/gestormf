@@ -719,8 +719,8 @@
           </table> 
           @if($data_actual)
           <br><br>
-          <?php $resposanble = DB::table('users')->where('id',$data_actual->idresponsable_registro)->first(); ?>
-          <?php $permiso = DB::table('permiso')->where('id',$data_actual->idresponsable_registro_idpermiso)->first(); ?>
+          <?php $resposanble = DB::table('users')->where('id',$data_actual->idresponsable)->first(); ?>
+          <?php $permiso = DB::table('permiso')->where('id',$data_actual->idresponsable_permiso)->first(); ?>
           <table class="tabla_informativa" style="text-align:center;margin-left:560px;">
               <tr>
                   <td>______________________________<br>

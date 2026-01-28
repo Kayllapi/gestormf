@@ -317,7 +317,7 @@ class CvmovimientointernodineroController extends Controller
                 'mensaje'   => 'Se ha validado correctamente.'
             ]);
         }
-        elseif($request->input('view') == 'registrar_retiro3_insert') {    
+        elseif($request->input('view') == 'registrar_retiro3_insert') {
             // --- RETIRO
             $consolidadooperaciones = cvconsolidadooperaciones($tienda,$idtienda,now()->format('Y-m-d'));
             if($request->idfuenteretiro_retiro3==6){

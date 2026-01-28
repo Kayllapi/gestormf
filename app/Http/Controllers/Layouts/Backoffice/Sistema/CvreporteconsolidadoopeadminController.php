@@ -52,9 +52,13 @@ class CvreporteconsolidadoopeadminController extends Controller
                 ->where('idagencia',$request->idagencia)
                 ->where('corte',$date->format('Y-m-d'))
                 ->first();
-            $data_actual = DB::table('arqueocaja')
+            /* $data_actual = DB::table('arqueocaja')
                 ->where('idagencia',$request->idagencia)
                 ->where('corte',$request->corte)
+                ->first(); */
+            $data_actual = DB::table('cvmovimientointernodinero')
+                ->where('idtienda',$idtienda)
+                ->where('idfuenteretiro',6)
                 ->first();
 
             $pdf = PDF::loadView(sistema_view().'/cvreporteconsolidadoopeadmin/pdf_reporte', compact(

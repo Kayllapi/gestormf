@@ -198,7 +198,7 @@
         return false;
       }
       let url = "{{ url('backoffice/'.$tienda->id) }}/cvasignacioncapital/"+idasignacioncapital+"/edit?view=voucher";
-      modal({ route: url })
+      modal({ route: url, size: 'modal-sm' })
    }
 </script>
 

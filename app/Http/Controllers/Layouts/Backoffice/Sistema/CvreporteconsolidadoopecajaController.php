@@ -528,9 +528,9 @@ class CvreporteconsolidadoopecajaController extends Controller
                 ]);
             }
           
-            $arqueocaja = DB::table('arqueocaja')->whereId($id)->first();
-            DB::table('arqueocaja')->whereId($id)->delete();
-            DB::table('arqueocaja_denominacion')->where('idarqueocaja',$id)->delete();
+            $arqueocaja = DB::table('cvarqueocaja')->whereId($id)->first();
+            DB::table('cvarqueocaja')->whereId($id)->delete();
+            DB::table('cvarqueocaja_denominacion')->where('idarqueocaja',$id)->delete();
           
             return response()->json([
               'resultado' => 'CORRECTO',

@@ -178,7 +178,7 @@
                       </table>
                     </div>
                   @else
-                    @if($co_actual['saldos_operaciones_efectivo_validacion_existe'])
+                    @if($consolidadooperaciones['saldos_operaciones_efectivo_validacion_existe'])
                       <p class="text-center" 
                         style="background-color: #dc3545;
                               padding: 15px;

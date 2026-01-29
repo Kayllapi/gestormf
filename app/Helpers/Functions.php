@@ -1979,7 +1979,6 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
     $saldos_operaciones_efectivo_validacion_existe = DB::table('cvasignacioncapital')
         ->where('cvasignacioncapital.idestadoeliminado',1)
         ->whereIn('cvasignacioncapital.idtipooperacion',[1,2,4]) // 1: Deposito, 2: Retiro, 4: Dep. Asignación
-        ->where('cvasignacioncapital.validar_estado',0)
         ->where($where)
         ->exists();
     $saldos_operaciones_efectivo_validacion_cantidad = DB::table('cvasignacioncapital')

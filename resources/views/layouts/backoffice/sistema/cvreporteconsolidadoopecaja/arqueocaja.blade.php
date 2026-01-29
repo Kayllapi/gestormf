@@ -96,7 +96,8 @@
                               color: #fff;
                               width: 90%;
                               margin: auto;">Falta confirmar, HABILITACIÓN Y GESTIÓN DE LIQUIDEZ ( I )!!</p>
-                    @elseif($consolidadooperaciones['habilitacion_gestion_liquidez2']>0)
+                    @endif
+                    @if($consolidadooperaciones['habilitacion_gestion_liquidez2']>0)
                       <p class="text-center" 
                         style="background-color: #dc3545;
                               padding: 15px;
@@ -104,7 +105,8 @@
                               color: #fff;
                               width: 90%;
                               margin: auto;">Falta confirmar, HABILITACIÓN Y GESTIÓN DE LIQUIDEZ ( II )!!</p>
-                    @elseif($consolidadooperaciones['cierre_caja_apertura']>0)
+                    @endif
+                    @if($consolidadooperaciones['cierre_caja_apertura']>0)
                       <p class="text-center" 
                         style="background-color: #dc3545;
                               padding: 15px;
@@ -112,7 +114,10 @@
                               color: #fff;
                               width: 90%;
                               margin: auto;">Falta confirmar, CIERRE Y APERTURA DE CAJA!!</p>
-                    @else
+                    @endif
+                    @if($consolidadooperaciones['habilitacion_gestion_liquidez1']==0 &&
+                        $consolidadooperaciones['habilitacion_gestion_liquidez2']==0 &&
+                        $consolidadooperaciones['cierre_caja_apertura']==0)
                       <div style="float:left;width:48%;">
                         <table class="table table-bordered" id="table-lista-asignacioncapital">
                           <thead class="table-dark" style="position: sticky;top: 0;">

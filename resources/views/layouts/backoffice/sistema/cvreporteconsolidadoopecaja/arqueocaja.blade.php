@@ -185,7 +185,7 @@
                               border-radius: 5px;
                               color: #fff;
                               width: 90%;
-                              margin: auto;">Para realizar el arqueo de caja, debe recepcionar el saldo de operaciones!!</p>
+                              margin: auto;">Para realizar el arqueo de caja, debe recepcionar asignación de fondos!!</p>
                     @endif
                   @endif
                 @else

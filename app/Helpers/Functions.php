@@ -2452,7 +2452,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
         $asignacioncapital_retiro_reserva-
         $ret_reservacf_caja+
         $ret_caja_reservacf+
-        $ret_banco_reservacf;
+        $ret_banco_reservacf_sum;
 
     $asignacioncapital_deposito_caja = DB::table('cvasignacioncapital')
         ->where('cvasignacioncapital.idtipodestino',1)

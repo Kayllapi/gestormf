@@ -573,7 +573,7 @@
               <td></td>
               <td></td>
               <td colspan="3" style="text-align:left;"><b>V.</b> Ret. de Banco para Reserva CF</td>
-              <td style="text-align:right;padding-right:30px;"><b>{{$co_actual['ret_banco_reservacf']}}</b></td>
+              <td style="text-align:right;padding-right:30px;"><b>{{$co_actual['ret_banco_reservacf_sum']}}</b></td>
               <td colspan="2"><b>V.</b> Dep. a Reserva CF desde Banco</td>
               <td style="text-align:right;"><b>{{$co_actual['dep_reservacf_banco']}}</b></td>
               <td></td>

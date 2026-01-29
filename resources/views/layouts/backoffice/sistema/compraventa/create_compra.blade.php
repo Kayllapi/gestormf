@@ -89,7 +89,7 @@
                 <div class="row">
                     <label class="col-sm-6 col-form-label" style="text-align: left;">Valor Compra (S/.) *</label>
                     <div class="col-sm-6">
-                        <input type="number" step="any" class="form-control" id="valorcompra">
+                        <input type="number" step="0.10" class="form-control" id="valorcompra" onchange="this.value = (Math.round(this.value * 10) / 10).toFixed(2)">
                     </div>
                 </div>
             </div>

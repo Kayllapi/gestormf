@@ -38,7 +38,7 @@
             </div>
             @php
                 $descuento = configuracion($tienda->id,'valor_descuento')['valor'];
-                $precio_venta_descuento = $cvcompra->valorcomercial - ($cvcompra->valorcomercial * $descuento / 100);
+                $precio_venta_descuento = round($cvcompra->valorcomercial - ($cvcompra->valorcomercial * $descuento / 100), 1);
             @endphp
             <div class="col-sm-12">
                 <label class="col-form-label" style="text-align: right;">Precio de Venta con Descuento</label>

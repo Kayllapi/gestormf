@@ -2664,7 +2664,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
         $validacion_operaciones_cuenta_banco = 'VERIFICADO';
     }
 
-    $efectivo_caja_corte = $saldos_caja;
+    $efectivo_caja_corte = round($saldos_caja, 1);
     $efectivo_caja_arqueo = 0;
     $resultado = $efectivo_caja_arqueo-$efectivo_caja_corte;
     

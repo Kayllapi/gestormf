@@ -2069,9 +2069,9 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
             'banco_dep' => number_format($movimientointernodineros1, 2, '.', ''),
         ];
     
-        if($ret_banco_caja!=$dep_caja_banco){
-            $valid_habilitacion++;
-        }
+        // if($ret_banco_caja!=$dep_caja_banco){
+        //     $valid_habilitacion++;
+        // }
     }
     $ret_caja_reservacf_sum = DB::table('cvmovimientointernodinero')
         ->where('cvmovimientointernodinero.idestadoeliminado',1)
@@ -2128,9 +2128,9 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
             'banco_dep' => number_format($movimientointernodineros1, 2, '.', ''),
         ];
     
-        if($ret_caja_banco!=$dep_banco_caja){
-            $valid_habilitacion++;
-        }
+        // if($ret_caja_banco!=$dep_banco_caja){
+        //     $valid_habilitacion++;
+        // }
     }
     //----
     $dep_caja_reservacf = DB::table('cvmovimientointernodinero')
@@ -2140,9 +2140,9 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
         ->where($where)
         ->sum('cvmovimientointernodinero.monto');
     
-    if($ret_reservacf_caja!=$dep_caja_reservacf){
-        $valid_habilitacion++;
-    }
+    // if($ret_reservacf_caja!=$dep_caja_reservacf){
+    //     $valid_habilitacion++;
+    // }
     
     $dep_reservacf_caja = DB::table('cvmovimientointernodinero')
         ->where('cvmovimientointernodinero.idestadoeliminado',1)
@@ -2206,9 +2206,9 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
             'banco_dep' => number_format($movimientointernodineros1, 2, '.', ''),
         ];
     
-        if($ret_banco_reservacf!=$dep_reservacf_banco){
-            $valid_habilitacion++;
-        }
+        // if($ret_banco_reservacf!=$dep_reservacf_banco){
+        //     $valid_habilitacion++;
+        // }
     }
     
     $habilitacion_gestion_liquidez2 = $ret_banco_reservacf_sum-$dep_reservacf_banco;
@@ -2244,12 +2244,12 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
         ->sum('cvmovimientointernodinero.monto');
 
 
-    if($ret_reservacf_caja_total!=$dep_caja_reservacf_total){
-        $valid_habilitacion++;
-    }
-    if($ret_caja_reservacf_total!=$dep_reservacf_caja_total){
-        $valid_habilitacion++;
-    }
+    // if($ret_reservacf_caja_total!=$dep_caja_reservacf_total){
+    //     $valid_habilitacion++;
+    // }
+    // if($ret_caja_reservacf_total!=$dep_reservacf_caja_total){
+    //     $valid_habilitacion++;
+    // }
     
     $cierre_caja_apertura = $ret_reservacf_caja_total+
                             $ret_caja_reservacf_total-

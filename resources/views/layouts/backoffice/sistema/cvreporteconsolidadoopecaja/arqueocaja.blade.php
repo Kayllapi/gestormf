@@ -95,7 +95,7 @@
                               border-radius: 5px;
                               color: #fff;
                               width: 90%;
-                              margin: auto;">Para realizar el arqueo de caja, debe confirmar los movimientos internos!!</p>
+                              margin: auto;">Falta confirmar, HABILITACIÓN Y GESTIÓN DE LIQUIDEZ ( I )!!</p>
                     @elseif($consolidadooperaciones['habilitacion_gestion_liquidez2']>0)
                       <p class="text-center" 
                         style="background-color: #dc3545;
@@ -103,7 +103,7 @@
                               border-radius: 5px;
                               color: #fff;
                               width: 90%;
-                              margin: auto;">Para realizar el arqueo de caja, debe confirmar los movimientos internos!!</p>
+                              margin: auto;">Falta confirmar, HABILITACIÓN Y GESTIÓN DE LIQUIDEZ ( II )!!</p>
                     @elseif($consolidadooperaciones['cierre_caja_apertura']>0)
                       <p class="text-center" 
                         style="background-color: #dc3545;
@@ -111,7 +111,7 @@
                               border-radius: 5px;
                               color: #fff;
                               width: 90%;
-                              margin: auto;">Para realizar el arqueo de caja, debe confirmar el cierre y apertura de caja!!</p>
+                              margin: auto;">Falta confirmar, CIERRE Y APERTURA DE CAJA!!</p>
                     @else
                       <div style="float:left;width:48%;">
                         <table class="table table-bordered" id="table-lista-asignacioncapital">

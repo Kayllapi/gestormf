@@ -1976,13 +1976,18 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
         }
     }
 
+    $saldos_operaciones_efectivo_validacion_existe = DB::table('cvasignacioncapital')
+        ->where('cvasignacioncapital.idestadoeliminado',1)
+        ->whereIn('cvasignacioncapital.idtipooperacion',[1,2,4]) // 1: Deposito, 2: Retiro, 4: Dep. Asignación
+        ->where('cvasignacioncapital.validar_estado',0)
+        ->where($where)
+        ->exists();
     $saldos_operaciones_efectivo_validacion_cantidad = DB::table('cvasignacioncapital')
         ->where('cvasignacioncapital.idestadoeliminado',1)
         ->whereIn('cvasignacioncapital.idtipooperacion',[1,2,4]) // 1: Deposito, 2: Retiro, 4: Dep. Asignación
         ->where('cvasignacioncapital.validar_estado',0)
         ->where($where)
         ->count();
-
     $saldos_operaciones_efectivo_validacion_recepcionado = DB::table('cvasignacioncapital')
         ->where('cvasignacioncapital.idestadoeliminado',1)
         ->whereIn('cvasignacioncapital.idtipooperacion',[1,2,4]) // 1: Deposito, 2: Retiro, 4: Dep. Asignación
@@ -2832,6 +2837,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
         'efectivo_caja_arqueo' => number_format($efectivo_caja_arqueo, 2, '.', ''),
         'resultado' => number_format($resultado, 2, '.', ''),
 
+        'saldos_operaciones_efectivo_validacion_existe' => $saldos_operaciones_efectivo_validacion_existe,
         'saldos_operaciones_efectivo_validacion_cantidad' => $saldos_operaciones_efectivo_validacion_cantidad,
         'saldos_operaciones_efectivo_validacion_recepcionado' => $saldos_operaciones_efectivo_validacion_recepcionado,
     ];

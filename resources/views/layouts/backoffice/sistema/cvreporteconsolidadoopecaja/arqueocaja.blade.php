@@ -178,13 +178,15 @@
                       </table>
                     </div>
                   @else
-                  <p class="text-center" 
-                    style="background-color: #dc3545;
-                          padding: 15px;
-                          border-radius: 5px;
-                          color: #fff;
-                          width: 90%;
-                          margin: auto;">Para realizar el arqueo de caja, debe recepcionar el saldo de operaciones!!</p>
+                    @if($co_actual['saldos_operaciones_efectivo_validacion_existe'])
+                      <p class="text-center" 
+                        style="background-color: #dc3545;
+                              padding: 15px;
+                              border-radius: 5px;
+                              color: #fff;
+                              width: 90%;
+                              margin: auto;">Para realizar el arqueo de caja, debe recepcionar el saldo de operaciones!!</p>
+                    @endif
                   @endif
                 @else
                   <p class="text-center" 

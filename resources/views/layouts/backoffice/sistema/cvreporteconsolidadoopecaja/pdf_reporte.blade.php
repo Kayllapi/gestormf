@@ -130,10 +130,12 @@
             <tr>
               <th colspan="6" rowspan="2" style="border-bottom: 2px solid #000;border-top: 2px solid #000;">
                 Saldos y Operaciones de Efectivo
-                @if($co_actual['saldos_operaciones_efectivo_validacion_cantidad']==0)
-                  <img src="{{url('public/backoffice/sistema/icono_check.png')}}" width="20px">
-                @else
-                  <img src="{{url('public/backoffice/sistema/icono_close.png')}}" width="20px">
+                @if($co_actual['saldos_operaciones_efectivo_validacion_existe'])
+                  @if($co_actual['saldos_operaciones_efectivo_validacion_cantidad']==0)
+                    <img src="{{url('public/backoffice/sistema/icono_check.png')}}" width="20px">
+                  @else
+                    <img src="{{url('public/backoffice/sistema/icono_close.png')}}" width="20px">
+                  @endif
                 @endif
               </th>
               <th colspan="2" rowspan="2" style="border-bottom: 2px solid #000;border-top: 2px solid #000;"></th>

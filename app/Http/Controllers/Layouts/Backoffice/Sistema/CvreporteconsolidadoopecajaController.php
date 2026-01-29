@@ -85,45 +85,24 @@ class CvreporteconsolidadoopecajaController extends Controller
             ]);
         }
         elseif($request->input('view') == 'submit_registro_arqueocaja'){
-
             $co = cvconsolidadooperaciones($tienda,$request->idagencia_arqueocaja,$request->corte_arqueocaja);
-          
+
             $idarqueocaja = DB::table('cvarqueocaja')->insertGetId([
                 'fecharegistro' => now(),
                 'total' => $request->total_arqueocaja,
                 'corte' => $request->corte_arqueocaja,
-              
-                'ingresoyegresocaja_ingreso_crediticio_cnp_capital' => $co['ingresoyegresocaja_ingreso_crediticio_cnp_capital'],
-                'ingresoyegresocaja_ingreso_crediticio_cnp_interes' => $co['ingresoyegresocaja_ingreso_crediticio_cnp_interes'],
-                'ingresoyegresocaja_ingreso_crediticio_cnp_desgravcargo' => $co['ingresoyegresocaja_ingreso_crediticio_cnp_desgravcargo'],
-                'ingresoyegresocaja_ingreso_crediticio_cnp_tenencxc' => $co['ingresoyegresocaja_ingreso_crediticio_cnp_tenencxc'],
-                'ingresoyegresocaja_ingreso_crediticio_cnp' => $co['ingresoyegresocaja_ingreso_crediticio_cnp'],
-                'ingresoyegresocaja_ingreso_crediticio_cp_capital' => $co['ingresoyegresocaja_ingreso_crediticio_cp_capital'],
-                'ingresoyegresocaja_ingreso_crediticio_cp_interes' => $co['ingresoyegresocaja_ingreso_crediticio_cp_interes'],
-                'ingresoyegresocaja_ingreso_crediticio_cp_desgravcargo' => $co['ingresoyegresocaja_ingreso_crediticio_cp_desgravcargo'],
-                'ingresoyegresocaja_ingreso_crediticio_cp_tenencxc' => $co['ingresoyegresocaja_ingreso_crediticio_cp_tenencxc'],
-                'ingresoyegresocaja_ingreso_crediticio_cp' => $co['ingresoyegresocaja_ingreso_crediticio_cp'],
-                'ingresoyegresocaja_ingreso_ahorro_plazofijo' => $co['ingresoyegresocaja_ingreso_ahorro_plazofijo'],
-                'ingresoyegresocaja_ingreso_ahorro_ahorroc' => $co['ingresoyegresocaja_ingreso_ahorro_ahorroc'],
-                'ingresoyegresocaja_ingreso_ahorro' => $co['ingresoyegresocaja_ingreso_ahorro'],
+
+                'ingresoyegresocaja_ingreso_ventas' => $co['ingresoyegresocaja_ingreso_cvventa'],
                 'ingresoyegresocaja_ingreso_incrementocapital' => $co['ingresoyegresocaja_ingreso_incrementocapital'],
                 'ingresoyegresocaja_ingreso_ingresosextraordinarios' => $co['ingresoyegresocaja_ingreso_ingresosextraordinarios'],
-                'ingresoyegresocaja_ingreso_crediticio' => $co['ingresoyegresocaja_ingreso_crediticio'],
-                'ingresoyegresocaja_ingreso_crediticio_transitorio' => $co['ingresoyegresocaja_ingreso_crediticio_transitorio'],
-
-                'ingresoyegresocaja_egreso_crediticio' => $co['ingresoyegresocaja_egreso_crediticio'],
-                'ingresoyegresocaja_egreso_ahorro_plazofijo' => $co['ingresoyegresocaja_egreso_ahorro_plazofijo'],
-                'ingresoyegresocaja_egreso_ahorro_intplazofijo' => $co['ingresoyegresocaja_egreso_ahorro_intplazofijo'],
-                'ingresoyegresocaja_egreso_ahorro_ahorrocte' => $co['ingresoyegresocaja_egreso_ahorro_ahorrocte'],
-                'ingresoyegresocaja_egreso_ahorro_intcte' => $co['ingresoyegresocaja_egreso_ahorro_intcte'],
-                'ingresoyegresocaja_egreso_ahorro' => $co['ingresoyegresocaja_egreso_ahorro'],
+                'ingresoyegresocaja_egreso_compras' => $co['ingresoyegresocaja_egreso_cvcompra'],
                 'ingresoyegresocaja_egreso_reduccioncapital' => $co['ingresoyegresocaja_egreso_reduccioncapital'],
                 'ingresoyegresocaja_egreso_gastosadministrativosyoperativos' => $co['ingresoyegresocaja_egreso_gastosadministrativosyoperativos'],
 
-                'ingresoyegresobanco_ingreso_crediticio_cnpcp' => $co['ingresoyegresobanco_ingreso_crediticio_cnpcp'],
-                'ingresoyegresobanco_ingreso_crediticio_cnpcps_bancos' => json_encode($co['ingresoyegresobanco_ingreso_crediticio_cnpcps_bancos']),
-                'ingresoyegresobanco_ingreso_crediticio_cnpcps_validacion' => $co['ingresoyegresobanco_ingreso_crediticio_cnpcps_validacion'],
-                'ingresoyegresobanco_ingreso_crediticio_cnpcps_validacion_cantida' => $co['ingresoyegresobanco_ingreso_crediticio_cnpcps_validacion_cantidad'],
+                'ingresoyegresobanco_ingreso_ventas' => $co['ingresoyegresobanco_ingreso_cvventa'],
+                'ingresoyegresobanco_ingreso_ventas_bancos' => json_encode($co['ingresoyegresobanco_ingreso_cvventas']),
+                'ingresoyegresobanco_ingreso_ventas_validacion' => $co['ingresoyegresobanco_ingreso_cvventa_validacion'],
+                'ingresoyegresobanco_ingreso_ventas_validacion_cantidad' => $co['ingresoyegresobanco_ingreso_cvventa_validacion_cantidad'],
                 'ingresoyegresobanco_ingreso_incrementocapital' => $co['ingresoyegresobanco_ingreso_incrementocapital'],
                 'ingresoyegresobanco_ingreso_incrementocapital_bancos' => json_encode($co['ingresoyegresobanco_ingreso_incrementocapital_bancos']),
                 'ingresoyegresobanco_ingreso_incrementocapital_validacion' => $co['ingresoyegresobanco_ingreso_incrementocapital_validacion'],
@@ -133,10 +112,10 @@ class CvreporteconsolidadoopecajaController extends Controller
                 'ingresoyegresobanco_ingreso_ingresosextraordinarios_validacion' => $co['ingresoyegresobanco_ingreso_ingresosextraordinarios_validacion'],
                 'ingresoyegresobanco_ingreso_ingresosextraordinarios_validacion_c' => $co['ingresoyegresobanco_ingreso_ingresosextraordinarios_validacion_cantidad'],
 
-                'ingresoyegresobanco_egreso_crediticio' => $co['ingresoyegresobanco_egreso_crediticio'],
-                'ingresoyegresobanco_egreso_crediticio_bancos' => json_encode($co['ingresoyegresobanco_egreso_crediticio_bancos']),
-                'ingresoyegresobanco_egreso_crediticio_validacion' => $co['ingresoyegresobanco_egreso_crediticio_validacion'],
-                'ingresoyegresobanco_egreso_crediticio_validacion_cantidad' => $co['ingresoyegresobanco_egreso_crediticio_validacion_cantidad'],
+                'ingresoyegresobanco_egreso_compras' => $co['ingresoyegresobanco_egreso_cvcompra'],
+                'ingresoyegresobanco_egreso_compras_bancos' => json_encode($co['ingresoyegresobanco_egreso_cvcompras']),
+                'ingresoyegresobanco_egreso_compras_validacion' => $co['ingresoyegresobanco_egreso_cvcompra_validacion'],
+                'ingresoyegresobanco_egreso_compras_validacion_cantidad' => $co['ingresoyegresobanco_egreso_cvcompra_validacion_cantidad'],
                 'ingresoyegresobanco_egreso_reduccioncapital' => $co['ingresoyegresobanco_egreso_reduccioncapital'],
                 'ingresoyegresobanco_egreso_reduccioncapital_bancos' => json_encode($co['ingresoyegresobanco_egreso_reduccioncapital_bancos']),
                 'ingresoyegresobanco_egreso_reduccioncapital_validacion' => $co['ingresoyegresobanco_egreso_reduccioncapital_validacion'],
@@ -146,11 +125,32 @@ class CvreporteconsolidadoopecajaController extends Controller
                 'ingresoyegresobanco_egreso_gastosadministrativosyoperativos_vali' => $co['ingresoyegresobanco_egreso_gastosadministrativosyoperativos_validacion'],
                 'ingresoyegresobanco_egreso_gastosadministrativosyoperativos_cant' => $co['ingresoyegresobanco_egreso_gastosadministrativosyoperativos_validacion_cantidad'],
 
-                'ret_reservacf_caja' => $co['ret_reservacf_caja'],
-                'ret_banco_caja' => $co['ret_banco_caja'],
+                'dep_caja_banco' => $co['dep_caja_banco'],
+                'dep_caja_banco_bancos' => json_encode($co['ret_banco_caja_bancos']),
+                'dep_reservacf_caja' => $co['dep_reservacf_caja'],
+                'dep_banco_caja' => $co['dep_banco_caja'],
+                'dep_banco_caja_bancos' => json_encode($co['ret_caja_banco_bancos']),
+                'dep_reservacf_banco' => $co['dep_reservacf_banco'],
+                'dep_reservacf_banco_bancos' => json_encode($co['ret_banco_reservacf_bancos']),
+                'dep_caja_reservacf_total' => $co['dep_caja_reservacf_total'],
+                'dep_reservacf_caja_total' => $co['dep_reservacf_caja_total'],
+
+                'habilitacion_gestion_liquidez1' => $co['habilitacion_gestion_liquidez1'],
+                'habilitacion_gestion_liquidez2' => $co['habilitacion_gestion_liquidez2'],
+                'cierre_caja_apertura' => $co['cierre_caja_apertura'],
+                'saldos_capitalasignada' => $co['saldos_capitalasignada'],
+                'saldos_cuentabanco' => $co['saldos_cuentabanco'],
+                'saldos_cuentabanco_bancos' => json_encode($co['saldos_cuentabanco_bancos']),
+                'saldos_reserva' => $co['saldos_reserva'],
+                'saldos_caja' => $co['saldos_caja'],
+                'arqueo_caja' => $co['arqueo_caja'],
+                'saldos_bienescomprados' => $co['saldos_bienescomprados'],
+
+                'ret_reservacf_caja' => $co['ret_reservacf_caja_sum'],
+                'ret_banco_caja' => $co['ret_banco_caja_sum'],
                 'ret_banco_caja_bancos' => json_encode($co['ret_banco_caja_bancos']),
-                'ret_caja_reservacf' => $co['ret_caja_reservacf'],
-                'ret_caja_banco' => $co['ret_caja_banco'],
+                'ret_caja_reservacf' => $co['ret_caja_reservacf_sum'],
+                'ret_caja_banco' => $co['ret_caja_banco_sum'],
                 'ret_caja_banco_bancos' => json_encode($co['ret_caja_banco_bancos']),
                 'ret_banco_reservacf' => $co['ret_banco_reservacf'],
                 'ret_banco_reservacf_bancos' => json_encode($co['ret_banco_reservacf_bancos']),
@@ -158,52 +158,25 @@ class CvreporteconsolidadoopecajaController extends Controller
                 'ret_caja_reservacf_total' => $co['ret_caja_reservacf_total'],
 
                 'dep_caja_reservacf' => $co['dep_caja_reservacf'],
-                'dep_caja_banco' => $co['dep_caja_banco'],
-                'dep_caja_banco_bancos' => json_encode($co['dep_caja_banco_bancos']),
-                'dep_reservacf_caja' => $co['dep_reservacf_caja'],
-                'dep_banco_caja' => $co['dep_banco_caja'],
-                'dep_banco_caja_bancos' => json_encode($co['dep_banco_caja_bancos']),
-                'dep_reservacf_banco' => $co['dep_reservacf_banco'],
-                'dep_reservacf_banco_bancos' => json_encode($co['dep_reservacf_banco_bancos']),
-                'dep_caja_reservacf_total' => $co['dep_caja_reservacf_total'],
-                'dep_reservacf_caja_total' => $co['dep_reservacf_caja_total'],
-
-                'habilitacion_gestion_liquidez1' => $co['habilitacion_gestion_liquidez1'],
-                'habilitacion_gestion_liquidez2' => $co['habilitacion_gestion_liquidez2'],
-                'cierre_caja_apertura' => $co['cierre_caja_apertura'],
-
-                'saldos_capitalasignada' => $co['saldos_capitalasignada'],
-                'saldos_cuentabanco' => $co['saldos_cuentabanco'],
-                'saldos_cuentabanco_bancos' => json_encode($co['saldos_cuentabanco_bancos']),
-                'saldos_reserva' => $co['saldos_reserva'],
-                'saldos_caja' => $co['saldos_caja'],
-                'arqueo_caja' => $co['arqueo_caja'],
-                'saldos_creditovigente_cnp' => $co['saldos_creditovigente_cnp'],
-                'saldos_creditovigente_cp' => $co['saldos_creditovigente_cp'],
-                'saldos_creditovigente' => $co['saldos_creditovigente'],
-                'saldos_interescreditovigentexcobrar_cnp' => $co['saldos_interescreditovigentexcobrar_cnp'],
-                'saldos_interescreditovigentexcobrar_cp' => $co['saldos_interescreditovigentexcobrar_cp'],
-                'saldos_interescreditovigentexcobrar' => $co['saldos_interescreditovigentexcobrar'],
-                'saldos_ahorros' => $co['saldos_ahorros'],
-                'saldos_interesgeneradosxpagar_ahorropf' => $co['saldos_interesgeneradosxpagar_ahorropf'],
-                'saldos_interesgeneradosxpagar_interescuentaahorropdfprogramadas' => $co['saldos_interesgeneradosxpagar_interescuentaahorropdfprogramadas'],
-                'saldos_interesgeneradosxpagar_ahorrocorriente' => $co['saldos_interesgeneradosxpagar_ahorrocorriente'],
-                'saldos_interesgeneradosxpagar_interescuentaahorrocgeneradas' => $co['saldos_interesgeneradosxpagar_interescuentaahorrocgeneradas'],
-                'saldos_interesgeneradosxpagar' => $co['saldos_interesgeneradosxpagar'],
                 'total_efectivo_ejercicio' => $co['total_efectivo_ejercicio'],
                 'incremental_capital_asignado' => $co['incremental_capital_asignado'],
-                'spread_financiero_proyectado' => $co['spread_financiero_proyectado'],
                 'indicador_reserva_legal' => $co['indicador_reserva_legal'],
                 'validacion_operaciones_cuenta_banco' => $co['validacion_operaciones_cuenta_banco'],
                 'efectivo_caja_corte' => $co['efectivo_caja_corte'],
                 'efectivo_caja_arqueo' => $co['efectivo_caja_arqueo'],
                 'resultado' => $co['resultado'],
-              
+
+                'eliminado_idresponsable' => 0,
+                'eliminado_idresponsable_permiso' => 0,
+                'idcvmovimientointernodinero_apertura' => 0,
+                'idcvmovimientointernodinero_cierre' => 0,
+
                 'idresponsable' => Auth::user()->id,
                 'idresponsable_registro' => $request->idresponsable_registro,
                 'idresponsable_registro_idpermiso' => $request->idresponsable_registro_idpermiso,
                 'idagencia' => $request->idagencia_arqueocaja,
                 'idtienda' => user_permiso()->idtienda,
+                'idestadoeliminado' => 1,
                 'idestado' => 1,
             ]);
           
@@ -502,12 +475,10 @@ class CvreporteconsolidadoopecajaController extends Controller
                 'idresponsable' => 'required',          
                 'responsableclave' => 'required',              
             ];
-
             $messages = [
                 'idresponsable.required' => 'El "Responsable" es Obligatorio.',
                 'responsableclave.required' => 'La "Contraseña" es Obligatorio.',
             ];
-
             $this->validate($request,$rules,$messages);
 
             $usuario = DB::table('users')
@@ -523,7 +494,7 @@ class CvreporteconsolidadoopecajaController extends Controller
                     'mensaje'   => 'El usuario y/o la contraseña es incorrecta!!.'
                 ]);
             }
-          
+
             return response()->json([
               'resultado' => 'CORRECTO',
               'mensaje'   => 'Se ha validado correctamente.',

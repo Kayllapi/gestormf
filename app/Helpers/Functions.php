@@ -1950,6 +1950,47 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
     }
     $ingresoyegresobanco_egreso_gastosadministrativosyoperativos_validacion = $validacion_0;
 
+    // ===== Validaciones en cvasignacioncapital =====
+    $where = [];
+    if($idagencia!=''){
+        $where[] = ['cvasignacioncapital.idtienda',$idagencia];
+    }
+    if($fechacorte!=''){
+        $where[] = ['cvasignacioncapital.fecharegistro','>=',$fechacorte.' 00:00:00'];
+        $where[] = ['cvasignacioncapital.fecharegistro','<=',$fechacorte.' 23:59:59'];
+    }
+
+    $saldos_operaciones_efectivo_validacion = '';
+    $saldos_operaciones_efectivo_validacion = DB::table('cvasignacioncapital')
+        ->where('cvasignacioncapital.idestadoeliminado',1)
+        ->whereIn('cvasignacioncapital.idtipooperacion',[1,2,4]) // 1: Deposito, 2: Retiro, 4: Dep. Asignación
+        ->where($where)
+        ->get();
+    foreach($saldos_operaciones_efectivo_validacion as $value){
+        if($value->validar_estado==1){
+            $validacion_operaciones_cuenta_banco_cant += 1;
+        }
+
+        if(count($saldos_operaciones_efectivo_validacion)>0){
+            $validacion_cantidad += 1;
+        }
+    }
+
+    $saldos_operaciones_efectivo_validacion_cantidad = DB::table('cvasignacioncapital')
+        ->where('cvasignacioncapital.idestadoeliminado',1)
+        ->whereIn('cvasignacioncapital.idtipooperacion',[1,2,4]) // 1: Deposito, 2: Retiro, 4: Dep. Asignación
+        ->where('cvasignacioncapital.validar_estado',0)
+        ->where($where)
+        ->count();
+
+    $saldos_operaciones_efectivo_validacion_recepcionado = DB::table('cvasignacioncapital')
+        ->where('cvasignacioncapital.idestadoeliminado',1)
+        ->whereIn('cvasignacioncapital.idtipooperacion',[1,2,4]) // 1: Deposito, 2: Retiro, 4: Dep. Asignación
+        ->where('cvasignacioncapital.idresponsable_recfinal',0)
+        ->where($where)
+        ->count();
+    // ===== fin validaciones en cvasignacioncapital =====
+
     // HABILITACIÓN Y GESTIÓN DE LIQUIDEZ ( I )
     $valid_habilitacion = 0;
     
@@ -2217,15 +2258,15 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
     
     $where = [];
     if($idagencia!=''){
-        $where[] = ['arqueocaja.idagencia',$idagencia];
+        $where[] = ['cvarqueocaja.idagencia',$idagencia];
     }
     if($fechacorte!=''){
-        $where[] = ['arqueocaja.corte',$fechacorte];
+        $where[] = ['cvarqueocaja.corte',$fechacorte];
     }
-    $arqueo_caja = DB::table('arqueocaja')
-        ->where('arqueocaja.idestado',1)
+    $arqueo_caja = DB::table('cvarqueocaja')
+        ->where('cvarqueocaja.idestado',1)
         ->where($where)
-        ->sum('arqueocaja.total');
+        ->sum('cvarqueocaja.total');
 
     $where1 = [];
     $where2 = [];
@@ -2657,7 +2698,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
     }
 
     $efectivo_caja_corte = round($saldos_caja, 1);
-    $efectivo_caja_arqueo = 0;
+    $efectivo_caja_arqueo = round($arqueo_caja, 1);
     $resultado = $efectivo_caja_arqueo-$efectivo_caja_corte;
     
     $data = [
@@ -2791,6 +2832,8 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
         'efectivo_caja_arqueo' => number_format($efectivo_caja_arqueo, 2, '.', ''),
         'resultado' => number_format($resultado, 2, '.', ''),
 
+        'saldos_operaciones_efectivo_validacion_cantidad' => $saldos_operaciones_efectivo_validacion_cantidad,
+        'saldos_operaciones_efectivo_validacion_recepcionado' => $saldos_operaciones_efectivo_validacion_recepcionado,
     ];
     return $data;
 }

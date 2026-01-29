@@ -77,7 +77,6 @@
 
             
       let idresponsable_recfinal = $(e).attr('idresponsable_recfinal');
-      //console.log(idresponsable_recfinal)
       $('#cont_recepcionar').css('display','none'); 
       $('#cont_voucher').css('display','none');         
       if(idresponsable_recfinal == 0){
@@ -91,7 +90,7 @@
       let idasignacioncapital = $('#table-lista-asignacioncapital > tbody > tr.selected').attr('data-valor-columna');
                         
       if(idasignacioncapital == "" || idasignacioncapital == undefined ){
-        mensaje = 'Debe seleccionar un dato.';
+        mensaje = 'Debe seleccionar una operación.';
         modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });  
         return false;
       }
@@ -102,7 +101,7 @@
       let idasignacioncapital = $('#table-lista-asignacioncapital > tbody > tr.selected').attr('data-valor-columna');
                         
       if(idasignacioncapital == "" || idasignacioncapital == undefined ){
-        mensaje = 'Debe seleccionar un dato.';
+        mensaje = 'Debe seleccionar una operación.';
         modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
         return false;
       }

@@ -323,7 +323,7 @@
         const id = $selectedRow.data('valor-columna');
 
         if (!id) {
-            mensaje = 'Debe seleccionar un dato.';
+            mensaje = 'Debe seleccionar una operación.';
             modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
             return;
         }
@@ -336,7 +336,7 @@
         const id = $selectedRow.data('valor-columna');
 
         if (!id) {
-            mensaje = 'Debe seleccionar un dato.';
+            mensaje = 'Debe seleccionar una operación.';
             modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
             return;
         }
@@ -349,7 +349,7 @@
         const id = $selectedRow.data('valor-columna');
 
         if (!id) {
-            mensaje = 'Debe seleccionar un dato.';
+            mensaje = 'Debe seleccionar una operación.';
             modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
             return;
         }
@@ -374,7 +374,7 @@
         const id = $selectedRow.data('valor-columna');
 
         if (!id) {
-            mensaje = 'Debe seleccionar un dato.';
+            mensaje = 'Debe seleccionar una operación.';
             modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
             return;
         }
@@ -452,7 +452,7 @@
         const id = $selectedRow.data('valor-columna');
 
         if (!id) {
-            mensaje = 'Debe seleccionar un dato.';
+            mensaje = 'Debe seleccionar una operación.';
             modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
             return;
         }
@@ -476,7 +476,7 @@
         const id = $selectedRow.data('valor-columna');
 
         if (!id) {
-            mensaje = 'Debe seleccionar un dato.';
+            mensaje = 'Debe seleccionar una operación.';
             modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
             return;
         }

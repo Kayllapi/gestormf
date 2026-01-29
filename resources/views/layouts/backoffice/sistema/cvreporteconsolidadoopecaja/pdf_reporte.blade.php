@@ -681,7 +681,7 @@
             <tr>
               <td></td>
               <td></td>
-              <td colspan="4" style="text-align:left;">Efectivo Físico en Caja al Corte (S/.):</td>
+              <td colspan="4" style="text-align:left;">Efectivo Contable en Caja al Corte (S/.):</td>
               <td></td>
               <td></td>
               <td></td>

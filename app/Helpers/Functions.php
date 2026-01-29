@@ -2069,7 +2069,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
             'banco_dep' => number_format($movimientointernodineros1, 2, '.', ''),
         ];
     
-        if($ret_banco_caja!=$dep_caja_banco){
+        if($ret_banco_caja_sum!=$dep_caja_banco){
             $valid_habilitacion++;
         }
     }
@@ -2128,7 +2128,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
             'banco_dep' => number_format($movimientointernodineros1, 2, '.', ''),
         ];
     
-        if($ret_caja_banco!=$dep_banco_caja){
+        if($ret_caja_banco_sum!=$dep_banco_caja){
             $valid_habilitacion++;
         }
     }
@@ -2140,7 +2140,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
         ->where($where)
         ->sum('cvmovimientointernodinero.monto');
     
-    if($ret_reservacf_caja!=$dep_caja_reservacf){
+    if($ret_reservacf_caja_sum!=$dep_caja_reservacf){
         $valid_habilitacion++;
     }
     
@@ -2151,14 +2151,14 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
         ->where($where)
         ->sum('cvmovimientointernodinero.monto');
 
-    if($ret_caja_reservacf!=$dep_reservacf_caja){
+    if($ret_caja_reservacf_sum!=$dep_reservacf_caja){
         $valid_habilitacion++;
     }
     
-    $habilitacion_gestion_liquidez1 = $ret_reservacf_caja+
-                                    $ret_banco_caja+
-                                    $ret_caja_reservacf+
-                                    $ret_caja_banco-
+    $habilitacion_gestion_liquidez1 = $ret_reservacf_caja_sum+
+                                    $ret_banco_caja_sum+
+                                    $ret_caja_reservacf_sum+
+                                    $ret_caja_banco_sum-
                                     $dep_caja_reservacf-
                                     $dep_caja_banco-
                                     $dep_reservacf_caja-
@@ -2206,12 +2206,12 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
             'banco_dep' => number_format($movimientointernodineros1, 2, '.', ''),
         ];
     
-        if($ret_banco_reservacf!=$dep_reservacf_banco){
+        if($ret_banco_reservacf_sum!=$dep_reservacf_banco){
             $valid_habilitacion++;
         }
     }
     
-    $habilitacion_gestion_liquidez2 = $ret_banco_reservacf-$dep_reservacf_banco;
+    $habilitacion_gestion_liquidez2 = $ret_banco_reservacf_sum-$dep_reservacf_banco;
     
     // CIERRE Y APERTURA DE CAJA
     

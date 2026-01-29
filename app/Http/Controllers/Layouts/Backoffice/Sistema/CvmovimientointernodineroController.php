@@ -320,11 +320,19 @@ class CvmovimientointernodineroController extends Controller
                 ->where('fecharegistro', '>=', now()->format('Y-m-d 00:00:00'))
                 ->where('fecharegistro', '<=', now()->format('Y-m-d 23:59:59'))
                 ->first();
-            if($dt!=''){ 
-                return response()->json([
-                    'resultado' => 'ERROR',
-                    'mensaje'   => 'Ya existe un registro de este tipo.'
-                ]);
+            if($dt!=''){
+                if ($request->idfuenteretiro_retiro3 == 6) {
+                    return response()->json([
+                        'resultado' => 'ERROR',
+                        'mensaje'   => 'Ya existe operación de Apertura de Caja .'
+                    ]);
+                }
+                elseif ($request->idfuenteretiro_retiro3 == 8) {
+                    return response()->json([
+                        'resultado' => 'ERROR',
+                        'mensaje'   => 'Ya existe operación de Cierre de Caja.'
+                    ]);
+                }
             }
 
             return response()->json([

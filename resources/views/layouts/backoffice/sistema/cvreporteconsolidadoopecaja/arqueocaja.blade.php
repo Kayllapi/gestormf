@@ -96,6 +96,7 @@
                               color: #fff;
                               width: 90%;
                               margin: auto;">Falta confirmar, HABILITACIÓN Y GESTIÓN DE LIQUIDEZ ( I )!!</p>
+                        <br>
                     @endif
                     @if($consolidadooperaciones['habilitacion_gestion_liquidez2']>0)
                       <p class="text-center" 
@@ -105,6 +106,7 @@
                               color: #fff;
                               width: 90%;
                               margin: auto;">Falta confirmar, HABILITACIÓN Y GESTIÓN DE LIQUIDEZ ( II )!!</p>
+                        <br>
                     @endif
                     @if($consolidadooperaciones['cierre_caja_apertura']>0)
                       <p class="text-center" 
@@ -114,6 +116,7 @@
                               color: #fff;
                               width: 90%;
                               margin: auto;">Falta confirmar, CIERRE Y APERTURA DE CAJA!!</p>
+                        <br>
                     @endif
                     @if($consolidadooperaciones['habilitacion_gestion_liquidez1']==0 &&
                         $consolidadooperaciones['habilitacion_gestion_liquidez2']==0 &&

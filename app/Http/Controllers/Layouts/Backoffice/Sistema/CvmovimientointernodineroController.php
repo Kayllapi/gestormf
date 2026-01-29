@@ -311,7 +311,22 @@ class CvmovimientointernodineroController extends Controller
                 'descripcion_retiro3.required' => 'La "Descricpión" es Obligatorio.',
             ];
             $this->validate($request,$rules,$messages);
-          
+
+            $dt = DB::table('cvmovimientointernodinero')
+                ->where('idtienda',user_permiso()->idtienda)
+                ->where('idfuenteretiro', $request->idfuenteretiro_retiro3)
+                ->where('idtipomovimientointerno', 5)
+                ->where('idestadoeliminado', 1)
+                ->where('fecharegistro', '>=', now()->format('Y-m-d 00:00:00'))
+                ->where('fecharegistro', '<=', now()->format('Y-m-d 23:59:59'))
+                ->first();
+            if($dt!=''){ 
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'Ya existe un registro de este tipo.'
+                ]);
+            }
+
             return response()->json([
                 'resultado' => 'CORRECTO',
                 'mensaje'   => 'Se ha validado correctamente.'

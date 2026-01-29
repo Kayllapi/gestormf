@@ -130,7 +130,7 @@
   </div>
   <div class="mb-1">
     <span class="badge d-block" style="margin-top: 10px;text-align:center;background-color: #ebbe3a;
-    font-size: 18px;">CIERRE Y APERTURA DE CAJA</span>
+    font-size: 18px;">APERTURA Y CIERRE DE CAJA</span>
   </div>
   <div class="row">
     <div class="col-md-6">

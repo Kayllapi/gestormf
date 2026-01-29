@@ -184,7 +184,7 @@
       let idasignacioncapital = $('#table-lista-asignacioncapital > tbody > tr.selected').attr('data-valor-columna');
                         
       if(idasignacioncapital == "" || idasignacioncapital == undefined ){
-        mensaje = 'Debe de seleccionar una Asignación, Incremento ó Reducción de Capital.';
+        mensaje = 'Debe de seleccionar una operación.';
         modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
         return false;
       }
@@ -195,7 +195,7 @@
       let idasignacioncapital = $('#table-lista-asignacioncapital > tbody > tr.selected').attr('data-valor-columna');
                         
       if(idasignacioncapital == "" || idasignacioncapital == undefined ){
-        mensaje = 'Debe de seleccionar una Asignación, Incremento ó Reducción de Capital.';
+        mensaje = 'Debe de seleccionar una operación.';
         modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
         return false;
       }

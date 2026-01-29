@@ -10,6 +10,7 @@
           lista_asignacioncapital();
           load_nuevo_asignacioncapital();
           $('#modal-close-asignacioncapital-eliminar').click();
+          $('#cont_voucher').css('display','none');
       },this)">
     <div class="modal-header">
         <h5 class="modal-title">Eliminar Asignación</h5>

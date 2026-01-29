@@ -36,12 +36,13 @@
                                   <i class="fa-solid fa-search"></i> 
                     Filtrar</button>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3" style="text-align: right;">
                     <div>
                     <!--button type="button" class="btn btn-success mb-1" onclick="recepcionar()" id="cont_recepcionar" style="font-weight: bold; display:none;">
                       <i class="fa-solid fa-check" style="font-weight: bold;"></i> RECEPCIONAR</button-->
-                    <button type="button" class="btn btn-secondary mb-1" onclick="voucher()" id="cont_voucher" style="font-weight: bold; display:none">
-                      <i class="fa-solid fa-list" style="font-weight: bold;"></i> VOUCHER</button>
+                      <button type="button" class="btn btn-primary mb-1" onclick="voucher()" id="cont_voucher" style="font-weight: bold; display:none">
+                        <i class="fa-solid fa-list" style="font-weight: bold;"></i> VOUCHER
+                      </button>
                     </div>
                 </div>
               </div>

@@ -52,7 +52,7 @@
               <label for="fecha_inicio" class="col-sm-3 col-form-label">Saldo Contable en Caja (S/.):</label>
               <div class="col-sm-4">
                   <input type="text" class="form-control" 
-                         value="{{$consolidadooperaciones['saldos_caja']}}" id="saldocaja_arqueocaja" disabled>
+                         value="{{ number_format(round($consolidadooperaciones['saldos_caja'], 1), 2, '.', '') }}" id="saldocaja_arqueocaja" disabled>
               </div>
               @endif
               @if($arqueocaja)

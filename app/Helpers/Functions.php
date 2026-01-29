@@ -1505,8 +1505,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
             $banco_tenencxc += $value->total_pagar_tenencia+$value->total_pagar_penalidad+$value->total_pagar_compensatorio;
         }
             
-        if($validacion_1=='CHECK' && $validacion_0 == ''){
-            $validacion_0 = 'CHECK';  
+        if($validacion_1=='CHECK'){
             $validacion_operaciones_cuenta_banco_cant += 1;
         }
     
@@ -1572,8 +1571,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
             $compra_ingresoyegresobanco_egreso_cvventa += $valueventa->venta_montoventa;
         }
 
-        if($validacion_1=='CHECK' && $validacion_0 == ''){
-            $validacion_0 = 'CHECK';
+        if($validacion_1=='CHECK'){
             $validacion_operaciones_cuenta_banco_cant += 1;
         }
 
@@ -1635,8 +1633,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
             $compra_ingresoyegresobanco_egreso_cvcompra += $valuecompra->valorcompra;
         }
 
-        if($validacion_1=='CHECK' && $validacion_0 == ''){
-            $validacion_0 = 'CHECK';
+        if($validacion_1=='CHECK'){
             $validacion_operaciones_cuenta_banco_cant += 1;
         }
 
@@ -1697,8 +1694,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
             $ingresoyegresobanco_ingreso_incrementocapital_monto += $valuecrediticio->monto;
         }
 
-        if($validacion_1=='CHECK' && $validacion_0 == ''){
-            $validacion_0 = 'CHECK';
+        if($validacion_1=='CHECK'){
             $validacion_operaciones_cuenta_banco_cant += 1;
         }
     
@@ -1755,8 +1751,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
             $ingresoyegresobanco_ingreso_ingresosextraordinarios_monto += $valuecrediticio->monto;
         }
 
-        if($validacion_1=='CHECK' && $validacion_0 == ''){
-            $validacion_0 = 'CHECK';
+        if($validacion_1=='CHECK'){
             $validacion_operaciones_cuenta_banco_cant += 1;
         }
     
@@ -1817,8 +1812,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
             $desembolsos_ingresoyegresobanco_egreso_crediticio += $valuecrediticio->monto_solicitado;
         }
             
-        if($validacion_1=='CHECK' && $validacion_0 == ''){
-            $validacion_0 = 'CHECK';
+        if($validacion_1=='CHECK'){
             $validacion_operaciones_cuenta_banco_cant += 1;
         }
     
@@ -1871,8 +1865,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
             $ingresoyegresobanco_egreso_reduccioncapital_monto += $valuecrediticio->monto;
         }
 
-        if($validacion_1=='CHECK' && $validacion_0 == ''){
-            $validacion_0 = 'CHECK';
+        if($validacion_1=='CHECK'){
             $validacion_operaciones_cuenta_banco_cant += 1;
         }
     
@@ -1930,8 +1923,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
             $ingresoyegresocaja_egreso_gastosadministrativosyoperativos_monto += $valuecrediticio->monto;
         }
 
-        if($validacion_1=='CHECK' && $validacion_0 == ''){
-            $validacion_0 = 'CHECK';
+        if($validacion_1=='CHECK'){
             $validacion_operaciones_cuenta_banco_cant += 1;
         }
     

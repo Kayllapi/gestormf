@@ -2010,6 +2010,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
     $ret_reservacf_caja_sum = DB::table('cvmovimientointernodinero')
         ->where('cvmovimientointernodinero.idestadoeliminado',1)
         ->where('cvmovimientointernodinero.idfuenteretiro',6)
+        ->where('cvmovimientointernodinero.idtipomovimientointerno',1)
         ->where($where)
         ->select(
             'cvmovimientointernodinero.*',
@@ -2137,6 +2138,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
     $dep_caja_reservacf = DB::table('cvmovimientointernodinero')
         ->where('cvmovimientointernodinero.idestadoeliminado',1)
         ->where('cvmovimientointernodinero.idfuenteretiro',1)
+        ->where('cvmovimientointernodinero.idtipomovimientointerno',2)
         ->where('cvmovimientointernodinero.idresponsable','<>',0)
         ->where($where)
         ->sum('cvmovimientointernodinero.monto');

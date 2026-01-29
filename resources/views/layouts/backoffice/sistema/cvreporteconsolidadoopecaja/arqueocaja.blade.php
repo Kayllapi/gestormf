@@ -190,6 +190,7 @@
               <div class="col-sm-2">
                     <button type="button" class="btn btn-warning" onclick="reporte_arqueocaja()">
                       REPORTE DE <br>ARQUEO</button>
+                      <span style="color: #e64343">Excedente Efectivo Físico Registrar en Ingreso Extraordinario Opción Remanente Cdre. para regularización</span>
               </div>
           </div>
           @if(!$arqueocaja)

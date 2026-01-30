@@ -37,7 +37,9 @@
               </div>
     </div>
     <div class="modal-footer">
-        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-trash"></i> Eliminar</button>
+        @if ($apertura_caja)
+            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-trash"></i> Eliminar</button>
+        @endif
     </div>
 </form>  
 <script>

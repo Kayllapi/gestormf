@@ -18,13 +18,11 @@ class CvmovimientointernodineroController extends Controller
     public function index(Request $request,$idtienda)
     {
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
-      
         if($request->input('view') == 'tabla'){
             return view(sistema_view().'/cvmovimientointernodinero/tabla',[
-              'tienda' => $tienda
+                'tienda' => $tienda,
             ]);
         }
-            
     }
   
     public function create(Request $request,$idtienda)
@@ -37,10 +35,12 @@ class CvmovimientointernodineroController extends Controller
               ->where('idtipo',2)
               ->whereIn('id',[6,7,8,9])
               ->get();
+            $apertura_caja = cvapertura($idtienda);
             return view(sistema_view().'/cvmovimientointernodinero/create_retiro1',[
                 'tienda' => $tienda,
                 'bancos' => $bancos,
                 'fuenteretiros' => $fuenteretiros,
+                'apertura_caja' => $apertura_caja,
             ]);
         }
         elseif($request->view == 'registrar_deposito1') {
@@ -748,10 +748,12 @@ class CvmovimientointernodineroController extends Controller
                 ->where('users_permiso.idtienda',$idtienda)
                 ->select('users.*','permiso.nombre as nombrepermiso')
                 ->get();
+            $apertura_caja = cvapertura($idtienda);
             return view(sistema_view().'/cvmovimientointernodinero/delete_retiro1',[
                 'tienda' => $tienda,
                 'movimientointernodinero' => $movimientointernodinero,
                 'usuarios' => $usuarios,
+                'apertura_caja' => $apertura_caja,
             ]);
         }
         elseif($request->input('view') == 'editar_deposito1'){

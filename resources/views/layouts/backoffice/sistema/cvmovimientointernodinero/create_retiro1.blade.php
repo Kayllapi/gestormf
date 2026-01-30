@@ -55,7 +55,9 @@
               <div class="row">
                 <label class="col-sm-5 col-form-label" style="text-align: right;"></label>
                 <div class="col-sm-7">
+                  @if ($apertura_caja)
                     <button type="button" class="btn btn-primary" onclick="valid_registro_retiro1()"><i class="fa-solid fa-floppy-disk"></i> Registrar</button>
+                  @endif
                 </div>
               </div>
           </div>

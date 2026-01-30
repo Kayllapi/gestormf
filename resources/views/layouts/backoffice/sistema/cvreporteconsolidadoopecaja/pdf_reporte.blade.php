@@ -130,13 +130,6 @@
             <tr>
               <th colspan="6" rowspan="2" style="border-bottom: 2px solid #000;border-top: 2px solid #000;">
                 Saldos y Operaciones de Efectivo
-                @if($co_actual['saldos_operaciones_efectivo_validacion_existe'])
-                  @if($co_actual['saldos_operaciones_efectivo_validacion_cantidad']==0)
-                    <img src="{{url('public/backoffice/sistema/icono_check.png')}}" width="20px">
-                  @else
-                    <img src="{{url('public/backoffice/sistema/icono_close.png')}}" width="20px">
-                  @endif
-                @endif
               </th>
               <th colspan="2" rowspan="2" style="border-bottom: 2px solid #000;border-top: 2px solid #000;"></th>
               <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;width:60px;"></th>
@@ -154,7 +147,15 @@
               <td style="text-align:left;width:80px;"><b>Saldos</b></td>
               <td style="width:80px;"></td>
               <td colspan="4" style="border-bottom: 2px solid #000;text-align:left;">Caja</td>
-              <td colspan="2" style="border-bottom: 2px solid #000;"></td>
+              <td colspan="2" style="border-bottom: 2px solid #000;">
+                @if($co_actual['saldos_operaciones_efectivo_validacion_existe'])
+                  @if($co_actual['saldos_operaciones_efectivo_validacion_cantidad']==0)
+                    <img src="{{url('public/backoffice/sistema/icono_check.png')}}" width="20px">
+                  @else
+                    <img src="{{url('public/backoffice/sistema/icono_close.png')}}" width="20px">
+                  @endif
+                @endif
+              </td>
               <td style="border-bottom: 2px solid #000;text-align:right;"><b>{{$co_actual['arqueo_caja']}}</b></td>
               <td style="border-bottom: 2px solid #000;text-align:right;"><b>{{$co_actual['saldos_caja']}}</b></td>
               <td style="border-bottom: 2px solid #000;text-align:right;"><b>{{$co_anterior?$co_anterior->arqueo_caja:'0.00'}}</b></td>

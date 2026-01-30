@@ -285,30 +285,6 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
               // dd($modulos);
             ?>
             <?php $i = 1  ; ?>
-            <style>
-              .not-active { 
-                pointer-events: none; 
-                cursor: default; 
-              }
-              .bg-not-active {
-                background-color: #c9c9c9 !important;
-              }
-            </style>
-            @php
-                $datenow = Carbon\Carbon::now()->format('Y-m-d');
-                $apertura_caja =  DB::table('cvmovimientointernodinero')
-                    ->where('cvmovimientointernodinero.idestadoeliminado',1)
-                    ->where('cvmovimientointernodinero.idfuenteretiro',6)
-                    ->where('cvmovimientointernodinero.idtipomovimientointerno',5)
-                    ->where('cvmovimientointernodinero.fecharegistro','>=',$datenow.' 00:00:00')
-                    ->where('cvmovimientointernodinero.fecharegistro','<=',$datenow.' 23:59:59')
-                    ->where('cvmovimientointernodinero.idtienda',$tienda->id)
-                    ->first();
-                $menuBloquear = [
-                  'backoffice/{idtienda}/cvgastoadministrativooperativo',
-                  'backoffice/{idtienda}/cvingresoextraordinario',
-                ];
-            @endphp
             @foreach($modulos as $value)
                <li  class="nav-item dropdown menu_click_li" style="font-weight: normal;font-size: 13px;" >
                     <a href="javascript:;" class="nav-link dropdown-toggle menu_click" 
@@ -316,7 +292,6 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
                       <i class="{{ $value->icono }}"></i> {{ $value->nombre }}</a>
                     <ul class="dropdown-menu">
                     <?php
-
                     $submodulos = DB::table('permisoacceso')
                                   ->join('modulo','modulo.id','permisoacceso.idmodulo')
                                   ->where('permisoacceso.idpermiso',user_permiso()->idpermiso)
@@ -329,22 +304,8 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
                     ?>
                     @foreach($submodulos as $subvalue)
                           <?php
-                            $href = str_replace('{idtienda}', $tienda->id, $subvalue->vista);
-
-                            if ($apertura_caja) {
-                              $classdisabled = '';
-                              $classdisabledFondo = '';
-                            } else {
-                              if (in_array($subvalue->vista, $menuBloquear)) {
-                                $classdisabled = 'not-active';
-                                $classdisabledFondo = 'bg-not-active';
-                              }else{
-                                $classdisabled = '';
-                                $classdisabledFondo = '';
-                              }
-                            }
-                          ?>       
-                          <li><a href="javascript:;"  class="dropdown-item {{ $classdisabled }} {{ $classdisabledFondo }}" style="font-size: 13px;"
+                            $href = str_replace('{idtienda}', $tienda->id, $subvalue->vista);?>       
+                          <li><a href="javascript:;"  class="dropdown-item" style="font-size: 13px;"
                           onclick="pagina({route:'{{url($href)}}?view=tabla',result:'#cuerposistema'}),menu_click({{ $value->id }})">
                             <i class="{{ $subvalue->icono }}"></i> {{ $subvalue->nombre }}</a></li>                  
                     @endforeach

@@ -14,18 +14,18 @@ class CompraventaadminController extends Controller
     {
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
         $agencias = DB::table('tienda')->get();
-        $apertura_caja = cvapertura($idtienda);
+        // $apertura_caja = cvapertura($idtienda);
 
-        if (!$apertura_caja) {
-            return view('app/nuevosistema/mensajeapertura',[
-                'tienda' => $tienda,
-                'mensaje' => 'Falta aperturar caja.',
-            ]);
-        } else {
+        // if (!$apertura_caja) {
+        //     return view('app/nuevosistema/mensajeapertura',[
+        //         'tienda' => $tienda,
+        //         'mensaje' => 'Falta aperturar caja.',
+        //     ]);
+        // } else {
             if($request->input('view') == 'tabla'){
                 return view(sistema_view().'/compraventaadmin/tabla', compact('tienda','agencias'));
             }
-        }
+        // }
     }
 
     public function create(Request $request,$idtienda)

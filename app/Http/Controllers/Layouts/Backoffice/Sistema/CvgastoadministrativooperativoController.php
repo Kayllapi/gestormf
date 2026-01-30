@@ -18,20 +18,20 @@ class CvgastoadministrativooperativoController extends Controller
     public function index(Request $request,$idtienda)
     {
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
-        $apertura_caja = cvapertura($idtienda);
+        // $apertura_caja = cvapertura($idtienda);
 
-        if (!$apertura_caja) {
-            return view('app/nuevosistema/mensajeapertura',[
-                'tienda' => $tienda,
-                'mensaje' => 'Falta aperturar caja.',
-            ]);
-        } else {
+        // if (!$apertura_caja) {
+        //     return view('app/nuevosistema/mensajeapertura',[
+        //         'tienda' => $tienda,
+        //         'mensaje' => 'Falta aperturar caja.',
+        //     ]);
+        // } else {
             if($request->input('view') == 'tabla'){
                 return view(sistema_view().'/cvgastoadministrativooperativo/tabla',[
                   'tienda' => $tienda,
                 ]);
             }
-        }
+        // }
     }
   
     public function create(Request $request,$idtienda)

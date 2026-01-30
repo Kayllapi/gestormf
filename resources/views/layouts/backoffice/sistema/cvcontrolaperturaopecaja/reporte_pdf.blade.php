@@ -132,18 +132,18 @@
               <?php 
       
       
-          $cierre_insitucionaldetalle = DB::table('cierre_insitucionaldetalle')
-              ->join('cierre_insitucional','cierre_insitucional.id','cierre_insitucionaldetalle.idcierre_insitucional')
-              ->join('users as responsable','responsable.id','cierre_insitucionaldetalle.idresponsable')
-              ->join('tienda','tienda.id','cierre_insitucional.idtienda')
-              ->where('cierre_insitucional.fechacorte',$fecha_corte)
+          $cierre_insitucionaldetalle = DB::table('cvcierre_insitucionaldetalle')
+              ->join('cvcierre_insitucional','cvcierre_insitucional.id','cvcierre_insitucionaldetalle.idcvcierre_insitucional')
+              ->join('users as responsable','responsable.id','cvcierre_insitucionaldetalle.idresponsable')
+              ->join('tienda','tienda.id','cvcierre_insitucional.idtienda')
+              ->where('cvcierre_insitucional.fechacorte',$fecha_corte)
               ->select(
-                  'cierre_insitucionaldetalle.*',
+                  'cvcierre_insitucionaldetalle.*',
                   'tienda.nombreagencia as nombreagencia',
                   'responsable.nombrecompleto as nombrecompleto_responsable',
                   'responsable.codigo as usuario_responsable',
               )
-              ->orderBy('cierre_insitucionaldetalle.id','asc')
+              ->orderBy('cvcierre_insitucionaldetalle.id','asc')
               ->get();
           
           $html = '<table style="width:100%;border-bottom: 2px solid #000;">

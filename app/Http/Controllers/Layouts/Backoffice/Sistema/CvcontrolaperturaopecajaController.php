@@ -89,10 +89,10 @@ class CvcontrolaperturaopecajaController extends Controller
               if($ret_reservacf_caja_total){
                   $estado_apertura = 'ABIERTO';    
                   $efectivo_apertura = $ret_reservacf_caja_total->monto;
-                  $fechahora_apertura = date_format(date_create($ret_reservacf_caja_total->fecharegistro),"d-m-Y H:i:s A");            
+                  $fechahora_apertura = date_format(date_create($ret_reservacf_caja_total->fecharegistro),"d-m-Y h:i:s A");            
               }
             
-              $arqueocaja = DB::table('arqueocaja')
+              $arqueocaja = DB::table('cvarqueocaja')
                   ->where('idagencia',$value->id)
                   ->where('corte',$request->fecha)
                   ->first();
@@ -101,7 +101,7 @@ class CvcontrolaperturaopecajaController extends Controller
               $fechahora_arqueocaja = '';
               if($arqueocaja && $ret_reservacf_caja_total){
                   $efectivo_arqueocaja = $arqueocaja->total;
-                  $fechahora_arqueocaja = $arqueocaja->fecharegistro;
+                  $fechahora_arqueocaja = date_format(date_create($arqueocaja->fecharegistro),"d-m-Y h:i:s A");
               }
             
               $ret_caja_reservacf_total = DB::table('cvmovimientointernodinero')
@@ -123,21 +123,24 @@ class CvcontrolaperturaopecajaController extends Controller
               $responsable_cierre = '';
               $usuario_cierre = '';
               if($ret_caja_reservacf_total && $ret_reservacf_caja_total){
-                  $fechahora_cierre = date_format(date_create($ret_caja_reservacf_total->fecharegistro),"d-m-Y H:i:s A");
                   $responsable_cierre = $ret_caja_reservacf_total->nombrecompleto_responsable;
                   $usuario_cierre = $ret_caja_reservacf_total->usuario_responsable;
+                  $fechahora_cierre = date_format(date_create($ret_caja_reservacf_total->fecharegistro),"d-m-Y h:i:s A");
               }
             
               $estado_cierre = '';
               if(!$ret_reservacf_caja_total){
-                  $estado_cierre = 'SIN APERTURA';
+                    $color = "#fce092";
+                    $estado_cierre = 'SIN APERTURA';
               }
               elseif(($ret_reservacf_caja_total && !$arqueocaja) || 
                      ($ret_reservacf_caja_total && !$ret_caja_reservacf_total)){
-                  $estado_cierre = 'PENDIENTE';
+                    $color = "#ff8a8a";
+                    $estado_cierre = 'PENDIENTE';
               }
               elseif($ret_reservacf_caja_total && $arqueocaja && $ret_caja_reservacf_total){
-                  $estado_cierre = 'CERRADA';
+                    $color = "#aaffa7";
+                    $estado_cierre = 'CERRADA';
               }
             
               $html .= '<tr id="show_data_select" idtienda="{$value->id}">
@@ -148,7 +151,7 @@ class CvcontrolaperturaopecajaController extends Controller
                             <td style="text-align:center;">'.$fechahora_apertura.'</td>
                             <td style="text-align:right;">'.number_format($efectivo_arqueocaja,2,'.','').'</td>
                             <td style="text-align:center;">'.$fechahora_arqueocaja.'</td>
-                            <td style="background-color: #b8e79f;">'.$estado_cierre.'</td>
+                            <td style="background-color: '.$color.'">'.$estado_cierre.'</td>
                             <td style="text-align:center;">'.$fechahora_cierre.'</td>
                             <td>'.$responsable_cierre.'</td>
                             <td>'.$usuario_cierre.'</td>
@@ -202,8 +205,8 @@ class CvcontrolaperturaopecajaController extends Controller
                     ->first();
             
                 if($ret_reservacf_caja_total){
-                    $cierre_insitucionaldetalle_1 = DB::table('cierre_insitucionaldetalle')
-                        ->where('cierre_insitucionaldetalle.idaperturacaja',$ret_reservacf_caja_total->id)
+                    $cierre_insitucionaldetalle_1 = DB::table('cvcierre_insitucionaldetalle')
+                        ->where('cvcierre_insitucionaldetalle.idaperturacaja',$ret_reservacf_caja_total->id)
                         ->first();
                     if(!$cierre_insitucionaldetalle_1){
                         $valid_apertura++; 
@@ -216,8 +219,8 @@ class CvcontrolaperturaopecajaController extends Controller
                     ->first();
 
                 if($arqueocaja && $ret_reservacf_caja_total){
-                    $cierre_insitucionaldetalle_2 = DB::table('cierre_insitucionaldetalle')
-                        ->where('cierre_insitucionaldetalle.idarqueocaja',$arqueocaja->id)
+                    $cierre_insitucionaldetalle_2 = DB::table('cvcierre_insitucionaldetalle')
+                        ->where('cvcierre_insitucionaldetalle.idarqueocaja',$arqueocaja->id)
                         ->first();
                     if(!$cierre_insitucionaldetalle_2){
                         $valid_arqueo++; 
@@ -234,8 +237,8 @@ class CvcontrolaperturaopecajaController extends Controller
                     ->first();
 
                 if($ret_caja_reservacf_total && $ret_reservacf_caja_total){
-                    $cierre_insitucionaldetalle_3 = DB::table('cierre_insitucionaldetalle')
-                        ->where('cierre_insitucionaldetalle.idcierrecaja',$ret_caja_reservacf_total->id)
+                    $cierre_insitucionaldetalle_3 = DB::table('cvcierre_insitucionaldetalle')
+                        ->where('cvcierre_insitucionaldetalle.idcierrecaja',$ret_caja_reservacf_total->id)
                         ->first();
                     if(!$cierre_insitucionaldetalle_3){
                         $valid_cierre++; 
@@ -267,12 +270,12 @@ class CvcontrolaperturaopecajaController extends Controller
         }
         else if( $request->input('view') == 'reporte_pdf' ){
 
-            $cierre_insitucional = DB::table('cierre_insitucional')
-                ->join('users as responsable','responsable.id','cierre_insitucional.validar_responsable')
-                ->join('permiso','permiso.id','cierre_insitucional.validar_responsable_permiso')
-                ->where('cierre_insitucional.fechacorte',$request->fecha_corte_reporte)
+            $cierre_insitucional = DB::table('cvcierre_insitucional')
+                ->join('users as responsable','responsable.id','cvcierre_insitucional.validar_responsable')
+                ->join('permiso','permiso.id','cvcierre_insitucional.validar_responsable_permiso')
+                ->where('cvcierre_insitucional.fechacorte',$request->fecha_corte_reporte)
                 ->select(
-                    'cierre_insitucional.*',
+                    'cvcierre_insitucional.*',
                     'responsable.nombrecompleto as nombrecompleto_responsable',
                     'responsable.codigo as codigo_responsable',
                     'permiso.nombre as nombre_permiso',
@@ -320,7 +323,7 @@ class CvcontrolaperturaopecajaController extends Controller
                 ]);
             }
           
-            $idcierre_insitucional = DB::table('cierre_insitucional')->insertGetId([
+            $idcierre_insitucional = DB::table('cvcierre_insitucional')->insertGetId([
                 'fecharegistro' => now(),
                 'fechacorte' => $request->fecha_corte,
                 'validar_responsable' => $request->idresponsable,
@@ -401,7 +404,7 @@ class CvcontrolaperturaopecajaController extends Controller
 
                 if($ret_caja_reservacf_total && $arqueocaja && $ret_reservacf_caja_total){
 
-                DB::table('cierre_insitucionaldetalle')->insert([
+                DB::table('cvcierre_insitucionaldetalle')->insert([
                     'idagencia' => $value->id,
                     'apertura_estado' => $estado_apertura,
                     'apertura_efectivo' => number_format($efectivo_apertura,2,'.',''),
@@ -414,7 +417,7 @@ class CvcontrolaperturaopecajaController extends Controller
                     'idarqueocaja' => $id_arquecaja,
                     'idcierrecaja' => $id_cierre,
                     'idresponsable' => $request->idresponsable,
-                    'idcierre_insitucional' => $idcierre_insitucional,
+                    'idcvcierre_insitucional' => $idcierre_insitucional,
                     'idtienda' => user_permiso()->idtienda,
                     'idestado' => 1
                 ]); 

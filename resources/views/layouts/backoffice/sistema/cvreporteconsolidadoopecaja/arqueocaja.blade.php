@@ -80,10 +80,10 @@
               <div class="col-sm-10">
               @if($arqueocaja)
                       <p class="text-center" 
-                           style="background-color: #dc3545;
+                           style="background-color: #ffc9ca !important;
                                   padding: 15px;
                                   border-radius: 5px;
-                                  color: #fff;
+                                  color: #93222c !important;
                                   width: 90%;
                                   margin: auto;">Ya esta arqueado la CAJA!!</p>
               @else
@@ -92,30 +92,30 @@
                   @if($consolidadooperaciones['saldos_operaciones_efectivo_validacion_recepcionado']==0)
                     @if($consolidadooperaciones['habilitacion_gestion_liquidez1']>0)
                       <p class="text-center" 
-                        style="background-color: #dc3545;
+                        style="background-color: #ffc9ca !important;
                               padding: 15px;
                               border-radius: 5px;
-                              color: #fff;
+                              color: #93222c !important;
                               width: 90%;
                               margin: auto;">Falta confirmar, HABILITACIÓN Y GESTIÓN DE LIQUIDEZ ( I )!!</p>
                         <br>
                     @endif
                     @if($consolidadooperaciones['habilitacion_gestion_liquidez2']>0)
                       <p class="text-center" 
-                        style="background-color: #dc3545;
+                        style="background-color: #ffc9ca !important;
                               padding: 15px;
                               border-radius: 5px;
-                              color: #fff;
+                              color: #93222c !important;
                               width: 90%;
                               margin: auto;">Falta confirmar, HABILITACIÓN Y GESTIÓN DE LIQUIDEZ ( II )!!</p>
                         <br>
                     @endif
                     @if($consolidadooperaciones['cierre_caja_apertura']>0)
                       <p class="text-center" 
-                        style="background-color: #dc3545;
+                        style="background-color: #ffc9ca !important;
                               padding: 15px;
                               border-radius: 5px;
-                              color: #fff;
+                              color: #93222c !important;
                               width: 90%;
                               margin: auto;">Falta confirmar, CIERRE Y APERTURA DE CAJA!!</p>
                         <br>
@@ -216,20 +216,20 @@
                   @else
                     @if($consolidadooperaciones['saldos_operaciones_efectivo_validacion_existe'])
                       <p class="text-center" 
-                        style="background-color: #dc3545;
+                        style="background-color: #ffc9ca !important;
                               padding: 15px;
                               border-radius: 5px;
-                              color: #fff;
+                              color: #93222c !important;
                               width: 90%;
                               margin: auto;">Para realizar el arqueo de caja, debe recepcionar asignación de fondos!!</p>
                     @endif
                   @endif
                 @else
                   <p class="text-center" 
-                    style="background-color: #dc3545;
+                    style="background-color: #ffc9ca !important;
                           padding: 15px;
                           border-radius: 5px;
-                          color: #fff;
+                          color: #93222c !important;
                           width: 90%;
                           margin: auto;">Para realizar el arqueo de caja, la validación debe estar VERIFICADO!!</p>
                 @endif

@@ -18,18 +18,18 @@
     <div class="modal-body">
       @if($estado_cierre_institucional=='PENDIENTE')
                       <p class="text-center" 
-                           style="background-color: #dc3545;
+                           style="background-color: #ffc9ca !important;
                                   padding: 15px;
                                   border-radius: 5px;
-                                  color: #fff;
+                                  color: #93222c !important;
                                   width: 90%;
                                   margin: auto;">Hay una aperturas pendientes!!</p>
       @elseif($estado_cierre_institucional=='NOEXISTE')
                       <p class="text-center" 
-                           style="background-color: #dc3545;
+                           style="background-color: #ffc9ca !important;
                                   padding: 15px;
                                   border-radius: 5px;
-                                  color: #fff;
+                                  color: #93222c !important;
                                   width: 90%;
                                   margin: auto;">No hay ninguna apertura!!</p>
       @else

@@ -37,9 +37,9 @@
               </div>
     </div>
     <div class="modal-footer">
-        @if ($apertura_caja)
+        {{-- @if ($apertura_caja) --}}
             <button type="submit" class="btn btn-primary"><i class="fa-solid fa-trash"></i> Eliminar</button>
-        @endif
+        {{-- @endif --}}
     </div>
 </form>  
 <script>

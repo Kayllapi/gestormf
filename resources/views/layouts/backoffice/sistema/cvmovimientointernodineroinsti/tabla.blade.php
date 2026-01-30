@@ -41,8 +41,18 @@
               </div>
             </div>
           </div>
+  </div>
+  <div class="row">
+    @if (!$apertura_caja)
+      <div class="modal-body" style="position: absolute; z-index: 100;">
+        <div class="alert bg-danger" style="color: #c31717 !important; background-color: #fde1e2 !important; height: 110px;">
+          <i class="fa fa-warning" style="font-size: 35px;color: #c31717;"></i> <br>
+          Falta aperturar caja.
+        </div>
+      </div>
+    @endif
     <div class="col-md-6">
-      <div class="mb-1">
+      <div class="mb-1 mt-1">
       <h5 class="modal-title text-center">
         RETIRO
         <a href="javascript:;" 

@@ -18,9 +18,11 @@ class CvmovimientointernodineroController extends Controller
     public function index(Request $request,$idtienda)
     {
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
+        $apertura_caja = cvapertura($idtienda);
         if($request->input('view') == 'tabla'){
             return view(sistema_view().'/cvmovimientointernodinero/tabla',[
                 'tienda' => $tienda,
+                'apertura_caja' => $apertura_caja,
             ]);
         }
     }

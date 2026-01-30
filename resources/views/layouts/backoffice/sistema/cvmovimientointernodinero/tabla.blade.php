@@ -43,17 +43,25 @@
     <span class="badge d-block" style="margin-top: 10px;text-align:center;">HABILITACIÓN Y GESTIÓN DE LIQUIDEZ ( I )</span>
   </div>
   <div class="row">
+    @if (!$apertura_caja)
+      <div class="modal-body" style="position: fixed; z-index: 100;">
+        <div class="alert bg-danger" style="color: #c31717 !important; background-color: #fde1e2 !important; height: 110px;">
+          <i class="fa fa-warning" style="font-size: 35px;color: #c31717;"></i> <br>
+          Falta aperturar caja.
+        </div>
+      </div>
+    @endif
     <div class="col-md-6">
       <div class="mb-1">
-      <h5 class="modal-title text-center">
-        RETIRO
-        <a href="javascript:;" 
-           class="btn btn-primary" 
-           onclick="load_nuevo_movimientointernodinero_retiro1()"
-           style="margin-top: -5px;padding: 2px 8px 2px 8px;">
-          <i class="fa-solid fa-plus"></i> Nuevo
-        </a>
-      </h5>
+        <h5 class="modal-title text-center">
+          RETIRO
+          <a href="javascript:;" 
+            class="btn btn-primary" 
+            onclick="load_nuevo_movimientointernodinero_retiro1()"
+            style="margin-top: -5px;padding: 2px 8px 2px 8px;">
+            <i class="fa-solid fa-plus"></i> Nuevo
+          </a>
+        </h5>
       </div>
       <div class="row">
           <div class="col-sm-12">

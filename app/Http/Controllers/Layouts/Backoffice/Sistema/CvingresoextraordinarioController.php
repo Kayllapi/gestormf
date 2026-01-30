@@ -18,7 +18,7 @@ class CvingresoextraordinarioController extends Controller
     public function index(Request $request,$idtienda)
     {
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
-        // $apertura_caja = cvapertura($idtienda);
+        $apertura_caja = cvapertura($idtienda);
 
         // if (!$apertura_caja) {
         //     return view('app/nuevosistema/mensajeapertura',[
@@ -28,7 +28,8 @@ class CvingresoextraordinarioController extends Controller
         // } else {
             if($request->input('view') == 'tabla'){
                 return view(sistema_view().'/cvingresoextraordinario/tabla',[
-                'tienda' => $tienda
+                'tienda' => $tienda,
+                'apertura_caja' => $apertura_caja,
                 ]);
             }
         // }

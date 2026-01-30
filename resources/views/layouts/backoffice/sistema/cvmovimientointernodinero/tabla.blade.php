@@ -52,7 +52,7 @@
       </div>
     @endif
     <div class="col-md-6">
-      <div class="mb-1">
+      <div class="mb-1 mt-1">
         <h5 class="modal-title text-center">
           RETIRO
           <a href="javascript:;" 

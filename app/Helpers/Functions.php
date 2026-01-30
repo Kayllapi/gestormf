@@ -2159,9 +2159,9 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
         ->where($where)
         ->sum('cvmovimientointernodinero.monto');
 
-    if($ret_caja_reservacf!=$dep_reservacf_caja){
-        $valid_habilitacion++;
-    }
+    // if($ret_caja_reservacf!=$dep_reservacf_caja){
+    //     $valid_habilitacion++;
+    // }
     
     $habilitacion_gestion_liquidez1 = $ret_reservacf_caja_sum+
                                     $ret_banco_caja_sum+

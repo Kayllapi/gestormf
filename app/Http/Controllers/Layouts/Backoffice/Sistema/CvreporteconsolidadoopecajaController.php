@@ -86,7 +86,6 @@ class CvreporteconsolidadoopecajaController extends Controller
         }
         elseif($request->input('view') == 'submit_registro_arqueocaja'){
             $co = cvconsolidadooperaciones($tienda,$request->idagencia_arqueocaja,$request->corte_arqueocaja);
-
             $idarqueocaja = DB::table('cvarqueocaja')->insertGetId([
                 'fecharegistro' => now(),
                 'total' => $request->total_arqueocaja,
@@ -179,6 +178,12 @@ class CvreporteconsolidadoopecajaController extends Controller
                 'idestadoeliminado' => 1,
                 'idestado' => 1,
             ]);
+
+            // $co = cvconsolidadooperaciones($tienda,$request->idagencia_arqueocaja,$request->corte_arqueocaja);
+            // DB::table('cvarqueocaja')->where('id',$idarqueocaja)->update([
+            //     'saldos_caja' => $co['saldos_caja'],
+            //     'arqueo_caja' => $co['arqueo_caja'],
+            // ]);
           
             DB::table('cvarqueocaja_denominacion')->insert([
                 'denominacion' => 0.10,

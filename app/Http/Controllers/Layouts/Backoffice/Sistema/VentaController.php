@@ -13,9 +13,17 @@ class VentaController extends Controller
     {
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
         $agencias = DB::table('tienda')->get();
-      
-        if($request->input('view') == 'tabla'){
-            return view(sistema_view().'/venta/tabla', compact('tienda','agencias'));
+        $apertura_caja = cvapertura($idtienda);
+
+        if (!$apertura_caja) {
+            return view('app/nuevosistema/mensajeapertura',[
+                'tienda' => $tienda,
+                'mensaje' => 'Falta aperturar caja.',
+            ]);
+        } else {
+            if($request->input('view') == 'tabla'){
+                return view(sistema_view().'/venta/tabla', compact('tienda','agencias'));
+            }
         }
     }
 

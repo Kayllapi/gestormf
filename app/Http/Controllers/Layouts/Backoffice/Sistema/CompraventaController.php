@@ -12,16 +12,22 @@ class CompraventaController extends Controller
 {
     public function index(Request $request,$idtienda)
     {
-        // $request->user()->authorizeRoles($request->path(),$idtienda);
-
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
         $agencias = DB::table('tienda')->get();
+        $apertura_caja = cvapertura($idtienda);
 
-        if(request('view') == 'tabla'){
-            return view(sistema_view().'/compraventa/tabla', compact(
-                'tienda',
-                'agencias',
-            ));
+        if (!$apertura_caja) {
+            return view('app/nuevosistema/mensajeapertura',[
+                'tienda' => $tienda,
+                'mensaje' => 'Falta aperturar caja.',
+            ]);
+        } else {
+            if(request('view') == 'tabla'){
+                return view(sistema_view().'/compraventa/tabla', compact(
+                    'tienda',
+                    'agencias',
+                ));
+            }
         }
     }
 

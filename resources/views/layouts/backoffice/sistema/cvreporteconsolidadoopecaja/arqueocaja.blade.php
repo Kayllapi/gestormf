@@ -30,48 +30,50 @@
               </div>
               <div class="col-sm-3"></div>
               @if($arqueocaja)
-              
-              <label for="fecha_inicio" class="col-sm-3 col-form-label">Fecha y Hora de Registro:</label>
-              <div class="col-sm-4">
-                  <input type="text" class="form-control" 
-                         value="{{ date_format(date_create($arqueocaja->fecharegistro),'d/m/Y H:i:s A') }}" disabled>
-              </div>
-              <div class="col-sm-3"></div>
-              <label for="fecha_inicio" class="col-sm-3 col-form-label">Responsable:</label>
-              <div class="col-sm-6">
-                  <input type="text" class="form-control" 
-                         value="{{$resposanble->nombrecompleto}}" disabled>
-              </div>
-              <div class="col-sm-3"></div>
-              <label for="fecha_inicio" class="col-sm-3 col-form-label">Total S/.:</label>
-              <div class="col-sm-3">
-                  <input type="text" class="form-control" 
-                         value="{{$arqueocaja->total}}" disabled>
-              </div>
+                <label for="fecha_inicio" class="col-sm-3 col-form-label">Fecha y Hora de Registro:</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" 
+                          value="{{ date_format(date_create($arqueocaja->fecharegistro),'d/m/Y H:i:s A') }}" disabled>
+                </div>
+                <div class="col-sm-3"></div>
+                <label for="fecha_inicio" class="col-sm-3 col-form-label">Responsable:</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" 
+                          value="{{$resposanble->nombrecompleto}}" disabled>
+                </div>
+                <div class="col-sm-3"></div>
+                <label for="fecha_inicio" class="col-sm-3 col-form-label">Total S/.:</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" 
+                          value="{{$arqueocaja->total}}" disabled>
+                </div>
               @else
-              <label for="fecha_inicio" class="col-sm-3 col-form-label">Saldo Contable en Caja (S/.):</label>
-              <div class="col-sm-4">
-                  <input type="text" class="form-control" 
-                         value="{{ number_format(round($consolidadooperaciones['saldos_caja'], 1), 2, '.', '') }}" id="saldocaja_arqueocaja" disabled>
-              </div>
+                <label for="fecha_inicio" class="col-sm-3 col-form-label">Saldo Contable en Caja (S/.):</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" 
+                          value="{{ number_format(round($consolidadooperaciones['saldos_caja'], 1), 2, '.', '') }}" id="saldocaja_arqueocaja" disabled>
+                </div>
               @endif
-              @if($arqueocaja)
-              <div class="col-sm-5" style="text-align: right;">
-                  <?php 
-                    $co_actual = consolidadooperaciones($tienda,$arqueocaja->idagencia,$arqueocaja->corte);
-                    $date = Carbon\Carbon::createFromFormat('Y-m-d', $arqueocaja->corte);
-                    $date->addDay(); // 1 day
-                    $arqueocaja_diasiguiente = DB::table('arqueocaja')
-                        ->where('idagencia',$arqueocaja->idagencia)
-                        ->where('corte',$date->format('Y-m-d'))
-                        ->first();
-                    ?>
-                    @if(!$arqueocaja_diasiguiente)
-                    <button type="button" class="btn btn-danger" onclick="valid_eliminar_arqueocaja()">
-                      <i class="fa fa-trash"></i>
-                      ELIMINAR ARQUEO DE CAJA</button>
-                    @endif
+              <div class="col-sm-3">
               </div>
+              @if($arqueocaja)
+                <div class="col-sm-3" style="text-align: right;">
+                    <?php 
+                      $co_actual = consolidadooperaciones($tienda,$arqueocaja->idagencia,$arqueocaja->corte);
+                      $date = Carbon\Carbon::createFromFormat('Y-m-d', $arqueocaja->corte);
+                      $date->addDay(); // 1 day
+                      $arqueocaja_diasiguiente = DB::table('arqueocaja')
+                          ->where('idagencia',$arqueocaja->idagencia)
+                          ->where('corte',$date->format('Y-m-d'))
+                          ->first();
+                      ?>
+                      @if(!$arqueocaja_diasiguiente)
+                        <button type="button" class="btn btn-danger" onclick="valid_eliminar_arqueocaja()">
+                          <i class="fa fa-trash"></i>
+                          ELIMINAR ARQUEO<br>DE CAJA
+                        </button>
+                      @endif
+                </div>
               @endif
           </div>
           <div class="row" style="margin-top:10px;">
@@ -234,10 +236,11 @@
               @endif
               </div>
               <div class="col-sm-2">
-                    <button type="button" class="btn btn-warning" onclick="reporte_arqueocaja()">
-                      REPORTE DE <br>ARQUEO</button>
-                      <br><br>
-                      <span style="color: #e64343">Excedente Efec. Físico Registrar en Ingr. Extraordinario Opción Remanente Cdre. para regularización</span>
+                <button type="button" class="btn btn-warning" onclick="reporte_arqueocaja()">
+                  REPORTE DE <br>ARQUEO
+                </button>
+                <br><br>
+                <span style="color: #e64343">Excedente Efec. Físico Registrar en Ingr. Extraordinario Opción Remanente Cdre. para regularización</span>
               </div>
           </div>
           @if(!$arqueocaja)

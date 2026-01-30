@@ -212,7 +212,7 @@
               <td></td>
               <td style="border-bottom: 1px solid #000;text-align:right;"><b>{{$co_actual['saldos_bienescomprados']}}</b></td>
               <td></td>
-              <td style="border-bottom: 1px solid #000;text-align:right;"><b>0.00</b></td>
+              <td style="border-bottom: 1px solid #000;text-align:right;"><b>{{$co_anterior?$co_anterior->saldos_bienescomprados:'0.00'}}</b></td>
             </tr>
             <tr>
               <td style="border-bottom: 2px solid #000;"></td>
@@ -233,7 +233,7 @@
               <td></td>
               <td style="text-align:right;"><b>{{$co_actual['ingresoyegresocaja_ingreso_cvventa']}}</b></td>
               <td></td>
-              <td style="text-align:right;"><b>0.00</b></td>
+              <td style="text-align:right;"><b>{{$co_anterior?$co_anterior->ingresoyegresocaja_ingreso_ventas:'0.00'}}</b></td>
             </tr>
             <tr>
               <td></td>
@@ -262,7 +262,7 @@
               <td></td>
               <td style="text-align:right;"><b>{{$co_actual['ingresoyegresocaja_egreso_cvcompra']}}</b></td>
               <td></td>
-              <td style="text-align:right;"><b>0.00</b></td>
+              <td style="text-align:right;"><b>{{$co_anterior?$co_anterior->ingresoyegresocaja_egreso_compras:'0.00'}}</b></td>
             </tr>
             <tr>
               <td></td>
@@ -294,7 +294,7 @@
               <td></td>
               <td style="text-align:right;"><b>{{$co_actual['ingresoyegresobanco_ingreso_cvventa']}}</b></td>
               <td></td>
-              <td style="text-align:right;"><b>0.00</b></td>
+              <td style="text-align:right;"><b>{{$co_anterior?$co_anterior->ingresoyegresobanco_ingreso_ventas:'0.00'}}</b></td>
             </tr>
             @foreach($co_actual['ingresoyegresobanco_ingreso_cvventas'] as $value)
             <tr>
@@ -364,7 +364,7 @@
               <td style="border-top: 2px solid #000;"></td>
               <td style="border-top: 2px solid #000;text-align:right;"><b>{{$co_actual['ingresoyegresobanco_egreso_cvcompra']}}</b></td>
               <td style="border-top: 2px solid #000;"></td>
-              <td style="border-top: 2px solid #000;text-align:right;"><b>0.00</b></td>
+              <td style="border-top: 2px solid #000;text-align:right;"><b>{{$co_anterior?$co_anterior->ingresoyegresobanco_egreso_compras:'0.00'}}</b></td>
             </tr>
             @foreach($co_actual['ingresoyegresobanco_egreso_cvcompras'] as $value)
             <tr>

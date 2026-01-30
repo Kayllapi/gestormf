@@ -23,7 +23,7 @@ class CvingresoextraordinarioController extends Controller
         if (!$apertura_caja) {
             return view('app/nuevosistema/mensajeapertura',[
                 'tienda' => $tienda,
-                'mensaje' => 'Aún falta aperturar la caja.',
+                'mensaje' => 'Falta aperturar caja.',
             ]);
         } else {
             if($request->input('view') == 'tabla'){

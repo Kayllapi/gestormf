@@ -47,12 +47,11 @@ class CvreporteconsolidadoopeinstiController extends Controller
             $co_actual = cvconsolidadooperaciones($tienda,$request->idagencia,$request->corte);
             $date = Carbon::createFromFormat('Y-m-d', $request->corte);
             $date->subDay(); // Subtracts 1 day
-            //$co_anterior = consolidadooperaciones($tienda,$request->idagencia,$date->format('Y-m-d'));
-            $co_anterior = DB::table('arqueocaja')
+            $co_anterior = DB::table('cvarqueocaja')
                 ->where('idagencia',$request->idagencia)
                 ->where('corte',$date->format('Y-m-d'))
                 ->first();
-            $data_actual = DB::table('arqueocaja')
+            $data_actual = DB::table('cvarqueocaja')
                 ->where('idagencia',$request->idagencia)
                 ->where('corte',$request->corte)
                 ->first();

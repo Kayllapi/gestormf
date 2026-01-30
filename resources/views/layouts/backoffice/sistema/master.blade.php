@@ -159,6 +159,7 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
           .table > tbody > tr:hover > th {
               background-color: #c2c0c2 !important;
           }
+          .alert-primary,
           .bg-primary,
           .btn-primary,
           .btn-primary:hover,
@@ -171,6 +172,7 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
           .btn-primary  .fa-solid:before {    
               color: #000;
           }
+          .alert-warning,
           .bg-warning,
           .btn-warning,
           .btn-warning:hover,
@@ -182,6 +184,10 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
           .btn-warning  .fa-solid:before {    
               color: #000;
           }
+          .alert-success {
+              background-color: #a8df95 !important;
+              color: #000 !important;
+          }
           .bg-success,
           .btn-success,
           .btn-success:hover,
@@ -191,8 +197,13 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
               border: 1px solid #326222 !important;
               color: #000 !important;
           }
+          .alert-success  .fa-solid:before, 
           .btn-success  .fa-solid:before {    
               color: #000;
+          }
+          .alert-danger {
+              background-color: #ffc9ca !important;
+              color: #93222c !important;
           }
           .bg-danger,
           .btn-danger,
@@ -201,10 +212,14 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
           .btn-danger:focus {    
               background-color: #ffc9ca !important;
               border: 1px solid #b35b5d !important;
-              color: #000 !important;
+              color: #93222c !important;
           }
           .btn-danger  .fa-solid:before {    
-              color: #cd2024;
+              color: #b02a37;
+          }
+          .alert-info {
+              background-color: #c3ddff !important;
+              color: #000 !important;
           }
           .bg-info,
           .btn-info,

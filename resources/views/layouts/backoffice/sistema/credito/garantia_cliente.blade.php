@@ -32,6 +32,7 @@
                 <th width="90px">Valor Comercial<br>(Tasador)</th>
                 <th width="90px">Cobertura<br>(Valor Realización)</th>
                 <th width="90px"></th>
+                <th width="90px"></th>
               </tr>
             </thead>
             <tbody>
@@ -55,6 +56,7 @@
                 <th width="90px">Valor Mercado</th>
                 <th width="90px">Valor Comercial<br>(Tasador)</th>
                 <th width="90px">Cobertura<br>(Valor Realización)</th>
+                <th width="90px"></th>
                 <th width="90px"></th>
               </tr>
             </thead>

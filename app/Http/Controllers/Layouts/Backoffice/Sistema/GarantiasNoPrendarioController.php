@@ -147,6 +147,7 @@ class GarantiasNoPrendarioController extends Controller
                   ->whereIn('credito.estado',['PENDIENTE','PROCESO','APROBADO','DESEMBOLSADO'])
                   ->first();
             
+            
               $color_garantia = $garantia_credito ? 'style="background-color:#3cd48d;"' : '';
               /*if($garantia_credito==''){
                 $garantia_credito = DB::table('credito_garantia')
@@ -270,7 +271,7 @@ class GarantiasNoPrendarioController extends Controller
             ->whereIn('credito.estado',['PENDIENTE','PROCESO','APROBADO','DESEMBOLSADO'])
             ->first();
         
-              if($garantia_credito==''){
+              /*if($garantia_credito==''){
                 $garantia_credito = DB::table('credito_garantia')
                     ->join('credito','credito.id','credito_garantia.idcredito')
                     ->where('credito_garantia.idgarantias_noprendarias',$id)
@@ -279,6 +280,7 @@ class GarantiasNoPrendarioController extends Controller
                     ->whereIn('credito.estado',['PENDIENTE','PROCESO','APROBADO','DESEMBOLSADO'])
                     ->first();
               }
+              dd($garantia_credito);*/
         
         return view(sistema_view().'/garantiasnoprendario/edit',[
           'tienda' => $tienda,

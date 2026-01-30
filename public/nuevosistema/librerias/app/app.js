@@ -49,7 +49,7 @@ function carga(param) {
         $(param['input'])
           .addClass('mx-carga')
           .append('<div onclick="removecarga({input:\''+param['input']+'\'})" id="mx-subcarga'+inp[1]+'" class="mx-subcarga alert">'+
-                  '<div class="mx-contenedor-subcarga alert-primary" data-dismiss="alert" aria-label="Close">'+
+                  '<div class="mx-contenedor-subcarga alert-info" data-dismiss="alert" aria-label="Close">'+
                       '<div id="preloader"></div>'+
                       '<div id="mx-mensaje-subcarga">'+param['mensaje']+'</div>'+
                   '</div></div>');

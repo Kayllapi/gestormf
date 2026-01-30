@@ -140,8 +140,8 @@ class GarantiasController extends Controller
 //                'aplique_contraplacado'    => $request->input('aplique_contraplacado'),
 //                'complemntos_cir_rect'     => $request->input('complemntos_cir_rect'),
 //                'reloj'                    => $request->input('reloj'),
-               'iddescuento_joya'         => $request->input('idtipogarantia') == 6 ? $request->input('iddescuento_joya') : 0,
-               'idvalorizacion_descuento' => $request->input('idtipogarantia') == 6 ? $request->input('idvalorizacion_descuento') : 0,
+               'iddescuento_joya'         => $request->input('idtipogarantia') == 6 ? ($request->input('iddescuento_joya')!=''?$request->input('iddescuento_joya'):0) : 0,
+               'idvalorizacion_descuento' => $request->input('idtipogarantia') == 6 ? ($request->input('idvalorizacion_descuento')!=''?$request->input('idvalorizacion_descuento'):0) : 0,
               
                'peso_neto'                => $request->input('peso_neto'),
               
@@ -586,9 +586,10 @@ class GarantiasController extends Controller
                'idtipo_joyas'             => $request->input('idtipogarantia') == 6 ? $request->input('idtipo_joyas') : 0,
                'idtarifario_joya'         => $request->input('idtipogarantia') == 6 ? $request->input('idtarifario_joya') : 0,
                'peso_gramos'              => $request->input('peso_gramos'),
+               'peso_neto'                => $request->input('peso_neto'),
               
-               'iddescuento_joya'         => $request->input('idtipogarantia') == 6 ? $request->input('iddescuento_joya') : 0,
-               'idvalorizacion_descuento' => $request->input('idtipogarantia') == 6 ? $request->input('idvalorizacion_descuento') : 0,
+               'iddescuento_joya'         => $request->input('idtipogarantia') == 6 ? ($request->input('iddescuento_joya')!='null'?$request->input('iddescuento_joya'):0) : 0,
+               'idvalorizacion_descuento' => $request->input('idtipogarantia') == 6 ? ($request->input('idvalorizacion_descuento')!=''?$request->input('idvalorizacion_descuento'):0) : 0,
                'idresponsable'            => $request->idresponsable_modificado,
 
  

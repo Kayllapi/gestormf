@@ -233,7 +233,7 @@
                 </tbody>
               </table>
     </div>
-    <div class="modal-footer">
+    <div class="modal-footer d-none" id="cont-btnguardar">
         <button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i> Guardar Cambios</button>
     </div>
 </form> 
@@ -253,6 +253,7 @@
     $('#form-editar-garantia').find('input').attr('disabled',true);
     $('#form-editar-garantia').find('textarea').attr('disabled',true);
   function autorizar_edicion(){
+    $('#cont-btnguardar').removeClass("d-none");
     $('#form-editar-garantia').find('select').removeAttr('disabled');
     $('#form-editar-garantia').find('input').removeAttr('disabled');
     $('#form-editar-garantia').find('textarea').removeAttr('disabled');

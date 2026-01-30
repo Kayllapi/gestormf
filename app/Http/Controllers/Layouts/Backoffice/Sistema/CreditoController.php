@@ -922,38 +922,39 @@ class CreditoController extends Controller
               $color_garantia = '';
               $est_garantia = '';
               if($credito->idforma_credito==1){
-              $garantia_credito = DB::table('credito_garantia')
-                  ->join('credito','credito.id','credito_garantia.idcredito')
-                  ->where('credito_garantia.idgarantias',$value->id)
-                  ->where('credito.idestadocredito',1)
-                  ->where('credito_garantia.idcredito','<>',$request->input('idcredito'))
-                  ->whereIn('credito.estado',['PENDIENTE','PROCESO','APROBADO','DESEMBOLSADO'])
-                  ->first();
-              $color_garantia = $garantia_credito ? 'style="background-color:#3cd48d !important;border-radius: 5px;padding: 3px 5px 3px 5px;white-space: nowrap;"' : '';
-              $est_garantia = $garantia_credito ? 'c. Crédito' : '';
-              if($garantia_credito==''){
-                $garantia_credito = DB::table('credito_garantia')
-                    ->join('credito','credito.id','credito_garantia.idcredito')
-                    ->where('credito_garantia.idgarantias',$value->id)
-                    ->where('credito.idestadocredito',2)
-                    ->where('credito_garantia.idestadoentrega',1)
-                    ->where('credito_garantia.idcredito','<>',$request->input('idcredito'))
-                    ->whereIn('credito.estado',['PENDIENTE','PROCESO','APROBADO','DESEMBOLSADO'])
-                    ->first();
-                $color_garantia = $garantia_credito ? 'style="background-color:#6bc5ff !important;border-radius: 5px;padding: 3px 5px 3px 5px;white-space: nowrap;"' : '';
-                $est_garantia = $garantia_credito ? 'x. Entreg.' : '';
+                  $garantia_credito = DB::table('credito_garantia')
+                      ->join('credito','credito.id','credito_garantia.idcredito')
+                      ->where('credito_garantia.idgarantias',$value->id)
+                      ->where('credito.idestadocredito',1)
+                      ->where('credito_garantia.idcredito','<>',$request->input('idcredito'))
+                      ->whereIn('credito.estado',['PENDIENTE','PROCESO','APROBADO','DESEMBOLSADO'])
+                      ->first();
+                  $color_garantia = $garantia_credito ? 'style="background-color:#3cd48d !important;border-radius: 5px;padding: 3px 5px 3px 5px;white-space: nowrap;text-align: center;"' : '';
+                  $est_garantia = $garantia_credito ? 'c. Crédito' : '';
+                  if($garantia_credito==''){
+                    $garantia_credito = DB::table('credito_garantia')
+                        ->join('credito','credito.id','credito_garantia.idcredito')
+                        ->where('credito_garantia.idgarantias',$value->id)
+                        ->where('credito.idestadocredito',2)
+                        ->where('credito_garantia.idestadoentrega',1)
+                        ->where('credito_garantia.idcredito','<>',$request->input('idcredito'))
+                        ->whereIn('credito.estado',['PENDIENTE','PROCESO','APROBADO','DESEMBOLSADO'])
+                        ->first();
+                    $color_garantia = $garantia_credito ? 'style="background-color:#6bc5ff !important;border-radius: 5px;padding: 3px 5px 3px 5px;white-space: nowrap;text-align: center;"' : '';
+                    $est_garantia = $garantia_credito ? 'x. Entreg.' : '';
+                  }
               }
-              }
+   
               // fin valid garantia
               $dias = '--';
               if($value->fecharegistro!=''){
                 $dias = "<div style='margin-top: 6px;
-    background-color: #ffd100;
-    float: left;
-    padding-left: 3px;
-    padding-right: 3px;
-    border-radius: 3px;padding-top: 2px;
-    padding-bottom: 2px;'>".calcularDiasPasados($value->fecharegistro).' DIA(S)</div>';
+                              background-color: #ffd100;
+                              float: left;
+                              padding-left: 3px;
+                              padding-right: 3px;
+                              border-radius: 3px;padding-top: 2px;
+                              padding-bottom: 2px;'>".calcularDiasPasados($value->fecharegistro).' DIA(S)</div>';
               }
               $html .= "<tr idgarantia='{$idgarantia_prendaria}' idgarantianoprendataria='{$idgarantia_noprendaria}' idcliente='{$value->idclientegarantia}'>
                           <td value='{$value->tipo_garantia}' tipo_garantia>{$value->tipo_garantia}</td>
@@ -973,11 +974,18 @@ class CreditoController extends Controller
                           if($est_garantia!=''){
                               $html .= '<div '.$color_garantia.'><b>'.$est_garantia.'</b></div>';
                           }elseif($est_garantia==''){
+                             if(calcularDiasPasados($value->fecharegistro)<=360){
                             $html .= '
                               <label class="chk">
                                   <input type="checkbox" '.$check_garantia.' '.$disabled_garantia.'>
                                   <span class="checkmark"></span>
                               </label>';
+                             }
+                          }
+                 $html .= "</td>
+                          <td class='mx-td-input'>";
+                          if(calcularDiasPasados($value->fecharegistro)>360){
+                              $html .= '<div style="background-color:#c3ddff !important;border:1px solid #5b81b3;border-radius: 5px;padding: 3px 5px 3px 5px;white-space: nowrap;text-align: center;"><b>Actualizar</b></div>';
                           }
                  $html .= "</td>
                         </tr>";

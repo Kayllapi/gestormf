@@ -65,9 +65,7 @@ select+.select2-container--bootstrap-5 {
 .table th .btn-primary {
     border-color: #ffffff !important;
 }
-.mx-contenedor-subcarga .fa-solid {
-    color: #b02a37 !important;
-}
+
 .mensaje-danger {
     background-color: #fb175b;
     padding: 8px;
@@ -543,7 +541,7 @@ section.hero-section {
   position:relative;
   cursor: pointer;
   border-color: transparent;
-  color: #93222c;
+  /*color: #93222c;*/
 }
 .mx-contenedor-subcarga svg {
   color: #680b0b;    

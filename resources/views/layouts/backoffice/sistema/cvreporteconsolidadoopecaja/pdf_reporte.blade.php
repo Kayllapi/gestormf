@@ -147,7 +147,8 @@
               <td style="text-align:left;width:80px;"><b>Saldos</b></td>
               <td style="width:80px;"></td>
               <td colspan="4" style="border-bottom: 2px solid #000;text-align:left;">Caja</td>
-              <td colspan="2" style="border-bottom: 2px solid #000;">
+              <td style="border-bottom: 2px solid #000;"></td>
+              <td style="border-bottom: 2px solid #000;">
                 @if($co_actual['saldos_operaciones_efectivo_validacion_existe'])
                   @if($co_actual['saldos_operaciones_efectivo_validacion_cantidad']==0)
                     <img src="{{url('public/backoffice/sistema/icono_check.png')}}" width="20px">

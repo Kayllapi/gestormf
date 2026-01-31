@@ -14,7 +14,7 @@ class CompraController extends Controller
     {
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
         $agencias = DB::table('tienda')->get();
-        // $apertura_caja = cvapertura($idtienda);
+        $apertura_caja = cvapertura($idtienda);
 
         // if (!$apertura_caja) {
         //     return view('app/nuevosistema/mensajeapertura',[
@@ -23,7 +23,7 @@ class CompraController extends Controller
         //     ]);
         // } else {
             if($request->input('view') == 'tabla'){
-                return view(sistema_view().'/compra/tabla', compact('tienda','agencias'));
+                return view(sistema_view().'/compra/tabla', compact('tienda','agencias','apertura_caja'));
             }
         // }
     }

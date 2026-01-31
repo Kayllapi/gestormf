@@ -132,7 +132,11 @@
                                 <div class="col-sm-2">
                                     <button type="button"
                                         class="btn btn-primary"
-                                        onclick="create_venta()"
+                                        @if(!$apertura_caja)
+                                            onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Falta aperturar caja.')}}', size: 'modal-sm' })"
+                                        @else
+                                            onclick="create_venta()"
+                                        @endif
                                         style="font-size: 15px; background-color: #FFBD81 !important;">
                                         Registrar <br> Venta
                                     </button>
@@ -231,10 +235,22 @@
                                     TOTAL: <span id="total_venta" style="font-weight: normal;"></span>
                                 </div>
                                 <div class="col-9 text-end">
-                                    <button type="button" class="btn btn-danger" onclick="eliminar_venta()">
+                                    <button type="button" class="btn btn-danger"
+                                        @if(!$apertura_caja)
+                                            onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Falta aperturar caja.')}}', size: 'modal-sm' })"
+                                        @else
+                                            onclick="eliminar_venta()"
+                                        @endif
+                                        >
                                         <i class="fa-solid fa-trash"></i> Eliminar
                                     </button>
-                                    <button type="button" class="btn btn-warning" style="background-color: #F9F3B5 !important;" onclick="vaucher_venta()">
+                                    <button type="button" class="btn btn-warning" style="background-color: #F9F3B5 !important;"
+                                        @if(!$apertura_caja)
+                                            onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Falta aperturar caja.')}}', size: 'modal-sm' })"
+                                        @else
+                                            onclick="vaucher_venta()"
+                                        @endif
+                                        >
                                         <i class="fa-solid fa-copy" style="color:#000 !important;"></i> Duplicar Voucher
                                     </button>
                                 </div>

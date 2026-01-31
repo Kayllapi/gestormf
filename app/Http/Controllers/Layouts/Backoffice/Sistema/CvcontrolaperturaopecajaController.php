@@ -358,10 +358,10 @@ class CvcontrolaperturaopecajaController extends Controller
                     $fechahora_apertura = $ret_reservacf_caja_total->fecharegistro;    
                 }
               
-                $arqueocaja = DB::table('arqueocaja')
-                        ->where('idagencia',$value->id)
-                        ->where('corte',$request->fecha_corte)
-                        ->first();
+                $arqueocaja = DB::table('cvarqueocaja')
+                    ->where('idagencia',$value->id)
+                    ->where('corte',$request->fecha_corte)
+                    ->first();
 
                 $id_arquecaja = 0;
                 $efectivo_arqueocaja = 0;

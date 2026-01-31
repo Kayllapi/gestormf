@@ -86,6 +86,24 @@ class CvreporteconsolidadoopecajaController extends Controller
         }
         elseif($request->input('view') == 'submit_registro_arqueocaja'){
             $co = cvconsolidadooperaciones($tienda,$request->idagencia_arqueocaja,$request->corte_arqueocaja);
+
+            $apertura_caja =  DB::table('cvmovimientointernodinero')
+                ->where('cvmovimientointernodinero.idestadoeliminado',1)
+                ->where('cvmovimientointernodinero.idfuenteretiro',1)
+                ->where('cvmovimientointernodinero.idtipomovimientointerno',6)
+                ->where('cvmovimientointernodinero.idresponsable','<>',0)
+                ->where('cvmovimientointernodinero.fecharegistro','>=',$request->corte_arqueocaja.' 00:00:00')
+                ->where('cvmovimientointernodinero.fecharegistro','<=',$request->corte_arqueocaja.' 23:59:59')
+                ->where('cvmovimientointernodinero.idtienda',$request->idagencia_arqueocaja)
+                ->first();
+
+            if(is_null($apertura_caja)){
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'Falta confirmar apertura de caja.'
+                ]);
+            }
+
             $idarqueocaja = DB::table('cvarqueocaja')->insertGetId([
                 'fecharegistro' => now(),
                 'total' => $request->total_arqueocaja,
@@ -167,7 +185,7 @@ class CvreporteconsolidadoopecajaController extends Controller
 
                 'eliminado_idresponsable' => 0,
                 'eliminado_idresponsable_permiso' => 0,
-                'idcvmovimientointernodinero_apertura' => 0,
+                'idcvmovimientointernodinero_apertura' => $apertura_caja->id,
                 'idcvmovimientointernodinero_cierre' => 0,
 
                 'idresponsable' => Auth::user()->id,
@@ -178,12 +196,6 @@ class CvreporteconsolidadoopecajaController extends Controller
                 'idestadoeliminado' => 1,
                 'idestado' => 1,
             ]);
-
-            // $co = cvconsolidadooperaciones($tienda,$request->idagencia_arqueocaja,$request->corte_arqueocaja);
-            // DB::table('cvarqueocaja')->where('id',$idarqueocaja)->update([
-            //     'saldos_caja' => $co['saldos_caja'],
-            //     'arqueo_caja' => $co['arqueo_caja'],
-            // ]);
           
             DB::table('cvarqueocaja_denominacion')->insert([
                 'denominacion' => 0.10,

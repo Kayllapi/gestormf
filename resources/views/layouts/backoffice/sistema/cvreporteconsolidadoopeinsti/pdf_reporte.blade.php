@@ -648,20 +648,6 @@
               <td style="border-bottom: 2px solid #000;"></td>
             </tr>
           </table>
-          @if($data_actual)
-          <br><br><br>
-          <?php $resposanble = DB::table('users')->where('id',$data_actual->idresponsable_registro)->first(); ?>
-          <?php $permiso = DB::table('permiso')->where('id',$data_actual->idresponsable_registro_idpermiso)->first(); ?>
-          <table class="tabla_informativa" style="text-align:center;margin-left:560px;">
-              <tr>
-                  <td>______________________________<br>
-                    {{ strtoupper($permiso->nombre) }}<br>
-                    {{ strtoupper($resposanble->nombrecompleto) }}<br>
-                    {{ strtoupper($resposanble->codigo) }}
-                  </td>
-              </tr>
-          </table> 
-          @endif
     </div>
   </main>
 </body>

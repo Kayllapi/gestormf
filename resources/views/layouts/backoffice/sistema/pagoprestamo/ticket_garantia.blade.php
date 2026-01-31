@@ -22,7 +22,7 @@
           @else
             <div class="col-sm-12 mt-2 text-center">
                 <iframe id="iframe_acta_aprobacion" 
-                src="{{ url('/backoffice/'.$tienda->id.'/pagoprestamo/'.$credito_cobranzacuota->id.'/edit?view=pdf_garantia') }}#zoom=90" 
+                src="{{ url('/backoffice/'.$tienda->id.'/pagoprestamo/'.$credito_cobranzacuota->id.'/edit?view=pdf_garantia') }}#zoom=100" 
                 frameborder="0" width="100%" height="600px"></iframe>
             </div>
           @endif

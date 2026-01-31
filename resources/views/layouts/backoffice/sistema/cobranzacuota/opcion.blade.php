@@ -17,11 +17,11 @@
             onclick="verpdf('pdf_pago')"> VOUCHER DE PAGO</button>
             @if($idestadocredito==2 && $credito->idforma_credito==1 && $entregargarantia=='on')
             <button type="button" class="btn btn-danger" style="background-color: #1e69d9;border-color: #144081;" 
-            onclick="verpdf('pdf_garantia',{{$credito->id}})"> VOUCHER DE GARANTIA</button>
+            onclick="verpdf('pdf_garantia',{{$credito->id}})"> V. ENTREGA DE GARANTIA</button>
             @endif
        <div class="col-sm-12 mt-2">
         <iframe id="iframe_acta_aprobacion" 
-        src="{{ url('/backoffice/'.$tienda->id.'/cobranzacuota/'.$credito->id.'/edit?view=pdf_pago&idcobranzacuota='.$idcobranzacuota) }}#zoom=90" 
+        src="{{ url('/backoffice/'.$tienda->id.'/cobranzacuota/'.$credito->id.'/edit?view=pdf_pago&idcobranzacuota='.$idcobranzacuota) }}#zoom=100" 
         frameborder="0" width="100%" height="600px"></iframe>
       </div>
       </div>

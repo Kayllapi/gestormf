@@ -172,7 +172,6 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
           .btn-primary  .fa-solid:before {    
               color: #000;
           }
-          .alert-warning,
           .bg-warning,
           .btn-warning,
           .btn-warning:hover,
@@ -182,6 +181,17 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
               color: #000 !important;
           }
           .btn-warning  .fa-solid:before {    
+              color: #000;
+          }
+          .btn-warning1,
+          .btn-warning1:hover,
+          .btn-warning1:active,
+          .btn-warning1:focus {    
+              background-color: #F9F3B5 !important;
+              color: #000 !important;
+              border: 1px solid #917319;
+          }
+          .btn-warning1  .fa-solid:before {    
               color: #000;
           }
           .alert-success {
@@ -230,6 +240,7 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
               border: 1px solid #5b81b3 !important;
               color: #000 !important;
           }
+          .bg-info .fa-solid:before,
           .btn-info  .fa-solid:before {    
               color: #000;
           }

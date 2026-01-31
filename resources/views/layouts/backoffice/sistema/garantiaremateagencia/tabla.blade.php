@@ -1,7 +1,7 @@
 <div class="modal-header">
-  <h5 class="modal-title">Agregar / Quitar de lista de Remates Institucional</h5>
+  <h5 class="modal-title">Agregar / Quitar de: Lista de Remates - Institucional</h5>
   
-  <button type="button" class="btn-close" onclick="ir_inicio()" style="font-size: 20px;"></button>
+  <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>
 <div class="modal-body">
   <div class="row">
@@ -74,8 +74,8 @@
                     </div>
                 </div>
                 <div class="row">
-                <div style="width:45%;float: left;">
-                  
+                <div style="width:46%;float: left;">
+                    
                     @include('app.nuevosistema.tabla',[
                         'tabla' => '#tabla-origendes',
                         'route' => url('backoffice/'.$tienda->id.'/garantiaremateagencia/showcliente_asignar?idagencia='.$tienda->id),
@@ -86,7 +86,7 @@
                             ['data' => '' ],
                             ['data' => 'N°' ],
                             ['data' => 'CUENTA' ],
-                            ['data' => 'DOI/RUC' ],
+                            ['data' => 'RUC/DNI/CE' ],
                             ['data' => 'Apellidos y Nombres' ],
                             ['data' => 'Monto Crédito (S/.)' ],
                             ['data' => 'F. Pago' ],
@@ -101,7 +101,7 @@
                             ['data' => 'Calificación' ],
                             ['data' => 'Producto' ],
                             ['data' => 'Modalidad' ],
-                            ['data' => 'DOI/RUC (Aval)' ],
+                            ['data' => 'RUC/DNI/CE (Aval)' ],
                             ['data' => 'Ape. Nom. Aval' ],
                             ['data' => 'Ejecutivo' ],
                         ],
@@ -130,43 +130,38 @@
                         ],
                     ])
                 <input type="hidden" id="check_origen">
-                  <button type="button" class="btn  big-btn  color-bg flat-btn" id="btn-autorizar-garantia" 
-                            onclick="ver_garantia()" style="background-color: #144081;
-    color: #fff;margin-bottom: 5px;">
-                      Garantias </button>
+                  <button type="button" class="btn btn-primary mt-1" id="btn-autorizar-garantia" onclick="ver_garantia()">
+                      Garantías </button>
                 </div>
                 <div class="row  text-center align-items-center" 
-                     style="width:10%;float: left;height: 350px;margin-left:0px;margin-right:0px;">
+                     style="width:8%;float: left;height: 350px;margin-left:0px;margin-right:0px;">
                     <div class="col-md-12">
-                    <button type="button" class="btn  big-btn  color-bg flat-btn" id="btn-autorizar-garantia" 
-                            onclick="autorizar_garantia()" style="background-color: #144081;
-    color: #fff;width: 100px;margin-bottom: 5px;">
+                    <button type="button" class="btn btn-warning mb-1 mt-1" id="btn-autorizar-garantia" onclick="autorizar_garantia()">
                       Agregar <i class="fa fa-angle-right"></i></button>
-                    <button type="button" class="btn  big-btn  color-bg flat-btn" id="btn-quitar-garantia" 
-                            onclick="quitar_garantia()" style="background-color: #144081;
-    color: #fff;width: 100px;">
+                    <button type="button" class="btn btn-danger" id="btn-quitar-garantia" onclick="quitar_garantia()">
                       <i class="fa fa-angle-left"></i> Quitar</button>
                     </div>
                 </div>
-                <div style="width:45%;float: left;">
+                <div style="width:46%;float: left;">
+                    <div style="text-align: center;background-color: #9d9d9d;padding: 2px;">LISTA DE REMATES</div>
                     @include('app.nuevosistema.tabla',[
                         'tabla' => '#tabla-destinodes',
                         'route' => url('backoffice/'.$tienda->id.'/garantiaremateagencia/showcliente_destino'),
                         'check_id' => 'check_destino',
-                        'scrollY' => '290',
+                        'scrollY' => '281',
                         'dom' => 'rt',
                         'thead' => [
                             ['data' => '' ],
                             ['data' => 'CLIENTE' ],
-                            ['data' => 'DNI' ],
-                            ['data' => 'TIPO DE GARANTIA' ],
+                            ['data' => 'RUC/DNI/CE' ],
+                            ['data' => 'TIPO DE GARANTÍA' ],
                             ['data' => 'DESCRIPCIÓN' ],
                             ['data' => 'MODELO' ],
                             ['data' => 'VALOR COMERCIAL' ],
                             ['data' => 'ACCESORIOS' ],
                             ['data' => 'COBERTURA' ],
                             ['data' => 'COLOR' ],
-                            ['data' => 'CODIGO DE GARANTIA' ],
+                            ['data' => 'CÓDIGO GARANTÍA' ],
                         ],
                         'tbody' => [
                             ['data' => 'id','type'=>'check'],
@@ -183,10 +178,10 @@
                         ],
                     ])
                 <input type="hidden" id="check_destino">
-                  <button type="button" class="btn  big-btn  color-bg flat-btn" style="background-color: #144081;color: #fff;margin-bottom: 5px;">
-                      LIQUIDACIÓN DE GARANTIAS </button>
-                  <button type="button" class="btn  big-btn  color-bg flat-btn" style="background-color: #144081;color: #fff;margin-bottom: 5px;">
-                      IMPRIMIR REMATES </button>
+                  <button type="button" class="btn btn-warning1 mt-1">
+                     LIQUIDACIÓN DE GARANTÍAS </button>
+                  <button type="button" class="btn btn-info mt-1">
+                     <i class="fa-solid fa-file-pdf"></i> REMATES </button>
                 </div>
                 </div>
             </div> 
@@ -213,10 +208,18 @@
   sistema_select2({ input:'#idformacredito',val:'CP' });
   sistema_select2({ input:'#idasesor',val:'{{Auth::user()->id}}' });
   
+    $(`#tabla-origendes`).on("click", "tr", function(e) {
+        $('#tabla-destinodes > tbody > tr').removeClass('selected');
+    });
+    $(`#tabla-destinodes`).on("click", "tr", function(e) {
+        $('#tabla-origendes > tbody > tr').removeClass('selected');
+    });
+  
   function ver_garantia(){
       let idcredito = $('#tabla-origendes > tbody > tr.selected').attr('data-valor-columna');    
       if(idcredito == "" || idcredito == undefined ){
-        alert('Debe de seleccionar un crédito.');   
+        var mensaje = "Debe de seleccionar un crédito.";
+        modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });  
         return false;
       }
       modal({ route:"{{url('backoffice/'.$tienda->id.'/garantiaremateagencia/0/edit?view=ver_garantia')}}&idcredito="+idcredito,  size: 'modal-fullscreen' }); 
@@ -225,7 +228,8 @@
   function autorizar_garantia(){
       var check_origen = $('#check_origen').val();
       if(check_origen==''){
-          alert('Es obligatorio seleccionar un crédito!!');
+        var mensaje = "Debe de seleccionar un crédito.";
+        modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });  
           return false;
       }
       modal({ route:"{{url('backoffice/'.$tienda->id.'/garantiaremateagencia/0/edit?view=autorizar')}}",  size: 'modal-sm' }); 
@@ -234,7 +238,8 @@
   function quitar_garantia(){
       var check_destino = $('#check_destino').val();
       if(check_destino==''){
-          alert('Es obligatorio seleccionar un crédito!!');
+        var mensaje = "Debe de seleccionar un crédito.";
+        modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });  
           return false;
       }
       modal({ route:"{{url('backoffice/'.$tienda->id.'/garantiaremateagencia/0/edit?view=quitar')}}",  size: 'modal-sm' }); 

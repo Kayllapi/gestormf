@@ -1,7 +1,7 @@
 <div class="modal-header">
   <h5 class="modal-title">Historial de Pagos de  Préstamos Asesor/Cobranza</h5>
   
-  <button type="button" class="btn-close" onclick="ir_inicio()" style="font-size: 20px;"></button>
+  <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>
 <div class="modal-body">
   <div class="row">
@@ -152,7 +152,7 @@
         return false;
       }
       let url = "{{ url('backoffice/'.$tienda->id) }}/pagoprestamo/"+idcredito_cobranzacuota+"/edit?view=ticket";
-      modal({ route: url })
+      modal({ route: url,  size: 'modal-sm' })
    }
    function ticketgarantia(){
       let idcredito_cobranzacuota = $('#table-lista-credito > tbody > tr.selected').attr('idcredito_cobranzacuota');

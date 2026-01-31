@@ -1,7 +1,7 @@
 <div class="modal-header">
   <h5 class="modal-title">Historial de Pagos de  Préstamos Caja/Operaciones/Admin</h5>
   
-  <button type="button" class="btn-close" onclick="ir_inicio()" style="font-size: 20px;"></button>
+  <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>
 <div class="modal-body">
   <div class="row">
@@ -185,7 +185,7 @@
         return false;
       }
       let url = "{{ url('backoffice/'.$tienda->id) }}/pagoprestamo/"+idcredito_cobranzacuota+"/edit?view=ticket_garantia";
-      modal({ route: url })
+      modal({ route: url,  size: 'modal-sm' })
    }
    
    function extornar(){

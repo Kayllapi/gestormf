@@ -30,10 +30,10 @@
     <div class="ticket_contenedor">  
       <div><b>ENTREGA DE GARANTÍA</b></div><div class="linea"></div>
      
-          <table class="tabla_informativa">
+          <table class="tabla_informativa" width="100%">
               <tr>
                   <td>
-                    <b>N° DE CUOTA:</b> C{{ str_pad($credito_cobranzacuota->creditocuenta, 8, "0", STR_PAD_LEFT) }}</td>
+                    <b>N° DE CUENTA:</b> C{{ str_pad($credito_cobranzacuota->creditocuenta, 8, "0", STR_PAD_LEFT) }}</td>
               </tr>
               <tr>
                   <td><b>FECHA:</b> {{ date_format(date_create($credito_cobranzacuota->fecharegistro),'d-m-Y H:i:s A') }}</td>

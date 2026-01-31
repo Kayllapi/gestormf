@@ -1230,8 +1230,9 @@ function cvapertura($idagencia){
     $datenow = now()->format('Y-m-d');
     $apertura_caja =  DB::table('cvmovimientointernodinero')
         ->where('cvmovimientointernodinero.idestadoeliminado',1)
-        ->where('cvmovimientointernodinero.idfuenteretiro',6)
-        ->where('cvmovimientointernodinero.idtipomovimientointerno',5)
+        ->where('cvmovimientointernodinero.idfuenteretiro',1)
+        ->where('cvmovimientointernodinero.idtipomovimientointerno',6)
+        ->where('cvmovimientointernodinero.idresponsable','<>',0)
         ->where('cvmovimientointernodinero.fecharegistro','>=',$datenow.' 00:00:00')
         ->where('cvmovimientointernodinero.fecharegistro','<=',$datenow.' 23:59:59')
         ->where('cvmovimientointernodinero.idtienda',$idagencia)

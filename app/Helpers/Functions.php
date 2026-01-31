@@ -1977,7 +1977,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
     $saldos_operaciones_efectivo_validacion = '';
     $saldos_operaciones_efectivo_validacion = DB::table('cvasignacioncapital')
         ->where('cvasignacioncapital.idestadoeliminado',1)
-        ->whereIn('cvasignacioncapital.idtipooperacion',[1,2,4]) // 1: Deposito, 2: Retiro, 4: Dep. Asignación
+        ->where('cvasignacioncapital.idtipooperacion',4) // 4: Dep. Asignación
         ->where('cvasignacioncapital.idtipodestino',2) // banco
         ->where($where)
         ->get();
@@ -1993,20 +1993,20 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
 
     $saldos_operaciones_efectivo_validacion_existe = DB::table('cvasignacioncapital')
         ->where('cvasignacioncapital.idestadoeliminado',1)
-        ->whereIn('cvasignacioncapital.idtipooperacion',[1,2,4]) // 1: Deposito, 2: Retiro, 4: Dep. Asignación
+        ->where('cvasignacioncapital.idtipooperacion',4) // 4: Dep. Asignación
         ->where('cvasignacioncapital.idtipodestino',3) // banco
         ->where($where)
         ->exists();
     $saldos_operaciones_efectivo_validacion_cantidad = DB::table('cvasignacioncapital')
         ->where('cvasignacioncapital.idestadoeliminado',1)
-        ->whereIn('cvasignacioncapital.idtipooperacion',[1,2,4]) // 1: Deposito, 2: Retiro, 4: Dep. Asignación
+        ->where('cvasignacioncapital.idtipooperacion',4) // 4: Dep. Asignación
         ->where('cvasignacioncapital.idtipodestino',3) // banco
         ->where('cvasignacioncapital.validar_estado',0)
         ->where($where)
         ->count();
     $saldos_operaciones_efectivo_validacion_recepcionado = DB::table('cvasignacioncapital')
         ->where('cvasignacioncapital.idestadoeliminado',1)
-        ->whereIn('cvasignacioncapital.idtipooperacion',[1,2,4]) // 1: Deposito, 2: Retiro, 4: Dep. Asignación
+        ->where('cvasignacioncapital.idtipooperacion',4) // 4: Dep. Asignación
         ->where('cvasignacioncapital.idtipodestino',3) // banco
         ->where('cvasignacioncapital.idresponsable_recfinal',0)
         ->where($where)

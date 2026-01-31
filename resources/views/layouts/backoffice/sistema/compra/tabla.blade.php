@@ -21,6 +21,8 @@
                                         style="font-size: 15px; background-color: #FFBD81 !important;"
                                         @if(!$apertura_caja)
                                             onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Falta aperturar caja.')}}', size: 'modal-sm' })"
+                                        @elseif($arqueocaja)
+                                            onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Ya esta arqueado la caja!!')}}', size: 'modal-sm' })"
                                         @else
                                             onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/compraventa/create?view=create_compra')}}'})"
                                         @endif
@@ -129,6 +131,8 @@
                                     <button type="button" class="btn btn-success"
                                         @if(!$apertura_caja)
                                             onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Falta aperturar caja.')}}', size: 'modal-sm' })"
+                                        @elseif($arqueocaja)
+                                            onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Ya esta arqueado la caja!!')}}', size: 'modal-sm' })"
                                         @else
                                             onclick="validar_editcompra()"
                                         @endif
@@ -138,6 +142,8 @@
                                     <button type="button" class="btn btn-danger"
                                         @if(!$apertura_caja)
                                             onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Falta aperturar caja.')}}', size: 'modal-sm' })"
+                                        @elseif($arqueocaja)
+                                            onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Ya esta arqueado la caja!!')}}', size: 'modal-sm' })"
                                         @else
                                             onclick="eliminar_compra()"
                                         @endif

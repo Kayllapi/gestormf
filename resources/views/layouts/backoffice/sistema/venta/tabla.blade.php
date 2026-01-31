@@ -134,6 +134,8 @@
                                         class="btn btn-primary"
                                         @if(!$apertura_caja)
                                             onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Falta aperturar caja.')}}', size: 'modal-sm' })"
+                                        @elseif($arqueocaja)
+                                            onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Ya esta arqueado la caja!!')}}', size: 'modal-sm' })"
                                         @else
                                             onclick="create_venta()"
                                         @endif
@@ -238,6 +240,8 @@
                                     <button type="button" class="btn btn-danger"
                                         @if(!$apertura_caja)
                                             onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Falta aperturar caja.')}}', size: 'modal-sm' })"
+                                        @elseif($arqueocaja)
+                                            onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Ya esta arqueado la caja!!')}}', size: 'modal-sm' })"
                                         @else
                                             onclick="eliminar_venta()"
                                         @endif
@@ -247,6 +251,8 @@
                                     <button type="button" class="btn btn-warning" style="background-color: #F9F3B5 !important;"
                                         @if(!$apertura_caja)
                                             onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Falta aperturar caja.')}}', size: 'modal-sm' })"
+                                        @elseif($arqueocaja)
+                                            onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Ya esta arqueado la caja!!')}}', size: 'modal-sm' })"
                                         @else
                                             onclick="vaucher_venta()"
                                         @endif

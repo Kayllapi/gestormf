@@ -12,6 +12,14 @@
 
 <div class="modal-body">
   <div class="row">
+      @if($arqueocaja)
+        <div class="modal-body" style="position: absolute; z-index: 100;">
+          <div class="alert bg-danger" style="color: #c31717 !important; background-color: #fde1e2 !important; height: 110px;">
+          <i class="fa fa-warning" style="font-size: 35px;color: #c31717;"></i> <br>
+          Ya esta arqueado la caja!!
+          </div>
+        </div>
+      @endif
       <div class="col-sm-12">
         <div class="card">
           <div class="card-body p-2" id="form-result-giro">

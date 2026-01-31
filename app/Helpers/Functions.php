@@ -1239,6 +1239,11 @@ function cvapertura($idagencia){
         ->first();
     return $apertura_caja;
 }
+function cvarqueocaja($idagencia){
+    $datenow = now()->format('Y-m-d');
+    $arqueocaja = DB::table('cvarqueocaja')->where('idagencia',$idagencia)->where('corte', $datenow)->first();
+    return $arqueocaja;
+}
 
 function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
     $agencia = DB::table('tienda')->whereId($idagencia)->first();

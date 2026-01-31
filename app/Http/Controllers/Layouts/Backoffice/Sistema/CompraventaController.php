@@ -15,21 +15,16 @@ class CompraventaController extends Controller
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
         $agencias = DB::table('tienda')->get();
         $apertura_caja = cvapertura($idtienda);
+        $arqueocaja = cvarqueocaja($idtienda);
 
-        // if (!$apertura_caja) {
-        //     return view('app/nuevosistema/mensajeapertura',[
-        //         'tienda' => $tienda,
-        //         'mensaje' => 'Falta aperturar caja.',
-        //     ]);
-        // } else {
-            if(request('view') == 'tabla'){
-                return view(sistema_view().'/compraventa/tabla', compact(
-                    'tienda',
-                    'agencias',
-                    'apertura_caja',
-                ));
-            }
-        // }
+        if(request('view') == 'tabla'){
+            return view(sistema_view().'/compraventa/tabla', compact(
+                'tienda',
+                'agencias',
+                'apertura_caja',
+                'arqueocaja'
+            ));
+        }
     }
 
     public function create(Request $request,$idtienda)

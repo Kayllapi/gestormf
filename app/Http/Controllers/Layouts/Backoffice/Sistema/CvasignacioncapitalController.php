@@ -17,13 +17,13 @@ class CvasignacioncapitalController extends Controller
     }
     public function index(Request $request,$idtienda)
     {
-        //$request->user()->authorizeRoles($request->path(),$idtienda);
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
+        $arqueocaja = cvarqueocaja($idtienda);
       
         if($request->input('view') == 'tabla'){
-            
             return view(sistema_view().'/cvasignacioncapital/tabla',[
-              'tienda' => $tienda
+              'tienda' => $tienda,
+              'arqueocaja' => $arqueocaja
             ]);
         }
             

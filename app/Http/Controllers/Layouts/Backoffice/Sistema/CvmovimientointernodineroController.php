@@ -1343,7 +1343,6 @@ class CvmovimientointernodineroController extends Controller
 
                 if($ret_reservacf_caja_total && $ret_caja_reservacf_total){
                     $co = cvconsolidadooperaciones($tienda,$arqueo->idagencia,$arqueo->corte);
-                    dump($co['saldos_caja'], $co['arqueo_caja']);
                     DB::table('cvarqueocaja')->where('id',$arqueo->id)->update([
                         'ingresoyegresocaja_ingreso_ventas' => $co['ingresoyegresocaja_ingreso_cvventa'],
                         'ingresoyegresocaja_ingreso_incrementocapital' => $co['ingresoyegresocaja_ingreso_incrementocapital'],
@@ -1420,6 +1419,10 @@ class CvmovimientointernodineroController extends Controller
                         'resultado' => $co['resultado'],
 
                         'idcvmovimientointernodinero_cierre' => $id,
+                    ]);
+
+                    DB::table('cvmovimientointernodinero')->whereId($id)->update([
+                        'idcvarqueocaja_cierre' => $arqueo->id,
                     ]);
                 }
             }

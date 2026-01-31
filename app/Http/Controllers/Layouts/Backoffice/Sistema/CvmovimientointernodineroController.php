@@ -316,6 +316,20 @@ class CvmovimientointernodineroController extends Controller
             ];
             $this->validate($request,$rules,$messages);
 
+            if($request->idfuenteretiro_retiro3 == 8){
+                $datenow = now()->format('Y-m-d');
+                $tienda = DB::table('tienda')->whereId(user_permiso()->idtienda)->first();
+                $co = cvconsolidadooperaciones($tienda,user_permiso()->idtienda,$datenow);
+
+                if ($request->monto_retiro3 < $co['saldos_caja']) {
+                    return response()->json([
+                        'resultado' => 'ERROR',
+                        'mensaje'   => 'El monto ingresado debe ser igual o mayor al monto de ' . $co['saldos_caja']
+                    ]);
+                }
+            }
+
+
             $dt = DB::table('cvmovimientointernodinero')
                 ->where('idtienda',user_permiso()->idtienda)
                 ->where('idfuenteretiro', $request->idfuenteretiro_retiro3)

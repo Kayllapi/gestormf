@@ -2316,13 +2316,21 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
         $where8[] = ['cvventa.idtienda',$idagencia];
     }
     if($fechacorte!=''){
+        $where1[] = ['credito_cobranzacuota.fecharegistro','>=',$fechacorte.' 00:00:00'];
         $where1[] = ['credito_cobranzacuota.fecharegistro','<=',$fechacorte.' 23:59:59'];
+        $where2[] = ['credito_formapago.fechapago','>=',$fechacorte.' 00:00:00'];
         $where2[] = ['credito_formapago.fechapago','<=',$fechacorte.' 23:59:59'];
+        $where3[] = ['cvasignacioncapital.fecharegistro','>=',$fechacorte.' 00:00:00'];
         $where3[] = ['cvasignacioncapital.fecharegistro','<=',$fechacorte.' 23:59:59'];
+        $where4[] = ['cvmovimientointernodinero.fecharegistro','>=',$fechacorte.' 00:00:00'];
         $where4[] = ['cvmovimientointernodinero.fecharegistro','<=',$fechacorte.' 23:59:59'];
+        $where5[] = ['cvgastoadministrativooperativo.fecharegistro','>=',$fechacorte.' 00:00:00'];
         $where5[] = ['cvgastoadministrativooperativo.fecharegistro','<=',$fechacorte.' 23:59:59'];
+        $where6[] = ['cvingresoextraordinario.fecharegistro','>=',$fechacorte.' 00:00:00'];
         $where6[] = ['cvingresoextraordinario.fecharegistro','<=',$fechacorte.' 23:59:59'];
+        $where7[] = ['cvcompra.fecharegistro','>=',$fechacorte.' 00:00:00'];
         $where7[] = ['cvcompra.fecharegistro','<=',$fechacorte.' 23:59:59'];
+        $where8[] = ['cvventa.fecharegistro','>=',$fechacorte.' 00:00:00'];
         $where8[] = ['cvventa.fecharegistro','<=',$fechacorte.' 23:59:59'];
     }
 
@@ -2452,12 +2460,19 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
         $where6[] = ['cvcompra.idtienda',$idagencia];
     }
     if($fechacorte!=''){
+        $where[] = ['cvasignacioncapital.fecharegistro','>=',$fechacorte.' 00:00:00'];
         $where[] = ['cvasignacioncapital.fecharegistro','<=',$fechacorte.' 23:59:59'];
+        $where1[] = ['credito_cobranzacuota.fecharegistro','>=',$fechacorte.' 00:00:00'];
         $where1[] = ['credito_cobranzacuota.fecharegistro','<=',$fechacorte.' 23:59:59'];
+        $where2[] = ['cvingresoextraordinario.fecharegistro','>=',$fechacorte.' 00:00:00'];
         $where2[] = ['cvingresoextraordinario.fecharegistro','<=',$fechacorte.' 23:59:59'];
+        $where3[] = ['credito_formapago.fechapago','>=',$fechacorte.' 00:00:00'];
         $where3[] = ['credito_formapago.fechapago','<=',$fechacorte.' 23:59:59'];
+        $where4[] = ['cvgastoadministrativooperativo.fecharegistro','>=',$fechacorte.' 00:00:00'];
         $where4[] = ['cvgastoadministrativooperativo.fecharegistro','<=',$fechacorte.' 23:59:59'];
+        $where5[] = ['cvventa.fecharegistro','>=',$fechacorte.' 00:00:00'];
         $where5[] = ['cvventa.fecharegistro','<=',$fechacorte.' 23:59:59'];
+        $where6[] = ['cvcompra.fecharegistro','>=',$fechacorte.' 00:00:00'];
         $where6[] = ['cvcompra.fecharegistro','<=',$fechacorte.' 23:59:59'];
     }
 
@@ -2614,8 +2629,11 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
         $where12[] = ['cvventa.idtienda',$idagencia];
     }
     if($fechacorte!=''){
+        $where10[] = ['cvcompra.fecharegistro','>=',$fechacorte.' 00:00:00'];
         $where10[] = ['cvcompra.fecharegistro','<=',$fechacorte.' 23:59:59'];
+        $where11[] = ['cvventa.fecharegistro','>=',$fechacorte.' 00:00:00'];
         $where11[] = ['cvventa.fecharegistro','<=',$fechacorte.' 23:59:59'];
+        $where12[] = ['cvventa.fecharegistro','>=',$fechacorte.' 00:00:00'];
         $where12[] = ['cvventa.fecharegistro','<=',$fechacorte.' 23:59:59'];
     }
     $ingresoyegresobanco_egreso_cvcompra_saldocapital = DB::table('cvcompra')
@@ -2638,6 +2656,10 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
         ->where($where12)
         ->sum('cvcompra.valorcompra');
     
+    // dd($ingresoyegresocaja_egreso_cvcompra_saldocapital,
+    //     $ingresoyegresobanco_egreso_cvcompra_saldocapital,
+    //     $ingresoyegresocaja_ingreso_cvventa_saldocapital,
+    //     $ingresoyegresobanco_ingreso_cvventa_saldocapital);
     $saldos_bienescomprados = $ingresoyegresocaja_egreso_cvcompra_saldocapital+
         $ingresoyegresobanco_egreso_cvcompra_saldocapital-
         $ingresoyegresocaja_ingreso_cvventa_saldocapital-
@@ -2678,6 +2700,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
         $where[] = ['cvasignacioncapital.idtienda',$idagencia];
     }
     if($fechacorte!=''){
+        $where[] = ['cvasignacioncapital.fecharegistro','>=',$fechacorte.' 00:00:00'];
         $where[] = ['cvasignacioncapital.fecharegistro','<=',$fechacorte.' 23:59:59'];
     }
     /*$ret_correc = DB::table('asignacioncapital')

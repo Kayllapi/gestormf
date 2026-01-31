@@ -11,6 +11,7 @@
           lista_movimientointernodinero_deposito3();
           load_nuevo_movimientointernodinero_deposito3();
           $('#modal-close-movimientointernodinero-valid').click();
+          pagina({route:'{{url('backoffice/'.$tienda->id.'/cvmovimientointernodinero?view=tabla')}}',result:'#cuerposistema'});
       },this)">
     <div class="modal-header">
         <h5 class="modal-title">Confirmar</h5>

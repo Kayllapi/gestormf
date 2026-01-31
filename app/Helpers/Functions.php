@@ -1978,7 +1978,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
     $saldos_operaciones_efectivo_validacion = DB::table('cvasignacioncapital')
         ->where('cvasignacioncapital.idestadoeliminado',1)
         ->where('cvasignacioncapital.idtipooperacion',4) // 4: Dep. Asignación
-        ->where('cvasignacioncapital.idtipodestino',2) // banco
+        ->where('cvasignacioncapital.idtipodestino',3) // banco
         ->where($where)
         ->get();
     foreach($saldos_operaciones_efectivo_validacion as $value){

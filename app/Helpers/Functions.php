@@ -1979,6 +1979,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
         ->where('cvasignacioncapital.idestadoeliminado',1)
         ->where('cvasignacioncapital.idtipooperacion',4) // 4: Dep. Asignación
         ->where('cvasignacioncapital.idtipodestino',3) // banco
+        ->where('cvasignacioncapital.idresponsable_recfinal', '<>', 0)
         ->where($where)
         ->get();
     foreach($saldos_operaciones_efectivo_validacion as $value){
@@ -1995,6 +1996,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
         ->where('cvasignacioncapital.idestadoeliminado',1)
         ->where('cvasignacioncapital.idtipooperacion',4) // 4: Dep. Asignación
         ->where('cvasignacioncapital.idtipodestino',3) // banco
+        ->where('cvasignacioncapital.idresponsable_recfinal', '<>', 0)
         ->where($where)
         ->exists();
     $saldos_operaciones_efectivo_validacion_cantidad = DB::table('cvasignacioncapital')
@@ -2002,6 +2004,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
         ->where('cvasignacioncapital.idtipooperacion',4) // 4: Dep. Asignación
         ->where('cvasignacioncapital.idtipodestino',3) // banco
         ->where('cvasignacioncapital.validar_estado',0)
+        ->where('cvasignacioncapital.idresponsable_recfinal', '<>', 0)
         ->where($where)
         ->count();
     $saldos_operaciones_efectivo_validacion_recepcionado = DB::table('cvasignacioncapital')
@@ -2009,6 +2012,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
         ->where('cvasignacioncapital.idtipooperacion',4) // 4: Dep. Asignación
         ->where('cvasignacioncapital.idtipodestino',3) // banco
         ->where('cvasignacioncapital.idresponsable_recfinal',0)
+        ->where('cvasignacioncapital.idresponsable_recfinal', '<>', 0)
         ->where($where)
         ->count();
     // ===== fin validaciones en cvasignacioncapital =====

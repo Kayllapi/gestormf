@@ -2071,6 +2071,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
         ->where('cvmovimientointernodinero.idestadoeliminado',1)
         ->where('cvmovimientointernodinero.idfuenteretiro',6)
         ->where('cvm.idresponsable','<>',0)
+        ->where('cvmovimientointernodinero.idcvarqueocaja_cierre', '<>', 0)
         ->where($where)
         ->select(
             'cvmovimientointernodinero.*',
@@ -2135,6 +2136,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
         ->where('cvmovimientointernodinero.idestadoeliminado',1)
         ->where('cvmovimientointernodinero.idfuenteretiro',8)
         ->where('cvm.idresponsable','<>',0)
+        ->where('cvmovimientointernodinero.idcvarqueocaja_cierre', '<>', 0)
         ->where($where)
         ->sum('cvmovimientointernodinero.monto');
     
@@ -2232,6 +2234,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
             ->where('cvmovimientointernodinero.idtipomovimientointerno',3)
             ->where('cvmovimientointernodinero.idbanco',$valuebancos->id)
             ->where('cvm.idresponsable','<>',0)
+            ->where('cvmovimientointernodinero.idcvarqueocaja_cierre', '<>', 0)
             ->where($where)
             ->sum('cvmovimientointernodinero.monto');
         $movimientointernodineros_sum = DB::table('cvmovimientointernodinero')
@@ -2507,6 +2510,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
         ->where('cvasignacioncapital.idestadoeliminado',1)
         ->where('cvasignacioncapital.idresponsable_recfinal', '<>', 0)
         ->whereIn('cvasignacioncapital.idtipooperacion',[1,4])
+        ->where('cvasignacioncapital.idcvarqueocaja_cierre', '<>', 0)
         ->where($where)
         ->sum('cvasignacioncapital.monto');
     $asignacioncapital_retiro_reserva = DB::table('cvasignacioncapital')
@@ -2514,6 +2518,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
         ->where('cvasignacioncapital.idestadoeliminado',1)
         ->where('cvasignacioncapital.idresponsable_recfinal', '<>', 0)
         ->where('cvasignacioncapital.idtipooperacion',2)
+        ->where('cvasignacioncapital.idcvarqueocaja_cierre', '<>', 0)
         ->where($where)
         ->sum('cvasignacioncapital.monto');
     $saldos_reserva = $asignacioncapital_deposito_reserva-

@@ -79,6 +79,11 @@ class GarantiaremateagenciaController extends Controller
               ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
               ->where('credito.estado','DESEMBOLSADO')
               ->where('credito.idestadocredito',1)
+              ->whereNotIn('credito.id', function ($query) {
+                  $query->select('idcredito')
+                        ->from('credito_garantia')
+                        ->where('estado_listagarantia', '<>', 0);
+              })
               ->where($where)
               ->select(
                   'credito.*',

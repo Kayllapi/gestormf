@@ -3,3 +3,6 @@
 [24-Jan-2026 00:32:30 UTC] PHP Parse error:  Unclosed '(' in /home/cqqqwjzl/sistema.transportessebas.com/app/Helpers/Functions.php on line 307
 [25-Jan-2026 16:09:21 America/Bogota] PHP Fatal error:  Cannot declare class App\Http\Controllers\Layouts\Backoffice\Sistema\CompraventadminController, because the name is already in use in /home/cqqqwjzl/sistema.transportessebas.com/app/Http/Controllers/Layouts/Backoffice/Sistema/CompraventaadminController.php on line 0
 [27-Jan-2026 16:53:11 UTC] PHP Parse error:  Unclosed '(' in /home/cqqqwjzl/sistema.transportessebas.com/app/Helpers/Functions.php on line 1780
+[02-Feb-2026 16:51:32 UTC] PHP Parse error:  syntax error, unexpected variable "$saldos_caja" in /home/cqqqwjzl/sistema.transportessebas.com/app/Helpers/Functions.php on line 2581
+[02-Feb-2026 16:51:50 UTC] PHP Parse error:  syntax error, unexpected variable "$saldos_caja" in /home/cqqqwjzl/sistema.transportessebas.com/app/Helpers/Functions.php on line 2581
+[02-Feb-2026 16:52:07 UTC] PHP Parse error:  syntax error, unexpected variable "$saldos_caja" in /home/cqqqwjzl/sistema.transportessebas.com/app/Helpers/Functions.php on line 2581

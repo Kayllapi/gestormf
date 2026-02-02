@@ -1244,6 +1244,27 @@ function cvarqueocaja($idagencia){
     $arqueocaja = DB::table('cvarqueocaja')->where('idagencia',$idagencia)->where('corte', $datenow)->first();
     return $arqueocaja;
 }
+function updatearqueocaja($id){
+    $arqueocaja = DB::table('cvarqueocaja')->where('id',$id)->first();
+    DB::table('cvasignacioncapital')->where('idcvarqueocaja_cierre',0)->update([
+        'idcvarqueocaja_cierre' => $arqueocaja->id,
+    ]);
+    DB::table('cvcompra')->where('idcvarqueocaja_cierre',0)->update([
+        'idcvarqueocaja_cierre' => $arqueocaja->id,
+    ]);
+    DB::table('cvventa')->where('idcvarqueocaja_cierre',0)->update([
+        'idcvarqueocaja_cierre' => $arqueocaja->id,
+    ]);
+    DB::table('cvgastosadministrativooperativo')->where('idcvarqueocaja_cierre',0)->update([
+        'idcvarqueocaja_cierre' => $arqueocaja->id,
+    ]);
+    DB::table('cvingresoextraordinario')->where('idcvarqueocaja_cierre',0)->update([
+        'idcvarqueocaja_cierre' => $arqueocaja->id,
+    ]);
+    DB::table('cvmovimientointernodinero')->where('idcvarqueocaja_cierre',0)->update([
+        'idcvarqueocaja_cierre' => $arqueocaja->id,
+    ]);
+}
 
 function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
     $agencia = DB::table('tienda')->whereId($idagencia)->first();

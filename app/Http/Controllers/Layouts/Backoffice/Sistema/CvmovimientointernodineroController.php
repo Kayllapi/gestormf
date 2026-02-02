@@ -1437,9 +1437,10 @@ class CvmovimientointernodineroController extends Controller
                         'idcvmovimientointernodinero_cierre' => $id,
                     ]);
 
-                    DB::table('cvmovimientointernodinero')->whereId($id)->update([
-                        'idcvarqueocaja_cierre' => $arqueo->id,
-                    ]);
+                    // DB::table('cvmovimientointernodinero')->whereId($id)->update([
+                    //     'idcvarqueocaja_cierre' => $arqueo->id,
+                    // ]);
+                    updatearqueocaja($arqueo->id);
                 }
             }
 

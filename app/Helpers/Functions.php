@@ -2475,9 +2475,9 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
         $where3[] = ['credito_formapago.fechapago','<=',$fechacorte.' 23:59:59'];
         // $where4[] = ['cvgastoadministrativooperativo.fecharegistro','>=',$fechacorte.' 00:00:00'];
         $where4[] = ['cvgastoadministrativooperativo.fecharegistro','<=',$fechacorte.' 23:59:59'];
-        // $where5[] = ['cvventa.fecharegistro','>=',$fechacorte.' 00:00:00'];
+        $where5[] = ['cvventa.fecharegistro','>=',$fechacorte.' 00:00:00'];
         $where5[] = ['cvventa.fecharegistro','<=',$fechacorte.' 23:59:59'];
-        // $where6[] = ['cvcompra.fecharegistro','>=',$fechacorte.' 00:00:00'];
+        $where6[] = ['cvcompra.fecharegistro','>=',$fechacorte.' 00:00:00'];
         $where6[] = ['cvcompra.fecharegistro','<=',$fechacorte.' 23:59:59'];
     }
 
@@ -2568,12 +2568,14 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
     $ingresoyegresocaja_ingreso_cvventa_saldocapital = DB::table('cvventa')
         ->where('cvventa.idestadoeliminado',1)
         ->where('cvventa.venta_idformapago', 1) // caja
+        ->where('cvventa.idcvarqueocaja_cierre', '<>', 0)
         ->where($where5)
         ->sum('cvventa.venta_montoventa');
 
     $ingresoyegresocaja_egreso_cvcompra_saldocapital = DB::table('cvcompra')
         ->where('cvcompra.idestadoeliminado',1)
         ->where('cvcompra.compra_idformapago', 1) // caja
+        ->where('cvcompra.idcvarqueocaja_cierre', '<>', 0)
         ->where($where6)
         ->sum('cvcompra.valorcompra');
 

@@ -11,16 +11,16 @@
             <table class="table table-striped table-hover" id="table-lista-credito">
               <thead class="table-dark">
                 <tr>
-                  <td>CLIENTE</td>
-                  <td>DNI</td>
-                  <td>TIPO DE GARANTIA</td>
-                  <td>DESCRIPCIÓN</td>
-                  <td>MODELO</td>
-                  <td>VALOR COMERCIAL</td>
-                  <td>ACCESORIOS</td>
-                  <td>COBERTURA</td>
-                  <td>COLOR</td>
-                  <td>CODIGO DE GARANTIA</td>
+                  <th>CLIENTE</th>
+                  <th>RUC/DNI/CE</th>
+                  <th>TIPO DE GARANTIA</th>
+                  <th>DESCRIPCIÓN</th>
+                  <th>MODELO</th>
+                  <th>VALOR COMERCIAL</th>
+                  <th>ACCESORIOS</th>
+                  <th>COBERTURA</th>
+                  <th>COLOR</th>
+                  <th>CODIGO DE GARANTIA</th>
                 </tr>
               </thead>
               <tbody>

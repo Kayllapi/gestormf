@@ -263,7 +263,7 @@ $name_table = generateRandomString();
                       @elseif($value['type']=='check')
                       {
                           render: function ( data, type, full, meta ) {
-                              return '<div class="form-check"><input class="form-check-input" type="checkbox" id="check_seleccionar{{$check_id}}" data="'+full.{{$value['data']}}+'"></div>';
+                              return '<label class="chk"><input type="checkbox" id="check_seleccionar{{$check_id}}" data="'+full.{{$value['data']}}+'"><span class="checkmark"></span></label>';
                           },
                           className: 'table-type-check',
                           orderable: false,

@@ -69,6 +69,7 @@ class GarantiaremateagenciaController extends Controller
               ->join('forma_pago_credito','forma_pago_credito.id','credito.idforma_pago_credito')
               ->join('users as cliente','cliente.id','credito.idcliente')
               ->join('ubigeo','ubigeo.id','cliente.idubigeo')
+              //->join('credito_garantia','credito_garantia.idcliente','credito.idcliente')
               ->leftjoin('users as cajero','cajero.id','credito.idcajero')
               ->leftjoin('users as asesor','asesor.id','credito.idasesor')
               ->leftjoin('users as administrador','administrador.id','credito.idadministrador')

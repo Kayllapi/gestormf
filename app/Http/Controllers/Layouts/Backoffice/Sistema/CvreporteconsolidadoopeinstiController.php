@@ -49,17 +49,13 @@ class CvreporteconsolidadoopeinstiController extends Controller
             $date->subDay(); // Subtracts 1 day
             $co_anterior = DB::table('cvarqueocaja')
                 ->where('idagencia',$request->idagencia)
-                ->where('corte',$date->format('Y-m-d'))
-                ->first();
-            $data_actual = DB::table('cvarqueocaja')
-                ->where('idagencia',$request->idagencia)
-                ->where('corte',$request->corte)
+                // ->where('corte',$date->format('Y-m-d'))
+                ->orderByDesc('id')
                 ->first();
 
             $pdf = PDF::loadView(sistema_view().'/cvreporteconsolidadoopeinsti/pdf_reporte', compact(
                 'co_actual',
                 'co_anterior',
-                'data_actual',
             ));
             $pdf->setPaper('A4', 'landscape');
             return $pdf->stream('REPORTE_CONSOLIDADO_OPE_INST.pdf');

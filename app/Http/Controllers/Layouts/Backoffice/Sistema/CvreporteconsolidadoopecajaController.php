@@ -319,7 +319,8 @@ class CvreporteconsolidadoopecajaController extends Controller
           //$co_anterior = consolidadooperaciones($tienda,$request->idagencia,$date->format('Y-m-d'));
           $co_anterior = DB::table('cvarqueocaja')
               ->where('idagencia',$request->idagencia)
-              ->where('corte',$date->format('Y-m-d'))
+              // ->where('corte',$date->format('Y-m-d'))
+              ->orderByDesc('id')
               ->first();
           $data_actual = DB::table('cvarqueocaja')
               ->where('idagencia',$request->idagencia)

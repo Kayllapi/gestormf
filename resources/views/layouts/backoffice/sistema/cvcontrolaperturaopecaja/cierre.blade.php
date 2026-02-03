@@ -43,7 +43,11 @@
       @endif
     </div>
     <div class="modal-footer">
+        @if($estado_cierre_institucional=='PENDIENTE')
+        @elseif($estado_cierre_institucional=='NOEXISTE')
+        @else
         <button type="submit" class="btn btn-primary"><i class="fa-solid fa-check"></i> Validar</button>
+        @endif
     </div>
 </form>  
 <script>

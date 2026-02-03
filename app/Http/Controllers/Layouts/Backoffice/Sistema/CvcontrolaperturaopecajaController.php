@@ -84,7 +84,7 @@ class CvcontrolaperturaopecajaController extends Controller
             
               $estado_apertura = 'SIN APERTURA';
               $efectivo_apertura = 0;
-              $fechahora_apertura = '';
+              $fechahora_apertura = '-.-';
               if($ret_reservacf_caja_total){
                   $estado_apertura = 'CON APERTURA';
                   $efectivo_apertura = $ret_reservacf_caja_total->monto;
@@ -97,7 +97,7 @@ class CvcontrolaperturaopecajaController extends Controller
                   ->first();
             
               $efectivo_arqueocaja = 0;
-              $fechahora_arqueocaja = '';
+              $fechahora_arqueocaja = '-.-';
               if($arqueocaja && $ret_reservacf_caja_total){
                   $efectivo_arqueocaja = $arqueocaja->total;
                   $fechahora_arqueocaja = date_format(date_create($arqueocaja->fecharegistro),"d-m-Y h:i:s A");
@@ -118,9 +118,9 @@ class CvcontrolaperturaopecajaController extends Controller
                   )
                   ->first();
             
-              $fechahora_cierre = '';
-              $responsable_cierre = '';
-              $usuario_cierre = '';
+              $fechahora_cierre = '-.-';
+              $responsable_cierre = '-.-';
+              $usuario_cierre = '-.-';
               if($ret_caja_reservacf_total && $ret_reservacf_caja_total){
                   $responsable_cierre = $ret_caja_reservacf_total->nombrecompleto_responsable;
                   $usuario_cierre = $ret_caja_reservacf_total->usuario_responsable;
@@ -349,12 +349,12 @@ class CvcontrolaperturaopecajaController extends Controller
                     ->where('cvmovimientointernodinero.idtienda',$value->id)
                     ->first();
 
-                $estado_apertura = 'NO ABIERTO';
+                $estado_apertura = 'SIN APERTURA';
                 $id_apertura = 0;
                 $efectivo_apertura = 0;
                 $fechahora_apertura = '';
                 if($ret_reservacf_caja_total){
-                    $estado_apertura = 'ABIERTO';   
+                    $estado_apertura = 'CON APERTURA';   
                     $id_apertura = $ret_reservacf_caja_total->id; 
                     $efectivo_apertura = $ret_reservacf_caja_total->monto;
                     $fechahora_apertura = $ret_reservacf_caja_total->fecharegistro;    
@@ -406,7 +406,7 @@ class CvcontrolaperturaopecajaController extends Controller
                     $estado_cierre = 'CERRADA';
                 }
 
-                if($ret_caja_reservacf_total && $arqueocaja && $ret_reservacf_caja_total){
+                // if($ret_caja_reservacf_total && $arqueocaja && $ret_reservacf_caja_total){
 
                 DB::table('cvcierre_insitucionaldetalle')->insert([
                     'idagencia' => $value->id,
@@ -427,9 +427,9 @@ class CvcontrolaperturaopecajaController extends Controller
                     'idestado' => 1
                 ]); 
                   
-                }
+                // }
             }
-          
+
             /*DB::table('movimientointernodinero')
                 ->where('movimientointernodinero.idestadoeliminado',1)
                 ->whereIn('movimientointernodinero.idfuenteretiro',[6,8])

@@ -166,8 +166,10 @@ class CvcontrolaperturaopecajaController extends Controller
             $cierre_insitucional = DB::table('cvcierre_insitucional')
                 ->where('cvcierre_insitucional.fechacorte',$request->fecha)
                 ->first();
-            $estado_cierre_institucional = 'PENDIENTE';
-            if(!$cierre_insitucional){
+            $estado_cierre_institucional = '';
+            if($cierre_insitucional){
+                $estado_cierre_institucional = 'EXISTE';
+            }else{
                 $estado_cierre_institucional = 'NOEXISTE';
             }
 

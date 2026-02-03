@@ -85,17 +85,13 @@
             $(this).addClass('selected');
         });
 
-        if(res.estado_cierre_institucional == 'PENDIENTE'){
-          $('#estado_cierre_institucional').addClass('btn btn-warning mb-1');
-          $('#estado_cierre_institucional').text('SIN CIERRE INSTI.');
+        if(res.estado_cierre_institucional == 'EXISTE'){
+          $('#estado_cierre_institucional').addClass('btn btn-success mb-1');
+          $('#estado_cierre_institucional').text('CON CIERRE INSTI.');
           $('#estado_cierre_institucional').removeClass('d-none');
         }else if(res.estado_cierre_institucional == 'NOEXISTE'){
           $('#estado_cierre_institucional').addClass('btn btn-warning mb-1');
           $('#estado_cierre_institucional').text('SIN CIERRE INSTI.');
-          $('#estado_cierre_institucional').removeClass('d-none');
-        }else{
-          $('#estado_cierre_institucional').addClass('btn btn-success mb-1');
-          $('#estado_cierre_institucional').text('CON CIERRE INSTI.');
           $('#estado_cierre_institucional').removeClass('d-none');
         }
       }

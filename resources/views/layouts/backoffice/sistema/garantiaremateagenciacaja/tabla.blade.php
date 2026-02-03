@@ -37,7 +37,7 @@
                               <div class="row">
                                 <label for="fecha_fin" class="col-sm-3 col-form-label">F. CRÉDITO</label>
                                 <div class="col-sm-9">
-                                    <select class="form-control" id="idformacredito">
+                                    <select class="form-control" id="idformacredito" disabled>
                                       <option></option>
                                       <option value="0" selected>TODO</option>
                                       <option value="CP">CP</option>

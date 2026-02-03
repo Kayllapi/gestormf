@@ -2,7 +2,7 @@
   <h5 class="modal-title">
     Garantias con créditos vigentes y prendarios cancelados por recoger</h5>
   
-  <button type="button" class="btn-close" onclick="ir_inicio()" style="font-size: 20px;"></button>
+  <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>
 <div class="modal-body">
   <div class="row">

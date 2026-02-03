@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GARANTÍAS CON CRÉDITOS VIGENTES Y PRENDARIOS CANCELADOS POR RECOGER</title>
+    <title>GARANTÍAS (PRENDARIA Y REGULAR) CON CRÉDITOS VIGENTES Y PRENDARIAS CANCELADOS POR RECOGER</title>
     <style>
       *{
         font-family:helvetica;
@@ -124,7 +124,7 @@
   </footer>
   <main>
     <div class="container">
-      <h4 align="center">GARANTÍAS CON CRÉDITOS VIGENTES Y PRENDARIOS CANCELADOS POR RECOGER</h4>
+      <h4 align="center">GARANTÍAS (PRENDARIA Y REGULAR) CON CRÉDITOS VIGENTES Y PRENDARIAS CANCELADOS POR RECOGER</h4>
           <div style="height:35px;">
           <div style="width:400px;float:left;"> 
             <div ><b>AGENCIA: </b>{{ $agencia->nombreagencia }}  </div>
@@ -152,15 +152,14 @@
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Saldo de Deuda (S/.)</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">T. Cred.</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Apellidos y Nombres</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">DOI/RUC</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Cnta. Propio/Avalado</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">RUC/DNI/CE</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Cnta. Propio/Aval</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Cod. Garantía</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Garantía</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Serie</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Modelo</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Placa</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Estado</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Accesorio/Doc.Original</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Acc./Doc.Original</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Detalle G.</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">V. Cobertura (S/.)</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">V. Comercial (S/.)</td>
@@ -168,7 +167,7 @@
               </thead>
               <tbody>';
           
-          
+          $i = 1;
           foreach($credito_garantias as $key => $value){
         
               $cp = '';
@@ -194,22 +193,49 @@
               }
               
               $propioavalado = '';
+              $clientenombrecompleto = '';
+              $clienteidentificacion = '';
               if($value->tipo=='CLIENTE'){
                   $propioavalado = 'Propio';
+                  $clientenombrecompleto = $value->clientenombrecompleto;
+                  $clienteidentificacion = $value->clienteidentificacion;
               }
               elseif($value->tipo=='AVAL'){
                   $propioavalado = 'Avalado';
+                  $clientenombrecompleto = $value->avalnombrecompleto;
+                  $clienteidentificacion = $value->avalidentificacion;
               }
             
-              $saldodeuda = '';
+              $cronograma = select_cronograma(
+                  $value->idtienda,
+                  $value->idcredito,
+                  $value->idforma_credito,
+                  $value->modalidadproductocredito,
+                  $value->cuotas,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  'detalle_cobranza'
+              );
             
-              if($value->saldo_pendientepago>0){
-                  $saldodeuda = $value->saldo_pendientepago;
+              $saldodeuda = '';
+              $saldodeuda_valid = 0;
+            
+              if($cronograma['cuota_pendiente']>0){
+                  $saldodeuda = $cronograma['cuota_pendiente'];
+                  $saldodeuda_valid = 1;
               }else{
-                  if($value->idestadoentrega==1){
+                  if($value->idestadoentrega==1 && $value->idforma_credito==1){
                       $saldodeuda = 'X Entregar';
+                      $saldodeuda_valid = 1;
                   }
-                  elseif($value->idestadoentrega==2){
+                  elseif($value->idestadoentrega==2 && $value->idforma_credito==1){
                       $saldodeuda = 'Entregado';
                   }
               }
@@ -257,18 +283,19 @@
                   'detalle_cobranza'
               );*/
             
-              $html .= "<tr id='show_data_select' idcredito_cobranzacuota='{$value->id}'>
-                            <td>".($key+1)."</td>
+              if($saldodeuda_valid==1){
+            
+                  $html .= "<tr id='show_data_select' idcredito_cobranzacuota='{$value->id}'>
+                            <td>".($i)."</td>
                             <td>C{$value->cuentacredito}</td>
                             <td style='text-align:right'>{$saldodeuda}</td>
                             <td>{$cp}</td>
-                            <td>{$value->clientenombrecompleto}</td>
-                            <td>{$value->clienteidentificacion}</td>
+                            <td>{$clientenombrecompleto}</td>
+                            <td>{$clienteidentificacion}</td>
                             <td>{$propioavalado}</td>
                             <td>{$value->garantias_codigo}</td>
                             <td>{$value->descripcion}</td>
                             <td>{$value->garantias_serie_motor_partida}</td>
-                            <td>{$value->garantias_modelo_tipo}</td>
                             <td>{$value->garantias_placa}</td>
                             <td>{$estado}</td>
                             <td>{$value->garantias_accesorio_doc}</td>
@@ -276,6 +303,8 @@
                             <td style='text-align:right'>{$value->garantias_cobertura}</td>
                             <td style='text-align:right'>{$value->garantias_valorcomercial}</td>
                         </tr>";
+                $i++;
+              }
           }
           if(count($credito_garantias)==0){
               $html.= '<tr><td colspan="16" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';

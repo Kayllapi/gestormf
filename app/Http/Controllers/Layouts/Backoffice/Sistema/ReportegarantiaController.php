@@ -60,7 +60,7 @@ class ReporteGarantiaController extends Controller
           
           $credito_garantias = DB::table('credito_garantia')
               ->join('credito','credito.id','credito_garantia.idcredito')
-              //->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
+              ->leftJoin('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
               ->where($where)
               ->where('credito.estado','DESEMBOLSADO')
               //->whereIn('credito_garantia.idestadoentrega',[1,2])
@@ -70,13 +70,16 @@ class ReporteGarantiaController extends Controller
                   'credito_garantia.*',
                   'credito.clientenombrecompleto as clientenombrecompleto',
                   'credito.clienteidentificacion as clienteidentificacion',
+                  'credito.avalnombrecompleto as avalnombrecompleto',
+                  'credito.avalidentificacion as avalidentificacion',
                   'credito.fecha_cancelado as fecha_cancelado',
                   'credito.monto_solicitado as monto_solicitado',
                   'credito.cuenta as cuentacredito',
                   'credito.idforma_credito as idforma_credito',
                   'credito.cuotas as cuotas',
-                  'credito.saldo_pendientepago as saldo_pendientepago',
-                  //'credito_prendatario.modalidad as modalidadproductocredito',
+                  'credito.total_pendientepago as total_pendientepago',
+                  'credito.idtienda as idtienda',
+                  'credito_prendatario.modalidad as modalidadproductocredito',
               )
              ->get();
           

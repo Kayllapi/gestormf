@@ -324,7 +324,7 @@ class CvmovimientointernodineroController extends Controller
                 if ($request->monto_retiro3 < $co['saldos_caja']) {
                     return response()->json([
                         'resultado' => 'ERROR',
-                        'mensaje'   => 'El monto ingresado debe ser igual o mayor al monto de ' . $co['saldos_caja']
+                        'mensaje'   => 'El saldo contable a retirar para reserva CF es S/. ' . $co['saldos_caja']
                     ]);
                 }
             }

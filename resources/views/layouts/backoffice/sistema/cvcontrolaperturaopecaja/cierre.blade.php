@@ -20,6 +20,10 @@
         <div class="alert alert-danger">
             <b>Hay una aperturas pendientes!!</b>
         </div>
+      @elseif($estado_cierre_institucional=='PENDIENTE ARQUEO')
+        <div class="alert alert-danger">
+            <b>Hay un arqueo pendiente!!</b>
+        </div>
       @elseif($estado_cierre_institucional=='NOEXISTE')
         <div class="alert alert-danger">
             <b>No hay ninguna apertura!!</b>

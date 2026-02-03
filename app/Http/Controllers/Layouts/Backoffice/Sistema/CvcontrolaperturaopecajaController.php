@@ -159,11 +159,11 @@ class CvcontrolaperturaopecajaController extends Controller
                   ->where('cvmovimientointernodinero.idtienda',$value->id)
                   ->first();
             
-              $estado_apertura = 'NO ABIERTO';
+              $estado_apertura = 'SIN APERTURA';
               $efectivo_apertura = 0;
               $fechahora_apertura = '';
               if($ret_reservacf_caja_total){
-                  $estado_apertura = 'ABIERTO';    
+                  $estado_apertura = 'CON APERTURA';
                   $efectivo_apertura = $ret_reservacf_caja_total->monto;
                   $fechahora_apertura = date_format(date_create($ret_reservacf_caja_total->fecharegistro),"d-m-Y h:i:s A");            
               }
@@ -324,7 +324,7 @@ class CvcontrolaperturaopecajaController extends Controller
             if($valid_apertura>0 && $valid_cierre==0){
                 $estado_cierre_institucional = 'PENDIENTE';
             }elseif($valid_apertura>0 && $valid_arqueo==0){
-                $estado_cierre_institucional = 'PENDIENTE';
+                $estado_cierre_institucional = 'PENDIENTE ARQUEO';
             }elseif($valid_apertura==0){
                 $estado_cierre_institucional = 'NOEXISTE';
             }

@@ -30,19 +30,7 @@
                     </div>
                       <div class="col-sm-12 col-md-5" style="text-align: right;">
                         <div>
-                          @if($estado_cierre_institucional=='PENDIENTE')
-                            <button type="button" class="btn btn-warning mb-1" style="font-weight: bold;width: 190px;">
-                              SIN CIERRE INSTI.
-                            </button>
-                          @elseif($estado_cierre_institucional=='NOEXISTE')
-                            <button type="button" class="btn btn-warning mb-1" style="font-weight: bold;width: 190px;">
-                              SIN CIERRE INSTI.
-                            </button>
-                          @else
-                            <button type="button" class="btn btn-success mb-1" style="font-weight: bold;width: 190px;">
-                              <i class="fa-solid fa-check" style="font-weight: bold;"></i> CON CIERRE INSTI.
-                            </button>
-                          @endif
+                            <button type="button" class="d-none" id="estado_cierre_institucional" style="font-weight: bold;width: 190px;"></button>
                             <button type="button" class="btn btn-primary mb-1" onclick="cierre()" style="font-weight: bold;width: 190px;">
                               <i class="fa-solid fa-check" style="font-weight: bold;"></i> CIERRE INSTITUCIONAL
                             </button>
@@ -81,7 +69,7 @@
   
   lista_credito();
   function lista_credito(){
-    
+    $('#estado_cierre_institucional').addClass('d-none');
     $.ajax({
       url:"{{url('backoffice/0/cvcontrolaperturaopecaja/showtable')}}",
       type:'GET',
@@ -96,6 +84,22 @@
             $('tr.selected').removeClass('selected');
             $(this).addClass('selected');
         });
+
+        console.log(res.estado_cierre_institucional);
+
+        if(res.estado_cierre_institucional == 'PENDIENTE'){
+          $('#estado_cierre_institucional').addClass('btn btn-warning mb-1');
+          $('#estado_cierre_institucional').text('SIN CIERRE INSTI.');
+          $('#estado_cierre_institucional').removeClass('d-none');
+        }else if(res.estado_cierre_institucional == 'NOEXISTE'){
+          $('#estado_cierre_institucional').addClass('btn btn-warning mb-1');
+          $('#estado_cierre_institucional').text('SIN CIERRE INSTI.');
+          $('#estado_cierre_institucional').removeClass('d-none');
+        }else{
+          $('#estado_cierre_institucional').addClass('btn btn-success mb-1');
+          $('#estado_cierre_institucional').text('CON CIERRE INSTI.');
+          $('#estado_cierre_institucional').removeClass('d-none');
+        }
       }
     })
   }

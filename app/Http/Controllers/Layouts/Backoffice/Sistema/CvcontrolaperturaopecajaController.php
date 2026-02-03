@@ -21,88 +21,11 @@ class CvcontrolaperturaopecajaController extends Controller
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
       
         if($request->input('view') == 'tabla'){
-            $usuarios = DB::table('users')
-                ->join('users_permiso','users_permiso.idusers','users.id')
-                ->join('permiso','permiso.id','users_permiso.idpermiso')
-                ->whereIn('users_permiso.idpermiso',[1])
-                ->where('users_permiso.idtienda',$idtienda)
-                ->select('users.*','permiso.id as idpermiso','permiso.nombre as nombrepermiso')
-                ->get();
-          
-            $tiendas = DB::table('tienda')
-                ->orderBy('tienda.id','asc')
-                ->get();
-
-            $valid_apertura = 0;
-            $valid_arqueo = 0;
-            $valid_cierre = 0;
-            foreach($tiendas as $value){
-                $ret_reservacf_caja_total = DB::table('cvmovimientointernodinero')
-                    ->where('cvmovimientointernodinero.idestadoeliminado',1)
-                    ->where('cvmovimientointernodinero.idfuenteretiro',6)
-                    ->where('cvmovimientointernodinero.idtipomovimientointerno',5)
-                    ->where('cvmovimientointernodinero.fecharegistro','>=',$request->fecha_corte.' 00:00:00')
-                    ->where('cvmovimientointernodinero.fecharegistro','<=',$request->fecha_corte.' 23:59:59')
-                    ->where('cvmovimientointernodinero.idtienda',$value->id)
-                    ->first();
-
-                if($ret_reservacf_caja_total){
-                    $cierre_insitucionaldetalle_1 = DB::table('cvcierre_insitucionaldetalle')
-                        ->where('cvcierre_insitucionaldetalle.idaperturacaja',$ret_reservacf_caja_total->id)
-                        ->first();
-                    if(!$cierre_insitucionaldetalle_1){
-                        $valid_apertura++; 
-                    }           
-                }
-
-                $arqueocaja = DB::table('cvarqueocaja')
-                    ->where('idagencia',$value->id)
-                    ->where('corte',$request->fecha_corte)
-                    ->first();
-
-                if($arqueocaja && $ret_reservacf_caja_total){
-                    $cierre_insitucionaldetalle_2 = DB::table('cvcierre_insitucionaldetalle')
-                        ->where('cvcierre_insitucionaldetalle.idarqueocaja',$arqueocaja->id)
-                        ->first();
-                    if(!$cierre_insitucionaldetalle_2){
-                        $valid_arqueo++; 
-                    }
-                }
-
-                $ret_caja_reservacf_total = DB::table('cvmovimientointernodinero')
-                    ->where('cvmovimientointernodinero.idestadoeliminado',1)
-                    ->where('cvmovimientointernodinero.idfuenteretiro',8)
-                    ->where('cvmovimientointernodinero.idtipomovimientointerno',5)
-                    ->where('cvmovimientointernodinero.fecharegistro','>=',$request->fecha_corte.' 00:00:00')
-                    ->where('cvmovimientointernodinero.fecharegistro','<=',$request->fecha_corte.' 23:59:59')
-                    ->where('cvmovimientointernodinero.idtienda',$value->id)
-                    ->first();
-
-                if($ret_caja_reservacf_total && $ret_reservacf_caja_total){
-                    $cierre_insitucionaldetalle_3 = DB::table('cvcierre_insitucionaldetalle')
-                        ->where('cvcierre_insitucionaldetalle.idcierrecaja',$ret_caja_reservacf_total->id)
-                        ->first();
-                    if(!$cierre_insitucionaldetalle_3){
-                        $valid_cierre++; 
-                    }
-                }    
-            }
-          
-            $estado_cierre_institucional = '';
-            if($valid_apertura>0 && $valid_cierre==0){
-                $estado_cierre_institucional = 'PENDIENTE';
-            }elseif($valid_apertura>0 && $valid_arqueo==0){
-                $estado_cierre_institucional = 'PENDIENTE';
-            }elseif($valid_apertura==0){
-                $estado_cierre_institucional = 'NOEXISTE';
-            }
-            
             $agencias = DB::table('tienda')->get();
           
             return view(sistema_view().'/cvcontrolaperturaopecaja/tabla',[
               'tienda' => $tienda,
               'agencias' => $agencias,
-              'estado_cierre_institucional' => $estado_cierre_institucional,
             ]);
         }
             
@@ -239,9 +162,78 @@ class CvcontrolaperturaopecajaController extends Controller
           }
               $html .= '</tbody>
             </table>';
+
+            $tiendas = DB::table('tienda')
+                ->orderBy('tienda.id','asc')
+                ->get();
+            $valid_apertura = 0;
+            $valid_arqueo = 0;
+            $valid_cierre = 0;
+            foreach($tiendas as $value){
+                $ret_reservacf_caja_total = DB::table('cvmovimientointernodinero')
+                    ->where('cvmovimientointernodinero.idestadoeliminado',1)
+                    ->where('cvmovimientointernodinero.idfuenteretiro',6)
+                    ->where('cvmovimientointernodinero.idtipomovimientointerno',5)
+                    ->where('cvmovimientointernodinero.fecharegistro','>=',$request->fecha.' 00:00:00')
+                    ->where('cvmovimientointernodinero.fecharegistro','<=',$request->fecha.' 23:59:59')
+                    ->where('cvmovimientointernodinero.idtienda',$value->id)
+                    ->first();
+
+                if($ret_reservacf_caja_total){
+                    $cierre_insitucionaldetalle_1 = DB::table('cvcierre_insitucionaldetalle')
+                        ->where('cvcierre_insitucionaldetalle.idaperturacaja',$ret_reservacf_caja_total->id)
+                        ->first();
+                    if(!$cierre_insitucionaldetalle_1){
+                        $valid_apertura++; 
+                    }           
+                }
+
+                $arqueocaja = DB::table('cvarqueocaja')
+                    ->where('idagencia',$value->id)
+                    ->where('corte',$request->fecha)
+                    ->first();
+
+                if($arqueocaja && $ret_reservacf_caja_total){
+                    $cierre_insitucionaldetalle_2 = DB::table('cvcierre_insitucionaldetalle')
+                        ->where('cvcierre_insitucionaldetalle.idarqueocaja',$arqueocaja->id)
+                        ->first();
+                    if(!$cierre_insitucionaldetalle_2){
+                        $valid_arqueo++; 
+                    }
+                }
+
+                $ret_caja_reservacf_total = DB::table('cvmovimientointernodinero')
+                    ->where('cvmovimientointernodinero.idestadoeliminado',1)
+                    ->where('cvmovimientointernodinero.idfuenteretiro',8)
+                    ->where('cvmovimientointernodinero.idtipomovimientointerno',5)
+                    ->where('cvmovimientointernodinero.fecharegistro','>=',$request->fecha.' 00:00:00')
+                    ->where('cvmovimientointernodinero.fecharegistro','<=',$request->fecha.' 23:59:59')
+                    ->where('cvmovimientointernodinero.idtienda',$value->id)
+                    ->first();
+
+                if($ret_caja_reservacf_total && $ret_reservacf_caja_total){
+                    $cierre_insitucionaldetalle_3 = DB::table('cvcierre_insitucionaldetalle')
+                        ->where('cvcierre_insitucionaldetalle.idcierrecaja',$ret_caja_reservacf_total->id)
+                        ->first();
+                    if(!$cierre_insitucionaldetalle_3){
+                        $valid_cierre++; 
+                    }
+                }    
+            }
+          
+            $estado_cierre_institucional = '';
+            if($valid_apertura>0 && $valid_cierre==0){
+                $estado_cierre_institucional = 'PENDIENTE';
+            }elseif($valid_apertura>0 && $valid_arqueo==0){
+                $estado_cierre_institucional = 'PENDIENTE';
+            }elseif($valid_apertura==0){
+                $estado_cierre_institucional = 'NOEXISTE';
+            }
+
           return array(
             'html' => $html,
-            'html1' => ''
+            'html1' => '',
+            'estado_cierre_institucional' => $estado_cierre_institucional,
           );
           
         }

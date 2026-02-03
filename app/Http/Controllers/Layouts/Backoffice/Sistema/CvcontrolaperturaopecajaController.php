@@ -177,7 +177,6 @@ class CvcontrolaperturaopecajaController extends Controller
         $tienda = DB::table('tienda')->whereId($idtienda)->first(); 
 
         if($request->input('view') == 'cierre') {
-
             $usuarios = DB::table('users')
                 ->join('users_permiso','users_permiso.idusers','users.id')
                 ->join('permiso','permiso.id','users_permiso.idpermiso')
@@ -186,15 +185,14 @@ class CvcontrolaperturaopecajaController extends Controller
                 ->select('users.*','permiso.id as idpermiso','permiso.nombre as nombrepermiso')
                 ->get();
           
-          $tiendas = DB::table('tienda')
-              ->orderBy('tienda.id','asc')
-              ->get();
+            $tiendas = DB::table('tienda')
+                ->orderBy('tienda.id','asc')
+                ->get();
 
             $valid_apertura = 0;
             $valid_arqueo = 0;
             $valid_cierre = 0;
             foreach($tiendas as $value){
-
                 $ret_reservacf_caja_total = DB::table('cvmovimientointernodinero')
                     ->where('cvmovimientointernodinero.idestadoeliminado',1)
                     ->where('cvmovimientointernodinero.idfuenteretiro',6)
@@ -203,7 +201,7 @@ class CvcontrolaperturaopecajaController extends Controller
                     ->where('cvmovimientointernodinero.fecharegistro','<=',$request->fecha_corte.' 23:59:59')
                     ->where('cvmovimientointernodinero.idtienda',$value->id)
                     ->first();
-            
+
                 if($ret_reservacf_caja_total){
                     $cierre_insitucionaldetalle_1 = DB::table('cvcierre_insitucionaldetalle')
                         ->where('cvcierre_insitucionaldetalle.idaperturacaja',$ret_reservacf_caja_total->id)
@@ -213,7 +211,7 @@ class CvcontrolaperturaopecajaController extends Controller
                     }           
                 }
 
-                $arqueocaja = DB::table('arqueocaja')
+                $arqueocaja = DB::table('cvarqueocaja')
                     ->where('idagencia',$value->id)
                     ->where('corte',$request->fecha_corte)
                     ->first();
@@ -261,7 +259,6 @@ class CvcontrolaperturaopecajaController extends Controller
                 'estado_cierre_institucional' => $estado_cierre_institucional,
             ]);
         }
-        
         else if($request->input('view') == 'reporte') {
             return view(sistema_view().'/cvcontrolaperturaopecaja/reporte',[
                 'tienda' => $tienda,
@@ -269,7 +266,6 @@ class CvcontrolaperturaopecajaController extends Controller
             ]);
         }
         else if( $request->input('view') == 'reporte_pdf' ){
-
             $cierre_insitucional = DB::table('cvcierre_insitucional')
                 ->join('users as responsable','responsable.id','cvcierre_insitucional.validar_responsable')
                 ->join('permiso','permiso.id','cvcierre_insitucional.validar_responsable_permiso')
@@ -281,7 +277,7 @@ class CvcontrolaperturaopecajaController extends Controller
                     'permiso.nombre as nombre_permiso',
                 )
                 ->first();
-          
+
             $pdf = PDF::loadView(sistema_view().'/cvcontrolaperturaopecaja/reporte_pdf',[
                 'tienda' => $tienda,
                 'fecha_corte' => $request->fecha_corte_reporte,
@@ -294,19 +290,15 @@ class CvcontrolaperturaopecajaController extends Controller
 
     public function update(Request $request, $idtienda, $id)
     {
-        
-        
         if($request->input('view') == 'validar'){
             $rules = [
                 'idresponsable' => 'required',          
                 'responsableclave' => 'required',              
             ];
-
             $messages = [
                 'idresponsable.required' => 'El "Responsable" es Obligatorio.',
                 'responsableclave.required' => 'La "Contraseña" es Obligatorio.',
             ];
-
             $this->validate($request,$rules,$messages);
 
             $usuario = DB::table('users')
@@ -322,7 +314,7 @@ class CvcontrolaperturaopecajaController extends Controller
                     'mensaje'   => 'El usuario y/o la contraseña es incorrecta!!.'
                 ]);
             }
-          
+
             $idcierre_insitucional = DB::table('cvcierre_insitucional')->insertGetId([
                 'fecharegistro' => now(),
                 'fechacorte' => $request->fecha_corte,

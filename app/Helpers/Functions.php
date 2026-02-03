@@ -1281,18 +1281,35 @@ function cvconsolidadooperacionesNuevo($idagencia,$fechacorte) {
         $whereMovimiento[] = ['cvmovimientointernodinero.fecharegistro','<=',$fechacorte.' 23:59:59'];
     }
 
-    $asignacioncapital_deposito_reserva = DB::table('cvasignacioncapital')
-        ->where('cvasignacioncapital.idtipodestino',2)
+    // Capital Asignada
+    $monto_suma = DB::table('cvasignacioncapital')
         ->where('cvasignacioncapital.idestadoeliminado',1)
-        ->where('cvasignacioncapital.idresponsable_recfinal', '<>', 0)
         ->whereIn('cvasignacioncapital.idtipooperacion',[1,4]) // 1: deposito y 4: dep. asignación
+        ->where('cvasignacioncapital.idresponsable_recfinal','<>',0)
+        ->where($whereAsignacion)
+        ->sum('cvasignacioncapital.monto');
+    $monto_resta = DB::table('cvasignacioncapital')
+        ->where('cvasignacioncapital.idestadoeliminado',1)
+        ->whereIn('cvasignacioncapital.idtipooperacion',[2,3]) // 2: retiro y 3: ret. asignación
+        ->where('cvasignacioncapital.idresponsable_recfinal','<>',0)
+        ->where($whereAsignacion)
+        ->sum('cvasignacioncapital.monto');
+    $saldos_capitalasignada = $monto_suma - $monto_resta;
+    // Fin Capital Asignada
+
+    // Reserva CF
+    $asignacioncapital_deposito_reserva = DB::table('cvasignacioncapital')
+        ->where('cvasignacioncapital.idestadoeliminado',1)
+        ->whereIn('cvasignacioncapital.idtipooperacion',[1,4]) // 1: deposito y 4: dep. asignación
+        ->where('cvasignacioncapital.idresponsable_recfinal', '<>', 0)
+        ->where('cvasignacioncapital.idtipodestino',2)
         ->where($whereAsignacion)
         ->sum('cvasignacioncapital.monto');
     $asignacioncapital_retiro_reserva = DB::table('cvasignacioncapital')
-        ->where('cvasignacioncapital.idtipodestino',2)
         ->where('cvasignacioncapital.idestadoeliminado',1)
-        ->where('cvasignacioncapital.idresponsable_recfinal', '<>', 0)
         ->where('cvasignacioncapital.idtipooperacion',2) // 2: retiro
+        ->where('cvasignacioncapital.idresponsable_recfinal', '<>', 0)
+        ->where('cvasignacioncapital.idtipodestino',2)
         ->where($whereAsignacion)
         ->sum('cvasignacioncapital.monto');
     $ret_reservacf_caja = DB::table('cvmovimientointernodinero')
@@ -1352,10 +1369,37 @@ function cvconsolidadooperacionesNuevo($idagencia,$fechacorte) {
     }
 
     $saldos_reserva = $asignacioncapital_deposito_reserva-
-        $asignacioncapital_retiro_reserva-
+                    $asignacioncapital_retiro_reserva-
+                    $ret_reservacf_caja+
+                    $ret_caja_reservacf+
+                    $ret_banco_reservacf;
+    // Fin Reserva CF
+
+    // Caja
+    $asignacioncapital_deposito_caja = DB::table('cvasignacioncapital')
+        ->where('cvasignacioncapital.idtipodestino',1)
+        ->where('cvasignacioncapital.idestadoeliminado',1)
+        ->where('cvasignacioncapital.idresponsable_recfinal', '<>', 0)
+        ->where('cvasignacioncapital.idtipooperacion',4)
+        ->where($where)
+        ->sum('cvasignacioncapital.monto');
+    $saldos_caja = $asignacioncapital_deposito_caja-
+        $asignacioncapital_retiro_caja+
         $ret_reservacf_caja+
-        $ret_caja_reservacf+
-        $ret_banco_reservacf;
+        $ret_banco_caja-
+        $ret_caja_reservacf-
+        $ret_caja_banco+
+        $ingresoyegresocaja_ingreso_crediticio_saldofinal+
+        $ingresoyegresocaja_ingreso_ahorro+
+        $ingresoyegresocaja_ingreso_incrementocapital_saldofinal+
+        $ingresoyegresocaja_ingreso_ingresosextraordinarios_saldofinal-
+        $ingresoyegresocaja_egreso_crediticio_saldofinal-
+        $ingresoyegresocaja_egreso_ahorro-
+        $ingresoyegresocaja_egreso_reduccioncapital_saldocapital-
+        $ingresoyegresocaja_egreso_gastosadministrativosyoperativos_saldocapital-
+        $ingresoyegresocaja_egreso_cvcompra_saldocapital+
+        $ingresoyegresocaja_ingreso_cvventa_saldocapital;
+    // Fin Caja
     dd($saldos_reserva);
 
     $data = [

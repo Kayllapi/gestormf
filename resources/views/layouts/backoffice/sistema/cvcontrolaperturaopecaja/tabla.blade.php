@@ -29,8 +29,15 @@
                                 
                     </div>
                       <div class="col-sm-12 col-md-3" style="text-align: right;">
-                          <div>
-                          <button type="button" class="btn btn-warning mb-1" onclick="cierre()" style="font-weight: bold;width: 190px;">
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                          @if($estado_cierre_institucional=='PENDIENTE')
+                            <p style="background-color: #fce092;color: #000000; display: inline-block; margin: 0;">NO TIENE CIERRE INSTITUCIONAL</p>
+                          @elseif($estado_cierre_institucional=='NOEXISTE')
+                            <p style="background-color: #fce092;color: #000000; display: inline-block; margin: 0;">NO TIENE CIERRE INSTITUCIONAL</p>
+                          @else
+                            <p style="background-color: #aaffa7;color: #000000; display: inline-block; margin: 0;">NO TIENE CIERRE INSTITUCIONAL</p>
+                          @endif
+                            <button type="button" class="btn btn-primary mb-1" onclick="cierre()" style="font-weight: bold;width: 190px;">
                             <i class="fa-solid fa-check" style="font-weight: bold;"></i> CIERRE INSTITUCIONAL</button>
                           </div>
                       </div>

@@ -256,7 +256,7 @@ class CvcontrolaperturaopecajaController extends Controller
             $usuarios = DB::table('users')
                 ->join('users_permiso','users_permiso.idusers','users.id')
                 ->join('permiso','permiso.id','users_permiso.idpermiso')
-                ->whereIn('users_permiso.idpermiso',[1])
+                ->whereIn('users_permiso.idpermiso',[2])
                 ->where('users_permiso.idtienda',$idtienda)
                 ->select('users.*','permiso.id as idpermiso','permiso.nombre as nombrepermiso')
                 ->get();

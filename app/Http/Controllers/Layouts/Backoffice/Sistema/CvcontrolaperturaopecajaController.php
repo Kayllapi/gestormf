@@ -132,8 +132,7 @@ class CvcontrolaperturaopecajaController extends Controller
                   <td rowspan="2" style="text-align:center; font-weight: bold;">Agencia</td>
                   <td colspan="3" style="text-align:center; font-weight: bold;">APERTURA DE CAJA</td>
                   <td colspan="2" style="text-align:center; font-weight: bold;">ARQUEO DE CAJA</td>
-                  <td colspan="2" style="text-align:center; font-weight: bold;">CIERRE DE CAJA</td>
-                  <td rowspan="2" style="text-align:center; font-weight: bold;">Administrador de Agencia  (A. y N.)</td>
+                  <td colspan="3" style="text-align:center; font-weight: bold;">CIERRE DE CAJA</td>
                   <td rowspan="2" style="text-align:center; font-weight: bold;">Usuario</td>
                 </tr>
                 <tr>
@@ -144,6 +143,7 @@ class CvcontrolaperturaopecajaController extends Controller
                   <td style="text-align:center; font-weight: bold;">Fecha y Hora</td>
                   <td style="text-align:center; font-weight: bold;">Estado</td>
                   <td style="text-align:center; font-weight: bold;">Fecha y Hora</td>
+                  <td style="text-align:center; font-weight: bold;">Administrador de Agencia  (A. y N.)</td>
                 </tr>
               </thead>
               <tbody>';

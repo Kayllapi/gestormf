@@ -128,22 +128,22 @@ class CvcontrolaperturaopecajaController extends Controller
           $html = '<table class="table table-hover table-bordered" id="table-lista-credito">
               <thead class="table-dark" style="position: sticky;top: 0;">
                 <tr>
-                  <td rowspan="2" style="text-align:center">N°</td>
-                  <td rowspan="2" style="text-align:center">Agencia</td>
-                  <td colspan="3" style="text-align:center">APERTURA DE CAJA</td>
-                  <td colspan="2" style="text-align:center">ARQUEO DE CAJA</td>
-                  <td colspan="2" style="text-align:center">CIERRE DE CAJA</td>
-                  <td rowspan="2" style="text-align:center">Administrador de Agencia  (A. y N.)</td>
-                  <td rowspan="2" style="text-align:center">Usuario</td>
+                  <td rowspan="2" style="text-align:center; font-weight: bold;">N°</td>
+                  <td rowspan="2" style="text-align:center; font-weight: bold;">Agencia</td>
+                  <td colspan="3" style="text-align:center; font-weight: bold;">APERTURA DE CAJA</td>
+                  <td colspan="2" style="text-align:center; font-weight: bold;">ARQUEO DE CAJA</td>
+                  <td colspan="2" style="text-align:center; font-weight: bold;">CIERRE DE CAJA</td>
+                  <td rowspan="2" style="text-align:center; font-weight: bold;">Administrador de Agencia  (A. y N.)</td>
+                  <td rowspan="2" style="text-align:center; font-weight: bold;">Usuario</td>
                 </tr>
                 <tr>
-                  <td style="text-align:center">Estado</td>
-                  <td style="text-align:center">Efectivo (S/.)</td>
-                  <td style="text-align:center">Fecha y Hora</td>
-                  <td style="text-align:center">Efectivo (S/.)</td>
-                  <td style="text-align:center">Fecha y Hora</td>
-                  <td style="text-align:center">Estado</td>
-                  <td style="text-align:center">Fecha y Hora</td>
+                  <td style="text-align:center; font-weight: bold;">Estado</td>
+                  <td style="text-align:center; font-weight: bold;">Efectivo (S/.)</td>
+                  <td style="text-align:center; font-weight: bold;">Fecha y Hora</td>
+                  <td style="text-align:center; font-weight: bold;">Efectivo (S/.)</td>
+                  <td style="text-align:center; font-weight: bold;">Fecha y Hora</td>
+                  <td style="text-align:center; font-weight: bold;">Estado</td>
+                  <td style="text-align:center; font-weight: bold;">Fecha y Hora</td>
                 </tr>
               </thead>
               <tbody>';

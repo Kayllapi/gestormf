@@ -352,7 +352,7 @@ class CvcontrolaperturaopecajaController extends Controller
                 $estado_apertura = 'SIN APERTURA';
                 $id_apertura = 0;
                 $efectivo_apertura = 0;
-                $fechahora_apertura = '';
+                $fechahora_apertura = null;
                 if($ret_reservacf_caja_total){
                     $estado_apertura = 'CON APERTURA';   
                     $id_apertura = $ret_reservacf_caja_total->id; 
@@ -368,7 +368,7 @@ class CvcontrolaperturaopecajaController extends Controller
                 $id_arquecaja = 0;
                 $efectivo_arqueocaja_fisico = 0;
                 $efectivo_arqueocaja_contable = 0;
-                $fechahora_arqueocaja = '';
+                $fechahora_arqueocaja = null;
                 if($arqueocaja && $ret_reservacf_caja_total){
                     $id_arquecaja = $arqueocaja->id;
                     $efectivo_arqueocaja_fisico = $arqueocaja->efectivo_caja_arqueo;
@@ -387,7 +387,7 @@ class CvcontrolaperturaopecajaController extends Controller
 
                 $id_cierre = 0;
                 $efectivo_cierre = 0;
-                $fechahora_cierre = '';
+                $fechahora_cierre = null;
                 if($ret_caja_reservacf_total && $ret_reservacf_caja_total){
                     $id_cierre = $ret_caja_reservacf_total->id;
                     $efectivo_cierre = $ret_caja_reservacf_total->monto;

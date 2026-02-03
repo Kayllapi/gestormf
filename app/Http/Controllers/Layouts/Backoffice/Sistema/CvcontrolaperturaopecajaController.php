@@ -324,7 +324,7 @@ class CvcontrolaperturaopecajaController extends Controller
             if($valid_apertura>0 && $valid_cierre==0){
                 $estado_cierre_institucional = 'PENDIENTE';
             }elseif($valid_apertura>0 && $valid_arqueo==0){
-                $estado_cierre_institucional = 'PENDIENTE ARQUEO';
+                $estado_cierre_institucional = 'PENDIENTE';
             }elseif($valid_apertura==0){
                 $estado_cierre_institucional = 'NOEXISTE';
             }

@@ -18,7 +18,7 @@
     <div class="modal-body">
       @if($estado_cierre_institucional=='PENDIENTE')
         <div class="alert alert-danger">
-            <b>Hay una aperturas pendientes!!</b>
+            <b>Hay agencias pendientes de cierre!!</b>
         </div>
       @elseif($estado_cierre_institucional=='PENDIENTE ARQUEO')
         <div class="alert alert-danger">

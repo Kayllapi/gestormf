@@ -163,70 +163,11 @@ class CvcontrolaperturaopecajaController extends Controller
               $html .= '</tbody>
             </table>';
 
-            $tiendas = DB::table('tienda')
-                ->orderBy('tienda.id','asc')
-                ->get();
-            $valid_apertura = 0;
-            $valid_arqueo = 0;
-            $valid_cierre = 0;
-            foreach($tiendas as $value){
-                $ret_reservacf_caja_total = DB::table('cvmovimientointernodinero')
-                    ->where('cvmovimientointernodinero.idestadoeliminado',1)
-                    ->where('cvmovimientointernodinero.idfuenteretiro',6)
-                    ->where('cvmovimientointernodinero.idtipomovimientointerno',5)
-                    ->where('cvmovimientointernodinero.fecharegistro','>=',$request->fecha.' 00:00:00')
-                    ->where('cvmovimientointernodinero.fecharegistro','<=',$request->fecha.' 23:59:59')
-                    ->where('cvmovimientointernodinero.idtienda',$value->id)
-                    ->first();
-
-                if($ret_reservacf_caja_total){
-                    $cierre_insitucionaldetalle_1 = DB::table('cvcierre_insitucionaldetalle')
-                        ->where('cvcierre_insitucionaldetalle.idaperturacaja',$ret_reservacf_caja_total->id)
-                        ->first();
-                    if(!$cierre_insitucionaldetalle_1){
-                        $valid_apertura++; 
-                    }           
-                }
-
-                $arqueocaja = DB::table('cvarqueocaja')
-                    ->where('idagencia',$value->id)
-                    ->where('corte',$request->fecha)
-                    ->first();
-
-                if($arqueocaja && $ret_reservacf_caja_total){
-                    $cierre_insitucionaldetalle_2 = DB::table('cvcierre_insitucionaldetalle')
-                        ->where('cvcierre_insitucionaldetalle.idarqueocaja',$arqueocaja->id)
-                        ->first();
-                    if(!$cierre_insitucionaldetalle_2){
-                        $valid_arqueo++; 
-                    }
-                }
-
-                $ret_caja_reservacf_total = DB::table('cvmovimientointernodinero')
-                    ->where('cvmovimientointernodinero.idestadoeliminado',1)
-                    ->where('cvmovimientointernodinero.idfuenteretiro',8)
-                    ->where('cvmovimientointernodinero.idtipomovimientointerno',5)
-                    ->where('cvmovimientointernodinero.fecharegistro','>=',$request->fecha.' 00:00:00')
-                    ->where('cvmovimientointernodinero.fecharegistro','<=',$request->fecha.' 23:59:59')
-                    ->where('cvmovimientointernodinero.idtienda',$value->id)
-                    ->first();
-
-                if($ret_caja_reservacf_total && $ret_reservacf_caja_total){
-                    $cierre_insitucionaldetalle_3 = DB::table('cvcierre_insitucionaldetalle')
-                        ->where('cvcierre_insitucionaldetalle.idcierrecaja',$ret_caja_reservacf_total->id)
-                        ->first();
-                    if(!$cierre_insitucionaldetalle_3){
-                        $valid_cierre++; 
-                    }
-                }    
-            }
-          
-            $estado_cierre_institucional = '';
-            if($valid_apertura>0 && $valid_cierre==0){
-                $estado_cierre_institucional = 'PENDIENTE';
-            }elseif($valid_apertura>0 && $valid_arqueo==0){
-                $estado_cierre_institucional = 'PENDIENTE';
-            }elseif($valid_apertura==0){
+            $cierre_insitucional = DB::table('cvcierre_insitucional')
+                ->where('cvcierre_insitucional.fechacorte',$request->fecha)
+                ->first();
+            $estado_cierre_institucional = 'PENDIENTE';
+            if(!$cierre_insitucional){
                 $estado_cierre_institucional = 'NOEXISTE';
             }
 
@@ -397,7 +338,6 @@ class CvcontrolaperturaopecajaController extends Controller
               ->get();
           
             foreach($tiendas as $value){
-
                 $ret_reservacf_caja_total = DB::table('cvmovimientointernodinero')
                     ->where('cvmovimientointernodinero.idestadoeliminado',1)
                     ->where('cvmovimientointernodinero.idfuenteretiro',6)

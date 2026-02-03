@@ -85,8 +85,6 @@
             $(this).addClass('selected');
         });
 
-        console.log(res.estado_cierre_institucional);
-
         if(res.estado_cierre_institucional == 'PENDIENTE'){
           $('#estado_cierre_institucional').addClass('btn btn-warning mb-1');
           $('#estado_cierre_institucional').text('SIN CIERRE INSTI.');

@@ -153,8 +153,7 @@
                   <td rowspan="2" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Agencia</td>
                   <td colspan="3" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">APERTURA DE CAJA</td>
                   <td colspan="2" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">ARQUEO DE CAJA</td>
-                  <td colspan="2" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">CIERRE DE CAJA</td>
-                  <td rowspan="2" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Administrador de Agencia  (A. y N.)</td>
+                  <td colspan="3" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">CIERRE DE CAJA</td>
                   <td rowspan="2" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Usuario</td>
                 </tr>
                 <tr>
@@ -165,6 +164,7 @@
                   <td style="border-bottom: 2px solid #000;text-align:center">Fecha y Hora</td>
                   <td style="border-bottom: 2px solid #000;text-align:center">Estado</td>
                   <td style="border-bottom: 2px solid #000;text-align:center">Fecha y Hora</td>
+                  <td style="border-bottom: 2px solid #000;text-align:center">Administrador de Agencia  (A. y N.)</td>
                 </tr>
               </thead>
               <tbody>';

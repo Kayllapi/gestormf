@@ -309,8 +309,11 @@ class GarantiaremateagenciaController extends Controller
           //$where[] = ['credito_garantia.idtienda',$request->idagencia];
           
           $credito_garantias = DB::table('credito_garantia')
+              ->join('credito','credito.id','credito_garantia.idcredito')
               ->join('users as cliente','cliente.id','credito_garantia.idcliente')
               ->where('credito_garantia.estado_listagarantia','<>',0)
+              ->where('credito.idestadocredito',1)
+              ->where('credito.estado','DESEMBOLSADO')
               ->where($where)
               ->select(
                 'credito_garantia.*',

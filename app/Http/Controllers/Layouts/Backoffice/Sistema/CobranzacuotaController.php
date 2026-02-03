@@ -1042,7 +1042,7 @@ class CobranzacuotaController extends Controller
                 <th>C. Ss./ <br>Otros.</th>
                 <th>Cargo</th>
                 <th>Cuota</th>
-                <th><span style="background-color: #cd0909 !important;font-weight: bold;">Atraso</span></th>
+                <th><span style="background-color: #ffb2b2 !important;font-weight: bold;">Vencido</span></th>
                 <th>Custo.</th>
                 <th style="width:10px;">Int. Comp.</th>
                 <th style="width:10px;">Int. morat.</th>

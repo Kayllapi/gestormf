@@ -91,7 +91,7 @@
                             ['data' => 'Monto Crédito (S/.)' ],
                             ['data' => 'F. Pago' ],
                             ['data' => 'Saldo Cuotas Venc. (S/.)' ],
-                            ['data' => 'Días Atraso' ],
+                            ['data' => 'Días Vencido', 'class' => 'dia_vencido' ],
                             ['data' => 'Form. C.' ],
                             ['data' => 'Nro. de Cuotas Cumplido y Venc.' ],
                             ['data' => 'Tele./Celu.' ],
@@ -194,6 +194,9 @@
                 #tabla-destinodes td,
                 #tabla-origendes td {
                         white-space: nowrap;
+                }
+                .dia_vencido >span {
+                  background-color: #ffb2b2 !important;
                 }
               </style>
 <style>

@@ -2728,9 +2728,9 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
         $where3[] = ['credito_formapago.fechapago','<=',$fechacorte.' 23:59:59'];
         // $where4[] = ['cvgastoadministrativooperativo.fecharegistro','>=',$fechacorte.' 00:00:00'];
         $where4[] = ['cvgastoadministrativooperativo.fecharegistro','<=',$fechacorte.' 23:59:59'];
-        $where5[] = ['cvventa.fecharegistro','>=',$fechacorte.' 00:00:00'];
+        // $where5[] = ['cvventa.fecharegistro','>=',$fechacorte.' 00:00:00'];
         $where5[] = ['cvventa.fecharegistro','<=',$fechacorte.' 23:59:59'];
-        $where6[] = ['cvcompra.fecharegistro','>=',$fechacorte.' 00:00:00'];
+        // $where6[] = ['cvcompra.fecharegistro','>=',$fechacorte.' 00:00:00'];
         $where6[] = ['cvcompra.fecharegistro','<=',$fechacorte.' 23:59:59'];
     }
 

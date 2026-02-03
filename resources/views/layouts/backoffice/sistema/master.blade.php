@@ -178,6 +178,7 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
           .btn-warning:active,
           .btn-warning:focus {    
               background-color: #ffdf7d !important;
+              border-color: #8a6a09 !important;
               color: #000 !important;
           }
           .btn-warning  .fa-solid:before {    
@@ -265,7 +266,7 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
   <div class="container-fluid" style="background-color:#efefef;
     font-size: 20px;
     font-weight: bold;text-align: center;height: 35px;">
-    <a class="navbar-brand" href="#" style="color: #1d549b">
+    <a class="navbar-brand" href="#" style="color: #123869">
           @if($tienda->imagen!='')
           <img src="{{ url('public/backoffice/tienda/'.$tienda->id.'/sistema/'.$tienda->imagen) }}" 
                style="height: 32px;float: left;margin-top:2px;">
@@ -297,7 +298,7 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
             ?>
             <?php $i = 1  ; ?>
             @foreach($modulos as $value)
-               <li  class="nav-item dropdown menu_click_li" style="font-weight: normal;font-size: 13px;" >
+               <li  class="nav-item dropdown menu_click_li m_click{{ $value->id }}" style="font-weight: normal;font-size: 13px;" >
                     <a href="javascript:;" class="nav-link dropdown-toggle menu_click" 
                     id="menu_click{{ $value->id }}" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                       <i class="{{ $value->icono }}"></i> {{ $value->nombre }}</a>
@@ -330,6 +331,9 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
         
       </ul>
       <style>
+        .m_click337 {
+            margin-left: 20px;
+        }
         .menu_click {
               padding-bottom: 6px;
               border-radius: 5px 5px 0px 0px;

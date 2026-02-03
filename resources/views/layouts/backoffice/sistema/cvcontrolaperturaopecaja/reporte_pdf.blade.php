@@ -171,16 +171,19 @@
           $i = 1;
           foreach($cierre_insitucionaldetalle as $value){
 
+              $apertura_fecha = $value->apertura_fecha ? date_format(date_create($value->apertura_fecha),"d-m-Y H:i:s A") : "-.-";
+              $arqueo_fecha = $value->arqueo_fecha ? date_format(date_create($value->arqueo_fecha),"d-m-Y H:i:s A") : "-.-";
+              $cierre_fecha = $value->cierre_fecha ? date_format(date_create($value->cierre_fecha),"d-m-Y H:i:s A") : "-.-";
               $html .= '<tr>
                             <td style="text-align:center;">'.$i.'</td>
                             <td>'.$value->nombreagencia.'</td>
                             <td>'.$value->apertura_estado.'</td>
                             <td style="text-align:right;">'.$value->apertura_efectivo.'</td>
-                            <td style="text-align:center;">'.$value->apertura_fecha ? date_format(date_create($value->apertura_fecha),"d-m-Y H:i:s A") : "-.-".'</td>
+                            <td style="text-align:center;">'.$apertura_fecha.'</td>
                             <td style="text-align:right;">'.$value->arqueo_efectivo_fisico.'</td>
-                            <td style="text-align:center;">'.$value->arqueo_fecha ? date_format(date_create($value->arqueo_fecha),"d-m-Y H:i:s A") : "-.-".'</td>
+                            <td style="text-align:center;">'.$arqueo_fecha.'</td>
                             <td>'.$value->cierre_estado.'</td>
-                            <td style="text-align:center;">'.$value->cierre_fecha ? date_format(date_create($value->cierre_fecha),"d-m-Y H:i:s A") : "-.-".'</td>
+                            <td style="text-align:center;">'.$cierre_fecha.'</td>
                             <td>'.$value->nombrecompleto_responsable.'</td>
                             <td>'.$value->usuario_responsable.'</td>
                         </tr>';

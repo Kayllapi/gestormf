@@ -211,7 +211,7 @@ class CvcontrolaperturaopecajaController extends Controller
               }
               elseif(($ret_reservacf_caja_total && !$arqueocaja) || 
                      ($ret_reservacf_caja_total && !$ret_caja_reservacf_total)){
-                    $color = "#ff8a8a";
+                    $color = "#ffc9ca; color:#93222c;";
                     $estado_cierre = 'PENDIENTE';
               }
               elseif($ret_reservacf_caja_total && $arqueocaja && $ret_caja_reservacf_total){
@@ -227,7 +227,7 @@ class CvcontrolaperturaopecajaController extends Controller
                             <td style="text-align:center;">'.$fechahora_apertura.'</td>
                             <td style="text-align:right;">'.number_format($efectivo_arqueocaja,2,'.','').'</td>
                             <td style="text-align:center;">'.$fechahora_arqueocaja.'</td>
-                            <td style="background-color: '.$color.'">'.$estado_cierre.'</td>
+                            <td style="background-color: '.$color.'"><b>'.$estado_cierre.'</b></td>
                             <td style="text-align:center;">'.$fechahora_cierre.'</td>
                             <td>'.$responsable_cierre.'</td>
                             <td>'.$usuario_cierre.'</td>

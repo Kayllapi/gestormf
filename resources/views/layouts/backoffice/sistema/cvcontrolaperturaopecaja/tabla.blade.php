@@ -12,7 +12,7 @@
             <div class="modal-body">
               
                 <div class="row">
-                    <div class="col-sm-12 col-md-9">
+                    <div class="col-sm-12 col-md-7">
                         <div class="row">
                            <div class="col-sm-12 col-md-6">
                               <div class="row">
@@ -28,17 +28,24 @@
                         </div>
                                 
                     </div>
-                      <div class="col-sm-12 col-md-3" style="text-align: right;">
-                        <div style="display: flex; gap: 10px; align-items: center;">
+                      <div class="col-sm-12 col-md-5" style="text-align: right;">
+                        <div>
                           @if($estado_cierre_institucional=='PENDIENTE')
-                            <p style="background-color: #fce092;color: #000000; display: inline-block; margin: 0;">NO TIENE CIERRE INSTITUCIONAL</p>
+                            <button type="button" class="btn btn-warning mb-1" style="font-weight: bold;width: 190px;">
+                              NO TIENE CIERRE INSTITUCIONAL
+                            </button>
                           @elseif($estado_cierre_institucional=='NOEXISTE')
-                            <p style="background-color: #fce092;color: #000000; display: inline-block; margin: 0;">NO TIENE CIERRE INSTITUCIONAL</p>
+                            <button type="button" class="btn btn-warning mb-1" style="font-weight: bold;width: 190px;">
+                              NO TIENE CIERRE INSTITUCIONAL
+                            </button>
                           @else
-                            <p style="background-color: #aaffa7;color: #000000; display: inline-block; margin: 0;">NO TIENE CIERRE INSTITUCIONAL</p>
+                            <button type="button" class="btn btn-success mb-1" style="font-weight: bold;width: 190px;">
+                              <i class="fa-solid fa-check" style="font-weight: bold;"></i> TIENE CIERRE INSTITUCIONAL
+                            </button>
                           @endif
                             <button type="button" class="btn btn-primary mb-1" onclick="cierre()" style="font-weight: bold;width: 190px;">
-                            <i class="fa-solid fa-check" style="font-weight: bold;"></i> CIERRE INSTITUCIONAL</button>
+                              <i class="fa-solid fa-check" style="font-weight: bold;"></i> CIERRE INSTITUCIONAL
+                            </button>
                           </div>
                       </div>
                 </div>

@@ -32,15 +32,15 @@
                         <div>
                           @if($estado_cierre_institucional=='PENDIENTE')
                             <button type="button" class="btn btn-warning mb-1" style="font-weight: bold;width: 190px;">
-                              NO TIENE CIERRE INSTITUCIONAL
+                              SIN CIERRE INSTI.
                             </button>
                           @elseif($estado_cierre_institucional=='NOEXISTE')
                             <button type="button" class="btn btn-warning mb-1" style="font-weight: bold;width: 190px;">
-                              NO TIENE CIERRE INSTITUCIONAL
+                              SIN CIERRE INSTI.
                             </button>
                           @else
                             <button type="button" class="btn btn-success mb-1" style="font-weight: bold;width: 190px;">
-                              <i class="fa-solid fa-check" style="font-weight: bold;"></i> TIENE CIERRE INSTITUCIONAL
+                              <i class="fa-solid fa-check" style="font-weight: bold;"></i> CON CIERRE INSTI.
                             </button>
                           @endif
                             <button type="button" class="btn btn-primary mb-1" onclick="cierre()" style="font-weight: bold;width: 190px;">

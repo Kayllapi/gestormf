@@ -174,6 +174,9 @@
               $apertura_fecha = $value->apertura_fecha ? date_format(date_create($value->apertura_fecha),"d-m-Y H:i:s A") : "-.-";
               $arqueo_fecha = $value->arqueo_fecha ? date_format(date_create($value->arqueo_fecha),"d-m-Y H:i:s A") : "-.-";
               $cierre_fecha = $value->cierre_fecha ? date_format(date_create($value->cierre_fecha),"d-m-Y H:i:s A") : "-.-";
+              $nombrecompleto_responsable = $value->nombrecompleto_responsable ? $value->nombrecompleto_responsable : "-.-";
+              $usuario_responsable = $value->usuario_responsable ? $value->usuario_responsable : "-.-";
+
               $html .= '<tr>
                             <td style="text-align:center;">'.$i.'</td>
                             <td>'.$value->nombreagencia.'</td>
@@ -184,8 +187,8 @@
                             <td style="text-align:center;">'.$arqueo_fecha.'</td>
                             <td>'.$value->cierre_estado.'</td>
                             <td style="text-align:center;">'.$cierre_fecha.'</td>
-                            <td>'.$value->nombrecompleto_responsable.'</td>
-                            <td>'.$value->usuario_responsable.'</td>
+                            <td>'.$nombrecompleto_responsable.'</td>
+                            <td>'.$usuario_responsable.'</td>
                         </tr>';
              $i++;     
           }

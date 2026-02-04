@@ -1288,6 +1288,7 @@ function validacionDiaria($idagencia){
         ->where('cvmovimientointernodinero.idtienda',$idagencia)
         ->orderByDesc('cvmovimientointernodinero.fecharegistro')
         ->first();
+    dd($aperturacaja_existe_ultima);
 
     $arqueocaja = False;
     $cierre_caja = False;

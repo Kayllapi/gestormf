@@ -318,13 +318,13 @@ class CvreporteconsolidadoopecajaController extends Controller
           $date->subDay(); // Subtracts 1 day
           //$co_anterior = consolidadooperaciones($tienda,$request->idagencia,$date->format('Y-m-d'));
 
-          $anterior = DB::table('cvarqueocaja')
+            $anterior = DB::table('cvarqueocaja')
               ->where('idagencia',$request->idagencia)
               ->where('corte',$date->format('Y-m-d'))
               ->orderByDesc('id')
               ->exists();
             
-            if ($anterior) {
+            if (!$anterior) {
               $co_anterior = DB::table('cvarqueocaja')
                   ->where('idagencia',$request->idagencia)
                   ->where('corte',$date->format('Y-m-d'))

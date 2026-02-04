@@ -12,7 +12,7 @@
             <div class="modal-body">
               
                 <div class="row">
-                    <div class="col-sm-12 col-md-9">
+                    <div class="col-sm-12 col-md-8">
                         <div class="row">
                            <div class="col-sm-12 col-md-6">
                               <div class="row">
@@ -28,7 +28,7 @@
                         </div>
                                 
                     </div>
-                      <div class="col-sm-12 col-md-3" style="text-align: right;">
+                      <div class="col-sm-12 col-md-4" style="text-align: right;">
                         <div style="display: flex;align-items: center;justify-content: flex-end;">
                             <p class="d-none" style="margin: 0;font-weight: bold; display: inline-block;" id="estado_cierre_institucional"></p>
                             <button type="button" class="btn btn-primary mb-1" onclick="cierre()" style="font-weight: bold;width: 190px;">

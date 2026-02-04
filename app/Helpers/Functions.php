@@ -1265,6 +1265,84 @@ function updatearqueocaja($id){
         'idcvarqueocaja_cierre' => $arqueocaja->id,
     ]);
 }
+function cvcierre($idagencia){
+    $datenow = now()->format('Y-m-d');
+    $cierre_caja =  DB::table('cvmovimientointernodinero')
+        ->where('cvmovimientointernodinero.idestadoeliminado',1)
+        ->where('cvmovimientointernodinero.idfuenteretiro',3)
+        ->where('cvmovimientointernodinero.idtipomovimientointerno',6)
+        ->where('cvmovimientointernodinero.idresponsable',0)
+        ->where('cvmovimientointernodinero.fecharegistro','<=',$datenow.' 23:59:59')
+        ->where('cvmovimientointernodinero.idtienda',$idagencia)
+        ->first();
+    return $cierre_caja;
+}
+function validacionArqueoCaja($idagencia,$fechacorte){
+    $datenow = now()->format('Y-m-d');
+
+    $cvasignacioncapital_falta_recepcionar = DB::table('cvasignacioncapital')
+        ->where('cvasignacioncapital.idestadoeliminado',1)
+        ->where('cvasignacioncapital.idresponsable_recfinal', 0)
+        ->where('cvasignacioncapital.fecharegistro','<=',$fechacorte.' 23:59:59')
+        ->where('cvasignacioncapital.idtienda',$idagencia)
+        ->exists();
+
+    $aperturacaja_existe_dia = DB::table('cvmovimientointernodinero')
+        ->where('cvmovimientointernodinero.idestadoeliminado',1)
+        ->where('cvmovimientointernodinero.idfuenteretiro',1)
+        ->where('cvmovimientointernodinero.idtipomovimientointerno',6)
+        ->where('cvmovimientointernodinero.idresponsable','<>',0)
+        ->where('cvmovimientointernodinero.fecharegistro','>=',$fechacorte.' 00:00:00')
+        ->where('cvmovimientointernodinero.fecharegistro','<=',$fechacorte.' 23:59:59')
+        ->where('cvmovimientointernodinero.idtienda',$idagencia)
+        ->exists();
+    $aperturacaja_falta_confirmar = DB::table('cvmovimientointernodinero')
+        ->where('cvmovimientointernodinero.idestadoeliminado',1)
+        ->where('cvmovimientointernodinero.idfuenteretiro',1)
+        ->where('cvmovimientointernodinero.idtipomovimientointerno',6)
+        ->where('cvmovimientointernodinero.idresponsable', 0)
+        ->where('cvmovimientointernodinero.fecharegistro','<=',$fechacorte.' 23:59:59')
+        ->where('cvmovimientointernodinero.idtienda',$idagencia)
+        ->exists();
+    $cierrecaja_falta_confirmar = DB::table('cvmovimientointernodinero')
+        ->where('cvmovimientointernodinero.idestadoeliminado',1)
+        ->where('cvmovimientointernodinero.idfuenteretiro',3)
+        ->where('cvmovimientointernodinero.idtipomovimientointerno',6)
+        ->where('cvmovimientointernodinero.idresponsable', 0)
+        ->where('cvmovimientointernodinero.fecharegistro','<=',$fechacorte.' 23:59:59')
+        ->where('cvmovimientointernodinero.idtienda',$idagencia)
+        ->exists();
+
+    // $ret_caja_reservacf_total = DB::table('cvmovimientointernodinero')
+    //     ->where('cvmovimientointernodinero.idestadoeliminado',1)
+    //     ->where('cvmovimientointernodinero.idfuenteretiro',8)
+    //     ->where('cvmovimientointernodinero.idtipomovimientointerno',5)
+    //     ->where($where)
+    //     ->sum('cvmovimientointernodinero.monto');
+    
+    // $dep_caja_reservacf_total = DB::table('cvmovimientointernodinero')
+    //     ->where('cvmovimientointernodinero.idestadoeliminado',1)
+    //     ->where('cvmovimientointernodinero.idfuenteretiro',1)
+    //     ->where('cvmovimientointernodinero.idtipomovimientointerno',6)
+    //     ->where('cvmovimientointernodinero.idresponsable','<>',0)
+    //     ->where($where)
+    //     ->sum('cvmovimientointernodinero.monto');
+    // $dep_reservacf_caja_total = DB::table('cvmovimientointernodinero')
+    //     ->where('cvmovimientointernodinero.idestadoeliminado',1)
+    //     ->where('cvmovimientointernodinero.idfuenteretiro',3)
+    //     ->where('cvmovimientointernodinero.idtipomovimientointerno',6)
+    //     ->where('cvmovimientointernodinero.idresponsable','<>',0)
+    //     ->where($where)
+    //     ->sum('cvmovimientointernodinero.monto');
+    
+    $data = [
+        'cvasignacioncapital_falta_recepcionar' => $cvasignacioncapital_falta_recepcionar,
+        'aperturacaja_existe_dia' => $aperturacaja_existe_dia,
+        'aperturacaja_falta_confirmar' => $aperturacaja_falta_confirmar,
+        'cierrecaja_falta_confirmar' => $cierrecaja_falta_confirmar,
+    ];
+    return $data;
+}
 
 function cvconsolidadooperacionesNuevo($idagencia,$fechacorte) {
     $tienda = DB::table('tienda')->whereId($idagencia)->first();

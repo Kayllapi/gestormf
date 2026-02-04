@@ -15,10 +15,17 @@ class CompraController extends Controller
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
         $agencias = DB::table('tienda')->get();
         $apertura_caja = cvapertura($idtienda);
+        $cierre_caja = cvcierre($idtienda);
         $arqueocaja = cvarqueocaja($idtienda);
 
         if($request->input('view') == 'tabla'){
-            return view(sistema_view().'/compra/tabla', compact('tienda','agencias','apertura_caja','arqueocaja'));
+            return view(sistema_view().'/compra/tabla', compact(
+                'tienda',
+                'agencias',
+                'apertura_caja',
+                'cierre_caja',
+                'arqueocaja'
+            ));
         }
     }
 

@@ -83,10 +83,26 @@
                   <b>Ya esta arqueado la CAJA!!</b>
                 </div>
               @else
-                @if($consolidadooperaciones['saldos_operaciones_confirmacion_existe'])
+                {{-- @if ($validacionArqueoCaja['cvasignacioncapital_falta_recepcionar'])
                   <div class="alert alert-danger">
                     <b>Para realizar el arqueo de caja, debe recepcionar los fondos!!</b>
-                  </div> 
+                  </div>
+                @endif --}}
+                @if (!$validacionArqueoCaja['aperturacaja_existe_dia'])
+                  <div class="alert alert-danger">
+                    <b>Para realizar el arqueo de caja, debe realizar la apertura de caja!!</b>
+                  </div>
+                @elseif ($validacionArqueoCaja['aperturacaja_falta_confirmar'])
+                  <div class="alert alert-danger">
+                    <b>Para realizar el arqueo de caja, debe confirmar la apertura de caja!!</b>
+                  </div>
+                @endif
+
+                {{-- === --}}
+                @if ($validacionArqueoCaja['cvasignacioncapital_falta_recepcionar'])
+                    <div class="alert alert-danger">
+                      <b>Para realizar el arqueo de caja, debe recepcionar los fondos!!</b>
+                    </div>
                 @else
                   @if($consolidadooperaciones['validacion_operaciones_cuenta_banco']=='VERIFICADO' ||
                     $consolidadooperaciones['validacion_operaciones_cuenta_banco']=='SIN OPERACIONES')
@@ -202,7 +218,7 @@
                     @else
                       @if($consolidadooperaciones['saldos_operaciones_efectivo_validacion_existe'])
                         <div class="alert alert-danger">
-                          <b>Para realizar el arqueo de caja, debe recepcionar asignación de fondos!!</b>
+                          <b>Para realizar el arqueo de caja, debe validar la asignación de fondos!!</b>
                         </div>
                       @endif
                     @endif

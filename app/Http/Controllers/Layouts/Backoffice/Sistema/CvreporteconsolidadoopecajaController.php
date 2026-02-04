@@ -349,10 +349,10 @@ class CvreporteconsolidadoopecajaController extends Controller
             ]);
         }
         else if($request->input('view') == 'arqueocaja') {
-          
             $agencias = DB::table('tienda')->get();
             $agencia = DB::table('tienda')->whereId($request->idagencia)->first();
             $consolidadooperaciones = cvconsolidadooperaciones($tienda,$request->idagencia,$request->corte);
+            $validacionArqueoCaja = validacionArqueoCaja($request->idagencia,$request->corte);
             $arqueocaja = DB::table('cvarqueocaja')->where('idagencia',$request->idagencia)->where('corte',$request->corte)->first();
             $resposanble = DB::table('users')->where('id',$arqueocaja?$arqueocaja->idresponsable:0)->first();
             return view(sistema_view().'/cvreporteconsolidadoopecaja/arqueocaja',[
@@ -361,6 +361,7 @@ class CvreporteconsolidadoopecajaController extends Controller
                 'agencia' => $agencia,
                 'corte' => $request->corte,
                 'consolidadooperaciones' => $consolidadooperaciones,
+                'validacionArqueoCaja' => $validacionArqueoCaja,
                 'arqueocaja' => $arqueocaja,
                 'resposanble' => $resposanble,
             ]);

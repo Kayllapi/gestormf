@@ -332,10 +332,11 @@ class CvreporteconsolidadoopecajaController extends Controller
                     ->orderByDesc('id')
                     ->first();
 
-                if ($ultimo && $ultimo->corte === $request->corte) {
+                if ($ultimo && $ultimo->corte >= $request->corte) {
                     $co_anterior = DB::table('cvarqueocaja')
                         ->where('idagencia', $request->idagencia)
-                        ->where('id', '<', $ultimo->id)
+                        ->where('corte', '<', $request->corte)
+                        ->orderByDesc('corte')
                         ->orderByDesc('id')
                         ->first();
                 } else {

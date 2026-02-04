@@ -19,7 +19,7 @@
                                     <a href="javascript:;"
                                         class="btn btn-primary"
                                         style="font-size: 15px; background-color: #FFBD81 !important;"
-                                        @if($validacionDiaria['arqueocaja'])
+                                        @if(!$validacionDiaria['arqueocaja'])
                                             onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Falta arquear caja '.$validacionDiaria['fechacorte'].'!!')}}', size: 'modal-sm' })"
                                         @elseif($validacionDiaria['cierre_caja'])
                                             onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Falta cerrar caja '.$validacionDiaria['fechacorte'].'!!')}}', size: 'modal-sm' })"

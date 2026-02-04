@@ -1289,8 +1289,8 @@ function validacionDiaria($idagencia){
         ->orderByDesc('cvmovimientointernodinero.fecharegistro')
         ->first();
 
-    $arqueocaja = False;
-    $cierre_caja = False;
+    $arqueocaja = false;
+    $cierre_caja = false;
     $fechacorte = '';
 
     if ($aperturacaja_existe_ultima) {
@@ -1300,7 +1300,6 @@ function validacionDiaria($idagencia){
             ->where('corte','>=',$fechacorte.' 00:00:00')
             ->where('corte','<=',$fechacorte.' 23:59:59')
             ->exists();
-        dd($arqueocaja);
 
         if ($arqueocaja) {
             $cierre_caja = DB::table('cvmovimientointernodinero')

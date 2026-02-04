@@ -1312,8 +1312,6 @@ function validacionDiaria($idagencia){
                 ->where('cvmovimientointernodinero.idtienda',$idagencia)
                 ->exists();
         }
-        // dump($aperturacaja_existe_ultima->fecharegistro, $fechacorte, $cierre_caja);
-
     }
 
     $data = [

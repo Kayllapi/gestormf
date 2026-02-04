@@ -90,15 +90,15 @@
                 @endif --}}
                 @if ($validacionArqueoCaja['cvasignacioncapital_falta_recepcionar'])
                   <div class="alert alert-danger">
-                    <b>Para realizar el arqueo de caja, debe recepcionar los fondos!!</b>
+                    <b>Para arqueo de caja, debe recepcionar los fondos!!</b>
                   </div>
                 @elseif (!$validacionArqueoCaja['aperturacaja_existe_dia'])
                   <div class="alert alert-danger">
-                    <b>Para realizar el arqueo de caja, debe realizar la apertura de caja!!</b>
+                    <b>Para arqueo de caja, debe existir apertura de caja!!</b>
                   </div>
                 @elseif ($validacionArqueoCaja['aperturacaja_falta_confirmar'])
                   <div class="alert alert-danger">
-                    <b>Para realizar el arqueo de caja, debe confirmar la apertura de caja!!</b>
+                    <b>Para arqueo de caja, debe confirmar la apertura de caja!!</b>
                   </div>
                 @else
                   @if($consolidadooperaciones['validacion_operaciones_cuenta_banco']=='VERIFICADO' ||

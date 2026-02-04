@@ -20,7 +20,7 @@
                 <b>Falta arquear caja {{ $validacionDiaria['fechacorte'] }}!!</b>
                 </div>
             </div>
-        @elseif($validacionDiaria['cierre_caja'])
+        @elseif(!$validacionDiaria['cierre_caja'])
             <div class="modal-body" style="position: absolute; z-index: 100;">
                 <div class="alert bg-danger" style="height: 110px;">
                 <br>

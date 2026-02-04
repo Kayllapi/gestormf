@@ -134,7 +134,7 @@
                                         class="btn btn-primary"
                                         @if(!$validacionDiaria['arqueocaja'])
                                             onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Falta arquear caja '.$validacionDiaria['fechacorte'].'!!')}}', size: 'modal-sm' })"
-                                        @elseif($validacionDiaria['cierre_caja'])
+                                        @elseif(!$validacionDiaria['cierre_caja'])
                                             onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Falta cerrar caja '.$validacionDiaria['fechacorte'].'!!')}}', size: 'modal-sm' })"
                                         @elseif(!$apertura_caja)
                                             onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Falta aperturar caja.')}}', size: 'modal-sm' })"
@@ -244,7 +244,7 @@
                                     <button type="button" class="btn btn-danger"
                                         @if(!$validacionDiaria['arqueocaja'])
                                             onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Falta arquear caja '.$validacionDiaria['fechacorte'].'!!')}}', size: 'modal-sm' })"
-                                        @elseif($validacionDiaria['cierre_caja'])
+                                        @elseif(!$validacionDiaria['cierre_caja'])
                                             onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Falta cerrar caja '.$validacionDiaria['fechacorte'].'!!')}}', size: 'modal-sm' })"
                                         @elseif(!$apertura_caja)
                                             onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Falta aperturar caja.')}}', size: 'modal-sm' })"
@@ -259,7 +259,7 @@
                                     <button type="button" class="btn btn-warning" style="background-color: #F9F3B5 !important;"
                                         @if(!$validacionDiaria['arqueocaja'])
                                             onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Falta arquear caja '.$validacionDiaria['fechacorte'].'!!')}}', size: 'modal-sm' })"
-                                        @elseif($validacionDiaria['cierre_caja'])
+                                        @elseif(!$validacionDiaria['cierre_caja'])
                                             onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Falta cerrar caja '.$validacionDiaria['fechacorte'].'!!')}}', size: 'modal-sm' })"
                                         @elseif(!$apertura_caja)
                                             onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Falta aperturar caja.')}}', size: 'modal-sm' })"

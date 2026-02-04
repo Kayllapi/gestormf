@@ -1306,13 +1306,13 @@ function validacionDiaria($idagencia){
                 ->where('cvmovimientointernodinero.idestadoeliminado',1)
                 ->where('cvmovimientointernodinero.idfuenteretiro',3)
                 ->where('cvmovimientointernodinero.idtipomovimientointerno',6)
-                ->where('cvmovimientointernodinero.idresponsable',0)
+                ->where('cvmovimientointernodinero.idresponsable','<>',0)
                 ->where('cvmovimientointernodinero.fecharegistro','>=',$fechacorte.' 00:00:00')
                 ->where('cvmovimientointernodinero.fecharegistro','<=',$fechacorte.' 23:59:59')
                 ->where('cvmovimientointernodinero.idtienda',$idagencia)
                 ->exists();
         }
-        dump($aperturacaja_existe_ultima->fecharegistro, $fechacorte, $cierre_caja);
+        // dump($aperturacaja_existe_ultima->fecharegistro, $fechacorte, $cierre_caja);
 
     }
 

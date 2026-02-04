@@ -323,8 +323,8 @@ class CvreporteconsolidadoopecajaController extends Controller
               ->where('corte',$date->format('Y-m-d'))
               ->orderByDesc('id')
               ->exists();
-            
-            if (!$anterior) {
+            dd($date->format('Y-m-d'), $anterior);
+            if ($anterior) {
               $co_anterior = DB::table('cvarqueocaja')
                   ->where('idagencia',$request->idagencia)
                   ->where('corte',$date->format('Y-m-d'))

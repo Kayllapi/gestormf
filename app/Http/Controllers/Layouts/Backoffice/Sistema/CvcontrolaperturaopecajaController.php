@@ -263,11 +263,23 @@ class CvcontrolaperturaopecajaController extends Controller
             }elseif($valid_apertura==0){
                 $estado_cierre_institucional = 'NOEXISTE';
             }
+
+            $cierre_insitucional = DB::table('cvcierre_insitucional')
+                ->where('cvcierre_insitucional.fechacorte',$request->fecha_corte)
+                ->first();
+            $estado_cierre_institucionalGlobal = '';
+            if($cierre_insitucional){
+                $estado_cierre_institucionalGlobal = 'EXISTE';
+            }else{
+                $estado_cierre_institucionalGlobal = 'NOEXISTE';
+            }
+
             return view(sistema_view().'/cvcontrolaperturaopecaja/cierre',[
                 'tienda' => $tienda,
                 'usuarios' => $usuarios,
                 'fecha_corte' => $request->fecha_corte,
                 'estado_cierre_institucional' => $estado_cierre_institucional,
+                'estado_cierre_institucionalGlobal' => $estado_cierre_institucionalGlobal,
             ]);
         }
         else if($request->input('view') == 'reporte') {

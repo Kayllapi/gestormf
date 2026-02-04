@@ -134,14 +134,11 @@
       
           $cierre_insitucionaldetalle = DB::table('cvcierre_insitucionaldetalle')
               ->join('cvcierre_insitucional','cvcierre_insitucional.id','cvcierre_insitucionaldetalle.idcvcierre_insitucional')
-              ->join('users as responsable','responsable.id','cvcierre_insitucionaldetalle.idresponsable')
               ->join('tienda','tienda.id','cvcierre_insitucional.idtienda')
               ->where('cvcierre_insitucional.fechacorte',$fecha_corte)
               ->select(
                   'cvcierre_insitucionaldetalle.*',
                   'tienda.nombreagencia as nombreagencia',
-                  'responsable.nombrecompleto as nombrecompleto_responsable',
-                  'responsable.codigo as usuario_responsable',
               )
               ->orderBy('cvcierre_insitucionaldetalle.id','asc')
               ->get();
@@ -178,8 +175,9 @@
               $nombrecompleto_responsable = "-.-";
               $usuario_responsable = "-.-";
               if ($value->idresponsable!=0) {
-                $nombrecompleto_responsable = $value->nombrecompleto_responsable;
-                $usuario_responsable = $value->usuario_responsable;
+                $usuario = DB::table('users')->where('id',$value->idresponsable)->first();
+                $nombrecompleto_responsable = $usuario->nombrecompleto;
+                $usuario_responsable = $usuario->codigo;
               }
 
               $html .= '<tr>

@@ -18,13 +18,16 @@ class CompraController extends Controller
         $cierre_caja = cvcierre($idtienda);
         $arqueocaja = cvarqueocaja($idtienda);
 
+        $validacionDiaria = validacionDiaria($idtienda);
+
         if($request->input('view') == 'tabla'){
             return view(sistema_view().'/compra/tabla', compact(
                 'tienda',
                 'agencias',
                 'apertura_caja',
                 'cierre_caja',
-                'arqueocaja'
+                'arqueocaja',
+                'validacionDiaria'
             ));
         }
     }

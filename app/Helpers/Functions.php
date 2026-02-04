@@ -1288,19 +1288,39 @@ function validacionDiaria($idagencia){
         ->where('cvmovimientointernodinero.idtienda',$idagencia)
         ->orderByDesc('cvmovimientointernodinero.fecharegistro')
         ->first();
-    // $fechacorte = $aperturacaja_existe_ultima->fecharegistro;
-    $arqueocaja = DB::table('cvarqueocaja')
-        ->where('idagencia',$idagencia)
-        ->where('corte','<=',$fechacorte.' 23:59:59')
-        ->exists();
-    $cierre_caja = DB::table('cvmovimientointernodinero')
-        ->where('cvmovimientointernodinero.idestadoeliminado',1)
-        ->where('cvmovimientointernodinero.idfuenteretiro',3)
-        ->where('cvmovimientointernodinero.idtipomovimientointerno',6)
-        ->where('cvmovimientointernodinero.idresponsable',0)
-        ->where('cvmovimientointernodinero.fecharegistro','<=',$datenow.' 23:59:59')
-        ->where('cvmovimientointernodinero.idtienda',$idagencia)
-        ->first();
+
+    $arqueocaja = False;
+    $cierre_caja = False;
+    $fechacorte = '';
+
+    if ($aperturacaja_existe_ultima) {
+        $fechacorte = date('Y-m-d', strtotime($aperturacaja_existe_ultima->fecharegistro));
+        $arqueocaja = DB::table('cvarqueocaja')
+            ->where('idagencia',$idagencia)
+            ->where('corte','>=',$fechacorte.' 00:00:00')
+            ->where('corte','<=',$fechacorte.' 23:59:59')
+            ->exists();
+
+        if ($arqueocaja) {
+            $cierre_caja = DB::table('cvmovimientointernodinero')
+                ->where('cvmovimientointernodinero.idestadoeliminado',1)
+                ->where('cvmovimientointernodinero.idfuenteretiro',3)
+                ->where('cvmovimientointernodinero.idtipomovimientointerno',6)
+                ->where('cvmovimientointernodinero.idresponsable',0)
+                ->where('cvmovimientointernodinero.fecharegistro','>=',$fechacorte.' 00:00:00')
+                ->where('cvmovimientointernodinero.fecharegistro','<=',$fechacorte.' 23:59:59')
+                ->where('cvmovimientointernodinero.idtienda',$idagencia)
+                ->exists();
+        }
+    }
+
+    $data = [
+        'aperturacaja_existe_ultima' => $aperturacaja_existe_ultima,
+        'arqueocaja' => $arqueocaja,
+        'cierre_caja' => $cierre_caja,
+        'fechacorte' => $fechacorte,
+    ];
+    return $data;
 }
 function validacionArqueoCaja($idagencia,$fechacorte){
     $datenow = now()->format('Y-m-d');

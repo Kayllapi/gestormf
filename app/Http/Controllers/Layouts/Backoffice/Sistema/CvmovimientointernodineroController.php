@@ -1436,7 +1436,7 @@ class CvmovimientointernodineroController extends Controller
                         'validacion_operaciones_cuenta_banco' => $co['validacion_operaciones_cuenta_banco'],
                         'efectivo_caja_corte' => $co['efectivo_caja_corte'],
                         'efectivo_caja_arqueo' => $co['efectivo_caja_arqueo'],
-                        'resultado' => $co['resultado'],
+                        // 'resultado' => $co['resultado'],
 
                         'idcvmovimientointernodinero_cierre' => $id,
                     ]);

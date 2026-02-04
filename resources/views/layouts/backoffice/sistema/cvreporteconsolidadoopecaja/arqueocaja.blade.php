@@ -88,7 +88,11 @@
                     <b>Para realizar el arqueo de caja, debe recepcionar los fondos!!</b>
                   </div>
                 @endif --}}
-                @if (!$validacionArqueoCaja['aperturacaja_existe_dia'])
+                @if ($validacionArqueoCaja['cvasignacioncapital_falta_recepcionar'])
+                  <div class="alert alert-danger">
+                    <b>Para realizar el arqueo de caja, debe recepcionar los fondos!!</b>
+                  </div>
+                @elseif (!$validacionArqueoCaja['aperturacaja_existe_dia'])
                   <div class="alert alert-danger">
                     <b>Para realizar el arqueo de caja, debe realizar la apertura de caja!!</b>
                   </div>
@@ -96,13 +100,6 @@
                   <div class="alert alert-danger">
                     <b>Para realizar el arqueo de caja, debe confirmar la apertura de caja!!</b>
                   </div>
-                @endif
-
-                {{-- === --}}
-                @if ($validacionArqueoCaja['cvasignacioncapital_falta_recepcionar'])
-                    <div class="alert alert-danger">
-                      <b>Para realizar el arqueo de caja, debe recepcionar los fondos!!</b>
-                    </div>
                 @else
                   @if($consolidadooperaciones['validacion_operaciones_cuenta_banco']=='VERIFICADO' ||
                     $consolidadooperaciones['validacion_operaciones_cuenta_banco']=='SIN OPERACIONES')

@@ -132,7 +132,11 @@
                                 <div class="col-sm-2">
                                     <button type="button"
                                         class="btn btn-primary"
-                                        @if(!$apertura_caja)
+                                        @if(!$validacionDiaria['arqueocaja'])
+                                            onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Falta arquear caja '.$validacionDiaria['fechacorte'].'!!')}}', size: 'modal-sm' })"
+                                        @elseif($validacionDiaria['cierre_caja'])
+                                            onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Falta cerrar caja '.$validacionDiaria['fechacorte'].'!!')}}', size: 'modal-sm' })"
+                                        @elseif(!$apertura_caja)
                                             onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Falta aperturar caja.')}}', size: 'modal-sm' })"
                                         @elseif($arqueocaja)
                                             onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Ya esta arqueado la caja!!')}}', size: 'modal-sm' })"
@@ -238,7 +242,11 @@
                                 </div>
                                 <div class="col-9 text-end">
                                     <button type="button" class="btn btn-danger"
-                                        @if(!$apertura_caja)
+                                        @if(!$validacionDiaria['arqueocaja'])
+                                            onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Falta arquear caja '.$validacionDiaria['fechacorte'].'!!')}}', size: 'modal-sm' })"
+                                        @elseif($validacionDiaria['cierre_caja'])
+                                            onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Falta cerrar caja '.$validacionDiaria['fechacorte'].'!!')}}', size: 'modal-sm' })"
+                                        @elseif(!$apertura_caja)
                                             onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Falta aperturar caja.')}}', size: 'modal-sm' })"
                                         @elseif($arqueocaja)
                                             onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Ya esta arqueado la caja!!')}}', size: 'modal-sm' })"
@@ -249,7 +257,11 @@
                                         <i class="fa-solid fa-trash"></i> Eliminar
                                     </button>
                                     <button type="button" class="btn btn-warning" style="background-color: #F9F3B5 !important;"
-                                        @if(!$apertura_caja)
+                                        @if(!$validacionDiaria['arqueocaja'])
+                                            onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Falta arquear caja '.$validacionDiaria['fechacorte'].'!!')}}', size: 'modal-sm' })"
+                                        @elseif($validacionDiaria['cierre_caja'])
+                                            onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Falta cerrar caja '.$validacionDiaria['fechacorte'].'!!')}}', size: 'modal-sm' })"
+                                        @elseif(!$apertura_caja)
                                             onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Falta aperturar caja.')}}', size: 'modal-sm' })"
                                         @elseif($arqueocaja)
                                             onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Ya esta arqueado la caja!!')}}', size: 'modal-sm' })"

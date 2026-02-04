@@ -12,18 +12,36 @@
 
 <div class="modal-body">
     <div class="row">
-        @if (!$apertura_caja)
-        <div class="modal-body" style="position: absolute; z-index: 100;">
-            <div class="alert bg-danger" style="height: 150px;">
-            <i class="fa fa-warning" style="font-size: 35px;"></i> <br>
-            Falta aperturar caja.
+        @if(!$validacionDiaria['arqueocaja'])
+            <div class="modal-body" style="position: absolute; z-index: 100;">
+                <div class="alert bg-danger" style="height: 150px;">
+                <br> <br>
+                <i class="fa fa-warning" style="font-size: 35px;"></i> <br>
+                <b>Falta arquear caja {{ $validacionDiaria['fechacorte'] }}!!</b>
+                </div>
             </div>
-        </div>
+        @elseif($validacionDiaria['cierre_caja'])
+            <div class="modal-body" style="position: absolute; z-index: 100;">
+                <div class="alert bg-danger" style="height: 150px;">
+                <br> <br>
+                <i class="fa fa-warning" style="font-size: 35px;"></i> <br>
+                <b>Falta cerrar caja {{ $validacionDiaria['fechacorte'] }}!!</b>
+                </div>
+            </div>
+        @elseif (!$apertura_caja)
+            <div class="modal-body" style="position: absolute; z-index: 100;">
+                <div class="alert bg-danger" style="height: 150px;">
+                <br> <br>
+                <i class="fa fa-warning" style="font-size: 35px;"></i> <br>
+                <b>Falta aperturar caja.</b>
+                </div>
+            </div>
         @elseif($arqueocaja)
             <div class="modal-body" style="position: absolute; z-index: 100;">
                 <div class="alert bg-danger" style="height: 150px;">
+                <br> <br>
                 <i class="fa fa-warning" style="font-size: 35px;"></i> <br>
-                Ya esta arqueado la caja!!
+                <b>Ya esta arqueado la caja!!</b>
                 </div>
             </div>
         @endif

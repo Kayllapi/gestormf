@@ -19,12 +19,15 @@ class CompraventaController extends Controller
         $apertura_caja = cvapertura($idtienda);
         $arqueocaja = cvarqueocaja($idtienda);
 
+        $validacionDiaria = validacionDiaria($idtienda);
+
         if(request('view') == 'tabla'){
             return view(sistema_view().'/compraventa/tabla', compact(
                 'tienda',
                 'agencias',
                 'apertura_caja',
                 'arqueocaja',
+                'validacionDiaria',
             ));
         }
     }

@@ -19,12 +19,15 @@ class CvasignacioncapitalController extends Controller
     {
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
         $arqueocaja = cvarqueocaja($idtienda);
+
+        $validacionDiaria = validacionDiaria($idtienda);
       
         if($request->input('view') == 'tabla'){
-            return view(sistema_view().'/cvasignacioncapital/tabla',[
-              'tienda' => $tienda,
-              'arqueocaja' => $arqueocaja
-            ]);
+            return view(sistema_view().'/cvasignacioncapital/tabla', compact(
+              'tienda',
+              'arqueocaja',
+              'validacionDiaria'
+            ));
         }
             
     }

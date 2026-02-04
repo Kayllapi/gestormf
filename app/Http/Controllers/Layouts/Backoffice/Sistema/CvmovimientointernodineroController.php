@@ -20,12 +20,16 @@ class CvmovimientointernodineroController extends Controller
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
         $apertura_caja = cvapertura($idtienda);
         $arqueocaja = cvarqueocaja($idtienda);
+
+        $validacionDiaria = validacionDiaria($idtienda);
+
         if($request->input('view') == 'tabla'){
-            return view(sistema_view().'/cvmovimientointernodinero/tabla',[
-                'tienda' => $tienda,
-                'apertura_caja' => $apertura_caja,
-                'arqueocaja' => $arqueocaja,
-            ]);
+            return view(sistema_view().'/cvmovimientointernodinero/tabla', compact(
+                'tienda',
+                'apertura_caja',
+                'arqueocaja',
+                'validacionDiaria'
+            ));
         }
     }
   

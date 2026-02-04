@@ -21,12 +21,15 @@ class CvingresoextraordinarioController extends Controller
         $apertura_caja = cvapertura($idtienda);
         $arqueocaja = cvarqueocaja($idtienda);
 
+        $validacionDiaria = validacionDiaria($idtienda);
+
         if($request->input('view') == 'tabla'){
-            return view(sistema_view().'/cvingresoextraordinario/tabla',[
-                'tienda' => $tienda,
-                'apertura_caja' => $apertura_caja,
-                'arqueocaja' => $arqueocaja,
-            ]);
+            return view(sistema_view().'/cvingresoextraordinario/tabla', compact(
+                'tienda',
+                'apertura_caja',
+                'arqueocaja',
+                'validacionDiaria'
+            ));
         }
     }
   

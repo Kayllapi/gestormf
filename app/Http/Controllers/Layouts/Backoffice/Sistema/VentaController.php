@@ -16,8 +16,16 @@ class VentaController extends Controller
         $apertura_caja = cvapertura($idtienda);
         $arqueocaja = cvarqueocaja($idtienda);
 
+        $validacionDiaria = validacionDiaria($idtienda);
+
         if($request->input('view') == 'tabla'){
-            return view(sistema_view().'/venta/tabla', compact('tienda','agencias','apertura_caja','arqueocaja'));
+            return view(sistema_view().'/venta/tabla', compact(
+                'tienda',
+                'agencias',
+                'apertura_caja',
+                'arqueocaja',
+                'validacionDiaria'
+            ));
         }
     }
 

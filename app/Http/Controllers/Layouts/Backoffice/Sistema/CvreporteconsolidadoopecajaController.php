@@ -318,24 +318,40 @@ class CvreporteconsolidadoopecajaController extends Controller
           $date->subDay(); // Subtracts 1 day
           //$co_anterior = consolidadooperaciones($tienda,$request->idagencia,$date->format('Y-m-d'));
 
-            $anterior = DB::table('cvarqueocaja')
-              ->where('idagencia',$request->idagencia)
-              ->where('corte',$date->format('Y-m-d'))
-              ->orderByDesc('id')
-              ->exists();
-            dd($date->format('Y-m-d'), $anterior);
-            if ($anterior) {
-              $co_anterior = DB::table('cvarqueocaja')
-                  ->where('idagencia',$request->idagencia)
-                  ->where('corte',$date->format('Y-m-d'))
-                  ->orderByDesc('id')
-                  ->first();
-            } else {
-              $co_anterior = DB::table('cvarqueocaja')
-                  ->where('idagencia',$request->idagencia)
-                  ->orderByDesc('id')
-                  ->first();
+            $co_anterior = DB::table('cvarqueocaja')
+                ->where('idagencia', $request->idagencia)
+                ->where('corte', $fechaAnterior)
+                ->orderByDesc('id')
+                ->first();
+            if (!$co_anterior) {
+                $ultimo = DB::table('cvarqueocaja')
+                    ->where('idagencia', $request->idagencia)
+                    ->orderByDesc('id')
+                    ->first();
+
+                if ($ultimo && $ultimo->corte === $request->corte) {
+                    $co_anterior = DB::table('cvarqueocaja')
+                        ->where('idagencia', $request->idagencia)
+                        ->where('id', '<', $ultimo->id)
+                        ->orderByDesc('id')
+                        ->first();
+                } else {
+                    $co_anterior = $ultimo;
+                }
             }
+            // dd($date->format('Y-m-d'), $anterior);
+            // if ($anterior) {
+            //   $co_anterior = DB::table('cvarqueocaja')
+            //       ->where('idagencia',$request->idagencia)
+            //       ->where('corte',$date->format('Y-m-d'))
+            //       ->orderByDesc('id')
+            //       ->first();
+            // } else {
+            //   $co_anterior = DB::table('cvarqueocaja')
+            //       ->where('idagencia',$request->idagencia)
+            //       ->orderByDesc('id')
+            //       ->first();
+            // }
 
         //   $co_anterior = DB::table('cvarqueocaja')
         //       ->where('idagencia',$request->idagencia)

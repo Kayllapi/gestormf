@@ -48,7 +48,7 @@ class CvcontrolaperturaopecajaController extends Controller
               ->orderBy('tienda.id','asc')
               ->get();
           
-          $html = '<table class="table table-hover table-bordered" id="table-lista-credito">
+          $html = '<table class="table table-hover" id="table-lista-credito">
               <thead class="table-dark" style="position: sticky;top: 0;">
                 <tr>
                   <td rowspan="2" style="text-align:center; font-weight: bold;">N°</td>

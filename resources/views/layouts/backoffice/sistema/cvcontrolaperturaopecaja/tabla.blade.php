@@ -1,6 +1,5 @@
 <div class="modal-header">
   <h5 class="modal-title">Control de Apertura y Cierre de Ope. de Caja</h5>
-  
   <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>
 <div class="modal-body">
@@ -8,9 +7,7 @@
       <div class="col-sm-12">
         <div class="card">
           <div class="card-body p-2" id="form-credito-result">
-             
             <div class="modal-body">
-              
                 <div class="row">
                     <div class="col-sm-12 col-md-8">
                         <div class="row">
@@ -40,7 +37,6 @@
                           </div>
                       </div>
                 </div>
-              
             </div> 
           </div>
         </div>
@@ -48,9 +44,11 @@
   </div>
       <div class="col-sm-12">
         <div class="card">
-          <div class="card-body" id="tabla-controlaperturaopecaja" style="overflow-y: scroll;height: 260px;padding-top: 0px;padding-bottom: 0px;">
-          </div>
-          <div class="card-body" id="tabla-controlaperturaopecaja1">
+          <div class="card-body" id="tabla-controlaperturaopecaja" style="
+            overflow-y: scroll;
+            height: calc(100vh - 219px);
+            padding-top: 0px;
+            padding-bottom: 0px;">
           </div>
         </div>
       </div>
@@ -65,7 +63,6 @@
   }
 </style>
 <script>
-
   sistema_select2({ input:'#idagencia',val:'{{$tienda->id}}' });
   sistema_select2({ idtienda:{{$tienda->id}}, json:'tienda:usuario', input:'#idcliente' });
   sistema_select2({ input:'#idasesor' });
@@ -100,12 +97,10 @@
       }
     })
   }
- 
     function cierre(){
         var fecha_corte = $('#fecha_corte').val();
         modal({ route:"{{ url('backoffice/'.$tienda->id) }}/cvcontrolaperturaopecaja/0/edit?view=cierre&fecha_corte="+fecha_corte,  size: 'modal-sm' });
     }
- 
    function reporte(){
       let url = "{{ url('backoffice/'.$tienda->id) }}/cvcontrolaperturaopecaja/0/edit?view=reporte";
       modal({ route: url,size:'modal-fullscreen' })

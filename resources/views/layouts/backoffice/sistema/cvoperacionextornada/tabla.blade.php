@@ -48,18 +48,15 @@
                             </div>
                         </div>
                     </div>
-                            
-                         
                 </div>
-              
             </div> 
           </div>
         </div>
       </div>
   </div>
       <div class="col-sm-12">
-        <div class="card">
-        <iframe id="iframe_acta_aprobacion" frameborder="0" width="100%" height="600px"></iframe>
+        <div class="card" style="height: calc(100vh - 190px);">
+          <iframe id="iframe_acta_aprobacion" frameborder="0" width="100%" height="100%"></iframe>
         </div>
       </div>
 </div>

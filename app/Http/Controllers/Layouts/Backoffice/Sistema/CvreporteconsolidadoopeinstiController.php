@@ -45,14 +45,31 @@ class CvreporteconsolidadoopeinstiController extends Controller
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
         if($request->input('view') == 'pdf_reporte'){
             $co_actual = cvconsolidadooperaciones($tienda,$request->idagencia,$request->corte);
-            // $co_actual = cvconsolidadooperacionesNuevo($request->idagencia,$request->corte);
-            $date = Carbon::createFromFormat('Y-m-d', $request->corte);
-            $date->subDay(); // Subtracts 1 day
+
+            $fechaCorte = Carbon::createFromFormat('Y-m-d', $request->corte);
+            $fechaAnterior = $fechaCorte->copy()->subDay()->format('Y-m-d');
             $co_anterior = DB::table('cvarqueocaja')
-                ->where('idagencia',$request->idagencia)
-                // ->where('corte',$date->format('Y-m-d'))
+                ->where('idagencia', $request->idagencia)
+                ->where('corte', $fechaAnterior)
                 ->orderByDesc('id')
                 ->first();
+            if (!$co_anterior) {
+                $ultimo = DB::table('cvarqueocaja')
+                    ->where('idagencia', $request->idagencia)
+                    ->orderByDesc('id')
+                    ->first();
+
+                if ($ultimo && $ultimo->corte >= $request->corte) {
+                    $co_anterior = DB::table('cvarqueocaja')
+                        ->where('idagencia', $request->idagencia)
+                        ->where('corte', '<', $request->corte)
+                        ->orderByDesc('corte')
+                        ->orderByDesc('id')
+                        ->first();
+                } else {
+                    $co_anterior = $ultimo;
+                }
+            }
 
             $pdf = PDF::loadView(sistema_view().'/cvreporteconsolidadoopeinsti/pdf_reporte', compact(
                 'co_actual',

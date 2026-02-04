@@ -313,14 +313,10 @@ class CvreporteconsolidadoopecajaController extends Controller
     {
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
         if($request->input('view') == 'pdf_reporte'){
-          $co_actual = cvconsolidadooperaciones($tienda,$request->idagencia,$request->corte);
-        //   $date = Carbon::createFromFormat('Y-m-d', $request->corte);
-        //   $date->subDay(); // Subtracts 1 day
-          //$co_anterior = consolidadooperaciones($tienda,$request->idagencia,$date->format('Y-m-d'));
+            $co_actual = cvconsolidadooperaciones($tienda,$request->idagencia,$request->corte);
 
-          $fechaCorte = Carbon::createFromFormat('Y-m-d', $request->corte);
-          $fechaAnterior = $fechaCorte->copy()->subDay()->format('Y-m-d');
-
+            $fechaCorte = Carbon::createFromFormat('Y-m-d', $request->corte);
+            $fechaAnterior = $fechaCorte->copy()->subDay()->format('Y-m-d');
             $co_anterior = DB::table('cvarqueocaja')
                 ->where('idagencia', $request->idagencia)
                 ->where('corte', $fechaAnterior)
@@ -343,25 +339,6 @@ class CvreporteconsolidadoopecajaController extends Controller
                     $co_anterior = $ultimo;
                 }
             }
-            // dd($date->format('Y-m-d'), $anterior);
-            // if ($anterior) {
-            //   $co_anterior = DB::table('cvarqueocaja')
-            //       ->where('idagencia',$request->idagencia)
-            //       ->where('corte',$date->format('Y-m-d'))
-            //       ->orderByDesc('id')
-            //       ->first();
-            // } else {
-            //   $co_anterior = DB::table('cvarqueocaja')
-            //       ->where('idagencia',$request->idagencia)
-            //       ->orderByDesc('id')
-            //       ->first();
-            // }
-
-        //   $co_anterior = DB::table('cvarqueocaja')
-        //       ->where('idagencia',$request->idagencia)
-        //       // ->where('corte',$date->format('Y-m-d'))
-        //       ->orderByDesc('id')
-        //       ->first();
           $data_actual = DB::table('cvarqueocaja')
               ->where('idagencia',$request->idagencia)
               ->where('corte',$request->corte)

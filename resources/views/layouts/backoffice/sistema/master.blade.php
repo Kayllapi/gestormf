@@ -112,12 +112,6 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
           #cuerposistema .modal-title {
               color: #000000;
           }
-          .subtitulo {
-            border-radius: 5px;
-    padding-left: 5px;
-    padding-right: 5px;
-    margin-bottom: 3px;
-          }
           
           .select2-container--bootstrap-5 .select2-dropdown .select2-results__options .select2-results__option.select2-results__option--highlighted {
               color: #000;
@@ -244,6 +238,14 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
           .bg-info .fa-solid:before,
           .btn-info  .fa-solid:before {    
               color: #000;
+          }
+          .subtitulo {
+              border-radius: 5px;
+              padding-left: 5px;
+              padding-right: 5px;
+              margin-bottom: 3px;
+              background-color: #b7b6b7 !important;
+              border: 1px solid #b7b6b7 !important;
           }
 
           #cuerposistema > .modal-body {

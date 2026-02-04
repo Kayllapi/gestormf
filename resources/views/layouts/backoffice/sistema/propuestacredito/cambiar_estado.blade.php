@@ -10,7 +10,7 @@
         <h5 class="modal-title">ESTADO DE CRÉDITO</h5>
         <button type="button" class="btn-close" id="modal-close-cambiar-estado" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
-    <div class="modal-body">
+    <div class="modal-body" style="height: calc(100vh - 38px);">
       <div class="row" style="font-size: 14px;padding: 7px;">
           <div class="col-md-6"><b>CLIENTE:</b> {{ $usuario->nombrecompleto }}</div>
           <div class="col-md-6" style="text-align: right;"><b>PRODUCTO:</b> {{ $credito->nombreproductocredito }}</div>
@@ -54,12 +54,7 @@
           <div class="row">
               <div class="col-md-4">
                 <div class="mb-1">
-                    <label style="background-color: #636363;
-    color: #fff;
-    width: 100%;
-    border-radius: 5px;
-    padding: 0px 5px;
-    margin-bottom: 5px;">Seleccionar Nivel de Aprobación</label>
+                    <div class="mt-2 bg-primary subtitulo">Seleccionar Nivel de Aprobación</div>
                     <select class="form-control" id="tipo_validacion" onchange="mostrar_permisos(this.value)" {{ $credito->aprobacion_tipo_validacion!='' && count($credito_aprobacion)>0?'disabled':'' }}>
                       <option disabled selected> -- Seleccione una opcion -- </option>
                       <option value="nivelaprobacion" {{ $credito->aprobacion_tipo_validacion=='nivelaprobacion' && count($credito_aprobacion)>0?'selected':'' }}>1. COMITÉ DE APROBACIÓN</option>
@@ -68,12 +63,7 @@
                     </select>
                 </div>
                 <div class="mb-1">
-                    <label style="background-color: #636363;
-    color: #fff;
-    width: 100%;
-    border-radius: 5px;
-    padding: 0px 5px;
-    margin-bottom: 5px;">Nivel</label>
+                    <div class="mt-2 bg-primary subtitulo">Nivel</div>
                         <div class="form-check">
                           <input class="form-check-input" type="radio" name="exampleRadios" id="check_uno_table" 
                                  value="table_uno" {{ $credito->aprobacion_nivel_validacion==1 && count($credito_aprobacion)>0?'checked':'' }} {{ $credito->aprobacion_nivel_validacion!=0 && count($credito_aprobacion)>0?'disabled':'' }}>
@@ -93,14 +83,7 @@
               
               </div>
               <div class="col-md-8">
-                  <div class="mb-1">
-                    <label style="background-color: #636363;
-                      color: #fff;
-                      width: 100%;
-                      border-radius: 5px;
-                      padding: 0px 5px;
-                      margin-bottom: 5px;text-align: center;">ACTA DE APROBACIÓN</label>
-                </div>
+                    <div class="mt-2 bg-primary subtitulo text-center">ANOTACIONES</div>
                 <div class="row">
                   <div class="col-sm-4">
                     <div class="mb-1">
@@ -182,7 +165,7 @@
                                     <div style="background-color: #dc3545;padding: 7px;border-radius: 5px;color: #fff;text-align: center;font-weight: bold;">ANULADO</div></td>
                                   @endif
                               @else
-                              <td id="resultado_cambiar_permiso{{ $value->id }}" style="240px">
+                              <td id="resultado_cambiar_permiso{{ $value->id }}" style="width:242px">
                                 <button type="button" class="btn btn-warning" onclick="validarclave({{ $value->id }},1,'#table-permisos-nivel-uno')"><i class="fa-solid fa-check"></i> APROBAR</button>
                                 <button type="button" class="btn btn-danger" onclick="validarclave({{ $value->id }},2,'#table-permisos-nivel-uno')"><i class="fa-solid fa-ban"></i> DESAPROBAR</button>
                               </td>
@@ -277,12 +260,7 @@
               <div class="row">
                   <div class="col-sm-4"> </div>
                   <div class="col-sm-4 mt-2"> 
-                  <label class="mt-1" style="background-color: #636363;
-                    color: #fff;
-                    width: 100%;
-                    border-radius: 5px;
-                    padding: 0px 5px;
-                    margin-bottom: 5px;">Aprobación</label>
+                <div class="mt-2 bg-primary subtitulo">Aprobación</div>
                         <div class="mb-1">
                             <label>Responsable (Gerencia General) *</label>
                             <select class="form-select" id="idresponsable">
@@ -363,6 +341,7 @@
 
 </style>
 <script>
+    sistema_select2({ input:'#tipo_validacion' });
     sistema_select2({ input:'#idresponsable' });
   @if($credito->aprobacion_tipo_validacion!='' && $credito->aprobacion_nivel_validacion!=0)
   //setTimeout(function() {
@@ -495,7 +474,7 @@
                           <td><span class="badge bg-warning" style="color:#000">${valor.permiso}</span></td>
                           <td><select class="form-control" id="per_usuario${num}" usuario>${option_usuario}</select></td>
                           <td><input type="password" password_users id="per_clave${num}" class="form-control text-center"></td>
-                          <td id="resultado_cambiar_permiso${num}" style="240px">
+                          <td id="resultado_cambiar_permiso${num}" style="width:242px">
                             <button type="button" class="btn btn-warning" onclick="validarclave(${num},1,'${target}')">
                             <i class="fa-solid fa-check"></i> APROBAR</button>
                             <button type="button" class="btn btn-danger" onclick="validarclave(${num},2,'${target}')">
@@ -505,6 +484,7 @@
         num++;
     });
     $(target+' > tbody').html(tr_body);
+    sistema_select2({ input:'#per_usuario'+num });
     /*$('#table-permisos-nivel-dos > tbody input').attr('disabled',false);
     $('#table-permisos-nivel-dos > tbody select').attr('disabled',false);
     $('#table-permisos-nivel-uno > tbody input').attr('disabled',false);

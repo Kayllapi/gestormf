@@ -1,6 +1,6 @@
 <div class="modal-header">
   <h5 class="modal-title">
-    Garantias con créditos vigentes y prendarios cancelados por recoger Institucional</h5>
+    Garantias con créditos vigentes y prendarios cancelados por entregar Institucional</h5>
   
   <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>

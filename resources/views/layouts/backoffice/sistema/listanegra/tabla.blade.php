@@ -20,6 +20,7 @@
         'tabla' => '#tabla-listanegra',
         'route' => url('backoffice/'.$tienda->id.'/listanegra/show_table'),
         'type' => 'GET',
+        'scrollY' => 'calc(-198px + 100vh)',
         'thead' => [
             ['data' => 'RUC/DNI/CE'],
             ['data' => 'Cliente'],

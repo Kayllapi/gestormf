@@ -15,6 +15,7 @@
     @include('app.nuevosistema.tabla',[
         'tabla' => '#tabla-usuarioacceso',
         'route' => url('public/backoffice/tienda/'.$tienda->id.'/sistema_json/usuarioacceso.json'),
+        'scrollY' => 'calc(-196px + 100vh)',
         'thead' => [
             ['data' => 'Código'],
             ['data' => 'RUC/DNI'],

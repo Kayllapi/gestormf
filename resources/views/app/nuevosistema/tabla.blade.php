@@ -186,7 +186,7 @@ $name_table = generateRandomString();
             selector: 'td:not(:nth-child(10))'
         },
         keys: true,
-        scrollY: {{isset($scrollY)?$scrollY:350}},
+        scrollY: '{{isset($scrollY)?$scrollY:350}}',
         scroller: {
             loadingIndicator: true
         },

@@ -14,6 +14,7 @@
         'tabla' => '#tabla-usuario',
         'route' => url('backoffice/'.$tienda->id.'/usuario/show_table'),
         'type' => 'GET',
+        'scrollY' => 'calc(-196px + 100vh)',
         'thead' => [
             ['data' => 'Código'],
             ['data' => 'RUC/DNI/CE'],

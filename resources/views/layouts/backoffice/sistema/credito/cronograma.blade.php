@@ -31,7 +31,8 @@
                 <div class="row">
                   <label class="col-sm-5 col-form-label" style="text-align: right;">Monto de Préstamo</label>
                   <div class="col-sm-7">
-                    <input type="number" step="any" class="form-control" {{ $view_detalle=='false' ? 'disabled' : ($credito->idestadorefinanciamiento==1?'disabled':'') }} id="monto_solicitado" value="{{ $credito->monto_solicitado }}" onclick="showtasa()" onkeyup="showtasa()">
+                    <input type="number" step="any" class="form-control" {{ $view_detalle=='false' ? 'disabled' : ($credito->idestadorefinanciamiento==1?'disabled':'') }} 
+                    id="monto_solicitado" value="{{ $credito->monto_solicitado }}" onclick="showtasa()" onkeyup="showtasa()">
                   </div>
                 </div>
                 <div class="row">
@@ -205,7 +206,7 @@
           let monto       = parseFloat($('#monto_solicitado').val());
           let numerocuota = parseFloat($('#cuotas').val());
           let fechainicio = $('#fecha_desembolso').val();
-          let frecuencia  = $('#idforma_pago_credito').val();
+          let frecuencia  = $('#idforma_pago_credito :selected').val();
           let dia_gracia  = $('#dia_gracia').val();
           
           let cargo       = $('#cargo').val();
@@ -215,6 +216,12 @@
           
           if(monto<=0){
               var mensaje = "Monto de Prestamo debe ser mayor a 0.00.";
+              modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });  
+              return false;
+          }
+
+          if(frecuencia==undefined){
+              var mensaje = "La Frecuencia de Pago es Obligatorio.";
               modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });  
               return false;
           }
@@ -328,7 +335,9 @@
   
   
     setTimeout(function() {
+      @if($credito->monto_solicitado>0 && $credito->cuotas>0)
       cronograma();
+      @endif
     }, 1000);
   
   $('#tasa_tem').inputmask("decimal", {

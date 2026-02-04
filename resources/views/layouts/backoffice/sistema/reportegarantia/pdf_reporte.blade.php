@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GARANTÍAS (PRENDARIA Y REGULAR) CON CRÉDITOS VIGENTES Y PRENDARIAS CANCELADOS POR RECOGER</title>
+    <title>GARANTÍAS (PRENDARIA Y REGULAR) CON CRÉDITOS VIGENTES Y PRENDARIAS CANCELADOS POR ENTREGAR</title>
     <style>
       *{
         font-family:helvetica;
@@ -124,7 +124,7 @@
   </footer>
   <main>
     <div class="container">
-      <h4 align="center">GARANTÍAS (PRENDARIA Y REGULAR) CON CRÉDITOS VIGENTES Y PRENDARIAS CANCELADOS POR RECOGER</h4>
+      <h4 align="center">GARANTÍAS (PRENDARIA Y REGULAR) CON CRÉDITOS VIGENTES Y PRENDARIAS CANCELADOS POR ENTREGAR</h4>
           <div style="height:35px;">
           <div style="width:400px;float:left;"> 
             <div ><b>AGENCIA: </b>{{ $agencia->nombreagencia }}  </div>

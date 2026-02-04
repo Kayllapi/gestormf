@@ -14,6 +14,7 @@
         'tabla' => '#tabla-permisos',
         'route' => url('backoffice/'.$tienda->id.'/permisos/show_table'),
         'type' => 'GET',
+        'scrollY' => 'calc(-196px + 100vh)',
         'thead' => [
             ['data' => 'Rango' ],
             ['data' => 'Nombre' ],

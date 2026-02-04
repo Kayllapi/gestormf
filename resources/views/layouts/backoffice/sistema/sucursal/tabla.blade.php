@@ -14,6 +14,7 @@
     @include('app.nuevosistema.tabla',[
         'tabla' => '#tabla-sucursal',
         'route' => url('public/backoffice/tienda/'.$tienda->id.'/sistema_json/sucursal.json'),
+        'scrollY' => 'calc(-196px + 100vh)',
         'thead' => [
             ['data' => 'Nombre Empresa'],
             ['data' => 'Agencia'],

@@ -49,7 +49,7 @@
             </div>
           </div>
           <div class="row">
-            <label class="col-sm-12 col-form-label">DNI/RUC:</label>
+            <label class="col-sm-12 col-form-label">RUC/DNI/CE:</label>
             <div class="col-sm-12">
               <input type="text" step="any" class="form-control" value="{{ $credito->docuementocliente }}" disabled>
             </div>

@@ -1301,7 +1301,6 @@ function validacionDiaria($idagencia){
             ->where('corte','<=',$fechacorte.' 23:59:59')
             ->exists();
 
-        dd($arqueocaja);
         if ($arqueocaja) {
             $cierre_caja = DB::table('cvmovimientointernodinero')
                 ->where('cvmovimientointernodinero.idestadoeliminado',1)
@@ -1313,6 +1312,8 @@ function validacionDiaria($idagencia){
                 ->where('cvmovimientointernodinero.idtienda',$idagencia)
                 ->exists();
         }
+        dump($aperturacaja_existe_ultima->fecharegistro, $fechacorte, $cierre_caja);
+
     }
 
     $data = [

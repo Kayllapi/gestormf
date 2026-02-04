@@ -2316,6 +2316,12 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
         ->where('cvasignacioncapital.idresponsable_recfinal', '<>', 0)
         ->where($where)
         ->count();
+
+    $saldos_operaciones_confirmacion_existe = DB::table('cvasignacioncapital')
+        ->where('cvasignacioncapital.idestadoeliminado',1)
+        ->where('cvasignacioncapital.idresponsable_recfinal', '<>', 0)
+        ->where('cvasignacioncapital.fecharegistro','<=',$fechacorte.' 23:59:59')
+        ->exists();
     // ===== fin validaciones en cvasignacioncapital =====
 
     // HABILITACIÓN Y GESTIÓN DE LIQUIDEZ ( I )
@@ -3206,6 +3212,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
         'resultado' => number_format($resultado, 2, '.', ''),
 
         'saldos_operaciones_efectivo_validacion_existe' => $saldos_operaciones_efectivo_validacion_existe,
+        'saldos_operaciones_confirmacion_existe' => $saldos_operaciones_confirmacion_existe,
         'saldos_operaciones_efectivo_validacion_cantidad' => $saldos_operaciones_efectivo_validacion_cantidad,
         'saldos_operaciones_efectivo_validacion_recepcionado' => $saldos_operaciones_efectivo_validacion_recepcionado,
     ];

@@ -79,177 +79,145 @@
           <div class="row" style="margin-top:10px;">
               <div class="col-sm-10">
               @if($arqueocaja)
-              <div class="alert alert-danger">
-                <b>Ya esta arqueado la CAJA!!</b>
-              </div>
-                      {{-- <p class="text-center" 
-                           style="background-color: #ffc9ca !important;
-                                  padding: 15px;
-                                  border-radius: 5px;
-                                  color: #93222c !important;
-                                  width: 90%;
-                                  margin: auto;">Ya esta arqueado la CAJA!!</p> --}}
+                <div class="alert alert-danger">
+                  <b>Ya esta arqueado la CAJA!!</b>
+                </div>
               @else
-                @if($consolidadooperaciones['validacion_operaciones_cuenta_banco']=='VERIFICADO' ||
-                  $consolidadooperaciones['validacion_operaciones_cuenta_banco']=='SIN OPERACIONES')
-                  @if($consolidadooperaciones['saldos_operaciones_efectivo_validacion_recepcionado']==0)
-                    @if($consolidadooperaciones['habilitacion_gestion_liquidez1']>0)
-                    <div class="alert alert-danger">
-                      <b>Falta confirmar, HABILITACIÓN Y GESTIÓN DE LIQUIDEZ ( I )!!</b>
-                    </div>
-                      {{-- <p class="text-center" 
-                        style="background-color: #ffc9ca !important;
-                              padding: 15px;
-                              border-radius: 5px;
-                              color: #93222c !important;
-                              width: 90%;
-                              margin: auto;">Falta confirmar, HABILITACIÓN Y GESTIÓN DE LIQUIDEZ ( I )!!</p>
-                        <br> --}}
-                    @endif
-                    @if($consolidadooperaciones['habilitacion_gestion_liquidez2']>0)
-                    <div class="alert alert-danger">
-                      <b>Falta confirmar, HABILITACIÓN Y GESTIÓN DE LIQUIDEZ ( II )!!</b>
-                    </div>
-                      {{-- <p class="text-center" 
-                        style="background-color: #ffc9ca !important;
-                              padding: 15px;
-                              border-radius: 5px;
-                              color: #93222c !important;
-                              width: 90%;
-                              margin: auto;">Falta confirmar, HABILITACIÓN Y GESTIÓN DE LIQUIDEZ ( II )!!</p>
-                        <br> --}}
-                    @endif
-                    @if($consolidadooperaciones['cierre_caja_apertura']>0)
-                    <div class="alert alert-danger">
-                      <b>Falta confirmar, CIERRE Y APERTURA DE CAJA!!</b>
-                    </div>
-                      {{-- <p class="text-center" 
-                        style="background-color: #ffc9ca !important;
-                              padding: 15px;
-                              border-radius: 5px;
-                              color: #93222c !important;
-                              width: 90%;
-                              margin: auto;">Falta confirmar, CIERRE Y APERTURA DE CAJA!!</p>
-                        <br> --}}
-                    @endif
-                    @if($consolidadooperaciones['habilitacion_gestion_liquidez1']==0 &&
-                        $consolidadooperaciones['habilitacion_gestion_liquidez2']==0 &&
-                        $consolidadooperaciones['cierre_caja_apertura']==0)
-                      <div style="float:left;width:48%;">
-                        <table class="table table-bordered" id="table-lista-asignacioncapital">
-                          <thead class="table-dark" style="position: sticky;top: 0;">
-                            <tr>
-                              <td colspan="3" style="text-align: center;">MONEDAS</td>
-                            </tr>
-                            <tr>
-                              <td style="text-align: center;">Denominación</td>
-                              <td style="text-align: center;">Cantidad</td>
-                              <td style="text-align: center;">Total</td>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td style="text-align: right;">S/ 0.10</td>
-                              <td style="width:33%;"><input type="text" class="form-control campo_moneda color_cajatexto" value="0" id="moneda_1" onclick="calculo_moneda()" onkeyup="calculo_moneda()"></td>
-                              <td style="width:33%;text-align:right;">S/. <span id="moneda_1_total">0.00</span></td>
-                            </tr>
-                            <tr>
-                              <td style="text-align: right;">S/ 0.20</td>
-                              <td><input type="text" class="form-control campo_moneda color_cajatexto" value="0" id="moneda_2" onclick="calculo_moneda()" onkeyup="calculo_moneda()"></td>
-                              <td style="text-align:right;">S/. <span id="moneda_2_total">0.00</span></td>
-                            </tr>
-                            <tr>
-                              <td style="text-align: right;">S/ 0.50</td>
-                              <td><input type="text" class="form-control campo_moneda color_cajatexto" value="0" id="moneda_3" onclick="calculo_moneda()" onkeyup="calculo_moneda()"></td>
-                              <td style="text-align:right;">S/. <span id="moneda_3_total">0.00</span></td>
-                            </tr>
-                            <tr>
-                              <td style="text-align: right;">S/ 1.00</td>
-                              <td><input type="text" class="form-control campo_moneda color_cajatexto" value="0" id="moneda_4" onclick="calculo_moneda()" onkeyup="calculo_moneda()"></td>
-                              <td style="text-align:right;">S/. <span id="moneda_4_total">0.00</span></td>
-                            </tr>
-                            <tr>
-                              <td style="text-align: right;">S/ 2.00</td>
-                              <td><input type="text" class="form-control campo_moneda color_cajatexto" value="0" id="moneda_5" onclick="calculo_moneda()" onkeyup="calculo_moneda()"></td>
-                              <td style="text-align:right;">S/. <span id="moneda_5_total">0.00</span></td>
-                            </tr>
-                            <tr>
-                              <td style="text-align: right;">S/ 5.00</td>
-                              <td><input type="text" class="form-control campo_moneda color_cajatexto" value="0" id="moneda_6" onclick="calculo_moneda()" onkeyup="calculo_moneda()"></td>
-                              <td style="text-align:right;">S/. <span id="moneda_6_total">0.00</span></td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <div style="float:left;width:4%;height:10px;">
-                      </div>
-                      <div style="float:left;width:48%;">
-                        <table class="table table-bordered" id="table-lista-asignacioncapital">
-                          <thead class="table-dark" style="position: sticky;top: 0;">
-                            <tr>
-                              <td colspan="3" style="text-align: center;">BILLETES</td>
-                            </tr>
-                            <tr>
-                              <td style="text-align: center;">Denominación</td>
-                              <td style="text-align: center;">Cantidad</td>
-                              <td style="text-align: center;">Total</td>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td style="text-align: right;">S/ 10.00</td>
-                              <td style="width:33%;"><input type="text" class="form-control campo_moneda color_cajatexto" value="0" id="moneda_7" onclick="calculo_moneda()" onkeyup="calculo_moneda()"></td>
-                              <td style="width:33%;text-align:right;">S/. <span id="moneda_7_total">0.00</span></td>
-                            </tr>
-                            <tr>
-                              <td style="text-align: right;">S/ 20.00</td>
-                              <td><input type="text" class="form-control campo_moneda color_cajatexto" value="0" id="moneda_8" onclick="calculo_moneda()" onkeyup="calculo_moneda()"></td>
-                              <td style="text-align:right;">S/. <span id="moneda_8_total">0.00</span></td>
-                            </tr>
-                            <tr>
-                              <td style="text-align: right;">S/ 50.00</td>
-                              <td><input type="text" class="form-control campo_moneda color_cajatexto" value="0" id="moneda_9" onclick="calculo_moneda()" onkeyup="calculo_moneda()"></td>
-                              <td style="text-align:right;">S/. <span id="moneda_9_total">0.00</span></td>
-                            </tr>
-                            <tr>
-                              <td style="text-align: right;">S/ 100.00</td>
-                              <td><input type="text" class="form-control campo_moneda color_cajatexto" value="0" id="moneda_10" onclick="calculo_moneda()" onkeyup="calculo_moneda()"></td>
-                              <td style="text-align:right;">S/. <span id="moneda_10_total">0.00</span></td>
-                            </tr>
-                            <tr>
-                              <td style="text-align: right;">S/ 200.00</td>
-                              <td><input type="text" class="form-control campo_moneda color_cajatexto" value="0" id="moneda_11" onclick="calculo_moneda()" onkeyup="calculo_moneda()"></td>
-                              <td style="text-align:right;">S/. <span id="moneda_11_total">0.00</span></td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
+                @if($consolidadooperaciones['saldos_operaciones_confirmacion_existe'])
+                  <div class="alert alert-danger">
+                    <b>Para realizar el arqueo de caja, debe recepcionar los fondos!!</b>
+                  </div> 
+                @else
+                  @if($consolidadooperaciones['validacion_operaciones_cuenta_banco']=='VERIFICADO' ||
+                    $consolidadooperaciones['validacion_operaciones_cuenta_banco']=='SIN OPERACIONES')
+                    @if($consolidadooperaciones['saldos_operaciones_efectivo_validacion_recepcionado']==0)
+                      @if($consolidadooperaciones['habilitacion_gestion_liquidez1']>0)
+                        <div class="alert alert-danger">
+                          <b>Falta confirmar, HABILITACIÓN Y GESTIÓN DE LIQUIDEZ ( I )!!</b>
+                        </div>
+                      @endif
+                      @if($consolidadooperaciones['habilitacion_gestion_liquidez2']>0)
+                        <div class="alert alert-danger">
+                          <b>Falta confirmar, HABILITACIÓN Y GESTIÓN DE LIQUIDEZ ( II )!!</b>
+                        </div>
+                      @endif
+                      @if($consolidadooperaciones['cierre_caja_apertura']>0)
+                        <div class="alert alert-danger">
+                          <b>Falta confirmar, APERTURA Y CIERRE DE CAJA!!</b>
+                        </div>
+                      @endif
+                      @if($consolidadooperaciones['habilitacion_gestion_liquidez1']==0 &&
+                          $consolidadooperaciones['habilitacion_gestion_liquidez2']==0 &&
+                          $consolidadooperaciones['cierre_caja_apertura']==0)
+                        <div style="float:left;width:48%;">
+                          <table class="table table-bordered" id="table-lista-asignacioncapital">
+                            <thead class="table-dark" style="position: sticky;top: 0;">
+                              <tr>
+                                <td colspan="3" style="text-align: center;">MONEDAS</td>
+                              </tr>
+                              <tr>
+                                <td style="text-align: center;">Denominación</td>
+                                <td style="text-align: center;">Cantidad</td>
+                                <td style="text-align: center;">Total</td>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td style="text-align: right;">S/ 0.10</td>
+                                <td style="width:33%;"><input type="text" class="form-control campo_moneda color_cajatexto" value="0" id="moneda_1" onclick="calculo_moneda()" onkeyup="calculo_moneda()"></td>
+                                <td style="width:33%;text-align:right;">S/. <span id="moneda_1_total">0.00</span></td>
+                              </tr>
+                              <tr>
+                                <td style="text-align: right;">S/ 0.20</td>
+                                <td><input type="text" class="form-control campo_moneda color_cajatexto" value="0" id="moneda_2" onclick="calculo_moneda()" onkeyup="calculo_moneda()"></td>
+                                <td style="text-align:right;">S/. <span id="moneda_2_total">0.00</span></td>
+                              </tr>
+                              <tr>
+                                <td style="text-align: right;">S/ 0.50</td>
+                                <td><input type="text" class="form-control campo_moneda color_cajatexto" value="0" id="moneda_3" onclick="calculo_moneda()" onkeyup="calculo_moneda()"></td>
+                                <td style="text-align:right;">S/. <span id="moneda_3_total">0.00</span></td>
+                              </tr>
+                              <tr>
+                                <td style="text-align: right;">S/ 1.00</td>
+                                <td><input type="text" class="form-control campo_moneda color_cajatexto" value="0" id="moneda_4" onclick="calculo_moneda()" onkeyup="calculo_moneda()"></td>
+                                <td style="text-align:right;">S/. <span id="moneda_4_total">0.00</span></td>
+                              </tr>
+                              <tr>
+                                <td style="text-align: right;">S/ 2.00</td>
+                                <td><input type="text" class="form-control campo_moneda color_cajatexto" value="0" id="moneda_5" onclick="calculo_moneda()" onkeyup="calculo_moneda()"></td>
+                                <td style="text-align:right;">S/. <span id="moneda_5_total">0.00</span></td>
+                              </tr>
+                              <tr>
+                                <td style="text-align: right;">S/ 5.00</td>
+                                <td><input type="text" class="form-control campo_moneda color_cajatexto" value="0" id="moneda_6" onclick="calculo_moneda()" onkeyup="calculo_moneda()"></td>
+                                <td style="text-align:right;">S/. <span id="moneda_6_total">0.00</span></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <div style="float:left;width:4%;height:10px;">
+                        </div>
+                        <div style="float:left;width:48%;">
+                          <table class="table table-bordered" id="table-lista-asignacioncapital">
+                            <thead class="table-dark" style="position: sticky;top: 0;">
+                              <tr>
+                                <td colspan="3" style="text-align: center;">BILLETES</td>
+                              </tr>
+                              <tr>
+                                <td style="text-align: center;">Denominación</td>
+                                <td style="text-align: center;">Cantidad</td>
+                                <td style="text-align: center;">Total</td>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td style="text-align: right;">S/ 10.00</td>
+                                <td style="width:33%;"><input type="text" class="form-control campo_moneda color_cajatexto" value="0" id="moneda_7" onclick="calculo_moneda()" onkeyup="calculo_moneda()"></td>
+                                <td style="width:33%;text-align:right;">S/. <span id="moneda_7_total">0.00</span></td>
+                              </tr>
+                              <tr>
+                                <td style="text-align: right;">S/ 20.00</td>
+                                <td><input type="text" class="form-control campo_moneda color_cajatexto" value="0" id="moneda_8" onclick="calculo_moneda()" onkeyup="calculo_moneda()"></td>
+                                <td style="text-align:right;">S/. <span id="moneda_8_total">0.00</span></td>
+                              </tr>
+                              <tr>
+                                <td style="text-align: right;">S/ 50.00</td>
+                                <td><input type="text" class="form-control campo_moneda color_cajatexto" value="0" id="moneda_9" onclick="calculo_moneda()" onkeyup="calculo_moneda()"></td>
+                                <td style="text-align:right;">S/. <span id="moneda_9_total">0.00</span></td>
+                              </tr>
+                              <tr>
+                                <td style="text-align: right;">S/ 100.00</td>
+                                <td><input type="text" class="form-control campo_moneda color_cajatexto" value="0" id="moneda_10" onclick="calculo_moneda()" onkeyup="calculo_moneda()"></td>
+                                <td style="text-align:right;">S/. <span id="moneda_10_total">0.00</span></td>
+                              </tr>
+                              <tr>
+                                <td style="text-align: right;">S/ 200.00</td>
+                                <td><input type="text" class="form-control campo_moneda color_cajatexto" value="0" id="moneda_11" onclick="calculo_moneda()" onkeyup="calculo_moneda()"></td>
+                                <td style="text-align:right;">S/. <span id="moneda_11_total">0.00</span></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      @endif
+                    @else
+                      @if($consolidadooperaciones['saldos_operaciones_efectivo_validacion_existe'])
+                        <div class="alert alert-danger">
+                          <b>Para realizar el arqueo de caja, debe recepcionar asignación de fondos!!</b>
+                        </div>
+                      @endif
                     @endif
                   @else
-                    @if($consolidadooperaciones['saldos_operaciones_efectivo_validacion_existe'])
-                    <div class="alert alert-danger">
-                      <b>Falta confirmar, CIERRE Y APERTURA DE CAJA!!</b>
-                    </div>
-                      {{-- <p class="text-center" 
-                        style="background-color: #ffc9ca !important;
-                              padding: 15px;
-                              border-radius: 5px;
-                              color: #93222c !important;
-                              width: 90%;
-                              margin: auto;">Para realizar el arqueo de caja, debe recepcionar asignación de fondos!!</p> --}}
-                    @endif
+                  <div class="alert alert-danger">
+                    <b>Para realizar el arqueo de caja, la validación debe estar VERIFICADO!!</b>
+                  </div>
+                    {{-- <p class="text-center" 
+                      style="background-color: #ffc9ca !important;
+                            padding: 15px;
+                            border-radius: 5px;
+                            color: #93222c !important;
+                            width: 90%;
+                            margin: auto;">Para realizar el arqueo de caja, la validación debe estar VERIFICADO!!</p> --}}
                   @endif
-                @else
-                <div class="alert alert-danger">
-                  <b>Falta confirmar, CIERRE Y APERTURA DE CAJA!!</b>
-                </div>
-                  {{-- <p class="text-center" 
-                    style="background-color: #ffc9ca !important;
-                          padding: 15px;
-                          border-radius: 5px;
-                          color: #93222c !important;
-                          width: 90%;
-                          margin: auto;">Para realizar el arqueo de caja, la validación debe estar VERIFICADO!!</p> --}}
                 @endif
               @endif
               </div>

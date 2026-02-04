@@ -92,7 +92,7 @@
                   <div class="alert alert-danger">
                     <b>Para arqueo de caja, debe recepcionar los fondos!!</b>
                   </div>
-                @elseif (!$validacionArqueoCaja['aperturacaja_existe_dia'])
+                @elseif ($validacionArqueoCaja['aperturacaja_existe_dia'])
                   <div class="alert alert-danger">
                     <b>Para arqueo de caja, debe existir apertura de caja!!</b>
                   </div>

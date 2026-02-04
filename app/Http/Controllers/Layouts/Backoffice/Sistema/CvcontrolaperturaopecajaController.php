@@ -388,10 +388,12 @@ class CvcontrolaperturaopecajaController extends Controller
                 $id_cierre = 0;
                 $efectivo_cierre = 0;
                 $fechahora_cierre = null;
+                $idresponsable_cierre = 0;
                 if($ret_caja_reservacf_total && $ret_reservacf_caja_total){
                     $id_cierre = $ret_caja_reservacf_total->id;
                     $efectivo_cierre = $ret_caja_reservacf_total->monto;
                     $fechahora_cierre = $ret_caja_reservacf_total->fecharegistro;
+                    $idresponsable_cierre = $ret_caja_reservacf_total->idresponsable;
                 }
             
                 $estado_cierre = '';
@@ -421,7 +423,7 @@ class CvcontrolaperturaopecajaController extends Controller
                     'idaperturacaja' => $id_apertura,
                     'idarqueocaja' => $id_arquecaja,
                     'idcierrecaja' => $id_cierre,
-                    'idresponsable' => $request->idresponsable,
+                    'idresponsable' => $idresponsable_cierre,
                     'idcvcierre_insitucional' => $idcierre_insitucional,
                     'idtienda' => user_permiso()->idtienda,
                     'idestado' => 1

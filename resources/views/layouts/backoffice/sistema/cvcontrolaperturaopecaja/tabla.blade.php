@@ -12,7 +12,7 @@
             <div class="modal-body">
               
                 <div class="row">
-                    <div class="col-sm-12 col-md-7">
+                    <div class="col-sm-12 col-md-9">
                         <div class="row">
                            <div class="col-sm-12 col-md-6">
                               <div class="row">
@@ -28,9 +28,9 @@
                         </div>
                                 
                     </div>
-                      <div class="col-sm-12 col-md-5" style="text-align: right;">
-                        <div>
-                            <button type="button" class="d-none" id="estado_cierre_institucional" style="font-weight: bold;width: 190px;"></button>
+                      <div class="col-sm-12 col-md-3" style="text-align: right;">
+                        <div style="display: flex;align-items: center;justify-content: flex-end;">
+                            <p class="d-none" style="margin: 0;font-weight: bold; display: inline-block;" id="estado_cierre_institucional"></p>
                             <button type="button" class="btn btn-primary mb-1" onclick="cierre()" style="font-weight: bold;width: 190px;">
                               <i class="fa-solid fa-check" style="font-weight: bold;"></i> CIERRE INSTITUCIONAL
                             </button>
@@ -86,11 +86,11 @@
         });
 
         if(res.estado_cierre_institucional == 'EXISTE'){
-          $('#estado_cierre_institucional').addClass('btn btn-success mb-1');
+          $('#estado_cierre_institucional').attr('style','background-color: #cfecc5 !important;');
           $('#estado_cierre_institucional').text('CON CIERRE INSTI.');
           $('#estado_cierre_institucional').removeClass('d-none');
         }else if(res.estado_cierre_institucional == 'NOEXISTE'){
-          $('#estado_cierre_institucional').addClass('btn btn-warning mb-1');
+          $('#estado_cierre_institucional').attr('style','background-color: #ffdf7d !important;');
           $('#estado_cierre_institucional').text('SIN CIERRE INSTI.');
           $('#estado_cierre_institucional').removeClass('d-none');
         }

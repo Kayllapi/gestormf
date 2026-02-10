@@ -391,9 +391,17 @@ class CvmovimientointernodineroController extends Controller
             if($movimientointernodinero!=''){
                 $codigo = $movimientointernodinero->codigo+1;
             }
-          
+
+            $fecharegistro = now();
+            $fecharegularizacion = null;
+            if ($request->fecharegularizacion!='') {
+                $fecharegistro = Carbon::parse($request->fecharegularizacion);
+                $fecharegularizacion = now();
+            }
+
             $idmovimientointernodinero = DB::table('cvmovimientointernodinero')->insertGetId([
-                'fecharegistro' => now(),
+                'fecharegistro' => $fecharegistro,
+                'fecharegularizacion' => $fecharegularizacion,
                 'codigoprefijo' => 'ACRV',
                 'codigo' => $codigo,
                 'monto' => $request->input('monto_retiro3'),
@@ -651,26 +659,28 @@ class CvmovimientointernodineroController extends Controller
             $html = '';
             foreach($movimientointernodinero as $key => $value){
                 $fecharegistro = date_format(date_create($value->fecharegistro),"d-m-Y H:i:s A");
+                $fecharegularizacion = $value->fecharegularizacion!='' ? date_format(date_create($value->fecharegularizacion),"d-m-Y H:i:s A") : '---';
                 $html .= "<tr data-valor-columna='{$value->id}' onclick='show_data_retiro3(this)'>
                               <td style='white-space: nowrap;'>{$value->codigoprefijo}{$value->codigo}</td>
                               <td style='white-space: nowrap;'>{$value->credito_fuenteretironombre}</td>
                               <td style='white-space: nowrap;text-align:right;'>{$value->monto}</td>
                               <td style='white-space: nowrap;'>{$value->descripcion}</td>
                               <td style='white-space: nowrap;'>{$fecharegistro}</td>
+                              <td style='white-space: nowrap;'>{$fecharegularizacion}</td>
                               <td style='white-space: nowrap;'>{$value->codigo_responsable}</td>
                           </tr>";
                 $total = $total+$value->monto;
             }
           
             if(count($movimientointernodinero)==0){
-                $html.= '<tr><td colspan="7" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
+                $html.= '<tr><td colspan="8" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
             }
                
             $html .= '
                 <tr style="position: sticky;bottom: 0;">
                   <td colspan="2" style="background-color: #c2c0c2 !important; font-weight: bold; text-align:right;">Total Retiros (S/.)</td>
                   <td style="background-color: #c2c0c2 !important; font-weight: bold; text-align:right;">'.number_format($total, 2, '.', '').'</td>
-                  <td colspan="3" style="background-color: #c2c0c2 !important; font-weight: bold; text-align:right;"></td>
+                  <td colspan="4" style="background-color: #c2c0c2 !important; font-weight: bold; text-align:right;"></td>
                 </tr>'; 
           
             return array(

@@ -195,7 +195,8 @@
                                     <td>Fuente de Retiro</td>
                                     <td>Monto (S/.)</td>
                                     <td>Descripción</td>
-                                    <td>Fecha</td>
+                                    <td>Fecha Registro</td>
+                                    <td>Fecha Regularización</td>
                                     <td>Usuario</td>
                                     </tr>
                                 </thead>

@@ -124,7 +124,7 @@ class CvcontrolaperturaopecajaController extends Controller
               if($ret_caja_reservacf_total && $ret_reservacf_caja_total){
                   $responsable_cierre = $ret_caja_reservacf_total->nombrecompleto_responsable;
                   $usuario_cierre = $ret_caja_reservacf_total->usuario_responsable;
-                  $fechahora_cierre = date_format(date_create($ret_caja_reservacf_total->fecharegistro),"d-m-Y h:i:s A");
+                  $fechahora_cierre = $ret_caja_reservacf_total->fecharegularizacion!='' ? date_format(date_create($ret_caja_reservacf_total->fecharegularizacion),"d-m-Y h:i:s A") : date_format(date_create($ret_caja_reservacf_total->fecharegistro),"d-m-Y h:i:s A");
               }
             
               $estado_cierre = '';

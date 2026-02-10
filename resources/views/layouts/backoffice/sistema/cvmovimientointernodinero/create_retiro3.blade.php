@@ -23,6 +23,12 @@
                   <input type="number" class="form-control" id="monto_retiro3" step="any">
                 </div>
               </div>
+              <div class="row">
+                <label class="col-sm-4 col-form-label" style="text-align: right;">Fecha Regularización:</label>
+                <div class="col-sm-8">
+                  <input type="date" class="form-control" id="fecharegularizacion">
+                </div>
+              </div>
           </div>
           <div class="col-sm-12 col-md-5">
               <div class="row">

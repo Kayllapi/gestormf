@@ -1444,8 +1444,8 @@ class CvmovimientointernodineroController extends Controller
                         'incremental_capital_asignado' => $co['incremental_capital_asignado'],
                         'indicador_reserva_legal' => $co['indicador_reserva_legal'],
                         'validacion_operaciones_cuenta_banco' => $co['validacion_operaciones_cuenta_banco'],
-                        'efectivo_caja_corte' => $co['efectivo_caja_corte'],
-                        'efectivo_caja_arqueo' => $co['efectivo_caja_arqueo'],
+                        // 'efectivo_caja_corte' => $co['efectivo_caja_corte'],
+                        // 'efectivo_caja_arqueo' => $co['efectivo_caja_arqueo'],
                         // 'resultado' => $co['resultado'],
 
                         'idcvmovimientointernodinero_cierre' => $id,

@@ -363,9 +363,16 @@ class CvmovimientointernodineroController extends Controller
             ]);
         }
         elseif($request->input('view') == 'registrar_retiro3_insert') {
+            $validacionDiaria = validacionDiaria($idtienda);
             // --- RETIRO
             $consolidadooperaciones = cvconsolidadooperaciones($tienda,$idtienda,now()->format('Y-m-d'));
             if($request->idfuenteretiro_retiro3==6){
+                if (!$validacionDiaria['cierre_caja']) {
+                    return response()->json([
+                        'resultado' => 'ERROR',
+                        'mensaje'   => 'Falta cerrar caja '.$validacionDiaria['fechacorte'].'!!'
+                    ]);
+                }
                 if($consolidadooperaciones['saldos_reserva']<$request->monto_retiro3){
                     return response()->json([
                         'resultado' => 'ERROR',
@@ -374,6 +381,12 @@ class CvmovimientointernodineroController extends Controller
                 }
             }
             elseif($request->idfuenteretiro_retiro3==8){
+                if (!$validacionDiaria['arqueocaja']) {
+                    return response()->json([
+                        'resultado' => 'ERROR',
+                        'mensaje'   => 'Falta arquear caja '.$validacionDiaria['fechacorte'].'!!'
+                    ]);
+                }
                 if($consolidadooperaciones['saldos_caja']<$request->monto_retiro3){
                     return response()->json([
                         'resultado' => 'ERROR',

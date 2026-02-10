@@ -112,6 +112,7 @@
         
       .campo_moneda {
           text-align: right;
+        
       } 
   
 
@@ -119,13 +120,14 @@
 </head>
 <body>
   <header>
-    <div style="float:left;font-size:18px;">{{ $tienda->nombre }}</div> {{ Auth::user()->usuario }} | {{ date('d-m-Y H:iA') }}
+    <div style="float:left;font-size:18px;">{{ $tienda->nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->usuario }} | {{ date('d-m-Y H:iA') }}
   </header>
   <footer>
     <p class="page">Página </p>
   </footer>
   <main>
     <div class="row">
+      <div style="font-size:14px;font-weight: bold;text-align: center;">ACTA DE APROBACIÓN</div>
       <div class="col" style="width:500px;">
         <table style="width:100%;">
           <tr>
@@ -133,7 +135,7 @@
             <td class="border-td">{{ $tienda->nombreagencia }}</td>
           </tr>
           <tr>
-            <td>CLIENTE/RAZON SOCIAL:</td>
+            <td>CLIENTE/RAZÓN SOCIAL:</td>
             <td class="border-td">{{ $credito->nombreclientecredito }}</td>
           </tr>
           @if($users_prestamo->dni_pareja!='' or $users_prestamo->nombrecompleto_pareja!='')

@@ -12,10 +12,10 @@
     </div>
     <div class="modal-body" style="height: calc(100vh - 38px);">
       <div class="row" style="font-size: 14px;padding: 7px;">
-          <div class="col-md-6"><b>CLIENTE:</b> {{ $usuario->nombrecompleto }}</div>
-          <div class="col-md-6" style="text-align: right;"><b>PRODUCTO:</b> {{ $credito->nombreproductocredito }}</div>
-          <div class="col-md-3"><b>MONTO DE PRÉSTAMO:</b>S/. {{ $credito->monto_solicitado }}</div>
-          <div class="col-md-2"><b>FORMA DE PAGO:</b> {{ $credito->forma_pago_credito_nombre }}</div>
+          <div class="col-md-4"><b>CLIENTE:</b> {{ $usuario->nombrecompleto }}</div>
+          <div class="col-md-8"><b>PRODUCTO:</b> {{ $credito->nombreproductocredito }}</div>
+          <div class="col-md-4"><b>MONTO DE PRÉSTAMO:</b>S/. {{ $credito->monto_solicitado }}</div>
+          <div class="col-md-3"><b>FORMA DE PAGO:</b> {{ $credito->forma_pago_credito_nombre }}</div>
           <div class="col-md-2"><b>N° DE CUOTAS:</b> {{ $credito->cuotas }}</div>
           <div class="col-md-3"><b>N° DE SOLICITUD:</b> S{{ str_pad($credito->id, 8, "0", STR_PAD_LEFT) }}</div>
       </div>
@@ -91,13 +91,13 @@
                         <textarea class="form-control" disabled cols="30" rows="5">{{ $credito->excepcionesautorizaciones }}</textarea>
                     </div>
                   </div>
-                  <div class="col-sm-4">
+                  <div class="col-sm-3">
                     <div class="mb-1">
                         <label>OPINIÓN DE AREA DE RIESGOS</label>
                         <textarea class="form-control" disabled cols="30" rows="5">{{ $credito->areariesgos }}</textarea>
                     </div>
                   </div>
-                  <div class="col-sm-4">
+                  <div class="col-sm-5">
                     <div class="mb-1">
                         <label>COMENTARIO DE VISITAS Y/O VERIFICACIÓN</label>
                         <textarea class="form-control" disabled cols="30" rows="5">{{ $credito->comentariovisita }}</textarea>

@@ -13,7 +13,7 @@
               
                 <div class="row">
                     <div class="col-sm-12 col-md-9">
-                        <div class="row">
+                        <div class="row mb-1">
                            <div class="col-sm-12 col-md-6">
                               <div class="row">
                                 <label for="fecha_inicio" class="col-sm-3 col-form-label">AGENCIA</label>
@@ -32,7 +32,7 @@
                               <button type="button" class="btn btn-success" onclick="actualizar_tabla_origen()"><i class="fa-solid fa-search"></i> FILTRAR</button>
                           </div>
                         </div>
-                        <div class="row">
+                        <div class="row mb-1">
                            <div class="col-sm-12 col-md-6">
                               <div class="row">
                                 <label for="fecha_fin" class="col-sm-3 col-form-label">F. CRÉDITO</label>
@@ -80,7 +80,7 @@
                         'tabla' => '#tabla-origendes',
                         'route' => url('backoffice/'.$tienda->id.'/garantiaremateagencia/showcliente_asignar?idagencia='.$tienda->id),
                         'check_id' => 'check_origen',
-                        'scrollY' => '280',
+                        'scrollY' => 'calc(-321px  + 100vh)',
                         'dom' => 'rt',
                         'thead' => [
                             ['data' => '' ],
@@ -143,12 +143,12 @@
                     </div>
                 </div>
                 <div style="width:46%;float: left;">
-                    <div style="text-align: center;background-color: #9d9d9d;padding: 2px;">LISTA DE REMATES</div>
+                    <div style="text-align: center;background-color: #a7a7a7;padding: 2px;">LISTA DE REMATES</div>
                     @include('app.nuevosistema.tabla',[
                         'tabla' => '#tabla-destinodes',
                         'route' => url('backoffice/'.$tienda->id.'/garantiaremateagencia/showcliente_destino'),
                         'check_id' => 'check_destino',
-                        'scrollY' => '281',
+                        'scrollY' => 'calc(-321px  + 100vh)',
                         'dom' => 'rt',
                         'thead' => [
                             ['data' => '' ],

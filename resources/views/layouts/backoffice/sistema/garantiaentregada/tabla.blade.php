@@ -4,7 +4,7 @@
   <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>
 <div class="modal-body">
-  <div class="row">
+  <div class="row mb-1">
       <div class="col-sm-12">
         <div class="card">
           <div class="card-body p-2" id="form-credito-result">
@@ -15,7 +15,7 @@
                     <div class="col-sm-12 col-md-8">
                         <div class="row">
                             <div class="col-sm-12 col-md-8">
-                              <div class="row mb-3">
+                              <div class="row mb-1">
                                 <label for="fecha_fin" class="col-sm-2 col-form-label">CLIENTE</label>
                                 <div class="col-sm-10">
                                     <select class="form-control" id="idcliente">
@@ -30,7 +30,7 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-12 col-md-4">
-                              <div class="row mb-3">
+                              <div class="row">
                                 <label for="fecha_inicio" class="col-sm-3 col-form-label">DEL</label>
                                 <div class="col-sm-9">
                                   <input type="date" class="form-control" id="fecha_inicio" value="{{ date('Y-m-d') }}">
@@ -38,7 +38,7 @@
                               </div>
                             </div>
                             <div class="col-sm-12 col-md-3">
-                              <div class="row mb-3">
+                              <div class="row">
                                 <label for="fecha_fin" class="col-sm-3 col-form-label">AL</label>
                                 <div class="col-sm-9">
                                   <input type="date" class="form-control" id="fecha_fin" value="{{ date('Y-m-d') }}">
@@ -62,7 +62,9 @@
   </div>
       <div class="col-sm-12">
         <div class="card">
-          <div class="card-body" id="tabla-pagoprestamo" style="overflow-y: scroll;height: 260px;padding-top: 0px;padding-bottom: 0px;">
+          <div class="card-body">
+            <div id="tabla-pagoprestamo" class="tabla_overflow" style="height: calc(-247px  + 100vh)">
+            </div>
           </div>
         </div>
       </div>

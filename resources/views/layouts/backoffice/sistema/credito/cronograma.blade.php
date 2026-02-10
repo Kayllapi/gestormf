@@ -57,7 +57,7 @@
                 <div class="row">
                   <label class="col-sm-5 col-form-label" style="text-align: right;">TEM (%):</label>
                   <div class="col-sm-4">
-                    <input type="text" step="any" class="form-control" {{ $view_detalle=='false' ? 'disabled' : '' }} id="tasa_tem" value="{{ $credito->tasa_tem }}">
+                    <input type="text" step="any" class="form-control" {{ $view_detalle=='false' ? 'disabled' : '' }} id="tasa_tem" value="{{ $credito->tasa_tem }}"  onkeyup="cal_tasa_tem()">
                   </div>
                   <div class="col-sm-3">
                     <input type="number" step="any" class="form-control" {{ $view_detalle=='false' ? 'disabled' : '' }} id="tasa_tem_minima" value="0" disabled>
@@ -93,12 +93,12 @@
                   </div>
                 </div>
                 <div class="row">
-                  <label class="col-sm-5 col-form-label" style="text-align: right;">C. Ss./Otros (%):</label>
+                  <label class="col-sm-5 col-form-label" style="text-align: right;">C. Ss./Otros (% mes):</label>
                   <div class="col-sm-7">
                     <input type="number" step="any" class="form-control" id="comision" value="0.00" disabled>
                   </div>
                 </div>
-                @if($usuario->custodiagarantia_id==1)
+                @if($credito->idforma_credito==1 && $usuario->custodiagarantia_id==1)
                 <div class="row">
                   <label class="col-sm-5 col-form-label" style="text-align: right;">Cargo S/.:</label>
                   <div class="col-sm-7">
@@ -116,6 +116,12 @@
                     <input type="number" step="any" class="form-control" {{ $view_detalle=='false' ? 'disabled' : '' }} id="cargo" value="{{ $credito->cargo }}">
                   </div>
                 </div>
+                @if($credito->idforma_credito==1 && $usuario->custodiagarantia_id==0)
+                <div class="row">
+                  <label class="col-sm-2"></label>
+                  <label class="col-sm-10 text-end" style="color: #b32121;">Seleccionar Depositario.</label>
+                </div>
+                @endif
                 @endif
                 @if($view_detalle!='false')
                 <div class="row">
@@ -200,7 +206,12 @@
         </div>
       </div>
       <script>
-        
+        function cal_tasa_tem(){
+            var tasa_tem = parseFloat($('#tasa_tem').val());
+            var comision = parseFloat($('#comision').val())
+            var tasa_tcem = tasa_tem+comision;
+            $('#tasa_tcem').val(tasa_tcem.toFixed(2))
+        }
         function cronograma(){
           
           let monto       = parseFloat($('#monto_solicitado').val());
@@ -349,11 +360,11 @@
     digitsOptional : false
   });
   $('#tasa_tem').on('blur', function() {
-    valida_tem()
+    //valida_tem()
   });
   $('#tasa_tem').on('keydown', function() {
     setTimeout(function() {
-      valida_tem();
+      //valida_tem();
     }, 1000);
   });
   function valida_tem(){
@@ -398,6 +409,7 @@
         return false;
     }
 
+    @if($credito->idforma_credito==1 && $usuario->custodiagarantia_id==1)
     var comision_gestion_garantia_cargo = parseFloat({{ configuracion($tienda->id,'comision_gestion_garantia_cargo')['valor'] }});
     var monto_cobertura_garantia =  parseFloat($('#monto_cobertura_garantia').val());
     var cargocom = 0;
@@ -415,6 +427,9 @@
     }
     var cargo = cargocom*monto_cobertura_garantia;
     $('#cargo').val(cargo.toFixed(2));
+    @else
+    $('#cargo').val('0.00');
+    @endif
 
     $.ajax({
       url:"{{url('backoffice/0/credito/showtasa')}}",

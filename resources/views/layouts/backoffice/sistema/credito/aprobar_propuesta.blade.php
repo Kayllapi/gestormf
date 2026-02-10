@@ -22,7 +22,7 @@
 
   
     <div class="modal-header" style="border-bottom: 0;">
-        <h5 class="modal-title">APROBAR CRÉDITO </h5>
+        <h5 class="modal-title">PROCESO DE APROBACIÓN DE CRÉDITO </h5>
         <button type="button" class="btn-close text-white" id="modal-close-garantia-cliente" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <div class="modal-body modal-body-cualitativa">

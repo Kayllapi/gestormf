@@ -6,7 +6,7 @@
 </div>
 <div class="modal-body">
   <div class="row">
-      <div class="col-sm-12">
+      <div class="col-sm-12 mb-1">
         <div class="card">
           <div class="card-body p-2" id="form-credito-result">
              
@@ -74,12 +74,15 @@
           </div>
         </div>
       </div>
-  </div>
+
       <div class="col-sm-12">
         <div class="card">
-        <iframe id="iframe_acta_aprobacion" frameborder="0" width="100%" height="600px"></iframe>
+          <div class="card-body">
+              <iframe id="iframe_acta_aprobacion" frameborder="0" width="100%" style="height: calc(-215px  + 100vh)"></iframe>
+          </div>
         </div>
-      </div>
+      </div>  
+  </div>
 </div>
 <script>
     sistema_select2({ input:'#idagencia',val:'{{$tienda->id}}' });

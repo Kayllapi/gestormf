@@ -23,7 +23,7 @@ class ResponsableAprobacionController extends Controller
                     ->select(
                         'permiso.*'
                     )
-                    ->orderBy('permiso.nombre','asc')
+                    ->orderBy('permiso.rango','asc')
                     ->get();
         $nivelaprobacions_prendario = DB::table('nivelaprobacion')
                     ->where('idtipocredito',1)

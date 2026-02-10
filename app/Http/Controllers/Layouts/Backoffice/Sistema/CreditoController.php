@@ -1268,7 +1268,7 @@ class CreditoController extends Controller
                   ->join('users as asesor','asesor.id','credito.idasesor')
                   ->leftjoin('users as aval','aval.id','credito.idaval')
                   ->join('forma_credito','forma_credito.id','credito.idforma_credito')
-                  //->join('forma_pago_credito','forma_pago_credito.id','credito.idforma_pago_credito')
+                  ->leftjoin('forma_pago_credito','forma_pago_credito.id','credito.idforma_pago_credito')
                   ->join('modalidad_credito','modalidad_credito.id','credito.idmodalidad_credito')
                   ->join('tipo_destino_credito','tipo_destino_credito.id','credito.idtipo_destino_credito')
                   ->join('tipo_operacion_credito','tipo_operacion_credito.id','credito.idtipo_operacion_credito')
@@ -1288,7 +1288,7 @@ class CreditoController extends Controller
                       'forma_credito.nombre as forma_credito_nombre',
                       'tipo_operacion_credito.nombre as tipo_operacion_credito_nombre',
                       'modalidad_credito.nombre as modalidad_credito_nombre',
-                      //'forma_pago_credito.nombre as forma_pago_credito_nombre',
+                      'forma_pago_credito.nombre as forma_pago_credito_nombre',
                       'tipo_destino_credito.nombre as tipo_destino_credito_nombre',
                       /*'tarifario.monto as monto_max_credito',
                       'tarifario.cuotas as coutas_max_credito',
@@ -3324,9 +3324,9 @@ class CreditoController extends Controller
               $garantias_accesorio_doc = '';
               $garantias_detalle_garantia = '';
               $garantias_idestado_garantia = 0;
-              $garantias_idestado_garantia_ref = '';
-              $garantias_cobertura = '';
-              $garantias_valorcomercial = '';
+              $garantias_idestado_garantia_ref = 0;
+              $garantias_cobertura = 0;
+              $garantias_valorcomercial = 0;
               $garantias_metodo_valorizacion = '';
               $garantias_tipo_joyas = '';
               $garantias_tarifario_joya = '';

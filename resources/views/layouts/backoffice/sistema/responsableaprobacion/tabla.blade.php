@@ -2,7 +2,7 @@
     <h5 class="modal-title">
       Niveles de aprobación
     </h5>
-    <button type="button" class="btn-close" onclick="ir_inicio()" style="font-size: 20px;"></button>
+    <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>
 
 <div class="modal-body">
@@ -29,23 +29,25 @@
             <table class="table table-striped table-hover table-bordered" id="table-creditosprendarios">
               <thead class="table-dark">
                 <tr>
-                  <td colspan="7">CRÉDITOS PRENDARIOS</td>
+                  <th colspan="7">CRÉDITOS PRENDARIOS</th>
                 </tr>
                 <tr>
-                  <td style="width:200px;">NIVELES DE APROBACIÓN *</td>
-                  <td colspan="2" style="width:200px;">RIESGO CREDITICIO (S/.) *</td>
-                  <td>COMITÉ DE APROBACIÓN</td>
-                  <td>AUTONOMÍA DE ADMINITRACIÓN</td>
-                  <td>AUTONOMÍA DE GERENCIA GENERAL</td>
-                  <td><a href="javascript:;" class="btn btn-success" onclick="agregar_nivelaprobacion_prendario()">
+                  <th style="width:200px;">NIVELES DE APROBACIÓN *</th>
+                  <th colspan="2" style="width:200px;">RIESGO CREDITICIO (S/.) *</th>
+                  <th>COMITÉ DE APROBACIÓN</th>
+                  <th>AUTONOMÍA DE ADMINITRACIÓN</th>
+                  <th>AUTONOMÍA DE GERENCIA GENERAL</th>
+                  <th><a href="javascript:;" class="btn btn-success" onclick="agregar_nivelaprobacion_prendario()">
                       <i class="fa-solid fa-plus"></i>
-                    </a></td>
+                    </a></th>
                 </tr>
               </thead>
               <tbody num="{{ count($nivelaprobacions_prendario) }}">
                 @foreach($nivelaprobacions_prendario as $key => $value)
                   <tr id="{{ $key }}">
-                    <td><input type="text" class="form-control" nombre_aprobacion value="{{ $value->nivelaprobacionnombre }}" id="nivelaprobacionnombre{{ $key }}"></td>
+                    <td>
+                        <textarea class="form-control" nombre_aprobacion id="nivelaprobacionnombre{{ $key }}">{{ $value->nivelaprobacionnombre }}</textarea>
+                    </td>
                     <td style="width:120px;">
                         <div class="input-group">
                           <span class="input-group-text">></span>
@@ -61,24 +63,25 @@
                     <td class="align-top" >
                       <div class="row">
                         <div class="col-12 col-md-9">
-                          <label>Selección de Responsables:</label>
+                          <label>Responsables:</label>
                           <select class="form-select" id="nivelaprobacion_cprendario{{ $key }}" onchange="addPermisoTable(this,'#container_permiso_nivelaprobacion{{ $key }}', $('input[name=nivelaprobacion{{ $key }}]:checked').val() )">
                             <option></option>
                             @foreach($permisos as $value_per)
                               <option value="{{ $value_per->id }}">{{ $value_per->nombre }}</option>
                             @endforeach
                           </select>
+                          <script>sistema_select2({ input:'#nivelaprobacion_cprendario{{ $key }}' });</script>
                         </div>
                         <div class="col-12 col-md-3">
                           <label>Opción:</label>
-                          <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="nivelaprobacion{{ $key }}" value="1" checked>
-                            <label class="form-check-label">1</label>
-                          </div>
-                          <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="nivelaprobacion{{ $key }}" value="2">
-                            <label class="form-check-label" >2</label>
-                          </div>
+                          <label class="radio-custom">
+                              <input type="radio" name="nivelaprobacion{{ $key }}" value="1" checked>
+                              <span class="radio"></span> 1
+                          </label>
+                          <label class="radio-custom">
+                              <input type="radio" name="nivelaprobacion{{ $key }}" value="2">
+                              <span class="radio"></span> 2
+                          </label>
                         </div>
                       </div>
                       <div id="container_permiso_nivelaprobacion{{ $key }}" data_nivelaprobacion >
@@ -107,24 +110,25 @@
                     <td class="align-top">
                       <div class="row">
                         <div class="col-12 col-md-9">
-                          <label>Selección de Responsables:</label>
+                          <label>Responsables:</label>
                           <select class="form-select" id="autonomiaadministracion_cprendario{{ $key }}" onchange="addPermisoTable(this,'#container_permiso_autonomiaadministracion{{ $key }}', $('input[name=autonomiaadministracion{{ $key }}]:checked').val() )">
                             <option></option>
                             @foreach($permisos as $value_per)
                               <option value="{{ $value_per->id }}">{{ $value_per->nombre }}</option>
                             @endforeach
                           </select>
+                          <script>sistema_select2({ input:'#autonomiaadministracion_cprendario{{ $key }}' });</script>
                         </div>
                         <div class="col-12 col-md-3">
                           <label>Opción:</label>
-                          <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="autonomiaadministracion{{ $key }}" value="1" checked>
-                            <label class="form-check-label">1</label>
-                          </div>
-                          <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="autonomiaadministracion{{ $key }}" value="2">
-                            <label class="form-check-label" >2</label>
-                          </div>
+                          <label class="radio-custom">
+                              <input type="radio" name="autonomiaadministracion{{ $key }}" value="1" checked>
+                              <span class="radio"></span> 1
+                          </label>
+                          <label class="radio-custom">
+                              <input type="radio" name="autonomiaadministracion{{ $key }}" value="2">
+                              <span class="radio"></span> 2
+                          </label>
                         </div>
                       </div>
                       <div id="container_permiso_autonomiaadministracion{{ $key }}" data_autonomiaadministracion >
@@ -153,24 +157,25 @@
                     <td class="align-top">
                       <div class="row">
                         <div class="col-12 col-md-9">
-                          <label>Selección de Responsables:</label>
+                          <label>Responsables:</label>
                           <select class="form-select" id="autonomiagerencia_cprendario{{ $key }}" onchange="addPermisoTable(this,'#container_permiso_autonomiagerencia{{ $key }}', $('input[name=autonomiagerencia{{ $key }}]:checked').val() )">
                             <option></option>
                             @foreach($permisos as $value_per)
                               <option value="{{ $value_per->id }}">{{ $value_per->nombre }}</option>
                             @endforeach
                           </select>
+                          <script>sistema_select2({ input:'#autonomiagerencia_cprendario{{ $key }}' });</script>
                         </div>
                         <div class="col-12 col-md-3">
                           <label>Opción:</label>
-                          <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="autonomiagerencia{{ $key }}" value="1" checked>
-                            <label class="form-check-label">1</label>
-                          </div>
-                          <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="autonomiagerencia{{ $key }}" value="2">
-                            <label class="form-check-label" >2</label>
-                          </div>
+                          <label class="radio-custom">
+                              <input type="radio" name="autonomiagerencia{{ $key }}" value="1" checked>
+                              <span class="radio"></span> 1
+                          </label>
+                          <label class="radio-custom">
+                              <input type="radio" name="autonomiagerencia{{ $key }}" value="2">
+                              <span class="radio"></span> 2
+                          </label>
                         </div>
                       </div>
                       <div id="container_permiso_autonomiagerencia{{ $key }}" data_autonomiagerencia >
@@ -205,23 +210,25 @@
             <table class="table table-striped table-hover table-bordered" id="table-creditosnoprendarios">
               <thead class="table-dark">
                 <tr>
-                  <td colspan="7">CRÉDITOS NO PRENDARIOS</td>
+                  <th colspan="7">CRÉDITOS NO PRENDARIOS</th>
                 </tr>
                 <tr>
-                  <td style="width:200px;">NIVELES DE APROBACIÓN *</td>
-                  <td colspan="2" style="width:200px;">RIESGO CREDITICIO (S/.) *</td>
-                  <td>COMITÉ DE APROBACIÓN</td>
-                  <td>AUTONOMÍA DE ADMINITRACIÓN</td>
-                  <td>AUTONOMÍA DE GERENCIA GENERAL</td>
-                  <td><a href="javascript:;" class="btn btn-success" onclick="agregar_nivelaprobacion_noprendario()">
+                  <th style="width:200px;">NIVELES DE APROBACIÓN *</th>
+                  <th colspan="2" style="width:200px;">RIESGO CREDITICIO (S/.) *</th>
+                  <th>COMITÉ DE APROBACIÓN</th>
+                  <th>AUTONOMÍA DE ADMINITRACIÓN</th>
+                  <th>AUTONOMÍA DE GERENCIA GENERAL</th>
+                  <th><a href="javascript:;" class="btn btn-success" onclick="agregar_nivelaprobacion_noprendario()">
                       <i class="fa-solid fa-plus"></i>
-                    </a></td>
+                    </a></th>
                 </tr>
               </thead>
               <tbody num="{{ count($nivelaprobacions_noprendario) }}">
                 @foreach($nivelaprobacions_noprendario as $key => $value)
                   <tr id="{{ $key }}">
-                    <td><input type="text" class="form-control" nombre_aprobacion value="{{ $value->nivelaprobacionnombre }}" id="nivelaprobacionnombre_noprendario{{ $key }}"></td>
+                    <td>
+                        <textarea class="form-control" nombre_aprobacion id="nivelaprobacionnombre_noprendario{{ $key }}">{{ $value->nivelaprobacionnombre }}</textarea>
+                    </td>
                     <td style="width:120px;">
                         <div class="input-group">
                           <span class="input-group-text">></span>
@@ -237,24 +244,25 @@
                     <td class="align-top" >
                       <div class="row">
                         <div class="col-12 col-md-9">
-                          <label>Selección de Responsables:</label>
+                          <label>Responsables:</label>
                           <select class="form-select" id="nivelaprobacion_cprendario_noprendario{{ $key }}" onchange="addPermisoTable(this,'#container_permiso_nivelaprobacion_noprendario{{ $key }}', $('input[name=nivelaprobacion_noprendario{{ $key }}]:checked').val() )">
                             <option></option>
                             @foreach($permisos as $value_per)
                               <option value="{{ $value_per->id }}">{{ $value_per->nombre }}</option>
                             @endforeach
                           </select>
+                          <script>sistema_select2({ input:'#nivelaprobacion_cprendario_noprendario{{ $key }}' });</script>
                         </div>
                         <div class="col-12 col-md-3">
                           <label>Opción:</label>
-                          <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="nivelaprobacion_noprendario{{ $key }}" value="1" checked>
-                            <label class="form-check-label">1</label>
-                          </div>
-                          <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="nivelaprobacion_noprendario{{ $key }}" value="2">
-                            <label class="form-check-label" >2</label>
-                          </div>
+                          <label class="radio-custom">
+                              <input type="radio" name="nivelaprobacion_noprendario{{ $key }}" value="1" checked>
+                              <span class="radio"></span> 1
+                          </label>
+                          <label class="radio-custom">
+                              <input type="radio" name="nivelaprobacion_noprendario{{ $key }}" value="2">
+                              <span class="radio"></span> 2
+                          </label>
                         </div>
                       </div>
                       <div id="container_permiso_nivelaprobacion_noprendario{{ $key }}" data_nivelaprobacion >
@@ -282,24 +290,25 @@
                     <td class="align-top">
                       <div class="row">
                         <div class="col-12 col-md-9">
-                          <label>Selección de Responsables:</label>
+                          <label>Responsables:</label>
                           <select class="form-select" id="autonomiaadministracion_cprendario_noprendario{{ $key }}" onchange="addPermisoTable(this,'#container_permiso_autonomiaadministracion_noprendario{{ $key }}', $('input[name=autonomiaadministracion_noprendario{{ $key }}]:checked').val() )">
                             <option></option>
                             @foreach($permisos as $value_per)
                               <option value="{{ $value_per->id }}">{{ $value_per->nombre }}</option>
                             @endforeach
                           </select>
+                          <script>sistema_select2({ input:'#autonomiaadministracion_cprendario_noprendario{{ $key }}' });</script>
                         </div>
                         <div class="col-12 col-md-3">
                           <label>Opción:</label>
-                          <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="autonomiaadministracion_noprendario{{ $key }}" value="1" checked>
-                            <label class="form-check-label">1</label>
-                          </div>
-                          <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="autonomiaadministracion_noprendario{{ $key }}" value="2">
-                            <label class="form-check-label" >2</label>
-                          </div>
+                          <label class="radio-custom">
+                              <input type="radio" name="autonomiaadministracion_noprendario{{ $key }}" value="1" checked>
+                              <span class="radio"></span> 1
+                          </label>
+                          <label class="radio-custom">
+                              <input type="radio" name="autonomiaadministracion_noprendario{{ $key }}" value="2">
+                              <span class="radio"></span> 2
+                          </label>
                         </div>
                       </div>
                       <div id="container_permiso_autonomiaadministracion_noprendario{{ $key }}" data_autonomiaadministracion >
@@ -327,24 +336,25 @@
                     <td class="align-top">
                       <div class="row">
                         <div class="col-12 col-md-9">
-                          <label>Selección de Responsables:</label>
+                          <label>Responsables:</label>
                           <select class="form-select" id="autonomiagerencia_cprendario_noprendario{{ $key }}" onchange="addPermisoTable(this,'#container_permiso_autonomiagerencia_noprendario{{ $key }}', $('input[name=autonomiagerencia_noprendario{{ $key }}]:checked').val() )">
                             <option></option>
                             @foreach($permisos as $value_per)
                               <option value="{{ $value_per->id }}">{{ $value_per->nombre }}</option>
                             @endforeach
                           </select>
+                          <script>sistema_select2({ input:'#autonomiagerencia_cprendario_noprendario{{ $key }}' });</script>
                         </div>
                         <div class="col-12 col-md-3">
                           <label>Opción:</label>
-                          <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="autonomiagerencia_noprendario{{ $key }}" value="1" checked>
-                            <label class="form-check-label">1</label>
-                          </div>
-                          <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="autonomiagerencia_noprendario{{ $key }}" value="2">
-                            <label class="form-check-label" >2</label>
-                          </div>
+                          <label class="radio-custom">
+                              <input type="radio" name="autonomiagerencia_noprendario{{ $key }}" value="1" checked>
+                              <span class="radio"></span> 1
+                          </label>
+                          <label class="radio-custom">
+                              <input type="radio" name="autonomiagerencia_noprendario{{ $key }}" value="2">
+                              <span class="radio"></span> 2
+                          </label>
                         </div>
                       </div>
                       <div id="container_permiso_autonomiagerencia_noprendario{{ $key }}" data_autonomiagerencia >
@@ -461,7 +471,9 @@ function agregar_nivelaprobacion_prendario(nivelaprobacionnombre='',riesgocredit
   let btn_eliminar = `<button type="button" onclick="eliminar_producto(this)" class="btn btn-danger "><i class="fa-solid fa-trash"></i></button>` ;
 
   let tabla = ` <tr id="${num}">
-                  <td><input type="text" class="form-control" nombre_aprobacion value="${nivelaprobacionnombre}" id="nivelaprobacionnombre${num}"></td>
+                    <td>
+                        <textarea class="form-control" nombre_aprobacion id="nivelaprobacionnombre${num}">${nivelaprobacionnombre}</textarea>
+                    </td>
                   <td style="width:120px;">
                       <div class="input-group">
                         <span class="input-group-text">></span>
@@ -477,21 +489,21 @@ function agregar_nivelaprobacion_prendario(nivelaprobacionnombre='',riesgocredit
                   <td class="align-top" >
                     <div class="row">
                       <div class="col-12 col-md-9">
-                        <label>Selección de Responsables:</label>
+                        <label>Responsables:</label>
                         <select class="form-select" id="nivelaprobacion_cprendario${num}" onchange="addPermisoTable(this,'#container_permiso_nivelaprobacion${num}', $('input[name=nivelaprobacion${num}]:checked').val() )">
                           ${option_nivelaprobacion}
                         </select>
                       </div>
                       <div class="col-12 col-md-3">
                           <label>Opción:</label>
-                        <div class="form-check form-check-inline">
-                          <input class="form-check-input" type="radio" name="nivelaprobacion${num}" value="1" checked>
-                          <label class="form-check-label">1</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                          <input class="form-check-input" type="radio" name="nivelaprobacion${num}" value="2">
-                          <label class="form-check-label" >2</label>
-                        </div>
+                          <label class="radio-custom">
+                              <input type="radio" name="nivelaprobacion${num}" value="1" checked>
+                              <span class="radio"></span> 1
+                          </label>
+                          <label class="radio-custom">
+                              <input type="radio" name="nivelaprobacion${num}" value="2">
+                              <span class="radio"></span> 2
+                          </label>
                       </div>
                     </div>
                     <div id="container_permiso_nivelaprobacion${num}" data_nivelaprobacion >
@@ -506,21 +518,21 @@ function agregar_nivelaprobacion_prendario(nivelaprobacionnombre='',riesgocredit
                   <td class="align-top">
                     <div class="row">
                       <div class="col-12 col-md-9">
-                        <label>Selección de Responsables:</label>
+                        <label>Responsables:</label>
                         <select class="form-select" id="autonomiaadministracion_cprendario${num}" onchange="addPermisoTable(this,'#container_permiso_autonomiaadministracion${num}', $('input[name=autonomiaadministracion${num}]:checked').val() )">
                           ${option_autonomiaadministracion}
                         </select>
                       </div>
                       <div class="col-12 col-md-3">
                           <label>Opción:</label>
-                        <div class="form-check form-check-inline">
-                          <input class="form-check-input" type="radio" name="autonomiaadministracion${num}" value="1" checked>
-                          <label class="form-check-label">1</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                          <input class="form-check-input" type="radio" name="autonomiaadministracion${num}" value="2">
-                          <label class="form-check-label" >2</label>
-                        </div>
+                          <label class="radio-custom">
+                              <input type="radio" name="autonomiaadministracion${num}" value="1" checked>
+                              <span class="radio"></span> 1
+                          </label>
+                          <label class="radio-custom">
+                              <input type="radio" name="autonomiaadministracion${num}" value="2">
+                              <span class="radio"></span> 2
+                          </label>
                       </div>
                     </div>
                     <div id="container_permiso_autonomiaadministracion${num}" data_autonomiaadministracion >
@@ -535,21 +547,21 @@ function agregar_nivelaprobacion_prendario(nivelaprobacionnombre='',riesgocredit
                   <td class="align-top">
                     <div class="row">
                       <div class="col-12 col-md-9">
-                        <label>Selección de Responsables:</label>
+                        <label>Responsables:</label>
                         <select class="form-select" id="autonomiagerencia_cprendario${num}" onchange="addPermisoTable(this,'#container_permiso_autonomiagerencia${num}', $('input[name=autonomiagerencia${num}]:checked').val() )">
                           ${option_autonomiagerencia}
                         </select>
                       </div>
                       <div class="col-12 col-md-3">
                           <label>Opción:</label>
-                        <div class="form-check form-check-inline">
-                          <input class="form-check-input" type="radio" name="autonomiagerencia${num}" value="1" checked>
-                          <label class="form-check-label">1</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                          <input class="form-check-input" type="radio" name="autonomiagerencia${num}" value="2">
-                          <label class="form-check-label" >2</label>
-                        </div>
+                          <label class="radio-custom">
+                              <input type="radio" name="autonomiagerencia${num}" value="1" checked>
+                              <span class="radio"></span> 1
+                          </label>
+                          <label class="radio-custom">
+                              <input type="radio" name="autonomiagerencia${num}" value="2">
+                              <span class="radio"></span> 2
+                          </label>
                       </div>
                     </div>
                     <div id="container_permiso_autonomiagerencia${num}" data_autonomiagerencia >
@@ -605,7 +617,7 @@ function removePermiso(e){
 function getJsonPermiso(table){
   let data = [];
   $(`#${table} > tbody > tr`).each(function() {
-    let nombre_aprobacion = $(this).find('input[nombre_aprobacion]').val();
+    let nombre_aprobacion = $(this).find('textarea[nombre_aprobacion]').val();
     let riesgocredito_one = $(this).find('input[riesgocredito_one]').val();
     let riesgocredito_two = $(this).find('input[riesgocredito_two]').val();
     // ONE TD
@@ -749,7 +761,9 @@ function agregar_nivelaprobacion_noprendario(nivelaprobacionnombre='',riesgocred
   let btn_eliminar = `<button type="button" onclick="eliminar_producto(this)" class="btn btn-danger "><i class="fa-solid fa-trash"></i></button>` ;
 
   let tabla = ` <tr id="${num}">
-                  <td><input type="text" class="form-control" nombre_aprobacion value="${nivelaprobacionnombre}" id="nivelaprobacionnombre_noprendario${num}"></td>
+                    <td>
+                        <textarea class="form-control" nombre_aprobacion id="nivelaprobacionnombre_noprendario${num}">${nivelaprobacionnombre}</textarea>
+                    </td>
                   <td style="width:120px;">
                       <div class="input-group">
                         <span class="input-group-text">></span>
@@ -765,21 +779,21 @@ function agregar_nivelaprobacion_noprendario(nivelaprobacionnombre='',riesgocred
                   <td class="align-top" >
                     <div class="row">
                       <div class="col-12 col-md-9">
-                        <label>Selección de Responsables:</label>
+                        <label>Responsables:</label>
                         <select class="form-select" id="nivelaprobacion_cprendario_noprendario${num}" onchange="addPermisoTable(this,'#container_permiso_nivelaprobacion_noprendario${num}', $('input[name=nivelaprobacion_noprendario${num}]:checked').val() )">
                           ${option_nivelaprobacion}
                         </select>
                       </div>
                       <div class="col-12 col-md-3">
                           <label>Opción:</label>
-                        <div class="form-check form-check-inline">
-                          <input class="form-check-input" type="radio" name="nivelaprobacion_noprendario${num}" value="1" checked>
-                          <label class="form-check-label">1</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                          <input class="form-check-input" type="radio" name="nivelaprobacion_noprendario${num}" value="2">
-                          <label class="form-check-label" >2</label>
-                        </div>
+                          <label class="radio-custom">
+                              <input type="radio" name="nivelaprobacion_noprendario${num}" value="1" checked>
+                              <span class="radio"></span> 1
+                          </label>
+                          <label class="radio-custom">
+                              <input type="radio" name="nivelaprobacion_noprendario${num}" value="2">
+                              <span class="radio"></span> 2
+                          </label>
                       </div>
                     </div>
                     <div id="container_permiso_nivelaprobacion_noprendario${num}" data_nivelaprobacion >
@@ -794,21 +808,21 @@ function agregar_nivelaprobacion_noprendario(nivelaprobacionnombre='',riesgocred
                   <td class="align-top">
                     <div class="row">
                       <div class="col-12 col-md-9">
-                        <label>Selección de Responsables:</label>
+                        <label>Responsables:</label>
                         <select class="form-select" id="autonomiaadministracion_cprendario_noprendario${num}" onchange="addPermisoTable(this,'#container_permiso_autonomiaadministracion_noprendario${num}', $('input[name=autonomiaadministracion_noprendario${num}]:checked').val() )">
                           ${option_autonomiaadministracion}
                         </select>
                       </div>
                       <div class="col-12 col-md-3">
                           <label>Opción:</label>
-                        <div class="form-check form-check-inline">
-                          <input class="form-check-input" type="radio" name="autonomiaadministracion_noprendario${num}" value="1" checked>
-                          <label class="form-check-label">1</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                          <input class="form-check-input" type="radio" name="autonomiaadministracion_noprendario${num}" value="2">
-                          <label class="form-check-label" >2</label>
-                        </div>
+                          <label class="radio-custom">
+                              <input type="radio" name="autonomiaadministracion_noprendario${num}" value="1" checked>
+                              <span class="radio"></span> 1
+                          </label>
+                          <label class="radio-custom">
+                              <input type="radio" name="autonomiaadministracion_noprendario${num}" value="2">
+                              <span class="radio"></span> 2
+                          </label>
                       </div>
                     </div>
                     <div id="container_permiso_autonomiaadministracion_noprendario${num}" data_autonomiaadministracion >
@@ -823,21 +837,21 @@ function agregar_nivelaprobacion_noprendario(nivelaprobacionnombre='',riesgocred
                   <td class="align-top">
                     <div class="row">
                       <div class="col-12 col-md-9">
-                        <label>Selección de Responsables:</label>
+                        <label>Responsables:</label>
                         <select class="form-select" id="autonomiagerencia_cprendario_noprendario${num}" onchange="addPermisoTable(this,'#container_permiso_autonomiagerencia_noprendario${num}', $('input[name=autonomiagerencia_noprendario${num}]:checked').val() )">
                           ${option_autonomiagerencia}
                         </select>
                       </div>
                       <div class="col-12 col-md-3">
                           <label>Opción:</label>
-                        <div class="form-check form-check-inline">
-                          <input class="form-check-input" type="radio" name="autonomiagerencia_noprendario${num}" value="1" checked>
-                          <label class="form-check-label">1</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                          <input class="form-check-input" type="radio" name="autonomiagerencia_noprendario${num}" value="2">
-                          <label class="form-check-label" >2</label>
-                        </div>
+                          <label class="radio-custom">
+                              <input type="radio" name="autonomiagerencia_noprendario${num}" value="1" checked>
+                              <span class="radio"></span> 1
+                          </label>
+                          <label class="radio-custom">
+                              <input type="radio" name="autonomiagerencia_noprendario${num}" value="2">
+                              <span class="radio"></span> 2
+                          </label>
                       </div>
                     </div>
                     <div id="container_permiso_autonomiagerencia_noprendario${num}" data_autonomiagerencia >

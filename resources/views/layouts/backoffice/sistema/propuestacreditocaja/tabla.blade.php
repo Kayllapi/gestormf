@@ -1,7 +1,7 @@
 <div class="modal-header">
   <h5 class="modal-title">Aprobación de Créditos Administrador</h5>
   
-  <button type="button" class="btn-close" onclick="ir_inicio()" style="font-size: 20px;"></button>
+  <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>
 <div class="modal-body">
   <div class="row">
@@ -18,7 +18,7 @@
                     <button type="button" class="btn btn-danger" onclick="cambiar_estado('ELIMINAR')"> ELIMINAR CRÉDITO</button>
                     <button type="button" class="btn btn-info" onclick="acta_aprobacion()" style="float: right;"> 
                     <b>ACTA DE APROBACIÓN</b><br>
-                    <div style="float: right;margin-right:5px;font-size:10px;">
+                    <div style="float: right;margin-right:5px;font-size:13px;">
                       (Excepciones, Op. Riesgos, Verificaciones)</div>
                     </button>
                     
@@ -28,27 +28,31 @@
                         let idcredito = $('#table-lista-credito > tbody > tr.selected').attr('idcredito');
                         
                         if(idcredito == "" || idcredito == undefined ){
-                          alert('Debe de seleccionar un crédito.');   
+                          var mensaje = "Debe de seleccionar un crédito.";
+                          modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });  
                           return false;
                         }
                         
-                        if(estado == "DESAPROBADO"){
-                          alert('No puede eliminar un Crédito Desaprobado');   
+                        if(estado == "DESAPROBADO"){  
+                          var mensaje = "o puede eliminar un Crédito Desaprobado.";
+                          modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });  
                           return false;
                         }
                         if(estado == "CANCELADO"){
-                          alert('No puede eliminar un Crédito Cancelado');   
+                          var mensaje = "No puede eliminar un Crédito Cancelado.";
+                          modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });    
                           return false;
                         }
                         
-                        let url = "{{ url('backoffice/'.$tienda->id) }}/propuestacredito/"+idcredito+"/edit?view=cambiar_estado&tipo="+tipo+'&permiso=administrador';
+                        let url = "{{ url('backoffice/'.$tienda->id) }}/propuestacredito/"+idcredito+"/edit?view=cambiar_estado&tipo="+tipo+'&permiso=institucional';
                         modal({ route: url, size: 'modal-fullscreen' })
                       }
                       function acta_aprobacion(){
                         let idcredito = $('#table-lista-credito > tbody > tr.selected').attr('idcredito');
                         
                         if(idcredito == "" || idcredito == undefined ){
-                          alert('Debe de seleccionar un crédito.');   
+                          var mensaje = "Debe de seleccionar un crédito.";
+                          modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });  
                           return false;
                         }
                         let url = "{{ url('backoffice/'.$tienda->id) }}/propuestacredito/"+idcredito+"/edit?view=acta_aprobacion";
@@ -82,7 +86,7 @@
                       </div>
                       <div class="col-sm-12 col-md-2">
                         <div class="row mb-3">
-                          <label for="fecha_inicio" class="col-sm-2 col-form-label">DEL</label>
+                          <label for="fecha_inicio" class="col-sm-2 col-form-label">DE</label>
                           <div class="col-sm-10">
                             <input type="date" class="form-control" id="fecha_inicio" value="{{ date('Y-m-d') }}">
                           </div>
@@ -97,7 +101,7 @@
                         </div>
                       </div>
                       <div class="col-sm-12 col-md-1">
-                          <button type="button" class="btn btn-secondary" onclick="lista_credito();"> BUSCAR</button>
+                          <button type="button" class="btn btn-primary" onclick="lista_credito();"> BUSCAR</button>
                       </div>
                     </div>
                   </div>
@@ -108,23 +112,23 @@
         </div>
       </div>
       <div class="col-sm-12">
-            <h5 class="modal-title" style="margin-top: 10px;text-align: center;">Lista de Créditos</h5>
+            <h5 class="modal-title" style="margin-top: 10px;text-align: center;">LISTA DE CRÉDITOS</h5>
         <div class="card">
           <div class="card-body">
 
             <table class="table table-striped table-hover" id="table-lista-credito">
               <thead class="table-dark">
                 <tr>
-                  <td>N°</td>
-                  <td>CLIENTE</td>
-                  <td>AVAL</td>
-                  <td>PRODUCTO</td>
-                  <td>PRESTAMO</td>
-                  <td>ESTADO</td>
-                  <td>ASESOR/EJECUTIVO</td>
-                  <td>FECHA</td>
-                  <td>MODA. CRÉDITO</td>
-                  <td>OPCIÓN</td>
+                  <th>N°</th>
+                  <th>CLIENTE</th>
+                  <th>AVAL</th>
+                  <th>PRODUCTO</th>
+                  <th>PRÉSTAMO</th>
+                  <th>ESTADO</th>
+                  <th>ASESOR/EJECUTIVO</th>
+                  <th>FECHA</th>
+                  <th>MODALI. CRÉDITO</th>
+                  <th>PROPUESTA</th>
                 </tr>
               </thead>
               <tbody>
@@ -137,16 +141,7 @@
   </div>
 </div>
 <style>
-  #menu-opcion ul {
-      background-color: #0a58ca;
-  }
-  #menu-opcion ul li a.dropdown-item {
-      color: #fff;
-  }
-  #menu-opcion ul li a.dropdown-item:hover {
-      color: #181818 !important;
-      background-color: #dfdf79;
-  }
+  
 </style>
 <script>
   lista_credito();

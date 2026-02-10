@@ -4,7 +4,7 @@
   <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>
 <div class="modal-body">
-  <div class="row">
+  <div class="row mb-1">
       <div class="col-sm-12">
         <div class="card">
           <div class="card-body p-2" id="form-credito-result">
@@ -15,7 +15,7 @@
                     <div class="col-sm-12 col-md-8">
                         <div class="row">
                             <div class="col-sm-12 col-md-8">
-                              <div class="row mb-3">
+                              <div class="row">
                                 <label for="fecha_fin" class="col-sm-2 col-form-label">CLIENTE</label>
                                 <div class="col-sm-10">
                                     <select class="form-control" id="idcliente">
@@ -30,24 +30,24 @@
                         </div>
                     </div>
                       <div class="col-sm-12 col-md-4" style="text-align: right;">
-                          <div>
-                          <button type="button" class="btn btn-warning mb-1" onclick="entregar()">
+                          <button type="button" class="btn btn-warning" onclick="entregar()">
                             <i class="fa-solid fa-check"></i> ENTREGA DE GARANTIA PRENDARIA</button>
                       </div>
-                </div>
               
             </div> 
           </div>
         </div>
       </div>
-  </div>
+    </div>
+</div>
       <div class="col-sm-12">
         <div class="card">
-          <div class="card-body" id="tabla-pagoprestamo" style="overflow-y: scroll;height: 260px;padding-top: 0px;padding-bottom: 0px;">
+          <div class="card-body">
+            <div id="tabla-pagoprestamo" class="tabla_overflow" style="height: calc(-209px + 100vh)">
+            </div>
           </div>
         </div>
       </div>
-</div>
 <script>
   sistema_select2({ idtienda:{{$tienda->id}}, json:'tienda:usuario', input:'#idcliente' });
   

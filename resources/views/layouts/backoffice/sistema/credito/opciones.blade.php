@@ -6,8 +6,9 @@
     </div>
     <div class="modal-body">
       <div class="row" style="font-size: 14px;padding: 7px;">
-          <div class="col-md-6"><b>CLIENTE:</b> <span style="font-weight: normal;">{{ $usuario->nombrecompleto }}</span></div>
-          <div class="col-md-6" style="text-align: right;"><b>PRODUCTO:</b> <span style="font-weight: normal;">{{ $credito->nombreproductocredito }}</span></div>
+          <div class="col-md-5"><b>CLIENTE:</b> <span style="font-weight: normal;">{{ $usuario->nombrecompleto }}</span></div>
+          <div class="col-md-3"><b>F. INGRESO:</b> <span style="font-weight: normal;">{{ $users_prestamo->db_idfuenteingreso }}</span></div>
+          <div class="col-md-4" style="text-align: right;"><b>PRODUCTO:</b> <span style="font-weight: normal;">{{ $credito->nombreproductocredito }}</span></div>
       </div>
       @if($credito->idcredito_refinanciado!=0)
                         <p class="text-center" 
@@ -71,56 +72,56 @@
               </div>
             <div class="col-sm-12">
                 <div class="btn-group mb-1 evaluacion-completa" id="cont_cualitativa">
-                  <button type="button" class="btn btn-warning evaluacion" style="background-color: #80e52e;border-color: #212529;"
+                  <button type="button" class="btn btn-primary evaluacion"
                           onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=evaluacion_cualitativa')}}', size: 'modal-fullscreen' })">
                     1.- EVALUACION CUALITATIVA</button>
                 </div>
                 <div class="btn-group mb-1 evaluacion-completa" id="cont_cuantitativa">
-                  <button type="button" class="btn btn-warning evaluacion" style="background-color: #80e52e;border-color: #212529;"
+                  <button type="button" class="btn btn-primary evaluacion"
                           onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=evaluacion_cuantitativa')}}', size: 'modal-fullscreen' })">
                     2.- EVALUACION CUANTITATIVA</button>
                 </div>
                 <div class="btn-group mb-1 evaluacion-completa" id="cont_margen_ventas">
-                  <button type="button" class="btn btn-warning evaluacion" style="background-color: #c0f297;border-color: #212529;"
+                  <button type="button" class="btn btn-primary evaluacion"
                           onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=margen_ventas')}}', size: 'modal-fullscreen' })">
                     3.- MARGEN DE VENTAS</button>
                 </div>
                 <div class="btn-group mb-1 evaluacion-completa" id="cont_inventario_activos">
-                  <button type="button" class="btn btn-warning evaluacion" style="background-color: #c0f297;border-color: #212529;"
+                  <button type="button" class="btn btn-primary evaluacion"
                           onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=inventario_activos')}}', size: 'modal-fullscreen' })">
                     4.- INVENTARIO Y ACTIVOS</button>
                 </div>
                 <div class="btn-group mb-1 evaluacion-completa" id="cont_deudas">
-                  <button type="button" class="btn btn-warning evaluacion" style="background-color: #c0f297;border-color: #212529;"
+                  <button type="button" class="btn btn-primary evaluacion"
                           onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=deudas')}}', size: 'modal-fullscreen' })">
                     5.- DEUDAS</button>
                 </div>
                 <div class="btn-group mb-1 evaluacion-completa" id="cont_ingresoadicional">
-                  <button type="button" class="btn btn-warning evaluacion" style="background-color: #c0f297;border-color: #212529;"
+                  <button type="button" class="btn btn-primary evaluacion"
                           onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=ingresos_adicionales')}}', size: 'modal-fullscreen' })">
                     6.- INGRESO ADICIONAL - MES Y FIJOS</button>
                 </div>
                 <div class="btn-group mb-1 evaluacion-completa" id="cont_control_limites">
-                  <button type="button" class="btn btn-warning evaluacion" style="background-color: #c0f297;border-color: #212529;"
+                  <button type="button" class="btn btn-primary evaluacion"
                           onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=control_limites')}}', size: 'modal-fullscreen' })">
                     7.- GARANTIAS Y LIMITES</button>
                 </div>
                 <div class="btn-group mb-1 evaluacion-completa" id="cont_flujocaja">
-                  <button type="button" class="btn btn-warning evaluacion" style="background-color: #c0f297;border-color: #212529;"
+                  <button type="button" class="btn btn-primary evaluacion"
                           onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=flujo_caja')}}', size: 'modal-fullscreen' })">
                     8.- FLUJO DE CAJA</button>
                 </div>
                 <div class="btn-group mb-1 evaluacion-resumida" id="cont_evaluacion_resumida">
-                  <button type="button" class="btn btn-warning evaluacion" style="background-color: #c0f297;border-color: #212529;"
+                  <button type="button" class="btn btn-primary evaluacion"
                           onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=evaluacion_resumida')}}', size: 'modal-fullscreen' })">
                     1.- EVALUACION RESUMIDA</button>
                 </div>
                 <div class="btn-group mb-1 evaluacion-resumida">
-                  <button type="button" class="btn btn-warning evaluacion" style="background-color: #c0f297;border-color: #212529;"
+                  <button type="button" class="btn btn-primary evaluacion"
                           onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=control_limites')}}', size: 'modal-fullscreen' })">
                     2.- GARANTIAS Y LIMITES</button>
                 </div>
-                <button type="button" class="btn btn-secondary mb-1" style="background-color: #6e726b;border-color: #212529;"  
+                <button type="button" class="btn btn-warning1 mb-1"
                         onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=solicitud_checklist')}}', size: 'modal-fullscreen' })">
                   CHECK LIST</button>
               </div>
@@ -145,12 +146,12 @@
             </div>
             <div class="col-sm-12">
               <div class="btn-group mb-1" id="formato_evaluacion">
-                <button type="button" class="btn btn-warning evaluacion" style="background-color: #c0f297;border-color: #212529;"
+                <button type="button" class="btn btn-primary evaluacion"
                         onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=formato_evaluacion')}}', size: 'modal-fullscreen' })">
                   1.- FORMATO DE EVALUACIÓN</button>
               </div>
                 <div class="btn-group mb-1 evaluacion-resumida">
-                  <button type="button" class="btn btn-warning evaluacion" style="background-color: #c0f297;border-color: #212529;"
+                  <button type="button" class="btn btn-primary evaluacion"
                           onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=control_limites')}}', size: 'modal-fullscreen' })">
                     2.- GARANTIAS Y LIMITES</button>
                 </div>
@@ -162,7 +163,7 @@
 
                 </div-->
 
-              <button type="button" class="btn btn-secondary mb-1" style="background-color: #6e726b;border-color: #212529;"  
+              <button type="button" class="btn btn-warning1 mb-1"
                       onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=solicitud_checklist')}}', size: 'modal-fullscreen' })">
                 CHECK LIST</button>
             </div>

@@ -39,13 +39,13 @@
         <div class="card">
           <div class="card-body p-2 modal-body">
             <div class="row">
-              <div class="col-sm-3">
+              <div style="width:24%;">
                 <div class="mb-1">
                   <span class="badge d-block">PRÉSTAMOS</span>
                 </div>
                 <div class="row d-none data-cliente">
                   <div class="col-sm-12">
-                    <label>DNI/CE - Apellidos y Nombres: </label>
+                    <label>RUC/DNI/CE - Apellidos y Nombres: </label>
                     <input type="text" disabled value="" class="form-control mb-1" id="data-cliente-nombre" style="background-color: white;">
                     <input type="hidden" value="" class="form-control" id="data-cliente-id">
                   </div>
@@ -64,15 +64,8 @@
                     </tr>
                   </tbody>
                 </table>
-                <!--select class="form-control" id="idcliente">
-                    <option></option>
-                    @foreach($creditos as $value)
-                      <option value="{{ $value->id }}">
-                        {{ $value->identificacion }} - {{ $value->nombrecliente }} - S/. {{ $value->monto_solicitado }} - C{{ str_pad($value->cuenta, 8, "0", STR_PAD_LEFT) }}
-                    @endforeach
-                </select-->
                 <div class="mb-1 mt-1">
-                  <span class="badge d-block">RESUMEN DE PAGO Y SALDO DE PRÉSTAMO</span>
+                  <span class="badge d-block">RESUMEN DE PAGO Y SALDO</span>
                 </div>
                 <input type="hidden" id="idcredito" value="0">
                <b> N° DE CUENTA: <span id="numerodecuenta"></span></b><br>
@@ -116,9 +109,7 @@
                 </table>
                 
               </div>
-              <div class="col-sm-9">
-                <div class="row">
-                  <div class="col-sm-2">
+              <div style="width:19%;">
                     <div style="background-color: #bcbcbc;font-weight: bold;" class="p-1">
 
                     <div class="mb-1">
@@ -140,18 +131,18 @@
                     <input type="text" class="form-control" style="background-color: #fff;" placeholder="0" id="tenencia_penalidad_mora" valida_input_vacio disabled/>
 
                     <div class="mb-1 mt-1">
-                      <span class="badge d-block">PAGO A CUENTA - <a href="javascript:;" onclick="ver_pagoacuenta()" style="color: #ffc107;">Ver</a></span>
+                      <span class="badge d-block">PAGO A CUENTA - <a href="javascript:;" onclick="ver_pagoacuenta()" style="color: #b45126;">Ver</a></span>
                     </div>
                     <input type="text" value="0.00" disabled style="background-color: #fff;" class="form-control" id="pagoacuenta_acuenta" valida_input_vacio>
 
                     <div class="mb-1 mt-1">
-                      <span class="badge d-block">CTA X COBRAR - <a href="javascript:;" onclick="ver_cuentasporcobrar()" style="color: #ffc107;">Ver</a></span>
+                      <span class="badge d-block">CTA X COBRAR - <a href="javascript:;" onclick="ver_cuentasporcobrar()" style="color: #b45126;">Ver</a></span>
                     </div>
 
                       <input type="text" class="form-control" style="background-color: #fff;" placeholder="0" id="detalle_porcobrar" valida_input_vacio disabled/>
 
                     <div class="mb-1 mt-1">
-                      <span class="badge d-block">DESC. - CUOTA <span id="detalle_descuento_numerocuota">(0)</span> - <a href="javascript:;" onclick="ver_descuentos()" style="color: #ffc107;">Ver</a></span>
+                      <span class="badge d-block">DESC. - CUOTA <span id="detalle_descuento_numerocuota">(0)</span> - <a href="javascript:;" onclick="ver_descuentos()" style="color: #b45126;">Ver</a></span>
                     </div>
                     <input type="text" class="form-control" style="background-color: #fff;" placeholder="0" id="totaldescuento" disabled valida_input_vacio>
 
@@ -159,25 +150,34 @@
                       <span class="badge d-block">TOTAL A PAGAR</span>
                     </div>
                     <input type="text" class="form-control" style="background-color: #fff;" placeholder="0" id="totalapagar" disabled valida_input_vacio>
-
-                    <div class="form-check">
-                      <input class="form-check-input" type="radio" name="opcion_pago" id="pagocuota" onclick="pagocuota()"> Pago de Cuotas
-                    </div>
-
-                    <div class="form-check">
-                      <input class="form-check-input" type="radio" name="opcion_pago" id="pagoacuenta" onclick="pagoacuenta()"> Pago a Cuenta
-                    </div>
-                    <div class="form-check">
-                      <input class="form-check-input" type="radio" name="opcion_pago" id="pagototal" onclick="pagototal()"> Total
-                    </div>
+                      <div>
+                          <label class="radio-custom">
+                              <input type="radio" name="opcion_pago" id="pagocuota" onclick="pagocuota()">
+                              <span class="radio"></span> Pago de Cuotas
+                          </label>
+                      </div>
+                      <div>
+                          <label class="radio-custom">
+                              <input type="radio" name="opcion_pago" id="pagoacuenta" onclick="pagoacuenta()">
+                              <span class="radio"></span> Pago a Cuenta
+                          </label>
+                      </div>
+                      <div>
+                          <label class="radio-custom">
+                              <input type="radio" name="opcion_pago" id="pagototal" onclick="pagototal()">
+                              <span class="radio"></span> Total
+                          </label>
+                      </div>
                     <button type="submit" 
                             class="btn btn-primary w-100 mt-1" 
                             onclick="cobrar()">
                       <i class="fa-solid fa-check"></i> Cobrar
                     </button>
                     </div>
-                  </div>
-                  <div class="col-sm-10">
+                  
+            
+              </div>
+              <div style="width:57%;">
                     <div class="mb-1">
                       <span class="badge d-block">DATOS DE PRÉSTAMO</span>
                     </div>
@@ -185,8 +185,6 @@
                     <div id="table-datosprestamos_cronograma" class="modal-body" style="overflow-y: scroll;height: 260px;padding-top: 0px;padding-bottom: 0px;"></div>
                     <div id="opciones_datosprestamos" class="modal-body"></div>
                     <!--a href="javascript:;" class="btn btn-primary" onclick="ver_opciones(35)">opcion</a-->
-                  </div>
-                </div>
               </div>
             </div>
           </div>

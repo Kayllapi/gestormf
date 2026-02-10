@@ -1156,7 +1156,7 @@ class CobranzacuotaController extends Controller
           
           //opciones
           
-          $btn_congelarcredito = '<button type="button" class="btn btn-warning" onclick="congelarcredito()" style="font-weight: bold;">
+          $btn_congelarcredito = '<button type="button" class="btn btn-info" onclick="congelarcredito()" style="font-weight: bold;">
     <img src="'.url('public/backoffice/nuevosistema/congelador.png').'" style="width: 17px;"> CONGELAR CRÉDITO</button>';
           if($credito->idestado_congelarcredito==2){
               $btn_congelarcredito = '<div style="    background-color: #ffa700;

@@ -5,8 +5,9 @@
   </div>
   <div class="modal-body">
     <div class="row" style="font-size: 14px;padding: 7px;">
-      <div class="col-md-6"><b>CLIENTE:</b> {{ $usuario->nombrecompleto }}</div>
-      <div class="col-md-6" style="text-align: right;"><b>PRODUCTO:</b> {{ $credito->nombreproductocredito }}</div>
+          <div class="col-md-5"><b>CLIENTE:</b> <span style="font-weight: normal;">{{ $usuario->nombrecompleto }}</span></div>
+          <div class="col-md-3"><b>F. INGRESO:</b> <span style="font-weight: normal;">{{ $users_prestamo->db_idfuenteingreso }}</span></div>
+          <div class="col-md-4" style="text-align: right;"><b>PRODUCTO:</b> <span style="font-weight: normal;">{{ $credito->nombreproductocredito }}</span></div>
     </div>
 
     <div class="col-sm-12 mt-2">

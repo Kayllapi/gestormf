@@ -24,5 +24,5 @@
               </div>
           </div>
     @endif
-    <iframe id="iframe_acta_aprobacion" src="{{ url('/backoffice/'.$tienda->id.'/propuestacredito/'.$credito->id.'/edit?view=acta_aprobacionpdf') }}#zoom=90" frameborder="0" width="100%" height="600px"></iframe>
+    <iframe id="iframe_acta_aprobacion" src="{{ url('/backoffice/'.$tienda->id.'/propuestacredito/'.$credito->id.'/edit?view=acta_aprobacionpdf') }}#zoom=100" frameborder="0" width="100%" height="600px"></iframe>
 </div>

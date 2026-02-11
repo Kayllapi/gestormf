@@ -14,7 +14,7 @@
       <div class="col-sm-12">
             <h5 class="modal-title" style="margin-top: 10px;text-align: center;">Préstamos en Procesos</h5>
         <div class="card">
-          <div class="card-body">
+          <div class="card-body" style="height: calc(-380px + 100vh);">
 
             <table class="table table-striped table-hover" id="table-lista-credito">
               <thead class="table-dark">

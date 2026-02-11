@@ -225,12 +225,12 @@ class ConsolidadoCarteraCreditoController extends Controller
           }
               $html .= '
                 <tr style="position: sticky;bottom: 0;">
-                  <td style="background-color: #144081 !important;text-align:right;color:#fff !important;">TOTAL S/.</td>
-                  <td style="background-color: #144081 !important;text-align:right;color:#fff !important;">'.number_format($total_cartera, 2, '.', '').'</td>
-                  <td style="background-color: #144081 !important;text-align:right;color:#fff !important;">'.$total_num_creditos.'</td>
-                  <td style="background-color: #144081 !important;text-align:right;color:#fff !important;">'.number_format($total_mora_soles, 2, '.', '').'</td>
-                  <td style="background-color: #144081 !important;text-align:right;color:#fff !important;">'.number_format($total_mora_porcentaje, 2, '.', '').'</td>
-                  <td style="background-color: #144081 !important;text-align:right;color:#fff !important;">'.$total_numero_moracredito.'</td>
+                  <th>TOTAL S/.</th>
+                  <th>'.number_format($total_cartera, 2, '.', '').'</th>
+                  <th>'.$total_num_creditos.'</th>
+                  <th>'.number_format($total_mora_soles, 2, '.', '').'</th>
+                  <th>'.number_format($total_mora_porcentaje, 2, '.', '').'</th>
+                  <th>'.$total_numero_moracredito.'</th>
                 </tr>';
           
               
@@ -255,9 +255,9 @@ class ConsolidadoCarteraCreditoController extends Controller
                             <td style='text-align:right;'>{$clasificacion_perdida_saldo}</td>
                             <td style='text-align:right;'>{$clasificacion_perdida_creditos}</td>
                         </tr><tr>
-                            <td style='background-color: #144081 !important;text-align:right;color:#fff !important;'><b>TOTAL</b></td>
-                            <td style='background-color: #144081 !important;text-align:right;color:#fff !important;'>{$total_saldos}</td>
-                            <td style='background-color: #144081 !important;text-align:right;color:#fff !important;'>{$total_creditos}</td>
+                            <th><b>TOTAL</b></th>
+                            <th><b>{$total_saldos}</b></th>
+                            <th><b>{$total_creditos}</b></th>
                         </tr>";
               $demora1 = 0;
               $demora2 = 0;

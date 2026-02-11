@@ -66,9 +66,9 @@ class CvmovimientointernodineroController extends Controller
         elseif($request->view == 'registrar_retiro3') {
             $bancos = DB::table('banco')->where('estado','ACTIVO')->get();
             $fuenteretiros= DB::table('credito_fuenteretiro')
-              ->where('idtipo',2)
-              ->whereIn('id',[6,8])
-              ->get();
+                ->where('idtipo',2)
+                ->whereIn('id',[6,8])
+                ->get();
             return view(sistema_view().'/cvmovimientointernodinero/create_retiro3',[
                 'tienda' => $tienda,
                 'bancos' => $bancos,
@@ -444,7 +444,8 @@ class CvmovimientointernodineroController extends Controller
             }
 
             DB::table('cvmovimientointernodinero')->insert([
-                'fecharegistro' => now(),
+                'fecharegistro' => $fecharegistro,
+                'fecharegularizacion' => $fecharegularizacion,
                 'codigoprefijo' => 'ACDV',
                 'codigo' => $codigo,
                 'monto' => $request->input('monto_retiro3'),
@@ -728,6 +729,7 @@ class CvmovimientointernodineroController extends Controller
             $html = '';
             foreach($movimientointernodinero as $key => $value){
                 $fecharegistro = date_format(date_create($value->fecharegistro),"d-m-Y H:i:s A");
+                $fecharegularizacion = $value->fecharegularizacion!='' ? date_format(date_create($value->fecharegularizacion),"d-m-Y H:i:s A") : '---';
                 $bgcolor = '';
                 if($value->idresponsable==0){
                     $bgcolor = 'style="background-color: #ffb8b8;"';
@@ -738,6 +740,7 @@ class CvmovimientointernodineroController extends Controller
                               <td style='white-space: nowrap;text-align:right;'>{$value->monto}</td>
                               <td style='white-space: nowrap;'>{$value->descripcion}</td>
                               <td style='white-space: nowrap;'>{$fecharegistro}</td>
+                              <td style='white-space: nowrap;'>{$fecharegularizacion}</td>
                               <td style='white-space: nowrap;'>{$value->codigo_responsable}</td>
                           </tr>";
                 $total = $total+$value->monto;
@@ -751,7 +754,7 @@ class CvmovimientointernodineroController extends Controller
                 <tr style="position: sticky;bottom: 0;">
                   <td colspan="2" style="background-color: #c2c0c2 !important; font-weight: bold; text-align:right;">Total Depósitos (S/.)</td>
                   <td style="background-color: #c2c0c2 !important; font-weight: bold; text-align:right;">'.number_format($total, 2, '.', '').'</td>
-                  <td colspan="3" style="background-color: #c2c0c2 !important; font-weight: bold; text-align:right;"></td>
+                  <td colspan="4" style="background-color: #c2c0c2 !important; font-weight: bold; text-align:right;"></td>
                 </tr>'; 
           
             return array(

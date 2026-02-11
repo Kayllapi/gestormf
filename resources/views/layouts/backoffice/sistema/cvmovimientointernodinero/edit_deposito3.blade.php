@@ -12,7 +12,7 @@
                     </select>
                 </div>
               </div>
-              <div class="row">
+              <div class="row" style="margin-bottom:50px;">
                 <label class="col-sm-4 col-form-label" style="text-align: right;">Monto S/.:</label>
                 <div class="col-sm-8">
                   <input type="number" class="form-control" id="monto_deposito3" value="{{$movimientointernodinero->monto}}" step="any" disabled>

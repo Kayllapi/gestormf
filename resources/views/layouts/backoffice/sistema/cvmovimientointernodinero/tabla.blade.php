@@ -246,7 +246,6 @@
                 <div class="col-sm-12">
                     <div class="card">
                     <div class="card-body" style="overflow-y: scroll;height: 180px;padding: 0;margin-top: 5px;overflow-x: scroll;">
-
                         <table class="table table-striped table-hover" id="table-lista-movimientointernodinero_deposito3">
                         <thead class="table-dark" style="position: sticky;top: 0; font-weight: bold;">
                             <tr>
@@ -254,12 +253,12 @@
                             <td>Destino de Depósito</td>
                             <td>Monto (S/.)</td>
                             <td>Descripción</td>
-                            <td>Fecha</td>
+                            <td>Fecha Registro</td>
+                            <td>Fecha Regularización</td>
                             <td>Usuario</td>
                             </tr>
                         </thead>
                         <tbody>
-
                         </tbody>
                         </table>
                     </div>

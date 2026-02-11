@@ -1,7 +1,7 @@
 <div class="modal-header">
   <h5 class="modal-title">Refinanciamiento de Crédito</h5>
   
-  <button type="button" class="btn-close" onclick="ir_inicio()" style="font-size: 20px;"></button>
+  <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>
 <div class="modal-body">
   <div class="row">
@@ -9,7 +9,7 @@
         <div class="card">
           <div class="card-body p-2" id="form-credito-result">
              
-            <div class="modal-body">
+            <div class="modal-body pb-0">
               
                 <div class="row">
                     <div class="col-sm-12 col-md-7">
@@ -55,10 +55,10 @@
         </div>
       </div>
   </div>
-      <div class="col-sm-12">
+      <div class="col-sm-12 mt-1">
         <div class="card">
-          <div class="card-body" style="overflow-y: scroll;height: 260px;padding: 0;margin-top: 5px;">
-
+          <div class="card-body p-2">
+            <div class="modal-body p-0" style="overflow-y: scroll;height: calc(-238px + 100vh);">
             <table class="table table-striped table-hover" id="table-lista-credito">
               <thead class="table-dark" style="position: sticky;top: 0;">
                 <tr>
@@ -80,6 +80,7 @@
               
               </tbody>
             </table>
+            </div>
           </div>
         </div>
       </div>

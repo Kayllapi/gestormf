@@ -1,7 +1,7 @@
 <div class="modal-header">
   <h5 class="modal-title">Cartera de Crédito Institucional</h5>
   
-  <button type="button" class="btn-close" onclick="ir_inicio()" style="font-size: 20px;"></button>
+  <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>
 <div class="modal-body">
   <div class="row">
@@ -9,7 +9,7 @@
         <div class="card">
           <div class="card-body p-2" id="form-credito-result">
              
-            <div class="modal-body">
+            <div class="modal-body pb-0">
               
                 <div class="row">
                     <div class="col-sm-12 col-md-9">
@@ -96,68 +96,76 @@
         </div>
       </div>
   </div>
-      <div class="col-sm-12">
+      <div class="col-sm-12 mt-1">
         <div class="card">
-
-            <table class="table" style="width:600px;margin-bottom: 3px;">
+          <div class="card-body p-2">
+            <div class="modal-body p-0">
+            <table class="table table-bordered" style="width:600px;margin-bottom: 3px;">
               <thead class="table-dark"> 
                 <tr>
-                  <td colspan="5" style='text-align:center;'>CATEGORIA DE CLASIFICACIÓN</td>
+                  <th colspan="5" style='text-align:center;'>CATEGORIA DE CLASIFICACIÓN</th>
                 </tr>
                 <tr>
-                  <td style='text-align:center;'>NORMAL</td>
-                  <td style='text-align:center;'>CPP</td>
-                  <td style='text-align:center;'>DEFICIENTE</td>
-                  <td style='text-align:center;'>DUDOSO</td>
-                  <td style='text-align:center;'>PÉRDIDA</td>
+                  <th style='text-align:center;'>NORMAL</th>
+                  <th style='text-align:center;'>CPP</th>
+                  <th style='text-align:center;'>DEFICIENTE</th>
+                  <th style='text-align:center;'>DUDOSO</th>
+                  <th style='text-align:center;'>PÉRDIDA</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td style='text-align:center;background-color: #78d7ab !important;'><=8 DÍAS</td>
-                  <td style='text-align:center;background-color: #78d7ab !important;'>>8<=30 DÍAS</td>
-                  <td style='text-align:center;background-color: #78d7ab !important;'>>30<=60 DÍAS</td>
-                  <td style='text-align:center;background-color: #78d7ab !important;'>>60<=120 DÍAS</td>
-                  <td style='text-align:center;background-color: #78d7ab !important;'>>120 DÍAS</td>
+                  <th style='text-align:center;background-color: #78d7ab !important;'><=8 DÍAS</th>
+                  <th style='text-align:center;background-color: #78d7ab !important;'>>8<=30 DÍAS</th>
+                  <th style='text-align:center;background-color: #78d7ab !important;'>>30<=60 DÍAS</th>
+                  <th style='text-align:center;background-color: #78d7ab !important;'>>60<=120 DÍAS</th>
+                  <th style='text-align:center;background-color: #78d7ab !important;'>>120 DÍAS</th>
                 </tr>
               </tbody>
             </table>
-          <div class="card-body" style="overflow-y: scroll;height: 260px;padding: 0;margin-top: 5px;">
+            </div>
+          </div>
+      </div>
+      <div class="col-sm-12 mt-1 mb-1">
+        <div class="card">
+          <div class="card-body p-2">
+            <div class="modal-body p-0" style="overflow-y: scroll;height: calc(-427px + 100vh);">
             <table class="table table-striped table-hover" id="table-lista-credito">
               <thead class="table-dark" style="position: sticky;top: 0;"> 
                 <tr>
-                  <td>N°</td>
-                  <td>CUENTA</td>
-                  <td>DOI/RUC</td>
-                  <td>Apellidos y Nombres</td>
-                  <td>DOI/RUC (Aval)</td>
-                  <td>Ape. Nom. Aval</td>
-                  <td>Fecha Desemb.</td>
-                  <td>Monto Cred. (S/.)</td>
-                  <td>Saldo Cap. (S/.)</td>
-                  <td>Saldo Deuda T. (S/.)</td>
-                  <td>F. Pago</td>
-                  <td>Cuotas</td>
-                  <td>Form. C.</td>
-                  <td>Días de atraso</td>
-                  <td>Calificación</td>
-                  <td>Producto</td>
-                  <td>Modalidad</td>
-                  <td>Tele./Celu.</td>
-                  <td>Direc/Domicilio</td>
+                  <th>N°</th>
+                  <th>CUENTA</th>
+                  <th>DOI/RUC</th>
+                  <th>Apellidos y Nombres</th>
+                  <th>DOI/RUC (Aval)</th>
+                  <th>Ape. Nom. Aval</th>
+                  <th>Fecha Desemb.</th>
+                  <th>Monto Cred. (S/.)</th>
+                  <th>Saldo Cap. (S/.)</th>
+                  <th>Saldo Deuda T. (S/.)</th>
+                  <th>F. Pago</th>
+                  <th>Cuotas</th>
+                  <th>Form. C.</th>
+                  <th>Días de atraso</th>
+                  <th>Calificación</th>
+                  <th>Producto</th>
+                  <th>Modalidad</th>
+                  <th>Tele./Celu.</th>
+                  <th>Direc/Domicilio</th>
                 </tr>
               </thead>
               <tbody>
               
               </tbody>
             </table>
+            </div>
           </div>
         </div>
       </div>
                               <div style="text-align: right;">
-                                <button type="button" class="btn btn-info" onclick="exportar_pdf()" style="font-weight: bold;">
+                                <button type="button" class="btn btn-info" onclick="exportar_pdf()">
                                   <i class="fa-solid fa-file-pdf" style="color:#000 !important;font-weight: bold;"></i> REPORTE PDF</button>
-                                <button type="button" class="btn btn-success" onclick="exportar_excel()" style="font-weight: bold;">
+                                <button type="button" class="btn btn-success" onclick="exportar_excel()">
                                   <i class="fa-solid fa-file-excel" style="color:#000 !important;font-weight: bold;"></i> REPORTE EXCEL</button>
                               </div>
 </div>

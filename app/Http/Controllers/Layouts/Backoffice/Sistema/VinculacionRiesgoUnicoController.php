@@ -227,8 +227,8 @@ class VinculacionRiesgoUnicoController extends Controller
    
               $html .= '
                 <tr style="position: sticky;bottom: 0;">
-                  <td colspan="11" style="background-color: #144081 !important;text-align:right;color:#fff !important;">TOTAL S/.</td>
-                  <td style="background-color: #144081 !important;text-align:right;color:#fff !important;">'.number_format($total, 2, '.', '').'</td>
+                  <th colspan="11" class="text-end">TOTAL S/.</th>
+                  <th class="text-end">'.number_format($total, 2, '.', '').'</th>
                 </tr>';
           return array(
             'html' => $html

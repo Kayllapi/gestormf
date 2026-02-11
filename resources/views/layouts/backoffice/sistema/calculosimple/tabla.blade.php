@@ -2,7 +2,7 @@
     <h5 class="modal-title">
       Simulador de Crédito (Cálculo Simple)
     </h5>
-    <button type="button" class="btn-close" onclick="ir_inicio()" style="font-size: 20px;"></button>
+    <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>
 <div class="modal-body">
   <div class="row justify-content-center">
@@ -136,7 +136,7 @@
           </div>
         </div>
         <div class="row mt-3 justify-content-center">
-          <div class="col-sm-12 col-md-7">
+          <div class="col-sm-12 col-md-7" style="height: calc(-429px + 100vh);">
             <table class="table table-striped" id="table-cronograma">
               <thead>
                 <th>Cuota N°</th>
@@ -158,7 +158,7 @@
               </tbody>
             </table>
           </div>
-          <div class="col-sm-12 col-md-5">
+          <div class="col-sm-12 col-md-5" style="height: calc(-429px + 100vh);">
             <table class="table table-bordered" id="table-tarifario-producto">
               <thead>
                 <tr>

@@ -1,7 +1,7 @@
 <div class="modal-header">
   <h5 class="modal-title">Cartera de Cliente</h5>
   
-  <button type="button" class="btn-close" onclick="ir_inicio()" style="font-size: 20px;"></button>
+  <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>
 <div class="modal-body">
   <form action="javascript:;" 
@@ -18,6 +18,9 @@
         $('#check_origen').val('');
         $('#check_seleccionar_todocheck_origen').prop('checked',false);
         },this)"> 
+          <div class="card">
+            <div class="card-body p-2">
+                <div class="modal-body pb-0">
                 <div class="row">
                     <div class="col-sm-12 col-md-9">
                         <div class="row">
@@ -80,15 +83,19 @@
                                 
                     </div>
                 </div>
-  <div class="row">
+                </div>
+            </div>
+        </div>
+  <div class="row mt-1 mb-1">
       <div class="col-sm-12">
         <div class="card">
           <div class="card-body p-2">
              <div id="cont-filtro"></div>
-            <div class="modal-body">
+            <div class="modal-body p-0">
                     @include('app.nuevosistema.tabla',[
                         'tabla' => '#tabla-origendes',
                         'route' => url('backoffice/'.$tienda->id.'/carteradecliente/showcliente'),
+                        'scrollY' => 'calc(-373px + 100vh)',
                         'thead' => [
                             ['data' => '' ],
                             ['data' => 'Cod. Cliente' ],

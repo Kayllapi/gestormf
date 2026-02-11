@@ -16,7 +16,7 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h1 class="modal-title fs-5 text-white" id="exampleModalLabel">Buscar Cliente</h1>
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Buscar Cliente</h1>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -32,7 +32,7 @@
         </div>
       </div>
     </h5>
-    <button type="button" class="btn-close" onclick="ir_inicio()" style="font-size: 20px;"></button>
+    <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>
 <div class="modal-body">
   <div class="row">
@@ -52,7 +52,7 @@
       </div>
       <label>Préstamos: </label>
       <span id="cont_listanegra"></span>
-      <div style="overflow-y: scroll;height: 260px;">
+      <div style="overflow-y: scroll;height: calc(-246px + 100vh);">
       <table class="table table-striped table-hover" id="table-detalle-prestamo">
         <thead class="table-dark" style="position: sticky;top: 0;">
           <tr>
@@ -80,7 +80,7 @@
               <i class="fa fa-check"></i> Ver Última Evaluación (Completa)
             </button>
         </div>
-        <iframe id="iframe_acta_aprobacion" frameborder="0" width="100%" height="400px"></iframe>
+        <iframe id="iframe_acta_aprobacion" frameborder="0" width="100%" style="height: calc(-170px + 100vh);"></iframe>
       </div>
     </div>
   </div>

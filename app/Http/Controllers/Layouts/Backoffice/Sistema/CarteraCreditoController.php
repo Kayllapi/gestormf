@@ -203,11 +203,11 @@ class CarteraCreditoController extends Controller
           }
               $html .= '
                 <tr style="position: sticky;bottom: 0;">
-                  <td colspan="7" style="background-color: #144081 !important;text-align:right;color:#fff !important;">TOTAL S/.</td>
-                  <td style="background-color: #144081 !important;text-align:right;color:#fff !important;">'.number_format($total_desembolsado, 2, '.', '').'</td>
-                  <td style="background-color: #144081 !important;text-align:right;color:#fff !important;">'.number_format($total_saldo, 2, '.', '').'</td>
-                  <td style="background-color: #144081 !important;text-align:right;color:#fff !important;">'.number_format($total_deuda, 2, '.', '').'</td>
-                  <td colspan="9" style="background-color: #144081 !important;"></td>
+                  <th colspan="7">TOTAL S/.</th>
+                  <th>'.number_format($total_desembolsado, 2, '.', '').'</th>
+                  <th>'.number_format($total_saldo, 2, '.', '').'</th>
+                  <th>'.number_format($total_deuda, 2, '.', '').'</th>
+                  <th colspan="9"></th>
                 </tr>';
           return array(
             'html' => $html

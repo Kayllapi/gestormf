@@ -1,7 +1,7 @@
 <div class="modal-header">
   <h5 class="modal-title">Vinculación por Riesgo Unico</h5>
   
-  <button type="button" class="btn-close" onclick="ir_inicio()" style="font-size: 20px;"></button>
+  <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>
 <div class="modal-body">
   <div class="row">
@@ -9,7 +9,7 @@
         <div class="card">
           <div class="card-body p-2" id="form-credito-result">
              
-            <div class="modal-body">
+            <div class="modal-body pb-0">
               
                 <div class="row">
                     <div class="col-sm-12 col-md-9">
@@ -57,44 +57,46 @@
         </div>
       </div>
   </div>
-      <div class="col-sm-12">
+      <div class="col-sm-12 mt-1 mb-1">
         <div class="card">
-          <div class="card-body" style="overflow-y: scroll;height: 260px;padding: 0;margin-top: 5px;">
+          <div class="card-body">
+            <div class="modal-body p-0" style="overflow-y: scroll;height: calc(-305px + 100vh);">
             <table class="table table-striped table-hover table-bordered" id="table-lista-credito">
               <thead class="table-dark" style="position: sticky;top: 0;"> 
                 <tr>
-                  <td style="text-align: center;" rowspan="2" colspan="3">VINCULADOS</td>
-                  <td style="text-align: center;" colspan="8">RIESGO Saldo de Créd.(S/.)</td>
-                  <td style="text-align: center;" rowspan="3">TOTAL</td>
+                  <th style="text-align: center;" rowspan="2" colspan="3">VINCULADOS</th>
+                  <th style="text-align: center;" colspan="8">RIESGO Saldo de Créd.(S/.)</th>
+                  <th style="text-align: center;" rowspan="3">TOTAL</th>
                 </tr> 
                 <tr>
-                  <td style="text-align: center;" colspan="4">POR PROPIEDAD Y AVAL</td>
-                  <td style="text-align: center;" colspan="2">POR NEGOCIO</td>
-                  <td style="text-align: center;" colspan="2">FAMILIARES EN LA EMPRESA</td>
+                  <th style="text-align: center;" colspan="4">POR PROPIEDAD Y AVAL</th>
+                  <th style="text-align: center;" colspan="2">POR NEGOCIO</th>
+                  <th style="text-align: center;" colspan="2">FAMILIARES EN LA EMPRESA</th>
                 </tr>
                 <tr>
-                  <td style="text-align: center;">N°</td>
-                  <td style="text-align: center;">DOI/RUC</td>
-                  <td style="text-align: center;">Nombres y Apellidos</td>
-                  <td style="text-align: center;">Cnta</td>
-                  <td style="text-align: center;">Avalados por Cliente al Vinculado con  MISMO DOMICILIO</td>
-                  <td style="text-align: center;">Cnta</td>
-                  <td style="text-align: center;">Avalados por Vinculado al Cliente  con MISMO DOMICILIO </td>
-                  <td style="text-align: center;">Cnta</td>
-                  <td style="text-align: center;">Misma dirección de negocio del vinculado</td>
-                  <td style="text-align: center;">Cnta</td>
-                  <td style="text-align: center;">Usuario Vinculado con mismo domicilio del Cliente</td>
+                  <th style="text-align: center;">N°</th>
+                  <th style="text-align: center;">DOI/RUC</th>
+                  <th style="text-align: center;">Nombres y Apellidos</th>
+                  <th style="text-align: center;">Cnta</th>
+                  <th style="text-align: center;">Avalados por Cliente al Vinculado con  MISMO DOMICILIO</th>
+                  <th style="text-align: center;">Cnta</th>
+                  <th style="text-align: center;">Avalados por Vinculado al Cliente  con MISMO DOMICILIO </th>
+                  <th style="text-align: center;">Cnta</th>
+                  <th style="text-align: center;">Misma dirección de negocio del vinculado</th>
+                  <th style="text-align: center;">Cnta</th>
+                  <th style="text-align: center;">Usuario Vinculado con mismo domicilio del Cliente</th>
                 </tr>
               </thead>
               <tbody>
               
               </tbody>
             </table>
+            </div>
           </div>
         </div>
       </div>
                               <div style="text-align: right;">
-                                <button type="button" class="btn btn-info" onclick="exportar_pdf()" style="font-weight: bold;">
+                                <button type="button" class="btn btn-info" onclick="exportar_pdf()">
                                   <i class="fa-solid fa-file-pdf" style="color:#000 !important;font-weight: bold;"></i> REPORTE PDF</button>
                               </div>
 

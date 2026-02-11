@@ -1,7 +1,7 @@
 <div class="modal-header">
   <h5 class="modal-title">Consolidado de Cartera de Crédito Institucional</h5>
   
-  <button type="button" class="btn-close" onclick="ir_inicio()" style="font-size: 20px;"></button>
+  <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>
 <div class="modal-body">
   <div class="row">
@@ -9,7 +9,7 @@
         <div class="card">
           <div class="card-body p-2" id="form-credito-result">
              
-            <div class="modal-body">
+            <div class="modal-body pb-0">
               
                 <div class="row">
                     <div class="col-sm-12 col-md-9">
@@ -95,45 +95,45 @@
         </div>
       </div>
   </div>
-  <div class="row"> 
+  <div class="row mt-1"> 
       <div class="col-sm-7">
         <div class="card">
           <div class="card-body">
-
             <table class="table table-bordered"  style="margin-bottom: 10px;">
               <tbody>
                 <tr>
-                  <td style='text-align:center;background-color: #78d7ab !important;font-weight: bold;'>(Días de Mora > {{configuracion($tienda->id,'dias_tolerancia_garantia')['valor']}} días)</td>
+                  <th style='text-align:center;background-color: #78d7ab !important;font-weight: bold;'>(Días de Mora > {{configuracion($tienda->id,'dias_tolerancia_garantia')['valor']}} días)</th>
                 </tr>
               </tbody>
             </table>
-            <table class="table table-striped table-hover" id="table-lista-credito">
-              <thead class="table-dark"> 
+            <div style="height: calc(-314px + 100vh);">
+            <table class="table table-striped" id="table-lista-credito">
+              <thead class="table-dark" style="position: sticky;top: 0;"> 
                 <tr>
-                  <td>Asesor/ejecutivo</td>
-                  <td style='text-align:right;'>Cartera (S/.)</td>
-                  <td style='text-align:right;'>N° de Créditos</td>
-                  <td style='text-align:right;'>En Mora (S/.)</td>
-                  <td style='text-align:right;'>% de Mora</td>
-                  <td style='text-align:right;'>N° de Cred. En Mora</td>
+                  <th>Asesor/ejecutivo</th>
+                  <th style='text-align:right;'>Cartera (S/.)</th>
+                  <th style='text-align:right;'>N° de Créditos</th>
+                  <th style='text-align:right;'>En Mora (S/.)</th>
+                  <th style='text-align:right;'>% de Mora</th>
+                  <th style='text-align:right;'>N° de Cred. En Mora</th>
                 </tr>
               </thead>
               <tbody>
               </tbody>
             </table>
+            </div>
           </div>
         </div>
       </div>
       <div class="col-sm-3">
         <div class="card">
           <div class="card-body">
-
-            <table class="table table-striped table-hover" id="table-lista-credito1">
+            <table class="table table-striped table-bordered" id="table-lista-credito1">
               <thead class="table-dark"> 
                 <tr>
-                  <td>CLASIFICACIÓN</td>
-                  <td style='text-align:right;'>SALDO</td>
-                  <td style='text-align:right;'>N° DE CRÉDITOS</td>
+                  <th>CLASIFICACIÓN</th>
+                  <th style='text-align:center;'>SALDO</th>
+                  <th style='text-align:center;'>N° DE CRÉDITOS</th>
                 </tr>
               </thead>
               <tbody>
@@ -146,14 +146,14 @@
         <div class="card">
           <div class="card-body">
 
-            <table class="table table-striped table-hover" id="table-lista-credito2">
+            <table class="table table-striped table-bordered" id="table-lista-credito2">
               <thead class="table-dark"> 
                 <tr>
-                  <td colspan="2" style='text-align:center;'>INDICE DE MORA REGULAR</td>
+                  <th colspan="2" style='text-align:center;'>INDICE DE MORA REGULAR</th>
                 </tr>
                 <tr>
-                  <td style='text-align:center;'>% de Mora</td>
-                  <td style='text-align:center;'>Clasificación Consid.</td>
+                  <th style='text-align:center;'>% de Mora</th>
+                  <th style='text-align:center;'>Clasificación Consid.</th>
                 </tr>
               </thead>
               <tbody>
@@ -163,7 +163,7 @@
         </div>
       </div>
     </div>
-                              <div style="text-align: right;">
+                              <div style="text-align: right;margin-top:-30px">
                                 <button type="button" class="btn btn-info" onclick="exportar_pdf()" style="font-weight: bold;">
                                   <i class="fa-solid fa-file-pdf" style="color:#000 !important;font-weight: bold;"></i> REPORTE PDF</button>
                               </div>

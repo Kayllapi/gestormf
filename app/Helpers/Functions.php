@@ -1379,7 +1379,7 @@ function validacionArqueoCaja($idagencia,$fechacorte){
     //     ->where('cvmovimientointernodinero.idresponsable','<>',0)
     //     ->where($where)
     //     ->sum('cvmovimientointernodinero.monto');
-    
+
     $data = [
         'cvasignacioncapital_falta_recepcionar' => $cvasignacioncapital_falta_recepcionar,
         'aperturacaja_existe_dia' => $aperturacaja_existe_dia,

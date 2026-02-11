@@ -88,6 +88,11 @@
                     <b>Para realizar el arqueo de caja, debe recepcionar los fondos!!</b>
                   </div>
                 @endif --}}
+                @if (!$validacionDiaria['cierre_caja'])
+                  <div class="alert alert-danger">
+                    <b>Falta cerrar caja {{ $validacionDiaria['fechacorte'] }}!!</b>
+                  </div>
+                @endif
                 @if ($validacionArqueoCaja['cvasignacioncapital_falta_recepcionar'])
                   <div class="alert alert-danger">
                     <b>Para arqueo de caja, debe recepcionar los fondos!!</b>

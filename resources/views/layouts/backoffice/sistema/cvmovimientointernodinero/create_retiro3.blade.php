@@ -24,7 +24,8 @@
                 </div>
               </div>
               <div class="row">
-                <label class="col-sm-4 col-form-label" style="text-align: right;">Fecha Regularización:</label>
+                <label class="col-sm-4 col-form-label" style="text-align: right;">Fecha 
+                  <span style="background-color: #ffc107;">Regul.</span> Cierre:</label>
                 <div class="col-sm-8">
                   <input type="date" class="form-control" id="fecharegularizacion">
                 </div>

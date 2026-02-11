@@ -1,7 +1,7 @@
 <div class="modal-header">
   <h5 class="modal-title">Asiganción de Cartera</h5>
   
-  <button type="button" class="btn-close" onclick="ir_inicio()" style="font-size: 20px;"></button>
+  <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>
 <div class="modal-body">
   <form action="javascript:;" 
@@ -43,7 +43,7 @@
         <div class="card">
           <div class="card-body p-2">
              <div id="cont-filtro"></div>
-            <div class="modal-body">
+            <div class="modal-body" style="display: inline-block;width: 100%;">
                 <div style="width:47%;float: left;">
                     <span class="badge d-block" style="margin-bottom: 5px;">Origen</span>
                         <div class="row">
@@ -73,6 +73,7 @@
                         'tabla' => '#tabla-origendes',
                         'route' => url('backoffice/'.$tienda->id.'/asignaciondecartera/showcliente_origen'),
                         'check_id' => 'check_origen',
+                        'scrollY' => 'calc(-323px + 100vh)',
                         'thead' => [
                             ['data' => '' ],
                             ['data' => '' ],
@@ -97,11 +98,9 @@
                     ])
                 <input type="hidden" id="check_origen">
                 </div>
-                <div class="row  text-center align-items-center" style="width:6%;float: left;height: 400px;">
-                    <div class="col-md-12">
-                      <button type="submit" class="btn  big-btn  color-bg flat-btn" style="background-color: #144081;
-    color: #fff;width: 50px;"><i class="fa fa-angle-right"></i></button>
-                    </div>
+                <div class="text-center align-items-center" style="width:6%;float: left;height: calc(-194px + 100vh);">
+                      <button type="submit" class="btn btn-success" style="width: 50px;margin-top: calc(-500px + 100vh);;">
+                        <i class="fa fa-angle-right"></i></button>
                 </div>
                 <div style="width:47%;float: left;">
                     <span class="badge d-block" style="margin-bottom: 5px;">Destino</span>
@@ -120,6 +119,7 @@
                     @include('app.nuevosistema.tabla',[
                         'tabla' => '#tabla-destinodes',
                         'route' => url('backoffice/'.$tienda->id.'/asignaciondecartera/showcliente_destino'),
+                        'scrollY' => 'calc(-323px + 100vh)',
                         'thead' => [
                             ['data' => '' ],
                             ['data' => 'Nombre' ],

@@ -2455,7 +2455,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
         $where[] = ['cvmovimientointernodinero.idtienda',$idagencia];
     }
     if($fechacorte!=''){
-        // $where[] = ['cvmovimientointernodinero.fecharegistro','>=',$fechacorte.' 00:00:00'];
+        $where[] = ['cvmovimientointernodinero.fecharegistro','>=',$fechacorte.' 00:00:00'];
         $where[] = ['cvmovimientointernodinero.fecharegistro','<=',$fechacorte.' 23:59:59'];
     }
 

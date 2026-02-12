@@ -97,7 +97,8 @@ function sistema_select2(param){
             /*if(modulo=='facturacionboletafactura' || modulo=='ventacredito'){
                 ruta = raiz()+'public/backoffice/tienda/'+param['idtienda']+'/sistema_json/'+modulo+'_'+param['idtienda']+'.json?token='+Math.floor((Math.random() * 100) + 1);
             }else{*/
-                ruta = raiz()+'public/backoffice/tienda/'+param['idtienda']+'/sistema_json/'+modulo+'.json?token='+Math.floor((Math.random() * 100) + 1);
+                //ruta = raiz()+'public/backoffice/tienda/'+param['idtienda']+'/sistema_json/'+modulo+'.json?token='+Math.floor((Math.random() * 100) + 1);
+                ruta = raiz()+'backoffice/'+param['idtienda']+'/usuario/show_usuario';
             //}
         }else{
             ruta = raiz()+'public/nuevosistema/librerias/json/'+modulo+'.json?token='+Math.floor((Math.random() * 100) + 1);
@@ -111,7 +112,7 @@ function sistema_select2(param){
                 modulo=='usuarioacceso' || 
                 modulo=='ubigeo' || 
                 modulo=='facturacionboletafactura'){
-              
+                
                 if(param['search']=='false'){
                     $(param['input']).select2({
                         data: data.data,

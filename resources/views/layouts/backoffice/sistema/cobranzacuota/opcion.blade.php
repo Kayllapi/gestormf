@@ -13,10 +13,10 @@
     <div class="modal-body">
        <div class="col-sm-12 mt-2 text-center">
          
-            <button type="button" class="btn btn-danger" style="background-color: #144081;border-color: #144081;" 
+            <button type="button" class="btn btn-primary"
             onclick="verpdf('pdf_pago')"> VOUCHER DE PAGO</button>
             @if($idestadocredito==2 && $credito->idforma_credito==1 && $entregargarantia=='on')
-            <button type="button" class="btn btn-danger" style="background-color: #1e69d9;border-color: #144081;" 
+            <button type="button" class="btn btn-warning"
             onclick="verpdf('pdf_garantia',{{$credito->id}})"> V. ENTREGA DE GARANTIA</button>
             @endif
        <div class="col-sm-12 mt-2">

@@ -971,6 +971,47 @@ class UsuarioController extends Controller
                 'data'            => $tabla,
             ]);
         }
+        elseif($id=='show_usuario'){
+            $usuarios = DB::table('users')
+                ->join('tipopersona','tipopersona.id','=','users.idtipopersona')
+                ->leftJoin('ubigeo','ubigeo.id','=','users.idubigeo')
+                ->leftJoin('s_users_prestamo','s_users_prestamo.id_s_users','users.id')
+                ->where('users.idestado',1)
+                ->where('users.idtipousuario',2)
+                // ->where('users.idtienda',$idtienda)
+                ->select(
+                    'users.*',
+                    's_users_prestamo.db_idtipodocumento as tipodocumento_persona',
+                    'tipopersona.nombre as tipopersonanombre',
+                    'ubigeo.codigo as ubigeocodigo',
+                    'ubigeo.nombre as ubigeonombre',
+                )
+                ->orderBy('users.id','desc')
+                ->get();
+
+            $tabla = [];
+            foreach($usuarios as $value){
+
+                $tabla[] = [
+                    'id'              => $value->id,
+                    'text'            => ($value->identificacion!=0?$value->identificacion.' - ':'').$value->nombrecompleto,
+                    'codigo'          => $value->codigo,
+                    'idtipopersona'   => $value->idtipopersona,
+                    'tipodocumento'   => $value->tipodocumento_persona,
+                    'persona'         => $value->tipopersonanombre,
+                    'identificacion'  => $value->identificacion!=0?$value->identificacion:'',
+                    'cliente'         => $value->nombrecompleto,
+                    'telefono'        => $value->numerotelefono,
+                    'direccion'       => $value->direccion,
+                    'idubigeo'        => $value->idubigeo,
+                    'ubigeo'          => $value->ubigeocodigo!=''?$value->ubigeocodigo.' - '.$value->ubigeonombre:''
+                  ];
+            }
+                  
+            return response()->json([
+                'data' => $tabla
+            ]);
+        }
     }
 
     public function edit(Request $request, $idtienda, $id)

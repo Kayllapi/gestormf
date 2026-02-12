@@ -51,7 +51,10 @@
 
               <div class="input-group">
                         <div class="input-group-text">
-                          <input id="estadocargo" onclick="estado_cargo(this)" class="form-check-input mt-0" type="checkbox" checked>
+                          <label class="chk">
+                            <input type="checkbox" id="estadocargo" onclick="estado_cargo(this)" checked>
+                            <span class="checkmark"></span>
+                          </label>
                         </div>
                         <input type="text" value="{{  $monto_cargo }}" 
               class="form-control campo_moneda" id="cobrar_cargo" valida_input_vacio disabled>
@@ -140,9 +143,10 @@
           </div>
           </div>
           @if($select_numerocuota_fin==$credito->cuotas && $credito->idforma_credito==1)
-          <div class="form-check" style="color: red;font-size: 14px;font-weight: bold;">
-                  <input class="form-check-input" type="checkbox" name="entregargarantia" id="entregargarantia" checked> Entregar Garantia
-                </div>
+              <label class="chk" style="color: red;font-size: 14px;font-weight: bold;margin-top:3px;">
+                <input type="checkbox" name="entregargarantia" id="entregargarantia" checked>
+                <span class="checkmark"></span> Entregar Garantia
+              </label>
           @endif
           <div class="row mt-1">
             <div class="col" style="flex: 0 0 0%;">
@@ -160,6 +164,14 @@
     
 </form>   
 
+<style>
+
+
+input::selection {
+  background: #d9d8d8;
+  color: black;
+}
+</style>
 <script>
 
   valida_input_vacio();

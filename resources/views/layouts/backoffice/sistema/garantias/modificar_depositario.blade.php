@@ -12,12 +12,12 @@
           autorizar_edicion_depositario({{$val}});
       },this)">
     <div class="modal-header">
-        <h5 class="modal-title">Modificar Garantía</h5>
+        <h5 class="modal-title">Modificar Depositario</h5>
         <button type="button" class="btn-close" id="modal-close-garantias-modificar" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <div class="modal-body">
         <div class="alert alert-danger">
-          <i class="fa-solid fa-triangle-exclamation"></i> ¿Esta seguro de modificar la garantía?<br>
+          <i class="fa-solid fa-triangle-exclamation"></i> ¿Esta seguro de modificar el depositario?<br>
           <b>"{{$cliente->nombrecompleto}}"</b>
         </div>
                 <div class="mt-2 bg-primary subtitulo">Aprobación</div>

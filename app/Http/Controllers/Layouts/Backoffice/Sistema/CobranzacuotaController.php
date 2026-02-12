@@ -406,6 +406,7 @@ class CobranzacuotaController extends Controller
                     'detalle_cobranza'
                 );
                 
+            
                 //dd($cronograma['cuota_pendiente']);
           
                 $credito_cobranzacuota = DB::table('credito_cobranzacuota')
@@ -661,7 +662,7 @@ class CobranzacuotaController extends Controller
             // actualziar ultimo saldo
             $count_credito_cronograma = DB::table('credito_cronograma')
                 ->where('credito_cronograma.idcredito',$request->idcredito)
-                ->where('credito_cronograma.idestadocredito_cronograma',1)
+                ->whereIn('credito_cronograma.idestadocredito_cronograma',[1,3])
                 ->count();
                 
             $idestadocredito = 1;
@@ -911,30 +912,39 @@ class CobranzacuotaController extends Controller
             
                $tasa_tip = $credito->modalidad_calculo == 'Interes Compuesto' ? '' : $credito->tasa_tip;
                  
-              $datosprestamos = '<table class="table table-bordered">
+              $datosprestamos = '<table class="table" style="width:100%;">
                       <tr>
-                        <td style="background-color: #efefef !important;width: 80px;">Préstamo S/.</td>
-                        <td style="width: 60px;"><b>'.$credito->monto_solicitado.'</b></td>
-                        <td style="background-color: #efefef !important;width: 50px;">Prest., Int., Serv. y Cargo S/.</td>
-                        <td style="width: 60px;"><b>'.$credito->total_pagar.'</b></td>
-                        <td style="background-color: #efefef !important;width: 50px;">Venc. Contrato</td>
-                        <td style="width: 80px;"><b>'.date_format(date_create($credito->fecha_ultimopago),'d-m-Y').'</b></td>
+                        <td style="background-color: #efefef !important;width: 90px;"><b>Préstamo S/.</b></td>
+                        <td style="width:2px;"><b>:</b></td>
+                        <td>'.$credito->monto_solicitado.'</td>
+                        <td style="background-color: #efefef !important;width: 180px;"><b>Prest., Int., Serv. y Cargo S/.</b></td>
+                        <td style="width:2px;"><b>:</b></td>
+                        <td>'.$credito->total_pagar.'</td>
+                        <td style="background-color: #efefef !important;width: 120px;"><b>Venc. Contrato</b></td>
+                        <td style="width:2px;"><b>:</b></td>
+                        <td ">'.date_format(date_create($credito->fecha_ultimopago),'d-m-Y').'</td>
                       </tr>
                       <tr>
-                        <td style="background-color: #efefef !important;">TEM (%)</td>
-                        <td><b>'.$credito->tasa_tem.'</b></td>
-                        <td style="background-color: #efefef !important;">TIP (%)</td>
-                        <td><b>'.$tasa_tip.'</b></td>
-                        <td style="background-color: #efefef!important;">F. PAGO</td>
-                        <td><b>'.$credito->forma_pago_credito_nombre.' ('.$credito->cuotas.' Cuotas)</b></td>
+                        <td style="background-color: #efefef !important;"><b>TEM (%)</b></td>
+                        <td><b>:</b></td>
+                        <td>'.$credito->tasa_tem.'</td>
+                        <td style="background-color: #efefef !important;"><b>TIP (%)</b></td>
+                        <td><b>:</b></td>
+                        <td>'.$tasa_tip.'</td>
+                        <td style="background-color: #efefef!important;"><b>F. PAGO</b></td>
+                        <td><b>:</b></td>
+                        <td>'.$credito->forma_pago_credito_nombre.' ('.$credito->cuotas.' Cuotas)</td>
                       </tr>
                       <tr>
-                        <td style="background-color: #efefef !important;">Producto</td>
-                        <td><b>'.$credito->nombreproductocredito.'</b></td>
-                        <td style="background-color: #efefef !important;">Modalidad de C.</td>
-                        <td><b>'.$credito->modalidad_credito_nombre.'</b></td>
-                        <td style="background-color: #efefef !important;">F. Desembolso</td>
-                        <td colspan="3"><b>'.date_format(date_create($credito->fecha_desembolso),'d-m-Y').'</b></td>
+                        <td style="background-color: #efefef !important;"><b>Producto</b></td>
+                        <td><b>:</b></td>
+                        <td>'.$credito->nombreproductocredito.'</td>
+                        <td style="background-color: #efefef !important;"><b>Modalidad de C</b></td>
+                        <td><b>:</b></td>
+                        <td>'.$credito->modalidad_credito_nombre.'</td>
+                        <td style="background-color: #efefef !important;"><b>F. Desembolso</b></td>
+                        <td><b>:</b></td>
+                        <td colspan="3">'.date_format(date_create($credito->fecha_desembolso),'d-m-Y').'</td>
                       </tr>
                     </table>';
               
@@ -1031,8 +1041,8 @@ class CobranzacuotaController extends Controller
               'detalle_cobranza'
           );
           
-          $html = '<table class="table table-bordered" id="table-detalle-cronograma">
-              <thead style="position: sticky;top: 0;">
+          $html = '<table class="table" id="table-detalle-cronograma">
+              <thead style="position: sticky;top: 0;z-index: 1;">
               <tr>
                 <th style="width:5px;"></th>
                 <th style="width:10px;">N° Cuo.</th>
@@ -1091,11 +1101,10 @@ class CobranzacuotaController extends Controller
                             data-id="'.$value['id'].'" 
                             data-numerocuota="'.$value['numerocuota'].'">
                             <td style="'.$value['style'].'">
-                                <div class="form-check">
-                                  <input style="font-size: 1rem;margin-left: -17px;height: 20px;width: 20px;" class="form-check-input" 
-                                  type="checkbox" name="seleccionar_cuota" id="numerocuotaselect" 
-                                  onclick="pagocuota('.$value['numerocuota'].')" '.$value['checked'].' '.$value['disabled'].' '.$disabled.'>
-                                </div>
+                                <label class="chk">
+                                  <input type="checkbox" name="seleccionar_cuota" id="numerocuotaselect"onclick="pagocuota('.$value['numerocuota'].')" '.$value['checked'].' '.$value['disabled'].' '.$disabled.'>
+                                  <span class="checkmark"></span>
+                                </label>
                             </td>
                             <td style="'.$value['style'].'width:10px;text-align:center;" '.$fechacobranza_fecharegistro.' id="cont-popover-cuota">'.$value['numerocuota'].
                             //'///'.$totaladelanto.'=='.$value['totalcuota'].'//'.$value['id'].
@@ -1159,11 +1168,7 @@ class CobranzacuotaController extends Controller
           $btn_congelarcredito = '<button type="button" class="btn btn-info" onclick="congelarcredito()" style="font-weight: bold;">
     <img src="'.url('public/backoffice/nuevosistema/congelador.png').'" style="width: 17px;"> CONGELAR CRÉDITO</button>';
           if($credito->idestado_congelarcredito==2){
-              $btn_congelarcredito = '<div style="    background-color: #ffa700;
-    font-weight: bold;
-    padding: 4px 10px;
-    border-radius: 5px;
-    float: right;">CRÉDITO CONGELADO ('.date_format(date_create($credito->fecha_congelarcredito),'d-m-Y').')</div>';
+              $btn_congelarcredito = '<div class="btn btn-info" style="float:right">CRÉDITO CONGELADO ('.date_format(date_create($credito->fecha_congelarcredito),'d-m-Y').')</div>';
           }
               
           $opciones_datosprestamos = '<button type="button" class="btn btn-warning" onclick="vistapreliminar()" style="background-color: #bcbcbc;
@@ -1307,7 +1312,7 @@ class CobranzacuotaController extends Controller
               }
               $cuenta = str_pad($value->cuenta, 8, "0", STR_PAD_LEFT);
               $html .= "<tr data-valor-columna='{$value->id}' onclick='show_data(this)'>
-                            <td style='text-align: right;width: 70px;'>S/ {$value->monto_solicitado}</td>
+                            <td style='text-align: right;width: 90px;'>S/ {$value->monto_solicitado}</td>
                             <td style='width: 20px;'>{$cp}</td>
                             <td>C{$cuenta}</td>
                         </tr>";
@@ -1676,7 +1681,7 @@ class CobranzacuotaController extends Controller
           
             $count_credito_cronograma = DB::table('credito_cronograma')
                 ->where('credito_cronograma.idcredito',$credito_cobranzacuota->idcredito)
-                ->where('credito_cronograma.idestadocredito_cronograma',1)
+                ->whereIn('credito_cronograma.idestadocredito_cronograma',[1,3])
                 ->count();
           
             $pdf = PDF::loadView(sistema_view().'/cobranzacuota/pdf_pago',[

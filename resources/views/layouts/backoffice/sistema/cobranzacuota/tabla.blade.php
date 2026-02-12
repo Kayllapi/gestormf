@@ -30,7 +30,7 @@
                   </div>
                 </div>
     </h5>
-    <button type="button" class="btn-close" onclick="ir_inicio()" style="font-size: 20px;"></button>
+    <button type="button" class="btn-close" onclick="ir_inicio()"></button>
     
 </div>
 <div class="modal-body">
@@ -65,13 +65,13 @@
                   </tbody>
                 </table>
                 <div class="mb-1 mt-1">
-                  <span class="badge d-block">RESUMEN DE PAGO Y SALDO</span>
+                  <span class="badge d-block">RESUMEN DE PAGOS Y SALDOS</span>
                 </div>
                 <input type="hidden" id="idcredito" value="0">
-               <b> N° DE CUENTA: <span id="numerodecuenta"></span></b><br>
-               <b> CLASIFICACIÓN: <span id="clasificacion"></span></b><br>
-               <b> ASESOR/EJECUTIVO: <span id="asesor" style="color: #1162da;"></span></b>
-                <table class="table table-bordered" id="table-prestamos">
+               <b> N° DE CUENTA: <span id="numerodecuenta" style="font-weight: normal;"></span></b><br>
+               <b> CLASIFICACIÓN: <span id="clasificacion" style="font-weight: normal;"></span></b><br>
+               <b> ASES./EJEC.: <span id="asesor" style="color: #002a8d;font-weight: normal;"></span></b>
+                <table class="table" id="table-prestamos">
                   <thead>
                       <tr>
                         <th style="text-align: center;background-color: #bcbcbc !important;color: #000 !important;">Estado de cuotas <span id="estadocuotas" style="background-color: #ffc107;"></span></th>
@@ -81,35 +81,34 @@
                   </thead>
                   <tbody>
                       <tr>
-                        <td style="width: 150px;background-color: #efefef !important;color: #65bf00 !important;font-weight: bold;">Cancelados</td>
-                        <td id="numero_cuota_cancelada" style="color: #65bf00 !important;text-align: right;font-weight:bold;">0</td>
-                        <td id="cuota_pagada" style="color: #65bf00 !important;text-align: right;font-weight:bold;">0.00</td>
+                        <td style="width: 150px;background-color: #efefef !important;color: #04c050 !important;font-weight: bold;">Cancelados</td>
+                        <td id="numero_cuota_cancelada" style="color: #04c050 !important;text-align: right;">0</td>
+                        <td id="cuota_pagada" style="color: #04c050 !important;text-align: right;">0.00</td>
                       </tr>
                       <tr>
                         <td style="background-color: #efefef !important;font-weight: bold;">Pendientes</td>
-                        <td id="numero_cuota_pendiente" style="text-align: right;font-weight:bold;">0</td>
-                        <td id="cuota_pendiente"  style="text-align: right;font-weight:bold;">0.00</td>
+                        <td id="numero_cuota_pendiente" style="text-align: right;">0</td>
+                        <td id="cuota_pendiente"  style="text-align: right;">0.00</td>
                       </tr>
                       <tr>
                         <td style="background-color: #efefef !important;color: #dc3545 !important;font-weight: bold;">Cumplido y Vencidos</td>
-                        <td id="numero_cuota_vencida" style="color: #dc3545 !important;text-align: right;font-weight:bold;">0</td>
-                        <td id="saldo_vencido" style="color: #dc3545 !important;text-align: right;font-weight:bold;">0.00</td>
+                        <td id="numero_cuota_vencida" style="color: #dc3545 !important;text-align: right;">0</td>
+                        <td id="saldo_vencido" style="color: #dc3545 !important;text-align: right;">0.00</td>
                       </tr>
                   </tbody>
                 </table>
                 <table class="table table-bordered mt-2" id="table-prestamos">
                   <tbody>
                       <tr>
-                        <td style="text-align: center;
-    background-color: #bcbcbc !important;color: #000 !important;
+                        <td style="background-color: #bcbcbc !important;color: #000 !important;
     font-weight: bold;" >Saldo capital de deuda (S/.)</td>
-                        <td id="saldo_capital" style="text-align: right;font-weight:bold;width: 50px;" colspan="2">0.00</td>
+                        <td id="saldo_capital" style="text-align: right;width: 50px;" colspan="2">0.00</td>
                       </tr>
                   </tbody>
                 </table>
                 
               </div>
-              <div style="width:19%;">
+              <div style="width:16%;">
                     <div style="background-color: #bcbcbc;font-weight: bold;" class="p-1">
 
                     <div class="mb-1">
@@ -131,18 +130,18 @@
                     <input type="text" class="form-control" style="background-color: #fff;" placeholder="0" id="tenencia_penalidad_mora" valida_input_vacio disabled/>
 
                     <div class="mb-1 mt-1">
-                      <span class="badge d-block">PAGO A CUENTA - <a href="javascript:;" onclick="ver_pagoacuenta()" style="color: #b45126;">Ver</a></span>
+                      <span class="badge d-block">PAGO A CUENTA - <a href="javascript:;" onclick="ver_pagoacuenta()" style="color: #ad222f;">Ver</a></span>
                     </div>
                     <input type="text" value="0.00" disabled style="background-color: #fff;" class="form-control" id="pagoacuenta_acuenta" valida_input_vacio>
 
                     <div class="mb-1 mt-1">
-                      <span class="badge d-block">CTA X COBRAR - <a href="javascript:;" onclick="ver_cuentasporcobrar()" style="color: #b45126;">Ver</a></span>
+                      <span class="badge d-block">CTA X COBRAR - <a href="javascript:;" onclick="ver_cuentasporcobrar()" style="color: #ad222f;">Ver</a></span>
                     </div>
 
                       <input type="text" class="form-control" style="background-color: #fff;" placeholder="0" id="detalle_porcobrar" valida_input_vacio disabled/>
 
                     <div class="mb-1 mt-1">
-                      <span class="badge d-block">DESC. - CUOTA <span id="detalle_descuento_numerocuota">(0)</span> - <a href="javascript:;" onclick="ver_descuentos()" style="color: #b45126;">Ver</a></span>
+                      <span class="badge d-block">DESC. - CUOTA <span id="detalle_descuento_numerocuota">(0)</span> - <a href="javascript:;" onclick="ver_descuentos()" style="color: #ad222f;">Ver</a></span>
                     </div>
                     <input type="text" class="form-control" style="background-color: #fff;" placeholder="0" id="totaldescuento" disabled valida_input_vacio>
 
@@ -177,12 +176,12 @@
                   
             
               </div>
-              <div style="width:57%;">
+              <div style="width:60%;">
                     <div class="mb-1">
                       <span class="badge d-block">DATOS DE PRÉSTAMO</span>
                     </div>
                     <div id="table-datosprestamos" class="modal-body"></div>
-                    <div id="table-datosprestamos_cronograma" class="modal-body" style="overflow-y: scroll;height: 260px;padding-top: 0px;padding-bottom: 0px;"></div>
+                    <div id="table-datosprestamos_cronograma" class="modal-body" style="overflow-y: scroll;height: calc(-323px + 100vh);padding-top: 0px;padding-bottom: 0px;"></div>
                     <div id="opciones_datosprestamos" class="modal-body"></div>
                     <!--a href="javascript:;" class="btn btn-primary" onclick="ver_opciones(35)">opcion</a-->
               </div>

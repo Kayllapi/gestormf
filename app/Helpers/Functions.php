@@ -3011,23 +3011,23 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
         ->where($where6)
         ->sum('cvcompra.valorcompra');
 
-    // dd($asignacioncapital_deposito_caja,
-    //     $asignacioncapital_retiro_caja,
-    //     $ret_reservacf_caja,
-    //     $ret_banco_caja,
-    //     $ret_caja_reservacf,
-    //     $ret_caja_banco,
-    //     $ingresoyegresocaja_ingreso_crediticio_saldofinal,
-    //     $ingresoyegresocaja_ingreso_ahorro,
-    //     $ingresoyegresocaja_ingreso_incrementocapital_saldofinal,
-    //     $ingresoyegresocaja_ingreso_ingresosextraordinarios_saldofinal,
-    //     $ingresoyegresocaja_egreso_crediticio_saldofinal,
-    //     $ingresoyegresocaja_egreso_ahorro,
-    //     $ingresoyegresocaja_egreso_reduccioncapital_saldocapital,
-    //     $ingresoyegresocaja_egreso_gastosadministrativosyoperativos_saldocapital,
-    //     $ingresoyegresocaja_egreso_cvcompra_saldocapital,
-    //     $ingresoyegresocaja_ingreso_cvventa_saldocapital
-    //     );
+    dd($asignacioncapital_deposito_caja,
+        $asignacioncapital_retiro_caja,
+        $ret_reservacf_caja,
+        $ret_banco_caja,
+        $ret_caja_reservacf,
+        $ret_caja_banco,
+        $ingresoyegresocaja_ingreso_crediticio_saldofinal,
+        $ingresoyegresocaja_ingreso_ahorro,
+        $ingresoyegresocaja_ingreso_incrementocapital_saldofinal,
+        $ingresoyegresocaja_ingreso_ingresosextraordinarios_saldofinal,
+        $ingresoyegresocaja_egreso_crediticio_saldofinal,
+        $ingresoyegresocaja_egreso_ahorro,
+        $ingresoyegresocaja_egreso_reduccioncapital_saldocapital,
+        $ingresoyegresocaja_egreso_gastosadministrativosyoperativos_saldocapital,
+        $ingresoyegresocaja_egreso_cvcompra_saldocapital,
+        $ingresoyegresocaja_ingreso_cvventa_saldocapital
+        );
     $saldos_caja = $asignacioncapital_deposito_caja-
         $asignacioncapital_retiro_caja+
         $ret_reservacf_caja+

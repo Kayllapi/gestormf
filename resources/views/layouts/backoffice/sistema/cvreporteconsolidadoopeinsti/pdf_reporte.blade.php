@@ -162,7 +162,7 @@
               <td style="border-bottom: 1px solid #000;text-align:right;"><b>{{$co_anterior?$co_anterior->saldos_cuentabanco:'0.00'}}</b></td>
             </tr>
             @php
-              $saldosAnteriores = json_decode($co_anterior->saldos_cuentabanco_bancos, true);
+              $saldosAnterioresRaw = json_decode($co_anterior->saldos_cuentabanco_bancos, true);
               $saldosAnteriores = [];
               foreach($saldosAnterioresRaw as $item){
                   $key = $item['banco_nombre'].'-'.$item['banco_cuenta'];

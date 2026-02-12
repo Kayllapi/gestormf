@@ -1255,7 +1255,7 @@ function updatearqueocaja($id){
     DB::table('cvventa')->where('idcvarqueocaja_cierre',0)->update([
         'idcvarqueocaja_cierre' => $arqueocaja->id,
     ]);
-    DB::table('cvgastosadministrativooperativo')->where('idcvarqueocaja_cierre',0)->update([
+    DB::table('cvgastoadministrativooperativo')->where('idcvarqueocaja_cierre',0)->update([
         'idcvarqueocaja_cierre' => $arqueocaja->id,
     ]);
     DB::table('cvingresoextraordinario')->where('idcvarqueocaja_cierre',0)->update([

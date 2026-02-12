@@ -2673,17 +2673,25 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
     
     // CIERRE Y APERTURA DE CAJA
     
+    $where = [];
+    if($idagencia!=''){
+        $where1[] = ['cvmovimientointernodinero.idtienda',$idagencia];
+    }
+    if($fechacorte!=''){
+        $where1[] = ['cvmovimientointernodinero.fecharegistro','>=',$fechacorte.' 00:00:00'];
+        $where1[] = ['cvmovimientointernodinero.fecharegistro','<=',$fechacorte.' 23:59:59'];
+    }
     $ret_reservacf_caja_total = DB::table('cvmovimientointernodinero')
         ->where('cvmovimientointernodinero.idestadoeliminado',1)
         ->where('cvmovimientointernodinero.idfuenteretiro',6)
         ->where('cvmovimientointernodinero.idtipomovimientointerno',5)
-        ->where($where)
+        ->where($where1)
         ->sum('cvmovimientointernodinero.monto');
     $ret_caja_reservacf_total = DB::table('cvmovimientointernodinero')
         ->where('cvmovimientointernodinero.idestadoeliminado',1)
         ->where('cvmovimientointernodinero.idfuenteretiro',8)
         ->where('cvmovimientointernodinero.idtipomovimientointerno',5)
-        ->where($where)
+        ->where($where1)
         ->sum('cvmovimientointernodinero.monto');
     
     $dep_caja_reservacf_total = DB::table('cvmovimientointernodinero')
@@ -2691,14 +2699,14 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
         ->where('cvmovimientointernodinero.idfuenteretiro',1)
         ->where('cvmovimientointernodinero.idtipomovimientointerno',6)
         ->where('cvmovimientointernodinero.idresponsable','<>',0)
-        ->where($where)
+        ->where($where1)
         ->sum('cvmovimientointernodinero.monto');
     $dep_reservacf_caja_total = DB::table('cvmovimientointernodinero')
         ->where('cvmovimientointernodinero.idestadoeliminado',1)
         ->where('cvmovimientointernodinero.idfuenteretiro',3)
         ->where('cvmovimientointernodinero.idtipomovimientointerno',6)
         ->where('cvmovimientointernodinero.idresponsable','<>',0)
-        ->where($where)
+        ->where($where1)
         ->sum('cvmovimientointernodinero.monto');
 
 

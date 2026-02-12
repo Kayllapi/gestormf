@@ -1365,6 +1365,7 @@ class CvmovimientointernodineroController extends Controller
 
             $arqueo = DB::table('cvarqueocaja')
                 ->where('idcvmovimientointernodinero_cierre', 0)
+                ->orwhere('idcvmovimientointernodinero_cierre', $id)
                 ->orderByDesc('id')
                 ->first();
             

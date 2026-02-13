@@ -320,6 +320,30 @@ class CvmovimientointernodineroController extends Controller
             ];
             $this->validate($request,$rules,$messages);
 
+            // validar si hay una apertura de caja o cierre de caja en el mismo día
+            dd($request->fecharegularizacion);
+            $fecharegularizacion = now();
+            if ($request->fecharegularizacion!='') {
+                $fecharegularizacion = Carbon::parse($request->fecharegularizacion)->setTime(now()->hour, now()->minute, now()->second);
+            }
+
+            $apertura_existe = DB::table('cvmovimientointernodinero')
+                ->where('idtienda',user_permiso()->idtienda)
+                ->where('idfuenteretiro', 6)
+                ->where('idtipomovimientointerno', 5)
+                ->where('idestadoeliminado', 1)
+                ->whereBetween('fecharegistro', [
+                    $fecharegularizacion->copy()->startOfDay(),
+                    $fecharegularizacion->copy()->endOfDay()
+                ])
+                ->exists();
+            if ($request->idfuenteretiro_retiro3 == 8 && !$apertura_existe) {
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'No puede cerrar caja porque no hay apertura de caja.'
+                ]);
+            }
+
             if($request->idfuenteretiro_retiro3 == 8){
                 $datenow = now()->format('Y-m-d');
                 $tienda = DB::table('tienda')->whereId(user_permiso()->idtienda)->first();
@@ -408,7 +432,7 @@ class CvmovimientointernodineroController extends Controller
             $fecharegistro = now();
             $fecharegularizacion = null;
             if ($request->fecharegularizacion!='') {
-                $fecharegistro = Carbon::parse($request->fecharegularizacion);
+                $fecharegistro = Carbon::parse($request->fecharegularizacion)->setTime(now()->hour, now()->minute, now()->second);
                 $fecharegularizacion = now();
             }
 

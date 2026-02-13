@@ -399,24 +399,8 @@ class GarantiaremateagenciaController extends Controller
         }
         elseif($request->input('view') == 'ver_liquidacion_garantia'){
             $credito = DB::table('credito')->whereId($request->idcredito)->first();
-
-            // $credito_garantias = DB::table('credito_garantia')
-            //     ->join('credito','credito.id','credito_garantia.idcredito')
-            //     ->join('users as cliente','cliente.id','credito_garantia.idcliente')
-            //     ->where('credito_garantia.estado_listagarantia','<>',0)
-            //     ->where('credito.idestadocredito',1)
-            //     ->where('credito.estado','DESEMBOLSADO')
-            //     ->where($where)
-            //     ->select(
-            //     'credito_garantia.*',
-            //     'cliente.nombrecompleto as clientenombrecompleto',
-            //     'cliente.identificacion as dni'
-            //     )
-            //     ->orderBy('credito_garantia.fecharegistro_listaremate','asc')
-            //     ->get();
             $credito_garantias = DB::table('credito_garantia')
               ->join('users as cliente','cliente.id','credito_garantia.idcliente')
-              //->where('credito_garantia.estado_listagarantia','<>',0)
               ->where('credito_garantia.idcredito',$request->idcredito)
               ->select(
                 'credito_garantia.*',

@@ -14,7 +14,7 @@
             <div class="row">
                 <label for="valor_comercial" class="col-sm-3 col-form-label">Valor comercial</label>
                 <div class="col-sm-3">
-                    <input type="number" class="form-control" id="valor_comercial" value="{{ $credito_garantias->sum('valor_comercial') }}">
+                    <input type="number" class="form-control" id="valor_comercial" value="">
                 </div>
                 <label for="saldo" class="col-sm-3 col-form-label">SALDO: C+I S/.</label>
                 <div class="col-sm-3">
@@ -22,9 +22,9 @@
                 </div>
             </div>
             <div class="row">
-                <label for="valor_comercial" class="col-sm-3 col-form-label">Venta con descuento</label>
+                <label for="valor_realizacion" class="col-sm-3 col-form-label">Valor de cobertura</label>
                 <div class="col-sm-3">
-                    <input type="number" class="form-control" id="valor_comercial">
+                    <input type="number" class="form-control" id="valor_realizacion" value="">
                 </div>
                 <label for="saldo" class="col-sm-3 col-form-label">SALDO: C+I+Ic+M S/.</label>
                 <div class="col-sm-3">
@@ -40,7 +40,9 @@
                         padding: 0;
                         margin-top: 5px;
                         overflow-x: scroll;">
-                    <table class="table table-striped table-hover" style="table-layout: fixed; width: 100%;" id="table-lista-credito">
+                    <table class="table table-striped table-hover"
+                        style="table-layout: fixed; width: 100%;"
+                        id="table-liquidacion-garantias">
                         <thead class="table-dark" style="position: sticky;top: 0;">
                             <tr>
                                 <th width="70px;">CLIENTE</th>
@@ -57,7 +59,10 @@
                         </thead>
                         <tbody>
                             @foreach($credito_garantias as $value)
-                            <tr>
+                            <tr
+                                data-valor-comercial='{{ $value->valor_comercial }}'
+                                data-valor-realizacion='{{ $value->valor_realizacion }}'
+                                onclick='show_data_compra(this)'>
                                 <td>{{$value->clientenombrecompleto}}</td>
                                 <td>{{$value->dni}}</td>
                                 <td>{{$value->garantias_tipogarantia}}</td>
@@ -77,3 +82,11 @@
         </div>
     </div>
 </div>
+<script>
+    function show_data_compra(element) {
+        var valor_comercial = $(element).data('valor-comercial');
+        var valor_realizacion = $(element).data('valor-realizacion');
+        $('#valor_comercial').val(valor_comercial);
+        $('#valor_realizacion').val(valor_realizacion);
+    }
+</script>

@@ -8,13 +8,13 @@
             <div class="row">
                 <label for="cliente" class="col-sm-3 col-form-label">CLIENTE</label>
                 <div class="col-sm-9">
-                    <input type="text" class="form-control" id="cliente" value="{{$credito->clientenombrecompleto}}" disabled>
+                    <input type="text" class="form-control" id="cliente" value="{{ $credito->clientenombrecompleto }}" disabled>
                 </div>
             </div>
             <div class="row">
                 <label for="valor_comercial" class="col-sm-3 col-form-label">Valor comercial</label>
                 <div class="col-sm-3">
-                    <input type="number" class="form-control" id="valor_comercial">
+                    <input type="number" class="form-control" id="valor_comercial" value="{{ $credito_garantias->sum('valor_comercial') }}">
                 </div>
                 <label for="saldo" class="col-sm-3 col-form-label">SALDO: C+I S/.</label>
                 <div class="col-sm-3">

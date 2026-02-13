@@ -217,6 +217,25 @@
     $(`#tabla-destinodes`).on("click", "tr", function(e) {
         $('#tabla-origendes > tbody > tr').removeClass('selected');
     });
+
+  $('#tabla-origendes').on('change', 'input[type="checkbox"]', function () {
+      if ($(this).is(':checked')) {
+          // Desmarcar todos los checks de la tabla DESTINO
+          $('#tabla-destinodes input[type="checkbox"]').prop('checked', false);
+          // Opcional: limpiar valores hidden si usas
+          $('#check_destino').val('');
+      }
+  });
+
+  // Cuando hacen check en la tabla DESTINO
+  $('#tabla-destinodes').on('change', 'input[type="checkbox"]', function () {
+      if ($(this).is(':checked')) {
+          // Desmarcar todos los checks de la tabla ORIGEN
+          $('#tabla-origendes input[type="checkbox"]').prop('checked', false);
+          // Opcional: limpiar valores hidden si usas
+          $('#check_origen').val('');
+      }
+  });
   
   function ver_garantia(){
       let idcredito = $('#tabla-origendes > tbody > tr.selected').attr('data-valor-columna');    

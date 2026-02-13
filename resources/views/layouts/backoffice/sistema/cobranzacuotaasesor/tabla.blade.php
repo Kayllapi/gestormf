@@ -1,15 +1,20 @@
 <div class="modal-header">
     <h5 class="modal-title">
       Pago de Préstamos Asesor/Cobranza
-                <button type="button" class="btn btn-success mb-1" id="idbuscarcliente" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="buscarcliente()">
-                  <i class="fa fa-search"></i> Buscar Cliente
-                </button>
+      <button type="button" class="btn btn-success mb-1" id="idbuscarcliente" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="buscarcliente()">
+        <i class="fa fa-search"></i> Buscar Cliente
+      </button>
+      <div style="display:none;float: right;margin-left: 5px;" id="cont_irainicio">
+      <button type="button" class="btn btn-primary" onclick="lista_credito_cliente()">
+        <i class="fa fa-refresh"></i> Actualizar
+      </button>
+      </div>
                 <!-- Modal -->
                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                   <div class="modal-dialog">
                     <div class="modal-content">
                       <div class="modal-header">
-                        <h1 class="modal-title fs-5 text-white" id="exampleModalLabel">Buscar Cliente</h1>
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Buscar Cliente</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
                       <div class="modal-body">
@@ -25,7 +30,7 @@
                   </div>
                 </div>
     </h5>
-    <button type="button" class="btn-close" onclick="ir_inicio()" style="font-size: 20px;"></button>
+    <button type="button" class="btn-close" onclick="ir_inicio()"></button>
     
 </div>
 <div class="modal-body">
@@ -34,13 +39,13 @@
         <div class="card">
           <div class="card-body p-2 modal-body">
             <div class="row">
-              <div class="col-sm-3">
+              <div style="width:24%;">
                 <div class="mb-1">
                   <span class="badge d-block">PRÉSTAMOS</span>
                 </div>
                 <div class="row d-none data-cliente">
                   <div class="col-sm-12">
-                    <label>DNI/CE - Apellidos y Nombres: </label>
+                    <label>RUC/DNI/CE - Apellidos y Nombres: </label>
                     <input type="text" disabled value="" class="form-control mb-1" id="data-cliente-nombre" style="background-color: white;">
                     <input type="hidden" value="" class="form-control" id="data-cliente-id">
                   </div>
@@ -55,25 +60,18 @@
                   </thead>
                   <tbody>
                     <tr>
-                      <td colspan="2">SIN RESULTADOS</td>
+                      <td colspan="3">SIN RESULTADOS</td>
                     </tr>
                   </tbody>
                 </table>
-                <!--select class="form-control" id="idcliente">
-                    <option></option>
-                    @foreach($creditos as $value)
-                      <option value="{{ $value->id }}">
-                        {{ $value->identificacion }} - {{ $value->nombrecliente }} - S/. {{ $value->monto_solicitado }} - C{{ str_pad($value->cuenta, 8, "0", STR_PAD_LEFT) }}
-                    @endforeach
-                </select-->
                 <div class="mb-1 mt-1">
-                  <span class="badge d-block">RESUMEN DE PAGO Y SALDO DE PRÉSTAMO</span>
+                  <span class="badge d-block">RESUMEN DE PAGOS Y SALDOS</span>
                 </div>
                 <input type="hidden" id="idcredito" value="0">
-               <b> N° DE CUENTA: <span id="numerodecuenta"></span></b><br>
-               <b> CLASIFICACIÓN: <span id="clasificacion"></span></b><br>
-               <b> ASESOR/EJECUTIVO: <span id="asesor" style="color: #1162da;"></span></b>
-                <table class="table table-bordered" id="table-prestamos">
+               <b> N° DE CUENTA: <span id="numerodecuenta" style="font-weight: normal;"></span></b><br>
+               <b> CLASIFICACIÓN: <span id="clasificacion" style="font-weight: normal;"></span></b><br>
+               <b> ASES./EJEC.: <span id="asesor" style="color: #002a8d;font-weight: normal;"></span></b>
+                <table class="table" id="table-prestamos">
                   <thead>
                       <tr>
                         <th style="text-align: center;background-color: #bcbcbc !important;color: #000 !important;">Estado de cuotas <span id="estadocuotas" style="background-color: #ffc107;"></span></th>
@@ -83,35 +81,34 @@
                   </thead>
                   <tbody>
                       <tr>
-                        <td style="width: 150px;background-color: #efefef !important;color: #65bf00 !important;font-weight: bold;">Cancelados</td>
-                        <td id="numero_cuota_cancelada" style="color: #65bf00 !important;text-align: right;font-weight:bold;">0</td>
-                        <td id="cuota_pagada" style="color: #65bf00 !important;text-align: right;font-weight:bold;">0.00</td>
+                        <td style="width: 150px;background-color: #efefef !important;color: #04c050 !important;font-weight: bold;">Cancelados</td>
+                        <td id="numero_cuota_cancelada" style="color: #04c050 !important;text-align: right;">0</td>
+                        <td id="cuota_pagada" style="color: #04c050 !important;text-align: right;">0.00</td>
                       </tr>
                       <tr>
                         <td style="background-color: #efefef !important;font-weight: bold;">Pendientes</td>
-                        <td id="numero_cuota_pendiente" style="text-align: right;font-weight:bold;">0</td>
-                        <td id="cuota_pendiente"  style="text-align: right;font-weight:bold;">0.00</td>
+                        <td id="numero_cuota_pendiente" style="text-align: right;">0</td>
+                        <td id="cuota_pendiente"  style="text-align: right;">0.00</td>
                       </tr>
                       <tr>
                         <td style="background-color: #efefef !important;color: #dc3545 !important;font-weight: bold;">Cumplido y Vencidos</td>
-                        <td id="numero_cuota_vencida" style="color: #dc3545 !important;text-align: right;font-weight:bold;">0</td>
-                        <td id="saldo_vencido" style="color: #dc3545 !important;text-align: right;font-weight:bold;">0.00</td>
+                        <td id="numero_cuota_vencida" style="color: #dc3545 !important;text-align: right;">0</td>
+                        <td id="saldo_vencido" style="color: #dc3545 !important;text-align: right;">0.00</td>
                       </tr>
                   </tbody>
                 </table>
                 <table class="table table-bordered mt-2" id="table-prestamos">
                   <tbody>
                       <tr>
-                        <td style="text-align: center;
-    background-color: #bcbcbc !important;color: #000 !important;
+                        <td style="background-color: #bcbcbc !important;color: #000 !important;
     font-weight: bold;" >Saldo capital de deuda (S/.)</td>
-                        <td id="saldo_capital" style="text-align: right;font-weight:bold;width: 50px;" colspan="2">0.00</td>
+                        <td id="saldo_capital" style="text-align: right;width: 50px;" colspan="2">0.00</td>
                       </tr>
                   </tbody>
                 </table>
                 
               </div>
-                  <div class="col-sm-2">
+              <div style="width:16%;">
                     <div style="background-color: #bcbcbc;font-weight: bold;" class="p-1">
 
                     <div class="mb-1">
@@ -133,18 +130,18 @@
                     <input type="text" class="form-control" style="background-color: #fff;" placeholder="0" id="tenencia_penalidad_mora" valida_input_vacio disabled/>
 
                     <div class="mb-1 mt-1">
-                      <span class="badge d-block">PAGO A CUENTA - <a href="javascript:;" onclick="ver_pagoacuenta()" style="color: #ffc107;">Ver</a></span>
+                      <span class="badge d-block">PAGO A CUENTA - <a href="javascript:;" onclick="ver_pagoacuenta()" style="color: #ad222f;">Ver</a></span>
                     </div>
                     <input type="text" value="0.00" disabled style="background-color: #fff;" class="form-control" id="pagoacuenta_acuenta" valida_input_vacio>
 
                     <div class="mb-1 mt-1">
-                      <span class="badge d-block">CTA X COBRAR - <a href="javascript:;" onclick="ver_cuentasporcobrar()" style="color: #ffc107;">Ver</a></span>
+                      <span class="badge d-block">CTA X COBRAR - <a href="javascript:;" onclick="ver_cuentasporcobrar()" style="color: #ad222f;">Ver</a></span>
                     </div>
 
                       <input type="text" class="form-control" style="background-color: #fff;" placeholder="0" id="detalle_porcobrar" valida_input_vacio disabled/>
 
                     <div class="mb-1 mt-1">
-                      <span class="badge d-block">DESC. - CUOTA <span id="detalle_descuento_numerocuota">(0)</span> - <a href="javascript:;" onclick="ver_descuentos()" style="color: #ffc107;">Ver</a></span>
+                      <span class="badge d-block">DESC. - CUOTA <span id="detalle_descuento_numerocuota">(0)</span> - <a href="javascript:;" onclick="ver_descuentos()" style="color: #ad222f;">Ver</a></span>
                     </div>
                     <input type="text" class="form-control" style="background-color: #fff;" placeholder="0" id="totaldescuento" disabled valida_input_vacio>
 
@@ -152,31 +149,41 @@
                       <span class="badge d-block">TOTAL A PAGAR</span>
                     </div>
                     <input type="text" class="form-control" style="background-color: #fff;" placeholder="0" id="totalapagar" disabled valida_input_vacio>
-
-                    <div class="form-check">
-                      <input class="form-check-input" type="radio" name="opcion_pago" id="pagocuota" onclick="pagocuota()" checked> Pago de Cuotas
-                    </div>
-
-                    <div class="form-check">
-                      <input class="form-check-input" type="radio" name="opcion_pago" id="pagoacuenta" onclick="pagoacuenta()"> Pago a Cuenta
-                    </div>
-                    <div class="form-check">
-                      <input class="form-check-input" type="radio" name="opcion_pago" id="pagototal" onclick="pagototal()"> Total
-                    </div>
+                      <div>
+                          <label class="radio-custom">
+                              <input type="radio" name="opcion_pago" id="pagocuota" onclick="pagocuota()">
+                              <span class="radio"></span> Pago de Cuotas
+                          </label>
+                      </div>
+                      <div>
+                          <label class="radio-custom">
+                              <input type="radio" name="opcion_pago" id="pagoacuenta" onclick="pagoacuenta()">
+                              <span class="radio"></span> Pago a Cuenta
+                          </label>
+                      </div>
+                      <div>
+                          <label class="radio-custom">
+                              <input type="radio" name="opcion_pago" id="pagototal" onclick="pagototal()">
+                              <span class="radio"></span> Total
+                          </label>
+                      </div>
                     <button type="submit" 
                             class="btn btn-primary w-100 mt-1" 
                             onclick="cobrar()">
                       <i class="fa-solid fa-check"></i> Cobrar
                     </button>
                     </div>
-                  </div>
-              <div class="col-sm-7">
-                <div class="mb-1">
-                  <span class="badge d-block">DATOS DE PRÉSTAMO</span>
-                </div>
-                <div id="table-datosprestamos" class="modal-body"></div>
-                <div id="table-datosprestamos_cronograma" class="modal-body" style="overflow-y: scroll;height: 260px;padding-top: 0px;padding-bottom: 0px;"></div>
-        
+                  
+            
+              </div>
+              <div style="width:60%;">
+                    <div class="mb-1">
+                      <span class="badge d-block">DATOS DE PRÉSTAMO</span>
+                    </div>
+                    <div id="table-datosprestamos" class="modal-body"></div>
+                    <div id="table-datosprestamos_cronograma" class="modal-body" style="overflow-y: scroll;height: calc(-323px + 100vh);padding-top: 0px;padding-bottom: 0px;"></div>
+                    <div id="opciones_datosprestamos" class="modal-body"></div>
+                    <!--a href="javascript:;" class="btn btn-primary" onclick="ver_opciones(35)">opcion</a-->
               </div>
             </div>
           </div>
@@ -216,15 +223,15 @@
   });
   
   $("#idclientesearch").on("change", function(e) {
-    lista_credito_cliente(e.currentTarget.value);
+    lista_credito_cliente();
   });
   
-  function lista_credito_cliente(id){
+  function lista_credito_cliente(){
     $.ajax({
       url:"{{url('backoffice/0/cobranzacuota/showlistacreditos')}}",
       type:'GET',
       data: {
-          idcliente : id
+          idcliente : $('#idclientesearch :selected').val()
       },
       success: function (res){
         
@@ -236,7 +243,64 @@
         //load_create_prestamo(res.cliente.id);
         $('#btn-create-cliente').removeClass('d-none');
         
+        // limpiar
+        $('#cont_irainicio').css('display','block');
+        
+        
+        $('#idcredito').val('0');
+        $('#table-datosprestamos').html('');
+        $('#numero_cuotas').html('0');
+        $('#detalle_descuento_numerocuota').html('(0)');
+
+        /*$('#detalle_descuento_capital').val(respuesta.descuento_capital);
+        $('#detalle_descuento_interes').val(respuesta.descuento_interes);
+        $('#detalle_descuento_comision').val(respuesta.descuento_comision);
+        $('#detalle_descuento_cargo').val(respuesta.descuento_cargo);
+        $('#detalle_descuento_tenencia').val(respuesta.descuento_tenencia);
+        $('#detalle_descuento_penalidad').val(respuesta.descuento_penalidad);
+        $('#detalle_descuento_moratoria').val(respuesta.descuento_moratoria);
+        $('#detalle_descuento_total').val(respuesta.descuento_total);*/
+        $('#totaldescuento').val('0.00');
+        
+        
+        $('#table-datosprestamos_cronograma').html('');
+        $('#opciones_datosprestamos').html('');
+
+        $('#estadocuotas').html('');
+        $('#numerodecuenta').html('');
         $('#clasificacion').html('');
+        $('#asesor').html('');
+        $('#numero_cuota_cancelada').html('0');
+        $('#numero_cuota_pendiente').html('0');
+        $('#numero_cuota_vencida').html('0');
+        $('#cuota_pagada').html('0.00');
+        $('#cuota_pendiente').html('0.00');
+        $('#saldo_vencido').html('0.00');
+        $('#saldo_capital').html('0.00');
+        $('#numero_credito').html('0.00');
+
+        $('#detalle_cantidad_cuotas').val('0');
+        $('#detalle_monto_apagar').val('0.00');
+        $('#pagoacuenta_acuenta').val('0.00');
+        $('#pagoacuenta_capital').val('0.00');
+        $('#pagoacuenta_interes').val('0.00');
+        $('#pagoacuenta_interescuotamora').val('0.00');
+
+        /*$('#detalle_capital').val(respuesta.descuento_capital);
+        $('#detalle_interes').val(respuesta.descuento_interes);
+        $('#detalle_comision').val(respuesta.descuento_comision);
+        $('#detalle_cargo').val(respuesta.descuento_cargo);
+        $('#detalle_tenencia').val(respuesta.descuento_tenencia);
+        $('#detalle_penalidad').val(respuesta.descuento_penalidad);
+        $('#detalle_moratoria').val(respuesta.descuento_moratoria);
+        $('#detalle_total').val(respuesta.descuento_total);*/
+
+        //$('#detalle_total_pagar').val(respuesta.penalidad_pagar);
+        
+        $('#tenencia_penalidad_mora').val('0.00');
+        $('#detalle_porcobrar').val('0.00');
+        $('#totalapagar').val('0.00');
+        
       }
     })
   }
@@ -278,13 +342,13 @@
         var pagototal = $('#pagototal:checked').val();
    
         var opcion_pago = '';
-        if(pagocuota=='on'){
+        if(pagocuota=='on' && numerocuota != undefined){
             opcion_pago = 'PAGO_CUOTA';
            
-            if(numerocuota == "" || numerocuota == undefined ){
+            /*if(numerocuota == "" || numerocuota == undefined ){
               alert('Debe de seleccionar mínimo una cuota!!!.');   
               return false;
-            }
+            }*/
         }
         else if(pagoacuenta=='on'){
            opcion_pago = 'PAGO_ACUENTA';
@@ -292,6 +356,8 @@
         }
         else if(pagototal=='on'){
            opcion_pago = 'PAGO_TOTAL';
+        }else{
+           numerocuota = 0;
         }
         modal({ route:'{{url('backoffice/'.$tienda->id.'/cobranzacuota')}}/'+idcredito+'/edit?view=cobrar'+
         '&opcion='+opcion_pago+
@@ -307,8 +373,11 @@
     $(e).addClass('selected');
     
     $('#pagocuota').prop("checked", true);
+    $('#pagoacuenta').prop("checked", false);
+    $('#pagototal').prop("checked", false);
     
     show_data_credito(id);
+    
   }
   
   function show_data_credito(idcredito) {
@@ -341,7 +410,6 @@
       
         cronograma(idcredito,0,'pagocuota');
   }
-  
     $("#numero_cuotas").on("select2:select", function(e) {
         cronograma($('#idcredito').val(),e.params.data.id);
     });
@@ -357,10 +425,9 @@
                 acuenta : acuenta,
             },
             success: function (respuesta){
+              
                 $('#table-datosprestamos_cronograma').html(respuesta.tabla_cronorgrama);
-                $('#opciones_datosprestamos').html(respuesta.opciones_datosprestamos);
-                
-                
+                $('#opciones_datosprestamos').html(respuesta.btn_congelarcredito);
                 
                 $('#estadocuotas').html(respuesta.estadocuotas);
                 $('#numerodecuenta').html(respuesta.numerodecuenta);
@@ -374,13 +441,9 @@
                 $('#saldo_vencido').html(respuesta.saldo_vencido);
                 $('#saldo_capital').html(respuesta.saldo_capital);
                 $('#numero_credito').html(respuesta.numero_credito);
-                //$('#numero_total').html(respuesta.numero_total);
-                //$('#saldo_total').html(respuesta.saldo_total);
-                
-                
               
                 $('#detalle_cantidad_cuotas').val(respuesta.cantidad_cuota);
-                $('#detalle_monto_apagar').val(respuesta.monto_apagar);
+                $('#detalle_monto_apagar').val(respuesta.monto_totalapagar);
                 $('#pagoacuenta_acuenta').val(respuesta.pagoacuenta_acuenta);
                 $('#pagoacuenta_capital').val(respuesta.pagoacuenta_capital);
                 $('#pagoacuenta_interes').val(respuesta.pagoacuenta_interes);
@@ -400,14 +463,21 @@
                 
                 $('#detalle_porcobrar').val(respuesta.descuento_porcobrar);
               
-                $('#totalapagar').val(respuesta.monto_totalapagar);
+                $('#totalapagar').val(respuesta.totalapagar);
                 
                 setTimeout(function () { 
-                    $('#table-datosprestamos_cronograma').scrollTop((respuesta.select_ultimacuotacancelada*32)-32); 
+                    $('#table-datosprestamos_cronograma').scrollTop((respuesta.select_ultimacuotacancelada*32)-32);
                 }, 500);
+              
+                $('td#cont-popover-cuota').popover({
+                  trigger: 'focus'
+                });
+                /*$('[data-bs-toggle="popover"]').popover({
+                  trigger: 'focus'
+                })*/
+                //const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+                //const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
                 
-                const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
-                const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
             }
         })
     }

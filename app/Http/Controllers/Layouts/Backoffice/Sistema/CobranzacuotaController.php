@@ -1212,6 +1212,7 @@ class CobranzacuotaController extends Controller
               'credito' => $credito,
               'tabla_cronorgrama' => $html,
               'opciones_datosprestamos' => $opciones_datosprestamos,
+              'btn_congelarcredito' => $btn_congelarcredito,
               'select_ultimacuotacancelada' => $cronograma['select_ultimacuotacancelada'],
               'proximo_vencimiento' => $cronograma['proximo_vencimiento'],
               

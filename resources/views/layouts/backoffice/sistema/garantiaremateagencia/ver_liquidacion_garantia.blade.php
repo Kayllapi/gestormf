@@ -6,6 +6,12 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="row">
+                <label for="cliente" class="col-sm-3 col-form-label">N° DE CUENTA</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" id="cliente" value="C{{ $credito->cuenta }}" disabled>
+                </div>
+            </div>
+            <div class="row">
                 <label for="cliente" class="col-sm-3 col-form-label">CLIENTE</label>
                 <div class="col-sm-9">
                     <input type="text" class="form-control" id="cliente" value="{{ $credito->clientenombrecompleto }}" disabled>

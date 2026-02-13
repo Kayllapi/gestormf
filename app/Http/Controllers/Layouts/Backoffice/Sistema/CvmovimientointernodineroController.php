@@ -1381,15 +1381,22 @@ class CvmovimientointernodineroController extends Controller
                 ]);
             }
 
-            DB::table('cvmovimientointernodinero')->whereId($id)->update([
-                'idresponsable' => $request->idresponsable,
-                'idresponsable_permiso' => $request->idresponsable_permiso,
-            ]);
-
+            // congelando resultado
             $arqueo = DB::table('cvarqueocaja')
                 ->where('idcvmovimientointernodinero_cierre', 0)
                 ->orderByDesc('id')
                 ->first();
+            $resultado_congelado = 0;
+            if ($arqueo) {
+                $tienda = DB::table('tienda')->whereId($arqueo->idagencia)->first();
+                $co = cvconsolidadooperaciones($tienda,$arqueo->idagencia,$arqueo->corte);
+                $resultado_congelado = $co['resultado'];
+            }
+
+            DB::table('cvmovimientointernodinero')->whereId($id)->update([
+                'idresponsable' => $request->idresponsable,
+                'idresponsable_permiso' => $request->idresponsable_permiso,
+            ]);
 
             // DB::table('cvmovimientointernodinero')->whereId($id)->update([
             //     'idcvarqueocaja_cierre' => $arqueo->id,
@@ -1490,7 +1497,7 @@ class CvmovimientointernodineroController extends Controller
                         'validacion_operaciones_cuenta_banco' => $co['validacion_operaciones_cuenta_banco'],
                         'efectivo_caja_corte' => $co['efectivo_caja_corte'],
                         'efectivo_caja_arqueo' => $co['efectivo_caja_arqueo'],
-                        'resultado' => $co['resultado'],
+                        'resultado' => $resultado_congelado,
 
                         'idcvmovimientointernodinero_cierre' => $id,
                     ]);

@@ -106,8 +106,7 @@
                   </div>
                 </div>
                 <div class="row">
-                  <label class="col-sm-2"></label>
-                  <label class="col-sm-10" style="color: #b32121;">Costo por custodia de garantia para cargo: ({{ configuracion($tienda->id,'comision_gestion_garantia_cargo')['valor'] }}% Mensual)</label>
+                  <label class="col-sm-12 text-end" style="color: #b32121;">Costo por custodia de garantia para cargo: ({{ configuracion($tienda->id,'comision_gestion_garantia_cargo')['valor'] }}% Mensual)</label>
                 </div>
                 @else
                 <div class="row">
@@ -135,7 +134,7 @@
               </div>
           </div>
           <div class="col-md-5">
-          <h6 class="text-center"><b>LISTA DE GARANTIAS</b></h6>
+          <div class="text-center" style="font-size: 12px !important;"><b>LISTA DE GARANTIAS</b></div>
           <div class="table-responsive">
             <table class="table table-striped" id="table-garantia-cliente">
               <thead>
@@ -173,7 +172,7 @@
         </div>
       </div>
       
-      <div class="row mt-3 bg-success">
+      <div class="row mt-1 bg-success">
         <div class="col-sm-12 col-md-3">
           <div class="row">
             <input type="hidden" id="monto_cobertura_garantia" value="{{ $credito->monto_cobertura_garantia }}">
@@ -181,12 +180,6 @@
             <label class="col-sm-12 col-form-label" ><b>COBERTURA GARANTIA:</b> <span style="font-weight: normal;">{{ $credito->monto_cobertura_garantia }} SOLES</span></label>
             @endif
           </div>
-        </div>
-        <div class="col-sm-12 col-md-3 d-none">
-          <div class="row">
-            <label class="col-sm-12 col-form-label text-center"><b>CRONOGRAMA DE PAGOS</b></label>
-          </div>
-          
         </div>
         <div class="col-sm-12 col-md-9">
           <div class="row">
@@ -219,6 +212,11 @@
           let fechainicio = $('#fecha_desembolso').val();
           let frecuencia  = $('#idforma_pago_credito :selected').val();
           let dia_gracia  = $('#dia_gracia').val();
+
+          if(dia_gracia==''){
+              $('#dia_gracia').val(0);
+              dia_gracia = 0;
+          }
           
           let cargo       = $('#cargo').val();
           
@@ -301,31 +299,31 @@
         }
 
       </script>
-      <div class="row mt-3 justify-content-center">
+      <div class="row mt-1 justify-content-center">
         <div class="col-sm-12 col-md-10">
-          <table class="table table-striped" id="table-cronograma">
-            <thead>
-              <th>Cuota N°</th>
-              <th>Fecha de Pago</th>
-              <th>Capital</th>
-              <th>Amortización</th>
-              <th>Interés</th>
-              <th>C. Ss./Otros (%)</th>
-              <th>Cargo</th>
-              <th>Cuota</th>
-            </thead>
-            <tbody>
-              
-              <tr>
-                <td colspan="8">
-                  <div style="width:100px;height:100px;"></div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+            <div style="overflow-y: scroll;height: calc(-379px + 100vh);">
+              <table class="table table-striped" id="table-cronograma">
+                <thead style="position: sticky;top: 0;z-index: 1;">
+                  <th class="text-center">Cuota N°</th>
+                  <th>Fecha de Pago</th>
+                  <th class="text-end">Capital</th>
+                  <th class="text-end">Amortización</th>
+                  <th class="text-end">Interés</th>
+                  <th class="text-end">C. Ss./Otros (%)</th>
+                  <th class="text-end">Cargo</th>
+                  <th class="text-end">Cuota</th>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td colspan="8">
+                      <div style="width:100px;height:100px;"></div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           @if($view_detalle!='false')
-          <br>
-          <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> GUARDAR CRONOGRAMA</button>
+          <button type="submit" class="btn btn-primary mt-1"><i class="fa-solid fa-floppy-disk"></i> GUARDAR CRONOGRAMA</button>
           @endif
         </div>
       </div>

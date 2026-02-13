@@ -114,7 +114,7 @@
                             ['data' => 'monto_solicitado','type'=>'money'],
                             ['data' => 'frecuencianombre','type'=>'text'],
                             ['data' => 'cuota_vencida','type'=>'money'],
-                            ['data' => 'ultimo_atraso','type'=>'text'],
+                            ['data' => 'ultimo_atraso','type'=>'money'],
                             ['data' => 'cp','type'=>'text'],
                             ['data' => 'cuotas','type'=>'text'],
                             ['data' => 'telefonocliente','type'=>'text'],

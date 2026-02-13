@@ -1367,7 +1367,12 @@ class CvmovimientointernodineroController extends Controller
                 ->where('idcvmovimientointernodinero_cierre', 0)
                 ->orderByDesc('id')
                 ->first();
-            
+
+            // DB::table('cvmovimientointernodinero')->whereId($id)->update([
+            //     'idcvarqueocaja_cierre' => $arqueo->id,
+            // ]);
+            updatearqueocaja($arqueo->id);
+
             if ($arqueo) {
                 $tienda = DB::table('tienda')->whereId($arqueo->idagencia)->first();
                 $ret_reservacf_caja_total = DB::table('cvmovimientointernodinero')
@@ -1460,21 +1465,15 @@ class CvmovimientointernodineroController extends Controller
                         'incremental_capital_asignado' => $co['incremental_capital_asignado'],
                         'indicador_reserva_legal' => $co['indicador_reserva_legal'],
                         'validacion_operaciones_cuenta_banco' => $co['validacion_operaciones_cuenta_banco'],
-                        // 'efectivo_caja_corte' => $co['efectivo_caja_corte'],
-                        // 'efectivo_caja_arqueo' => $co['efectivo_caja_arqueo'],
-                        // 'resultado' => $co['resultado'],
+                        'efectivo_caja_corte' => $co['efectivo_caja_corte'],
+                        'efectivo_caja_arqueo' => $co['efectivo_caja_arqueo'],
+                        'resultado' => $co['resultado'],
 
                         'idcvmovimientointernodinero_cierre' => $id,
                     ]);
-
-                    // DB::table('cvmovimientointernodinero')->whereId($id)->update([
-                    //     'idcvarqueocaja_cierre' => $arqueo->id,
-                    // ]);
-                    updatearqueocaja($arqueo->id);
                 }
             }
 
-          
             return response()->json([
               'resultado' => 'CORRECTO',
               'mensaje'   => 'Se ha validado correctamente.'

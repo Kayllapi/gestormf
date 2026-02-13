@@ -23,11 +23,11 @@
     </div>
     <div class="modal-body">
         <div class="alert alert-danger">
-          <i class="fa-solid fa-triangle-exclamation"></i> ¿Esta seguro de agregar garantias?<br>
+          <i class="fa-solid fa-triangle-exclamation"></i> ¿Esta seguro de agregar a lista de garantias?<br>
         </div>
                 <div class="mt-2 bg-primary subtitulo">Aprobación</div>
               <div class="mb-1">
-                  <label>Responsable (Administración) *</label>
+                  <label>Responsable *</label>
                   <select class="form-select" id="idresponsable">
                       <option value=""></option>
                       @foreach($usuarios as $value)

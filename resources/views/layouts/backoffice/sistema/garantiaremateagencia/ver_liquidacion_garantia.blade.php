@@ -18,7 +18,7 @@
                 </div>
                 <label for="saldo" class="col-sm-3 col-form-label">SALDO: C+I S/.</label>
                 <div class="col-sm-3">
-                    <input type="number" class="form-control" id="saldo">
+                    <input type="number" class="form-control" id="saldo" value="">
                 </div>
             </div>
             <div class="row">

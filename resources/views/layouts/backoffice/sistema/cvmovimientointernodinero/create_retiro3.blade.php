@@ -27,7 +27,11 @@
                 <label class="col-sm-4 col-form-label" style="text-align: right;">Fecha 
                   <span style="background-color: #ffc107;">Regul.</span> Cierre:</label>
                 <div class="col-sm-8">
-                  <input type="date" class="form-control" id="fecharegularizacion">
+                  <input type="date" class="form-control" id="fecharegularizacion" 
+                  @if(!$validacionDiaria['cierre_caja'])
+                  @elseif (!$apertura_caja)
+                      disabled
+                  @endif>
                 </div>
               </div>
           </div>

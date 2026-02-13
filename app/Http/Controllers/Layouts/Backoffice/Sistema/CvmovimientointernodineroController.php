@@ -69,10 +69,15 @@ class CvmovimientointernodineroController extends Controller
                 ->where('idtipo',2)
                 ->whereIn('id',[6,8])
                 ->get();
+
+            $apertura_caja = cvapertura($idtienda);
+            $validacionDiaria = validacionDiaria($idtienda);
             return view(sistema_view().'/cvmovimientointernodinero/create_retiro3',[
                 'tienda' => $tienda,
                 'bancos' => $bancos,
                 'fuenteretiros' => $fuenteretiros,
+                'apertura_caja' => $apertura_caja,
+                'validacionDiaria' => $validacionDiaria,
             ]);
         }
         elseif($request->view == 'registrar_deposito3') {

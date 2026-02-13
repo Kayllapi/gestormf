@@ -233,7 +233,7 @@ class GarantiaremateagenciaController extends Controller
                       'id' => $value->id,
                       'estado' => $value->estado,
                       'key' => ($key+1),
-                      'cuenta' => $value->cuenta,
+                      'cuenta' => 'C'.$value->cuenta,
                       'identificacioncliente' => $value->identificacioncliente,
                       'nombrecliente' => $value->nombrecliente,
                       'identificacionaval' => $value->identificacionaval,

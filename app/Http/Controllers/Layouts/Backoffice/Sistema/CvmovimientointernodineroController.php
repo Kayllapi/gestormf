@@ -321,7 +321,6 @@ class CvmovimientointernodineroController extends Controller
             $this->validate($request,$rules,$messages);
 
             // validar si hay una apertura de caja o cierre de caja en el mismo día
-            dd($request->fecharegularizacion);
             $fecharegularizacion = now();
             if ($request->fecharegularizacion!='') {
                 $fecharegularizacion = Carbon::parse($request->fecharegularizacion)->setTime(now()->hour, now()->minute, now()->second);

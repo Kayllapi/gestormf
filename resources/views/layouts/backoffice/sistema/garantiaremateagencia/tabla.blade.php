@@ -178,7 +178,7 @@
                         ],
                     ])
                 <input type="hidden" id="check_destino">
-                  <button type="button" class="btn btn-warning1 mt-1">
+                  <button type="button" class="btn btn-warning1 mt-1" onclick="liquidacion_garantia()">
                      LIQUIDACIÓN DE GARANTÍAS </button>
                   <button type="button" class="btn btn-info mt-1">
                      <i class="fa-solid fa-file-pdf"></i> REMATES </button>
@@ -258,6 +258,16 @@
   function actualizar_tabla_destino(){
         var root = '{{url('backoffice/'.$tienda->id.'/garantiaremateagencia/showcliente_destino')}}?idagencia='+$('#idagencia').val();
         $('#tabla-destinodes').DataTable().ajax.url(root).load();
+  }
+
+  function liquidacion_garantia() {
+      let idcredito = $('#tabla-destinodes > tbody > tr.selected').attr('data-valor-columna');   
+      if(idcredito == "" || idcredito == undefined ){
+        var mensaje = "Debe de seleccionar un crédito.";
+        modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });  
+        return false;
+      }
+      modal({ route:"{{url('backoffice/'.$tienda->id.'/garantiaremateagencia/0/edit?view=ver_liquidacion_garantia')}}&idcredito="+idcredito,  size: 'modal-xl' }); 
   }
 </script>  
 

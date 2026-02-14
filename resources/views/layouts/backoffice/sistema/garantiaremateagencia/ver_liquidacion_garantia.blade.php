@@ -22,7 +22,7 @@
                 <div class="col-sm-2">
                     <input type="number" class="form-control" id="valor_comercial" value="">
                 </div>
-                <label for="saldo" class="col-sm-2 col-form-label">SALDO: C+I S/.</label>
+                <label for="saldo" class="col-sm-3 col-form-label">Saldo de Deuda Programada (C+I): S/.</label>
                 <div class="col-sm-2">
                     <input type="number" class="form-control" id="saldo" value="">
                 </div>
@@ -32,7 +32,7 @@
                 <div class="col-sm-2">
                     <input type="number" class="form-control" id="valor_realizacion" value="">
                 </div>
-                <label for="saldo" class="col-sm-2 col-form-label">SALDO: C+I+Ic+M S/.</label>
+                <label for="saldo" class="col-sm-3 col-form-label">Saldo de Deuda Total (C+I+Ic+M): S/.</label>
                 <div class="col-sm-2">
                     <input type="number" class="form-control" id="saldo">
                 </div>

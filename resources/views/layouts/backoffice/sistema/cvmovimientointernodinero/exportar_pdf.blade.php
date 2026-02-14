@@ -259,7 +259,7 @@
             $html = '';
             foreach($movimientointernodinero_retiro3 as $key => $value){
                 $fecharegistro = date_format(date_create($value->fecharegistro),"d-m-Y H:i:s A");
-                $fecharegularizacion = date_format(date_create($value->fecharegularizacion),"d-m-Y H:i:s A");
+                $fecharegularizacion =  $value->fecharegularizacion!='' ? date_format(date_create($value->fecharegularizacion),"d-m-Y H:i:s A") : '---';
                 $html .= "<tr>
                               <td style='white-space: nowrap;'>{$value->codigoprefijo}{$value->codigo}</td>
                               <td style='white-space: nowrap;'>{$value->credito_fuenteretironombre}</td>
@@ -309,7 +309,7 @@
             $html = '';
             foreach($movimientointernodinero_deposito3 as $key => $value){
                 $fecharegistro = date_format(date_create($value->fecharegistro),"d-m-Y H:i:s A");
-                $fecharegularizacion = date_format(date_create($value->fecharegularizacion),"d-m-Y H:i:s A");
+                $fecharegularizacion =  $value->fecharegularizacion!='' ? date_format(date_create($value->fecharegularizacion),"d-m-Y H:i:s A") : '---';
                 $html .= "<tr>
                               <td style='white-space: nowrap;'>{$value->codigoprefijo}{$value->codigo}</td>
                               <td style='white-space: nowrap;'>{$value->credito_fuenteretironombre}</td>

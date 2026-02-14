@@ -268,6 +268,10 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
               width: 100%;
               height: calc(100vh - 54px);
           }
+          
+        .mx-subcarga{
+            padding: 0px calc(100% - 500px) !important;
+        }
         </style>
 </head>
 <body url="{{ url('/') }}">

@@ -1289,28 +1289,31 @@ function validacionDiaria($idagencia){
         ->orderByDesc('cvmovimientointernodinero.fecharegistro')
         ->first();
 
-    $arqueocaja = false;
-    $cierre_caja = false;
+    $arqueocaja = true;
+    $cierre_caja = true;
     $fechacorte = '';
 
     if ($aperturacaja_existe_ultima) {
         $fechacorte = date('Y-m-d', strtotime($aperturacaja_existe_ultima->fecharegistro));
-        $arqueocaja = DB::table('cvarqueocaja')
-            ->where('idagencia',$idagencia)
-            ->where('corte','>=',$fechacorte.' 00:00:00')
-            ->where('corte','<=',$fechacorte.' 23:59:59')
-            ->exists();
 
-        if ($arqueocaja) {
-            $cierre_caja = DB::table('cvmovimientointernodinero')
-                ->where('cvmovimientointernodinero.idestadoeliminado',1)
-                ->where('cvmovimientointernodinero.idfuenteretiro',3)
-                ->where('cvmovimientointernodinero.idtipomovimientointerno',6)
-                ->where('cvmovimientointernodinero.idresponsable','<>',0)
-                ->where('cvmovimientointernodinero.fecharegistro','>=',$fechacorte.' 00:00:00')
-                ->where('cvmovimientointernodinero.fecharegistro','<=',$fechacorte.' 23:59:59')
-                ->where('cvmovimientointernodinero.idtienda',$idagencia)
+        if ($fechacorte != $datenow) {
+            $arqueocaja = DB::table('cvarqueocaja')
+                ->where('idagencia',$idagencia)
+                ->where('corte',$fechacorte)
                 ->exists();
+            // dd($arqueocaja);
+
+            if ($arqueocaja) {
+                $cierre_caja = DB::table('cvmovimientointernodinero')
+                    ->where('cvmovimientointernodinero.idestadoeliminado',1)
+                    ->where('cvmovimientointernodinero.idfuenteretiro',3)
+                    ->where('cvmovimientointernodinero.idtipomovimientointerno',6)
+                    ->where('cvmovimientointernodinero.idresponsable','<>',0)
+                    ->where('cvmovimientointernodinero.fecharegistro','>=',$fechacorte.' 00:00:00')
+                    ->where('cvmovimientointernodinero.fecharegistro','<=',$fechacorte.' 23:59:59')
+                    ->where('cvmovimientointernodinero.idtienda',$idagencia)
+                    ->exists();
+            }
         }
     }
 

@@ -131,25 +131,45 @@
             <table style="width:100%;">
                 <thead class="table-dark">
                     <tr>
-                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">N°</td>
-                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Cod. Operación</td>
-                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Fecha Registro</td>
-                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Descripción</td>
-                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Serie/Motor/N° P.</td>
-                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" width="80px">Valor Compra</td>
-                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" width="80px">Valor Comercial</td>
-                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" width="80px">Precio Venta Descuento</td>
-                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" width="80px">Precio Venta Final</td>
-                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Estado</td>
-                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Placa de Vehículo</td>
-                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Origen</td>
-                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Comprador</td>
-                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Lugar de Pago</td>
-                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Banco</td>
-                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Responsable</td>
+                        <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" >CODIGO DE GARANTIA</th>
+                        <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" >CLIENTE</th>
+                        <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" >RUC/DNI/CE</th>
+                        <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" >TIPO DE GARANTIA</th>
+                        <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" >DESCRIPCIÓN</th>
+                        <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" >Serie/Motor/N°Partida</th>
+                        <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" >MODELO</th>
+                        <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" >OTROS</th>
+                        <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" >VALOR COMERCIAL</th>
+                        <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" >COBERTURA</th>
+                        <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" >ACCESORIOS</th>
+                        <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" >COLOR</th>
+                        <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" >AÑO DE FABRICACIÓN</th>
+                        <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" >AÑO DE COMPRA</th>
+                        <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" >PLACA DEL VEHÍCULO</th>
+                        <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" >DETALLE</th>
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach ($credito_garantias as $value)
+                        <tr>
+                                <td>{{$value->garantias_codigo}}</td>
+                                <td>{{$value->clientenombrecompleto}}</td>
+                                <td>{{$value->dni}}</td>
+                                <td>{{$value->garantias_tipogarantia}}</td>
+                                <td>{{$value->descripcion}}</td>
+                                <td>{{$value->garantias_serie_motor_partida}}</td>
+                                <td>{{$value->garantias_modelo_tipo}}</td>
+                                <td>{{$value->garantias_otros}}</td>
+                                <td>{{$value->valor_comercial}}</td>
+                                <td>{{$value->valor_realizacion}}</td>
+                                <td>{{$value->garantias_accesorio_doc}}</td>
+                                <td>{{$value->garantias_color}}</td>
+                                <td>{{$value->garantias_fabricacion}}</td>
+                                <td>{{$value->garantias_compra}}</td>
+                                <td>{{$value->garantias_placa}}</td>
+                                <td>{{$value->garantias_detalle_garantia}}</td>
+                        </tr>
+                    @endforeach
                 </tbody>
                 <tfoot>
                 </tfoot>

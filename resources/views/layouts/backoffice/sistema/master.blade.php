@@ -270,7 +270,7 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
           }
           
         .mx-subcarga{
-            padding: 0px calc(100% - 500px) !important;
+            padding: 0px 100px !important;
         }
         </style>
 </head>

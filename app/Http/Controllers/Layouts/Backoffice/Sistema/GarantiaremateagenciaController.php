@@ -415,6 +415,40 @@ class GarantiaremateagenciaController extends Controller
                 'credito_garantias' => $credito_garantias,
             ]);
         }
+        elseif($request->input('view') == 'ver_generarficha_liquidacion'){
+            $credito = DB::table('credito')->whereId($request->idcredito)->first();
+            return view(sistema_view().'/garantiaremateagencia/ver_generarficha_liquidacion',[
+                'tienda' => $tienda,
+                'credito' => $credito,
+            ]);
+        }
+        elseif($request->input('view') == 'ver_registrarprecio_liquidacion'){
+            $credito = DB::table('credito')->whereId($request->idcredito)->first();
+            return view(sistema_view().'/garantiaremateagencia/ver_registrarprecio_liquidacion',[
+                'tienda' => $tienda,
+                'credito' => $credito,
+            ]);
+        }
+        elseif (request('view') == 'ver_generarficha_liquidacionpdf') {
+            $credito = DB::table('credito')->whereId($request->idcredito)->first();
+            $credito_garantias = DB::table('credito_garantia')
+              ->join('users as cliente','cliente.id','credito_garantia.idcliente')
+              ->where('credito_garantia.idcredito',$request->idcredito)
+              ->select(
+                'credito_garantia.*',
+                'cliente.nombrecompleto as clientenombrecompleto',
+                'cliente.identificacion as dni'
+              )
+              ->orderBy('credito_garantia.fecharegistro_listaremate','asc')
+              ->get();
+            $pdf = PDF::loadView(sistema_view().'/garantiaremateagencia/ver_generarficha_liquidacionpdf', compact(
+                'tienda',
+                'credito',
+                'credito_garantias',
+            ));
+            $pdf->setPaper('A4', 'landscape');
+            return $pdf->stream('GENERAR FICHA.pdf');
+        }
     }
 
     public function update(Request $request, $idtienda, $id)

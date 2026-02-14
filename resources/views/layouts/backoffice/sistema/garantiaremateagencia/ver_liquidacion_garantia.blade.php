@@ -56,31 +56,61 @@
                                 <th width="90px;">RUC/DNI/CE</th>
                                 <th width="90px;">TIPO DE GARANTIA</th>
                                 <th width="100px;">DESCRIPCIÓN</th>
+                                <th width="140px;">Serie/Motor/N°Partida</th>
                                 <th width="70px;">MODELO</th>
+                                <th width="70px;">OTROS</th>
                                 <th width="90px;">VALOR COMERCIAL</th>
-                                <th width="95px;">ACCESORIOS</th>
                                 <th width="90px;">COBERTURA</th>
+                                <th width="95px;">ACCESORIOS</th>
                                 <th width="70px;">COLOR</th>
+                                <th width="100px;">AÑO DE FABRICACIÓN</th>
+                                <th width="100px;">AÑO DE COMPRA</th>
+                                <th width="100px;">PLACA DEL VEHÍCULO</th>
+                                <th width="100px;">DETALLE</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($credito_garantias as $value)
-                            <tr data-valor-comercial='{{ $value->valor_comercial }}' data-valor-realizacion='{{ $value->valor_realizacion }}'>
+                            <tr data-idcredito='{{ $value->idcredito }}'
+                                data-valor-comercial='{{ $value->valor_comercial }}'
+                                data-valor-realizacion='{{ $value->valor_realizacion }}'>
                                 <td>{{$value->garantias_codigo}}</td>
                                 <td>{{$value->clientenombrecompleto}}</td>
                                 <td>{{$value->dni}}</td>
                                 <td>{{$value->garantias_tipogarantia}}</td>
                                 <td>{{$value->descripcion}}</td>
+                                <td>{{$value->garantias_serie_motor_partida}}</td>
                                 <td>{{$value->garantias_modelo_tipo}}</td>
+                                <td>{{$value->garantias_otros}}</td>
                                 <td>{{$value->valor_comercial}}</td>
-                                <td>{{$value->garantias_accesorio_doc}}</td>
                                 <td>{{$value->valor_realizacion}}</td>
+                                <td>{{$value->garantias_accesorio_doc}}</td>
                                 <td>{{$value->garantias_color}}</td>
+                                <td>{{$value->garantias_fabricacion}}</td>
+                                <td>{{$value->garantias_compra}}</td>
+                                <td>{{$value->garantias_placa}}</td>
+                                <td>{{$value->garantias_detalle_garantia}}</td>
                             </tr>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
+            </div>
+        </div>
+        <div class="col-sm-12 mt-2">
+            <div class="row">
+                <div class="col-sm-8"></div>
+                <label for="precio_liquidacion" class="col-sm-2 col-form-label">PRECIO DE LIQUIDACIÓN</label>
+                <div class="col-sm-2">
+                    <input type="text" class="form-control" id="precio_liquidacion" value="" disabled>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-sm-6"></div>
+                <button type="button" class="btn btn-primary col-sm-3" onclick="generarfichaLiquidacion()">GENERAR FICHA DE LIQUIDACIÓN</button>
+                <button type="button" class="btn btn-primary col-sm-3" onclick="registrarprecioLiquidacion()">REGISTRAR PRECIO LIQUIDACIÓN</button>
             </div>
         </div>
     </div>
@@ -94,5 +124,28 @@
         var valor_realizacion = $(this).data('valor-realizacion');
         $('#valor_comercial').val(valor_comercial);
         $('#valor_realizacion').val(valor_realizacion);
+        $('#precio_liquidacion').val(valor_comercial);
     });
+
+    function generarfichaLiquidacion() {
+        var selectedRow = $('#table-liquidacion-garantias tbody tr.selected');
+        if (selectedRow.length === 0) {
+            var mensaje = "Debe de seleccionar una garantía.";
+            modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
+            return false;
+        }
+        var idcredito = selectedRow.data('idcredito');
+        modal({ route:"{{url('backoffice/'.$tienda->id.'/garantiaremateagencia/0/edit?view=ver_generarficha_liquidacion')}}&idcredito="+idcredito,  size: 'modal-fullscreen' });
+    }
+
+    function registrarprecioLiquidacion() {
+        var selectedRow = $('#table-liquidacion-garantias tbody tr.selected');
+        if (selectedRow.length === 0) {
+            var mensaje = "Debe de seleccionar una garantía.";
+            modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });  
+            return false;
+        }
+        var idcredito = selectedRow.data('idcredito');
+        modal({ route:"{{url('backoffice/'.$tienda->id.'/garantiaremateagencia/0/edit?view=ver_registrarprecio_liquidacion')}}&idcredito="+idcredito,  size: 'modal-sm' });
+    }
 </script>

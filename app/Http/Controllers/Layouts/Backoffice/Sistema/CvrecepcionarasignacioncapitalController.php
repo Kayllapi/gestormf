@@ -152,7 +152,11 @@ class CvrecepcionarasignacioncapitalController extends Controller
                 }
             }
             elseif($asignacioncapital->idtipooperacion==2){
-                $where = [1];
+                if($asignacioncapital->idtipodestino==1){
+                    $where = [4];
+                } else {
+                    $where = [1];
+                }
             }
             elseif($asignacioncapital->idtipooperacion==3){
                 $where = [2];

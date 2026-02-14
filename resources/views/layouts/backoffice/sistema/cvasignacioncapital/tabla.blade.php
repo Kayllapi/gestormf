@@ -166,6 +166,7 @@
   }
   load_nuevo_asignacioncapital();
   function load_nuevo_asignacioncapital(){
+    $('#table-lista-asignacioncapital tbody tr').removeClass('selected');
     pagina({ route:"{{url('backoffice/'.$tienda->id.'/cvasignacioncapital/create?view=registrar')}}", result:'#form-result-giro'});
   }
   

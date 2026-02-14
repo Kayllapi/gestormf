@@ -141,7 +141,7 @@
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">N° operación (banco)</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Descripción</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Usuario</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Usuario  Rec. Final Efectivo</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Us. Rec./Otorgante Final</td>
                 </tr>
               </thead>
               <tbody>

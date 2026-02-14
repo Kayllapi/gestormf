@@ -92,7 +92,7 @@
                   <td>N° operación (banco)</td>
                   <td>Descripción</td>
                   <td style="width:80px;">Usuario Emisor</td>
-                  <td style="width:90px;">Usuario  Rec. Final Efectivo</td>
+                  <td style="width:90px;">Us. Rec./Otorgante Final</td>
                 </tr>
               </thead>
               <tbody>

@@ -148,7 +148,7 @@ class CvrecepcionarasignacioncapitalController extends Controller
                     $where = [1];
                 }
                 elseif($asignacioncapital->idtipodestino==3){
-                    $where = [2];
+                    $where = [1];
                 }
             }
             elseif($asignacioncapital->idtipooperacion==2){
@@ -165,7 +165,7 @@ class CvrecepcionarasignacioncapitalController extends Controller
                     $where = [1];
                 }
                 elseif($asignacioncapital->idtipodestino==3){
-                    $where = [2];
+                    $where = [1];
                 }
             }
             $usuarios = DB::table('users')

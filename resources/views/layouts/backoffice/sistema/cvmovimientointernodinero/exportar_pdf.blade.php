@@ -236,7 +236,7 @@
               
               </tbody>
             </table>  
-      <h4 align="center" style="font-size:16px;">CIERRE Y APERTURA DE CAJA</h4>
+      <h4 align="center" style="font-size:16px;">APERTURA Y CIERRE DE CAJA</h4>
       <h4 align="center" style="font-size:16px;margin-bottom:0px;">RETIRO</h4>
               
             <table style="width:100%;">
@@ -246,7 +246,8 @@
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;width:200px;">Fuente de Retiro</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;width:50px;">Monto</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Descripción</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;width:130px;">Fecha</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;width:130px;">Fecha Registro</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;width:130px;">Fecha Regularización</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;width:60px;">Usuario</td>
                 </tr>
               </thead>
@@ -258,12 +259,14 @@
             $html = '';
             foreach($movimientointernodinero_retiro3 as $key => $value){
                 $fecharegistro = date_format(date_create($value->fecharegistro),"d-m-Y H:i:s A");
+                $fecharegularizacion = date_format(date_create($value->fecharegularizacion),"d-m-Y H:i:s A");
                 $html .= "<tr>
                               <td style='white-space: nowrap;'>{$value->codigoprefijo}{$value->codigo}</td>
                               <td style='white-space: nowrap;'>{$value->credito_fuenteretironombre}</td>
                               <td style='white-space: nowrap;text-align:right;'>{$value->monto}</td>
                               <td style='white-space: nowrap;'>{$value->descripcion}</td>
                               <td style='white-space: nowrap;'>{$fecharegistro}</td>
+                              <td style='white-space: nowrap;'>{$fecharegularizacion}</td>
                               <td style='white-space: nowrap;'>{$value->codigo_responsable}</td>
                           </tr>";
                 $total = $total+$value->monto;
@@ -277,7 +280,7 @@
                 <tr style="position: sticky;bottom: 0;">
                   <td colspan="2" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;">Total Retiros (S/.)</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;">'.number_format($total, 2, '.', '').'</td>
-                  <td colspan="3" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;"></td>
+                  <td colspan="4" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;"></td>
                 </tr>'; 
 
             echo $html;
@@ -293,7 +296,8 @@
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;width:200px;">Destino de Depósito</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;width:50px;">Monto</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Descripción</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;width:130px;">Fecha</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;width:130px;">Fecha Registro</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;width:130px;">Fecha Regularización</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;width:60px;">Usuario</td>
                 </tr>
               </thead>
@@ -305,12 +309,14 @@
             $html = '';
             foreach($movimientointernodinero_deposito3 as $key => $value){
                 $fecharegistro = date_format(date_create($value->fecharegistro),"d-m-Y H:i:s A");
+                $fecharegularizacion = date_format(date_create($value->fecharegularizacion),"d-m-Y H:i:s A");
                 $html .= "<tr>
                               <td style='white-space: nowrap;'>{$value->codigoprefijo}{$value->codigo}</td>
                               <td style='white-space: nowrap;'>{$value->credito_fuenteretironombre}</td>
                               <td style='white-space: nowrap;text-align:right;'>{$value->monto}</td>
                               <td style='white-space: nowrap;'>{$value->descripcion}</td>
                               <td style='white-space: nowrap;'>{$fecharegistro}</td>
+                              <td style='white-space: nowrap;'>{$fecharegularizacion}</td>
                               <td style='white-space: nowrap;'>{$value->codigo_responsable}</td>
                           </tr>";
                 $total = $total+$value->monto;
@@ -324,7 +330,7 @@
                 <tr style="position: sticky;bottom: 0;">
                   <td colspan="2" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;">Total Depósitos (S/.)</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;">'.number_format($total, 2, '.', '').'</td>
-                  <td colspan="3" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;"></td>
+                  <td colspan="4" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;"></td>
                 </tr>'; 
 
             echo $html;

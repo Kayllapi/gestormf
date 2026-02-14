@@ -1386,128 +1386,134 @@ class CvmovimientointernodineroController extends Controller
                 ]);
             }
 
-            // congelando resultado
-            $arqueo = DB::table('cvarqueocaja')
-                ->where('idcvmovimientointernodinero_cierre', 0)
-                ->orderByDesc('id')
-                ->first();
-            $resultado_congelado = 0;
-            if ($arqueo) {
-                $tienda = DB::table('tienda')->whereId($arqueo->idagencia)->first();
-                $co = cvconsolidadooperaciones($tienda,$arqueo->idagencia,$arqueo->corte);
-                $resultado_congelado = $co['resultado'];
-            }
-
-            DB::table('cvmovimientointernodinero')->whereId($id)->update([
-                'idresponsable' => $request->idresponsable,
-                'idresponsable_permiso' => $request->idresponsable_permiso,
-            ]);
-
-            // DB::table('cvmovimientointernodinero')->whereId($id)->update([
-            //     'idcvarqueocaja_cierre' => $arqueo->id,
-            // ]);
-            updatearqueocaja($arqueo->id);
-
-            if ($arqueo) {
-                $tienda = DB::table('tienda')->whereId($arqueo->idagencia)->first();
-                $ret_reservacf_caja_total = DB::table('cvmovimientointernodinero')
-                    ->where('cvmovimientointernodinero.idestadoeliminado',1)
-                    ->where('cvmovimientointernodinero.idfuenteretiro',6)
-                    ->where('cvmovimientointernodinero.idtipomovimientointerno',5)
-                    ->where('cvmovimientointernodinero.fecharegistro','>=',$arqueo->corte.' 00:00:00')
-                    ->where('cvmovimientointernodinero.fecharegistro','<=',$arqueo->corte.' 23:59:59')
-                    ->where('cvmovimientointernodinero.idtienda',$arqueo->idagencia)
-                    ->first();
-                $ret_caja_reservacf_total = DB::table('cvmovimientointernodinero')
-                    ->where('cvmovimientointernodinero.idestadoeliminado',1)
-                    ->where('cvmovimientointernodinero.idfuenteretiro',8)
-                    ->where('cvmovimientointernodinero.idtipomovimientointerno',5)
-                    ->where('cvmovimientointernodinero.fecharegistro','>=',$arqueo->corte.' 00:00:00')
-                    ->where('cvmovimientointernodinero.fecharegistro','<=',$arqueo->corte.' 23:59:59')
-                    ->where('cvmovimientointernodinero.idtienda',$arqueo->idagencia)
+            $data = DB::table('cvmovimientointernodinero')->whereId($id)->first();
+            if ($data->idfuenteretiro == 1 && $data->idtipomovimientointerno == 6) { // cuando aperturan caja
+                DB::table('cvmovimientointernodinero')->whereId($id)->update([
+                    'idresponsable' => $request->idresponsable,
+                    'idresponsable_permiso' => $request->idresponsable_permiso,
+                ]);
+            } else {
+                // congelando resultado
+                $arqueo = DB::table('cvarqueocaja')
+                    ->where('idcvmovimientointernodinero_cierre', 0)
+                    ->orderByDesc('id')
                     ->first();
 
-                if($ret_reservacf_caja_total && $ret_caja_reservacf_total){
+                $resultado_congelado = 0;
+                if ($arqueo) {
+                    $tienda = DB::table('tienda')->whereId($arqueo->idagencia)->first();
                     $co = cvconsolidadooperaciones($tienda,$arqueo->idagencia,$arqueo->corte);
-                    DB::table('cvarqueocaja')->where('id',$arqueo->id)->update([
-                        'ingresoyegresocaja_ingreso_ventas' => $co['ingresoyegresocaja_ingreso_cvventa'],
-                        'ingresoyegresocaja_ingreso_incrementocapital' => $co['ingresoyegresocaja_ingreso_incrementocapital'],
-                        'ingresoyegresocaja_ingreso_ingresosextraordinarios' => $co['ingresoyegresocaja_ingreso_ingresosextraordinarios'],
-                        'ingresoyegresocaja_egreso_compras' => $co['ingresoyegresocaja_egreso_cvcompra'],
-                        'ingresoyegresocaja_egreso_reduccioncapital' => $co['ingresoyegresocaja_egreso_reduccioncapital'],
-                        'ingresoyegresocaja_egreso_gastosadministrativosyoperativos' => $co['ingresoyegresocaja_egreso_gastosadministrativosyoperativos'],
+                    $resultado_congelado = $co['resultado'];
+                }
+    
+                DB::table('cvmovimientointernodinero')->whereId($id)->update([
+                    'idresponsable' => $request->idresponsable,
+                    'idresponsable_permiso' => $request->idresponsable_permiso,
+                ]);
+                updatearqueocaja($arqueo->id);
 
-                        'ingresoyegresobanco_ingreso_ventas' => $co['ingresoyegresobanco_ingreso_cvventa'],
-                        'ingresoyegresobanco_ingreso_ventas_bancos' => json_encode($co['ingresoyegresobanco_ingreso_cvventas']),
-                        'ingresoyegresobanco_ingreso_ventas_validacion' => $co['ingresoyegresobanco_ingreso_cvventa_validacion'],
-                        'ingresoyegresobanco_ingreso_ventas_validacion_cantidad' => $co['ingresoyegresobanco_ingreso_cvventa_validacion_cantidad'],
-                        'ingresoyegresobanco_ingreso_incrementocapital' => $co['ingresoyegresobanco_ingreso_incrementocapital'],
-                        'ingresoyegresobanco_ingreso_incrementocapital_bancos' => json_encode($co['ingresoyegresobanco_ingreso_incrementocapital_bancos']),
-                        'ingresoyegresobanco_ingreso_incrementocapital_validacion' => $co['ingresoyegresobanco_ingreso_incrementocapital_validacion'],
-                        'ingresoyegresobanco_ingreso_incrementocapital_validacion_cantida' => $co['ingresoyegresobanco_ingreso_incrementocapital_validacion_cantidad'],
-                        'ingresoyegresobanco_ingreso_ingresosextraordinarios' => $co['ingresoyegresobanco_ingreso_ingresosextraordinarios'],
-                        'ingresoyegresobanco_ingreso_ingresosextraordinarios_bancos' => json_encode($co['ingresoyegresobanco_ingreso_ingresosextraordinarios_bancos']),
-                        'ingresoyegresobanco_ingreso_ingresosextraordinarios_validacion' => $co['ingresoyegresobanco_ingreso_ingresosextraordinarios_validacion'],
-                        'ingresoyegresobanco_ingreso_ingresosextraordinarios_validacion_c' => $co['ingresoyegresobanco_ingreso_ingresosextraordinarios_validacion_cantidad'],
-
-                        'ingresoyegresobanco_egreso_compras' => $co['ingresoyegresobanco_egreso_cvcompra'],
-                        'ingresoyegresobanco_egreso_compras_bancos' => json_encode($co['ingresoyegresobanco_egreso_cvcompras']),
-                        'ingresoyegresobanco_egreso_compras_validacion' => $co['ingresoyegresobanco_egreso_cvcompra_validacion'],
-                        'ingresoyegresobanco_egreso_compras_validacion_cantidad' => $co['ingresoyegresobanco_egreso_cvcompra_validacion_cantidad'],
-                        'ingresoyegresobanco_egreso_reduccioncapital' => $co['ingresoyegresobanco_egreso_reduccioncapital'],
-                        'ingresoyegresobanco_egreso_reduccioncapital_bancos' => json_encode($co['ingresoyegresobanco_egreso_reduccioncapital_bancos']),
-                        'ingresoyegresobanco_egreso_reduccioncapital_validacion' => $co['ingresoyegresobanco_egreso_reduccioncapital_validacion'],
-                        'ingresoyegresobanco_egreso_reduccioncapital_validacion_cantidad' => $co['ingresoyegresobanco_egreso_reduccioncapital_validacion_cantidad'],
-                        'ingresoyegresobanco_egreso_gastosadministrativosyoperativos' => $co['ingresoyegresobanco_egreso_gastosadministrativosyoperativos'],
-                        'ingresoyegresobanco_egreso_gastosadministrativosyoperativos_banc' => json_encode($co['ingresoyegresobanco_egreso_gastosadministrativosyoperativos_bancos']),
-                        'ingresoyegresobanco_egreso_gastosadministrativosyoperativos_vali' => $co['ingresoyegresobanco_egreso_gastosadministrativosyoperativos_validacion'],
-                        'ingresoyegresobanco_egreso_gastosadministrativosyoperativos_cant' => $co['ingresoyegresobanco_egreso_gastosadministrativosyoperativos_validacion_cantidad'],
-
-                        'dep_caja_banco' => $co['dep_caja_banco'],
-                        'dep_caja_banco_bancos' => json_encode($co['ret_banco_caja_bancos']),
-                        'dep_reservacf_caja' => $co['dep_reservacf_caja'],
-                        'dep_banco_caja' => $co['dep_banco_caja'],
-                        'dep_banco_caja_bancos' => json_encode($co['ret_caja_banco_bancos']),
-                        'dep_reservacf_banco' => $co['dep_reservacf_banco'],
-                        'dep_reservacf_banco_bancos' => json_encode($co['ret_banco_reservacf_bancos']),
-                        'dep_caja_reservacf_total' => $co['dep_caja_reservacf_total'],
-                        'dep_reservacf_caja_total' => $co['dep_reservacf_caja_total'],
-
-                        'habilitacion_gestion_liquidez1' => $co['habilitacion_gestion_liquidez1'],
-                        'habilitacion_gestion_liquidez2' => $co['habilitacion_gestion_liquidez2'],
-                        'cierre_caja_apertura' => $co['cierre_caja_apertura'],
-                        'saldos_capitalasignada' => $co['saldos_capitalasignada'],
-                        'saldos_cuentabanco' => $co['saldos_cuentabanco'],
-                        'saldos_cuentabanco_bancos' => json_encode($co['saldos_cuentabanco_bancos']),
-                        'saldos_reserva' => $co['saldos_reserva'],
-                        'saldos_caja' => $co['saldos_caja'],
-                        'arqueo_caja' => $co['arqueo_caja'],
-                        'saldos_bienescomprados' => $co['saldos_bienescomprados'],
-
-                        'ret_reservacf_caja' => $co['ret_reservacf_caja_sum'],
-                        'ret_banco_caja' => $co['ret_banco_caja_sum'],
-                        'ret_banco_caja_bancos' => json_encode($co['ret_banco_caja_bancos']),
-                        'ret_caja_reservacf' => $co['ret_caja_reservacf_sum'],
-                        'ret_caja_banco' => $co['ret_caja_banco_sum'],
-                        'ret_caja_banco_bancos' => json_encode($co['ret_caja_banco_bancos']),
-                        'ret_banco_reservacf' => $co['ret_banco_reservacf'],
-                        'ret_banco_reservacf_bancos' => json_encode($co['ret_banco_reservacf_bancos']),
-                        'ret_reservacf_caja_total' => $co['ret_reservacf_caja_total'],
-                        'ret_caja_reservacf_total' => $co['ret_caja_reservacf_total'],
-
-                        'dep_caja_reservacf' => $co['dep_caja_reservacf'],
-                        'total_efectivo_ejercicio' => $co['total_efectivo_ejercicio'],
-                        'incremental_capital_asignado' => $co['incremental_capital_asignado'],
-                        'indicador_reserva_legal' => $co['indicador_reserva_legal'],
-                        'validacion_operaciones_cuenta_banco' => $co['validacion_operaciones_cuenta_banco'],
-                        'efectivo_caja_corte' => $co['efectivo_caja_corte'],
-                        'efectivo_caja_arqueo' => $co['efectivo_caja_arqueo'],
-                        'resultado' => $resultado_congelado,
-
-                        'idcvmovimientointernodinero_cierre' => $id,
-                    ]);
+                if ($arqueo) {
+                    $tienda = DB::table('tienda')->whereId($arqueo->idagencia)->first();
+                    $ret_reservacf_caja_total = DB::table('cvmovimientointernodinero')
+                        ->where('cvmovimientointernodinero.idestadoeliminado',1)
+                        ->where('cvmovimientointernodinero.idfuenteretiro',6)
+                        ->where('cvmovimientointernodinero.idtipomovimientointerno',5)
+                        ->where('cvmovimientointernodinero.fecharegistro','>=',$arqueo->corte.' 00:00:00')
+                        ->where('cvmovimientointernodinero.fecharegistro','<=',$arqueo->corte.' 23:59:59')
+                        ->where('cvmovimientointernodinero.idtienda',$arqueo->idagencia)
+                        ->first();
+                    $ret_caja_reservacf_total = DB::table('cvmovimientointernodinero')
+                        ->where('cvmovimientointernodinero.idestadoeliminado',1)
+                        ->where('cvmovimientointernodinero.idfuenteretiro',8)
+                        ->where('cvmovimientointernodinero.idtipomovimientointerno',5)
+                        ->where('cvmovimientointernodinero.fecharegistro','>=',$arqueo->corte.' 00:00:00')
+                        ->where('cvmovimientointernodinero.fecharegistro','<=',$arqueo->corte.' 23:59:59')
+                        ->where('cvmovimientointernodinero.idtienda',$arqueo->idagencia)
+                        ->first();
+    
+                    if($ret_reservacf_caja_total && $ret_caja_reservacf_total){
+                        $co = cvconsolidadooperaciones($tienda,$arqueo->idagencia,$arqueo->corte);
+                        DB::table('cvarqueocaja')->where('id',$arqueo->id)->update([
+                            'ingresoyegresocaja_ingreso_ventas' => $co['ingresoyegresocaja_ingreso_cvventa'],
+                            'ingresoyegresocaja_ingreso_incrementocapital' => $co['ingresoyegresocaja_ingreso_incrementocapital'],
+                            'ingresoyegresocaja_ingreso_ingresosextraordinarios' => $co['ingresoyegresocaja_ingreso_ingresosextraordinarios'],
+                            'ingresoyegresocaja_egreso_compras' => $co['ingresoyegresocaja_egreso_cvcompra'],
+                            'ingresoyegresocaja_egreso_reduccioncapital' => $co['ingresoyegresocaja_egreso_reduccioncapital'],
+                            'ingresoyegresocaja_egreso_gastosadministrativosyoperativos' => $co['ingresoyegresocaja_egreso_gastosadministrativosyoperativos'],
+    
+                            'ingresoyegresobanco_ingreso_ventas' => $co['ingresoyegresobanco_ingreso_cvventa'],
+                            'ingresoyegresobanco_ingreso_ventas_bancos' => json_encode($co['ingresoyegresobanco_ingreso_cvventas']),
+                            'ingresoyegresobanco_ingreso_ventas_validacion' => $co['ingresoyegresobanco_ingreso_cvventa_validacion'],
+                            'ingresoyegresobanco_ingreso_ventas_validacion_cantidad' => $co['ingresoyegresobanco_ingreso_cvventa_validacion_cantidad'],
+                            'ingresoyegresobanco_ingreso_incrementocapital' => $co['ingresoyegresobanco_ingreso_incrementocapital'],
+                            'ingresoyegresobanco_ingreso_incrementocapital_bancos' => json_encode($co['ingresoyegresobanco_ingreso_incrementocapital_bancos']),
+                            'ingresoyegresobanco_ingreso_incrementocapital_validacion' => $co['ingresoyegresobanco_ingreso_incrementocapital_validacion'],
+                            'ingresoyegresobanco_ingreso_incrementocapital_validacion_cantida' => $co['ingresoyegresobanco_ingreso_incrementocapital_validacion_cantidad'],
+                            'ingresoyegresobanco_ingreso_ingresosextraordinarios' => $co['ingresoyegresobanco_ingreso_ingresosextraordinarios'],
+                            'ingresoyegresobanco_ingreso_ingresosextraordinarios_bancos' => json_encode($co['ingresoyegresobanco_ingreso_ingresosextraordinarios_bancos']),
+                            'ingresoyegresobanco_ingreso_ingresosextraordinarios_validacion' => $co['ingresoyegresobanco_ingreso_ingresosextraordinarios_validacion'],
+                            'ingresoyegresobanco_ingreso_ingresosextraordinarios_validacion_c' => $co['ingresoyegresobanco_ingreso_ingresosextraordinarios_validacion_cantidad'],
+    
+                            'ingresoyegresobanco_egreso_compras' => $co['ingresoyegresobanco_egreso_cvcompra'],
+                            'ingresoyegresobanco_egreso_compras_bancos' => json_encode($co['ingresoyegresobanco_egreso_cvcompras']),
+                            'ingresoyegresobanco_egreso_compras_validacion' => $co['ingresoyegresobanco_egreso_cvcompra_validacion'],
+                            'ingresoyegresobanco_egreso_compras_validacion_cantidad' => $co['ingresoyegresobanco_egreso_cvcompra_validacion_cantidad'],
+                            'ingresoyegresobanco_egreso_reduccioncapital' => $co['ingresoyegresobanco_egreso_reduccioncapital'],
+                            'ingresoyegresobanco_egreso_reduccioncapital_bancos' => json_encode($co['ingresoyegresobanco_egreso_reduccioncapital_bancos']),
+                            'ingresoyegresobanco_egreso_reduccioncapital_validacion' => $co['ingresoyegresobanco_egreso_reduccioncapital_validacion'],
+                            'ingresoyegresobanco_egreso_reduccioncapital_validacion_cantidad' => $co['ingresoyegresobanco_egreso_reduccioncapital_validacion_cantidad'],
+                            'ingresoyegresobanco_egreso_gastosadministrativosyoperativos' => $co['ingresoyegresobanco_egreso_gastosadministrativosyoperativos'],
+                            'ingresoyegresobanco_egreso_gastosadministrativosyoperativos_banc' => json_encode($co['ingresoyegresobanco_egreso_gastosadministrativosyoperativos_bancos']),
+                            'ingresoyegresobanco_egreso_gastosadministrativosyoperativos_vali' => $co['ingresoyegresobanco_egreso_gastosadministrativosyoperativos_validacion'],
+                            'ingresoyegresobanco_egreso_gastosadministrativosyoperativos_cant' => $co['ingresoyegresobanco_egreso_gastosadministrativosyoperativos_validacion_cantidad'],
+    
+                            'dep_caja_banco' => $co['dep_caja_banco'],
+                            'dep_caja_banco_bancos' => json_encode($co['ret_banco_caja_bancos']),
+                            'dep_reservacf_caja' => $co['dep_reservacf_caja'],
+                            'dep_banco_caja' => $co['dep_banco_caja'],
+                            'dep_banco_caja_bancos' => json_encode($co['ret_caja_banco_bancos']),
+                            'dep_reservacf_banco' => $co['dep_reservacf_banco'],
+                            'dep_reservacf_banco_bancos' => json_encode($co['ret_banco_reservacf_bancos']),
+                            'dep_caja_reservacf_total' => $co['dep_caja_reservacf_total'],
+                            'dep_reservacf_caja_total' => $co['dep_reservacf_caja_total'],
+    
+                            'habilitacion_gestion_liquidez1' => $co['habilitacion_gestion_liquidez1'],
+                            'habilitacion_gestion_liquidez2' => $co['habilitacion_gestion_liquidez2'],
+                            'cierre_caja_apertura' => $co['cierre_caja_apertura'],
+                            'saldos_capitalasignada' => $co['saldos_capitalasignada'],
+                            'saldos_cuentabanco' => $co['saldos_cuentabanco'],
+                            'saldos_cuentabanco_bancos' => json_encode($co['saldos_cuentabanco_bancos']),
+                            'saldos_reserva' => $co['saldos_reserva'],
+                            'saldos_caja' => $co['saldos_caja'],
+                            'arqueo_caja' => $co['arqueo_caja'],
+                            'saldos_bienescomprados' => $co['saldos_bienescomprados'],
+    
+                            'ret_reservacf_caja' => $co['ret_reservacf_caja_sum'],
+                            'ret_banco_caja' => $co['ret_banco_caja_sum'],
+                            'ret_banco_caja_bancos' => json_encode($co['ret_banco_caja_bancos']),
+                            'ret_caja_reservacf' => $co['ret_caja_reservacf_sum'],
+                            'ret_caja_banco' => $co['ret_caja_banco_sum'],
+                            'ret_caja_banco_bancos' => json_encode($co['ret_caja_banco_bancos']),
+                            'ret_banco_reservacf' => $co['ret_banco_reservacf'],
+                            'ret_banco_reservacf_bancos' => json_encode($co['ret_banco_reservacf_bancos']),
+                            'ret_reservacf_caja_total' => $co['ret_reservacf_caja_total'],
+                            'ret_caja_reservacf_total' => $co['ret_caja_reservacf_total'],
+    
+                            'dep_caja_reservacf' => $co['dep_caja_reservacf'],
+                            'total_efectivo_ejercicio' => $co['total_efectivo_ejercicio'],
+                            'incremental_capital_asignado' => $co['incremental_capital_asignado'],
+                            'indicador_reserva_legal' => $co['indicador_reserva_legal'],
+                            'validacion_operaciones_cuenta_banco' => $co['validacion_operaciones_cuenta_banco'],
+                            'efectivo_caja_corte' => $co['efectivo_caja_corte'],
+                            'efectivo_caja_arqueo' => $co['efectivo_caja_arqueo'],
+                            'resultado' => $resultado_congelado,
+    
+                            'idcvmovimientointernodinero_cierre' => $id,
+                        ]);
+                    }
                 }
             }
+
 
             return response()->json([
               'resultado' => 'CORRECTO',

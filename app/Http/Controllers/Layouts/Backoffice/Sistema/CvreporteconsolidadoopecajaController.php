@@ -17,19 +17,16 @@ class CvreporteconsolidadoopecajaController extends Controller
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
       
         if($request->input('view') == 'tabla'){
-            
             $agencias = DB::table('tienda')->get();
             return view(sistema_view().'/cvreporteconsolidadoopecaja/tabla',[
                 'tienda' => $tienda,
                 'agencias' => $agencias,
             ]);
         }
-            
     }
   
     public function create(Request $request,$idtienda)
     {
-        
     }
   
     public function store(Request $request, $idtienda)
@@ -503,6 +500,14 @@ class CvreporteconsolidadoopecajaController extends Controller
                 'usuarios' => $usuarios,
                 'arqueocaja' => $arqueocaja,
             ]);
+        }
+        else if($request->input('view') == 'validar_limites') {
+            $co_actual = cvconsolidadooperaciones($tienda,$request->idagencia,$request->corte);
+            if ($co_actual['saldos_caja'] > $tienda->credito_limitemaximo_caja) {
+                $calculo = $co_actual['saldos_caja'] - $tienda->credito_limitemaximo_caja;
+                $mensaje = 'El saldo de caja excede el límite máximo permitido. Depositar a reserva CF: '.$calculo;
+                return $mensaje;
+            }
         }
     }
 

@@ -84,6 +84,14 @@ class CvreporteconsolidadoopeadminController extends Controller
             $pdf->setPaper('A4', 'landscape');
             return $pdf->stream('REPORTE_CONSOLIDADO_OPE_ADMIN.pdf');
         }
+        else if($request->input('view') == 'validar_limites') {
+            $co_actual = cvconsolidadooperaciones($tienda,$request->idagencia,$request->corte);
+            if ($co_actual['saldos_reserva'] > $tienda->credito_limitemaximo_reserva) {
+                $calculo = $co_actual['saldos_reserva'] - $tienda->credito_limitemaximo_reserva;
+                $mensaje = 'El saldo de reserva CF excede el límite máximo permitido. Depositar a Banco: '.$calculo;
+                return $mensaje;
+            }
+        }
     }
 
     public function update(Request $request, $idtienda, $id)

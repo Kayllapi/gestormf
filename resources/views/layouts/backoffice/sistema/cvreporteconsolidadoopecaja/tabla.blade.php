@@ -61,9 +61,28 @@
     sistema_select2({ input:'#idagencia',val:'{{$tienda->id}}' });
     verpdf();
     function verpdf(){
+        validar_limites();
         let corte = $('#corte').val();
         let idagencia = $('#idagencia').val();
         $('#cont_iframe_acta_aprobacion').html(' <iframe id="iframe_acta_aprobacion" src="{{ url('/backoffice/'.$tienda->id.'/cvreporteconsolidadoopecaja/0/edit?view=pdf_reporte') }}&corte='+corte+'&idagencia='+idagencia+'#zoom=100" frameborder="0" width="100%" height="100%"></iframe>');
+    }
+    function validar_limites(){
+        let corte = $('#corte').val();
+        let idagencia = $('#idagencia').val();
+        let url = "{{ url('backoffice/'.$tienda->id) }}/cvreporteconsolidadoopecaja/0/edit?view=validar_limites";
+        $.ajax({
+            url: url,
+            type:'GET',
+            data:{
+                corte: corte,
+                idagencia: idagencia
+            },
+            success: function (res){
+              if (res != '') {
+                modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+res, size: 'modal-sm' });
+              }
+            }
+        })
     }
     function arqueocaja(){
         let corte = $('#corte').val();

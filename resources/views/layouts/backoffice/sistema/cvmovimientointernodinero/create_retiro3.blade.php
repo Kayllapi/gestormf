@@ -23,12 +23,17 @@
                   <input type="number" class="form-control" id="monto_retiro3" step="any">
                 </div>
               </div>
+              @php
+                  $esHoy = \Carbon\Carbon::parse($validacionDiaria['aperturacaja_existe_ultima']->fecharegistro)->isToday();
+              @endphp
               <div class="row">
                 <label class="col-sm-4 col-form-label" style="text-align: right;">Fecha 
                   <span style="background-color: #ffc107;">Regul.</span> Cierre:</label>
                 <div class="col-sm-8">
                   <input type="date" class="form-control" id="fecharegularizacion" 
-                  @if(!$validacionDiaria['cierre_caja'])
+                  @if($esHoy)
+                    disabled
+                  @elseif(!$validacionDiaria['cierre_caja'])
                   @elseif (!$apertura_caja)
                       disabled
                   @endif>

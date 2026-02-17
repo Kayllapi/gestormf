@@ -51,7 +51,7 @@
   </div>
       <div class="col-sm-12">
         <div class="card">
-        <iframe id="iframe_acta_aprobacion" frameborder="0" width="100%" height="600px"></iframe>
+        <iframe id="iframe_acta_aprobacion" frameborder="0" width="100%" style="height: calc(100vh - 200px);"></iframe>
         </div>
       </div>
 </div>

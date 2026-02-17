@@ -22,8 +22,12 @@
       </div>
       <div class="col-sm-12">
         <div class="card">
-          <div class="card-body" style="overflow-y: scroll;height: 280px;padding: 0;margin-top: 5px;overflow-x: scroll;">
-            
+          <div class="card-body" style="
+            overflow-y: scroll;
+            height: calc(100vh - 266px);
+            padding: 0;
+            margin-top: 5px;
+            overflow-x: scroll;">
             <table class="table table-striped table-hover table-bordered" id="table-lista-asignacioncapital">
               <thead class="table-dark" style="position: sticky;top: 0;">
                 <tr>

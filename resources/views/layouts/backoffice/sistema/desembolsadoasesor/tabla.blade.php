@@ -78,8 +78,11 @@
   </div>
       <div class="col-sm-12">
         <div class="card">
-          <div class="card-body" style="overflow-y: scroll;height: 260px;padding: 0;margin-top: 5px;">
-
+          <div class="card-body" style="
+            overflow-y: scroll;
+            height: calc(100vh - 266px);
+            padding: 0;
+            margin-top: 5px;">
             <table class="table table-striped table-hover" id="table-lista-credito">
               <thead class="table-dark" style="position: sticky;top: 0;">
                 <tr>
@@ -105,10 +108,10 @@
           </div>
         </div>
       </div>
-                              <div style="text-align: right;">
-                                <button type="button" class="btn btn-info" onclick="exportar_pdf()" style="font-weight: bold;">
-                                  <i class="fa-solid fa-file-pdf" style="color:#000 !important;font-weight: bold;"></i> REPORTE</button>
-                              </div>
+      <div style="text-align: right;">
+        <button type="button" class="btn btn-info" onclick="exportar_pdf()" style="font-weight: bold;">
+          <i class="fa-solid fa-file-pdf" style="color:#000 !important;font-weight: bold;"></i> REPORTE</button>
+      </div>
 </div>
 <script>
   /*var d= new Date();

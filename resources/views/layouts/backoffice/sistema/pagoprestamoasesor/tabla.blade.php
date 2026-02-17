@@ -83,14 +83,18 @@
   </div>
       <div class="col-sm-12">
         <div class="card">
-          <div class="card-body" id="tabla-pagoprestamo" style="overflow-y: scroll;height: 260px;padding-top: 0px;padding-bottom: 0px;"> 
+          <div class="card-body" id="tabla-pagoprestamo" style="
+            overflow-y: scroll;
+            height: calc(100vh - 266px);
+            padding-top: 0px;
+            padding-bottom: 0px;"> 
           </div>
         </div>
       </div>
-                              <div style="text-align: right;">
-                                <button type="button" class="btn btn-info" onclick="exportar_pdf()" style="font-weight: bold;">
-                                  <i class="fa-solid fa-file-pdf" style="color:#000 !important;font-weight: bold;"></i> REPORTE</button>
-                              </div>
+      <div style="text-align: right;">
+        <button type="button" class="btn btn-info" onclick="exportar_pdf()" style="font-weight: bold;">
+          <i class="fa-solid fa-file-pdf" style="color:#000 !important;font-weight: bold;"></i> REPORTE</button>
+      </div>
 </div>
 <script>
 

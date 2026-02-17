@@ -395,6 +395,12 @@ class CvmovimientointernodineroController extends Controller
             // --- RETIRO
             $consolidadooperaciones = cvconsolidadooperaciones($tienda,$idtienda,now()->format('Y-m-d'));
             if($request->idfuenteretiro_retiro3==6){
+                if (!$validacionDiaria['arqueocaja']) {
+                    return response()->json([
+                        'resultado' => 'ERROR',
+                        'mensaje'   => 'Falta arquear caja '.$validacionDiaria['fechacorte'].'!!'
+                    ]);
+                }
                 if (!$validacionDiaria['cierre_caja']) {
                     return response()->json([
                         'resultado' => 'ERROR',

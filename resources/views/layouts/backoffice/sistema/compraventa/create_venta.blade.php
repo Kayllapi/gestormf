@@ -26,13 +26,13 @@
             </div>
             <div class="col-sm-12">
                 <label class="col-form-label" style="text-align: right;">RUC/DNI/CE (Comprador) *</label>
-                <input type="text" class="form-control" id="comprador_dni" style="width: 40%;">
+                <input type="text" class="form-control" id="comprador_dni" style="width: 50%;">
             </div>
             <div class="col-sm-12">
                 <label class="col-form-label" style="text-align: right;">Precio de Venta</label>
                 <input type="number"
                     class="form-control"
-                    style="background-color: #cfcdcd; font-size: 15px; font-weight: bold; width: 40%;"
+                    style="background-color: #cfcdcd; font-size: 15px; font-weight: bold; width: 50%;"
                     id="venta_precio_venta"
                     value="{{ $cvcompra->valorcomercial }}" disabled>
             </div>
@@ -44,7 +44,7 @@
                 <label class="col-form-label" style="text-align: right;">Precio de Venta con Descuento</label>
                 <input type="number"
                     class="form-control"
-                    style="background-color: #cfcdcd; font-size: 15px; font-weight: bold; width: 40%;"
+                    style="background-color: #cfcdcd; font-size: 15px; font-weight: bold; width: 50%;"
                     id="venta_precio_venta_descuento"
                     value="{{ number_format($precio_venta_descuento, 2, '.', '') }}" disabled>
             </div>
@@ -52,7 +52,7 @@
                 <label class="col-form-label" style="text-align: right;">Precio de Venta Final *</label>
                 <input type="number"
                     class="form-control"
-                    style="background-color: #cfcdcd; font-size: 15px; font-weight: bold; width: 40%;"
+                    style="background-color: #cfcdcd; font-size: 15px; font-weight: bold; width: 50%;"
                     id="venta_montoventa">
             </div>
             <div class="col-sm-12">

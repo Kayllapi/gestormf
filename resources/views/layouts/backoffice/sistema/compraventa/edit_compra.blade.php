@@ -95,7 +95,7 @@
             <div class="col-sm-8 mt-2">
                 <div class="row">
                     <label class="col-sm-6 col-form-label" style="text-align: right;">
-                        Valor Comercial <span style="color: #c40000;">(Mínimo {{ configuracion($tienda->id,'margen_previsto')['valor'] }}% del V.Compra)</span> *
+                        Valor Comercial <span style="color: #c40000;">(Mínimo {{ configuracion($tienda->id,'margen_previsto')['valor'] }}% más del V.Compra)</span> *
                     </label>
                     <div class="col-sm-6">
                         <input type="number" step="any" class="form-control" id="valorcomercial" value="{{$cvcompra->valorcomercial}}">

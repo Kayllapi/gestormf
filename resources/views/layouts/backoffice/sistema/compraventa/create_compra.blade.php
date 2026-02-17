@@ -123,7 +123,7 @@
                 <label class="col-form-label" style="text-align: right;">N° de Ficha o Comprobante *</label>
                 <input type="text" class="form-control" id="numeroficha">
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-4 mt-2">
                 <div class="row">
                     <div class="col-sm-12">
                         <label class="custom-radio">

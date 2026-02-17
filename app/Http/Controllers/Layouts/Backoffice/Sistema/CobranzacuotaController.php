@@ -1360,7 +1360,7 @@ class CobranzacuotaController extends Controller
               ->orderBy('credito_adelanto.numerocuota','asc')
               ->get();
           
-          $html = '<table class="table table-bordered" id="table-detalle-descuentodecuotas">
+          $html = '<table class="table" id="table-detalle-descuentodecuotas">
               <thead>
               <tr>
                 <th style="width:100px;">Fecha de Registro</th>

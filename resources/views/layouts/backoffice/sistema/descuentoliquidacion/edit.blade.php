@@ -16,33 +16,42 @@
       <span class="badge d-block">DATOS DE PRÉSTAMO</span>
     </div>
     <div class="modal-body">
-        <table class="table table-bordered">
+        <table class="table">
           <tr>
-            <td style="width: 80px;background-color: #efefef !important;">Prestamo S/.</td>
-            <td style="width: 60px;background-color: #fff;"><b>{{ $credito->monto_solicitado }}</b></td>
-            <td style="width: 50px;background-color: #efefef !important;">Prest., Int., Serv. y Cargo S/.</td>
-            <td style="width: 60px;background-color: #fff;"><b>{{ $credito->total_pagar }}</b></td>
-            <td style="width: 50px;background-color: #efefef !important;">Venc. Contrato</td>
-            <td style="width: 80px;background-color: #fff;"><b>{{ date_format(date_create($credito->fecha_ultimopago),'d-m-Y') }}</b></td>
+            <td style="width: 90px;"><b>Prestamo S/.</b></td>
+            <td style="width:2px;"><b>:</b></td>
+            <td >{{ $credito->monto_solicitado }}</td>
+            <td style="width: 180px;"><b>Prest., Int., Serv. y Cargo S/.</b></td>
+            <td style="width:2px;"><b>:</b></td>
+            <td >{{ $credito->total_pagar }}</td>
+            <td style="width: 120px;"><b>Venc. Contrato</b></td>
+            <td style="width:2px;"><b>:</b></td>
+            <td>{{ date_format(date_create($credito->fecha_ultimopago),'d-m-Y') }}</td>
           </tr>
           <tr>
-            <td style="background-color: #efefef !important;">TEM (%)</td>
-            <td style="background-color: #fff;"><b>{{ $credito->tasa_tem }}</b></td>
-            <td style="background-color: #efefef !important;">TIP (%)</td>
+            <td><b>TEM (%)</b></td>
+            <td style="width:2px;"><b>:</b></td>
+            <td>{{ $credito->tasa_tem }}</td>
+            <td><b>TIP (%)</b></td>
+            <td style="width:2px;"><b>:</b></td>
             <?php 
                $tasa_tip = $credito->modalidad_calculo == 'Interes Compuesto' ? '' : $credito->tasa_tip;
             ?>
-            <td style="background-color: #fff;"><b>{{ $tasa_tip }}</b></td>
-            <td style="background-color: #efefef !important;">F. PAGO</td>
-            <td style="background-color: #fff;"><b>{{ $credito->forma_pago_credito_nombre }} ({{ $credito->cuotas }} Cuotas)</b></td>
+            <td>{{ $tasa_tip }}</td>
+            <td><b>F. PAGO</b></td>
+            <td style="width:2px;"><b>:</b></td>
+            <td>{{ $credito->forma_pago_credito_nombre }} ({{ $credito->cuotas }} Cuotas)</td>
           </tr>
           <tr>
-            <td style="background-color: #efefef !important;">Producto</td>
-            <td style="background-color: #fff;"><b>{{ $credito->nombreproductocredito }}</b></td>
-            <td style="background-color: #efefef !important;">Modalidad de C.</td>
-            <td style="background-color: #fff;"><b>{{ $credito->modalidad_credito_nombre }}</b></td>
-            <td style="background-color: #efefef !important;">F. Desembolso</td>
-            <td style="background-color: #fff;"><b>{{ date_format(date_create($credito->fecha_desembolso),'d-m-Y') }}</b></td>
+            <td><b>Producto</b></td>
+            <td style="width:2px;"><b>:</b></td>
+            <td>{{ $credito->nombreproductocredito }}</td>
+            <td><b>Modalidad de C.</b></td>
+            <td style="width:2px;"><b>:</b></td>
+            <td>{{ $credito->modalidad_credito_nombre }}</td>
+            <td><b>F. Desembolso</b></td>
+            <td style="width:2px;"><b>:</b></td>
+            <td>{{ date_format(date_create($credito->fecha_desembolso),'d-m-Y') }}</td>
           </tr>
         </table>
     </div>

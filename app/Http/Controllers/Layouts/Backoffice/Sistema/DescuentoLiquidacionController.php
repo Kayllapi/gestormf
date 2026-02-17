@@ -325,7 +325,7 @@ class DescuentoLiquidacionController extends Controller
               }
               $cuenta = str_pad($value->cuenta, 8, "0", STR_PAD_LEFT);
               $html .= "<tr data-valor-columna='{$value->id}' onclick='show_data(this)'>
-                            <td style='text-align: right;width: 70px;'>S/ {$value->monto_solicitado}</td>
+                            <td style='text-align: right;width: 90px;'>S/ {$value->monto_solicitado}</td>
                             <td style='width: 20px;'>{$cp}</td>
                             <td>C{$cuenta}</td>
                         </tr>";
@@ -347,8 +347,8 @@ class DescuentoLiquidacionController extends Controller
               )
               ->first();
           
-          $html = '<table class="table table-bordered" id="table-detalle-cronograma">
-              <thead style="position: sticky;top: 0;">
+          $html = '<table class="table" id="table-detalle-cronograma">
+              <thead style="position: sticky;top: 0;z-index: 1">
               <tr>
                 <th style="width:5px;"></th>
                 <th width="10px">N° Cuo.</th>
@@ -358,7 +358,7 @@ class DescuentoLiquidacionController extends Controller
                 <th>C. Ss./<br>Desgr.</th>
                 <th>Cargo</th>
                 <th>Cuota</th>
-                <th><span style="background-color: #cd0909 !important;font-weight: bold;">Atraso</span></th>
+                <th><span style="background-color: #ffb2b2 !important;font-weight: bold;">Atraso</span></th>
                 <th>Custodia</th>
                 <th>Int. Comp.</th>
                 <th style="width:10px;">Int. Morat.</th>
@@ -394,11 +394,10 @@ class DescuentoLiquidacionController extends Controller
                             data-id="'.$value['id'].'" 
                             data-numerocuota="'.$value['numerocuota'].'">
                             <td style="'.$value['style'].'">
-                                <div class="form-check">
-                                  <input style="font-size: 1rem;margin-left: -17px;height: 20px;width: 20px;" class="form-check-input" 
-                                  type="checkbox" name="seleccionar_cuota" id="numerocuotaselect" 
-                                  onclick="show_data_cronograma('.$value['numerocuota'].')" '.$value['checked'].' '.$value['disabled'].'>
-                                </div>
+                                <label class="chk">
+                                  <input type="checkbox" name="seleccionar_cuota" id="numerocuotaselect" onclick="show_data_cronograma('.$value['numerocuota'].')" '.$value['checked'].' '.$value['disabled'].'>
+                                  <span class="checkmark"></span>
+                                </label>
                             </td>
                             <td style="'.$value['style'].'text-align:center">'.$value['numerocuota'].'</td>
                             <td style="'.$value['style'].'text-align:center">'.$value['fecha'].'</td>
@@ -454,7 +453,7 @@ class DescuentoLiquidacionController extends Controller
                 ->orderBy('credito_descuentocuota.numerocuota','asc')
                 ->get();
           
-          $html = '<table class="table table-bordered" id="table-detalle-descuentodecuotas">
+          $html = '<table class="table" id="table-detalle-descuentodecuotas">
               <thead>
               <tr>
                 <th style="width:100px;">Fecha de Registro</th>

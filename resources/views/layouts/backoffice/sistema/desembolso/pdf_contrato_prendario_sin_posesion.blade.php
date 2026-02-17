@@ -169,30 +169,35 @@ CON GARANTÍA MOBILIARIA SIN POSESIÓN</title>
     <b>1.1.</b> EL/LOS PRESTATARIO(S) declaran bajo juramento que los datos suministrados en ficha de información, solicitud, contrato 
     y demás documentos de crédito son verídicos y autoriza(n) a EL ACREEDOR el uso, para el seguimiento, control, evaluación y 
     clasificación del Préstamo otorgados a EL/LOS PRESTATARIO(S), conforme lo dispuesto en la Circular SBS N° 133-2010.<br>
-    <b>1.2.</b> Los medios de comunicación que utilizará El ACREEDOR para cursar a EL/LOS PRESTATARIO(S) durante la ejecución del 
-    presente contrato serán los medios directos como: mensajes de texto SMS, llamadas telefónicas y otros canales digitales; también 
-    podrá utilizar los medios indirectos de comunicación, la escrita y la virtual.
+    <b>1.2.</b> Los Canales de contratación que pone a disposición El ACREEDOR para atender a EL/LOS PRESTATARIO(S) son las oficinas y 
+    agencias, página web, llamadas telefónicas, aplicaciones móviles, entre otros. EL ACREEDOR verificará la identidad de EL/LOS PRESTATARIO(S), 
+    dejando constancia de su aceptación a través de las herramientas que tenga implementadas a tales efectos, conforme al marco legal aplicable. 
+    Igualmente, durante la ejecución del presente contrato, EL ACREEDOR podrá usar medios directos de comunicación como: cartas a domicilio, 
+    (simple o notarial) mensajes de texto SMS, llamadas telefónicas y otros canales digitales; también podrá utilizar los medios indirectos, 
+    la escrita, audio visual, página web y otras determinadas por EL ACREEDOR.
     
 <br><br>
 <b>II.  SOBRE EL CRÉDITO</b>
 <br>
     <b>2.1.</b> EL ACREEDOR otorga a EL/LOS PRESTATARIO(S), la suma de S/. {{ $credito->monto_solicitado }}, en condición de préstamo, 
     con pago {{strtoupper($credito->forma_pago_credito_nombre)}} en {{$credito->cuotas}} cuota(s), debiéndose pagar un total de S/. {{ $credito->total_pagar }} 
-    al terminar el plazo pactado, que incluye capital más los intereses, comisión de servicio y gastos, conforme lo informado y 
+    al terminar el plazo pactado, que incluye capital más los intereses, comisión de servicio y gastos (cargos), a la tasa de interés, tasa de comisión de servicio y cargos establecidos en Hoja de Resumen del crédito; conforme lo informado y 
     aceptación de estos por parte de EL/LOS PRESTATARIO(S). <br>
-    <b>2.2.</b> EL/LOS PRESTATARIO(S) se obliga a pagar a EL ACREEDOR el préstamo otorgado por este último más los intereses, comisión de 
-    servicio y gastos, en la forma y plazo de pagos convenido de ambas partes conforme numeral 2.1, para lo cual se le otorga 
-    {{ $credito->config_dias_tolerancia_garantia }} días de tolerancia para los pagos respectivos. Vencida la cuota y los días 
-    de tolerancia EL/LOS PRESTATARIO(S) pagará(n) el interés compensatorio y moratorio, custodia de garantía y cargos de ser el 
-    caso, desde el primer día de su vencimiento, conforme tasas de hoja de resumen de crédito.<br>
-    <b>2.3.</b> EL/LOS PRESTATARIO(S) podrá(n) solicitar ampliar su crédito vigente conforme amerite, disponiendo el monto equivalente a lo 
-    cancelado, conforme políticas establecidas. Para lo cual EL ACREEDOR procederá al recalculo del nuevo capital adeudado por EL/LOS PRESTATARIO(S). 
-    El nuevo saldo de capital comprenderá los intereses, así como las comisiones de servicio, gastos y cargos en caso correspondan. 
-    La Ampliación generará la novación del Contrato de Crédito, rigiéndose con Cláusula II y cláusula IV.<br>
+    <b>2.2.</b> EL/LOS PRESTATARIO(S) se obliga a pagar a EL ACREEDOR el préstamo otorgado por este último más los intereses, comisión de servicio y gastos (cargos), 
+    en la forma y plazo de pagos convenido de ambas partes conforme numeral 2.1; debiendo pagar en la misma moneda del crédito, 
+    en las oficinas o agencias de EL ACREEDOR en forma de efectivo, transferencia bancaria, depósitos en cuenta, entre otras; 
+    para lo cual se le otorga {{ $credito->config_dias_tolerancia_garantia }} días de tolerancia para el pago de las cuotas respectivas. Vencido los días de tolerancia 
+    EL/LOS PRESTATARIO(S) pagará(n) el interés compensatorio y moratorio, custodia de garantía y cargos adicionales de ser el caso, 
+    desde el primer día de su vencimiento, conforme tasas y penalidades establecidas en la hoja de resumen del crédito.<br>
+    <b>2.3.</b> EL/LOS PRESTATARIO(S)  podrá(n) solicitar ampliar su crédito vigente conforme amerite, disponiendo el monto parcial o total de lo 
+    pagado a cuenta del crédito, conforme políticas establecidas. Para lo cual EL ACREEDOR procederá al recalculo del nuevo capital adeudado por EL/LOS PRESTATARIO(S). 
+    El nuevo saldo de capital comprenderá los intereses, las comisiones de servicio, gastos(cargos) en caso correspondan. La Ampliación generará la novación del Contrato 
+    de Crédito, por lo que, previamente se requerirá aceptación expresa de EL/LOS PRESTATARIO(S) dejándose constancia de ello. De procederse con esta operación, 
+    EL ACREEDOR alcanzará los documentos correspondientes que detallen las nuevas condiciones pactadas con EL/LOS PRESTATARIO(S), para lo cual será de aplicación el numeral 1.2 del Contrato.<br>
     <b>2.4.</b> EL ACREEDOR queda facultada a refinanciar la deuda de EL/LOS PRESTATARIO(S) en caso de incumplimiento de pago para lo cual 
     se incluirá el monto total de la deuda vencida, en una liquidación de saldo deudor conforme a sus reglas internas, como el 
     importe del capital saldo por pagar más intereses, servicios, intereses compensatorios y moratorios, custodia de garantía y 
-    cargos establecidos en la Hoja Resumen de EL ACREEDOR. Bastando la intervención en dicha operación de cualquiera de los obligados.<br>
+    cargos establecidos en la Hoja Resumen del crédito. Bastando la intervención en dicha operación de cualquiera de los obligados.<br>
     <b>2.5.</b> Derechos y exigencias de Pagos Anticipados, serán a solicitud expresa de EL/LOS PRESTATARIO(S) como una opción y se 
     considerará las cuotas programadas a más de 30 días; de la misma forma, optará realizar de manera expresa pago de adelanto de cuotas. 
     Donde EL/LOS PRESTATARIO(S) declara haber sido informado con anterioridad al otorgamiento del crédito, considerándose para ello: (a) 
@@ -208,9 +213,9 @@ CON GARANTÍA MOBILIARIA SIN POSESIÓN</title>
     previstos en el Contrato, por lo menos con tres (3) días de anticipación. Las causales que permitirán a EL ACREEDOR resolver de pleno derecho 
     el presente Contrato son las siguientes:<br>
     <b>3.1.</b> Al incumplimiento de pago de EL/LOS PRESTATARIO(S) sea el saldo o total del préstamo incluido intereses, comisión de servicio 
-    y gastos. En créditos pagaderos a 2 meses de plazo vencido, o en créditos pagaderos mayor a 2 meses con 90 días a más de vencido; 
-    EL/LOS PRESTATARIO(S) tendrá(n) {{ $credito->config_dias_tolerancia_garantia }} días para su cancelación total o regularización, pagando custodia del bien(s) en prenda, 
-    interés compensatorio y moratorio más cargos. Caso contrario EL ACREEDOR ejecutará la(s) prenda(s) entregada(s) conforme numeral 4.1. <br>
+    y gastos. En créditos pagaderos hasta 2 meses de plazo y vencido, o en créditos pagaderos mayor a 2 meses de plazo, con 90 días a más de vencido la cuota de pago; 
+    EL/LOS PRESTATARIO(S) tendrá(n) {{ $credito->config_dias_tolerancia_garantia }} días para su cancelación total o regularización, pagando custodia de ser el caso del bien(s) en garantía, 
+    interés compensatorio y moratorio más cargos. Caso contrario EL ACREEDOR ejecutará la(s) garantias(s) entregada(s) conforme en numeral 4.1. <br>
     <b>3.2.</b> EL/LOS PRESTATARIO(S) incurre en los supuestos previstos en el artículo 175 de Ley General del Sistema Financiero y del Sistema 
     de Seguros y Orgánica de la Superintendencia de Banca y Seguros, Ley N° 26702 <br>
     <b>3.3.</b> Otras permitidas por Ley, y que EL ACREEDOR implemente, comunicando oportunamente a EL/LOS PRESTATARIO(S).<br>
@@ -221,8 +226,8 @@ CON GARANTÍA MOBILIARIA SIN POSESIÓN</title>
 <br>
 <b>IV.  DE LA GARANTÍA MOBILIARIA</b>
 <br>
-    <b>4.1.</b> La garantía mobiliaria sin posesión que constituye(n) EL/LOS PRESTATARIO(S) a favor de EL ACREEDOR será de primera y preferente, siendo el (los) siguiente(s) 
-    bien(es) que respaldará(n) el cumplimiento del pago del préstamo y de los futuros préstamos u obligaciones que EL/LOS PRESTATARIO(S) pueda(n) asumir.<br>
+    <b>4.1.</b> La garantía(s) mobiliaria(s) con posesión que constituye(n) EL/LOS PRESTATARIO(S) a favor de EL ACREEDOR será de primera y preferente, siendo el (los) 
+    siguiente(s) bien(es) que respaldará(n) el cumplimiento de pago del préstamo y de futuros créditos que pueda(n) obtener.<br>
     
     <br>
     <br>

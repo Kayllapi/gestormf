@@ -272,6 +272,43 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
         .mx-subcarga{
             padding: 0px 100px !important;
         }
+
+        /* radio button */
+        .custom-radio {
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            margin-right: 20px;
+        }
+
+        .custom-radio input[type="radio"] {
+            display: none; /* ocultamos el radio original */
+        }
+
+        .custom-radio span {
+            width: 20px;
+            height: 20px;
+            border: 1px solid black;
+            background-color: white;
+            margin-right: 8px;
+            display: inline-block;
+            position: relative;
+            border-radius: 5px;
+        }
+
+        /* cuando está seleccionado */
+        .custom-radio input[type="radio"]:checked + span::after {
+            content: "✔";
+            position: absolute;
+            font-size: 14px;
+            color: black;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -55%);
+        }
+        .custom-radio span {
+            transition: all 0.2s ease;
+        }
         </style>
 </head>
 <body url="{{ url('/') }}">

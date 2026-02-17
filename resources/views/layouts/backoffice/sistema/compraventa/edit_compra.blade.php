@@ -125,8 +125,18 @@
             <div class="col-sm-4">
                 <div class="row">
                     <div class="col-sm-12">
-                        <input type="radio" name="compra_idformapago" id="compra_idformapago" value="1" @if($cvcompra->compra_idformapago == 1) checked @endif disabled> Caja
-                        <input type="radio" name="compra_idformapago" id="compra_idformapago" value="2" @if($cvcompra->compra_idformapago == 2) checked @endif disabled> Banco
+                        <label class="custom-radio">
+                            <input type="radio" name="compra_idformapago" id="compra_idformapago" value="1" @if($cvcompra->compra_idformapago == 1) checked @endif disabled>
+                            <span></span>
+                            Caja
+                        </label>
+                        <label class="custom-radio">
+                            <input type="radio" name="compra_idformapago" id="compra_idformapago" value="2" @if($cvcompra->compra_idformapago == 2) checked @endif disabled>
+                            <span></span>
+                            Banco
+                        </label>
+                        {{-- <input type="radio" name="compra_idformapago" id="compra_idformapago" value="1" @if($cvcompra->compra_idformapago == 1) checked @endif disabled> Caja
+                        <input type="radio" name="compra_idformapago" id="compra_idformapago" value="2" @if($cvcompra->compra_idformapago == 2) checked @endif disabled> Banco --}}
                     </div>
                     <div class="col-sm-12">
                         <label class="col-form-label" style="text-align: right;">Bancos</label>

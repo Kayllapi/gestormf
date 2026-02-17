@@ -286,25 +286,35 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
         }
 
         .custom-radio span {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             border: 1px solid black;
             background-color: white;
             margin-right: 8px;
             display: inline-block;
             position: relative;
-            border-radius: 5px;
+            border-radius: 4px;
+            transition: all .2s;
         }
 
         /* cuando está seleccionado */
         .custom-radio input[type="radio"]:checked + span::after {
-            content: "✔";
+            /* content: "✔";
             position: absolute;
             font-size: 14px;
             color: black;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -55%);
+            transform: translate(-50%, -55%); */
+            content: "";
+            position: absolute;
+            left: 6px;
+            top: 2px;
+            width: 5px;
+            height: 10px;
+            border: solid #000;
+            border-width: 0 3px 3px 0;
+            transform: rotate(45deg)
         }
         .custom-radio span {
             transition: all 0.2s ease;

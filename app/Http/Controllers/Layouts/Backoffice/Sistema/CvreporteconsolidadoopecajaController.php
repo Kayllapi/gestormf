@@ -505,7 +505,7 @@ class CvreporteconsolidadoopecajaController extends Controller
             $co_actual = cvconsolidadooperaciones($tienda,$request->idagencia,$request->corte);
             if ($co_actual['saldos_caja'] > $tienda->credito_limitemaximo_caja) {
                 $calculo = $co_actual['saldos_caja'] - $tienda->credito_limitemaximo_caja;
-                $mensaje = 'El saldo de caja excede el límite máximo permitido. Depositar a reserva CF: '.$calculo;
+                $mensaje = 'El saldo de Caja excede el límite máximo permitido. Depositar a reserva CF: '.$calculo;
                 return $mensaje;
             }
         }

@@ -60,7 +60,9 @@
                     <label class="col-form-label" style="text-align: right;">Precio de Venta Final *</label>
                     <input type="number"
                         class="form-control"
-                        style="font-size: 15px; font-weight: bold; width: 50%;"
+                        style="font-size: 15px; font-weight: bold; width: 50%; 
+                            background-color: #dfffdf;
+                            border: 1px solid #079907;"
                         id="venta_montoventa">
                 </div>
             </div>

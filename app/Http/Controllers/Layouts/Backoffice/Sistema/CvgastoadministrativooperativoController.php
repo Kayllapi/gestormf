@@ -441,17 +441,25 @@ class CvgastoadministrativooperativoController extends Controller
                         'mensaje'   => 'El usuario y/o la contraseña es incorrecta!!.'
                     ]);
                 }
+
+                $dt =  DB::table('cvgastoadministrativooperativo')->whereId($id)->first();
+                if ($dt->idcvarqueocaja_cierre != 0) {
+                    return response()->json([
+                        'resultado' => 'ERROR',
+                        'mensaje'   => 'No se puede eliminar el gasto administrativo operativo porque ya ha sido arqueado.'
+                    ]);
+                }
             
                 DB::table('cvgastoadministrativooperativo')->whereId($id)->update([
-                'fecha_eliminado' => now(),
-                'idestadoeliminado' => 2,
-                'idresponsble_eliminado' => $idresponsable,
+                    'fecha_eliminado' => now(),
+                    'idestadoeliminado' => 2,
+                    'idresponsble_eliminado' => $idresponsable,
                 ]);
             
                 //DB::table('cvgastoadministrativooperativo')->whereId($id)->delete();
                 return response()->json([
-                'resultado' => 'CORRECTO',
-                'mensaje'   => 'Se ha elimino correctamente.'
+                    'resultado' => 'CORRECTO',
+                    'mensaje'   => 'Se ha elimino correctamente.'
                 ]);
         }
     }

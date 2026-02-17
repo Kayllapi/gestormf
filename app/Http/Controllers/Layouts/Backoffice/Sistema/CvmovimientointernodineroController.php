@@ -1622,6 +1622,14 @@ class CvmovimientointernodineroController extends Controller
                 ]);
             }
 
+            $dt =  DB::table('cvmovimientointernodinero')->whereId($id)->first();
+            if ($dt->idcvarqueocaja_cierre != 0) {
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'No se puede eliminar el movimiento interno de dinero porque ya ha sido arqueado.'
+                ]);
+            }
+
             DB::table('cvmovimientointernodinero')->whereId($id)->update([
                'fecha_eliminado' => now(),
                'idestadoeliminado' => 2,
@@ -1631,6 +1639,14 @@ class CvmovimientointernodineroController extends Controller
             /* $movimientointernodinero = DB::table('cvmovimientointernodinero')
                 ->whereId($id)
                 ->first(); */
+
+            $dt1 =  DB::table('cvmovimientointernodinero')->where('idcvmovimientointernodinero',$id)->first();
+            if ($dt1->idcvarqueocaja_cierre != 0) {
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'No se puede eliminar el movimiento interno de dinero porque ya ha sido arqueado.'
+                ]);
+            }
           
             DB::table('cvmovimientointernodinero')->where('idcvmovimientointernodinero',$id)->update([
                 'fecha_eliminado' => now(),
@@ -1704,6 +1720,14 @@ class CvmovimientointernodineroController extends Controller
                 ]);
             }
 
+            $dt =  DB::table('cvmovimientointernodinero')->whereId($id)->first();
+            if ($dt->idcvarqueocaja_cierre != 0) {
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'No se puede eliminar el movimiento interno de dinero porque ya ha sido arqueado.'
+                ]);
+            }
+
             DB::table('cvmovimientointernodinero')->whereId($id)->update([
                'fecha_eliminado' => now(),
                'idestadoeliminado' => 2,
@@ -1713,6 +1737,13 @@ class CvmovimientointernodineroController extends Controller
             /* $movimientointernodinero = DB::table('cvmovimientointernodinero')
                 ->whereId($id)
                 ->first(); */
+            $dt1 =  DB::table('cvmovimientointernodinero')->where('idcvmovimientointernodinero',$id)->first();
+            if ($dt1->idcvarqueocaja_cierre != 0) {
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'No se puede eliminar el movimiento interno de dinero porque ya ha sido arqueado.'
+                ]);
+            }
 
             DB::table('cvmovimientointernodinero')->where('idcvmovimientointernodinero',$id)->update([
                 'fecha_eliminado' => now(),
@@ -1749,6 +1780,14 @@ class CvmovimientointernodineroController extends Controller
                 return response()->json([
                     'resultado' => 'ERROR',
                     'mensaje'   => 'El usuario y/o la contraseña es incorrecta!!.'
+                ]);
+            }
+
+            $dt =  DB::table('cvmovimientointernodinero')->whereId($id)->first();
+            if ($dt->idcvarqueocaja_cierre != 0) {
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'No se puede eliminar el movimiento interno de dinero porque ya ha sido arqueado.'
                 ]);
             }
 

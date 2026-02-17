@@ -986,6 +986,14 @@ class CompraventaController extends Controller
                 ]);
             }
 
+            $dt =  DB::table('cvcompra')->whereId($id)->first();
+            if ($dt->idcvarqueocaja_cierre != 0) {
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'No se puede eliminar la compra porque ya ha sido arqueada.'
+                ]);
+            }
+
             DB::table('cvcompra')->whereId($id)->update([
                'fechaeliminado' => now(),
                'eliminado_idresponsable' => $idresponsable,
@@ -1019,6 +1027,14 @@ class CompraventaController extends Controller
                 return response()->json([
                     'resultado' => 'ERROR',
                     'mensaje'   => 'El usuario y/o la contraseña es incorrecta!!.'
+                ]);
+            }
+
+            $dt =  DB::table('cvventa')->whereId($id)->first();
+            if ($dt->idcvarqueocaja_cierre != 0) {
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'No se puede eliminar la venta porque ya ha sido arqueada.'
                 ]);
             }
 

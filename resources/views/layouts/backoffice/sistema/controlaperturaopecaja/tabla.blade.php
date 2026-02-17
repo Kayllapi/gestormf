@@ -43,7 +43,11 @@
   </div>
       <div class="col-sm-12">
         <div class="card">
-          <div class="card-body" id="tabla-controlaperturaopecaja" style="overflow-y: scroll;height: 260px;padding-top: 0px;padding-bottom: 0px;">
+          <div class="card-body" id="tabla-controlaperturaopecaja" style="
+            overflow-y: scroll;
+            height: calc(100vh - 240px);
+            padding-top: 0px;
+            padding-bottom: 0px;">
           </div>
           <div class="card-body" id="tabla-controlaperturaopecaja1">
           </div>

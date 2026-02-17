@@ -411,6 +411,14 @@ class CvingresoextraordinarioController extends Controller
                     'mensaje'   => 'El usuario y/o la contraseña es incorrecta!!.'
                 ]);
             }
+
+            $dt =  DB::table('cvingresoextraordinario')->whereId($id)->first();
+            if ($dt->idcvarqueocaja_cierre != 0) {
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'No se puede eliminar el ingreso extraordinario porque ya ha sido arqueado.'
+                ]);
+            }
         
             DB::table('cvingresoextraordinario')->whereId($id)->update([
                'fecha_eliminado' => now(),

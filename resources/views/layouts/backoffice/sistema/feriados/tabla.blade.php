@@ -13,7 +13,11 @@
       </div>
       <div class="col-sm-12">
         <div class="card">
-          <div class="card-body" style="overflow-y: scroll;height: 260px;padding-top: 0px;padding-bottom: 0px;" id="cont-table-datosprestamos_cronograma">
+          <div class="card-body" style="
+            overflow-y: scroll;
+            height: calc(100vh - 260px);
+            padding-top: 0px;
+            padding-bottom: 0px;" id="cont-table-datosprestamos_cronograma">
             
             <table class="table table-striped table-hover" id="table-lista-feriados">
               <thead class="table-dark" style="position: sticky;top: 0;">

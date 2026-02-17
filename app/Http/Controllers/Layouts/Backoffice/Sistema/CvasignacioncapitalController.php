@@ -823,6 +823,14 @@ class CvasignacioncapitalController extends Controller
                 ]);
             }
 
+            $dt =  DB::table('cvasignacioncapital')->whereId($id)->first();
+            if ($dt->idcvarqueocaja_cierre != 0) {
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'No se puede eliminar la asignación de capital porque ya ha sido arqueado.'
+                ]);
+            }
+
             DB::table('cvasignacioncapital')->whereId($id)->update([
                'fecha_eliminado' => now(),
                'idestadoeliminado' => 2,

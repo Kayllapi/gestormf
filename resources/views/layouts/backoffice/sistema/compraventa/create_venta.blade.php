@@ -28,34 +28,43 @@
                 <label class="col-form-label" style="text-align: right;">RUC/DNI/CE (Comprador) *</label>
                 <input type="text" class="form-control" id="comprador_dni" style="width: 50%;">
             </div>
-            <div class="col-sm-12">
-                <label class="col-form-label" style="text-align: right;">Precio de Venta</label>
-                <input type="number"
-                    class="form-control"
-                    style="background-color: #cfcdcd; font-size: 15px; font-weight: bold; width: 50%;"
-                    id="venta_precio_venta"
-                    value="{{ $cvcompra->valorcomercial }}" disabled>
+            <div style="
+                margin: auto;
+                background-color: white;
+                border-radius: 0.375rem;
+                border: 1px solid #2727272e;
+                padding: 10px;
+                width: 98%;
+                margin-top: 5px;">
+                <div class="col-sm-12">
+                    <label class="col-form-label" style="text-align: right;">Precio de Venta</label>
+                    <input type="number"
+                        class="form-control"
+                        style="background-color: #cfcdcd; font-size: 15px; font-weight: bold; width: 50%;"
+                        id="venta_precio_venta"
+                        value="{{ $cvcompra->valorcomercial }}" disabled>
+                </div>
+                @php
+                    $descuento = configuracion($tienda->id,'valor_descuento')['valor'];
+                    $precio_venta_descuento = round($cvcompra->valorcomercial - ($cvcompra->valorcomercial * $descuento / 100), 1);
+                @endphp
+                <div class="col-sm-12">
+                    <label class="col-form-label" style="text-align: right;">Precio de Venta con Descuento</label>
+                    <input type="number"
+                        class="form-control"
+                        style="background-color: #cfcdcd; font-size: 15px; font-weight: bold; width: 50%;"
+                        id="venta_precio_venta_descuento"
+                        value="{{ number_format($precio_venta_descuento, 2, '.', '') }}" disabled>
+                </div>
+                <div class="col-sm-12">
+                    <label class="col-form-label" style="text-align: right;">Precio de Venta Final *</label>
+                    <input type="number"
+                        class="form-control"
+                        style="background-color: #cfcdcd; font-size: 15px; font-weight: bold; width: 50%;"
+                        id="venta_montoventa">
+                </div>
             </div>
-            @php
-                $descuento = configuracion($tienda->id,'valor_descuento')['valor'];
-                $precio_venta_descuento = round($cvcompra->valorcomercial - ($cvcompra->valorcomercial * $descuento / 100), 1);
-            @endphp
-            <div class="col-sm-12">
-                <label class="col-form-label" style="text-align: right;">Precio de Venta con Descuento</label>
-                <input type="number"
-                    class="form-control"
-                    style="background-color: #cfcdcd; font-size: 15px; font-weight: bold; width: 50%;"
-                    id="venta_precio_venta_descuento"
-                    value="{{ number_format($precio_venta_descuento, 2, '.', '') }}" disabled>
-            </div>
-            <div class="col-sm-12">
-                <label class="col-form-label" style="text-align: right;">Precio de Venta Final *</label>
-                <input type="number"
-                    class="form-control"
-                    style="background-color: #cfcdcd; font-size: 15px; font-weight: bold; width: 50%;"
-                    id="venta_montoventa">
-            </div>
-            <div class="col-sm-12">
+            <div class="col-sm-12 mt-2">
                 <div class="row">
                     <div class="col-sm-12">
                         <label class="custom-radio">

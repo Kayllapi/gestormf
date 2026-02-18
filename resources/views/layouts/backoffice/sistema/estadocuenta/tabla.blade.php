@@ -44,7 +44,7 @@
           <input type="hidden" value="" class="form-control" id="data-cliente-id">
         </div>
         <div class="col-sm-12">
-          <label>Documento de Identidad(DNI/CE): </label>
+          <label>Documento de Identidad(RUC/DNI/CE): </label>
           <input type="text" disabled value="" class="form-control" id="data-cliente-documento" style="background-color: white;">
         </div>
         <input type="hidden" id="idultimocredito_resumida" value="0">

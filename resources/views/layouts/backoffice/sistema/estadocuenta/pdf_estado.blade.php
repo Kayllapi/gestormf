@@ -171,7 +171,7 @@
                 PEND.
                 @endif
               </td>
-              <td>{{$value->tiendanombre}}</td>
+              <td>{{$value->nombreagencia}}</td>
             </tr>
             <?php
             $i++;

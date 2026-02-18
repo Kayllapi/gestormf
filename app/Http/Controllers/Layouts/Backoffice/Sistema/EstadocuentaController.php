@@ -671,6 +671,7 @@ class EstadocuentaController extends Controller
                   'credito_prendatario.nombre as nombreproductocredito',
                   'forma_pago_credito.nombre as forma_pago_credito_nombre',
                   'tienda.nombre as tiendanombre',
+                  'tienda.nombreagencia as nombreagencia',
               )
               ->orderBy('credito.idestadocredito','asc')
               ->orderBy('credito.fecha_desembolso','desc')

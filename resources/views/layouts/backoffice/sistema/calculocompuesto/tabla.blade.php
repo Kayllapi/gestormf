@@ -123,15 +123,15 @@
           <div class="col-sm-12 col-md-9">
             <div class="row">
               <label class="col-sm-2 col-form-label" style="text-align: right;"><b>Interes Total (S/):</b></label>
-              <div class="col-sm-2 col-form-label" id="interes_total">
+              <div class="col-sm-2 col-form-label" id="interes_total" style="font-weight: normal;">
                 0.00
               </div>
               <label class="col-sm-2 col-form-label" style="text-align: right;"><b>Comisión de Ss. (S/):</b></label>
-              <div class="col-sm-2 col-form-label" id="cargo_total">
+              <div class="col-sm-2 col-form-label" id="cargo_total" style="font-weight: normal;">
                 0.00
               </div>
               <label class="col-sm-2 col-form-label" style="text-align: right;"><b>Total a Pagar (S/):</b></label>
-              <div class="col-sm-2 col-form-label" id="total_pagar">
+              <div class="col-sm-2 col-form-label" id="total_pagar" style="font-weight: normal;">
                 0.00
               </div>
             </div>

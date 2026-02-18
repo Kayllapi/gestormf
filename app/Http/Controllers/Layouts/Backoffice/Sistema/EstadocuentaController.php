@@ -333,7 +333,7 @@ class EstadocuentaController extends Controller
           $html = '';
           foreach($creditos as $value){
               $estadocredito = 'PEND.';
-              $color = '#E8E585';
+              $color = '#EEE722';
               if($value->idestadocredito==2){
                   $estadocredito = 'CANC.';
                   $color = '';

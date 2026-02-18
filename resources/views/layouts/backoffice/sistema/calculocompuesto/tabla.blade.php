@@ -159,7 +159,7 @@
             </table>
           </div>
           <div class="col-sm-12 col-md-5" style="height: calc(-429px + 100vh);">
-            <table class="table table-bordered" id="table-tarifario-producto">
+            <table class="table table-striped" id="table-tarifario-producto">
               <thead>
                 <tr>
                   <th>FRECUENCIA</th>

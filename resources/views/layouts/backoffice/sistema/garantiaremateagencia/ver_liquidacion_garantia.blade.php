@@ -49,6 +49,7 @@
                         overflow-y: scroll;
                         padding: 0;
                         margin-top: 5px;
+                        height: 200px;
                         overflow-x: scroll;">
                     <table class="table table-striped table-hover dataTable no-footer"
                         style="table-layout: fixed; width: 100%;"

@@ -22,9 +22,9 @@
               border: 1px solid #326222 !important;
               color: #000;
               font-size: 14px;padding: 7px;">
-          <div class="col-md-4"><b>CLIENTE:</b> {{ $usuario->nombrecompleto }}</div>
-          <div class="col-md-4">@if($credito->idaval != 0) <b>AVAL:</b> {{ $credito->nombreavalcredito }} @endif</div>
-          <div class="col-md-4"><b>PRODUCTO:</b> {{ $credito->nombreproductocredito }}</div>
+          <div class="col-md-4"><b>CLIENTE:</b> <span style="font-weight: normal;">{{ $usuario->nombrecompleto }}</span></div>
+          <div class="col-md-4">@if($credito->idaval != 0) <b>AVAL:</b> <span style="font-weight: normal;">{{ $credito->nombreavalcredito }} </span>@endif</div>
+          <div class="col-md-4"><b>PRODUCTO:</b> <span style="font-weight: normal;">{{ $credito->nombreproductocredito }}</span></div>
       </div>
     <div class="modal-body">
       <div class="row">

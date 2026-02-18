@@ -129,6 +129,11 @@
         $('#valor_comercial').val(valor_comercial);
         $('#valor_realizacion').val(valor_realizacion);
         $('#precio_liquidacion').val(valor_comercial);
+
+        // Calcular el valor comercial con descuento
+        var porcentaje_descuento_liquidacion = {{ configuracion($tienda->id,'porcentaje_descuento_liquidacion')['valor'] }};
+        var valor_comercial_descuento = valor_comercial - (valor_comercial * porcentaje_descuento_liquidacion / 100);
+        $('#valor_comercial_descuento').val(valor_comercial_descuento.toFixed(2));
     });
 
     function generarfichaLiquidacion() {

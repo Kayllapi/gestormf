@@ -12,7 +12,7 @@
                 </div>
                 <label for="saldo" class="col-sm-3 col-form-label">Saldo de Deuda Programada (C+I): S/.</label>
                 <div class="col-sm-2">
-                    <input type="number" class="form-control" id="saldo" value="">
+                    <input type="number" class="form-control" id="saldo" value="" disabled>
                 </div>
             </div>
             <div class="row">
@@ -22,23 +22,23 @@
                 </div>
                 <label for="saldo" class="col-sm-3 col-form-label">Saldo de Deuda Total (C+I+Ic+M): S/.</label>
                 <div class="col-sm-2">
-                    <input type="number" class="form-control" id="saldo" value="{{ $cronograma['cuota_pendiente'] }}">
+                    <input type="number" class="form-control" id="saldo" value="{{ $cronograma['cuota_pendiente'] }}" disabled>
                 </div>
             </div>
             <div class="row">
                 <label for="valor_comercial" class="col-sm-2 col-form-label">Valor comercial</label>
                 <div class="col-sm-2">
-                    <input type="number" class="form-control" id="valor_comercial" value="">
+                    <input type="number" class="form-control" id="valor_comercial" value="" disabled>
                 </div>
                 <label for="valor_comercial_descuento" class="col-sm-2 col-form-label">V.Comercial con Descuento</label>
                 <div class="col-sm-2">
-                    <input type="number" class="form-control" id="valor_comercial_descuento" value="">
+                    <input type="number" class="form-control" id="valor_comercial_descuento" value="" disabled>
                 </div>
             </div>
             <div class="row">
                 <label for="valor_realizacion" class="col-sm-2 col-form-label">Valor de cobertura</label>
                 <div class="col-sm-2">
-                    <input type="number" class="form-control" id="valor_realizacion" value="">
+                    <input type="number" class="form-control" id="valor_realizacion" value="" disabled>
                 </div>
             </div>
         </div>

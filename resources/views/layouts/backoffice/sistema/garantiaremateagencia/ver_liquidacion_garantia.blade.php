@@ -62,11 +62,11 @@
                                 <th width="100px;">DESCRIPCIÓN</th>
                                 <th width="140px;">Serie/Motor/N°Partida</th>
                                 <th width="70px;">MODELO</th>
-                                <th width="70px;">OTROS</th>
                                 <th width="90px;">VALOR COMERCIAL</th>
                                 <th width="90px;">V.COMERCIAL CON DESCUENTO</th>
                                 <th width="90px;">COBERTURA</th>
                                 <th width="90px;">PRECIO DE LIQUIDACIÓN</th>
+                                <th width="70px;">OTROS</th>
                                 <th width="95px;">ACCESORIOS</th>
                                 <th width="70px;">COLOR</th>
                                 <th width="100px;">AÑO DE FABRICACIÓN</th>
@@ -88,11 +88,11 @@
                                     <td>{{$value->descripcion}}</td>
                                     <td>{{$value->garantias_serie_motor_partida}}</td>
                                     <td>{{$value->garantias_modelo_tipo}}</td>
-                                    <td>{{$value->garantias_otros}}</td>
                                     <td>{{$value->valor_comercial}}</td>
                                     <td>{{ number_format($value->valor_comercial - ($value->valor_comercial * configuracion($tienda->id,'porcentaje_descuento_liquidacion')['valor'] / 100), 2) }}</td>
                                     <td>{{$value->valor_realizacion}}</td>
                                     <td>{{$value->precioliquidacion}}</td>
+                                    <td>{{$value->garantias_otros}}</td>
                                     <td>{{$value->garantias_accesorio_doc}}</td>
                                     <td>{{$value->garantias_color}}</td>
                                     <td>{{$value->garantias_fabricacion}}</td>

@@ -95,7 +95,7 @@
                   </div>
                 </div>
                 <div class="row">
-                  <label class="col-sm-5 col-form-label" style="text-align: right;">Comisión de Ss. y Desgrav. (%):</label>
+                  <label class="col-sm-5 col-form-label" style="text-align: right;">Com.Ss./Otros.(Mes):</label>
                   <div class="col-sm-7">
                     <input type="number" step="any" class="form-control" id="comision" value="0." disabled>
                   </div>

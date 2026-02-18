@@ -61,7 +61,7 @@
             <div class="modal-body p-0" style="overflow-y: scroll;height: calc(-238px + 100vh);">
             <table class="table table-striped table-hover" id="table-lista-credito">
               <thead class="table-dark" style="position: sticky;top: 0;">
-                <tr>
+                <tr style="font-weight: bold;">
                   <td>N°</td>
                   <td>CLIENTE</td>
                   <td>AVAL</td>

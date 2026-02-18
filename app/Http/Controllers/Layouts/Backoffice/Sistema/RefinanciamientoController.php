@@ -153,9 +153,9 @@ class RefinanciamientoController extends Controller
           }
               $html .= '
                 <tr style="position: sticky;bottom: 0;">
-                  <td colspan="3" style="background-color: #144081 !important;text-align:right;color:#fff !important;">TOTAL S/.</td>
-                  <td style="background-color: #144081 !important;text-align:right;color:#fff !important;">'.number_format($total_desembolsado, 2, '.', '').'</td>
-                  <td colspan="8" style="background-color: #144081 !important;"></td>
+                  <td colspan="3" style="text-align:right;font-weight: bold;">TOTAL S/.</td>
+                  <td style="text-align:right;font-weight: bold;">'.number_format($total_desembolsado, 2, '.', '').'</td>
+                  <td colspan="8" style="font-weight: bold;"></td>
                 </tr>';
           return array(
             'html' => $html

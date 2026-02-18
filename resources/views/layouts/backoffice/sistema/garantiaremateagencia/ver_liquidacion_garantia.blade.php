@@ -18,7 +18,7 @@
                 </div>
             </div>
             <div class="row">
-                <label for="valor_comercial" class="col-sm-2 col-form-label">Valor comercial</label>
+                <label for="valor_comercial" class="col-sm-2 col-form-label">Valor comercial (con descuento)</label>
                 <div class="col-sm-2">
                     <input type="number" class="form-control" id="valor_comercial" value="">
                 </div>

@@ -113,7 +113,9 @@
             
         </div>
 
-        <div class="row mt-3" style="background-color: #CFEBC5; border: 1px solid #326222; color: #000;">
+        <div class="row mt-3" style="background-color: #cfecc5 !important;
+              border: 1px solid #326222 !important;
+              color: #000;">
           <div class="col-sm-12 col-md-3">
             
           </div>

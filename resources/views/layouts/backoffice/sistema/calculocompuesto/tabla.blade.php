@@ -229,6 +229,11 @@
     let frecuencia  = $('#idforma_pago_credito').val();
     let dia_gracia  = $('#dia_gracia').val();
 
+    if (dia_gracia == '') {
+        $('#dia_gracia').val(0);
+        dia_gracia = 0;
+    }
+
     let cargo       = $('#cargo').val();
 
     let tasa        = $('#tasa_tem').val();

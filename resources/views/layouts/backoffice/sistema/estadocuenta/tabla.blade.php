@@ -121,7 +121,7 @@
       //$('#cont_opcioncredito').css('display','none');
       $('#cont_irainicio').css('display','block');
       var idcliente = $('#idcliente_credito').val();
-      $('#iframe_acta_aprobacion').attr('src',"{{ url('/backoffice/'.$tienda->id.'/estadocuenta') }}/"+idcliente+"/edit?view=pdf_estado#zoom=90");
+      $('#iframe_acta_aprobacion').attr('src',"{{ url('/backoffice/'.$tienda->id.'/estadocuenta') }}/"+idcliente+"/edit?view=pdf_estado#zoom=100");
   }
   
   
@@ -192,7 +192,7 @@
     let id = $(e).attr('data-valor-columna');
     $('#table-detalle-prestamo tr.selected').removeClass('selected');
     $(e).addClass('selected');
-      $('#iframe_acta_aprobacion').attr('src',"{{ url('/backoffice/'.$tienda->id.'/estadocuenta') }}/"+id+"/edit?view=pdf_credito#zoom=90"); 
+      $('#iframe_acta_aprobacion').attr('src',"{{ url('/backoffice/'.$tienda->id.'/estadocuenta') }}/"+id+"/edit?view=pdf_credito#zoom=100"); 
   }
 </script>  
 

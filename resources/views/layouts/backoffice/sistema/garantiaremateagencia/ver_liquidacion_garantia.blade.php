@@ -66,7 +66,7 @@
                                 <th width="90px;">VALOR COMERCIAL</th>
                                 <th width="90px;">V.COMERCIAL CON DESCUENTO</th>
                                 <th width="90px;">COBERTURA</th>
-                                <th width="90px;"><span style="background-color: #ffc107;">PRECIO DE LIQUIDACIÓN</span></th>
+                                <th width="90px;"><span style="background-color: #E8E585;">PRECIO DE LIQUIDACIÓN</span></th>
                                 <th width="70px;">OTROS</th>
                                 <th width="95px;">ACCESORIOS</th>
                                 <th width="70px;">COLOR</th>

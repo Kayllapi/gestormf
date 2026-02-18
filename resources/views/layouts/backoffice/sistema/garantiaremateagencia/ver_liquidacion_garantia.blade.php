@@ -144,13 +144,7 @@
     });
 
     function generarfichaLiquidacion() {
-        var selectedRow = $('#table-liquidacion-garantias tbody tr.selected');
-        if (selectedRow.length === 0) {
-            var mensaje = "Debe de seleccionar una garantía.";
-            modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
-            return false;
-        }
-        var idcredito = selectedRow.data('idcredito');
+        var idcredito = {{ $credito->id }};
         modal({ route:"{{url('backoffice/'.$tienda->id.'/garantiaremateagencia/0/edit?view=ver_generarficha_liquidacion')}}&idcredito="+idcredito,  size: 'modal-fullscreen' });
     }
 

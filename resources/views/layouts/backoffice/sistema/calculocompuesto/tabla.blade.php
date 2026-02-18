@@ -73,7 +73,7 @@
                   <div class="row">
                     <label class="col-sm-5 col-form-label" style="text-align: right;">Fecha Desembolso:</label>
                     <div class="col-sm-7">
-                      <input type="date" class="form-control" id="fecha_desembolso" value="{{ date('Y-m-d') }}">
+                      <input type="date" class="form-control" id="fecha_desembolso" value="{{ date('Y-m-d') }}" disabled>
                     </div>
                   </div>
                   <div class="row">

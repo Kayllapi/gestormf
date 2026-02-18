@@ -110,9 +110,11 @@
         <div class="col-sm-12 mt-2">
             <div class="row">
                 <div class="col-sm-8"></div>
-                <label for="precio_liquidacion_total" class="col-sm-2 col-form-label">PRECIO DE LIQUIDACIÓN</label>
+                <label for="precio_liquidacion_total" class="col-sm-2 col-form-label">PRECIO DE LIQUIDACIÓN TOTAL</label>
                 <div class="col-sm-2">
-                    <input type="text" class="form-control" id="precio_liquidacion_total" value="{{ number_format($credito_garantias->sum('precioliquidacion'), 2) }}" disabled>
+                    <input type="text" class="form-control" id="precio_liquidacion_total"
+                        style="border-color: #969ca1;"
+                        value="{{ number_format($credito_garantias->sum('precioliquidacion'), 2) }}" disabled>
                 </div>
             </div>
         </div>
@@ -120,7 +122,7 @@
             <div class="row">
                 <div class="col-sm-6"></div>
                 <button type="button" class="btn btn-primary col-sm-3" onclick="generarfichaLiquidacion()">GENERAR FICHA DE LIQUIDACIÓN</button>
-                <button type="button" class="btn btn-primary col-sm-3" onclick="registrarprecioLiquidacion()">REGISTRAR PRECIO LIQUIDACIÓN</button>
+                <button type="button" class="btn btn-primary col-sm-3 me-1" onclick="registrarprecioLiquidacion()">REGISTRAR PRECIO LIQUIDACIÓN</button>
             </div>
         </div>
     </div>

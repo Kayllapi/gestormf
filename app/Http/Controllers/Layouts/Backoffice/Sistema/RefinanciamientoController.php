@@ -149,13 +149,13 @@ class RefinanciamientoController extends Controller
               $total_desembolsado += $value->monto_solicitado;
           }
           if(count($creditos)==0){
-              $html.= '<tr><td colspan="16" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
+              $html.= '<tr style="background-color: #b7b6b7 !important;"><td colspan="16" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
           }
               $html .= '
-                <tr style="position: sticky;bottom: 0;">
-                  <td colspan="3" style="text-align:right;font-weight: bold;">TOTAL S/.</td>
-                  <td style="text-align:right;font-weight: bold;">'.number_format($total_desembolsado, 2, '.', '').'</td>
-                  <td colspan="8" style="font-weight: bold;"></td>
+                <tr style="position: sticky;bottom: 0;font-weight: bold;background-color: #b7b6b7 !important;">
+                  <td colspan="3" style="text-align:right;">TOTAL S/.</td>
+                  <td style="text-align:right;">'.number_format($total_desembolsado, 2, '.', '').'</td>
+                  <td colspan="8" style=""></td>
                 </tr>';
           return array(
             'html' => $html

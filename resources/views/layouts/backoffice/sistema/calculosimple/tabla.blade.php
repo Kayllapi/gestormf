@@ -8,9 +8,9 @@
   <div class="row justify-content-center">
     <div class="col-sm-12">
       <div class="card">
-        <div class="card-body p-2" id="form-garantias-result">
+        <div class="card-body" id="form-garantias-result">
            <div class="row">
-            <div class="col-md-12 mt-3">
+            <div class="col-md-12">
               <div class="row">
                 <div class="col-md-6">
                   <div class="row">
@@ -73,7 +73,7 @@
                   <div class="row">
                     <label class="col-sm-5 col-form-label" style="text-align: right;">Fecha Desembolso:</label>
                     <div class="col-sm-7">
-                      <input type="date" class="form-control" id="fecha_desembolso" value="{{ date('Y-m-d') }}">
+                      <input type="date" class="form-control" id="fecha_desembolso" value="{{ date('Y-m-d') }}" disabled>
                     </div>
                   </div>
                   <div class="row">
@@ -113,30 +113,32 @@
             
         </div>
 
-        <div class="row mt-3" style="background-color: #198754;">
+        <div class="row mt-3" style="background-color: #cfecc5 !important;
+              border: 1px solid #326222 !important;
+              color: #000;">
           <div class="col-sm-12 col-md-3">
             
           </div>
           
           <div class="col-sm-12 col-md-9">
             <div class="row">
-              <label class="col-sm-2 col-form-label text-white" style="text-align: right;"><b>Interes Total (S/):</b></label>
-              <div class="col-sm-2 col-form-label text-white" id="interes_total">
+              <label class="col-sm-2 col-form-label" style="text-align: right;"><b>Interes Total (S/):</b></label>
+              <div class="col-sm-2 col-form-label" id="interes_total" style="font-weight: normal;">
                 0.00
               </div>
-              <label class="col-sm-2 col-form-label text-white" style="text-align: right;"><b>Servicios/Otros (S/):</b></label>
-              <div class="col-sm-2 col-form-label text-white" id="cargo_total">
+              <label class="col-sm-2 col-form-label" style="text-align: right;"><b>Servicios/Otros (S/):</b></label>
+              <div class="col-sm-2 col-form-label" id="cargo_total" style="font-weight: normal;">
                 0.00
               </div>
-              <label class="col-sm-2 col-form-label text-white" style="text-align: right;"><b>Total a Pagar (S/):</b></label>
-              <div class="col-sm-2 col-form-label text-white" id="total_pagar">
+              <label class="col-sm-2 col-form-label" style="text-align: right;"><b>Total a Pagar (S/):</b></label>
+              <div class="col-sm-2 col-form-label" id="total_pagar" style="font-weight: normal;">
                 0.00
               </div>
             </div>
           </div>
         </div>
         <div class="row mt-3 justify-content-center">
-          <div class="col-sm-12 col-md-7" style="height: calc(-429px + 100vh);">
+          <div class="col-sm-12 col-md-7" style="height: calc(-430px + 100vh);">
             <table class="table table-striped" id="table-cronograma">
               <thead>
                 <th>Cuota N°</th>
@@ -158,8 +160,8 @@
               </tbody>
             </table>
           </div>
-          <div class="col-sm-12 col-md-5" style="height: calc(-429px + 100vh);">
-            <table class="table table-bordered" id="table-tarifario-producto">
+          <div class="col-sm-12 col-md-5" style="height: calc(-430px + 100vh);">
+            <table class="table table-striped" id="table-tarifario-producto">
               <thead>
                 <tr>
                   <th>FRECUENCIA</th>
@@ -222,6 +224,11 @@ function cronograma(){
   let fechainicio = $('#fecha_desembolso').val();
   let frecuencia  = $('#idforma_pago_credito').val();
   let dia_gracia  = $('#dia_gracia').val();
+
+  if (dia_gracia == '') {
+      $('#dia_gracia').val(0);
+      dia_gracia = 0;
+  }
 
   let cargo       = $('#cargo').val();
 

@@ -8,9 +8,9 @@
   <div class="row justify-content-center">
     <div class="col-sm-12">
       <div class="card">
-        <div class="card-body p-2" id="form-garantias-result">
+        <div class="card-body" id="form-garantias-result">
            <div class="row">
-            <div class="col-md-12 mt-3">
+            <div class="col-md-12">
               <div class="row">
                 <div class="col-md-6">
                   <div class="row">

@@ -24,6 +24,6 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="submit" class="btn btn-primary"> Ingresar</button>
+        <button type="submit" class="btn btn-primary"> Registrar</button>
     </div>
 </form>   

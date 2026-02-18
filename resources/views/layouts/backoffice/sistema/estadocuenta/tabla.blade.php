@@ -57,7 +57,7 @@
         <thead class="table-dark" style="position: sticky;top: 0;">
           <tr>
             <th>MONTO</th>
-            <th></th>
+            <th>FC</th>
             <th>ESTADO</th>
             <th>DESEMBOLSO</th>
           </tr>

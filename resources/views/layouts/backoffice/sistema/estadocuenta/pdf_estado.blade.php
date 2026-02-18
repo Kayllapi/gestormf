@@ -126,7 +126,7 @@
             <tr>
               <th style="border-bottom: 2px solid #000;">N°</th>
               <th style="border-bottom: 2px solid #000;">N° CUENTA</th>
-              <th style="border-bottom: 2px solid #000;"></th>
+              <th style="border-bottom: 2px solid #000;">FC</th>
               <th style="border-bottom: 2px solid #000;">PRODUCTO</th>
               <th style="border-bottom: 2px solid #000;">MONT. PRES.</th>
               <th style="border-bottom: 2px solid #000;">F. DESEMBOLSO</th>

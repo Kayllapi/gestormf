@@ -67,7 +67,7 @@
             </div>
           </div-->
           <div class="mb-1">
-            <span class="badge d-block">Días de Tolerancia para liquidación de garantias prendarias</span>
+            <span class="badge d-block">Días de Tolerancia para liquidación de garantias prendarias y porcentaje de Descuento</span>
           </div>
           <div class="row mt-1">
             <label class="col-sm-8 col-form-label" style="text-align: right;">Días:</label>

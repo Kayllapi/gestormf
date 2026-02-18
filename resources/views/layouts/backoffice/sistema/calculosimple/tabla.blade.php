@@ -138,7 +138,10 @@
           </div>
         </div>
         <div class="row mt-3 justify-content-center">
-          <div class="col-sm-12 col-md-7" style="height: calc(-430px + 100vh);">
+          <div class="col-sm-12 col-md-7" style="
+              overflow-y: scroll;
+              height: calc(-430px + 100vh);
+              overflow-x: scroll;">
             <table class="table table-striped" id="table-cronograma">
               <thead>
                 <th>Cuota N°</th>

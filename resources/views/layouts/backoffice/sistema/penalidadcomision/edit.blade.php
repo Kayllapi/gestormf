@@ -76,7 +76,7 @@
             </div>
             <label class="col-sm-4 col-form-label" style="text-align: right;">% de Descuento Liquidación:</label>
             <div class="col-sm-4">
-              <input type="number" class="form-control" step="any" id="porcentaje_descuento" value="">
+              <input type="number" class="form-control" step="any" id="porcentaje_descuento_liquidacion" value="{{ configuracion($tienda->id,'porcentaje_descuento_liquidacion')['valor'] }}">
             </div>
           </div>
           <div class="mb-1">

@@ -136,6 +136,7 @@ class RefinanciamientoController extends Controller
                             <td>".($key+1)."</td>
                             <td>{$value->nombrecliente}</td>
                             <td>{$value->nombreaval}</td>
+                            <td>C{$value->cuenta}</td>
                             <td style='text-align:right;'>{$value->monto_solicitado}</td>
                             <td style='text-align:right;'>{$value->cuotas}</td>
                             <td>{$value->frecuencianombre}</td>
@@ -149,13 +150,13 @@ class RefinanciamientoController extends Controller
               $total_desembolsado += $value->monto_solicitado;
           }
           if(count($creditos)==0){
-              $html.= '<tr style="background-color: #b7b6b7 !important;"><td colspan="16" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
+              $html.= '<tr style="background-color: #b7b6b7 !important;"><td colspan="17" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
           }
               $html .= '
                 <tr style="position: sticky;bottom: 0;font-weight: bold;background-color: #b7b6b7 !important;">
                   <td colspan="3" style="text-align:right;">TOTAL S/.</td>
                   <td style="text-align:right;">'.number_format($total_desembolsado, 2, '.', '').'</td>
-                  <td colspan="8" style=""></td>
+                  <td colspan="9" style=""></td>
                 </tr>';
           return array(
             'html' => $html

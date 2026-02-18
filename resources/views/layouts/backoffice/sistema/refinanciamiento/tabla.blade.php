@@ -65,12 +65,13 @@
                   <td>N°</td>
                   <td>CLIENTE</td>
                   <td>AVAL</td>
-                  <td>DESEMBOLSO</td>
+                  <td>N°. CUENTA</td>
+                  <td>DESEM.</td>
                   <td>CUOTAS</td>
                   <td>F. PAGO</td>
                   <td>F. DESEMBOLSO</td>
                   <td>CAJERO</td>
-                  <td>OPERACIÓN EN</td>
+                  <td>OPE. EN</td>
                   <td>MODA. CRÉDITO</td>
                   <td>ASESOR</td>
                   <td>OPCIÓN</td>

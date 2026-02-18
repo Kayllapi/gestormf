@@ -12,7 +12,7 @@
             <div class="modal-body">
               
                 <div class="row">
-                    <div class="col-sm-12 col-md-7">
+                    <div class="col-sm-12 col-md-6">
                         <div class="row">
                            <div class="col-sm-12 col-md-10">
                               <div class="row">
@@ -59,8 +59,8 @@
                         <div class="row">
                            <div class="col-sm-12 col-md-5">
                               <div class="row">
-                                <label for="fecha_fin" class="col-sm-6 col-form-label">DÍAS VENCIDOS <span style="float:right;">DE</span></label>
-                                <div class="col-sm-6">
+                                <label for="fecha_fin" class="col-sm-7 col-form-label">DÍAS VENCIDOS <span style="float:right;">DE</span></label>
+                                <div class="col-sm-5">
                                     <input type="number" class="form-control" value="" id="dias_retencion_desde">
                                 </div>
                               </div>
@@ -68,7 +68,7 @@
                            <div class="col-sm-12 col-md-5">
                               <div class="row">
                                 <label for="fecha_fin" class="col-sm-3 col-form-label"><span style="float:right;">HASTA</span></label>
-                                <div class="col-sm-6">
+                                <div class="col-sm-5">
                                     <input type="number" class="form-control" value="" id="dias_retencion_hasta">
                                 </div>
                               </div>
@@ -76,7 +76,7 @@
                         </div>
                                 
                     </div>
-                    <div class="col-sm-12 col-md-5" style="background-color: #bababa;border-radius: 5px;padding: 10px;">
+                    <div class="col-sm-12 col-md-6" style="background-color: #bababa;border-radius: 5px;padding: 10px;">
                       <div style="margin-bottom: 5px;">LEYENDA DÍAS VENCIDOS</div>
                       <div>
                         <div style="float: left;">0 DÍAS</div>

@@ -35,7 +35,7 @@ CON GARANTÍA MOBILIARIA SIN POSESIÓN</title>
           line-height: 0.6cm;
           font-size:18px !important;
           font-weight: bold;
-          border-bottom: 2px solid #144081; 
+          border-bottom: 1px solid #000; 
           margin:5px;
           text-align:right;
           padding:5px;
@@ -152,13 +152,13 @@ CON GARANTÍA MOBILIARIA SIN POSESIÓN</title>
           }
           }
           ?>
-      <h4 align="center" style="font-size:13px;margin-top:10px;margin-bottom:10px;">CONTRATO DE CRÉDITO <br><br>CON GARANTÍA MOBILIARIA SIN POSESIÓN</h4>
+      <h4 align="center" style="font-size:13px;margin-top:10px;margin-bottom:10px;">CONTRATO DE CRÉDITO <br>CON GARANTÍA MOBILIARIA SIN POSESIÓN</h4>
       <!--div style="position:absolute; left:700px;top: 60px;">{{ $credito->cuenta!=''?$credito->cuenta:'00000000' }}</div-->
   <div style="text-align: justify;">
     Los que suscriben, por una parte, <b>{{ $tienda->nombre }}</b>, con RUC N° <b>{{ $tienda->ruc }}</b> y domicilio legal para 
-    estos efectos en {{ $tienda->direccion }} Distrito de {{ $ubigeo_tienda->distrito }}, 
-    Provincia de {{ $ubigeo_tienda->provincia }} y Departamento de {{ $ubigeo_tienda->departamento }} a 
-    quién en los sucesivo se le denominará como “EL ACREEDOR” y de otra parte “EL/LOS PRESTATARIO(S)”, cuyos datos se consignan al final del presente contrato.<br><br>
+    estos efectos en <b>{{ $tienda->direccion }}</b> Distrito de <b>{{ $ubigeo_tienda->distrito }}</b>, 
+    Provincia de <b>{{ $ubigeo_tienda->provincia }}</b> y Departamento de <b>{{ $ubigeo_tienda->departamento }}</b> a 
+    quién en lo sucesivo se le denominará como “EL ACREEDOR” y de otra parte “EL/LOS PRESTATARIO(S)”, cuyos datos se consignan al final del presente contrato.<br>
     
     Ambas partes y de forma separada, declaran tener la capacidad necesaria y la facultad suficiente, para la celebración 
     del presente. Hechas las declaraciones respectivas, ambas partes están de acuerdo en celebrar el presente contrato de 
@@ -169,31 +169,32 @@ CON GARANTÍA MOBILIARIA SIN POSESIÓN</title>
     <b>1.1.</b> EL/LOS PRESTATARIO(S) declaran bajo juramento que los datos suministrados en ficha de información, solicitud, contrato 
     y demás documentos de crédito son verídicos y autoriza(n) a EL ACREEDOR el uso, para el seguimiento, control, evaluación y 
     clasificación del Préstamo otorgados a EL/LOS PRESTATARIO(S), conforme lo dispuesto en la Circular SBS N° 133-2010.<br>
-    <b>1.2.</b> Los Canales de contratación que pone a disposición El ACREEDOR para atender a EL/LOS PRESTATARIO(S) son las oficinas y 
-    agencias, página web, llamadas telefónicas, aplicaciones móviles, entre otros. EL ACREEDOR verificará la identidad de EL/LOS PRESTATARIO(S), 
-    dejando constancia de su aceptación a través de las herramientas que tenga implementadas a tales efectos, conforme al marco legal aplicable. 
-    Igualmente, durante la ejecución del presente contrato, EL ACREEDOR podrá usar medios directos de comunicación como: cartas a domicilio, 
+    <b>1.2.</b> Los Canales de contratación que pone a disposición El ACREEDOR para atender a EL/LOS PRESTATARIO(S) son las oficinas y agencias, 
+    página web, llamadas telefónicas, aplicaciones móviles, entre otros. EL ACREEDOR verificará la identidad de EL/LOS PRESTATARIO(S), 
+    dejando constancia de su aceptación a través de las herramientas que tenga implementadas a tales efectos, conforme al marco legal aplicable 
+    de ser el caso. Igualmente, durante la ejecución del presente contrato, EL ACREEDOR podrá usar medios directos de comunicación como: cartas a domicilio, 
     (simple o notarial) mensajes de texto SMS, llamadas telefónicas y otros canales digitales; también podrá utilizar los medios indirectos, 
     la escrita, audio visual, página web y otras determinadas por EL ACREEDOR.
     
 <br><br>
 <b>II.  SOBRE EL CRÉDITO</b>
 <br>
-    <b>2.1.</b> EL ACREEDOR otorga a EL/LOS PRESTATARIO(S), la suma de S/. {{ $credito->monto_solicitado }}, en condición de préstamo, 
-    con pago {{strtoupper($credito->forma_pago_credito_nombre)}} en {{$credito->cuotas}} cuota(s), debiéndose pagar un total de S/. {{ $credito->total_pagar }} 
+    <b>2.1.</b> EL ACREEDOR otorga a EL/LOS PRESTATARIO(S), la suma de S/. <b>{{ $credito->monto_solicitado }}</b>, en condición de préstamo, 
+    con pago <b>{{strtoupper($credito->forma_pago_credito_nombre)}}</b> en <b>{{$credito->cuotas}}</b> cuota(s), debiéndose pagar un total de S/. <b>{{ $credito->total_pagar }}</b> 
     al terminar el plazo pactado, que incluye capital más los intereses, comisión de servicio y gastos (cargos), a la tasa de interés, tasa de comisión de servicio y cargos establecidos en Hoja de Resumen del crédito; conforme lo informado y 
     aceptación de estos por parte de EL/LOS PRESTATARIO(S). <br>
     <b>2.2.</b> EL/LOS PRESTATARIO(S) se obliga a pagar a EL ACREEDOR el préstamo otorgado por este último más los intereses, comisión de servicio y gastos (cargos), 
     en la forma y plazo de pagos convenido de ambas partes conforme numeral 2.1; debiendo pagar en la misma moneda del crédito, 
     en las oficinas o agencias de EL ACREEDOR en forma de efectivo, transferencia bancaria, depósitos en cuenta, entre otras; 
-    para lo cual se le otorga {{ $credito->config_dias_tolerancia_garantia }} días de tolerancia para el pago de las cuotas respectivas. Vencido los días de tolerancia 
+    para lo cual se le otorga <b>{{ $credito->config_dias_tolerancia_garantia }}</b> días de tolerancia para el pago de las cuotas respectivas. Vencido los días de tolerancia 
     EL/LOS PRESTATARIO(S) pagará(n) el interés compensatorio y moratorio, custodia de garantía y cargos adicionales de ser el caso, 
     desde el primer día de su vencimiento, conforme tasas y penalidades establecidas en la hoja de resumen del crédito.<br>
-    <b>2.3.</b> EL/LOS PRESTATARIO(S)  podrá(n) solicitar ampliar su crédito vigente conforme amerite, disponiendo el monto parcial o total de lo 
-    pagado a cuenta del crédito, conforme políticas establecidas. Para lo cual EL ACREEDOR procederá al recalculo del nuevo capital adeudado por EL/LOS PRESTATARIO(S). 
-    El nuevo saldo de capital comprenderá los intereses, las comisiones de servicio, gastos(cargos) en caso correspondan. La Ampliación generará la novación del Contrato 
-    de Crédito, por lo que, previamente se requerirá aceptación expresa de EL/LOS PRESTATARIO(S) dejándose constancia de ello. De procederse con esta operación, 
-    EL ACREEDOR alcanzará los documentos correspondientes que detallen las nuevas condiciones pactadas con EL/LOS PRESTATARIO(S), para lo cual será de aplicación el numeral 1.2 del Contrato.<br>
+    <b>2.3.</b> EL/LOS PRESTATARIO(S) podrá(n) solicitar ampliar su crédito vigente conforme amerite, disponiendo el monto parcial o total de 
+    lo pagado a cuenta del crédito, conforme políticas establecidas. Para lo cual EL ACREEDOR procederá al recalculo del nuevo capital adeudado 
+    por EL/LOS PRESTATARIO(S). El nuevo saldo de capital comprenderá los intereses, las comisiones de servicio, gastos(cargos) en caso correspondan. 
+    La Ampliación generará la novación del Contrato de Crédito, por lo que, previamente se requerirá aceptación expresa de EL/LOS PRESTATARIO(S) dejándose 
+    constancia de ello. De procederse con esta operación, EL ACREEDOR alcanzará los documentos correspondientes que detallen las nuevas condiciones 
+    pactadas con EL/LOS PRESTATARIO(S), para lo cual será de aplicación el numeral 1.2 del Contrato.<br>
     <b>2.4.</b> EL ACREEDOR queda facultada a refinanciar la deuda de EL/LOS PRESTATARIO(S) en caso de incumplimiento de pago para lo cual 
     se incluirá el monto total de la deuda vencida, en una liquidación de saldo deudor conforme a sus reglas internas, como el 
     importe del capital saldo por pagar más intereses, servicios, intereses compensatorios y moratorios, custodia de garantía y 
@@ -214,8 +215,8 @@ CON GARANTÍA MOBILIARIA SIN POSESIÓN</title>
     el presente Contrato son las siguientes:<br>
     <b>3.1.</b> Al incumplimiento de pago de EL/LOS PRESTATARIO(S) sea el saldo o total del préstamo incluido intereses, comisión de servicio 
     y gastos. En créditos pagaderos hasta 2 meses de plazo y vencido, o en créditos pagaderos mayor a 2 meses de plazo, con 90 días a más de vencido la cuota de pago; 
-    EL/LOS PRESTATARIO(S) tendrá(n) {{ $credito->config_dias_tolerancia_garantia }} días para su cancelación total o regularización, pagando custodia de ser el caso del bien(s) en garantía, 
-    interés compensatorio y moratorio más cargos. Caso contrario EL ACREEDOR ejecutará la(s) garantias(s) entregada(s) conforme en numeral 4.1. <br>
+    EL/LOS PRESTATARIO(S) tendrá(n) <b>{{ $credito->config_dias_tolerancia }}</b> días para su cancelación total o regularización, pagando custodia de ser el caso del bien(s) en garantía, 
+    interés compensatorio y moratorio más cargos. Caso contrario EL ACREEDOR ejecutará la(s) garantías(s) entregada(s) conforme en numeral 4.1. <br>
     <b>3.2.</b> EL/LOS PRESTATARIO(S) incurre en los supuestos previstos en el artículo 175 de Ley General del Sistema Financiero y del Sistema 
     de Seguros y Orgánica de la Superintendencia de Banca y Seguros, Ley N° 26702 <br>
     <b>3.3.</b> Otras permitidas por Ley, y que EL ACREEDOR implemente, comunicando oportunamente a EL/LOS PRESTATARIO(S).<br>
@@ -226,10 +227,9 @@ CON GARANTÍA MOBILIARIA SIN POSESIÓN</title>
 <br>
 <b>IV.  DE LA GARANTÍA MOBILIARIA</b>
 <br>
-    <b>4.1.</b> La garantía(s) mobiliaria(s) con posesión que constituye(n) EL/LOS PRESTATARIO(S) a favor de EL ACREEDOR será de primera y preferente, siendo el (los) 
-    siguiente(s) bien(es) que respaldará(n) el cumplimiento de pago del préstamo y de futuros créditos que pueda(n) obtener.<br>
+    <b>4.1.</b> La garantía(s) mobiliaria(s) sin posesión que constituye(n) EL/LOS PRESTATARIO(S) a favor de EL ACREEDOR será de primera y preferente, siendo el (los) 
+    siguiente(s) bien(es) que respaldará(n) el cumplimiento del pago del préstamo y de los futuros créditos que EL/LOS PRESTATARIO(S) pueda(n) obtener.<br>
     
-    <br>
     <br>
           <table style="width:100%;">
             <tr>
@@ -280,11 +280,11 @@ CON GARANTÍA MOBILIARIA SIN POSESIÓN</title>
     por EL ACREEDOR por alguno de los medios directos previstos en el numeral 1.2. EL/LOS PRESTATARIO(S) se compromete a que la valorización de la 
     Garantía Mobiliaria siempre ascienda a la detallada en la Hoja Resumen. El incumplimiento de esta obligación dará derecho a EL ACREEDOR a ejecutar 
     de inmediato la Garantía Mobiliaria.<br>
-<b>4.4.</b><b> Del depositario. </b> La garantía mobiliaria que se constituye en respaldo del préstamo se realiza sin entrega de posesión del (de los) bien(es) 
-    mueble(s) a EL ACREEDOR, modalidad de garantía mobiliaria conforme Ley de Garantía Mobiliaria N° 28677, Decreto Legislativo N° 1400 (o norma que 
-    la modifique o reemplace), en virtud de la cual se nombra DEPOSITARIO del (de los) bien(es) detallados en numeral 4.1. y en Hoja de resumen del 
-    crédito entregado a EL/LOS PRESTATARIO(S); siendo el lugar de depósito en el domicilio del DEPOSITARIO.
-EL/LOS PRESTATARIO(S) podrá designar un DEPOSITARIO idóneo para que custodie el (los) bien(es) dado(s) en garantía. En ese caso, comunicará dicha 
+<b>4.4.</b><b> Del depositario. </b> La garantía(s) mobiliaria(s) que se constituye en respaldo del préstamo se realiza sin entrega de posesión del 
+    (de los) bien(es) mueble(s) a EL ACREEDOR, modalidad de garantía mobiliaria conforme Ley de Garantía Mobiliaria N° 28677, Decreto Legislativo N° 1400 
+    (o norma que la modifique o reemplace), en virtud de la cual se nombra DEPOSITARIO del (de los) bien(es) detallados en numeral 4.1. a EL/LOS PRESTATARIO(S)  
+    y se detallan en Hoja de resumen del crédito entregado; siendo lugar de depósito en el domicilio del DEPOSITARIO.
+EL/LOS PRESTATARIO(S) podrá(n) designar un DEPOSITARIO tercero idóneo para que custodie el (los) bien(es) dado(s) en garantía. En ese caso, comunicará dicha 
     decisión a EL ACREEDOR, y esta última tendrá derecho a Adherirse al Contrato de Custodia que celebre EL/LOS PRESTATARIO(S) con el DEPOSITARIO, 
     asumiendo este último todas las obligaciones contempladas en la Ley de Garantía Mobiliaria, incluso la de entregar el bien gravado al Representante 
     Común cuando ello sea requerido conforme lo pactado en el Contrato del cual forma parte la presente cláusula adicional. El DEPOSITARIO designado 
@@ -300,21 +300,21 @@ En caso EL/LOS PRESTATARIO(S) mantenga la calidad de DEPOSITARIO deberá contrat
     virtud a Resolución SBS N° 3274-2017 artículos 40 y 41, quedando EL/LOS PRESTATARIO(S) obligado(s) a pagar a EL ACREEDOR un monto igual al saldo del Préstamo, 
     intereses y comisiones de servicio más los intereses compensatorios y moratorios de obligaciones impagas y gastos.
 EL/LOS PRESTATARIO(S) reconoce que, como parte de la evaluación para el otorgamiento del préstamo, EL ACREEDOR le solicitó la presentación del comprobante de pago 
-    de la adquisición del (de los) bienes materia de la garantía mobiliaria. Al no contar con dicho comprobante, EL/LOS PRESTATARIO(S) suscribe(n) la presente declaración 
+    de la adquisición del (de los) bien(es) materia de la garantía mobiliaria. Al no contar con dicho comprobante, EL/LOS PRESTATARIO(S) suscribe(n) la presente declaración 
     jurada, la cual forma parte integral del contrato de préstamo.<br>
 <br>
 <b>V. EJECUCIÓN DE LA GARANTÍA</b>
 <br>    
-    El ACREEDOR ejecutará la(s) garantía(s) mobiliaria de numeral 4.1. ante el incumplimiento de la(s) Obligación(es) Garantizada(s), así como, luego de vencido 
-    los plazos otorgados numeral 3.1 y será a elección indistinta de EL ACREEDOR a través de la Venta Extrajudicial o Remate Público, conforme Ley N° 28677 Artículo 
-    10 y 12, Decreto Legislativo N° 1400 (o norma que la modifique o reemplace); para lo cual el EL/LOS PRESTATARIO(S) autoriza a EL ACREEDOR con pleno conocimiento 
-    al suscribir el presente contrato. Donde EL ACREEDOR en Venta Extrajudicial no requerirá realizar publicación en medios de comunicación de mayor circulación; 
-    tampoco requiere de comunicación previa por cualquier medio directo a EL/LOS PRESTATARIO(S), siendo una facultad que podrá ejercer EL ACREEDOR discrecionalmente, 
-    en caso de Remate deberá notificar a EL/LOS PRESTATARIO(S) mediante la publicación de un aviso en medios de mayor circulación o en la página Web de EL ACREEDOR. 
-    El Producto de la venta mencionada será aplicada al pago de la deuda. El precio base de venta Extrajudicial o Remate Público no será menor de los 2/3 de la 
-    valorización pactado de la garantía mobiliaria descrita en Hoja Resumen y de existir remanente, este se pondrá a disposición de EL/LOS PRESTATARIO(S) en plazo 
-    máximo de 15 días calendarios que se comunicará conforme numeral 1.2. De no presentarse comprador en venta extrajudicial a terceros, el (los) bien(es) se adjudicarán 
-    directamente a EL ACREEDOR para la cancelación del saldo de la deuda.
+    Las partes acuerdan que El ACREEDOR ejecutará la(s) garantía(s) mobiliaria de numeral 4.1. ante el incumplimiento de la Obligación Garantizada, 
+    así como, luego de vencido los plazos otorgados en numeral 3.1 a través de la Venta Extrajudicial con venta privada o subasta pública y a elección 
+    indistinta de EL ACREEDOR, conforme Ley N° 28677 Artículo 10 y 12, Decreto Legislativo N° 1400 (o norma que la modifique o reemplace); para lo cual 
+    el EL/LOS PRESTATARIO(S) autoriza(n) a EL ACREEDOR con pleno conocimiento al suscribir el presente contrato. EL ACREEDOR en Venta Privada no requerirá 
+    realizar publicación en medios de comunicación de mayor circulación; tampoco requiere de comunicación previa por cualquier medio directo a EL/LOS PRESTATARIO(S), 
+    siendo una facultad que podrá ejercer EL ACREEDOR discrecionalmente, en venta por Subasta Pública deberá notificar a EL/LOS PRESTATARIO(S) mediante la publicación 
+    de un aviso en medios de mayor circulación o en la página web de EL ACREEDOR, y el producto de la venta mencionada será aplicada al pago de la deuda. 
+    El precio base de venta en Subasta Pública no será menor de los 2/3 de la valorización pactado de la garantía mobiliaria descrita en Hoja Resumen y de existir 
+    remanente, este se pondrá a disposición de EL/LOS PRESTATARIO(S) en plazo máximo de 15 días calendarios que se comunicará conforme numeral 1.2. De no presentarse 
+    postores a la Subasta, o no ser posible la Venta Privada, el (los) bien(es) se adjudicará(n) directamente a EL ACREEDOR para la cancelación del saldo de la deuda.
 <br>
 <br>
 <b>VI. EMISIÓN DE TITULO VALOR INCOMPLETO</b>
@@ -332,30 +332,34 @@ EL/LOS PRESTATARIO(S) reconoce que, como parte de la evaluación para el otorgam
 <br>
 <b>VII.REPRESENTANTE COMÚN</b>
 <br>
-    Las Partes designan como Representante Común para ejecutar la Garantía Mobiliaria en caso de incumplimiento en el pago de la(s) Obligación(es) Garantizada(s) a 
-    la(s) persona(s) indicada(s) en la Hoja de Resumen del crédito. Para que en forma individual e indistinta puedan realizar y formalizar el Remate Público o la 
-    Venta Extrajudicial a terceros o la Adjudicación a EL ACREEDOR, del (de los) bien(es) otorgado(s) en Garantía Mobiliaria otorgándole ambas partes Poder Específico, 
-    suficiente e irrevocable, para tal fin.
+    Las Partes designan como Representante Común conforme Ley, para ejecutar la Garantía Mobiliaria en caso de incumplimiento en el pago de la Obligación Garantizada 
+    a la(s) persona(s) indicada(s) en la Hoja de Resumen del crédito. Para que en forma individual e indistinta puedan realizar y formalizar el Remate Público o la 
+    Venta Privada o la Adjudicación a EL ACREEDOR, del (de los) bien(es) otorgado(s) en Garantía Mobiliaria; otorgándole ambas partes Poder Específico, suficiente e 
+    irrevocable, para tal fin.
 
 <br><br>
 <b>VIII. CESIÓN</b>
 <br>
-    EL/LOS PRESTATARIO(S) a través del presente autoriza a EL ACREEDOR para que este última pueda ceder o transmitir total o parcialmente todos los derechos y obligaciones derivados del Contrato en favor de un tercero. Asimismo, EL ACREEDOR podrá afectar o dar en garantía, cualquiera que sea la forma que esté prevista, los derechos que el Contrato le confiere en aplicación de los artículos 1206° y 1211° del Código Civil. El ACREEDOR comunicará a EL/LOS PRESTATARIO(S) mediante aviso escrito al domicilio, correo electrónico, o comunicaciones telefónicas la cesión de derechos con carácter informativo. EL/LOS PRESTATARIO(S) por su parte no podrá ceder su posición contractual a terceros, salvo sea autorizado por EL ACREEDOR.
+    EL/LOS PRESTATARIO(S) a través del presente autoriza a EL ACREEDOR para que este última pueda ceder o transmitir total o parcialmente todos los derechos y obligaciones 
+    derivados del Contrato en favor de un tercero. Asimismo, EL ACREEDOR podrá afectar o dar en garantía, cualquiera que sea la forma que esté prevista, 
+    los derechos que el Contrato le confiere en aplicación de los artículos 1206° y 1211° del Código Civil. El ACREEDOR comunicará a EL/LOS PRESTATARIO(S) 
+    mediante aviso escrito al domicilio, correo electrónico, o comunicaciones telefónicas la cesión de derechos con carácter informativo. EL/LOS PRESTATARIO(S) por 
+    su parte no podrá ceder su posición contractual a terceros, salvo autorice EL ACREEDOR.
 <br><br>
     <?php
     $meses = array("enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre");
     $mes = $meses[(date_format(date_create($credito->fecha_desembolso),'n')) - 1];
     $fecha_texto = date_format(date_create($credito->fecha_desembolso),'d') . ' de ' . $mes . ' de ' . date_format(date_create($credito->fecha_desembolso),'Y');
     ?>
-<b>IX. VIGENCIA.</b> Indeterminada hasta la cancelación total de la(s) obligación(es) Garantizada(s).
+<b>IX. VIGENCIA.</b> Indeterminada hasta la cancelación total de la Obligación Garantizada.
 <br><br>
     <b>X. JURISDICCIÓN Y COMPETENCIA.</b>
     Las partes renuncian al fuero de sus domicilios y se someten a la jurisdicción del lugar de celebración del Contrato. Todo cambio de domicilio de EL/LOS 
     PRESTATARIO(S) solo surtirá efecto desde su puesta en conocimiento a EL ACREEDOR, a través de comunicación física o electrónica, con una anticipación no 
     menor de cinco (5) días útiles.<br><br><br>
     <b>XI. ACEPTACIÓN DEL CONTRATO</b>
-    En mi condición de EL/LOS PRESTATARIO(S), declaro haber recibido la hoja de resumen del préstamo, cronograma de pagos y el dinero respectivo; asimismo la información sobre las políticas y condiciones del préstamo, aceptando los mismos. 
-    En fe a la verdad, suscribimos el presente contrato en la ciudad de {{ $ubigeo_tienda->distrito }}, a {{ $fecha_texto }}.<br>
+    En mi condición de EL/LOS PRESTATARIO(S), declaro haber recibido la hoja de resumen del préstamo, cronograma de pagos y el dinero respectivo; asimismo la información sobre las políticas y condiciones del préstamo, aceptando las mismas. 
+    En fe a la verdad, suscribimos el presente contrato en la ciudad de <b>{{ $ubigeo_tienda->distrito }}</b>, a <b>{{ $fecha_texto }}</b>.<br>
 </div>
 
 <br><br>

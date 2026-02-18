@@ -17,12 +17,12 @@
       </div>
        <div class="col-sm-12 mt-2 text-center">
             <div id="cont_botonesdesembolso" style="display:none;">
-            <button type="button" class="btn btn-danger" style="background-color: #144081;border-color: #144081;" onclick="verpdf('pdf_ticket')"> TICKET DE DESEMBOLSO</button>
-            <button type="button" class="btn btn-danger" style="background-color: #144081;border-color: #144081;" onclick="verpdf('pdf_cronograma')"> CRONOGRAMA</button>
-            <button type="button" class="btn btn-danger" style="background-color: #144081;border-color: #144081;" onclick="verpdf('pdf_contrato')"> CONTRATO</button>
-            <button type="button" class="btn btn-danger" style="background-color: #144081;border-color: #144081;" onclick="verpdf('pdf_resumen')"> H. RESUMEN</button>
+            <button type="button" class="btn btn-primary" onclick="verpdf('pdf_ticket')"> TICKET DE DESEMBOLSO</button>
+            <button type="button" class="btn btn-primary" onclick="verpdf('pdf_cronograma')"> CRONOGRAMA</button>
+            <button type="button" class="btn btn-primary" onclick="verpdf('pdf_contrato')"> CONTRATO</button>
+            <button type="button" class="btn btn-primary" onclick="verpdf('pdf_resumen')"> H. RESUMEN</button>
             @if($credito->idforma_credito==1)
-            <button type="button" class="btn btn-danger" style="background-color: #144081;border-color: #144081;" onclick="verpdf('pdf_declaracion')"> DECLARACIÓN JURADA</button>
+            <button type="button" class="btn btn-primary" onclick="verpdf('pdf_declaracion')"> DECLARACIÓN JURADA</button>
             @endif
             <button type="button" class="btn btn-warning" onclick="verpdf('pdf_pagare')"> PAGARÉ</button>
             </div>
@@ -32,21 +32,19 @@
             <hr style="margin-top: 8px;margin-bottom: 8px;">
             <?php $i=1 ?>
             @foreach($garantias as $value)
-            <button type="button" class="btn btn-danger" style="background-color: #1e69d9;border-color: #144081;" onclick="verpdf('pdf_ticketprendario',{{$value->id}},{{$i}})"> TICKET DE GARANTIA {{ $i }}</button>
+            <button type="button" class="btn btn-info" onclick="verpdf('pdf_ticketprendario',{{$value->id}},{{$i}})"> TICKET DE GARANTIA {{ $i }}</button>
             <?php $i++ ?>
             @endforeach
             @endif
             </div>
        </div>
-       <div class="col-sm-12 mt-2">
-        <iframe id="iframe_acta_aprobacion" src="{{ url('/backoffice/'.$tienda->id.'/desembolso/'.$credito->id.'/edit?view=pdf_cronograma') }}#zoom=90" frameborder="0" width="100%" height="600px"></iframe>
-      </div>
+        <iframe id="iframe_acta_aprobacion" src="{{ url('/backoffice/'.$tienda->id.'/desembolso/'.$credito->id.'/edit?view=pdf_cronograma') }}#zoom=100" frameborder="0" width="100%" height="600px"></iframe>
       </div>
 </form>   
 </div>
 <script>
 function verpdf(valor,idgarantia,num){
-    $('#iframe_acta_aprobacion').attr('src',"{{ url('/backoffice/'.$tienda->id.'/desembolso/'.$credito->id.'/edit?view=') }}"+valor+'&idgarantia='+idgarantia+'&num='+num+'#zoom=90');
+    $('#iframe_acta_aprobacion').attr('src',"{{ url('/backoffice/'.$tienda->id.'/desembolso/'.$credito->id.'/edit?view=') }}"+valor+'&idgarantia='+idgarantia+'&num='+num+'#zoom=100');
 }
    
    function realizar_desembolso(){

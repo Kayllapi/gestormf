@@ -18,7 +18,7 @@
     <div class="modal-body">
         <div class="row">
             <label class="col-sm-4 col-form-label" style="text-align: right;">Agencia *</label>
-            <div class="col-sm-8">
+            <div class="col-sm-4">
                 <select class="form-control" id="idtienda" disabled>
                     <option></option>
                     @foreach($agencias as $value)
@@ -29,7 +29,7 @@
         </div>
         <div class="row">
             <label class="col-sm-4 col-form-label" style="text-align: right;">Tipo de Bien *</label>
-            <div class="col-sm-8">
+            <div class="col-sm-4">
                 <select class="form-control" id="idtipogarantia" disabled>
                     <option></option>
                     @foreach($tipo_garantia as $value)

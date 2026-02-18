@@ -30,8 +30,6 @@
                 <div class="col-sm-2">
                     <input type="number" class="form-control" id="valor_comercial" value="">
                 </div>
-            </div>
-            <div class="row">
                 <label for="valor_comercial_descuento" class="col-sm-2 col-form-label">V.Comercial con Descuento</label>
                 <div class="col-sm-2">
                     <input type="number" class="form-control" id="valor_comercial_descuento" value="">

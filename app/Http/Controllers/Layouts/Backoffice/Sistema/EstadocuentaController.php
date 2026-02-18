@@ -333,8 +333,10 @@ class EstadocuentaController extends Controller
           $html = '';
           foreach($creditos as $value){
               $estadocredito = 'PEND.';
+              $color = '#ffb2b2';
               if($value->idestadocredito==2){
                   $estadocredito = 'CANC.';
+                  $color = '';
               }
               $cp = '';
               if($value->idforma_credito==1){
@@ -350,7 +352,7 @@ class EstadocuentaController extends Controller
               $html .= "<tr data-valor-columna='{$value->id}' onclick='show_data(this)'>
                             <td style='text-align: right;width: 70px;'>S/ {$value->monto_solicitado}</td>
                             <td style='width: 20px;'>{$cp}</td>
-                            <td style='width: 20px;'>{$estadocredito}</td>
+                            <td style='width: 20px;'><span style='background-color: {$color};'>{$estadocredito}</span></td>
                             <td style='font-size: 11px;'>{$fechadesemobolso}</td>
                         </tr>";
           }

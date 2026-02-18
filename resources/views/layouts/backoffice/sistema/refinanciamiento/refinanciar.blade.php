@@ -95,7 +95,7 @@
                   </div>
                 </div>
                 <div class="row">
-                  <label class="col-sm-5 col-form-label" style="text-align: right;">Com.Ss./Otros.(Mes):</label>
+                  <label class="col-sm-5 col-form-label" style="text-align: right;">Com.Ss./Otros.(%Mes):</label>
                   <div class="col-sm-7">
                     <input type="number" step="any" class="form-control" id="comision" value="0." disabled>
                   </div>
@@ -168,8 +168,11 @@
           <div class="row">
             <input type="hidden" id="monto_cobertura_garantia" value="{{ $credito->monto_cobertura_garantia }}">
             @if($credito->idforma_credito==1)
-            <label class="col-sm-12 col-form-label" ><span class="bg-light text-dark" style="padding: 4px;
-    border-radius: 4px;"><b>COBERTURA GARANTIA:</b> {{ $credito->monto_cobertura_garantia }} SOLES</span></label>
+            <label class="col-sm-12 col-form-label" >
+              <span class="bg-light text-dark" style="padding: 4px;border: 1px solid #000 !important;border-radius: 4px;">
+                <b>COBERTURA GARANTIA:</b> <span style="font-weight: normal;">{{ $credito->monto_cobertura_garantia }} SOLES</span>
+              </span>
+            </label>
             @endif
           </div>
         </div>
@@ -305,11 +308,13 @@
               </tr>
             </tbody>
           </table>
-          @if($view_detalle!='false')
-          <br>
-          <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> REFINANCIAR CRÉDITO</button>
-          @endif
         </div>
+          @if($view_detalle!='false')
+          <button type="submit" class="btn btn-primary"
+            style="height: fit-content;
+              margin-right: 10px;"><i class="fa-solid fa-floppy-disk"></i> REFINANCIAR CRÉDITO
+            </button>
+          @endif
       </div>
       
 

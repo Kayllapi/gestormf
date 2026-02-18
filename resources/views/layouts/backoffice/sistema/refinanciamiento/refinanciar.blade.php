@@ -123,7 +123,7 @@
               </div>
           </div>
           <div class="col-md-5">
-          <h6>LISTA DE GARANTIAS</h6>
+          <h6 style="margin-bottom: 2px; font-size: 0.8rem;">LISTA DE GARANTIAS</h6>
           <div class="table-responsive">
             <table class="table table-striped" id="table-garantia-cliente">
               <thead>

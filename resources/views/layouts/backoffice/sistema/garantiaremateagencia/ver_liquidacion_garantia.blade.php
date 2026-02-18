@@ -18,7 +18,7 @@
                 </div>
             </div>
             <div class="row">
-                <label for="valor_comercial" class="col-sm-2 col-form-label">Valor comercial (con descuento)</label>
+                <label for="valor_comercial" class="col-sm-2 col-form-label">Valor comercial</label>
                 <div class="col-sm-2">
                     <input type="number" class="form-control" id="valor_comercial" value="">
                 </div>
@@ -28,13 +28,19 @@
                 </div>
             </div>
             <div class="row">
-                <label for="valor_realizacion" class="col-sm-2 col-form-label">Valor de cobertura</label>
+                <label for="valor_comercial_descuento" class="col-sm-2 col-form-label">V.C con Descuento</label>
                 <div class="col-sm-2">
-                    <input type="number" class="form-control" id="valor_realizacion" value="">
+                    <input type="number" class="form-control" id="valor_comercial_descuento" value="">
                 </div>
                 <label for="saldo" class="col-sm-3 col-form-label">Saldo de Deuda Total (C+I+Ic+M): S/.</label>
                 <div class="col-sm-2">
                     <input type="number" class="form-control" id="saldo">
+                </div>
+            </div>
+            <div class="row">
+                <label for="valor_realizacion" class="col-sm-2 col-form-label">Valor de cobertura</label>
+                <div class="col-sm-2">
+                    <input type="number" class="form-control" id="valor_realizacion" value="">
                 </div>
             </div>
         </div>

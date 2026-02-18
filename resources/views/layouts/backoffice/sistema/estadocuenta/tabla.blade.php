@@ -1,6 +1,6 @@
 <div class="modal-header">
     <h5 class="modal-title">
-      Estado de Cuenta
+      Estado de Cuenta / Historial
       <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="buscarcliente()">
         <i class="fa fa-search"></i> Buscar Cliente
       </button>

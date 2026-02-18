@@ -2,7 +2,7 @@
     <h5 class="modal-title">
      Movimiento Interno de Efectivo
     </h5>
-    <button type="button" class="btn-close" onclick="ir_inicio()" style="font-size: 20px;"></button>
+    <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>
 
 <div class="modal-body">

@@ -22,7 +22,7 @@
                 </div>
                 <label for="saldo" class="col-sm-3 col-form-label">Saldo de Deuda Total (C+I+Ic+M): S/.</label>
                 <div class="col-sm-2">
-                    <input type="number" class="form-control" id="saldo">
+                    <input type="number" class="form-control" id="saldo" value="{{ $cronograma['cuota_pendiente'] }}">
                 </div>
             </div>
             <div class="row">
@@ -64,7 +64,9 @@
                                 <th width="70px;">MODELO</th>
                                 <th width="70px;">OTROS</th>
                                 <th width="90px;">VALOR COMERCIAL</th>
+                                <th width="90px;">V.COMERCIAL CON DESCUENTO</th>
                                 <th width="90px;">COBERTURA</th>
+                                <th width="90px;">PRECIO DE LIQUIDACIÓN</th>
                                 <th width="95px;">ACCESORIOS</th>
                                 <th width="70px;">COLOR</th>
                                 <th width="100px;">AÑO DE FABRICACIÓN</th>
@@ -75,26 +77,29 @@
                         </thead>
                         <tbody>
                             @foreach($credito_garantias as $value)
-                            <tr data-idcredito='{{ $value->idcredito }}'
-                                data-valor-comercial='{{ $value->valor_comercial }}'
-                                data-valor-realizacion='{{ $value->valor_realizacion }}'>
-                                <td>{{$value->garantias_codigo}}</td>
-                                <td>{{$value->clientenombrecompleto}}</td>
-                                <td>{{$value->dni}}</td>
-                                <td>{{$value->garantias_tipogarantia}}</td>
-                                <td>{{$value->descripcion}}</td>
-                                <td>{{$value->garantias_serie_motor_partida}}</td>
-                                <td>{{$value->garantias_modelo_tipo}}</td>
-                                <td>{{$value->garantias_otros}}</td>
-                                <td>{{$value->valor_comercial}}</td>
-                                <td>{{$value->valor_realizacion}}</td>
-                                <td>{{$value->garantias_accesorio_doc}}</td>
-                                <td>{{$value->garantias_color}}</td>
-                                <td>{{$value->garantias_fabricacion}}</td>
-                                <td>{{$value->garantias_compra}}</td>
-                                <td>{{$value->garantias_placa}}</td>
-                                <td>{{$value->garantias_detalle_garantia}}</td>
-                            </tr>
+                                <tr data-idcredito='{{ $value->idcredito }}'
+                                    data-idcreditogarantia='{{ $value->id }}'
+                                    data-valor-comercial='{{ $value->valor_comercial }}'
+                                    data-valor-realizacion='{{ $value->valor_realizacion }}'>
+                                    <td>{{$value->garantias_codigo}}</td>
+                                    <td>{{$value->clientenombrecompleto}}</td>
+                                    <td>{{$value->dni}}</td>
+                                    <td>{{$value->garantias_tipogarantia}}</td>
+                                    <td>{{$value->descripcion}}</td>
+                                    <td>{{$value->garantias_serie_motor_partida}}</td>
+                                    <td>{{$value->garantias_modelo_tipo}}</td>
+                                    <td>{{$value->garantias_otros}}</td>
+                                    <td>{{$value->valor_comercial}}</td>
+                                    <td>{{ number_format($value->valor_comercial - ($value->valor_comercial * configuracion($tienda->id,'porcentaje_descuento_liquidacion')['valor'] / 100), 2) }}</td>
+                                    <td>{{$value->valor_realizacion}}</td>
+                                    <td>{{$value->precioliquidacion}}</td>
+                                    <td>{{$value->garantias_accesorio_doc}}</td>
+                                    <td>{{$value->garantias_color}}</td>
+                                    <td>{{$value->garantias_fabricacion}}</td>
+                                    <td>{{$value->garantias_compra}}</td>
+                                    <td>{{$value->garantias_placa}}</td>
+                                    <td>{{$value->garantias_detalle_garantia}}</td>
+                                </tr>
                             @endforeach
                         </tbody>
                     </table>
@@ -104,9 +109,9 @@
         <div class="col-sm-12 mt-2">
             <div class="row">
                 <div class="col-sm-8"></div>
-                <label for="precio_liquidacion" class="col-sm-2 col-form-label">PRECIO DE LIQUIDACIÓN</label>
+                <label for="precio_liquidacion_total" class="col-sm-2 col-form-label">PRECIO DE LIQUIDACIÓN</label>
                 <div class="col-sm-2">
-                    <input type="text" class="form-control" id="precio_liquidacion" value="" disabled>
+                    <input type="text" class="form-control" id="precio_liquidacion_total" value="{{ number_format($credito_garantias->sum('precioliquidacion'), 2) }}" disabled>
                 </div>
             </div>
         </div>
@@ -128,7 +133,6 @@
         var valor_realizacion = $(this).data('valor-realizacion');
         $('#valor_comercial').val(valor_comercial);
         $('#valor_realizacion').val(valor_realizacion);
-        $('#precio_liquidacion').val(valor_comercial);
 
         // Calcular el valor comercial con descuento
         var porcentaje_descuento_liquidacion = {{ configuracion($tienda->id,'porcentaje_descuento_liquidacion')['valor'] }};
@@ -154,7 +158,7 @@
             modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });  
             return false;
         }
-        var idcredito = selectedRow.data('idcredito');
-        modal({ route:"{{url('backoffice/'.$tienda->id.'/garantiaremateagencia/0/edit?view=ver_registrarprecio_liquidacion')}}&idcredito="+idcredito,  size: 'modal-sm' });
+        var idcreditogarantia = selectedRow.data('idcreditogarantia');
+        modal({ route:"{{url('backoffice/'.$tienda->id.'/garantiaremateagencia/0/edit?view=ver_registrarprecio_liquidacion')}}&idcreditogarantia="+idcreditogarantia,  size: 'modal-sm' });
     }
 </script>

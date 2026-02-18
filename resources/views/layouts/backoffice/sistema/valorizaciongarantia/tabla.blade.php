@@ -8,7 +8,7 @@
       </a> -->
       <button type="button" class="btn btn-success" onclick="load_create_tipogarantia()">NUEVO / Actualizar</button>
     </h5>
-    <button type="button" class="btn-close" onclick="ir_inicio()" style="font-size: 20px;"></button>
+    <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>
 
 <?php

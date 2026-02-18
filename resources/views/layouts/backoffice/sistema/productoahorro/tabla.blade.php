@@ -1,6 +1,6 @@
 <div class="modal-header">
   <h5 class="modal-title">Productos de Ahorro <button type="button" class="btn btn-primary" id="btn-create-cliente" onclick="load_form_create()"><i class="fa-solid fa-plus"></i> Nuevo</button></h5>
-    <button type="button" class="btn-close" onclick="ir_inicio()" style="font-size: 20px;"></button>
+    <button type="button" class="btn-close" onclick="ir_inicio()"></button>
   
 </div>
 <div class="modal-body">

@@ -1,7 +1,7 @@
 <div class="modal-header">
   <h5 class="modal-title">Control de Apertura y Cierre de Ope. de Caja</h5>
   
-  <button type="button" class="btn-close" onclick="ir_inicio()" style="font-size: 20px;"></button>
+  <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>
 <div class="modal-body">
   <div class="row">

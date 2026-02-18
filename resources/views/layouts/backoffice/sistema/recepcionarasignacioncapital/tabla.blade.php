@@ -2,7 +2,7 @@
     <h5 class="modal-title">
      Recepcionar la Asignación, Incremento y Reducción de Capital
     </h5>
-    <button type="button" class="btn-close" onclick="ir_inicio()" style="font-size: 20px;"></button>
+    <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>
 
 <div class="modal-body">

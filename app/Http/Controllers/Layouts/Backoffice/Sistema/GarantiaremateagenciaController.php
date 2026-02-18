@@ -398,7 +398,19 @@ class GarantiaremateagenciaController extends Controller
             ]);
         }
         elseif($request->input('view') == 'ver_liquidacion_garantia'){
-            $credito = DB::table('credito')->whereId($request->idcredito)->first();
+            // $credito = DB::table('credito')->whereId($request->idcredito)->first();
+            $credito = DB::table('credito')
+              ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
+                    ->join('forma_pago_credito','forma_pago_credito.id','credito.idforma_pago_credito')
+                    ->join('users as asesor','asesor.id','credito.idasesor')
+              ->where('credito.id',$request->idcredito)
+              ->select(
+                    'credito.*',
+                    'credito_prendatario.modalidad as modalidadproductocredito',
+                    'forma_pago_credito.nombre as forma_pago_credito_nombre',
+                    'asesor.nombrecompleto as asesor',
+              )
+              ->first();
             $credito_garantias = DB::table('credito_garantia')
               ->join('users as cliente','cliente.id','credito_garantia.idcliente')
               ->where('credito_garantia.idcredito',$request->idcredito)
@@ -409,10 +421,53 @@ class GarantiaremateagenciaController extends Controller
               )
               ->orderBy('credito_garantia.fecharegistro_listaremate','asc')
               ->get();
+
+            $credito_descuentocuotas = DB::table('credito_descuentocuota')
+                ->where('credito_descuentocuota.idcredito',$request->idcredito)
+                ->where('credito_descuentocuota.idestadocredito_descuentocuota',1)
+                ->first();
+            $total_descuento_capital = 0; 
+            $total_descuento_interes = 0; 
+            $total_descuento_comision = 0; 
+            $total_descuento_cargo = 0;  
+            $total_descuento_penalidad = 0; 
+            $total_descuento_tenencia = 0; 
+            $total_descuento_compensatorio = 0; 
+            $total_descuento_total = 0; 
+            if($credito_descuentocuotas){
+                if($request->numerocuota>=$credito_descuentocuotas->numerocuota_fin){
+                    $total_descuento_capital = $credito_descuentocuotas->capital;
+                    $total_descuento_interes = $credito_descuentocuotas->interes;
+                    $total_descuento_comision = $credito_descuentocuotas->comision;
+                    $total_descuento_cargo = $credito_descuentocuotas->cargo;
+                    $total_descuento_penalidad = $credito_descuentocuotas->penalidad;
+                    $total_descuento_tenencia = $credito_descuentocuotas->tenencia;
+                    $total_descuento_compensatorio = $credito_descuentocuotas->compensatorio;
+                    $total_descuento_total = $credito_descuentocuotas->total;
+                }
+            }
+            $cronograma = select_cronograma(
+                $idtienda,
+                $request->idcredito,
+                $credito->idforma_credito,
+                $credito->modalidadproductocredito,
+                $request->numerocuota,
+                $total_descuento_capital,
+                $total_descuento_interes,
+                $total_descuento_comision,
+                $total_descuento_cargo,
+                $total_descuento_penalidad,
+                $total_descuento_tenencia,
+                $total_descuento_compensatorio,
+                ($request->acuenta!=null?$request->acuenta:0)-$request->cobrar_cargo,
+                1,
+                'detalle_cobranza'
+            );
             return view(sistema_view().'/garantiaremateagencia/ver_liquidacion_garantia',[
                 'tienda' => $tienda,
                 'credito' => $credito,
                 'credito_garantias' => $credito_garantias,
+                'cronograma' => $cronograma,
             ]);
         }
         elseif($request->input('view') == 'ver_generarficha_liquidacion'){
@@ -423,10 +478,12 @@ class GarantiaremateagenciaController extends Controller
             ]);
         }
         elseif($request->input('view') == 'ver_registrarprecio_liquidacion'){
-            $credito = DB::table('credito')->whereId($request->idcredito)->first();
+            $credito_garantia = DB::table('credito_garantia')->whereId($request->idcreditogarantia)->first();
+            $credito = DB::table('credito')->whereId($credito_garantia->idcredito)->first();
             return view(sistema_view().'/garantiaremateagencia/ver_registrarprecio_liquidacion',[
                 'tienda' => $tienda,
                 'credito' => $credito,
+                'credito_garantia' => $credito_garantia,
             ]);
         }
         elseif (request('view') == 'ver_generarficha_liquidacionpdf') {
@@ -453,7 +510,6 @@ class GarantiaremateagenciaController extends Controller
 
     public function update(Request $request, $idtienda, $id)
     {
-        
         if($request->input('view') == 'autorizar') {
             $rules = [
                 'idresponsable' => 'required',          
@@ -574,6 +630,24 @@ class GarantiaremateagenciaController extends Controller
                 'mensaje'   => 'Se ha autorizado correctamente.',
                 'idresponsable'   => $idresponsable
             ]);*/
+        }
+        elseif($request->input('view') == 'registrar_precio_liquidacion') {
+            $rules = [
+                'precioliquidacion' => 'required',          
+            ];
+            $messages = [
+                'precioliquidacion.required' => 'El "Precio de Liquidación" es Obligatorio.',
+            ];
+            $this->validate($request,$rules,$messages);
+
+            DB::table('credito_garantia')->whereId($id)->update([
+                'precioliquidacion'=>$request->input('precioliquidacion'),
+            ]);
+          
+            return response()->json([
+                'resultado'           => 'CORRECTO',
+                'mensaje'             => 'Se ha registrado correctamente el precio de liquidación!!'
+            ]);
         }
     }
 

@@ -18,9 +18,10 @@
         <h5 class="modal-title">REFINANCIAR </h5>
         <button type="button" class="btn-close text-white" id="modal-close-garantia-cliente" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
-      <div class="row" style="background-color: #198754;
-    color: #fffdfd;
-    font-size: 14px;padding: 7px;">
+      <div class="row" style="background-color: #cfecc5 !important;
+              border: 1px solid #326222 !important;
+              color: #000;
+              font-size: 14px;padding: 7px;">
           <div class="col-md-4"><b>CLIENTE:</b> {{ $usuario->nombrecompleto }}</div>
           <div class="col-md-4">@if($credito->idaval != 0) <b>AVAL:</b> {{ $credito->nombreavalcredito }} @endif</div>
           <div class="col-md-4"><b>PRODUCTO:</b> {{ $credito->nombreproductocredito }}</div>
@@ -160,7 +161,9 @@
         </div>
       </div>
       
-      <div class="row mt-3" style="background-color: #198754;">
+      <div class="row mt-3" style="background-color: #cfecc5 !important;
+              border: 1px solid #326222 !important;
+              color: #000;">
         <div class="col-sm-12 col-md-3">
           <div class="row">
             <input type="hidden" id="monto_cobertura_garantia" value="{{ $credito->monto_cobertura_garantia }}">
@@ -172,22 +175,22 @@
         </div>
         <div class="col-sm-12 col-md-3 d-none">
           <div class="row">
-            <label class="col-sm-12 col-form-label text-white text-center"><b>CRONOGRAMA DE PAGOS</b></label>
+            <label class="col-sm-12 col-form-label text-center"><b>CRONOGRAMA DE PAGOS</b></label>
           </div>
           
         </div>
         <div class="col-sm-12 col-md-9">
           <div class="row">
-            <label class="col-sm-2 col-form-label text-white" style="text-align: right;"><b>Interes Total (S/):</b></label>
-            <div class="col-sm-2 col-form-label text-white" id="interes_total">
+            <label class="col-sm-2 col-form-label" style="text-align: right;"><b>Interes Total (S/):</b></label>
+            <div class="col-sm-2 col-form-label" id="interes_total">
               {{ $credito->interes_total }}
             </div>
-            <label class="col-sm-2 col-form-label text-white" style="text-align: right;"><b>Cargos y otros (S/):</b></label>
-            <div class="col-sm-2 col-form-label text-white" id="cargo_total">
+            <label class="col-sm-2 col-form-label" style="text-align: right;"><b>Cargos y otros (S/):</b></label>
+            <div class="col-sm-2 col-form-label" id="cargo_total">
               0.00
             </div>
-            <label class="col-sm-2 col-form-label text-white" style="text-align: right;"><b>Total a Pagar (S/):</b></label>
-            <div class="col-sm-2 col-form-label text-white" id="total_pagar">
+            <label class="col-sm-2 col-form-label" style="text-align: right;"><b>Total a Pagar (S/):</b></label>
+            <div class="col-sm-2 col-form-label" id="total_pagar">
               {{ $credito->total_pagar }}
             </div>
           </div>
@@ -202,6 +205,11 @@
           let fechainicio = $('#fecha_desembolso').val();
           let frecuencia  = $('#idforma_pago_credito').val();
           let dia_gracia  = $('#dia_gracia').val();
+
+          if (dia_gracia == '') {
+              $('#dia_gracia').val(0);
+              dia_gracia = 0;
+          }
           
           let cargo       = $('#cargo').val();
           
@@ -273,7 +281,10 @@
 
       </script>
       <div class="row mt-3 justify-content-center">
-        <div class="col-sm-12 col-md-10">
+        <div class="col-sm-12 col-md-10" style="
+              overflow-y: scroll;
+              height: calc(-390px + 100vh);
+              overflow-x: scroll;">
           <table class="table table-striped" id="table-cronograma">
             <thead>
               <th>Cuota N°</th>

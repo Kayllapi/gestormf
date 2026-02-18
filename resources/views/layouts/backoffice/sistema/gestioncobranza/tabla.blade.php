@@ -115,7 +115,7 @@
                   <td>Monto Crédito (S/.)</td>
                   <td>F. Pago</td>
                   <td><span style="text-decoration: underline; font-weight: bold;">Saldo Cuotas Venc. (S/.)</span></td>
-                  <td><span style="text-decoration: underline;font-weight: bold;">Días Vencido</span></td>
+                  <td><span style="background-color: #ff6a79 !important;text-decoration: underline;font-weight: bold;">Días Vencido</span></td>
                   <td>Form. C.</td>
                   <td>Nro. de Cuotas Cumplido y Venc.</td>
                   <td>Tele./Celu.</td>

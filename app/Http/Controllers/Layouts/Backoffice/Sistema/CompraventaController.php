@@ -63,6 +63,7 @@ class CompraventaController extends Controller
 
     public function store(Request $request, $idtienda)
     {
+        $tienda = DB::table('tienda')->whereId($idtienda)->first();
         if (request('view') == 'registrar_compra') {
             $rules = [
                 'idtienda' => 'required',
@@ -103,6 +104,26 @@ class CompraventaController extends Controller
             }
 
             $this->validate($request,$rules,$messages);
+
+            $cvconsolidadooperaciones = cvconsolidadooperaciones($tienda,$idtienda,now()->format('Y-m-d'));
+            if($request->compra_idformapago==1){
+                if((float)$cvconsolidadooperaciones['saldos_caja']<=(float)$request->valorcompra){
+                    return response()->json([
+                        'resultado' => 'ERROR',
+                        'mensaje'   => 'No hay saldo suficiente en CAJA.<br><b>Saldo Actual: S/. '.$cvconsolidadooperaciones['saldos_caja'].'.</b>'
+                    ]);
+                }
+            }
+            elseif($request->compra_idformapago==2){
+                foreach($cvconsolidadooperaciones['saldos_cuentabanco_bancos'] as $value){
+                    if($value['banco_id']==$request->compra_idbanco && (float)$value['banco']<=(float)$request->valorcompra){
+                        return response()->json([
+                            'resultado' => 'ERROR',
+                            'mensaje'   => 'No hay saldo suficiente en Cuenta Bancaria.'
+                        ]);
+                    }
+                }  
+            }
 
             $codigo = DB::table('cvcompra')->max('codigo') + 1;
 

@@ -60,7 +60,7 @@
                                 <th width="90px;">RUC/DNI/CE</th>
                                 <th width="90px;">TIPO DE GARANTIA</th>
                                 <th width="100px;">DESCRIPCIÓN</th>
-                                <th width="140px;">Serie/Motor/N°Partida</th>
+                                <th width="80px;">Serie/Motor/N°Partida</th>
                                 <th width="70px;">MODELO</th>
                                 <th width="90px;">VALOR COMERCIAL</th>
                                 <th width="90px;">V.COMERCIAL CON DESCUENTO</th>

@@ -110,7 +110,7 @@
         <div class="col-sm-12 mt-2">
             <div class="row">
                 <div class="col-sm-8"></div>
-                <label for="precio_liquidacion_total" class="col-sm-2 col-form-label">PRECIO DE LIQUIDACIÓN TOTAL</label>
+                <label for="precio_liquidacion_total" class="col-sm-2 col-form-label">P. DE LIQUIDACIÓN TOTAL</label>
                 <div class="col-sm-2">
                     <input type="text" class="form-control" id="precio_liquidacion_total"
                         style="border-color: #969ca1;"

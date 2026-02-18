@@ -10,11 +10,19 @@
                 <div class="col-sm-4">
                     <input type="text" class="form-control" id="cliente" value="C{{ $credito->cuenta }}" disabled>
                 </div>
+                <label for="saldo" class="col-sm-3 col-form-label">Saldo de Deuda Programada (C+I): S/.</label>
+                <div class="col-sm-2">
+                    <input type="number" class="form-control" id="saldo" value="">
+                </div>
             </div>
             <div class="row">
                 <label for="cliente" class="col-sm-2 col-form-label">CLIENTE</label>
                 <div class="col-sm-4">
                     <input type="text" class="form-control" id="cliente" value="{{ $credito->clientenombrecompleto }}" disabled>
+                </div>
+                <label for="saldo" class="col-sm-3 col-form-label">Saldo de Deuda Total (C+I+Ic+M): S/.</label>
+                <div class="col-sm-2">
+                    <input type="number" class="form-control" id="saldo">
                 </div>
             </div>
             <div class="row">
@@ -22,19 +30,11 @@
                 <div class="col-sm-2">
                     <input type="number" class="form-control" id="valor_comercial" value="">
                 </div>
-                <label for="saldo" class="col-sm-3 col-form-label">Saldo de Deuda Programada (C+I): S/.</label>
-                <div class="col-sm-2">
-                    <input type="number" class="form-control" id="saldo" value="">
-                </div>
             </div>
             <div class="row">
-                <label for="valor_comercial_descuento" class="col-sm-2 col-form-label">V.C con Descuento</label>
+                <label for="valor_comercial_descuento" class="col-sm-2 col-form-label">V.Comercial con Descuento</label>
                 <div class="col-sm-2">
                     <input type="number" class="form-control" id="valor_comercial_descuento" value="">
-                </div>
-                <label for="saldo" class="col-sm-3 col-form-label">Saldo de Deuda Total (C+I+Ic+M): S/.</label>
-                <div class="col-sm-2">
-                    <input type="number" class="form-control" id="saldo">
                 </div>
             </div>
             <div class="row">

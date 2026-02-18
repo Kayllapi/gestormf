@@ -124,17 +124,17 @@
       <h4 align="center">PRÉSTAMOS</h4>
           <table style="width:100%;">
             <tr>
-              <th style="border-bottom: 2px solid #000;" width="20px">N°</th>
-              <th style="border-bottom: 2px solid #000;" width="40px">N° CUENTA</th>
-              <th style="border-bottom: 2px solid #000;" width="20px"></th>
-              <th style="border-bottom: 2px solid #000;" width="80px">PRODUCTO</th>
-              <th style="border-bottom: 2px solid #000;" width="50px">MONT. PRES.</th>
-              <th style="border-bottom: 2px solid #000;" width="100px">F. DESEMBOLSO</th>
-              <th style="border-bottom: 2px solid #000;" width="40px">F. PAGO</th>
-              <th style="border-bottom: 2px solid #000;" width="40px">N° CUOTA</th>
-              <th style="border-bottom: 2px solid #000;" width="30px">TEM</th>
-              <th style="border-bottom: 2px solid #000;" width="80px">ESTADO</th>
-              <th style="border-bottom: 2px solid #000;" width="80px">SUCURSAL</th>
+              <th style="border-bottom: 2px solid #000;">N°</th>
+              <th style="border-bottom: 2px solid #000;">N° CUENTA</th>
+              <th style="border-bottom: 2px solid #000;"></th>
+              <th style="border-bottom: 2px solid #000;">PRODUCTO</th>
+              <th style="border-bottom: 2px solid #000;">MONT. PRES.</th>
+              <th style="border-bottom: 2px solid #000;">F. DESEMBOLSO</th>
+              <th style="border-bottom: 2px solid #000;">F. PAGO</th>
+              <th style="border-bottom: 2px solid #000;">N° CUOTA</th>
+              <th style="border-bottom: 2px solid #000;">TEM</th>
+              <th style="border-bottom: 2px solid #000;">ESTADO</th>
+              <th style="border-bottom: 2px solid #000;">SUCURSAL</th>
             </tr>
             <?php
             $i = 1;

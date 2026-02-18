@@ -61,8 +61,7 @@
                     <input type="number"
                         class="form-control"
                         style="font-size: 15px; font-weight: bold; width: 50%; 
-                            background-color: #F9F3B5;
-                            border: 1px solid #ffec1c;"
+                            background-color: #F9F3B5;"
                         id="venta_montoventa">
                 </div>
             </div>

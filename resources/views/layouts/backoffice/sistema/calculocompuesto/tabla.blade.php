@@ -113,23 +113,23 @@
             
         </div>
 
-        <div class="row mt-3" style="background-color: #198754;">
+        <div class="row mt-3" style="background-color: #c1f1b1; color: #000;">
           <div class="col-sm-12 col-md-3">
             
           </div>
           
           <div class="col-sm-12 col-md-9">
             <div class="row">
-              <label class="col-sm-2 col-form-label text-white" style="text-align: right;"><b>Interes Total (S/):</b></label>
-              <div class="col-sm-2 col-form-label text-white" id="interes_total">
+              <label class="col-sm-2 col-form-label" style="text-align: right;"><b>Interes Total (S/):</b></label>
+              <div class="col-sm-2 col-form-label" id="interes_total">
                 0.00
               </div>
-              <label class="col-sm-2 col-form-label text-white" style="text-align: right;"><b>Comisión de Ss. (S/):</b></label>
-              <div class="col-sm-2 col-form-label text-white" id="cargo_total">
+              <label class="col-sm-2 col-form-label" style="text-align: right;"><b>Comisión de Ss. (S/):</b></label>
+              <div class="col-sm-2 col-form-label" id="cargo_total">
                 0.00
               </div>
-              <label class="col-sm-2 col-form-label text-white" style="text-align: right;"><b>Total a Pagar (S/):</b></label>
-              <div class="col-sm-2 col-form-label text-white" id="total_pagar">
+              <label class="col-sm-2 col-form-label" style="text-align: right;"><b>Total a Pagar (S/):</b></label>
+              <div class="col-sm-2 col-form-label" id="total_pagar">
                 0.00
               </div>
             </div>

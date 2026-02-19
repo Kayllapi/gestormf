@@ -123,7 +123,7 @@
                   <th>Saldo Deuda T. (S/.)</th>
                   <th>F. Pago</th>
                   <th>Cuotas</th>
-                  <th>Form. C.</th>
+                  <th>F.C.</th>
                   <th><span style="background-color: #ffb2b2 !important;text-decoration: underline;font-weight: bold;">Días Vencido</span></th>
                   <th>Calificación</th>
                   <th>Producto</th>

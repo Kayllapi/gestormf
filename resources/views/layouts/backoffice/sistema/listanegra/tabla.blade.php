@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h5 class="modal-title">
+    <h5 class="modal-title" style="width: 100%;">
         Lista Negra
         <a href="javascript:;" 
             class="btn btn-primary" 
@@ -8,6 +8,7 @@
         </a>
         <a href="javascript:;" 
             class="btn btn-info" 
+            style="margin-left: 30%;"
             onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/listanegra/create?view=reporte')}}',size:'modal-fullscreen'})">
             <i class="fa-solid fa-file-pdf"></i> Reporte
         </a>

@@ -102,7 +102,7 @@
             <table class="table table-bordered"  style="margin-bottom: 10px;">
               <tbody>
                 <tr>
-                  <th style='text-align:center;background-color: #78d7ab !important;font-weight: bold;'>(Días de Mora > {{configuracion($tienda->id,'dias_tolerancia_garantia')['valor']}} días)</th>
+                  <th style='text-align:center;background-color: #FFBD81 !important;font-weight: bold;'>(Días de Mora > {{configuracion($tienda->id,'dias_tolerancia_garantia')['valor']}} días)</th>
                 </tr>
               </tbody>
             </table>

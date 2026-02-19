@@ -30,6 +30,7 @@
     <div class="ticket_contenedor">
           <div class="cabecera"><b>{{ $tienda->nombre }} - {{ $tienda->nombreagencia }}</b></div>
           <div class="linea"></div>
+          <br>
           <div class="titulo"><b>PAGO DE CRÉDITO</b></div>  
           <table style="width:100%;">
             <tr>

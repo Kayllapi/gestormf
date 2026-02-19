@@ -21,40 +21,32 @@
           margin-bottom: 0cm;
       }
 
-      /** Definir las reglas del encabezado **/
       header {
           position: fixed;
           top: 0cm;
           left: 0.7cm;
           right: 0.7cm;
           height: 0.6cm;
-          /** Estilos extra personales **/
-          color: #676869;
+          color: #0f0f0f;
           text-align: center;
           line-height: 0.6cm;
-          font-size:18px !important;
+          font-size:15px !important;
           font-weight: bold;
-          border-bottom: 2px solid #144081; 
           margin:5px;
           text-align:right;
           padding:5px;
       }
-
-      /** Definir las reglas del pie de página **/
       footer {
           position: fixed; 
           bottom: 0cm; 
           left: 0.7cm; 
           right: 0.7cm;
           height: 1cm;
-
-          /** Estilos extra personales **/
           color: #000;
           text-align: center;
           line-height: 0.4cm;
-          font-size:11px;
+          font-size:12px;
       }
-      /** Definir las reglas de numeracion de página **/ 
       footer > .page:after { content: counter(page, decimal-leading-zero); }
 
       .saltopagina{
@@ -117,7 +109,7 @@
 </head>
 <body>
   <header>
-    <div style="float:left;font-size:18px;">{{ $tienda->nombre }}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
+    <div style="float:left;font-size:15px;">{{ $tienda->nombre }}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
   </header>
   <footer>
     <p class="page">Página </p>
@@ -133,27 +125,27 @@
             <table style="width:100%;">
               <thead class="table-dark">
                 <tr>
-                  <td style="border-top: 2px solid #000;text-align: center;" rowspan="2" colspan="3">VINCULADOS</td>
-                  <td style="border-top: 2px solid #000;text-align: center;" colspan="8">RIESGO Saldo de Créd.(S/.)</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;" rowspan="3">TOTAL</td>
+                  <td style="border-top: 2px solid #000;text-align: center;font-weight: bold;" rowspan="2" colspan="3">VINCULADOS</td>
+                  <td style="border-top: 2px solid #000;text-align: center;font-weight: bold;" colspan="8">RIESGO Saldo de Créd.(S/.)</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;font-weight: bold;" rowspan="3">TOTAL</td>
                 </tr> 
                 <tr>
-                  <td style="border-top: 2px solid #000;text-align: center;" colspan="4">POR PROPIEDAD Y AVAL</td>
-                  <td style="border-top: 2px solid #000;text-align: center;" colspan="2">POR NEGOCIO</td>
-                  <td style="border-top: 2px solid #000;text-align: center;" colspan="2">FAMILIARES EN LA EMPRESA</td>
+                  <td style="border-top: 2px solid #000;text-align: center;font-weight: bold;" colspan="4">POR PROPIEDAD Y AVAL</td>
+                  <td style="border-top: 2px solid #000;text-align: center;font-weight: bold;" colspan="2">POR NEGOCIO</td>
+                  <td style="border-top: 2px solid #000;text-align: center;font-weight: bold;" colspan="2">FAMILIARES EN LA EMPRESA</td>
                 </tr>
                 <tr>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;">N°</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;">DOI/RUC</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;">Nombres y Apellidos</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;">Cnta</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;">Avalados por Cliente al Vinculado con  MISMO DOMICILIO</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;">Cnta</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;">Avalados por Vinculado al Cliente  con MISMO DOMICILIO </td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;">Cnta</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;">Misma dirección de negocio del vinculado</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;">Cnta</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;">Usuario Vinculado con mismo domicilio del Cliente</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;font-weight: bold;">N°</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;font-weight: bold;">DOI/RUC</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;font-weight: bold;">Nombres y Apellidos</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;font-weight: bold;">Cnta</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;font-weight: bold;">Avalados por Cliente al Vinculado con  MISMO DOMICILIO</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;font-weight: bold;">Cnta</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;font-weight: bold;">Avalados por Vinculado al Cliente  con MISMO DOMICILIO </td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;font-weight: bold;">Cnta</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;font-weight: bold;">Misma dirección de negocio del vinculado</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;font-weight: bold;">Cnta</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;font-weight: bold;">Usuario Vinculado con mismo domicilio del Cliente</td>
                 </tr>
               </thead>
               <tbody>
@@ -301,8 +293,8 @@
               }
               $html .= '
                 <tr style="position: sticky;bottom: 0;">
-                  <td colspan="11" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;">TOTAL S/.</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;">'.number_format($total, 2, '.', '').'</td>
+                  <td colspan="11" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">TOTAL S/.</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">'.number_format($total, 2, '.', '').'</td>
                 </tr>';
                 echo $html;
               ?>

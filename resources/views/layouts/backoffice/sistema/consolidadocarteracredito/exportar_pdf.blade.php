@@ -291,9 +291,9 @@
                             <td style='text-align:right;'>{$clasificacion_perdida_saldo}</td>
                             <td style='text-align:right;'>{$clasificacion_perdida_creditos}</td>
                         </tr><tr>
-                            <td style='border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right'><b>TOTAL</b></td>
-                            <td style='border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right'>{$total_saldos}</td>
-                            <td style='border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right'>{$total_creditos}</td>
+                            <td style='border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;'><b>TOTAL</b></td>
+                            <td style='border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;'>{$total_saldos}</td>
+                            <td style='border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;'>{$total_creditos}</td>
                         </tr>";
           
               $demora1 = 0;

@@ -16,7 +16,7 @@
         color: #676869;
         text-align: center;
         line-height: 0.6cm;
-        font-size:16px !important;
+        font-size:15px !important;
         font-weight: bold;
         margin:5px;
         text-align:right;

@@ -29,10 +29,10 @@
           right: 0.7cm;
           height: 0.6cm;
           /** Estilos extra personales **/
-          color: #676869;
+          color: #0f0f0f;
           text-align: center;
           line-height: 0.6cm;
-          font-size:16px !important;
+          font-size:15px !important;
           font-weight: bold;
           margin:5px;
           text-align:right;
@@ -116,7 +116,7 @@
 </head>
 <body>
   <header>
-    <div style="float:left;font-size:18px;">{{ $tienda->nombre }} | {{ $agencia->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
+    <div style="float:left;font-size:15px;">{{ $tienda->nombre }} | {{ $agencia->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
   </header>
   <footer>
     <p class="page">Página </p>

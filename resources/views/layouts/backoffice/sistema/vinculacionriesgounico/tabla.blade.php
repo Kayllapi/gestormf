@@ -26,25 +26,25 @@
                             </div>
                            <div class="col-sm-6 col-md-6">
                               <div class="row">
-                                <label for="fecha_fin" class="col-sm-4 col-form-label">DIRECCIÓN DE NEGOCIO</label>
-                                <div class="col-sm-8">
-                                    <input type="text" disabled value="" class="form-control" id="data-direccion-negocio" style="background-color: white;">
-                                </div>
-                              </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                           <div class="col-sm-6 col-md-6">
-                              <div class="row">
                                 <label for="fecha_fin" class="col-sm-4 col-form-label">DIRECCIÓN DE DOMICILIO</label>
                                 <div class="col-sm-8">
                                     <input type="text" disabled value="" class="form-control" id="data-direccion-domicilio" style="background-color: white;">
                                 </div>
                               </div>
                            </div>
+                        </div>
+                        <div class="row">
                           <div class="col-sm-6 col-md-6" style="text-align: left;">
                               <button type="button" class="btn btn-success" onclick="lista_credito()"><i class="fa-solid fa-search"></i> FILTRAR</button>
                           </div>
+                           <div class="col-sm-6 col-md-6">
+                              <div class="row">
+                                <label for="fecha_fin" class="col-sm-4 col-form-label">DIRECCIÓN DE NEGOCIO</label>
+                                <div class="col-sm-8">
+                                    <input type="text" disabled value="" class="form-control" id="data-direccion-negocio" style="background-color: white;">
+                                </div>
+                              </div>
+                            </div>
                         </div>
                         <div class="row">
                         </div>
@@ -60,7 +60,7 @@
       <div class="col-sm-12 mt-1 mb-1">
         <div class="card">
           <div class="card-body">
-            <div class="modal-body p-0" style="overflow-y: scroll;height: calc(-305px + 100vh);">
+            <div class="modal-body p-0" style="overflow-y: scroll;height: calc(-271px + 100vh);">
             <table class="table table-striped table-hover" id="table-lista-credito">
               <thead class="table-dark" style="position: sticky;top: 0;"> 
                 <tr>
@@ -75,7 +75,7 @@
                 </tr>
                 <tr>
                   <th style="text-align: center;">N°</th>
-                  <th style="text-align: center;">DOI/RUC</th>
+                  <th style="text-align: center;">RUC/DNI/CE</th>
                   <th style="text-align: center;">Nombres y Apellidos</th>
                   <th style="text-align: center;">Cnta</th>
                   <th style="text-align: center;">Avalados por Cliente al Vinculado con  MISMO DOMICILIO</th>

@@ -24,8 +24,7 @@
 </head>
 <body>
     <div class="ticket_contenedor">
-          <div class="cabecera">{{ $tienda->nombre }}</div>
-          <div class="cabecera">{{ $tienda->direccion }}</div>
+          <div class="cabecera"><b>{{ $tienda->nombre }} - {{ $tienda->nombreagencia }}</b></div>
           <br>
           <div class="titulo"><b>DESEMBOLSO</b></div>
           <table class="tabla_informativa">

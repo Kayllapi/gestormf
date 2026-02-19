@@ -255,7 +255,7 @@ class ConsolidadoCarteraCreditoController extends Controller
                             <td style='text-align:right;'>{$clasificacion_perdida_saldo}</td>
                             <td style='text-align:right;'>{$clasificacion_perdida_creditos}</td>
                         </tr><tr>
-                            <th style='text-align:right;'><b>TOTAL</b></th>
+                            <th style='text-align:center;'><b>TOTAL</b></th>
                             <th style='text-align:right;'><b>{$total_saldos}</b></th>
                             <th style='text-align:right;'><b>{$total_creditos}</b></th>
                         </tr>";

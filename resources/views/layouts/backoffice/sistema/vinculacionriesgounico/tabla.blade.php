@@ -61,7 +61,7 @@
         <div class="card">
           <div class="card-body">
             <div class="modal-body p-0" style="overflow-y: scroll;height: calc(-305px + 100vh);">
-            <table class="table table-striped table-hover table-bordered" id="table-lista-credito">
+            <table class="table table-striped table-hover" id="table-lista-credito">
               <thead class="table-dark" style="position: sticky;top: 0;"> 
                 <tr>
                   <th style="text-align: center;" rowspan="2" colspan="3">VINCULADOS</th>

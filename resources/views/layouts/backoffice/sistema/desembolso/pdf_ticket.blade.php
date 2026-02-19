@@ -20,11 +20,16 @@
         text-align: center;
         
       }
+      .linea {
+          border-top: 1px solid #000;
+          width:100%;
+      }
     </style>
 </head>
 <body>
     <div class="ticket_contenedor">
           <div class="cabecera"><b>{{ $tienda->nombre }} - {{ $tienda->nombreagencia }}</b></div>
+            <div class="linea"></div>
           <br>
           <div class="titulo"><b>DESEMBOLSO</b></div>
           <table class="tabla_informativa">

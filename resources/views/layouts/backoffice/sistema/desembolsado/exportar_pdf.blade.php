@@ -123,17 +123,17 @@
             <table style="width:100%;">
               <thead class="table-dark">
                 <tr>
-                  <td  style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">N°</td>
-                  <td  style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">CLIENTE</td>
-                  <td  style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">AVAL</td>
-                  <td  style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;width:10px">DESEMBOLSO</td>
-                  <td  style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">CUOTAS</td>
-                  <td  style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">F. PAGO</td>
-                  <td  style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">F. DESEMBOLSO</td>
-                  <td  style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">CAJERO</td>
-                  <td  style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">OPERACIÓN EN</td>
-                  <td  style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">MODA. CRÉDITO</td>
-                  <td  style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">ASESOR</td>
+                  <td  style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">N°</td>
+                  <td  style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">CLIENTE</td>
+                  <td  style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">AVAL</td>
+                  <td  style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;width:10px">DESEMBOLSO</td>
+                  <td  style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">CUOTAS</td>
+                  <td  style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">F. PAGO</td>
+                  <td  style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">F. DESEMBOLSO</td>
+                  <td  style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">CAJERO</td>
+                  <td  style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">OPERACIÓN EN</td>
+                  <td  style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">MODA. CRÉDITO</td>
+                  <td  style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">ASESOR</td>
                 </tr>
               </thead>
               <tbody>
@@ -175,9 +175,9 @@
           }
               $html .= '
                 <tr>
-                  <td colspan="3" style="border-bottom: 2px solid #000;text-align:right;">TOTAL S/.</td>
-                  <td style="border-bottom: 2px solid #000;text-align:right;">'.number_format($total_desembolsado, 2, '.', '').'</td>
-                  <td colspan="7" style="border-bottom: 2px solid #000;"></td>
+                  <td colspan="3" style="border-bottom: 2px solid #000;text-align:right;font-weight: bold;">TOTAL S/.</td>
+                  <td style="border-bottom: 2px solid #000;text-align:right;font-weight: bold;">'.number_format($total_desembolsado, 2, '.', '').'</td>
+                  <td colspan="7" style="border-bottom: 2px solid #000;font-weight: bold;"></td>
                 </tr>';
             echo $html;
               ?>

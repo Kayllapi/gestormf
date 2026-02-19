@@ -114,7 +114,7 @@
                 </td>
             </tr>
           </table>  
-          <div style="border-bottom: 1px dashed #000;padding-top:5px;padding-bottom:5px;"></div>
+          <div class="linea"></div>
           <table style="width:100%;">
             <tr>
                 <td style="width:65px;">

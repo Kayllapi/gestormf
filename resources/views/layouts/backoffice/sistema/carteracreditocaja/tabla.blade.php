@@ -8,124 +8,103 @@
       <div class="col-sm-12">
         <div class="card">
           <div class="card-body p-2" id="form-credito-result">
-             
             <div class="modal-body pb-0">
-              
                 <div class="row">
-                    <div class="col-sm-12 col-md-9">
-                        <div class="row">
-                           <div class="col-sm-12 col-md-6">
-                              <div class="row">
-                                <label for="fecha_inicio" class="col-sm-3 col-form-label">AGENCIA</label>
-                                <div class="col-sm-9">
-                                    <select class="form-control" id="idagencia" disabled>
-                                      <option></option>
-                                          <option value="0" selected>TODA LAS AGENCIAS</option>
-                                      @foreach($agencias as $value)
-                                          <option value="{{$value->id}}">{{$value->nombreagencia}}</option>
-                                      @endforeach
-                                    </select>
-                                </div>
+                    <div class="col-sm-12 col-md-7">
+                      <div class="row">
+                         <div class="col-sm-12 col-md-7">
+                           <div class="row">
+                                   <label for="fecha_inicio" class="col-sm-3 col-form-label">AGENCIA</label>
+                                   <div class="col-sm-9">
+                                       <select class="form-control" id="idagencia" disabled>
+                                         <option></option>
+                                             <option value="0" selected>TODA LAS AGENCIAS</option>
+                                         @foreach($agencias as $value)
+                                             <option value="{{$value->id}}">{{$value->nombreagencia}}</option>
+                                         @endforeach
+                                       </select>
+                                   </div>
+                           </div>
+                           <div class="row">
+                                   <label for="fecha_fin" class="col-sm-3 col-form-label">F. CRÉDITO</label>
+                                   <div class="col-sm-9">
+                                       <select class="form-control" id="idformacredito">
+                                         <option></option>
+                                         <option value="0" selected>TODO</option>
+                                         <option value="CP">CP</option>
+                                         <option value="CNP">CNP</option>
+                                       </select>
+                                   </div>
+                           </div>
+                           <div class="row">
+                                   <label for="fecha_fin" class="col-sm-3 col-form-label">EJECUTIVO</label>
+                                   <div class="col-sm-9">
+                                       <select class="form-control" id="idasesor">
+                                         <option></option>
+                                         <option value="0" selected>TODO</option>
+                                         <?php
+                                         $usuarios = DB::table('users')
+                                             ->join('users_permiso','users_permiso.idusers','users.id')
+                                             ->join('permiso','permiso.id','users_permiso.idpermiso')
+                                             ->whereIn('users_permiso.idpermiso',[3,4,7])
+                                             ->where('users_permiso.idtienda',$tienda->id)
+                                             ->select('users.*','permiso.nombre as nombrepermiso')
+                                             ->get();
+                                         ?>
+                                         @foreach($usuarios as $value)
+                                         <option value="{{$value->id}}">{{$value->nombrecompleto}} ({{$value->nombrepermiso}})</option>
+                                         @endforeach
+                                       </select>
+                                   </div>
+                           </div>
+                         </div>
+                         <div class="col-sm-12 col-md-5" style="text-align: right;">
+                            <div class="row">
+                              <label for="fecha_inicio" class="col-sm-3 col-form-label">CORTE</label>
+                              <div class="col-sm-9">
+                                <input type="date" class="form-control" id="fecha_inicio" value="{{ date('Y-m-d') }}">
                               </div>
                             </div>
-                        </div>
-                        <div class="row">
-                           <div class="col-sm-12 col-md-6">
-                              <div class="row">
-                                <label for="fecha_fin" class="col-sm-3 col-form-label">F. CRÉDITO</label>
-                                <div class="col-sm-9">
-                                    <select class="form-control" id="idformacredito">
-                                      <option></option>
-                                      <option value="0" selected>TODO</option>
-                                      <option value="CP">CP</option>
-                                      <option value="CNP">CNP</option>
-                                    </select>
-                                </div>
-                              </div>
-                           </div>
-                          <div class="col-sm-12 col-md-6" style="text-align: right;">
-                              <button type="button" class="btn btn-success" onclick="lista_credito()"><i class="fa-solid fa-search"></i> FILTRAR</button>
+                            <button type="button" class="btn btn-success" onclick="lista_credito()"><i class="fa-solid fa-search"></i> FILTRAR</button>
+                         </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-md-5">
+                      <div class="card">
+                        <div class="card-body p-2">
+                          <div class="modal-body p-0">
+                          <table class="table table-bordered" style="width:600px;margin-bottom: 3px;">
+                            <thead class="table-dark"> 
+                              <tr>
+                                <th colspan="5" style='text-align:center;'>CATEGORIA DE CLASIFICACIÓN</th>
+                              </tr>
+                              <tr>
+                                <th style='text-align:center;'>NORMAL</th>
+                                <th style='text-align:center;'>CPP</th>
+                                <th style='text-align:center;'>DEFICIENTE</th>
+                                <th style='text-align:center;'>DUDOSO</th>
+                                <th style='text-align:center;'>PÉRDIDA</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <th style='text-align:center;background-color: #19e35c !important;'><=8 DÍAS</th>
+                                <th style='text-align:center;background-color: #E8E585 !important;'>>8<=30 DÍAS</th>
+                                <th style='text-align:center;background-color: #FFC5C5 !important;'>>30<=60 DÍAS</th>
+                                <th style='text-align:center;background-color: #959595 !important;'>>60<=120 DÍAS</th>
+                                <th style='text-align:center;background-color: #959595 !important;'>>120 DÍAS</th>
+                              </tr>
+                            </tbody>
+                          </table>
                           </div>
                         </div>
-                        <div class="row">
-                           <div class="col-sm-12 col-md-6">
-                              <div class="row">
-                                <label for="fecha_fin" class="col-sm-3 col-form-label">EJECUTIVO</label>
-                                <div class="col-sm-9">
-                                    <select class="form-control" id="idasesor">
-                                      <option></option>
-                                      <option value="0" selected>TODO</option>
-                                      <?php
-                                      $usuarios = DB::table('users')
-                                          ->join('users_permiso','users_permiso.idusers','users.id')
-                                          ->join('permiso','permiso.id','users_permiso.idpermiso')
-                                          ->whereIn('users_permiso.idpermiso',[3,4,7])
-                                          ->where('users_permiso.idtienda',$tienda->id)
-                                          ->select('users.*','permiso.nombre as nombrepermiso')
-                                          ->get();
-                                      ?>
-                                      @foreach($usuarios as $value)
-                                      <option value="{{$value->id}}">{{$value->nombrecompleto}} ({{$value->nombrepermiso}})</option>
-                                      @endforeach
-                                    </select>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-sm-12 col-md-6">
-                                <div class="row">
-                                    <div class="col-sm-12 col-md-6">
-                                      <div class="row">
-                                        <label for="fecha_inicio" class="col-sm-3 col-form-label">CORTE</label>
-                                        <div class="col-sm-9">
-                                          <input type="date" class="form-control" id="fecha_inicio" value="{{ date('Y-m-d') }}">
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <div class="col-sm-12 col-md-6">
-                                      
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                                
                     </div>
                 </div>
-              
             </div> 
           </div>
         </div>
       </div>
   </div>
-      <div class="col-sm-12 mt-1">
-        <div class="card">
-          <div class="card-body p-2">
-            <div class="modal-body p-0">
-            <table class="table table-bordered" style="width:600px;margin-bottom: 3px;">
-              <thead class="table-dark"> 
-                <tr>
-                  <th colspan="5" style='text-align:center;'>CATEGORIA DE CLASIFICACIÓN</th>
-                </tr>
-                <tr>
-                  <th style='text-align:center;'>NORMAL</th>
-                  <th style='text-align:center;'>CPP</th>
-                  <th style='text-align:center;'>DEFICIENTE</th>
-                  <th style='text-align:center;'>DUDOSO</th>
-                  <th style='text-align:center;'>PÉRDIDA</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th style='text-align:center;background-color: #19e35c !important;'><=8 DÍAS</th>
-                  <th style='text-align:center;background-color: #E8E585 !important;'>>8<=30 DÍAS</th>
-                  <th style='text-align:center;background-color: #FFC5C5 !important;'>>30<=60 DÍAS</th>
-                  <th style='text-align:center;background-color: #959595 !important;'>>60<=120 DÍAS</th>
-                  <th style='text-align:center;background-color: #959595 !important;'>>120 DÍAS</th>
-                </tr>
-              </tbody>
-            </table>
-            </div>
-          </div>
-      </div>
       <div class="col-sm-12 mt-1 mb-1">
         <div class="card">
           <div class="card-body p-2">

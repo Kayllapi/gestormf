@@ -67,15 +67,10 @@
                                         <input type="date" class="form-control" id="fecha_inicio" value="{{ date('Y-m-d') }}">
                                       </div>
                                 </div>
-                                <div class="row">
-                                  <div class="col-sm-3">
-                                      <button type="button"
-                                        class="btn btn-success"
-                                        style="margin-left: 15px;"
-                                        onclick="lista_credito()">
-                                        <i class="fa-solid fa-search"></i> FILTRAR</button>
-                                  </div>
-                                </div>
+                                <button type="button"
+                                  class="btn btn-success"
+                                  onclick="lista_credito()">
+                                  <i class="fa-solid fa-search"></i> FILTRAR</button>
                           </div>
                         </div>
                                 

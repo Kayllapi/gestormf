@@ -95,7 +95,7 @@
                     @include('app.nuevosistema.tabla',[
                         'tabla' => '#tabla-origendes',
                         'route' => url('backoffice/'.$tienda->id.'/carteradecliente/showcliente'),
-                        'scrollY' => 'calc(-373px + 100vh)',
+                        'scrollY' => 'calc(-400px + 100vh)',
                         'thead' => [
                             ['data' => '' ],
                             ['data' => 'Cod. Cliente' ],

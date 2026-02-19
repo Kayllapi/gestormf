@@ -17,45 +17,54 @@
       body {
           margin-top: 1.2cm;
           margin-left: 0.7cm;
-          margin-right: 0.7cm;
+          margin-right: 0.5cm;
           margin-bottom: 2cm;
       }
 
-      /** Definir las reglas del encabezado **/
+     /** Definir las reglas del encabezado **/
       header {
           position: fixed;
           top: 0cm;
           left: 0.7cm;
           right: 0.7cm;
           height: 0.6cm;
-          /** Estilos extra personales **/
           color: #000;
-          text-align: center;
           line-height: 0.6cm;
           font-size:18px !important;
           font-weight: bold;
-          border-bottom: 2px solid #144081; 
-          margin:5px;
+          border-bottom: 1px solid #000; 
+          margin-top:5px;
+          margin-bottom: 5px;
           text-align:right;
           padding:5px;
+          padding-left: 0px;
+          padding-right. 0px;
       }
-
-      /** Definir las reglas del pie de página **/
       footer {
           position: fixed; 
-          bottom: 0.7cm; 
+          bottom: 0.5cm; 
           left: 0.7cm; 
           right: 0.7cm;
-          height: 1cm;
-
-          /** Estilos extra personales **/
+          height: 20px;
           color: #000;
           text-align: center;
           line-height: 0.4cm;
-          font-size:12px;
+          font-size:11px;
+          font-weight: bold;
       }
-      /** Definir las reglas de numeracion de página **/
       footer .page:after { content: counter(page, decimal-leading-zero); }
+      .page {
+          position: absolute;
+          left:50%;
+          margin-left: -5px;
+          bottom:-5px;
+      }
+      .datafooter {
+        position: absolute;
+        bottom: -5px;
+        text-align: right;
+        right: 0px;
+      }
 
       .saltopagina{
         display:block;
@@ -107,12 +116,6 @@
       .subtable{
         padding-left:10px;
       }
-      .datafooter {
-        position: absolute;
-        bottom: 10px;
-        text-align: right;
-        right: 0.7cm;
-      }
      </style>
 </head>
 <body>
@@ -121,8 +124,7 @@
   </header>
   <footer>
     <p class="page">Página </p>
-    <p class="datafooter">{{ $tienda->nombreagencia }}<br>
-    {{ Auth::user()->codigo }}</p>
+    <p class="datafooter">{{ $tienda->nombreagencia }} / {{ Auth::user()->codigo }}</p>
   </footer>
   <main>
     <div class="container">
@@ -172,13 +174,13 @@
     <div style="width:100%; height:5px;"></div>
     <b>II.	SOBRE EL PRÉSTAMO </b>
     <br>
-    <b>2.1.</b>	EL ACREEDOR otorga a EL/LOS PRESTATARIO(S), la suma de S/. {{ $credito->monto_solicitado }}, en condición de préstamo, con pago {{strtoupper($credito->forma_pago_credito_nombre)}} en {{$credito->cuotas}} cuota(s), 
-    debiéndose pagar un total de S/. {{ $credito->total_pagar }} al terminar el plazo, que incluye capital más los intereses, comisión de servicio y gastos, 
+    <b>2.1.</b>	EL ACREEDOR otorga a EL/LOS PRESTATARIO(S), la suma de S/. <b>{{ $credito->monto_solicitado }}</b>, en condición de préstamo, con pago <b>{{strtoupper($credito->forma_pago_credito_nombre)}}</b> en <b>{{$credito->cuotas}}</b> cuota(s), 
+    debiéndose pagar un total de S/. <b>{{ $credito->total_pagar }}</b> al terminar el plazo, que incluye capital más los intereses, comisión de servicio y gastos, 
     conforme lo informado y aceptación de estos por parte de EL/LOS PRESTATARIO(S) y/o SU(S) AVAL/FIADOR(ES) SOLIDARIO(S). 
     La entrega del monto total del préstamo, hoja de resumen y el cronograma de pagos, se realizan en el momento de firmado del presente contrato y del título valor. 
     <br>
     <b>2.2.</b>	EL/LOS PRESTATARIO(S) se obliga(n) a pagar a EL ACREEDOR el monto total de préstamo otorgado por este último más los intereses, comisión de servicio y gastos, 
-    en la forma y plazo de pagos convenido de ambas partes conforme numeral 2.1., para lo cual se otorga {{ $credito->config_dias_tolerancia_garantia }} días de tolerancia para los pagos respectivos. 
+    en la forma y plazo de pagos convenido de ambas partes conforme numeral 2.1., para lo cual se otorga <b>{{ $credito->config_dias_tolerancia_garantia }}</b> días de tolerancia para los pagos respectivos. 
     Vencida el plazo convenido y los días de tolerancia EL/LOS PRESTATARIO(S) pagará(n) el interés compensatorio y moratorio más gastos, desde el primer día 
     de su vencimiento conforme las tasas de hoja de resumen de crédito.
     <br>
@@ -258,7 +260,7 @@ De conformidad a los Artículos 25 y 26 del Código Procesal Civil y al Artícul
     $fecha_texto = date_format(date_create($credito->fecha_desembolso),'d') . ' de ' . $mes . ' de ' . date_format(date_create($credito->fecha_desembolso),'Y');
     ?>
 EL/LOS PRESTATARIO(S) y/o SU(S) AVAL(ES) SOLIDARIO(S), declaramos haber recibido una copia del presente contrato, de la Hoja Resumen, Cronograma de pagos, y 
-    los aceptamos en su integridad y suscribimos en fe a la verdad del presente contrato en la ciudad de {{ $ubigeo_tienda->distrito }}, a {{ $fecha_texto }}.
+    los aceptamos en su integridad y suscribimos en fe a la verdad del presente contrato en la ciudad de <b>{{ $ubigeo_tienda->distrito }}</b>, a <b>{{ $fecha_texto }}</b>.
 
 </div>
 <br>
@@ -287,15 +289,17 @@ EL/LOS PRESTATARIO(S) y/o SU(S) AVAL(ES) SOLIDARIO(S), declaramos haber recibido
           <td style="padding:5px;border: 1px solid #000;width:60%;height:70px;">
             <span><b>PRESTATARIO:</b> {{ $usuario->nombrecompleto }}</span>
             <br>
-            <span><b>DOI/RUC: </b>{{ $usuario->identificacion }}</span>
+            <span><b>RUC/DNI/CE: </b>{{ $usuario->identificacion }}</span>
             <br>
             <span><b>DOMICILIO: </b>{{ $usuario->direccion }}, {{ $distrito }} - {{ $provincia }} - {{ $departamento }}</span>
             <br>
             <span><b>REP. LEGAL:</b></span>
           </td>
-          <td style="padding:5px;border: 1px solid #000;">
+          <td style="padding:5px;padding-bottom:0;border: 1px solid #000;">
+            <div style="font-size:7px;text-align:center;margin-top:65px;">(Sello, Firma)</div>
           </td>
-          <td style="padding:5px;border: 1px solid #000;width:15%;">
+          <td style="padding:5px;padding-bottom:0;border: 1px solid #000;width:15%;">
+            <div style="font-size:7px;text-align:center;margin-top:65px;">(Huella D.)</div>
           </td>
         </tr>
         @if($credito->participarconyugue_titular=='on')
@@ -303,13 +307,15 @@ EL/LOS PRESTATARIO(S) y/o SU(S) AVAL(ES) SOLIDARIO(S), declaramos haber recibido
           <td style="padding:5px;border: 1px solid #000;width:60%;height:70px;">
             <span><b>PRESTATARIO:</b> {{ $users_prestamo->nombrecompleto_pareja }}</span>
             <br>
-            <span><b>DOI/RUC: </b>{{ $users_prestamo->dni_pareja }}</span>
+            <span><b>RUC/DNI/CE: </b>{{ $users_prestamo->dni_pareja }}</span>
             <br>
             <span><b>DOMICILIO: </b>{{ $usuario->direccion }}, {{ $distrito }} - {{ $provincia }} - {{ $departamento }}</span>
           </td>
-          <td style="padding:5px;border: 1px solid #000;">
+          <td style="padding:5px;padding-bottom:0;border: 1px solid #000;">
+            <div style="font-size:7px;text-align:center;margin-top:65px;">(Firma)</div>
           </td>
-          <td style="padding:5px;border: 1px solid #000;">
+          <td style="padding:5px;padding-bottom:0;border: 1px solid #000;">
+            <div style="font-size:7px;text-align:center;margin-top:65px;">(Huella D.)</div>
           </td>
         </tr>
         @endif
@@ -318,15 +324,17 @@ EL/LOS PRESTATARIO(S) y/o SU(S) AVAL(ES) SOLIDARIO(S), declaramos haber recibido
           <td style="padding:5px;border: 1px solid #000;width:60%;height:70px;">
             <span><b>AVAL/FIADOR SOLIDARIO:</b> {{ $aval!=''?$aval->nombrecompleto:'' }}</span>
             <br>
-            <span><b>DOI/RUC: </b>{{ $aval!=''?$aval->identificacion:'' }}</span>
+            <span><b>RUC/DNI/CE: </b>{{ $aval!=''?$aval->identificacion:'' }}</span>
             <br>
             <span><b>DOMICILIO: </b> {{ $aval!=''?$aval->direccion:'' }}, {{ $distritoaval }} - {{ $provinciaaval }} - {{ $departamentoaval }}</span>
             <br>
             <span><b>REP. LEGAL:</b></span>
           </td>
-          <td style="padding:5px;border: 1px solid #000;">
+          <td style="padding:5px;padding-bottom:0;border: 1px solid #000;">
+            <div style="font-size:7px;text-align:center;margin-top:65px;">(Sello, Firma)</div>
           </td>
-          <td style="padding:5px;border: 1px solid #000;">
+          <td style="padding:5px;padding-bottom:0;border: 1px solid #000;">
+            <div style="font-size:7px;text-align:center;margin-top:65px;">(Huella D.)</div>
           </td>
         </tr>
         @endif
@@ -336,13 +344,15 @@ EL/LOS PRESTATARIO(S) y/o SU(S) AVAL(ES) SOLIDARIO(S), declaramos haber recibido
           <td style="padding:5px;border: 1px solid #000;width:60%;height:70px;">
             <span><b>AVAL/FIADOR SOLIDARIO:</b> {{ $users_prestamo_aval->nombrecompleto_pareja }}</span>
             <br>
-            <span><b>DOI/RUC: </b>{{ $users_prestamo_aval->dni_pareja }}</span>
+            <span><b>RUC/DNI/CE: </b>{{ $users_prestamo_aval->dni_pareja }}</span>
             <br>
             <span><b>DOMICILIO: </b> {{ $aval!=''?$aval->direccion:'' }}, {{ $distritoaval }} - {{ $provinciaaval }} - {{ $departamentoaval }}</span> 
           </td>
-          <td style="padding:5px;border: 1px solid #000;">
+          <td style="padding:5px;padding-bottom:0;border: 1px solid #000;">
+            <div style="font-size:7px;text-align:center;margin-top:65px;">(Firma)</div>
           </td>
-          <td style="padding:5px;border: 1px solid #000;">
+          <td style="padding:5px;padding-bottom:0;border: 1px solid #000;">
+            <div style="font-size:7px;text-align:center;margin-top:65px;">(Huella D.)</div>
           </td>
         </tr>
         @endif

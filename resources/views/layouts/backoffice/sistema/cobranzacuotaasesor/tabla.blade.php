@@ -449,7 +449,7 @@
                 $('#numero_credito').html(respuesta.numero_credito);
               
                 $('#detalle_cantidad_cuotas').val(respuesta.cantidad_cuota);
-                $('#detalle_monto_apagar').val(respuesta.monto_totalapagar);
+                $('#detalle_monto_apagar').val(respuesta.monto_apagar);
                 $('#pagoacuenta_acuenta').val(respuesta.pagoacuenta_acuenta);
                 $('#pagoacuenta_capital').val(respuesta.pagoacuenta_capital);
                 $('#pagoacuenta_interes').val(respuesta.pagoacuenta_interes);

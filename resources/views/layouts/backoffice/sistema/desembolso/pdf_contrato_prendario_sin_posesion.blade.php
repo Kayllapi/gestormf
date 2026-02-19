@@ -18,45 +18,54 @@ CON GARANTÍA MOBILIARIA SIN POSESIÓN</title>
       body {
           margin-top: 1.2cm;
           margin-left: 0.7cm;
-          margin-right: 0.7cm;
+          margin-right: 0.5cm;
           margin-bottom: 2cm;
       }
 
-      /** Definir las reglas del encabezado **/
+     /** Definir las reglas del encabezado **/
       header {
           position: fixed;
           top: 0cm;
           left: 0.7cm;
           right: 0.7cm;
           height: 0.6cm;
-          /** Estilos extra personales **/
           color: #000;
-          text-align: center;
           line-height: 0.6cm;
           font-size:18px !important;
           font-weight: bold;
           border-bottom: 1px solid #000; 
-          margin:5px;
+          margin-top:5px;
+          margin-bottom: 5px;
           text-align:right;
           padding:5px;
+          padding-left: 0px;
+          padding-right. 0px;
       }
-
-      /** Definir las reglas del pie de página **/
       footer {
           position: fixed; 
-          bottom: 0.7cm; 
+          bottom: 0.5cm; 
           left: 0.7cm; 
           right: 0.7cm;
-          height: 1cm;
-
-          /** Estilos extra personales **/
+          height: 20px;
           color: #000;
           text-align: center;
           line-height: 0.4cm;
           font-size:11px;
+          font-weight: bold;
       }
-      /** Definir las reglas de numeracion de página **/
       footer .page:after { content: counter(page, decimal-leading-zero); }
+      .page {
+          position: absolute;
+          left:50%;
+          margin-left: -5px;
+          bottom:-5px;
+      }
+      .datafooter {
+        position: absolute;
+        bottom: -5px;
+        text-align: right;
+        right: 0px;
+      }
 
       .saltopagina{
         display:block;
@@ -108,11 +117,9 @@ CON GARANTÍA MOBILIARIA SIN POSESIÓN</title>
       .subtable{
         padding-left:10px;
       }
-      .datafooter {
-        position: absolute;
-        bottom: 10px;
-        text-align: right;
-        right: 0.7cm;
+      .linea {
+          width: 100%;
+          border-top: 1px solid #000;
       }
      </style>
 </head>
@@ -122,8 +129,7 @@ CON GARANTÍA MOBILIARIA SIN POSESIÓN</title>
   </header>
   <footer>
     <p class="page">Página </p>
-    <p class="datafooter">{{ $tienda->nombreagencia }}<br>
-    {{ Auth::user()->codigo }}</p>
+    <p class="datafooter">{{ $tienda->nombreagencia }} / {{ Auth::user()->codigo }}</p>
   </footer>
   <main>
     <div class="container">
@@ -216,7 +222,7 @@ CON GARANTÍA MOBILIARIA SIN POSESIÓN</title>
     <b>3.1.</b> Al incumplimiento de pago de EL/LOS PRESTATARIO(S) sea el saldo o total del préstamo incluido intereses, comisión de servicio 
     y gastos. En créditos pagaderos hasta 2 meses de plazo y vencido, o en créditos pagaderos mayor a 2 meses de plazo, con 90 días a más de vencido la cuota de pago; 
     EL/LOS PRESTATARIO(S) tendrá(n) <b>{{ $credito->config_dias_tolerancia }}</b> días para su cancelación total o regularización, pagando custodia de ser el caso del bien(s) en garantía, 
-    interés compensatorio y moratorio más cargos. Caso contrario EL ACREEDOR ejecutará la(s) garantías(s) entregada(s) conforme en numeral 4.1. <br>
+    interés compensatorio y moratorio más cargos. Caso contrario EL ACREEDOR ejecutará la(s) garantías(s) entregada(s) en numeral 4.1. <br>
     <b>3.2.</b> EL/LOS PRESTATARIO(S) incurre en los supuestos previstos en el artículo 175 de Ley General del Sistema Financiero y del Sistema 
     de Seguros y Orgánica de la Superintendencia de Banca y Seguros, Ley N° 26702 <br>
     <b>3.3.</b> Otras permitidas por Ley, y que EL ACREEDOR implemente, comunicando oportunamente a EL/LOS PRESTATARIO(S).<br>
@@ -233,16 +239,16 @@ CON GARANTÍA MOBILIARIA SIN POSESIÓN</title>
     <br>
           <table style="width:100%;">
             <tr>
-              <th style="border-bottom: 2px solid #000;">Código</th>
-              <th style="border-bottom: 2px solid #000;">Bien</th>
-              <th style="border-bottom: 2px solid #000;">Accesorios</th>
-              <th style="border-bottom: 2px solid #000;">Año F.</th>
-              <th style="border-bottom: 2px solid #000;">Color</th>
-              <th style="border-bottom: 2px solid #000;">Serie/Motor/N°Partida</th>
-              <th style="border-bottom: 2px solid #000;">Chasis</th>
-              <th style="border-bottom: 2px solid #000;">Modelo</th>
-              <th style="border-bottom: 2px solid #000;">Placa</th>
-              <th style="border-bottom: 2px solid #000;">Estado</th>
+              <th style="border-bottom: 1px solid #000;">Código</th>
+              <th style="border-bottom: 1px solid #000;">Bien</th>
+              <th style="border-bottom: 1px solid #000;">Accesorios</th>
+              <th style="border-bottom: 1px solid #000;">Año F.</th>
+              <th style="border-bottom: 1px solid #000;">Color</th>
+              <th style="border-bottom: 1px solid #000;">Serie/Motor/N°Partida</th>
+              <th style="border-bottom: 1px solid #000;">Chasis</th>
+              <th style="border-bottom: 1px solid #000;">Modelo</th>
+              <th style="border-bottom: 1px solid #000;">Placa</th>
+              <th style="border-bottom: 1px solid #000;">Estado</th>
             </tr>
             @foreach($garantias as $value)
               <tr>
@@ -283,14 +289,14 @@ CON GARANTÍA MOBILIARIA SIN POSESIÓN</title>
 <b>4.4.</b><b> Del depositario. </b> La garantía(s) mobiliaria(s) que se constituye en respaldo del préstamo se realiza sin entrega de posesión del 
     (de los) bien(es) mueble(s) a EL ACREEDOR, modalidad de garantía mobiliaria conforme Ley de Garantía Mobiliaria N° 28677, Decreto Legislativo N° 1400 
     (o norma que la modifique o reemplace), en virtud de la cual se nombra DEPOSITARIO del (de los) bien(es) detallados en numeral 4.1. a EL/LOS PRESTATARIO(S)  
-    y se detallan en Hoja de resumen del crédito entregado; siendo lugar de depósito en el domicilio del DEPOSITARIO.
+    y se detallan en Hoja de resumen del crédito entregado; siendo lugar de depósito en el domicilio del DEPOSITARIO.<br>
 EL/LOS PRESTATARIO(S) podrá(n) designar un DEPOSITARIO tercero idóneo para que custodie el (los) bien(es) dado(s) en garantía. En ese caso, comunicará dicha 
     decisión a EL ACREEDOR, y esta última tendrá derecho a Adherirse al Contrato de Custodia que celebre EL/LOS PRESTATARIO(S) con el DEPOSITARIO, 
     asumiendo este último todas las obligaciones contempladas en la Ley de Garantía Mobiliaria, incluso la de entregar el bien gravado al Representante 
     Común cuando ello sea requerido conforme lo pactado en el Contrato del cual forma parte la presente cláusula adicional. El DEPOSITARIO designado 
     deberá contratar un seguro contra todo riesgo a satisfacción de EL ACREEDOR y endosar la póliza a nombre de esta última incluyendo sus renovaciones. 
     El seguro se mantendrá vigente hasta la cancelación total de la(s) obligación(es) garantizada(s). En caso de incumplimiento de esta obligación, 
-    EL ACREEDOR contratará el seguro y trasladará dicho costo a EL/LOS PRESTATARIO(S). 
+    EL ACREEDOR contratará el seguro y trasladará dicho costo a EL/LOS PRESTATARIO(S). <br>
 En caso EL/LOS PRESTATARIO(S) mantenga la calidad de DEPOSITARIO deberá contratar una póliza de seguros contra todo riesgo que cubra el valor del gravamen. 
     Dicha póliza deberá ser endosada a nombre de EL ACREEDOR y renovada hasta la cancelación total de la(s) obligación(es) garantizada(s). En caso incumpla 
     con esta obligación, EL ACREEDOR contratará el seguro y trasladará dicho costo a EL/LOS PRESTATARIO(S).<br>
@@ -298,8 +304,8 @@ En caso EL/LOS PRESTATARIO(S) mantenga la calidad de DEPOSITARIO deberá contrat
     cláusula 4.1, realmente le corresponden y no contienen adulteraciones. De determinarse lo contrario a lo declarado por EL/LOS PRESTATARIO(S), este asumirá 
     todas las responsabilidades civiles y penales, frente a EL ACREEDOR y terceros. En tal caso EL ACREEDOR, procederá a resolver el presente Contrato en 
     virtud a Resolución SBS N° 3274-2017 artículos 40 y 41, quedando EL/LOS PRESTATARIO(S) obligado(s) a pagar a EL ACREEDOR un monto igual al saldo del Préstamo, 
-    intereses y comisiones de servicio más los intereses compensatorios y moratorios de obligaciones impagas y gastos.
-EL/LOS PRESTATARIO(S) reconoce que, como parte de la evaluación para el otorgamiento del préstamo, EL ACREEDOR le solicitó la presentación del comprobante de pago 
+    intereses y comisiones de servicio más los intereses compensatorios y moratorios de obligaciones impagas y gastos.<br>
+EL/LOS PRESTATARIO(S) reconoce(n) que, como parte de la evaluación para el otorgamiento del préstamo, EL ACREEDOR le solicitó la presentación del comprobante de pago 
     de la adquisición del (de los) bien(es) materia de la garantía mobiliaria. Al no contar con dicho comprobante, EL/LOS PRESTATARIO(S) suscribe(n) la presente declaración 
     jurada, la cual forma parte integral del contrato de préstamo.<br>
 <br>
@@ -351,24 +357,25 @@ EL/LOS PRESTATARIO(S) reconoce que, como parte de la evaluación para el otorgam
     $mes = $meses[(date_format(date_create($credito->fecha_desembolso),'n')) - 1];
     $fecha_texto = date_format(date_create($credito->fecha_desembolso),'d') . ' de ' . $mes . ' de ' . date_format(date_create($credito->fecha_desembolso),'Y');
     ?>
-<b>IX. VIGENCIA.</b> Indeterminada hasta la cancelación total de la Obligación Garantizada.
+<b>IX. VIGENCIA.</b> <br>
+    Indeterminada hasta la cancelación total de la Obligación Garantizada.
 <br><br>
-    <b>X. JURISDICCIÓN Y COMPETENCIA.</b>
+    <b>X. JURISDICCIÓN Y COMPETENCIA.</b><br>
     Las partes renuncian al fuero de sus domicilios y se someten a la jurisdicción del lugar de celebración del Contrato. Todo cambio de domicilio de EL/LOS 
     PRESTATARIO(S) solo surtirá efecto desde su puesta en conocimiento a EL ACREEDOR, a través de comunicación física o electrónica, con una anticipación no 
-    menor de cinco (5) días útiles.<br><br><br>
-    <b>XI. ACEPTACIÓN DEL CONTRATO</b>
-    En mi condición de EL/LOS PRESTATARIO(S), declaro haber recibido la hoja de resumen del préstamo, cronograma de pagos y el dinero respectivo; asimismo la información sobre las políticas y condiciones del préstamo, aceptando las mismas. 
+    menor de cinco (5) días útiles.<br><br>
+    <b>XI. ACEPTACIÓN DEL CONTRATO</b><br>
+    En mi condición de EL/LOS PRESTATARIO(S), declaro haber recibido la hoja de resumen del préstamo, cronograma de pagos y el dinero respectivo; asimismo la información sobre las políticas y condiciones del préstamo, aceptando las mismas. <br><br>
     En fe a la verdad, suscribimos el presente contrato en la ciudad de <b>{{ $ubigeo_tienda->distrito }}</b>, a <b>{{ $fecha_texto }}</b>.<br>
 </div>
 
 <br><br>
 <br><br>
       <div style="width:175px;margin-top: 30px;float:left;margin-right:5px;">
-            <hr style="border: 1px solid #000;">
+            <div class="linea"></div>
             <span style="padding-top:10px;"><b>{{ $usuario->nombrecompleto }}</b></span>
             <br>
-            <span><b>DNI: </b>{{ $usuario->identificacion }}</span>
+            <span><b>RUC/DNI/CE: </b>{{ $usuario->identificacion }}</span>
             <br>
             <span><b>Domicilio: </b>{{ $usuario->direccion }}, {{ $distrito }} - {{ $provincia }} - {{ $departamento }}</span>
             <br>
@@ -377,10 +384,10 @@ EL/LOS PRESTATARIO(S) reconoce que, como parte de la evaluación para el otorgam
       <div style="width:100px;margin-top: 10px;height:100px;float:left;margin-right:10px;border: 1px solid #000;">
       </div>
       <div style="width:175px;margin-top: 30px;float:left;margin-right:5px;">
-            <hr style="border: 1px solid #000;">
+            <div class="linea"></div>
             <span style="padding-top:10px;"><b><?php echo $aval!=''?$aval->nombrecompleto:'' ?></b></span>
             <br>
-            <span><b>DNI: </b><?php echo $aval!=''?$aval->identificacion:'' ?></span>
+            <span><b>RUC/DNI/CE: </b><?php echo $aval!=''?$aval->identificacion:'' ?></span>
             <br>
             <span><b>Domicilio: </b> {{ $aval!=''?$aval->direccion:'' }}, {{ $distritoaval }} - {{ $provinciaaval }} - {{ $departamentoaval }}</span>
             <br>
@@ -393,7 +400,7 @@ EL/LOS PRESTATARIO(S) reconoce que, como parte de la evaluación para el otorgam
             <div style="text-align:center">
             <img src="{{ url('public/backoffice/tienda/'.$tienda->id.'/sistema/'.$tienda->firma) }}" width="100px"></div>
             @endif
-            <hr style="border: 1px solid #000;">
+            <div class="linea"></div>
             <span style="padding-top:10px;"><b>{{ $tienda->nombre }}</b></span>
             <br>
             <span>{{ $tienda->representante }}</span>

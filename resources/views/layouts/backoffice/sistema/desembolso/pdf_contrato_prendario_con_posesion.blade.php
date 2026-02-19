@@ -29,7 +29,6 @@ CON GARANTÍA MOBILIARIA CON POSESIÓN</title>
           left: 0.7cm;
           right: 0.7cm;
           height: 0.6cm;
-          /** Estilos extra personales **/
           color: #000;
           line-height: 0.6cm;
           font-size:18px !important;
@@ -42,31 +41,30 @@ CON GARANTÍA MOBILIARIA CON POSESIÓN</title>
           padding-left: 0px;
           padding-right. 0px;
       }
-
-      /** Definir las reglas del pie de página **/
       footer {
           position: fixed; 
           bottom: 0.5cm; 
           left: 0.7cm; 
           right: 0.7cm;
           height: 20px;
-
-          /** Estilos extra personales **/
           color: #000;
           text-align: center;
           line-height: 0.4cm;
           font-size:11px;
-          border-top: 1px solid #000; 
           font-weight: bold;
       }
-      /** Definir las reglas de numeracion de página **/
       footer .page:after { content: counter(page, decimal-leading-zero); }
-      
       .page {
           position: absolute;
           left:50%;
           margin-left: -5px;
           bottom:-5px;
+      }
+      .datafooter {
+        position: absolute;
+        bottom: -5px;
+        text-align: right;
+        right: 0px;
       }
 
       .saltopagina{
@@ -118,12 +116,6 @@ CON GARANTÍA MOBILIARIA CON POSESIÓN</title>
       }
       .subtable{
         padding-left:10px;
-      }
-      .datafooter {
-        position: absolute;
-        bottom: -5px;
-        text-align: right;
-        right: 0px;
       }
       .linea {
           width: 100%;

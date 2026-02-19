@@ -165,7 +165,7 @@ Por este PAGARÉ prometo(emos), pagar incondicionalmente a la orden de la <b>{{ 
           </table>
         
           <p style="text-align: justify;margin-top:2px;margin-bottom:2px;">
-          <b>1.</b> Este pagaré debe ser pagado en la misma moneda que expresa el título valor. <br>
+          <b>1.</b> Este pagaré debe ser pagado en la misma moneda que expresa este título valor. <br>
           <b>2.</b> El plazo de vencimiento el presente pagaré podrá ser prorrogado por su tenedor por el importe total o parcial, por el plazo que este señale en
             éste mismo documento, sin necesidad de intervención del obligado principal (emitente) ni de su/s avalista/s o fiador/es solidario/s, para cuyo 
             efecto el/los emitente/s y su/s avalista/s o fiador/es solidario/s prestan su consentimiento expreso al firmar este pagaré. La prórroga 
@@ -229,7 +229,7 @@ Por este PAGARÉ prometo(emos), pagar incondicionalmente a la orden de la <b>{{ 
           <td style="padding:5px;border: 1px solid #000;width:50%;">
             <span><b>EMITENTE 1:</b></span>
             <br>
-            <span><b>DOI/RUC:</b></span>
+            <span><b>RUC/DNI/CE:</b></span>
             <br>
             <span><b>DOMICILIO:</b></span>
             <br>
@@ -239,14 +239,14 @@ Por este PAGARÉ prometo(emos), pagar incondicionalmente a la orden de la <b>{{ 
             <div style="font-size:7px;text-align:center;margin-top:60px;">(Sollo, Firma)</div>
           </td>
           <td style="padding:5px;padding-bottom:0;border: 1px solid #000;width:15%;">
-            <div style="font-size:7px;text-align:center;;margin-top:60px;">(Huella D.)</div>
+            <div style="font-size:7px;text-align:center;margin-top:60px;">(Huella D.)</div>
           </td>
         </tr>
         <tr>
           <td style="padding:5px;border: 1px solid #000;width:50%;">
             <span><b>EMITENTE 2:</b></span>
             <br>
-            <span><b>DOI/RUC:</b></span>
+            <span><b>RUC/DNI/CE:</b></span>
             <br>
             <span><b>DOMICILIO:</b></span>
             <br>
@@ -256,14 +256,14 @@ Por este PAGARÉ prometo(emos), pagar incondicionalmente a la orden de la <b>{{ 
             <div style="font-size:7px;text-align:center;margin-top:60px;">(Firma)</div>
           </td>
           <td style="padding:5px;padding-bottom:0;border: 1px solid #000;width:15%;">
-            <div style="font-size:7px;text-align:center;;margin-top:60px;">(Huella D.)</div>
+            <div style="font-size:7px;text-align:center;margin-top:60px;">(Huella D.)</div>
           </td>
         </tr>
         <tr>
           <td style="padding:5px;border: 1px solid #000;width:50%;">
             <span><b>AVAL/FIADOR 1:</b></span>
             <br>
-            <span><b>DOI/RUC:</b></span>
+            <span><b>RUC/DNI/CE:</b></span>
             <br>
             <span><b>DOMICILIO:</b></span>
             <br>
@@ -273,14 +273,14 @@ Por este PAGARÉ prometo(emos), pagar incondicionalmente a la orden de la <b>{{ 
             <div style="font-size:7px;text-align:center;margin-top:60px;">(Sollo, Firma)</div>
           </td>
           <td style="padding:5px;padding-bottom:0;border: 1px solid #000;width:15%;">
-            <div style="font-size:7px;text-align:center;;margin-top:60px;">(Huella D.)</div>
+            <div style="font-size:7px;text-align:center;margin-top:60px;">(Huella D.)</div>
           </td>
         </tr>
         <tr>
           <td style="padding:5px;border: 1px solid #000;width:50%;">
             <span><b>AVAL/FIADOR 2:</b></span>
             <br>
-            <span><b>DOI/RUC:</b></span>
+            <span><b>RUC/DNI/CE:</b></span>
             <br>
             <span><b>DOMICILIO:</b></span>
             <br>
@@ -290,7 +290,7 @@ Por este PAGARÉ prometo(emos), pagar incondicionalmente a la orden de la <b>{{ 
             <div style="font-size:7px;text-align:center;margin-top:60px;">(Firma)</div>
           </td>
           <td style="padding:5px;padding-bottom:0;border: 1px solid #000;width:15%;">
-            <div style="font-size:7px;text-align:center;;margin-top:60px;">(Huella D.)</div>
+            <div style="font-size:7px;text-align:center;margin-top:60px;">(Huella D.)</div>
           </td>
         </tr>
       </table>

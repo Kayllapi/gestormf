@@ -28,8 +28,7 @@
 </head>
 <body>
     <div class="ticket_contenedor">
-          <div class="cabecera">{{ $tienda->nombre }}</div>
-          <div class="cabecera">{{ $tienda->direccion }}</div>
+          <div class="cabecera"><b>{{ $tienda->nombre }} - {{ $tienda->nombreagencia }}</b></div>
           <div class="linea"></div>
           <div class="titulo"><b>PAGO DE CRÉDITO</b></div>  
           <table style="width:100%;">

@@ -28,7 +28,9 @@
 </head>
 <body>
     <div class="ticket_contenedor">  
-      <div><b>ENTREGA DE GARANTÍA</b></div><div class="linea"></div>
+      <div><b>{{ $tienda->nombre }} - {{ $tienda->nombreagencia }}</b></div>
+      <div class="linea"></div>
+      <div><b>ENTREGA DE GARANTÍA</b></div>
      
           <table class="tabla_informativa" width="100%">
               <tr>

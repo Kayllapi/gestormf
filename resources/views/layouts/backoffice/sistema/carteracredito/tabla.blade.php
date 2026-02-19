@@ -113,9 +113,9 @@
                 <tr>
                   <th>N°</th>
                   <th>CUENTA</th>
-                  <th>DOI/RUC</th>
+                  <th>RUC/DNI/CE</th>
                   <th>Apellidos y Nombres</th>
-                  <th>DOI/RUC (Aval)</th>
+                  <th>RUC/DNI/CE (Aval)</th>
                   <th>Ape. Nom. Aval</th>
                   <th>Fecha Desemb.</th>
                   <th>Monto Cred. (S/.)</th>

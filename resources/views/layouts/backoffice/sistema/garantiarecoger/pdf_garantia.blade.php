@@ -28,7 +28,7 @@
 </head>
 <body>
     <div class="ticket_contenedor">  
-      <div>{{$tienda->nombre}} | {{$tienda->nombreagencia}}</div>
+      <div><b>{{$tienda->nombre}} - {{$tienda->nombreagencia}}</b></div>
       <div class="linea"></div>
       <div style="text-align: center"><b>ENTREGA DE GARANTÍA</b></div>
 

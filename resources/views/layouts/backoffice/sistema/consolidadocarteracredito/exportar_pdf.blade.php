@@ -21,40 +21,32 @@
           margin-bottom: 0cm;
       }
 
-      /** Definir las reglas del encabezado **/
       header {
           position: fixed;
           top: 0cm;
           left: 0.7cm;
           right: 0.7cm;
           height: 0.6cm;
-          /** Estilos extra personales **/
-          color: #676869;
+          color: #0f0f0f;
           text-align: center;
           line-height: 0.6cm;
-          font-size:18px !important;
+          font-size:15px !important;
           font-weight: bold;
-          border-bottom: 2px solid #144081; 
           margin:5px;
           text-align:right;
           padding:5px;
       }
-
-      /** Definir las reglas del pie de página **/
       footer {
           position: fixed; 
           bottom: 0cm; 
           left: 0.7cm; 
           right: 0.7cm;
           height: 1cm;
-
-          /** Estilos extra personales **/
           color: #000;
           text-align: center;
           line-height: 0.4cm;
-          font-size:11px;
+          font-size:12px;
       }
-      /** Definir las reglas de numeracion de página **/ 
       footer > .page:after { content: counter(page, decimal-leading-zero); }
 
       .saltopagina{
@@ -117,7 +109,7 @@
 </head>
 <body>
   <header>
-    <div style="float:left;font-size:18px;">{{ $tienda->nombre }} @if($agencia)| {{ $agencia->nombreagencia }} @else | TODA LAS AGENCIAS @endif</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
+    <div style="float:left;font-size:15px;">{{ $tienda->nombre }} @if($agencia)| {{ $agencia->nombreagencia }} @else | TODA LAS AGENCIAS @endif</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
   </header>
   <footer>
     <p class="page">Página </p>
@@ -269,12 +261,12 @@
           }
               $html .= '
                 <tr style="position: sticky;bottom: 0;">
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right">TOTAL S/.</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right">'.number_format($total_cartera, 2, '.', '').'</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right">'.$total_num_creditos.'</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right">'.number_format($total_mora_soles, 2, '.', '').'</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right">'.number_format($total_mora_porcentaje, 2, '.', '').'</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right">'.$total_numero_moracredito.'</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">TOTAL S/.</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">'.number_format($total_cartera, 2, '.', '').'</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">'.$total_num_creditos.'</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">'.number_format($total_mora_soles, 2, '.', '').'</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">'.number_format($total_mora_porcentaje, 2, '.', '').'</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">'.$total_numero_moracredito.'</td>
                 </tr>';
           
               

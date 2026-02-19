@@ -114,6 +114,12 @@
   <main>
     <div class="container">
       <h4 align="center">PRÉSTAMOS</h4>
+      <div style="height:35px;">
+        <div style="width:400px;float:left;"> 
+          <div ><b>Apellidos y Nombres: </b>{{ $cliente->nombrecompleto }}  </div>
+          <div ><b>RUC/DNI/CE: </b>{{ $cliente->identificacion }}  </div>
+        </div>
+      </div>
           <table style="width:100%;">
             <tr>
               <th style="border-bottom: 2px solid #000;">N°</th>

@@ -657,7 +657,7 @@ class EstadocuentaController extends Controller
             
    
         
-                
+        $cliente = DB::table('users')->where('users.id',$id)->first();
           $creditos = DB::table('credito')
               ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
               ->join('forma_pago_credito','forma_pago_credito.id','credito.idforma_pago_credito')
@@ -680,6 +680,7 @@ class EstadocuentaController extends Controller
           $pdf = PDF::loadView(sistema_view().'/estadocuenta/pdf_estado',[
               'tienda' => $tienda,
               'creditos' => $creditos,
+              'cliente' => $cliente,
           ]); 
           $pdf->setPaper('A4', 'landscape');
           return $pdf->stream('ESTADO_DE_CUENTA.pdf');

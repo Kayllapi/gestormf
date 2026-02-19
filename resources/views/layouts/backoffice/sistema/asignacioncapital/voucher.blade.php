@@ -14,7 +14,7 @@
        <div class="col-sm-12 mt-2 text-center">
        <div class="col-sm-12 mt-2">
         <iframe id="iframe_acta_aprobacion" 
-        src="{{ url('/backoffice/'.$tienda->id.'/asignacioncapital/'.$idasignacioncapital.'/edit?view=voucher_pdf') }}#zoom=90" 
+        src="{{ url('/backoffice/'.$tienda->id.'/asignacioncapital/'.$idasignacioncapital.'/edit?view=voucher_pdf') }}#zoom=100" 
         frameborder="0" width="100%" height="600px"></iframe>
       </div>
       </div>

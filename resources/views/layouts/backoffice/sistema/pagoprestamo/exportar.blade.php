@@ -14,7 +14,7 @@
        <div class="col-sm-12 mt-2 text-center">
        <div class="col-sm-12 mt-2">
         <iframe id="iframe_acta_aprobacion" 
-        src="{{ url('/backoffice/'.$tienda->id.'/pagoprestamo/0/edit?view=exportar_pdf&fecha_inicio='.$fecha_inicio.'&fecha_fin='.$fecha_fin.'&idagencia='.$idagencia.'&idcliente='.$idcliente) }}#zoom=90" 
+        src="{{ url('/backoffice/'.$tienda->id.'/pagoprestamo/0/edit?view=exportar_pdf&fecha_inicio='.$fecha_inicio.'&fecha_fin='.$fecha_fin.'&idagencia='.$idagencia.'&idcliente='.$idcliente) }}#zoom=100" 
         frameborder="0" width="100%" height="400px"></iframe>
       </div>
       </div>

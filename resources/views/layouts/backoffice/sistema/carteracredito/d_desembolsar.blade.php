@@ -34,13 +34,13 @@
             @endif
        </div>
        <div class="col-sm-12 mt-2">
-        <iframe id="iframe_acta_aprobacion" src="{{ url('/backoffice/'.$tienda->id.'/desembolso/'.$credito->id.'/edit?view=pdf_cronograma') }}#zoom=90" frameborder="0" width="100%" height="600px"></iframe>
+        <iframe id="iframe_acta_aprobacion" src="{{ url('/backoffice/'.$tienda->id.'/desembolso/'.$credito->id.'/edit?view=pdf_cronograma') }}#zoom=100" frameborder="0" width="100%" height="600px"></iframe>
       </div>
       </div>
 </form>   
 </div>
 <script>
 function verpdf(valor,idgarantia,num){
-    $('#iframe_acta_aprobacion').attr('src',"{{ url('/backoffice/'.$tienda->id.'/desembolso/'.$credito->id.'/edit?view=') }}"+valor+'&idgarantia='+idgarantia+'&num='+num+'#zoom=90');
+    $('#iframe_acta_aprobacion').attr('src',"{{ url('/backoffice/'.$tienda->id.'/desembolso/'.$credito->id.'/edit?view=') }}"+valor+'&idgarantia='+idgarantia+'&num='+num+'#zoom=100');
 }
 </script>

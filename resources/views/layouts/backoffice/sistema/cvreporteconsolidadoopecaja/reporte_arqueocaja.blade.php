@@ -37,6 +37,6 @@
     function reporte_arqueocaja_pdf(){
         let fecha_reporte_arqueocaja = $('#fecha_reporte_arqueocaja').val();
         let idagencia_reporte_arqueocaja = $('#idagencia_reporte_arqueocaja').val();
-        $('#iframe_reporte_arqueocaja').attr('src','{{ url('/backoffice/'.$tienda->id.'/cvreporteconsolidadoopecaja/0/edit?view=reporte_arqueocaja_pdf') }}&fecha_reporte_arqueocaja='+fecha_reporte_arqueocaja+'&idagencia_reporte_arqueocaja='+idagencia_reporte_arqueocaja+'#zoom=90');
+        $('#iframe_reporte_arqueocaja').attr('src','{{ url('/backoffice/'.$tienda->id.'/cvreporteconsolidadoopecaja/0/edit?view=reporte_arqueocaja_pdf') }}&fecha_reporte_arqueocaja='+fecha_reporte_arqueocaja+'&idagencia_reporte_arqueocaja='+idagencia_reporte_arqueocaja+'#zoom=100');
     }
 </script> 

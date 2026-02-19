@@ -8,7 +8,7 @@
     function crea_iframe(){
       let idtipo_giro_economico = $('#idtipo_giro_economico').val();
       let estado = $('#estado').val();
-      let link = "/backoffice/194/giroeconomico/0/edit?view=pdf&idtipo_giro_economico="+idtipo_giro_economico+"&estado="+estado+"#zoom=90";
+      let link = "/backoffice/194/giroeconomico/0/edit?view=pdf&idtipo_giro_economico="+idtipo_giro_economico+"&estado="+estado+"#zoom=100";
       $('#iframegiro').attr('src',link);
     }
   </script>

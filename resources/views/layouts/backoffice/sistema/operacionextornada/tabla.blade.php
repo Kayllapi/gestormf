@@ -70,7 +70,7 @@ function verpdf(){
     let fecha_inicio = $('#fecha_inicio').val();
     let fecha_fin = $('#fecha_fin').val();
     let idagencia = $('#idagencia').val();
-    $('#iframe_acta_aprobacion').attr('src','{{ url('/backoffice/'.$tienda->id.'/operacionextornada/0/edit?view=pdf_extorno') }}&fecha_inicio='+fecha_inicio+'&fecha_fin='+fecha_fin+'&idagencia='+idagencia+'#zoom=90');
+    $('#iframe_acta_aprobacion').attr('src','{{ url('/backoffice/'.$tienda->id.'/operacionextornada/0/edit?view=pdf_extorno') }}&fecha_inicio='+fecha_inicio+'&fecha_fin='+fecha_fin+'&idagencia='+idagencia+'#zoom=100');
 }
 </script>  
 

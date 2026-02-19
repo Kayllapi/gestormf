@@ -6,7 +6,7 @@
         <div class="col-sm-12 mt-2">
         <iframe id="iframe_acta_aprobacion" 
                 onload="ifrhgh()"
-                src="{{ url('/backoffice/'.$tienda->id.'/gestioncobranza/'.$credito->id.'/edit?view=notificacion_pdf') }}#zoom=90" 
+                src="{{ url('/backoffice/'.$tienda->id.'/gestioncobranza/'.$credito->id.'/edit?view=notificacion_pdf') }}#zoom=100" 
                 frameborder="0" width="100%"></iframe>
         </div>
     </div>

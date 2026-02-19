@@ -39,12 +39,12 @@
         <table style="width:100%;">
             <thead class="table-dark">
                 <tr>
-                    <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" width="10px">NRO</th>
-                    <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" width="80px">DNI/CE/RUC</th>
-                    <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" width="350px">CLIENTE</th>
-                    <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">MOTIVO</th>
-                    <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" width="100px">REG. POR</th>
-                    <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" width="120px">F. REGISTRO</th>
+                    <th style="border-top: 1px solid #000;border-bottom: 1px solid #000;text-align:center" width="10px">NRO</th>
+                    <th style="border-top: 1px solid #000;border-bottom: 1px solid #000;text-align:center" width="80px">DNI/CE/RUC</th>
+                    <th style="border-top: 1px solid #000;border-bottom: 1px solid #000;text-align:center" width="350px">CLIENTE</th>
+                    <th style="border-top: 1px solid #000;border-bottom: 1px solid #000;text-align:center">MOTIVO</th>
+                    <th style="border-top: 1px solid #000;border-bottom: 1px solid #000;text-align:center" width="100px">REG. POR</th>
+                    <th style="border-top: 1px solid #000;border-bottom: 1px solid #000;text-align:center" width="120px">F. REGISTRO</th>
                 </tr>
             </thead>
             <tbody>
@@ -58,6 +58,9 @@
                     <td>{{ date_format(date_create($value->fecharegistro),'d-m-Y') }}</td>
                 </tr>
                 @endforeach
+                <tr>
+                    <td style="border-top: 1px solid #000;text-align:center" colspan="6"></td>
+                </tr>
             </tbody>
         </table>
     </div>

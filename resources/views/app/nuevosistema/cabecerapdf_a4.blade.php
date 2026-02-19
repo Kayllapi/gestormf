@@ -18,7 +18,6 @@
         line-height: 0.6cm;
         font-size:16px !important;
         font-weight: bold;
-        border-bottom: 2px solid #144081; 
         margin:5px;
         text-align:right;
         padding:5px;

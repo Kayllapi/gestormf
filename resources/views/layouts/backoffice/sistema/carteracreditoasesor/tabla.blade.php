@@ -69,36 +69,31 @@
                             <button type="button" class="btn btn-success" onclick="lista_credito()"><i class="fa-solid fa-search"></i> FILTRAR</button>
                           </div>
                         </div>
-                      </div>
+                    </div>
                     <div class="col-sm-12 col-md-5">
-                      <div class="card">
-                        <div class="card-body p-2">
-                          <div class="modal-body p-0">
-                          <table class="table table-bordered" style="width:600px;margin-bottom: 3px;">
-                            <thead class="table-dark"> 
-                              <tr>
-                                <th colspan="5" style='text-align:center;'>CATEGORIA DE CLASIFICACIÓN</th>
-                              </tr>
-                              <tr>
-                                <th style='text-align:center;'>NORMAL</th>
-                                <th style='text-align:center;'>CPP</th>
-                                <th style='text-align:center;'>DEFICIENTE</th>
-                                <th style='text-align:center;'>DUDOSO</th>
-                                <th style='text-align:center;'>PÉRDIDA</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <th style='text-align:center;background-color: #19e35c !important;'><=8 DÍAS</th>
-                                <th style='text-align:center;background-color: #E8E585 !important;'>>8<=30 DÍAS</th>
-                                <th style='text-align:center;background-color: #FFC5C5 !important;'>>30<=60 DÍAS</th>
-                                <th style='text-align:center;background-color: #959595 !important;'>>60<=120 DÍAS</th>
-                                <th style='text-align:center;background-color: #959595 !important;'>>120 DÍAS</th>
-                              </tr>
-                            </tbody>
-                          </table>
-                          </div>
-                        </div>
+                      <table class="table table-bordered" style="margin-bottom: 3px;">
+                        <thead class="table-dark"> 
+                          <tr>
+                            <th colspan="5" style='text-align:center;'>CATEGORIA DE CLASIFICACIÓN</th>
+                          </tr>
+                          <tr>
+                            <th style='text-align:center;'>NORMAL</th>
+                            <th style='text-align:center;'>CPP</th>
+                            <th style='text-align:center;'>DEFICIENTE</th>
+                            <th style='text-align:center;'>DUDOSO</th>
+                            <th style='text-align:center;'>PÉRDIDA</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <th style='text-align:center;background-color: #19e35c !important;'><=8 DÍAS</th>
+                            <th style='text-align:center;background-color: #E8E585 !important;'>>8<=30 DÍAS</th>
+                            <th style='text-align:center;background-color: #FFC5C5 !important;'>>30<=60 DÍAS</th>
+                            <th style='text-align:center;background-color: #959595 !important;'>>60<=120 DÍAS</th>
+                            <th style='text-align:center;background-color: #959595 !important;'>>120 DÍAS</th>
+                          </tr>
+                        </tbody>
+                      </table>
                     </div>
                 </div>
             </div> 
@@ -109,7 +104,7 @@
       <div class="col-sm-12 mt-1 mb-1">
         <div class="card">
           <div class="card-body p-2">
-            <div class="modal-body p-0" style="overflow-y: scroll;height: calc(-427px + 100vh);">
+            <div class="modal-body p-0" style="overflow-y: scroll;height: calc(-305px + 100vh);">
             <table class="table table-striped table-hover" id="table-lista-credito">
               <thead class="table-dark" style="position: sticky;top: 0;"> 
                 <tr>

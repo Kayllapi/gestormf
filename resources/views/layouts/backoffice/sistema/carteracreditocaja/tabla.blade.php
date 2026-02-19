@@ -70,10 +70,7 @@
                       </div>
                     </div>
                     <div class="col-sm-12 col-md-5">
-                      <div class="card">
-                        <div class="card-body p-2">
-                          <div class="modal-body p-0">
-                          <table class="table table-bordered" style="width:600px;margin-bottom: 3px;">
+                          <table class="table table-bordered" style="margin-bottom: 3px;">
                             <thead class="table-dark"> 
                               <tr>
                                 <th colspan="5" style='text-align:center;'>CATEGORIA DE CLASIFICACIÓN</th>
@@ -96,8 +93,6 @@
                               </tr>
                             </tbody>
                           </table>
-                          </div>
-                        </div>
                     </div>
                 </div>
             </div> 
@@ -108,7 +103,7 @@
       <div class="col-sm-12 mt-1 mb-1">
         <div class="card">
           <div class="card-body p-2">
-            <div class="modal-body p-0" style="overflow-y: scroll;height: calc(-427px + 100vh);">
+            <div class="modal-body p-0" style="overflow-y: scroll;height: calc(-305px + 100vh);">
             <table class="table table-striped table-hover" id="table-lista-credito">
               <thead class="table-dark" style="position: sticky;top: 0;"> 
                 <tr>

@@ -225,12 +225,12 @@ class ConsolidadoCarteraCreditoController extends Controller
           }
               $html .= '
                 <tr style="position: sticky;bottom: 0;">
-                  <th>TOTAL S/.</th>
-                  <th>'.number_format($total_cartera, 2, '.', '').'</th>
-                  <th>'.$total_num_creditos.'</th>
-                  <th>'.number_format($total_mora_soles, 2, '.', '').'</th>
-                  <th>'.number_format($total_mora_porcentaje, 2, '.', '').'</th>
-                  <th>'.$total_numero_moracredito.'</th>
+                  <th style="text-align:right;">TOTAL S/.</th>
+                  <th style="text-align:right;">'.number_format($total_cartera, 2, '.', '').'</th>
+                  <th style="text-align:right;">'.$total_num_creditos.'</th>
+                  <th style="text-align:right;">'.number_format($total_mora_soles, 2, '.', '').'</th>
+                  <th style="text-align:right;">'.number_format($total_mora_porcentaje, 2, '.', '').'</th>
+                  <th style="text-align:right;">'.$total_numero_moracredito.'</th>
                 </tr>';
           
               
@@ -255,9 +255,9 @@ class ConsolidadoCarteraCreditoController extends Controller
                             <td style='text-align:right;'>{$clasificacion_perdida_saldo}</td>
                             <td style='text-align:right;'>{$clasificacion_perdida_creditos}</td>
                         </tr><tr>
-                            <th><b>TOTAL</b></th>
-                            <th><b>{$total_saldos}</b></th>
-                            <th><b>{$total_creditos}</b></th>
+                            <th style='text-align:right;'><b>TOTAL</b></th>
+                            <th style='text-align:right;'><b>{$total_saldos}</b></th>
+                            <th style='text-align:right;'><b>{$total_creditos}</b></th>
                         </tr>";
               $demora1 = 0;
               $demora2 = 0;

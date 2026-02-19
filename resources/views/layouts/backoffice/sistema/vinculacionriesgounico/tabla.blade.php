@@ -64,27 +64,27 @@
             <table class="table table-striped table-hover" id="table-lista-credito">
               <thead class="table-dark" style="position: sticky;top: 0;"> 
                 <tr>
-                  <th style="text-align: center; border:1px solid #e0e0e0;" rowspan="2" colspan="3">VINCULADOS</th>
-                  <th style="text-align: center; border:1px solid #e0e0e0;" colspan="8">RIESGO Saldo de Créd.(S/.)</th>
-                  <th style="text-align: center; border:1px solid #e0e0e0;" rowspan="3">TOTAL</th>
+                  <th style="text-align: center; border:1px solid #5a5a5a;" rowspan="2" colspan="3">VINCULADOS</th>
+                  <th style="text-align: center; border:1px solid #5a5a5a;" colspan="8">RIESGO Saldo de Créd.(S/.)</th>
+                  <th style="text-align: center; border:1px solid #5a5a5a;" rowspan="3">TOTAL</th>
                 </tr> 
                 <tr>
-                  <th style="text-align: center; border:1px solid #e0e0e0;" colspan="4">POR PROPIEDAD Y AVAL</th>
-                  <th style="text-align: center; border:1px solid #e0e0e0;" colspan="2">POR NEGOCIO</th>
-                  <th style="text-align: center; border:1px solid #e0e0e0;" colspan="2">FAMILIARES EN LA EMPRESA</th>
+                  <th style="text-align: center; border:1px solid #5a5a5a;" colspan="4">POR PROPIEDAD Y AVAL</th>
+                  <th style="text-align: center; border:1px solid #5a5a5a;" colspan="2">POR NEGOCIO</th>
+                  <th style="text-align: center; border:1px solid #5a5a5a;" colspan="2">FAMILIARES EN LA EMPRESA</th>
                 </tr>
                 <tr>
-                  <th style="text-align: center; border:1px solid #e0e0e0;">N°</th>
-                  <th style="text-align: center; border:1px solid #e0e0e0;">RUC/DNI/CE</th>
-                  <th style="text-align: center; border:1px solid #e0e0e0;">Nombres y Apellidos</th>
-                  <th style="text-align: center; border:1px solid #e0e0e0;">Cnta</th>
-                  <th style="text-align: center; border:1px solid #e0e0e0;">Avalados por Cliente al Vinculado con  MISMO DOMICILIO</th>
-                  <th style="text-align: center; border:1px solid #e0e0e0;">Cnta</th>
-                  <th style="text-align: center; border:1px solid #e0e0e0;">Avalados por Vinculado al Cliente  con MISMO DOMICILIO </th>
-                  <th style="text-align: center; border:1px solid #e0e0e0;">Cnta</th>
-                  <th style="text-align: center; border:1px solid #e0e0e0;">Misma dirección de negocio del vinculado</th>
-                  <th style="text-align: center; border:1px solid #e0e0e0;">Cnta</th>
-                  <th style="text-align: center; border:1px solid #e0e0e0;">Usuario Vinculado con mismo domicilio del Cliente</th>
+                  <th style="text-align: center; border:1px solid #5a5a5a;">N°</th>
+                  <th style="text-align: center; border:1px solid #5a5a5a;">RUC/DNI/CE</th>
+                  <th style="text-align: center; border:1px solid #5a5a5a;">Nombres y Apellidos</th>
+                  <th style="text-align: center; border:1px solid #5a5a5a;">Cnta</th>
+                  <th style="text-align: center; border:1px solid #5a5a5a;">Avalados por Cliente al Vinculado con  MISMO DOMICILIO</th>
+                  <th style="text-align: center; border:1px solid #5a5a5a;">Cnta</th>
+                  <th style="text-align: center; border:1px solid #5a5a5a;">Avalados por Vinculado al Cliente  con MISMO DOMICILIO </th>
+                  <th style="text-align: center; border:1px solid #5a5a5a;">Cnta</th>
+                  <th style="text-align: center; border:1px solid #5a5a5a;">Misma dirección de negocio del vinculado</th>
+                  <th style="text-align: center; border:1px solid #5a5a5a;">Cnta</th>
+                  <th style="text-align: center; border:1px solid #5a5a5a;">Usuario Vinculado con mismo domicilio del Cliente</th>
                 </tr>
               </thead>
               <tbody>

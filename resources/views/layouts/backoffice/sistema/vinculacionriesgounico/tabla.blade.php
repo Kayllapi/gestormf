@@ -12,41 +12,41 @@
             <div class="modal-body pb-0">
               
                 <div class="row">
-                    <div class="col-sm-12 col-md-9">
+                    <div class="col-sm-12 col-md-12">
                         <div class="row">
-                           <div class="col-sm-12 col-md-10">
+                           <div class="col-sm-6 col-md-6">
                               <div class="row">
-                                <label for="fecha_inicio" class="col-sm-3 col-form-label">CLIENTE/AVAL</label>
-                                <div class="col-sm-9">
+                                <label for="fecha_inicio" class="col-sm-4 col-form-label">CLIENTE/AVAL</label>
+                                <div class="col-sm-8">
                                     <select class="form-control" id="idcliente">
                                       <option></option>
                                     </select>
                                 </div>
                               </div>
                             </div>
-                        </div>
-                        <div class="row">
-                           <div class="col-sm-12 col-md-10">
+                           <div class="col-sm-6 col-md-6">
                               <div class="row">
-                                <label for="fecha_fin" class="col-sm-3 col-form-label">DIRECCIÓN DE DOMICILIO</label>
-                                <div class="col-sm-9">
-                                    <input type="text" disabled value="" class="form-control" id="data-direccion-domicilio" style="background-color: white;">
-                                </div>
-                              </div>
-                           </div>
-                          <div class="col-sm-12 col-md-2" style="text-align: right;">
-                              <button type="button" class="btn btn-success" onclick="lista_credito()"><i class="fa-solid fa-search"></i> FILTRAR</button>
-                          </div>
-                        </div>
-                        <div class="row">
-                           <div class="col-sm-12 col-md-10">
-                              <div class="row">
-                                <label for="fecha_fin" class="col-sm-3 col-form-label">DIRECCIÓN DE NEGOCIO</label>
-                                <div class="col-sm-9">
+                                <label for="fecha_fin" class="col-sm-4 col-form-label">DIRECCIÓN DE NEGOCIO</label>
+                                <div class="col-sm-8">
                                     <input type="text" disabled value="" class="form-control" id="data-direccion-negocio" style="background-color: white;">
                                 </div>
                               </div>
                             </div>
+                        </div>
+                        <div class="row">
+                           <div class="col-sm-6 col-md-6">
+                              <div class="row">
+                                <label for="fecha_fin" class="col-sm-4 col-form-label">DIRECCIÓN DE DOMICILIO</label>
+                                <div class="col-sm-8">
+                                    <input type="text" disabled value="" class="form-control" id="data-direccion-domicilio" style="background-color: white;">
+                                </div>
+                              </div>
+                           </div>
+                          <div class="col-sm-6 col-md-6" style="text-align: left;">
+                              <button type="button" class="btn btn-success" onclick="lista_credito()"><i class="fa-solid fa-search"></i> FILTRAR</button>
+                          </div>
+                        </div>
+                        <div class="row">
                         </div>
                                 
                     </div>

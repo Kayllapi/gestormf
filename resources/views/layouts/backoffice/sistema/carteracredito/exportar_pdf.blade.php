@@ -235,7 +235,7 @@
           }
               $html .= '
                 <tr>
-                  <td colspan="7" style="border-bottom: 2px solid #000;text-align:right;">TOTAL S/.</td>
+                  <td colspan="7" style="border-bottom: 2px solid #000;text-align:right;font-weight: bold;">TOTAL S/.</td>
                   <td style="border-bottom: 2px solid #000;text-align:right;font-weight: bold;">'.number_format($total_desembolsado, 2, '.', '').'</td>
                   <td style="border-bottom: 2px solid #000;text-align:right;font-weight: bold;">'.number_format($total_saldo, 2, '.', '').'</td>
                   <td style="border-bottom: 2px solid #000;text-align:right;font-weight: bold;">'.number_format($total_deuda, 2, '.', '').'</td>

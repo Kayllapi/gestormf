@@ -96,11 +96,11 @@
                           </thead>
                           <tbody>
                             <tr>
-                              <th style='text-align:center;background-color: #15FF63 !important;'><=8 DÍAS</th>
+                              <th style='text-align:center;background-color: #19e35c !important;'><=8 DÍAS</th>
                               <th style='text-align:center;background-color: #E8E585 !important;'>>8<=30 DÍAS</th>
                               <th style='text-align:center;background-color: #FFC5C5 !important;'>>30<=60 DÍAS</th>
-                              <th style='text-align:center;'>>60<=120 DÍAS</th>
-                              <th style='text-align:center;'>>120 DÍAS</th>
+                              <th style='text-align:center;background-color: #959595 !important;'>>60<=120 DÍAS</th>
+                              <th style='text-align:center;background-color: #959595 !important;'>>120 DÍAS</th>
                             </tr>
                           </tbody>
                         </table>

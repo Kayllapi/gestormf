@@ -32,9 +32,8 @@
           color: #676869;
           text-align: center;
           line-height: 0.6cm;
-          font-size:18px !important;
+          font-size:16px !important;
           font-weight: bold;
-          border-bottom: 2px solid #144081; 
           margin:5px;
           text-align:right;
           padding:5px;
@@ -122,6 +121,7 @@
   <footer>
     <p class="page">Página </p>
   </footer>
+  {{-- @include('app/nuevosistema/cabecerapdf_a4') --}}
   <main>
     <div class="container">
       <h4 align="center">GARANTÍAS (PRENDARIA Y REGULAR) CON CRÉDITOS VIGENTES Y PRENDARIAS CANCELADOS POR ENTREGAR</h4>
@@ -147,22 +147,22 @@
               $html = '<table style="width:100%;border-bottom: 2px solid #000;">
               <thead class="table-dark">
                 <tr>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">N°</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Cuenta</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Saldo de Deuda (S/.)</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">T. Cred.</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Apellidos y Nombres</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">RUC/DNI/CE</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Cnta. Propio/Aval</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Cod. Garantía</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Garantía</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Serie</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Placa</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Estado</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Acc./Doc.Original</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Detalle G.</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">V. Cobertura (S/.)</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">V. Comercial (S/.)</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">N°</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Cuenta</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Saldo de Deuda (S/.)</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">T. Cred.</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Apellidos y Nombres</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">RUC/DNI/CE</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Cnta. Propio/Aval</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Cod. Garantía</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Garantía</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Serie</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Placa</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Estado</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Acc./Doc.Original</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Detalle G.</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">V. Cobertura (S/.)</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">V. Comercial (S/.)</td>
                 </tr>
               </thead>
               <tbody>';

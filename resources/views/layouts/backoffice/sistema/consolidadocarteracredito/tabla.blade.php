@@ -149,7 +149,7 @@
             <table class="table table-striped" id="table-lista-credito2">
               <thead class="table-dark"> 
                 <tr>
-                  <th colspan="2" style='text-align:center;'>INDICE DE MORA REGULAR</th>
+                  <th colspan="2" style='text-align:center; background-color: #a7a7a7 !important;'>INDICE DE MORA REGULAR</th>
                 </tr>
                 <tr>
                   <th style='text-align:center;'>% de Mora</th>

@@ -115,11 +115,11 @@
               </thead>
               <tbody>
                 <tr>
-                  <th style='text-align:center;background-color: #78d7ab !important;'><=8 DÍAS</th>
-                  <th style='text-align:center;background-color: #78d7ab !important;'>>8<=30 DÍAS</th>
-                  <th style='text-align:center;background-color: #78d7ab !important;'>>30<=60 DÍAS</th>
-                  <th style='text-align:center;background-color: #78d7ab !important;'>>60<=120 DÍAS</th>
-                  <th style='text-align:center;background-color: #78d7ab !important;'>>120 DÍAS</th>
+                  <th style='text-align:center;background-color: #19e35c !important;'><=8 DÍAS</th>
+                  <th style='text-align:center;background-color: #E8E585 !important;'>>8<=30 DÍAS</th>
+                  <th style='text-align:center;background-color: #FFC5C5 !important;'>>30<=60 DÍAS</th>
+                  <th style='text-align:center;background-color: #959595 !important;'>>60<=120 DÍAS</th>
+                  <th style='text-align:center;background-color: #959595 !important;'>>120 DÍAS</th>
                 </tr>
               </tbody>
             </table>
@@ -135,9 +135,9 @@
                 <tr>
                   <th>N°</th>
                   <th>CUENTA</th>
-                  <th>DOI/RUC</th>
+                  <th>RUC/DNI/CE</th>
                   <th>Apellidos y Nombres</th>
-                  <th>DOI/RUC (Aval)</th>
+                  <th>RUC/DNI/CE (Aval)</th>
                   <th>Ape. Nom. Aval</th>
                   <th>Fecha Desemb.</th>
                   <th>Monto Cred. (S/.)</th>
@@ -145,7 +145,7 @@
                   <th>Saldo Deuda T. (S/.)</th>
                   <th>F. Pago</th>
                   <th>Cuotas</th>
-                  <th>Form. C.</th>
+                  <th>F.C.</th>
                   <th>Días de atraso</th>
                   <th>Calificación</th>
                   <th>Producto</th>

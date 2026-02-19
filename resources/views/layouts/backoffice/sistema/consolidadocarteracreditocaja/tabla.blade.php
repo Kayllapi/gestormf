@@ -128,7 +128,7 @@
       <div class="col-sm-3">
         <div class="card">
           <div class="card-body">
-            <table class="table table-striped table-bordered" id="table-lista-credito1">
+            <table class="table table-striped" id="table-lista-credito1">
               <thead class="table-dark"> 
                 <tr>
                   <th>CLASIFICACIÓN</th>
@@ -146,7 +146,7 @@
         <div class="card">
           <div class="card-body">
 
-            <table class="table table-striped table-bordered" id="table-lista-credito2">
+            <table class="table table-striped" id="table-lista-credito2">
               <thead class="table-dark"> 
                 <tr>
                   <th colspan="2" style='text-align:center;'>INDICE DE MORA REGULAR</th>

@@ -25,96 +25,10 @@
             padding:2px;
             vertical-align: top;
         }
-
-        .container-informacion {
-            border-collapse: collapse;
-            width: 100%; 
-        }
-        .ficha-titulo{
-            padding-bottom:2px;
-        }
-        .container-informacion > p {
-            font-size:10px;
-            border: 0.5px solid black; 
-            padding: 8px; 
-            margin: 0; 
-        }
         html, body {
           margin-top: 38px;
           margin-bottom: 28px;
       }
-      /* PDF A4 */
-      .header { 
-          position: fixed; 
-          top: -38px; 
-          left: 0px; 
-          right: 0px; 
-          height: 20px; 
-          margin:15px;
-          /* margin-left: 50px; */
-          /* margin-right: 50px; */
-          padding-bottom:5px;
-          border-bottom: 2px solid #31353d ; 
-      }
-      .footer { 
-          position: fixed; 
-          left: 0px; 
-          bottom: -25px; 
-          right: 0px; 
-          height: 25px;   
-          margin:15px;
-          margin-left: 50px;
-          margin-right: 50px;
-          padding-top:5px;
-          border-top: 2px solid #31353d;
-      }
-      .page {
-          float: right;
-      }
-      .content {
-          width:100%;
-          margin-left: 50px;
-          margin-right: 50px;
-      }
-      .content_pdf {
-          width:100%;
-          margin-left: 50px;
-          margin-right:-8px;
-      }
-      .content_pdf table {
-          margin:0px;
-          padding:0px;
-          border-collapse: collapse;
-          margin-right: 55px;
-      }
-      .content_pdf table td {
-          padding:3px;
-          text-align:left;
-      }
-      .footer .page:after { content: counter(page, decimal-leading-zero); }
-      .header_agencia_logo {
-          height: 50px;
-          text-align: center;
-          float: left;
-          margin-right:10px;
-      }
-      .header_agencia_logo > img {
-          display: block;
-          max-width: 100%;
-          height: 50px;
-      }
-      .header_agencia_informacion {
-          float: right;
-          width: 100%;
-          text-align: right;
-      }
-      .header_agencia_nombrecomercial {
-          font-size: 13px;
-          font-weight: bold;
-      }
-      .header_agencia_ruc {
-      }
-
     </style>
 </head>
 <body>
@@ -122,19 +36,18 @@
     <div class="container">
         <h3 align="center">LISTA NEGRA</h3>
         <br>
-        <table border=1>
-            <thead>
+        <table style="width:100%;">
+            <thead class="table-dark">
                 <tr>
-                    <th width="10px">NRO</th>
-                    <th width="80px">DNI/CE/RUC</th>
-                    <th width="350px">CLIENTE</th>
-                    <th>MOTIVO</th>
-                    <th width="100px">REG. POR</th>
-                    <th width="120px">F. REGISTRO</th>
+                    <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" width="10px">NRO</th>
+                    <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" width="80px">DNI/CE/RUC</th>
+                    <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" width="350px">CLIENTE</th>
+                    <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">MOTIVO</th>
+                    <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" width="100px">REG. POR</th>
+                    <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" width="120px">F. REGISTRO</th>
                 </tr>
             </thead>
             <tbody>
-
                 @foreach($listanegra as $key => $value)
                 <tr>
                     <td>{{ $key+1 }}</td>

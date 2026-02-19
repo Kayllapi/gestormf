@@ -143,12 +143,12 @@
           </div>
         </div>
       </div>
-                              <div style="text-align: right;">
-                                <button type="button" class="btn btn-info" onclick="exportar_pdf()">
-                                  <i class="fa-solid fa-file-pdf" style="color:#000 !important;font-weight: bold;"></i> REPORTE PDF</button>
-                                <button type="button" class="btn btn-success" onclick="exportar_excel()">
-                                  <i class="fa-solid fa-file-excel" style="color:#000 !important;font-weight: bold;"></i> REPORTE EXCEL</button>
-                              </div>
+      <div style="text-align: right;">
+        <button type="button" class="btn btn-info" onclick="exportar_pdf()">
+          <i class="fa-solid fa-file-pdf" style="color:#000 !important;font-weight: bold;"></i> REPORTE PDF</button>
+        <button type="button" class="btn btn-success" onclick="exportar_excel()">
+          <i class="fa-solid fa-file-excel" style="color:#000 !important;font-weight: bold;"></i> REPORTE EXCEL</button>
+      </div>
 </div>
 <script>
   /*var d= new Date();

@@ -144,14 +144,14 @@
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Fecha Desemb.</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">MONTO (S/.)</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Saldo C. (S/.)</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Saldo Deuda T. (S/.)</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">F. Pago</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Cuotas</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">F.C.</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Días de atraso</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Calificación</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Producto</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Modalidad</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Tele./Celu.</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Modalidad/Tel.</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Direc/Domicilio</td>
                 </tr>
               </thead>
@@ -161,6 +161,7 @@
           $html = '';
           $total_desembolsado = 0;
           $total_saldo = 0;
+          $total_deuda = 0;
             
           foreach($creditos as $key => $value){
 
@@ -221,18 +222,19 @@
                             <td>{$value->fecha_desembolso}</td>
                             <td style='text-align:right;'>{$value->monto_solicitado}</td>
                             <td style='text-align:right;'>{$value->saldo_pendientepago}</td>
+                            <td style='text-align:right;'>{$cronograma['cuota_pendiente']}</td>
                             <td>{$value->frecuencianombre}</td>
                             <td style='text-align:right;'>{$value->cuotas}</td>
                             <td>$cp</td>
                             <td>{$cronograma['ultimo_atraso']}</td>
                             <td>{$clasificacion}</td>
                             <td>{$value->nombreproductocredito}</td>
-                            <td>{$value->nombremodalidadcredito}</td>
-                            <td>{$value->telefonocliente}</td>
+                            <td>{$value->nombremodalidadcredito}<br>{$value->telefonocliente}</td>
                             <td>{$value->direccioncliente}, {$value->ubigeonombre}</td>
                         </tr>";
               $total_desembolsado += $value->monto_solicitado;
               $total_saldo += $value->saldo_pendientepago;
+              $total_deuda += $value->total_pendientepago;
           }
           if(count($creditos)==0){
               $html.= '<tr><td colspan="19" style="border-bottom: 2px solid #000;text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
@@ -244,7 +246,8 @@
                   <td colspan="7" style="border-bottom: 2px solid #000;text-align:right;">TOTAL S/.</td>
                   <td style="border-bottom: 2px solid #000;text-align:right;">'.number_format($total_desembolsado, 2, '.', '').'</td>
                   <td style="border-bottom: 2px solid #000;text-align:right;">'.number_format($total_saldo, 2, '.', '').'</td>
-                  <td colspan="9" style="border-bottom: 2px solid #000;"></td>
+                  <td style="border-bottom: 2px solid #000;text-align:right;">'.number_format($total_deuda, 2, '.', '').'</td>
+                  <td colspan="8" style="border-bottom: 2px solid #000;"></td>
                 </tr>';
             echo $html;
               ?>

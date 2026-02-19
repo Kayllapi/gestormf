@@ -114,7 +114,7 @@
                 </td>
             </tr>
           </table>  
-          <div class="linea"></div>
+          <div style="border-bottom: 1px dashed #000;padding-top:5px;padding-bottom:5px;"></div>
           <table style="width:100%;">
             <tr>
                 <td style="width:65px;">
@@ -170,7 +170,7 @@
                 </td>
             </tr>
             <tr>
-                <td style="border-top: 1px solid #000;padding-top:5px;padding-bottom:5px;">
+                <td style="border-top: 1px dashed #000;padding-top:5px;padding-bottom:5px;">
                     <b>Importe de Cuota(s)</b><br>
                     <b>Pago a Cuenta</b> 
                     @if($t_acuenta>0 && ($t_penalidad+$t_tenencia+$t_compensatorio)>0)
@@ -187,7 +187,7 @@
                         ->orderBy('credito_adelanto.id','desc')
                         ->first();
                     ?>
-                <td width="5px" style="border-top: 1px solid #000;padding-top:5px;padding-bottom:5px;text-align:right;">
+                <td width="5px" style="border-top: 1px dashed #000;padding-top:5px;padding-bottom:5px;text-align:right;">
                   @if($t_acuenta>0 && ($t_penalidad+$t_tenencia+$t_compensatorio)>0)
                   &nbsp;
                   <br><b><?php if($credito_ultadelanto){ echo $credito_ultadelanto->numerocuota; } ?></b>
@@ -195,7 +195,7 @@
                   <br>&nbsp;
                   @endif
                 </td>
-                <td width="60px" style="border-top: 1px solid #000;padding-top:5px;padding-bottom:5px;text-align:right;">
+                <td width="60px" style="border-top: 1px dashed #000;padding-top:5px;padding-bottom:5px;text-align:right;">
                     {{ number_format($t_cuotapagado, 2, '.', '') }}<br>
                     {{ number_format($t_acuenta, 2, '.', '') }}<br>
                     {{ number_format($t_penalidad+$t_tenencia+$t_compensatorio, 2, '.', '') }}<br>
@@ -203,13 +203,13 @@
                 </td>
             </tr>
             <tr>
-              <td style="border-bottom: 1px solid #000;border-top: 1px solid #000;padding-top:5px;padding-bottom:5px;">
+              <td style="border-bottom: 1px dashed #000;border-top: 1px dashed #000;padding-top:5px;padding-bottom:5px;">
                 <b>Total</b> 
               </td>
-                <td width="5px" style="border-bottom: 1px solid #000;border-top: 1px solid #000;padding-top:5px;padding-bottom:5px;text-align:right;">
+                <td width="5px" style="border-bottom: 1px dashed #000;border-top: 1px dashed #000;padding-top:5px;padding-bottom:5px;text-align:right;">
                     <b>S/.:</b>
                 </td>
-              <td style="border-bottom: 1px solid #000;border-top: 1px solid #000;padding-top:5px;padding-bottom:5px;text-align:right;">
+              <td style="border-bottom: 1px dashed #000;border-top: 1px dashed #000;padding-top:5px;padding-bottom:5px;text-align:right;">
                     {{ number_format($credito_cobranzacuota->total_pagar+$credito_cobranzacuota->cobrar_cargo, 2, '.', '') }}
               </td>
             </tr>

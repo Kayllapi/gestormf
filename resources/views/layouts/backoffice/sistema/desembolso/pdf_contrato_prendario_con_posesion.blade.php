@@ -22,38 +22,33 @@ CON GARANTÍA MOBILIARIA CON POSESIÓN</title>
           margin-bottom: 2cm;
       }
 
-      /** Definir las reglas del encabezado **/
       header {
           position: fixed;
           top: 0cm;
           left: 0.7cm;
           right: 0.7cm;
           height: 0.6cm;
-          color: #000;
+          color: #0f0f0f;
+          text-align: center;
           line-height: 0.6cm;
-          font-size:18px !important;
+          font-size:15px !important;
           font-weight: bold;
-          border-bottom: 1px solid #000; 
-          margin-top:5px;
-          margin-bottom: 5px;
+          margin:5px;
           text-align:right;
           padding:5px;
-          padding-left: 0px;
-          padding-right. 0px;
       }
       footer {
           position: fixed; 
-          bottom: 0.5cm; 
+          bottom: 0cm; 
           left: 0.7cm; 
           right: 0.7cm;
-          height: 20px;
+          height: 1cm;
           color: #000;
           text-align: center;
           line-height: 0.4cm;
-          font-size:11px;
-          font-weight: bold;
+          font-size:12px;
       }
-      footer .page:after { content: counter(page, decimal-leading-zero); }
+      footer > .page:after { content: counter(page, decimal-leading-zero); }
       .page {
           position: absolute;
           left:50%;
@@ -125,7 +120,7 @@ CON GARANTÍA MOBILIARIA CON POSESIÓN</title>
 </head>
 <body>
   <header>
-    <div style="float:left;font-size:18px;">{{ $tienda->nombre }}</div> C{{ str_pad($credito->cuenta, 8, "0", STR_PAD_LEFT) }} | {{ date('d-m-Y H:iA') }}
+    <div style="float:left;font-size:15px;">{{ $tienda->nombre }}</div> C{{ str_pad($credito->cuenta, 8, "0", STR_PAD_LEFT) }} | {{ date('d-m-Y H:iA') }}
   </header>
   <footer>
     <p class="page">Página </p>

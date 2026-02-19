@@ -21,43 +21,33 @@
           margin-bottom: 0cm;
       }
 
-      /** Definir las reglas del encabezado **/
       header {
           position: fixed;
           top: 0cm;
           left: 0.7cm;
           right: 0.7cm;
           height: 0.6cm;
-          /** Estilos extra personales **/
-          color: #676869;
+          color: #0f0f0f;
           text-align: center;
           line-height: 0.6cm;
-          font-size:18px !important;
+          font-size:15px !important;
           font-weight: bold;
-          border-bottom: 2px solid #144081; 
           margin:5px;
           text-align:right;
           padding:5px;
       }
-
-      /** Definir las reglas del pie de página **/
       footer {
           position: fixed; 
           bottom: 0cm; 
           left: 0.7cm; 
           right: 0.7cm;
           height: 1cm;
-
-          /** Estilos extra personales **/
           color: #000;
           text-align: center;
           line-height: 0.4cm;
-          font-size:11px;
+          font-size:12px;
       }
-      /** Definir las reglas de numeracion de página **/ 
-      footer > .page:after {
-        content: counter(page, decimal-leading-zero);
-      }
+      footer > .page:after { content: counter(page, decimal-leading-zero); }
 
       .saltopagina{
         display:block;
@@ -119,7 +109,7 @@
 </head>
 <body>
     <header>
-        <div style="float:left;font-size:18px;">{{ $tienda->ticket_nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
+        <div style="float:left;font-size:15px;">{{ $tienda->ticket_nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
     </header>
     <footer style="text-align:right;">
         <p class="page">Página </p>

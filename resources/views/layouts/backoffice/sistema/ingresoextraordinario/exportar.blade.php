@@ -15,7 +15,8 @@
        <div class="col-sm-12 mt-2">
         <iframe id="iframe_acta_aprobacion" 
         src="{{ url('/backoffice/'.$tienda->id.'/ingresoextraordinario/0/edit?view=exportar_pdf&fechainicio='.$fechainicio.'&fechafin='.$fechafin) }}#zoom=100" 
-        frameborder="0" width="100%" height="500px"></iframe>
+        frameborder="0" width="100%" 
+        style="height: calc(100vh - 62px)"></iframe>
       </div>
       </div>
   </div>

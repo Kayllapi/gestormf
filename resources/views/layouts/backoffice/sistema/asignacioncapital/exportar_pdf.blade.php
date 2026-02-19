@@ -21,42 +21,33 @@
           margin-bottom: 0cm;
       }
 
-      /** Definir las reglas del encabezado **/
       header {
           position: fixed;
           top: 0cm;
           left: 0.7cm;
           right: 0.7cm;
           height: 0.6cm;
-          /** Estilos extra personales **/
-          color: #676869;
+          color: #0f0f0f;
           text-align: center;
           line-height: 0.6cm;
-          font-size:18px !important;
+          font-size:15px !important;
           font-weight: bold;
-          border-bottom: 2px solid #144081; 
           margin:5px;
           text-align:right;
           padding:5px;
       }
-
-      /** Definir las reglas del pie de página **/
       footer {
           position: fixed; 
           bottom: 0cm; 
           left: 0.7cm; 
           right: 0.7cm;
           height: 1cm;
-          width:70%;
-          /** Estilos extra personales **/
           color: #000;
           text-align: center;
           line-height: 0.4cm;
-          font-size:11px;
+          font-size:12px;
       }
-      /** Definir las reglas de numeracion de página **/ 
       footer > .page:after { content: counter(page, decimal-leading-zero); }
-
       .saltopagina{
         display:block;
         page-break-before:always;
@@ -117,7 +108,7 @@
 </head>
 <body>
   <header>
-    <div style="float:left;font-size:18px;">{{ $tienda->nombre }}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
+    <div style="float:left;font-size:15px;">{{ $tienda->nombre }}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
   </header>
   <footer>
     <p class="page">Página </p>
@@ -131,17 +122,17 @@
             <table style="width:100%;">
               <thead class="table-dark">
                 <tr>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Agencia</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Fecha</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">N° Operación</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Tipo de operación</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Destino/Fuente Depósito/Retiro</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Monto (S/.)</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Banco</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">N° operación (banco)</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Descripción</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Usuario</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Usuario  Rec. Final Efectivo</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Agencia</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Fecha</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">N° Operación</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Tipo de operación</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Destino/Fuente Depósito/Retiro</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Monto (S/.)</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Banco</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">N° operación (banco)</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Descripción</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Usuario</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Usuario  Rec. Final Efectivo</td>
                 </tr>
               </thead>
               <tbody>

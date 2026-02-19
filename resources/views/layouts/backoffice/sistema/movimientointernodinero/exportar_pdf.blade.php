@@ -21,40 +21,32 @@
           margin-bottom: 0.7cm;
       }
 
-      /** Definir las reglas del encabezado **/
       header {
           position: fixed;
           top: 0cm;
           left: 0.7cm;
           right: 0.7cm;
           height: 0.6cm;
-          /** Estilos extra personales **/
-          color: #676869;
+          color: #0f0f0f;
           text-align: center;
           line-height: 0.6cm;
-          font-size:18px !important;
+          font-size:15px !important;
           font-weight: bold;
-          border-bottom: 2px solid #144081; 
           margin:5px;
           text-align:right;
           padding:5px;
       }
-
-      /** Definir las reglas del pie de página **/
       footer {
           position: fixed; 
           bottom: 0cm; 
           left: 0.7cm; 
           right: 0.7cm;
           height: 1cm;
-          width:70%;
-          /** Estilos extra personales **/
           color: #000;
           text-align: center;
           line-height: 0.4cm;
-          font-size:11px;
+          font-size:12px;
       }
-      /** Definir las reglas de numeracion de página **/ 
       footer > .page:after { content: counter(page, decimal-leading-zero); }
 
       .saltopagina{
@@ -117,7 +109,7 @@
 </head>
 <body>
   <header>
-    <div style="float:left;font-size:18px;">{{ $tienda->nombre }} | {{ $agencia->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
+    <div style="float:left;font-size:15px;">{{ $tienda->nombre }} | {{ $agencia->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
   </header>
   <footer>
     <p class="page">Página </p>
@@ -135,14 +127,14 @@
             <table style="width:100%;">
               <thead class="table-dark">
                 <tr>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;width:85px;">Código</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;width:200px;">Fuente de Retiro</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;width:50px;">Monto</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;width:130px;">Banco</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">N° operación (banco)</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Descripción</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;width:130px;">Fecha</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;width:60px;">Usuario</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;width:85px;">Código</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;width:200px;">Fuente de Retiro</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;width:50px;">Monto</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;width:130px;">Banco</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">N° operación (banco)</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Descripción</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;width:130px;">Fecha</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;width:60px;">Usuario</td>
                 </tr>
               </thead>
               <tbody>
@@ -173,9 +165,9 @@
                
             $html .= '
                 <tr style="position: sticky;bottom: 0;">
-                  <td colspan="2" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;">Total Retiros (S/.)</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;">'.number_format($total, 2, '.', '').'</td>
-                  <td colspan="5" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;"></td>
+                  <td colspan="2" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">Total Retiros (S/.)</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">'.number_format($total, 2, '.', '').'</td>
+                  <td colspan="5" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;"></td>
                 </tr>'; 
 
             echo $html;
@@ -187,14 +179,14 @@
             <table style="width:100%;">
               <thead class="table-dark">
                 <tr>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;width:85px;">Código</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;width:200px;">Destino de Depósito</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;width:50px;">Monto</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;width:130px;">Banco</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">N° operación (banco)</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Descripción</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;width:130px;">Fecha</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;width:60px;">Usuario</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;width:85px;">Código</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;width:200px;">Destino de Depósito</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;width:50px;">Monto</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;width:130px;">Banco</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">N° operación (banco)</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Descripción</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;width:130px;font-weight: bold;">Fecha</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;width:60px;font-weight: bold;">Usuario</td>
                 </tr>
               </thead>
               <tbody>
@@ -225,9 +217,9 @@
                
             $html .= '
                 <tr style="position: sticky;bottom: 0;">
-                  <td colspan="2" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;">Total Depósitos (S/.)</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;">'.number_format($total, 2, '.', '').'</td>
-                  <td colspan="5" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;"></td>
+                  <td colspan="2" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">Total Depósitos (S/.)</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">'.number_format($total, 2, '.', '').'</td>
+                  <td colspan="5" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;"></td>
                 </tr>'; 
 
             echo $html;
@@ -241,12 +233,12 @@
             <table style="width:100%;">
               <thead class="table-dark">
                 <tr>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;width:85px;">Código</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;width:200px;">Fuente de Retiro</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;width:50px;">Monto</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Descripción</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;width:130px;">Fecha</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;width:60px;">Usuario</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;width:85px;">Código</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;width:200px;">Fuente de Retiro</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;width:50px;">Monto</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Descripción</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;width:130px;">Fecha</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;width:60px;">Usuario</td>
                 </tr>
               </thead>
               <tbody>
@@ -274,9 +266,9 @@
                
             $html .= '
                 <tr style="position: sticky;bottom: 0;">
-                  <td colspan="2" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;">Total Retiros (S/.)</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;">'.number_format($total, 2, '.', '').'</td>
-                  <td colspan="3" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;"></td>
+                  <td colspan="2" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">Total Retiros (S/.)</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">'.number_format($total, 2, '.', '').'</td>
+                  <td colspan="3" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;"></td>
                 </tr>'; 
 
             echo $html;
@@ -288,12 +280,12 @@
             <table style="width:100%;">
               <thead class="table-dark">
                 <tr>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;width:85px;">Código</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;width:200px;">Destino de Depósito</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;width:50px;">Monto</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Descripción</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;width:130px;">Fecha</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;width:60px;">Usuario</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;width:85px;">Código</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;width:200px;">Destino de Depósito</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;width:50px;">Monto</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Descripción</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;width:130px;">Fecha</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;width:60px;">Usuario</td>
                 </tr>
               </thead>
               <tbody>
@@ -321,9 +313,9 @@
                
             $html .= '
                 <tr style="position: sticky;bottom: 0;">
-                  <td colspan="2" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;">Total Depósitos (S/.)</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;">'.number_format($total, 2, '.', '').'</td>
-                  <td colspan="3" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;"></td>
+                  <td colspan="2" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">Total Depósitos (S/.)</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">'.number_format($total, 2, '.', '').'</td>
+                  <td colspan="3" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;"></td>
                 </tr>'; 
 
             echo $html;

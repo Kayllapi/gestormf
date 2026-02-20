@@ -102,10 +102,10 @@
                     </label>
                   </div>
                   <div class="row">
-                    <label class="col-sm-5 col-form-label" style="text-align: right;"></label>
-                    <div class="col-sm-7 mt-3">
-                      <button type="button" class="btn btn-primary" id="generar_cronograma" onclick="cronograma()">CALCULAR</button>
+                    <div class="col-sm-5">
+                      <button type="button" class="btn btn-primary m-0" id="generar_cronograma" onclick="cronograma()">CALCULAR</button>
                     </div>
+                    {{-- <label class="col-sm-5 col-form-label" style="text-align: right;"></label> --}}
                   </div>
                 </div>
                 </div>

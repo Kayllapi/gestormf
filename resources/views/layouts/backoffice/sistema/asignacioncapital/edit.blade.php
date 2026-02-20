@@ -51,8 +51,8 @@
      
               @if($asignacioncapital->idtipodestino==3)
                 <div class="row">
-                  <label class="col-sm-4 col-form-label" style="text-align: right;">Bancos:</label>
-                  <div class="col-sm-8">
+                  <label class="col-sm-5 col-form-label" style="text-align: right;">Bancos:</label>
+                  <div class="col-sm-7">
                     <select id="idbanco" class="form-control" disabled>
                         <option></option>
                         @foreach($bancos as $value)
@@ -62,8 +62,8 @@
                   </div>
                 </div>
                 <div class="row">
-                  <label class="col-sm-4 col-form-label" style="text-align: right;">Nro Operación:</label>
-                  <div class="col-sm-8">
+                  <label class="col-sm-5 col-form-label" style="text-align: right;">Nro Operación:</label>
+                  <div class="col-sm-7">
                       <input type="text" id="numerooperacion" class="form-control" value="{{$asignacioncapital->numerooperacion}}" disabled>
                   </div>
                 </div>

@@ -21,42 +21,33 @@
           margin-bottom: 0cm;
       }
 
-      /** Definir las reglas del encabezado **/
       header {
           position: fixed;
           top: 0cm;
           left: 0.7cm;
           right: 0.7cm;
           height: 0.6cm;
-          /** Estilos extra personales **/
-          color: #676869;
+          color: #0f0f0f;
           text-align: center;
           line-height: 0.6cm;
-          font-size:18px !important;
+          font-size:15px !important;
           font-weight: bold;
-          border-bottom: 2px solid #144081; 
           margin:5px;
           text-align:right;
           padding:5px;
       }
-
-      /** Definir las reglas del pie de página **/
       footer {
           position: fixed; 
           bottom: 0cm; 
           left: 0.7cm; 
           right: 0.7cm;
           height: 1cm;
-          width:70%;
-          /** Estilos extra personales **/
           color: #000;
           text-align: center;
           line-height: 0.4cm;
-          font-size:11px;
+          font-size:12px;
       }
-      /** Definir las reglas de numeracion de página **/ 
       footer > .page:after { content: counter(page, decimal-leading-zero); }
-
       .saltopagina{
         display:block;
         page-break-before:always;
@@ -117,7 +108,7 @@
 </head>
 <body>
   <header>
-    <div style="float:left;font-size:18px;">{{ $tienda->nombre }} @if($agencia)| {{ $agencia->nombreagencia }} @else | TODA LAS AGENCIAS @endif</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
+    <div style="float:left;font-size:15px;">{{ $tienda->nombre }} @if($agencia)| {{ $agencia->nombreagencia }} @else | TODA LAS AGENCIAS @endif</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
   </header>
   <footer>
     <p class="page">Página </p>
@@ -143,27 +134,27 @@
             <table style="width:100%;">
               <thead class="table-dark">
                 <tr>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">N°</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">GP</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">CUENTA</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">DOI/RUC</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Apellidos y Nombres</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">N°</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">GP</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">CUENTA</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">DOI/RUC</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Apellidos y Nombres</td>
                   <!--td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Fecha Desemb.</td-->
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Monto Crédito (S/.)</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">F. Pago</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center"><span style="text-decoration: underline;font-weight: bold;">Saldo Cuotas Venc. (S/.)</span></td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center"><span style="text-decoration: underline;font-weight: bold;">Días Atraso</span></td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Nro. de Cuotas Cumplido y Venc.</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Form. C.</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Tele./Celu.</td>
-                  <!--td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">F. Compromiso</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Anotación</td-->
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Direc/Domicilio</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Calificación</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Producto</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Modalidad</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">DOI/RUC (Aval)</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Ape. Nom. Aval</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Monto Crédito (S/.)</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">F. Pago</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;"><span style="text-decoration: underline;font-weight: bold;">Saldo Cuotas Venc. (S/.)</span></td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;"><span style="text-decoration: underline;font-weight: bold;">Días Atraso</span></td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Nro. de Cuotas Cumplido y Venc.</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Form. C.</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Tele./Celu.</td>
+                  <!--td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">F. Compromiso</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Anotación</td-->
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Direc/Domicilio</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Calificación</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Producto</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Modalidad</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">DOI/RUC (Aval)</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Ape. Nom. Aval</td>
                 </tr>
               </thead>
               <tbody>
@@ -209,11 +200,11 @@
               
               $html .= '
                 <tr style="position: sticky;bottom: 0;">
-                  <td colspan="5" style="border-bottom: 2px solid #000;text-align:right;">TOTAL S/.</td>
-                  <td style="border-bottom: 2px solid #000;text-align:right;">'.number_format($total_monto_solicitado, 2, '.', '').'</td>
-                  <td style="border-bottom: 2px solid #000;text-align:right;"></td>
-                  <td style="border-bottom: 2px solid #000;text-align:right;">'.number_format($total_saldo_pendientepago, 2, '.', '').'</td>
-                  <td colspan="14" style="border-bottom: 2px solid #000;text-align:right;"></td>
+                  <td colspan="5" style="border-bottom: 2px solid #000;text-align:right;font-weight: bold;">TOTAL S/.</td>
+                  <td style="border-bottom: 2px solid #000;text-align:right;font-weight: bold;">'.number_format($total_monto_solicitado, 2, '.', '').'</td>
+                  <td style="border-bottom: 2px solid #000;text-align:right;font-weight: bold;"></td>
+                  <td style="border-bottom: 2px solid #000;text-align:right;font-weight: bold;">'.number_format($total_saldo_pendientepago, 2, '.', '').'</td>
+                  <td colspan="14" style="border-bottom: 2px solid #000;text-align:right;font-weight: bold;"></td>
                 </tr>';
                 
             echo $html;

@@ -15,7 +15,8 @@
        <div class="col-sm-12 mt-2">
         <iframe id="iframe_acta_aprobacion" 
         src="{{ url('/backoffice/'.$tienda->id.'/gestioncobranza/0/edit?view=exportar_pdf&dias_retencion_desde='.$dias_retencion_desde.'&dias_retencion_hasta='.$dias_retencion_hasta.'&idagencia='.$idagencia.'&idasesor='.$idasesor) }}#zoom=100" 
-        frameborder="0" width="100%" height="500px"></iframe>
+        frameborder="0" width="100%"
+        style="height: calc(100vh - 62px)"></iframe>
       </div>
       </div>
   </div>

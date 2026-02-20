@@ -32,10 +32,10 @@
               </div>
               <div class="row">
                 <label class="col-sm-3 col-form-label" style="text-align: right;">Monto S/.:</label>
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                   <input type="number" class="form-control" id="monto" step="any">
                 </div>
-                <label class="col-sm-3 col-form-label" style="text-align: right;">Descripción:</label>
+                <label class="col-sm-2 col-form-label">Descripción:</label>
                 <div class="col-sm-4">
                   <input type="text" class="form-control" id="descripcion">
                 </div>

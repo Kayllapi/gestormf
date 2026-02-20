@@ -299,9 +299,9 @@
               <td class="campo_moneda">{{ encontrar_valor('balance_activo_nocorriente', $resumen) }}</td>
             </tr>
             <tr>
-              <td style="background-color: #c8c8c8 !important;
+              <td style="background-color: #d8d7d7 !important;
               color: #000 !important;" colspan=2><b>TOTAL ACTIVO</b></td>
-              <td style="background-color: #c8c8c8 !important;
+              <td style="background-color: #d8d7d7 !important;
               color: #000 !important;" class="campo_moneda">{{ encontrar_valor('balance_total_activo', $resumen) }}</td>
             </tr>
             <tr>
@@ -343,9 +343,9 @@
               <td class="campo_moneda">{{ encontrar_valor('balance_pasivo_nocorriente', $resumen) }}</td>
             </tr>
             <tr>
-              <td style="background-color: #c8c8c8 !important;
+              <td style="background-color: #d8d7d7 !important;
               color: #000 !important;" colspan=2><b>TOTAL PASIVO</b></td>
-              <td style="background-color: #c8c8c8 !important;
+              <td style="background-color: #d8d7d7 !important;
               color: #000 !important;" class="campo_moneda">{{ encontrar_valor('balance_total_pasivo', $resumen) }}</td>
             </tr>
             <tr>
@@ -357,15 +357,15 @@
               <td class="campo_moneda">{{ encontrar_valor('balance_utilidad_acumulada', $resumen) }}</td>
             </tr>
             <tr>
-              <td style="background-color: #c8c8c8 !important;
+              <td style="background-color: #d8d7d7 !important;
               color: #000 !important;" colspan=2><b>TOTAL PATRIMONIO</b></td>
-              <td style="background-color: #c8c8c8 !important;
+              <td style="background-color: #d8d7d7 !important;
               color: #000 !important;" class="campo_moneda">{{ encontrar_valor('balance_total_patrimonio', $resumen) }}</td>
             </tr>
             <tr>
-              <td style="background-color: #c8c8c8 !important;
+              <td style="background-color: #d8d7d7 !important;
               color: #000 !important;" colspan=2><b>TOTAL PASIVO + PATRIMONIO</b></td>
-              <td style="background-color: #c8c8c8 !important;
+              <td style="background-color: #d8d7d7 !important;
               color: #000 !important;" class="campo_moneda">{{ encontrar_valor('balance_pasivo_patrimonio', $resumen) }}</td>
             </tr>
 
@@ -393,9 +393,9 @@
               <td class="campo_moneda">{{ encontrar_valor('ganancias_costo_venta', $ganancia_perdida) }}</td>
             </tr>
             <tr>
-              <td style="background-color: #c8c8c8 !important;
+              <td style="background-color: #d8d7d7 !important;
               color: #000 !important;"><b>UTILIDAD BRUTA</b></td>
-              <td style="background-color: #c8c8c8 !important;
+              <td style="background-color: #d8d7d7 !important;
               color: #000 !important;" class="campo_moneda">{{ encontrar_valor('ganancias_utilidad_bruta', $ganancia_perdida) }}</td>
             </tr>
             <tr>
@@ -459,15 +459,15 @@
               <td class="campo_moneda">{{ encontrar_valor('ganancias_otros_gastos', $ganancia_perdida) }}</td>
             </tr>
             <tr>
-              <td style="background-color: #c8c8c8 !important;
+              <td style="background-color: #d8d7d7 !important;
               color: #000 !important;"><b>TOTAL DE GASTOS OPERATIVOS</b></td>
-              <td style="background-color: #c8c8c8 !important;
+              <td style="background-color: #d8d7d7 !important;
               color: #000 !important;" class="campo_moneda">{{ encontrar_valor('ganancias_gastos_operativos', $ganancia_perdida) }}</td>
             </tr>
             <tr>
-              <td style="background-color: #c8c8c8 !important;
+              <td style="background-color: #d8d7d7 !important;
               color: #000 !important;"><b>UTILIDAD NETA</b></td>
-              <td style="background-color: #c8c8c8 !important;
+              <td style="background-color: #d8d7d7 !important;
               color: #000 !important;" class="campo_moneda">{{ encontrar_valor('ganancias_utilidad_neta', $ganancia_perdida) }}</td>
             </tr>
             <tr>
@@ -475,9 +475,9 @@
               <td class="campo_moneda">{{ encontrar_valor('ganancias_consumo_hipotecario', $ganancia_perdida) }}</td>
             </tr>
             <tr>
-              <td style="background-color: #c8c8c8 !important;
+              <td style="background-color: #d8d7d7 !important;
               color: #000 !important;"><b>EXCEDENTE MENSUAL</b></td>
-              <td style="background-color: #c8c8c8 !important;
+              <td style="background-color: #d8d7d7 !important;
               color: #000 !important;" class="campo_moneda">{{ encontrar_valor('ganancias_excedente_mensual', $ganancia_perdida) }}</td>
             </tr>
           </tbody>

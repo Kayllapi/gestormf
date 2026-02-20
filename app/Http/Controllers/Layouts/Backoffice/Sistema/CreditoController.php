@@ -2682,8 +2682,8 @@ class CreditoController extends Controller
           'tipo_giro_economico' => $this->tipo_giro_economico,
           'f_tiporeferencia' => $this->f_tiporeferencia,
         ]); 
-        $pdf->setPaper('A4');
-        //$pdf->setPaper('A4', 'landscape');
+        // $pdf->setPaper('A4');
+        $pdf->setPaper('A4', 'landscape');
         return $pdf->stream('SOLICITUD DE CREDITO.pdf');
       }
       else if( $request->input('view') == 'formato_evaluacion' ){

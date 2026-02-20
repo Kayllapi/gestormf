@@ -21,40 +21,32 @@
           margin-bottom: 0cm;
       }
 
-      /** Definir las reglas del encabezado **/
       header {
           position: fixed;
           top: 0cm;
           left: 0.7cm;
           right: 0.7cm;
           height: 0.6cm;
-          /** Estilos extra personales **/
-          color: #676869;
+          color: #0f0f0f;
           text-align: center;
           line-height: 0.6cm;
-          font-size:18px !important;
+          font-size:15px !important;
           font-weight: bold;
-          border-bottom: 2px solid #144081; 
           margin:5px;
           text-align:right;
           padding:5px;
       }
-
-      /** Definir las reglas del pie de página **/
       footer {
           position: fixed; 
           bottom: 0cm; 
           left: 0.7cm; 
           right: 0.7cm;
           height: 1cm;
-          width:70%;
-          /** Estilos extra personales **/
           color: #000;
           text-align: center;
           line-height: 0.4cm;
-          font-size:11px;
+          font-size:12px;
       }
-      /** Definir las reglas de numeracion de página **/ 
       footer > .page:after { content: counter(page, decimal-leading-zero); }
 
       .saltopagina{
@@ -117,7 +109,7 @@
 </head>
 <body>
   <header>
-    <div style="float:left;font-size:18px;">{{ $tienda->ticket_nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
+    <div style="float:left;font-size:15px;">{{ $tienda->ticket_nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
   </header>
   <footer>
     <p class="page">Página </p>
@@ -132,19 +124,19 @@
             <table style="width:100%;">
               <thead class="table-dark">
                 <tr>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" rowspan="2" width="10px">N°</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" rowspan="2">Operación</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" rowspan="2">Monto (S/.)</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" rowspan="2">Fecha de gasto</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" rowspan="2">Descripción</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" colspan="2">Sustento</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" rowspan="2">F. Pago</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" rowspan="2">Banco</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" rowspan="2">Usuario</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;" rowspan="2" width="10px">N°</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;" rowspan="2">Operación</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;" rowspan="2">Monto (S/.)</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;" rowspan="2">Fecha de gasto</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;" rowspan="2">Descripción</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;" colspan="2">Sustento</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;" rowspan="2">F. Pago</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;" rowspan="2">Banco</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;" rowspan="2">Usuario</td>
                 </tr>
                 <tr>
-                  <td style="border-bottom: 2px solid #000;text-align:center">Comprobante</td>
-                  <td style="border-bottom: 2px solid #000;text-align:center">N° y Detalle de Comp.</td>
+                  <td style="border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Comprobante</td>
+                  <td style="border-bottom: 2px solid #000;text-align:center;font-weight: bold;">N° y Detalle de Comp.</td>
                 </tr>
               </thead>
               <tbody>
@@ -182,13 +174,13 @@
           }
               $html .= '
                 <tr style="position: sticky;bottom: 0;">
-                  <td colspan="2" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;">Total (S/.)</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;">'.number_format($total, 2, '.', '').'</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;">Caja (S/.)</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;">'.number_format($total_caja, 2, '.', '').'</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;">Banco (S/.)</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;">'.number_format($total_banco, 2, '.', '').'</td>
-                  <td colspan="3" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;"></td>
+                  <td colspan="2" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">Total (S/.)</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">'.number_format($total, 2, '.', '').'</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">Caja (S/.)</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">'.number_format($total_caja, 2, '.', '').'</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">Banco (S/.)</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">'.number_format($total_banco, 2, '.', '').'</td>
+                  <td colspan="3" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;"></td>
                 </tr>';
                 
             echo $html;

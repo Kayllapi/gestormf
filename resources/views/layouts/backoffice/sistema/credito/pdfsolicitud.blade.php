@@ -65,7 +65,7 @@
           /* margin-left: 50px; */
           /* margin-right: 50px; */
           padding-bottom:5px;
-          border-bottom: 2px solid #31353d ; 
+          color: #0f0f0f;
       }
       .footer { 
           position: fixed; 
@@ -130,7 +130,7 @@
     
     <div class="header">
         <div class="header_agencia_informacion">
-            <div class="header_agencia_nombrecomercial"><div style="float:left;font-size:18px;">{{ $tienda->nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->usuario }} | {{ date('d-m-Y H:iA') }}</div>
+            <div class="header_agencia_nombrecomercial"><div style="float:left;font-size:15px;">{{ $tienda->nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->usuario }} | {{ date('d-m-Y H:iA') }}</div>
         </div>
     </div>
     <div class="footer">

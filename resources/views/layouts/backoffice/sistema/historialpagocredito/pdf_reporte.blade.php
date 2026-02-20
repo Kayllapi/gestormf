@@ -124,23 +124,23 @@
               $html = '<table style="width:100%;">
               <thead class="table-dark" style="position: sticky;top: 0;">
                 <tr>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">N°</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Cuenta</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">T. Cred.</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Apellidos y Nombres</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">DOI/RUC</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Fecha/Hora</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Cuotas</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Capital</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Interés</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">C. SS /Desgrav.</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Cargo</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">CxC</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Cust.</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">I. Comp.</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">I. Morat.</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Total (S/.)</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">F/L. PAGO</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">N°</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Cuenta</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">T. Cred.</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Apellidos y Nombres</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">DOI/RUC</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Fecha/Hora</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Cuotas</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Capital</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Interés</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">C. SS /Desgrav.</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Cargo</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">CxC</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Cust.</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">I. Comp.</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">I. Morat.</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Total (S/.)</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">F/L. PAGO</td>
                 </tr>
               </thead>
               <tbody>';
@@ -275,16 +275,16 @@
           }
               $html .= '</tbody><tfoot class="table-dark" style="position: sticky;bottom: 0;">
                 <tr>
-                  <td colspan="7" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right">TOTAL S/.</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right">'.number_format($total_amortizacion, 2, '.', '').'</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right">'.number_format($total_interes, 2, '.', '').'</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right">'.number_format($total_cargo, 2, '.', '').'</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right">'.number_format($total_comision, 2, '.', '').'</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right">'.number_format($cobrar_cargo, 2, '.', '').'</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right">'.number_format($total_tenencia, 2, '.', '').'</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right">'.number_format($total_penalidad, 2, '.', '').'</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right">'.number_format($total_compensatorio, 2, '.', '').'</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right">'.number_format($total_totalcuota, 2, '.', '').'</td>
+                  <td colspan="7" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">TOTAL S/.</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">'.number_format($total_amortizacion, 2, '.', '').'</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">'.number_format($total_interes, 2, '.', '').'</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">'.number_format($total_cargo, 2, '.', '').'</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">'.number_format($total_comision, 2, '.', '').'</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">'.number_format($cobrar_cargo, 2, '.', '').'</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">'.number_format($total_tenencia, 2, '.', '').'</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">'.number_format($total_penalidad, 2, '.', '').'</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">'.number_format($total_compensatorio, 2, '.', '').'</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">'.number_format($total_totalcuota, 2, '.', '').'</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;"></td>
                 </tr>
               </tfoot>
@@ -293,15 +293,15 @@
                 <tfoot class="table-dark" style="position: sticky;bottom: 0;">
                 <tr>
                   <td style="width:400px;"></td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;width:70px;">RESUMEN:</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;width:70px;">CAJA</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;width:70px;">'.number_format($total_caja, 2, '.', '').'</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;width:70px;">BANCO</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;width:70px;">'.number_format($total_banco, 2, '.', '').'</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;width:70px;">TRANSIT.</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;width:70px;">0.00</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;width:70px;">T. EFE. (S/.)</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;width:70px;">'.number_format($total_caja+$total_banco, 2, '.', '').'</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;width:70px;">RESUMEN:</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;width:70px;">CAJA</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;width:70px;">'.number_format($total_caja, 2, '.', '').'</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;width:70px;">BANCO</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;width:70px;">'.number_format($total_banco, 2, '.', '').'</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;width:70px;">TRANSIT.</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;width:70px;">0.00</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;width:70px;">T. EFE. (S/.)</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;width:70px;">'.number_format($total_caja+$total_banco, 2, '.', '').'</td>
                   <td style="" colspan="4"></td>
                 </tr>
               </tfoot>

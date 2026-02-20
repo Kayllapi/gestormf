@@ -118,7 +118,7 @@
       $referencia = $credito_formato_evaluacion ? ( $credito_formato_evaluacion->referencia == "" ? [] : json_decode($credito_formato_evaluacion->referencia) ) : [];
     @endphp
   <header>
-    <div style="float:left;font-size:15px;">{{ $tienda->nombre }}</div> {{ Auth::user()->usuario }} | {{ date('d-m-Y H:iA') }}
+    <div style="float:left;font-size:15px;">{{ $tienda->nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->usuario }} | {{ date('d-m-Y H:iA') }}
   </header>
   <footer>
     <p class="page">Página </p>

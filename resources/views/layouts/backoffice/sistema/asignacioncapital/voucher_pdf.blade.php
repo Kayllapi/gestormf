@@ -28,8 +28,7 @@
 </head>
 <body>
     <div class="ticket_contenedor">
-          <div class="cabecera"><b>{{ $tienda->nombre }}</b></div>
-          <div class="cabecera">{{ $tienda->direccion }}</div>
+          <div class="cabecera"><b>{{ $tienda->nombre }} - {{ $tienda->nombreagencia }}</b></div>
           <div class="linea"></div><br>
           <div class="titulo"><b>ASIGNACIÓN, REDUCCIÓN E INCREMENTO DE CAPITAL</b></div>  <br>
           <table style="width:100%;">
@@ -39,12 +38,11 @@
                 </td>
             </tr>
             <tr>
-                <td>
+                <td style="border-bottom: 1px dashed #000000;">
                     <b>N° Op. :</b> {{$asignacioncapital->codigoprefijo}}{{ str_pad($asignacioncapital->codigo, 10, "0", STR_PAD_LEFT) }}
                 </td>
             </tr>
           </table>  
-          <div class="linea"></div>
           <table style="width:100%;">
             <tr>
                 <td>
@@ -53,13 +51,12 @@
             </tr>
               @if($asignacioncapital->idtipodestino!=0)
             <tr>
-                <td>
+                <td style="border-bottom: 1px dashed #000000;">
                     <b>Destino - depósito /Fuente - retiro :</b> {{ $asignacioncapital->credito_tipodestinonombre }}
                 </td>
             </tr>
               @endif
-          </table>  
-          <div class="linea"></div>
+          </table>
           <table style="width:100%;">
               @if($asignacioncapital->idtipodestino==3)
             <tr>

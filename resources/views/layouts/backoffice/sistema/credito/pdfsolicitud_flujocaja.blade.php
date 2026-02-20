@@ -202,7 +202,7 @@
               @foreach($encabezado as $value)
                 <tr>
                   @foreach($value->encabezado as $thval)
-                    <td>{{ $thval->th }}</td>
+                    <td style="text-align: center;">{{ $thval->th }}</td>
                   @endforeach
                   
                 </tr>
@@ -238,7 +238,7 @@
             @endif
             <tr>
               <td style="width: 200px">Saldo Inicial Caja</td>
-              <td>{{ encontrar_valor('saldo_inicial', $flujo_caja) }}</td>
+              <td class="campo_moneda">{{ encontrar_valor('saldo_inicial', $flujo_caja) }}</td>
               <td></td>
               <td></td>
               <td></td>

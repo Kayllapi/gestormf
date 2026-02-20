@@ -99,7 +99,7 @@
                     <div>(Firma y Huella D.)</div>
                   </td>
                   <td style="width:140px;vertical-align: top;"> 
-                    <div class="linea"></div> <b>Receptor Final de Efectivo</b>
+                    <div class="linea"></div> <b>Receptor/Otorgante Final de Efectivo</b>
                     <div>{{$asignacioncapital->nombrecompleto_responsable_recfinal}}</div>
                     <div><b>{{$asignacioncapital->nombrepermiso_responsable_recfinal}}</b></div>
                     <div>{{$asignacioncapital->codigo_responsable_recfinal}}</div>

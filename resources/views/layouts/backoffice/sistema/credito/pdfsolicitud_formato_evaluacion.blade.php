@@ -413,6 +413,7 @@
     <div class="row">
       <div class="col" style="width:610px;">
 
+        @php $nombre_forma_pago = ''; @endphp
         @foreach($forma_pago_credito as $value)
           @if( $credito->idforma_pago_credito == $value->id)
             @php $nombre_forma_pago = $value->nombre; @endphp

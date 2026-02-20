@@ -119,43 +119,72 @@
       <h4 align="center" style="margin:0px;">OPERACIONES EXTORNADAS</h4>
            <b>De: {{$fecha_inicio}} Al: {{$fecha_fin}}</b>
           <table style="width:100%;">
-            <tr>
-              <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;">FECHA Y HORA</th>
-              <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;">COD/OPER.</th>
-              <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;">TIPO/OPER.</th>
-              <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;">N° DETALLE COMPRO.</th>
-              <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;">DESCRIPCIÓN/CLIENTES</th>
-              <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;">BANCO(OPER.)</th>
-              <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;">MONTO</th>
-              <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;">US.(EMISOR)</th>
-              <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;">US.(EXTORNO)</th>
-              <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;">SUCURSAL</th>
-            </tr>
-            <?php
-            $totalpago = 0;
-            ?>
-            @foreach($gastoadministrativooperativos as $value)
-            <?php
-              $coutas = str_replace(',',', ',$value->pago_cuota);
-              $totalpago += $value->total_pagar;
-              $cuenta = $value->banco!=''?$value->banco.' - ***'.substr($value->cuenta, -5).' ('.$value->numerooperacion.')':'';
-            ?>
-            <tr>
-              <td>{{$value->fechaextorno}}</td>
-              <td>{{$value->codigo}}</td>
-              <td>{{$value->operacion}}</td>
-              <td>{{$value->detalleoperacion}}</td>
-              <td>{{$value->descripcion}}</td>
-              <td>{{$cuenta}}</td>
-              <td style="text-align: right;">S/. {{$value->total_pagar}}</td>
-              <td>{{$value->codigoresponsable}}</td>
-              <td>{{$value->codigoresponsableeliminado}}</td>
-              <td>{{$value->tiendanombre}}</td>
-            </tr>
-            @endforeach
-            <tr>
-              <th style="border-top: 2px solid #000;" colspan="10"></th>
-            </tr>
+            <thead>
+
+              <tr>
+                <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;">FECHA Y HORA</th>
+                <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;">COD/OPER.</th>
+                <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;">TIPO/OPER.</th>
+                <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;">N° DETALLE COMPRO.</th>
+                <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;">DESCRIPCIÓN/CLIENTES</th>
+                <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;">BANCO(OPER.)</th>
+                <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;">MONTO</th>
+                <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;">US.(EMISOR)</th>
+                <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;">US.(EXTORNO)</th>
+                <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;">SUCURSAL</th>
+              </tr>
+            </thead>
+            <tbody>
+                <?php
+                $totalpago = 0;
+                
+              // $html = '';
+              // foreach ($gastoadministrativooperativos as $value) {
+              //   $coutas = str_replace(',',', ',$value->pago_cuota);
+              //   $totalpago += $value->total_pagar;
+              //   $cuenta = $value->banco!=''?$value->banco.' - ***'.substr($value->cuenta, -5).' ('.$value->numerooperacion.')':'';
+
+              //   $html .= '<tr>
+              //       <td>'.$value->fechaextorno.'</td>
+              //       <td>'.$value->codigo.'</td>
+              //       <td>'.$value->operacion.'</td>
+              //       <td>'.$value->detalleoperacion.'</td>
+              //       <td>'.$value->descripcion.'</td>
+              //       <td>'.$cuenta.'</td>
+              //       <td style="text-align: right;">S/. '.$value->total_pagar.'</td>
+              //       <td>'.$value->codigoresponsable.'</td>
+              //       <td>'.$value->codigoresponsableeliminado.'</td>
+              //       <td>'.$value->tiendanombre.'</td>
+              //     <tr>';
+              // }
+              // $html .= '<tr>
+              //   <th style="border-top: 2px solid #000;" colspan="10"></th>
+              // </tr>';
+              // echo $html;
+                ?>
+                @foreach($gastoadministrativooperativos as $value)
+                <?php
+                  $coutas = str_replace(',',', ',$value->pago_cuota);
+                  $totalpago += $value->total_pagar;
+                  $cuenta = $value->banco!=''?$value->banco.' - ***'.substr($value->cuenta, -5).' ('.$value->numerooperacion.')':'';
+                ?>
+                <tr>
+                  <td>{{$value->fechaextorno}}</td>
+                  <td>{{$value->codigo}}</td>
+                  <td>{{$value->operacion}}</td>
+                  <td>{{$value->detalleoperacion}}</td>
+                  <td>{{$value->descripcion}}</td>
+                  <td>{{$cuenta}}</td>
+                  <td style="text-align: right;">S/. {{$value->total_pagar}}</td>
+                  <td>{{$value->codigoresponsable}}</td>
+                  <td>{{$value->codigoresponsableeliminado}}</td>
+                  <td>{{$value->tiendanombre}}</td>
+                </tr>
+                @endforeach
+                <tr>
+                  <th style="border-top: 2px solid #000;" colspan="10"></th>
+                </tr>
+            </tbody>
           </table>
 
     </div>

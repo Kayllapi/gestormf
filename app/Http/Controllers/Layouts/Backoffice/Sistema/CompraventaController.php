@@ -775,6 +775,14 @@ class CompraventaController extends Controller
                 'usuarios'
             ));
         }
+        else if($request->input('view') == 'validar_limites') {
+            $co_actual = cvconsolidadooperaciones($tienda,$request->idagencia,$request->corte);
+            if ($co_actual['saldos_caja'] > $tienda->credito_limitemaximo_caja) {
+                $calculo = $co_actual['saldos_caja'] - $tienda->credito_limitemaximo_caja;
+                $mensaje = 'El saldo de Caja excede el límite máximo permitido. Depositar a Reserva CF: '.$calculo;
+                return $mensaje;
+            }
+        }
     }
 
     public function update(Request $request, $idtienda, $id)

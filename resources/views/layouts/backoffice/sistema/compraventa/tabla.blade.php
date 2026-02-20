@@ -573,4 +573,23 @@
         const url = `{{ url('backoffice/'.$tienda->id) }}/compraventa/${id}/edit?view=edit_validar_venta`;
         modal({ route: url, size: 'modal-sm' });
     }
+    validar_limites();
+    function validar_limites(){
+        let corte = new Date().toISOString().split('T')[0];
+        let idagencia = $('#id_agencia_compra').val();
+        let url = "{{ url('backoffice/'.$tienda->id) }}/compraventa/0/edit?view=validar_limites";
+        $.ajax({
+            url: url,
+            type:'GET',
+            data:{
+                corte: corte,
+                idagencia: idagencia
+            },
+            success: function (res){
+              if (res != '') {
+                modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+res, size: 'modal-sm' });
+              }
+            }
+        })
+    }
 </script>

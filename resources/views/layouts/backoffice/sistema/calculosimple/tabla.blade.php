@@ -140,7 +140,7 @@
         <div class="row mt-3 justify-content-center">
           <div class="col-sm-12 col-md-7" style="
               overflow-y: scroll;
-              height: calc(-450px + 100vh);">
+              height: calc(-440px + 100vh);">
             <table class="table table-striped" id="table-cronograma">
               <thead>
                 <th>Cuota N°</th>
@@ -162,7 +162,7 @@
               </tbody>
             </table>
           </div>
-          <div class="col-sm-12 col-md-5" style="height: calc(-450px + 100vh);">
+          <div class="col-sm-12 col-md-5" style="height: calc(-440px + 100vh);">
             <table class="table table-striped" id="table-tarifario-producto">
               <thead>
                 <tr>

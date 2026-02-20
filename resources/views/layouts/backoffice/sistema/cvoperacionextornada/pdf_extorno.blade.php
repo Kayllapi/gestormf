@@ -120,16 +120,16 @@
            <b>De: {{$fecha_inicio}} Al: {{$fecha_fin}}</b>
           <table style="width:100%;">
             <tr>
-              <th style="border-bottom: 2px solid #000;">FECHA Y HORA</th>
-              <th style="border-bottom: 2px solid #000;">COD/OPER.</th>
-              <th style="border-bottom: 2px solid #000;">TIPO/OPER.</th>
-              <th style="border-bottom: 2px solid #000;">N° DETALLE COMPRO.</th>
-              <th style="border-bottom: 2px solid #000;">DESCRIPCIÓN/CLIENTES</th>
-              <th style="border-bottom: 2px solid #000;">BANCO(OPER.)</th>
-              <th style="border-bottom: 2px solid #000;">MONTO</th>
-              <th style="border-bottom: 2px solid #000;">US.(EMISOR)</th>
-              <th style="border-bottom: 2px solid #000;">US.(EXTORNO)</th>
-              <th style="border-bottom: 2px solid #000;">SUCURSAL</th>
+              <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;">FECHA Y HORA</th>
+              <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;">COD/OPER.</th>
+              <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;">TIPO/OPER.</th>
+              <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;">N° DETALLE COMPRO.</th>
+              <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;">DESCRIPCIÓN/CLIENTES</th>
+              <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;">BANCO(OPER.)</th>
+              <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;">MONTO</th>
+              <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;">US.(EMISOR)</th>
+              <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;">US.(EXTORNO)</th>
+              <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;">SUCURSAL</th>
             </tr>
             <?php
             $totalpago = 0;

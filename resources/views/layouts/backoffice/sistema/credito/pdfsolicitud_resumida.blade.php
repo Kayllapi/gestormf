@@ -730,7 +730,7 @@
         <table>
           <thead>
             <tr>
-              <th colspan=2 style="background-color: #efefef !important;color: #000 !important;">INDICADOR DE SOLVENCIA (1)</th>
+              <th colspan=2 style="background-color: #efefef !important;color: #000 !important;border:solid 1px #000000;">INDICADOR DE SOLVENCIA (1)</th>
             </tr>
           </thead>
           <tbody>
@@ -754,7 +754,7 @@
         <table class="">
           <thead>
             <tr>
-              <th colspan=2 style="background-color: #efefef !important;color: #000 !important;">RELACION CUOTA /INGRESO (2)</th>
+              <th colspan=2 style="background-color: #efefef !important;color: #000 !important;border:solid 1px #000000;">RELACION CUOTA /INGRESO (2)</th>
             </tr>
           </thead>
           <tbody>
@@ -763,7 +763,7 @@
               <td class="border-td campo_moneda" width="40px">{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->relacion_cuota_mensual : '0.00' }}</td>
             </tr>
             <tr>
-              <th colspan=2 style="background-color: #efefef !important;color: #000 !important;">RELACIÓN CUOTA/ VENTA (3)</th>
+              <th colspan=2 style="background-color: #efefef !important;color: #000 !important;border:solid 1px #000000;">RELACIÓN CUOTA/ VENTA (3)</th>
             </tr>
             <tr>
               <td>R. Cuota diaria/ Venta diaria (%)</td>

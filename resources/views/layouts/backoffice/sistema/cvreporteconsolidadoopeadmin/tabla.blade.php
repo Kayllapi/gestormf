@@ -63,11 +63,11 @@
     sistema_select2({ input:'#idagencia',val:'{{$tienda->id}}' });
     verpdf();
     function verpdf(){
-        validar_limites();
         let corte = $('#corte').val();
         let idagencia = $('#idagencia').val();
         $('#cont_iframe_acta_aprobacion').html(' <iframe id="iframe_acta_aprobacion" src="{{ url('/backoffice/'.$tienda->id.'/cvreporteconsolidadoopeadmin/0/edit?view=pdf_reporte') }}&corte='+corte+'&idagencia='+idagencia+'#zoom=100" frameborder="0" width="100%" height="100%"></iframe>');
     }
+    validar_limites();
     function validar_limites(){
         let corte = $('#corte').val();
         let idagencia = $('#idagencia').val();

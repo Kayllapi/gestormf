@@ -38,7 +38,7 @@
             @if($asignacioncapital->idtipooperacion==1 || $asignacioncapital->idtipooperacion==2)
 
               <div class="row">
-                <label class="col-sm-4 col-form-label" style="text-align: right;">Destino/Fuente Depósito/Retiro:</label>
+                <label class="col-sm-5 col-form-label" style="text-align: right;">Destino/Fuente Depósito/Retiro:</label>
                 <div class="col-sm-4">
                     <select class="form-control" id="idtipodestino" disabled>
                       <option></option>

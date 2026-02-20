@@ -666,7 +666,7 @@
                   $('#mes_doce_saldo_acumulado').val(mes_doce_saldo_acumulado.toFixed(2));
                   
                   if(mes_cero_saldo_caja<=0){
-                      $('#mes_cero_saldo_caja').attr('style', 'background-color: #ffc9ca !important;border-color: #ffc9ca !important;');
+                      $('#mes_cero_saldo_caja').attr('style', 'background-color: #f68792 !important;border-color: #f68792 !important;');
                   }
                   if(mes_uno_saldo_caja<=0){
                       $('#mes_uno_saldo_caja').attr('style', 'background-color: #dc3545 !important;border-color: #dc3545 !important;');
@@ -706,7 +706,7 @@
                   }
                   
                   if(mes_cero_saldo_acumulado<=0){
-                      $('#mes_cero_saldo_acumulado').attr('style', 'background-color: #ffc9ca !important;border-color: #ffc9ca !important;');
+                      $('#mes_cero_saldo_acumulado').attr('style', 'background-color: #f68792 !important;border-color: #f68792 !important;');
                   }
                   if(mes_uno_saldo_acumulado<=0){
                       $('#mes_uno_saldo_acumulado').attr('style', 'background-color: #dc3545 !important;border-color: #dc3545 !important;');

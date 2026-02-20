@@ -83,10 +83,10 @@
         vertical-align: top;
       }
       .border-td{
-        border:solid 1px #888888;    
+        border:solid 1px #000000;
       }
       .table, .table th, .table td {
-        border: 1px solid #888888;
+        border: 1px solid #000000;
         border-collapse: collapse;
       }
       

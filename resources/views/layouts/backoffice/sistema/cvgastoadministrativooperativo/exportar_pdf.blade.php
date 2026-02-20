@@ -116,8 +116,8 @@
   </footer>
   <main>
     <div class="container">
-      <h4 align="center" style="font-size:16px; margin: 0px;">GASTOS ADMINISTRATIVOS Y  OPERATIVOS</h4>
-      <h4 align="center" style="font-size:16px; margin: 0px;">COMPRA Y VENTA DE BIENES</h4>
+      <h4 align="center" style="font-size:15px; margin: 0px;">GASTOS ADMINISTRATIVOS Y  OPERATIVOS</h4>
+      <h4 align="center" style="font-size:15px; margin: 0px;">COMPRA Y VENTA DE BIENES</h4>
            <b>DE: </b>{{ $fechainicio }}<br>
            <b>HASTA: </b>{{ $fechafin }}<br>
             

@@ -196,7 +196,7 @@
     <div class="row">
       <div class="col">
         
-        <table class="table" width="1060px">
+        <table class="table" width="800px">
           <thead>
             @if( count($encabezado) > 0)
               @foreach($encabezado as $value)
@@ -856,13 +856,13 @@
           </tbody>
         </table>
       </div>
-    </div>
-
-    <div class="row" >
-      <div class="col" style="margin-left:215px;margin-top:5px;">
+      <div class="col" style="margin-left:750px;margin-top:5px;">
         <div style="width:300px;height:1px;border-bottom:1px solid #000;"></div>
         <p align="center">Asesor(a) de Créditos: {{ Auth::user()->codigo }} <br>Firma y Sello</p>		
       </div>
+    </div>
+
+    <div class="row" >
     </div>
   </main>
 </body>

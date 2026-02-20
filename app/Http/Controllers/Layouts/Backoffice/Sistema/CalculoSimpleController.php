@@ -195,7 +195,7 @@ class CalculoSimpleController extends Controller
                         <td>'.$value['cuotafinal'].'</td>
                       </tr>';
           }
-          $html .= '<tr style="position: sticky;bottom: 0;z-index: 1;">
+          $html .= '<tr>
                         <th></th>
                         <th></th>
                         <th>TOTAL</th>

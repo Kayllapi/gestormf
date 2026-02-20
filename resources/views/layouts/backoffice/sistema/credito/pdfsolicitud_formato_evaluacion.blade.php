@@ -518,24 +518,24 @@
     </div>
     <span class="badge">III. COMENTARIOS SOBRE CENTRO LABORAL TIPO DE CONTRATO ANTIGÜEDAD, CONTINUIDAD Y FORTALEZAS IDENTIFICADAS</span>
     <div class="row">
-      <textarea >{{ $credito_formato_evaluacion ? $credito_formato_evaluacion->comentario_centro_laboral : '' }}</textarea>
+      <textarea style="border:solid 1px #000000;">{{ $credito_formato_evaluacion ? $credito_formato_evaluacion->comentario_centro_laboral : '' }}</textarea>
     </div>
     <span class="badge">IV. COMENTARIOS SOBRE CAPACIDAD DE PAGO, INGRESOS ADICIONALES, DESTINO DE LOS CRÉDITOS VIGENTES,  ACUMULACIÓN PATRIMONIAL</span>
     <div class="row">
-      <textarea >{{ $credito_formato_evaluacion ? $credito_formato_evaluacion->comentario_capacidad_pago : '' }}</textarea>
+      <textarea style="border:solid 1px #000000;">{{ $credito_formato_evaluacion ? $credito_formato_evaluacion->comentario_capacidad_pago : '' }}</textarea>
     </div>
     <span class="badge">V. SUSTENTO DEL HISTORIAL DE PAGO INTERNO Y EXTERNO, REFERENCIAS PERSONALES Y BANCARIAS, ENDEUDAMIENTO</span>
     <div class="row">
-      <textarea >{{ $credito_formato_evaluacion ? $credito_formato_evaluacion->sustento_historial_pago : '' }}</textarea>
+      <textarea style="border:solid 1px #000000;">{{ $credito_formato_evaluacion ? $credito_formato_evaluacion->sustento_historial_pago : '' }}</textarea>
     </div>
     <span class="badge">VI. SUSTENTO DEL DESTINO  DEL CRÉDITO</span>
     <div class="row">
-      <textarea >{{ $credito_formato_evaluacion ? $credito_formato_evaluacion->sustento_destino_credito : '' }}</textarea>
+      <textarea style="border:solid 1px #000000;">{{ $credito_formato_evaluacion ? $credito_formato_evaluacion->sustento_destino_credito : '' }}</textarea>
     </div>
     
     <div class="row" >
       <div class="col" style="margin-left:215px;margin-top:60px;">
-        <div style="width:300px;height:1px;border-bottom:1px solid #ccc;"></div>
+        <div style="width:300px;height:1px;border-bottom:1px solid #000;"></div>
         <p align="center">Asesor(a) de Créditos: {{ Auth::user()->codigo }} <br>Firma y Sello</p>		
       </div>
     </div>

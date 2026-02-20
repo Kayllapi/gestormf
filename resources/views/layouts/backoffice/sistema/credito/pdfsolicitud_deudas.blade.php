@@ -637,7 +637,7 @@
       </div>
     <div class="row" >
       <div class="col" style="margin-left:215px;margin-top:60px;">
-        <div style="width:300px;height:1px;border-bottom:1px solid #ccc;"></div>
+        <div style="width:300px;height:1px;border-bottom:1px solid #000;"></div>
         <p align="center">Asesor(a) de Créditos: {{ Auth::user()->codigo }} <br>Firma y Sello</p>		
       </div>
     </div>

@@ -511,11 +511,11 @@
       <div class="col" style="width:100%;">
         <span class="badge subtitle">{{ $credito->idevaluacion == 1 ? '6.5':($users_prestamo->idfuenteingreso == 2?'7.5':'9.5') }} COMENTARIOS SOBRE LA VINCULACIÓN</span>
         <div class="row">
-          <textarea id="fortalezas_negocio" class="form-control">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->comentarios : '' }}</textarea>
+          <textarea style="border:solid 1px #000000;" id="fortalezas_negocio" class="form-control">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->comentarios : '' }}</textarea>
         </div>
       </div>
       <div class="col" style="margin-left:215px;margin-top:60px;">
-        <div style="width:300px;height:1px;border-bottom:1px solid #ccc;"></div>
+        <div style="width:300px;height:1px;border-bottom:1px solid #000;"></div>
         <p align="center">Asesor(a) de Créditos: {{ Auth::user()->codigo }} <br>Firma y Sello</p>		
       </div>
     </div>

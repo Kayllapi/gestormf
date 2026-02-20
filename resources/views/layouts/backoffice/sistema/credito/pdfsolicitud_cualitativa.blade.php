@@ -449,15 +449,15 @@
     </div>
     <span class="badge subtitle">2.5 DETALLE DEL DESTINO DEL PRÉSTAMO</span>
     <div class="row">
-      <textarea id="detalle_destino_prestamo" class="form-control">{{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->detalle_destino_prestamo : '' }}</textarea>
+      <textarea style="border:solid 1px #000000;"  id="detalle_destino_prestamo" class="form-control">{{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->detalle_destino_prestamo : '' }}</textarea>
     </div>
     <span class="badge subtitle">2.6 COMENTARIOS Y ESPECIFICACIONES DE FORTALEZAS DEL NEGOCIO</span>
     <div class="row">
-      <textarea id="fortalezas_negocio" class="form-control">{{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->fortalezas_negocio : '' }}</textarea>
+      <textarea style="border:solid 1px #000000;"  id="fortalezas_negocio" class="form-control">{{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->fortalezas_negocio : '' }}</textarea>
     </div>
     <div class="row" >
       <div class="col" style="margin-left:215px;margin-top:60px;">
-        <div style="width:300px;height:1px;border-bottom:1px solid #ccc;"></div>
+        <div style="width:300px;height:1px;border-bottom:1px solid #000;"></div>
         <p align="center">Asesor(a) de Créditos: {{ Auth::user()->codigo }} <br>Firma y Sello</p>		
       </div>
     </div>

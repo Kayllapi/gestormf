@@ -847,11 +847,11 @@
       <div class="col" style="width:100%;">
         <span class="badge subtitle">3.5 COMENTARIOS DE ASPECTOS RESALTANTES</span>
         <div class="row">
-          <textarea id="fortalezas_negocio" class="form-control">{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->comentario : '' }}</textarea>
+          <textarea style="border:solid 1px #000000;"  id="fortalezas_negocio" class="form-control">{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->comentario : '' }}</textarea>
         </div>
       </div>
       <div class="col" style="margin-left:250px;margin-top:40px;">
-        <div style="width:200px;height:1px;border-bottom:1px solid #ccc;"></div>
+        <div style="width:200px;height:1px;border-bottom:1px solid #000;"></div>
         <p align="center">Asesor(a) de Créditos: {{ Auth::user()->codigo }} <br>Firma y Sello</p>		
       </div>
     </div>

@@ -497,10 +497,10 @@
       </div>
       <div class="col">
         <br><br><br>
-        <div style="width:300px;height:1px;border-bottom:1px solid #ccc;"></div>
+        <div style="width:300px;height:1px;border-bottom:1px solid #000;"></div>
         <p align="center">Asesor(a) de Créditos: {{ Auth::user()->codigo }} <br>Firma y Sello</p>
         <br><br>
-        <div style="width:300px;height:1px;border-bottom:1px solid #ccc;"></div>
+        <div style="width:300px;height:1px;border-bottom:1px solid #000;"></div>
         <p align="center">Ejecutivo(a) de Operaciones <br>Firma y Sello</p>
       </div>
     </div>

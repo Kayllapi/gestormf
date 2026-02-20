@@ -76,7 +76,12 @@
       </div>
       <div class="col-sm-12">
         <div class="card">
-          <div class="card-body" style="overflow-y: scroll;height: 300px;padding: 0;margin-top: 5px;overflow-x: scroll;">
+          <div class="card-body" style="
+            overflow-y: scroll;
+            height: calc(100vh - 355px);
+            padding: 0;
+            margin-top: 5px;
+            overflow-x: scroll;">
             
             <table class="table table-striped table-hover" id="table-lista-ingresoextraordinario">
               <thead class="table-dark" style="position: sticky;top: 0; font-weight: bold;">

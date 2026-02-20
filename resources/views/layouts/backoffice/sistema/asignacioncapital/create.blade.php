@@ -35,13 +35,17 @@
                 <div class="col-sm-2">
                   <input type="number" class="form-control" id="monto" step="any">
                 </div>
+                <label class="col-sm-3 col-form-label" style="text-align: right;">Descripción:</label>
+                <div class="col-sm-4">
+                  <input type="text" class="form-control" id="descripcion">
+                </div>
               </div>
-              <div class="row">
+              {{-- <div class="row">
                 <label class="col-sm-3 col-form-label" style="text-align: right;">Descripción:</label>
                 <div class="col-sm-9">
                   <input type="text" class="form-control" id="descripcion">
                 </div>
-              </div>
+              </div> --}}
           </div>
           <div class="col-sm-12 col-md-6">
             <div id="cont_tipooperacion" style="display:none;">

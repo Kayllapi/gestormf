@@ -28,10 +28,8 @@
                 <div class="col-sm-2">
                   <input type="number" class="form-control" id="monto" value="{{$asignacioncapital->monto}}" step="any" disabled>
                 </div>
-              </div>
-              <div class="row">
-                <label class="col-sm-4 col-form-label" style="text-align: right;">Descripción:</label>
-                <div class="col-sm-8">
+                <label class="col-sm-2 col-form-label" style="text-align: right;">Descripción:</label>
+                <div class="col-sm-4">
                   <input type="text" class="form-control" id="descripcion" value="{{$asignacioncapital->descripcion}}" disabled>
                 </div>
               </div>

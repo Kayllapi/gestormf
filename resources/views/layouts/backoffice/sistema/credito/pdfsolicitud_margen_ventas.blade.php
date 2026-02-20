@@ -154,7 +154,7 @@
         <table>
           <tr>
             <td>FECHA:</td>
-            <td class="border-td" width="100px">{{ date_format(date_create($credito_cuantitativa_margen_venta->fecha),'Y-m-d') }}</td>
+            <td class="border-td" width="100px">{{ $credito_cuantitativa_margen_venta ? date_format(date_create($credito_cuantitativa_margen_venta->fecha),'Y-m-d') : '' }}</td>
           </tr>
           <tr>
             <td>DNI/RUC</td>

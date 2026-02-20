@@ -137,30 +137,6 @@
             <tbody>
                 <?php
                 $totalpago = 0;
-                
-              // $html = '';
-              // foreach ($gastoadministrativooperativos as $value) {
-              //   $coutas = str_replace(',',', ',$value->pago_cuota);
-              //   $totalpago += $value->total_pagar;
-              //   $cuenta = $value->banco!=''?$value->banco.' - ***'.substr($value->cuenta, -5).' ('.$value->numerooperacion.')':'';
-
-              //   $html .= '<tr>
-              //       <td>'.$value->fechaextorno.'</td>
-              //       <td>'.$value->codigo.'</td>
-              //       <td>'.$value->operacion.'</td>
-              //       <td>'.$value->detalleoperacion.'</td>
-              //       <td>'.$value->descripcion.'</td>
-              //       <td>'.$cuenta.'</td>
-              //       <td style="text-align: right;">S/. '.$value->total_pagar.'</td>
-              //       <td>'.$value->codigoresponsable.'</td>
-              //       <td>'.$value->codigoresponsableeliminado.'</td>
-              //       <td>'.$value->tiendanombre.'</td>
-              //     <tr>';
-              // }
-              // $html .= '<tr>
-              //   <th style="border-top: 2px solid #000;" colspan="10"></th>
-              // </tr>';
-              // echo $html;
                 ?>
                 @foreach($gastoadministrativooperativos as $value)
                 <?php

@@ -119,51 +119,56 @@
       <h4 align="center">OPERACIONES EXTORNADAS</h4>
            <b>De: {{$fecha_inicio}} Al: {{$fecha_fin}}</b>
           <table style="width:100%;">
-            <tr>
-              <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">FECHA Y HORA</th>
-              <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">CUENTA</th>
-              <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">OPERACIÓN</th>
-              <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">SUB OPERACIÓN</th>
-              <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">DESCRIPCIÓN/CLIENTES</th>
-              <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">BANCO</th>
-              <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">MONTO</th>
-              <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">USUARIO</th>
-              <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">SUCURSAL</th>
-            </tr>
-            <?php
-            $totalpago = 0;
-            ?>
-            @foreach($creditos_extornados as $value)
-            <?php
-              $coutas = str_replace(',',', ',$value->pago_cuota);
-              $totalpago += $value->total_pagar;
-              $cuenta = $value->banco!=''?$value->banco.' - ***'.substr($value->cuenta, -5).' ('.$value->numerooperacion.')':'';
-            ?>
-            <tr>
-              <td>{{$value->fechaextorno}}</td>
-              <td>{{str_pad($value->cuenta, 8, "0", STR_PAD_LEFT)}}</td>
-              <td>{{$value->operacion}}</td>
-              <td>{{$value->operacion=='ELIM. CRÉDITO'?'':$coutas}}</td>
-              <td>{{$value->nombrecliente}}</td>
-              <td>{{$cuenta}}</td>
-              <td style="text-align: right;">S/. {{$value->total_pagar}}</td>
-              <td>{{$value->codigoresponsable}}</td>
-              <td>{{$value->tiendanombre}}</td>
-            </tr>
-            @endforeach
-            <tr>
-              <th style="border-top: 2px solid #000;" colspan="9"></th>
-            </tr>
-            <!--tr>
-              <th style="border-top: 2px solid #000;"></th>
-              <th style="border-top: 2px solid #000;"></th>
-              <th style="border-top: 2px solid #000;"></th>
-              <th style="border-top: 2px solid #000;"></th>
-              <th style="border-top: 2px solid #000;"></th>
-              <th style="border-top: 2px solid #000;text-align: right;">S/. {{number_format($totalpago, 2, '.', '')}}</th>
-              <th style="border-top: 2px solid #000;"></th>
-              <th style="border-top: 2px solid #000;"></th>
-            </tr-->
+            <thead>
+              <tr>
+                <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">FECHA Y HORA</th>
+                <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">CUENTA</th>
+                <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">OPERACIÓN</th>
+                <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">SUB OPERACIÓN</th>
+                <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">DESCRIPCIÓN/CLIENTES</th>
+                <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">BANCO</th>
+                <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">MONTO</th>
+                <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">USUARIO</th>
+                <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">SUCURSAL</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <?php
+              $totalpago = 0;
+              ?>
+              @foreach($creditos_extornados as $value)
+              <?php
+                $coutas = str_replace(',',', ',$value->pago_cuota);
+                $totalpago += $value->total_pagar;
+                $cuenta = $value->banco!=''?$value->banco.' - ***'.substr($value->cuenta, -5).' ('.$value->numerooperacion.')':'';
+              ?>
+              <tr>
+                <td>{{$value->fechaextorno}}</td>
+                <td>{{str_pad($value->cuenta, 8, "0", STR_PAD_LEFT)}}</td>
+                <td>{{$value->operacion}}</td>
+                <td>{{$value->operacion=='ELIM. CRÉDITO'?'':$coutas}}</td>
+                <td>{{$value->nombrecliente}}</td>
+                <td>{{$cuenta}}</td>
+                <td style="text-align: right;">S/. {{$value->total_pagar}}</td>
+                <td>{{$value->codigoresponsable}}</td>
+                <td>{{$value->tiendanombre}}</td>
+              </tr>
+              @endforeach
+              <tr>
+                <th style="border-top: 2px solid #000;" colspan="9"></th>
+              </tr>
+              <!--tr>
+                <th style="border-top: 2px solid #000;"></th>
+                <th style="border-top: 2px solid #000;"></th>
+                <th style="border-top: 2px solid #000;"></th>
+                <th style="border-top: 2px solid #000;"></th>
+                <th style="border-top: 2px solid #000;"></th>
+                <th style="border-top: 2px solid #000;text-align: right;">S/. {{number_format($totalpago, 2, '.', '')}}</th>
+                <th style="border-top: 2px solid #000;"></th>
+                <th style="border-top: 2px solid #000;"></th>
+              </tr-->
+            </tbody>
           </table>
 
     </div>

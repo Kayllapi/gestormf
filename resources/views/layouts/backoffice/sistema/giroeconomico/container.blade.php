@@ -12,6 +12,7 @@
       $('#iframegiro').attr('src',link);
     }
   </script>
-    <iframe src="" id="iframegiro" frameborder="0" width="100%" height="600px"></iframe>
+    <iframe src="" id="iframegiro" frameborder="0" width="100%" 
+        style="height: calc(100vh - 62px)"></iframe>
 </div>
 

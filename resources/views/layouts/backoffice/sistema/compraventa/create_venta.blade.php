@@ -69,12 +69,12 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <label class="custom-radio">
-                            <input type="radio" name="compra_idformapago" id="compra_idformapago" value="1" checked>
+                            <input type="radio" name="venta_idformapago" id="venta_idformapago" value="1" checked>
                             <span></span>
                             Caja
                         </label>
                         <label class="custom-radio">
-                            <input type="radio" name="compra_idformapago" id="compra_idformapago" value="2">
+                            <input type="radio" name="venta_idformapago" id="venta_idformapago" value="2">
                             <span></span>
                             Banco
                         </label>

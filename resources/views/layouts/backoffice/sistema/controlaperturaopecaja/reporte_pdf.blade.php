@@ -21,40 +21,32 @@
           margin-bottom: 0cm;
       }
 
-      /** Definir las reglas del encabezado **/
       header {
           position: fixed;
           top: 0cm;
           left: 0.7cm;
           right: 0.7cm;
           height: 0.6cm;
-          /** Estilos extra personales **/
-          color: #676869;
+          color: #0f0f0f;
           text-align: center;
           line-height: 0.6cm;
-          font-size:18px !important;
+          font-size:15px !important;
           font-weight: bold;
-          border-bottom: 2px solid #144081; 
           margin:5px;
           text-align:right;
           padding:5px;
       }
-
-      /** Definir las reglas del pie de página **/
       footer {
           position: fixed; 
           bottom: 0cm; 
           left: 0.7cm; 
           right: 0.7cm;
           height: 1cm;
-
-          /** Estilos extra personales **/
           color: #000;
           text-align: center;
           line-height: 0.4cm;
           font-size:12px;
       }
-      /** Definir las reglas de numeracion de página **/ 
       footer > .page:after { content: counter(page, decimal-leading-zero); }
 
       .saltopagina{
@@ -117,7 +109,7 @@
 </head>
 <body>
   <header>
-    <div style="float:left;font-size:18px;">{{ $tienda->nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
+    <div style="float:left;font-size:15px;">{{ $tienda->nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
   </header>
   <footer>
     <p class="page">Página </p>
@@ -149,22 +141,22 @@
           $html = '<table style="width:100%;border-bottom: 2px solid #000;">
               <thead>
                 <tr>
-                  <td rowspan="2" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">N°</td>
-                  <td rowspan="2" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Agencia</td>
-                  <td colspan="3" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">APERTURA DE CAJA</td>
-                  <td colspan="2" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">ARQUEO DE CAJA</td>
-                  <td colspan="2" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">CIERRE DE CAJA</td>
-                  <td rowspan="2" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Administrador de Agencia  (A. y N.)</td>
-                  <td rowspan="2" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Usuario</td>
+                  <td rowspan="2" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">N°</td>
+                  <td rowspan="2" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Agencia</td>
+                  <td colspan="3" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">APERTURA DE CAJA</td>
+                  <td colspan="2" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">ARQUEO DE CAJA</td>
+                  <td colspan="2" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">CIERRE DE CAJA</td>
+                  <td rowspan="2" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Administrador de Agencia  (A. y N.)</td>
+                  <td rowspan="2" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Usuario</td>
                 </tr>
                 <tr>
-                  <td style="border-bottom: 2px solid #000;text-align:center">Estado</td>
-                  <td style="border-bottom: 2px solid #000;text-align:center">Efectivo (S/.)</td>
-                  <td style="border-bottom: 2px solid #000;text-align:center">Fecha y Hora</td>
-                  <td style="border-bottom: 2px solid #000;text-align:center">Efectivo (S/.)</td>
-                  <td style="border-bottom: 2px solid #000;text-align:center">Fecha y Hora</td>
-                  <td style="border-bottom: 2px solid #000;text-align:center">Estado</td>
-                  <td style="border-bottom: 2px solid #000;text-align:center">Fecha y Hora</td>
+                  <td style="border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Estado</td>
+                  <td style="border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Efectivo (S/.)</td>
+                  <td style="border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Fecha y Hora</td>
+                  <td style="border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Efectivo (S/.)</td>
+                  <td style="border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Fecha y Hora</td>
+                  <td style="border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Estado</td>
+                  <td style="border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Fecha y Hora</td>
                 </tr>
               </thead>
               <tbody>';

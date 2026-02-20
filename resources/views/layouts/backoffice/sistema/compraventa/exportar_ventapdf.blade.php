@@ -123,22 +123,22 @@
             <table style="width:100%;">
                 <thead class="table-dark">
                     <tr>
-                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">N°</td>
-                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Cod. Operación</td>
-                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Fecha Registro</td>
-                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Descripción</td>
-                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Serie/Motor/N° P.</td>
-                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" width="80px">Valor Compra</td>
-                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" width="80px">Valor Comercial</td>
-                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" width="80px">Precio Venta Descuento</td>
-                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" width="80px">Precio Venta Final</td>
-                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Estado</td>
-                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Placa de Vehículo</td>
-                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Origen</td>
-                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Comprador</td>
-                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Lugar de Pago</td>
-                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Banco</td>
-                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Responsable</td>
+                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">N°</td>
+                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Cod. Operación</td>
+                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Fecha Registro</td>
+                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Descripción</td>
+                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Serie/Motor/N° P.</td>
+                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;" width="80px">Valor Compra</td>
+                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;" width="80px">Valor Comercial</td>
+                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;" width="80px">Precio Venta Descuento</td>
+                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;" width="80px">Precio Venta Final</td>
+                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Estado</td>
+                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Placa de Vehículo</td>
+                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Origen</td>
+                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Comprador</td>
+                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Lugar de Pago</td>
+                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Banco</td>
+                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Responsable</td>
                     </tr>
                 </thead>
                 <tbody>

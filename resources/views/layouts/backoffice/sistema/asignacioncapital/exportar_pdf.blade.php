@@ -115,7 +115,7 @@
   </footer>
   <main>
     <div class="container">
-      <h4 align="center" style="font-size:16px;">ASIGNACIÓN Y REDUCCIÓN DE CAPITAL</h4>
+      <h4 align="center" style="font-size:15px;">ASIGNACIÓN Y REDUCCIÓN DE CAPITAL</h4>
            <b>DE: </b>{{ $fechainicio }}<br>
            <b>HASTA: </b>{{ $fechafin }}<br>
             

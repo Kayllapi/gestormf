@@ -116,7 +116,7 @@
   </footer>
   <main>
     <div class="container">
-      <h4 align="center" style="font-size:16px;">MOVIMIENTO Y SALDO DE  CAPITAL ASIGNADO</h4>
+      <h4 align="center" style="font-size:15px;">MOVIMIENTO Y SALDO DE  CAPITAL ASIGNADO</h4>
             <div style="float:left;"><b>AGENCIA: </b>{{ $agencia->nombreagencia }}  </div>     
             <div style="margin-left:50px;float:left;"><b>A FECHA: </b>{{ now()->format('d-m-Y H:i:s A') }}</div>    <br>
             

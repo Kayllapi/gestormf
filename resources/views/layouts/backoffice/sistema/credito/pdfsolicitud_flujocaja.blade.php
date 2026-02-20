@@ -196,7 +196,7 @@
     <div class="row">
       <div class="col">
         
-        <table class="table" width="800px">
+        <table class="table" width="1060px">
           <thead>
             @if( count($encabezado) > 0)
               @foreach($encabezado as $value)
@@ -237,7 +237,7 @@
               @endforeach
             @endif
             <tr>
-              <td>Saldo Inicial Caja</td>
+              <td style="width: 200px">Saldo Inicial Caja</td>
               <td>{{ encontrar_valor('saldo_inicial', $flujo_caja) }}</td>
               <td></td>
               <td></td>

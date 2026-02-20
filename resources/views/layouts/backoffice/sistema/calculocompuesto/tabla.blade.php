@@ -65,20 +65,20 @@
                 </div>
                 <div class="col-md-6">
                   <div class="row">
-                    <label class="col-sm-5 col-form-label" style="text-align: right;">Dia de Gracia:</label>
-                    <div class="col-sm-7">
+                    <label class="col-sm-4 col-form-label" style="text-align: right;">Dia de Gracia:</label>
+                    <div class="col-sm-8">
                       <input type="number" step="any" class="form-control" id="dia_gracia" value="0">
                     </div>
                   </div>
                   <div class="row">
-                    <label class="col-sm-5 col-form-label" style="text-align: right;">Fecha Desembolso:</label>
-                    <div class="col-sm-7">
+                    <label class="col-sm-4 col-form-label" style="text-align: right;">Fecha Desembolso:</label>
+                    <div class="col-sm-8">
                       <input type="date" class="form-control" id="fecha_desembolso" value="{{ date('Y-m-d') }}" disabled>
                     </div>
                   </div>
                   <div class="row">
-                    <label class="col-sm-5 col-form-label" style="text-align: right;">C. Ss./Otros (%):</label>
-                    <div class="col-sm-7">
+                    <label class="col-sm-4 col-form-label" style="text-align: right;">C. Ss./Otros (%):</label>
+                    <div class="col-sm-8">
                       <input type="number" step="any" class="form-control" id="comision" value="" disabled>
                     </div>
                     <div class="col-sm-4 d-none">
@@ -86,14 +86,14 @@
                     </div>
                   </div>
                   <div class="row">
-                    <label class="col-sm-5 col-form-label" style="text-align: right;">Cargo:</label>
-                    <div class="col-sm-7">
+                    <label class="col-sm-4 col-form-label" style="text-align: right;">Cargo:</label>
+                    <div class="col-sm-8">
                       <input type="number" step="any" class="form-control" id="cargo" value="0.00" disabled>
                     </div>
                   </div>
                   <div class="row">
-                    <label class="col-sm-5"></label>
-                    <label class="col-sm-7">
+                    <label class="col-sm-4"></label>
+                    <label class="col-sm-8">
                     <label class="chk" style="width: 100%;">
                         <input type="checkbox" id="cargo_check" checked>
                         <span class="checkmark"></span>
@@ -102,8 +102,7 @@
                     </label>
                   </div>
                   <div class="row">
-                    <label class="col-sm-5 col-form-label" style="text-align: right;"></label>
-                    <div class="col-sm-7 mt-3">
+                    <div class="col-sm-8 mt-2">
                       <button type="button" class="btn btn-primary" id="generar_cronograma" onclick="cronograma()">CALCULAR</button>
                     </div>
                   </div>
@@ -138,9 +137,7 @@
           </div>
         </div>
         <div class="row mt-3 justify-content-center">
-          <div class="col-sm-12 col-md-7" style="
-              overflow-y: scroll;
-              height: calc(-430px + 100vh);">
+          <div class="col-sm-12 col-md-7">
             <table class="table table-striped" id="table-cronograma">
               <thead>
                 <th>Cuota N°</th>
@@ -162,7 +159,7 @@
               </tbody>
             </table>
           </div>
-          <div class="col-sm-12 col-md-5" style="height: calc(-430px + 100vh);">
+          <div class="col-sm-12 col-md-5">
             <table class="table table-striped" id="table-tarifario-producto">
               <thead>
                 <tr>

@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h5 class="modal-title">Cartera de Cliente - Institucional</h5>
+  <h5 class="modal-title">Cartera de Cliente</h5>
   
   <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>
@@ -28,7 +28,7 @@
                               <div class="row">
                                 <label for="fecha_inicio" class="col-sm-3 col-form-label">AGENCIA</label>
                                 <div class="col-sm-9">
-                                    <select class="form-control" id="idagencia">
+                                    <select class="form-control" id="idagencia" disabled>
                                       <option></option>
                                       @foreach($agencias as $value)
                                           <option value="{{$value->id}}">{{$value->nombreagencia}}</option>

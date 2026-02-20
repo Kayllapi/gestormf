@@ -20,12 +20,17 @@
         text-align: center;
         
       }
+      .linea {
+          border-top: 1px solid #000;
+          width:100%;
+      }
     </style>
 </head>
 <body>
     <div class="ticket_contenedor">  
-     
-          <table class="tabla_informativa">
+      <div><b>{{ $tienda->nombre }} - {{ $tienda->nombreagencia }}</b></div>
+      <div class="linea"></div>
+          <table class="tabla_informativa" width="100%">
               <tr>
                   <td>
                     <b>APE. Y NOM.:</b> {{ $usuario->nombrecompleto }}</td>

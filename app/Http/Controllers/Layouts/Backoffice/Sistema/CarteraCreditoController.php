@@ -19,19 +19,14 @@ class CarteraCreditoController extends Controller
     }
     public function index(Request $request,$idtienda)
     {
-      
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
-      
         if($request->input('view') == 'tabla'){
-            
             $agencias = DB::table('tienda')->get();
-          
             return view(sistema_view().'/carteracredito/tabla',[
               'tienda' => $tienda,
               'agencias' => $agencias,
             ]);
-        }
-            
+        }  
     }
   
     public function create(Request $request,$idtienda)

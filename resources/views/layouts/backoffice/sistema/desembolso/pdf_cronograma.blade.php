@@ -99,17 +99,11 @@
       .subtable{
         padding-left:10px;
       }
-      .datafooter {
-        position: absolute;
-        bottom: 10px;
-        text-align: right;
-        right: 0.7cm;
-      }
      </style>
 </head>
 <body>
   <header>
-    <div style="float:left;font-size:15px;">{{ $tienda->nombre }}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
+    <div style="float:left;font-size:15px;">{{ $tienda->nombre }} | {{$tienda->nombreagencia}}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
   </header>
   <main>
     <div class="container">

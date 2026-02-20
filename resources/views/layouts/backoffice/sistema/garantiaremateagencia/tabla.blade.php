@@ -180,7 +180,7 @@
                 <input type="hidden" id="check_destino">
                   <button type="button" class="btn btn-warning1 mt-1" onclick="liquidacion_garantia()">
                      LIQUIDACIÓN DE GARANTÍAS </button>
-                  <button type="button" class="btn btn-info mt-1">
+                  <button type="button" class="btn btn-info mt-1" onclick="reporte_remates()">
                      <i class="fa-solid fa-file-pdf"></i> REMATES </button>
                 </div>
                 </div>
@@ -287,6 +287,10 @@
         return false;
       }
       modal({ route:"{{url('backoffice/'.$tienda->id.'/garantiaremateagencia/0/edit?view=ver_liquidacion_garantia')}}&idcredito="+idcredito,  size: 'modal-xl' }); 
+  }
+  
+  function reporte_remates() {
+      modal({ route:"{{url('backoffice/'.$tienda->id.'/garantiaremateagencia/0/edit?view=ver_reporte_remates')}}",  size: 'modal-xl' }); 
   }
 </script>  
 

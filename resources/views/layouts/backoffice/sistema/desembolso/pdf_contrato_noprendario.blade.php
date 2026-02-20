@@ -152,7 +152,7 @@
   <div style="text-align: justify;">
       Los que suscriben, por una parte, <b>{{ $tienda->nombre }}</b>, con RUC/DNI N° <b>{{ $tienda->ruc }}</b> y domicilio legal para estos efectos 
     en <b>{{ $tienda->direccion }}</b> Distrito de <b>{{ $ubigeo_tienda->distrito }}</b>, Provincia de <b>{{ $ubigeo_tienda->provincia }}</b> y Departamento de <b>{{ $ubigeo_tienda->departamento }}</b> a 
-    quién en los sucesivo se le denominará como <b>“EL ACREEDOR”</b>, y de la otra parte <b>“EL/LOS PRESTATARIO(S)”</b> y <b>“SU(S) AVAL(ES) SOLIDARIO(S)”</b>, cuyos datos se 
+    quién en lo sucesivo se le denominará como <b>“EL ACREEDOR”</b>, y de la otra parte <b>“EL/LOS PRESTATARIO(S)”</b> y <b>“SU(S) AVAL(ES) SOLIDARIO(S)”</b>, cuyos datos se 
     consignan al final del presente contrato y ficha de información.
     Hechas las declaraciones respectivas, ambas partes están de acuerdo en celebrar el presente contrato de <b>CRÉDITO</b>, producto <b>{{ $credito->nombreproductocredito }}</b>, de conformidad con 
     las siguientes clausulas: 

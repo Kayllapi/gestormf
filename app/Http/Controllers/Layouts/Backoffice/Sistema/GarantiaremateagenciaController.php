@@ -506,6 +506,58 @@ class GarantiaremateagenciaController extends Controller
             $pdf->setPaper('A4', 'landscape');
             return $pdf->stream('GENERAR FICHA.pdf');
         }
+        elseif($request->input('view') == 'ver_reporte_remates'){
+            $credito = DB::table('credito')->whereId($request->idcredito)->first();
+            return view(sistema_view().'/garantiaremateagencia/ver_reporte_remates',[
+                'tienda' => $tienda,
+                'credito' => $credito,
+            ]);
+        }
+        elseif (request('view') == 'ver_reporte_rematespdf') {
+            $credito = DB::table('credito')->whereId($request->idcredito)->first();
+            $credito_garantias = DB::table('credito_garantia')
+              ->join('credito','credito.id','credito_garantia.idcredito')
+              ->join('users as cliente','cliente.id','credito_garantia.idcliente')
+              ->where('credito_garantia.estado_listagarantia','<>',0)
+              ->where('credito.idestadocredito',1)
+              ->where('credito.estado','DESEMBOLSADO')
+              ->select(
+                'credito_garantia.*',
+                'credito.cuenta as creditocuenta',
+                'cliente.nombrecompleto as clientenombrecompleto',
+                'cliente.identificacion as dni'
+              )
+              ->orderBy('credito_garantia.fecharegistro_listaremate','asc')
+              ->get();
+         
+            $tabla = [];
+            $i = 1;
+            foreach($credito_garantias as $value){
+                
+              $tabla[]=[
+                  'numero'      => $i,
+                  'id'      => $value->idcredito,
+                  'cuenta'      => 'C'.$value->creditocuenta,
+                  'cliente'   => $value->clientenombrecompleto,
+                  'dni'     => $value->dni,
+                  'tipo_garantia'  => $value->garantias_tipogarantia,
+                  'descripcion'  => $value->descripcion,
+                  'modelo'  => $value->garantias_modelo_tipo,
+                  'valorcomercial'  => $value->valor_comercial,
+                  'accesorios'  => $value->garantias_accesorio_doc,
+                  'cobertura'  => $value->valor_realizacion,
+                  'color'  => $value->garantias_color,
+                  'codigo_garantia'  => $value->garantias_codigo,
+              ];
+                $i++;
+            }
+            $pdf = PDF::loadView(sistema_view().'/garantiaremateagencia/ver_reporte_rematespdf',[
+                'tienda' => $tienda,
+                'credito_garantias' => $tabla,
+            ]);
+            $pdf->setPaper('A4', 'landscape');
+            return $pdf->stream('REPORTE DE REMATES.pdf');
+        }
     }
 
     public function update(Request $request, $idtienda, $id)

@@ -143,16 +143,16 @@
     <span class="badge">X. FLUJO DE CAJA</span>
     
     <div class="row">
-      <div class="col" style="width:340px;">
+      <div class="col" style="width:300px;">
         <table style="width:100%;">
           <tr>
             <td>CLIENTE/RAZON SOCIAL:</td>
             <td class="border-td">{{ $credito->nombreclientecredito }}</td>
           </tr>
-          <tr>
+          {{-- <tr>
             <td>PRODUCTO:</td>
             <td class="border-td">{{ $credito->nombreproductocredito }}</td>
-          </tr>
+          </tr> --}}
         </table>
       </div>
       <div class="col">
@@ -170,9 +170,25 @@
             <td>NRO SOLICITUD:</td>
             <td class="border-td" width="100px">S{{ str_pad($credito->id, 8, '0', STR_PAD_LEFT)  }}</td>
           </tr>
-          <tr>  
+          {{-- <tr>  
             <td>FECHA:</td>
             <td class="border-td">{{ date_format(date_create($credito->fecha),'Y-m-d') }}</td>
+          </tr> --}}
+        </table>
+      </div>
+      <div class="col">
+        <table>
+          <tr>
+            <td>PRODUCTO:</td>
+            <td class="border-td" width="130px">{{ $credito->nombreproductocredito }}</td>
+          </tr>
+        </table>
+      </div>
+      <div class="col">
+        <table>
+          <tr>  
+            <td>FECHA:</td>
+            <td class="border-td" width="100px">{{ date_format(date_create($credito->fecha),'Y-m-d') }}</td>
           </tr>
         </table>
       </div>
@@ -180,7 +196,7 @@
     <div class="row">
       <div class="col">
         
-        <table class="table" width="705px">
+        <table class="table" width="1060px">
           <thead>
             @if( count($encabezado) > 0)
               @foreach($encabezado as $value)
@@ -843,14 +859,11 @@
     </div>
 
     <div class="row" >
-      <div class="col" style="margin-left:215px;margin-top:60px;">
+      <div class="col" style="margin-left:215px;margin-top:30px;">
         <div style="width:300px;height:1px;border-bottom:1px solid #000;"></div>
         <p align="center">Asesor(a) de Créditos: {{ Auth::user()->codigo }} <br>Firma y Sello</p>		
       </div>
     </div>
-        
-
-      
   </main>
 </body>
 </html>

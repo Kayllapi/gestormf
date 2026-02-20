@@ -45,7 +45,7 @@
         <div class="card">
           <div class="card-body" style="
             overflow-y: scroll;
-            height: calc(100vh - 380px);
+            height: calc(100vh - 355px);
             padding: 0;
             margin-top: 5px;
             overflow-x: scroll;">

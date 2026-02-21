@@ -358,7 +358,7 @@ class DescuentoLiquidacionController extends Controller
                 <th>C. Ss./<br>Desgr.</th>
                 <th>Cargo</th>
                 <th>Cuota</th>
-                <th><span style="background-color: #ffb2b2 !important;font-weight: bold;">Vencido</span></th>
+                <th><span style="background-color: #ffb2b2 !important;font-weight: bold;">Dias Vencido</span></th>
                 <th>Custodia</th>
                 <th>Int. Comp.</th>
                 <th style="width:10px;">Int. Morat.</th>

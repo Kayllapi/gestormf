@@ -174,7 +174,7 @@
 
           ?>
       <div class="mb-1 mt-2">
-        <span style="font-weight: bold;">SOLICITUD:</span><span class="badge d-block"> {{ $credito->estado }} - En comité de créditos con las condiciones siguientes</span>
+        <span class="badge d-block" style="font-weight: bold;">SOLICITUD: {{ $credito->estado }} - En comité de créditos con las condiciones siguientes</span>
       </div>
     <div class="row">
       <div class="col">

@@ -174,7 +174,7 @@
 
           ?>
       <div class="mb-1 mt-2">
-        <span class="badge d-block">SOLICITUD: {{ $credito->estado }} - En comité de créditos con las condiciones siguientes</span>
+        <span class="badge d-block"><b>SOLICITUD:</b> {{ $credito->estado }} - En comité de créditos con las condiciones siguientes</span>
       </div>
     <div class="row">
       <div class="col">
@@ -247,12 +247,12 @@
       </div>
     </div>
       <div class="mb-1 mt-2">
-        <span class="badge d-block">GARANTIAS:</span>
+        <span class="badge d-block" style="font-weight: bold;">GARANTIAS:</span>
       </div>
  
     <div class="row">
       <div class="col" style="width:365px;">
-        <span class="badge" style="margin-bottom:5px;">CLIENTE:</span>
+        <span class="badge" style="margin-bottom:5px; font-weight: bold;">CLIENTE:</span>
         <table class="table table-bordered" id="table-garantia-cliente">
           <thead>
             <tr>
@@ -315,8 +315,8 @@
       </div>
       <div class="col" style="width:361px;">
         
-        <span class="badge" style="margin-bottom:5px;">AVAL: <span style="font-size:10px;">{{ $credito->nombreavalcredito }}</span> 
-        <div style="font-size:10px;text-align: right;margin-top:-12px;"><span>DNI: <span style="font-size:10px;">{{ $credito->documentoaval }}</span> </span></div>
+        <span class="badge" style="margin-bottom:5px;font-weight: bold;">AVAL: <span style="font-size:10px;">{{ $credito->nombreavalcredito }}</span> 
+        <div style="font-size:10px;text-align: right;margin-top:-12px;font-weight: bold;"><span>DNI: <span style="font-size:10px;">{{ $credito->documentoaval }}</span> </span></div>
         </span>
   
         <table class="table table-bordered" id="table-garantia-aval">
@@ -418,20 +418,20 @@
               <table class="table table-bordered">
               <tbody>
                 <tr>
-                  <td>Funcionario</td>
-                  <td>{{ substr($value->nombre, 0, 1) }}{{ $value->apellidopaterno }}</td>
+                  <td>Funcionario&nbsp;</td>
+                  <td>&nbsp;{{ substr($value->nombre, 0, 1) }}{{ $value->apellidopaterno }}</td>
                 </tr>
                 <tr>
-                  <td>Cargo</td>
-                  <td>{{ $value->nombre_permiso }}</td>
+                  <td>Cargo&nbsp;</td>
+                  <td>&nbsp;{{ $value->nombre_permiso }}</td>
                 </tr>
                 <tr>
-                  <td>Fecha</td>
-                  <td>{{ date_format(date_create($value->fecha),"d/m/Y") }}</td>
+                  <td>Fecha&nbsp;</td>
+                  <td>&nbsp;{{ date_format(date_create($value->fecha),"d/m/Y") }}</td>
                 </tr>
                 <tr>
-                  <td>Hora</td>
-                  <td>{{ date_format(date_create($value->fecha),"h:i A") }}</td>
+                  <td>Hora&nbsp;</td>
+                  <td>&nbsp;{{ date_format(date_create($value->fecha),"h:i A") }}</td>
                 </tr>
               </tbody>
               </table>

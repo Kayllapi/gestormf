@@ -162,15 +162,15 @@
                           </label>
                       </div>
                       <div>
-                          <label class="radio-custom" style="color: #ad222f;">
-                              <input type="radio" name="opcion_pago" id="pagoanticipado">
-                              <span class="radio"></span> Pago Anticipado
-                          </label>
-                      </div>
-                      <div>
                           <label class="radio-custom">
                               <input type="radio" name="opcion_pago" id="pagototal" onclick="pagototal()">
                               <span class="radio"></span> Total
+                          </label>
+                      </div>
+                      <div>
+                          <label class="radio-custom" style="color: #ad222f;">
+                              <input type="radio" name="opcion_pago" id="pagoanticipado">
+                              <span class="radio"></span> Pago Anticipado
                           </label>
                       </div>
                     <button type="submit" 

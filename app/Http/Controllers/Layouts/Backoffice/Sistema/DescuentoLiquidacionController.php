@@ -358,7 +358,7 @@ class DescuentoLiquidacionController extends Controller
                 <th>C. Ss./<br>Desgr.</th>
                 <th>Cargo</th>
                 <th>Cuota</th>
-                <th><span style="background-color: #ffb2b2 !important;font-weight: bold;">Vencidos</span></th>
+                <th><span style="background-color: #ffb2b2 !important;font-weight: bold;">Vencido</span></th>
                 <th>Custodia</th>
                 <th>Int. Comp.</th>
                 <th style="width:10px;">Int. Morat.</th>
@@ -406,7 +406,7 @@ class DescuentoLiquidacionController extends Controller
                             <td style="'.$value['style'].'text-align:right">'.$value['comision'].'</td>
                             <td style="'.$value['style'].'text-align:right">'.$value['cargo'].'</td>
                             <td style="'.$value['style'].'text-align:right">'.$value['cuota'].'</td>
-                            <td style="'.$value['style'].'text-align:right background-color: #CFECC5 !important;">
+                            <td style="'.$value['style'].'text-align:right; background-color: #CFECC5 !important;">
                                 <span style="'.($value['atraso_dias']>0?'color: #ff4343 !important;':'').'font-weight: bold;">
                             '.$value['atraso_dias'].'</span></td></td>
                             <td style="'.$value['style'].'text-align:right">'.$value['tenencia'].'</td>

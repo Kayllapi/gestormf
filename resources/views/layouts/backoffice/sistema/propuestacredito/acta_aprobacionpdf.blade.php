@@ -229,7 +229,7 @@
         <table>
           <tr>
             <td>Monto Aprobado S/.:</td>
-            <td class="border-td campo_moneda" style="background-color:yellow; width:100px;">{{ $credito->monto_solicitado }}</td>
+            <td class="border-td campo_moneda" style="background-color:#F9F3B5; width:100px;">{{ $credito->monto_solicitado }}</td>
           </tr>
           <tr>
             <td>Tasa efectiva mensual %:</td>

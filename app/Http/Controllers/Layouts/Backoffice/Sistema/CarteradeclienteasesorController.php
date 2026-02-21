@@ -21,7 +21,7 @@ class CarteradeclienteasesorController extends Controller
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
         if($request->input('view') == 'tabla'){
             $agencias = DB::table('tienda')->get();
-            return view(sistema_view().'/carteracreditoasesor/tabla',[
+            return view(sistema_view().'/carteradeclienteasesor/tabla',[
               'tienda' => $tienda,
               'agencias' => $agencias,
             ]);

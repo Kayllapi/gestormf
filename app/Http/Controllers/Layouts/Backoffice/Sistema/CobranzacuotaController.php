@@ -1115,7 +1115,7 @@ class CobranzacuotaController extends Controller
                             <td style="'.$value['style'].'text-align:right;" pagar="'.$value['pagar_comision'].'" descontar="'.$value['descontar_comision'].'">'.$value['comision'].'</td>
                             <td style="'.$value['style'].'text-align:right;" pagar="'.$value['pagar_cargo'].'" descontar="'.$value['descontar_cargo'].'">'.$value['cargo'].'</td>
                             <td style="'.$value['style'].'text-align:right;" pagar="'.$value['pagar_cuota'].'" descontar="'.$value['descontar_cuota'].'">'.$value['cuota'].'</td>
-                            <td style="'.$value['style'].'text-align:right;background-color: #e1ffd8 !important;">
+                            <td style="'.$value['style'].'text-align:right;background-color: #CFECC5 !important;">
                             <span style="'.($value['atraso_dias']>0?'color: #ff4343 !important;':'').'font-weight: bold;">
                             '.$value['atraso_dias'].'</span></td>
                             <td style="'.$value['style'].'text-align:right;" pagar="'.$value['pagar_tenencia'].'" descontar="'.$value['descontar_tenencia'].'">'.$value['tenencia'].'</td>

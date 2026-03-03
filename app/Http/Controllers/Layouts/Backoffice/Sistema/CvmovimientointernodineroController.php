@@ -1723,12 +1723,12 @@ class CvmovimientointernodineroController extends Controller
             }
 
             $dt =  DB::table('cvmovimientointernodinero')->whereId($id)->first();
-            // if (!Carbon::parse($dt->fecharegistro)->isToday()) {
-            //     return response()->json([
-            //         'resultado' => 'ERROR',
-            //         'mensaje'   => 'No se puede eliminar el movimiento interno de dinero porque ya son operaciones cerradas.'
-            //     ]);
-            // }
+            if (!Carbon::parse($dt->fecharegistro)->isToday()) {
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'No se puede eliminar el movimiento interno de dinero porque ya son operaciones cerradas.'
+                ]);
+            }
             if ($dt->idcvarqueocaja_cierre != 0) {
                 return response()->json([
                     'resultado' => 'ERROR',

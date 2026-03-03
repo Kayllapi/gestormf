@@ -107,6 +107,7 @@ class PenalidadComisionController extends Controller
             configuracion_update($idtienda,'tipo_cambio_dolar',$request->tipo_cambio_dolar);
             configuracion_update($idtienda,'comision_gestion_garantia_cargo',$request->comision_gestion_garantia_cargo);
             configuracion_update($idtienda,'porcentaje_descuento_liquidacion',$request->porcentaje_descuento_liquidacion);
+            configuracion_update($idtienda,'porcentaje_precio_liquidacion',$request->porcentaje_precio_liquidacion);
             return response()->json([
                 'resultado' => 'CORRECTO',
                 'mensaje'   => 'Se ha actualizado correctamente.'

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FICHA DE REMATE</title>
+    <title>FICHA DE LIQUIDACIÓN</title>
     <style>
       *{
         font-family:helvetica;
@@ -17,46 +17,48 @@
       body {
           margin-top: 1.2cm;
           margin-left: 0.7cm;
-          margin-right: 0.7cm;
-          margin-bottom: 0cm;
+          margin-right: 0.5cm;
+          margin-bottom: 2cm;
       }
 
-      /** Definir las reglas del encabezado **/
-      header {
+     header {
           position: fixed;
           top: 0cm;
           left: 0.7cm;
           right: 0.7cm;
           height: 0.6cm;
-          /** Estilos extra personales **/
-          color: #676869;
+          color: #0f0f0f;
           text-align: center;
           line-height: 0.6cm;
-          font-size:18px !important;
+          font-size:15px !important;
           font-weight: bold;
-          border-bottom: 2px solid #144081; 
           margin:5px;
           text-align:right;
           padding:5px;
       }
-
-      /** Definir las reglas del pie de página **/
       footer {
           position: fixed; 
           bottom: 0cm; 
           left: 0.7cm; 
           right: 0.7cm;
           height: 1cm;
-
-          /** Estilos extra personales **/
           color: #000;
           text-align: center;
           line-height: 0.4cm;
-          font-size:11px;
+          font-size:12px;
       }
-      /** Definir las reglas de numeracion de página **/ 
-      footer > .page:after {
-        content: counter(page, decimal-leading-zero);
+      footer > .page:after { content: counter(page, decimal-leading-zero); }
+      .page {
+          position: absolute;
+          left:50%;
+          margin-left: -5px;
+          bottom:-5px;
+      }
+      .datafooter {
+        position: absolute;
+        bottom: -5px;
+        text-align: right;
+        right: 0px;
       }
 
       .saltopagina{
@@ -109,26 +111,26 @@
       .subtable{
         padding-left:10px;
       }
-      .datafooter {
-        position: absolute;
-        bottom: 10px;
-        text-align: right;
-        right: 0.7cm;
+      .linea_firma {
+          width: 100%;
+          border-bottom: 2px solid #000,
       }
      </style>
 </head>
 <body>
     <header>
-        <div style="float:left;font-size:18px;">{{ $tienda->nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
+      <div style="float:left;font-size:15px;">{{ $tienda->nombre }} | {{$tienda->nombreagencia}}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
     </header>
     <footer style="text-align:right;">
         <p class="page">Página </p>
     </footer>
     <main>
         <div class="container">
-            <h4 align="center" style="margin-bottom: 0px;">FICHA DE REMATE</h4>
+            <h4 align="center" style="margin-bottom: 0px;">FICHA DE LIQUIDACIÓN</h4>
             <b>CLIENTE: </b>{{ $credito->clientenombrecompleto }}<br>
-            <table style="width:100%;">
+            <b>CUENTA: </b>C{{ $credito->cuenta }}<br>
+            <b>FECHA: </b>{{ $credito->fechaliquidaciongarantia }}<br>
+            <table style="width:100%;" style="border-bottom:2px solid #000">
                 <thead class="table-dark">
                     <tr>
                         <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" >CODIGO DE GARANTIA</th>
@@ -138,19 +140,28 @@
                         <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" >DESCRIPCIÓN</th>
                         <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" >Serie/Motor/N°Partida</th>
                         <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" >MODELO</th>
-                        <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" >OTROS</th>
                         <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" >VALOR COMERCIAL</th>
+                        <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" >V.C. DESCT.</th>
                         <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" >COBERTURA</th>
+                        <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" >P. LIQUID.</th>
                         <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" >ACCESORIOS</th>
                         <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" >COLOR</th>
                         <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" >AÑO DE FABRICACIÓN</th>
-                        <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" >AÑO DE COMPRA</th>
                         <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" >PLACA DEL VEHÍCULO</th>
-                        <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" >DETALLE</th>
                     </tr>
                 </thead>
                 <tbody>
+                  <?php
+                  $porcentaje_descuento_liquidacion = configuracion($tienda->id,'porcentaje_descuento_liquidacion')['valor'];
+                  $total_valorcomercial = 0;
+                  $total_descuento = 0;
+                  $total_cobertura = 0;
+                  $total_precio = 0;
+                  ?>
                     @foreach ($credito_garantias as $value)
+                  <?php
+                  $valor_comercial_descuento = $value->valor_comercial - ($value->valor_comercial * $porcentaje_descuento_liquidacion / 100);
+                  ?>
                         <tr>
                                 <td>{{$value->garantias_codigo}}</td>
                                 <td>{{$value->clientenombrecompleto}}</td>
@@ -159,21 +170,52 @@
                                 <td>{{$value->descripcion}}</td>
                                 <td>{{$value->garantias_serie_motor_partida}}</td>
                                 <td>{{$value->garantias_modelo_tipo}}</td>
-                                <td>{{$value->garantias_otros}}</td>
-                                <td>{{$value->valor_comercial}}</td>
-                                <td>{{$value->valor_realizacion}}</td>
+                                <td style="text-align:right;">{{$value->valor_comercial}}</td>
+                                <td style="text-align:right;">{{number_format($valor_comercial_descuento, 2, '.', '')}}</td>
+                                <td style="text-align:right;">{{$value->valor_realizacion}}</td>
+                                <td style="text-align:right;">{{$value->precioliquidacion}}</td>
                                 <td>{{$value->garantias_accesorio_doc}}</td>
                                 <td>{{$value->garantias_color}}</td>
                                 <td>{{$value->garantias_fabricacion}}</td>
-                                <td>{{$value->garantias_compra}}</td>
                                 <td>{{$value->garantias_placa}}</td>
-                                <td>{{$value->garantias_detalle_garantia}}</td>
                         </tr>
+                      <?php
+                      $total_valorcomercial += $value->valor_comercial;
+                      $total_descuento += $valor_comercial_descuento;
+                      $total_cobertura += $value->valor_realizacion;
+                      $total_precio += $value->precioliquidacion;
+                      ?>
                     @endforeach
                 </tbody>
                 <tfoot>
+                    <tr>
+                        <th style="border-top: 2px solid #000;text-align:right;" colspan="7">TOTAL</th>
+                        <th style="border-top: 2px solid #000;text-align:right;">{{number_format($total_valorcomercial, 2, '.', '')}}</th>
+                        <th style="border-top: 2px solid #000;text-align:right;">{{number_format($total_descuento, 2, '.', '')}}</th>
+                        <th style="border-top: 2px solid #000;text-align:right;">{{number_format($total_cobertura, 2, '.', '')}}</th>
+                        <th style="border-top: 2px solid #000;text-align:right;">{{number_format($total_precio, 2, '.', '')}}</th>
+                        <th style="border-top: 2px solid #000;" colspan="4"></th>
+                    </tr>
                 </tfoot>
             </table>
+          </br>
+            
+      <?php
+      $porcentaje_descuento_liquidacion = configuracion($tienda->id,'porcentaje_descuento_liquidacion')['valor'];
+      ?>
+      <table style="margin-top:60px;width:100%;">
+          <tr>
+              <td style="width:50%;" align="center">
+                  <div style="border-top:solid 1px #000;margin-left:20px;margin-right:20px;width:260px;margin:auto;"></div>
+                  <div style="padding-top:5px;">{{ $liquidaciongarantiaresponsable->nombrecompleto }}</div>
+                  <div>Firma del Resposanble</div>
+              </td>
+              <td style="width:50%;" align="center">
+                  <div style="border-top:solid 1px #000;margin-left:20px;margin-right:20px;width:260px;margin:auto;"></div>
+                  <div style="padding-top:5px;">Firma de Administrador/Gerente</div><br>
+              </td>
+          </tr>
+      </table>
         </div>
     </main>
 </body>

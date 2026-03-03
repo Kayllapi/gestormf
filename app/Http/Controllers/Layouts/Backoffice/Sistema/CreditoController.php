@@ -1221,6 +1221,8 @@ class CreditoController extends Controller
             'tasa_tcem' => number_format($tasa_tem+$comision_cargo,2,'.',''),
             'cargootros' => $comision_cargo,
             'interes_total' => $cronograma['total_interes'],
+            'total_cargo' => $cronograma['total_cargo'],
+            'total_comision' => $cronograma['total_comision'],
             'cargo_total' => $cronograma['total_comisioncargo'],
             'total_pagar' => $cronograma['total_cuotafinal']
           );

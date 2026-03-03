@@ -184,15 +184,19 @@
         <div class="col-sm-12 col-md-9">
           <div class="row">
             <label class="col-sm-2 col-form-label" style="text-align: right;"><b>Interés Total (S/):</b></label>
-            <div class="col-sm-2 col-form-label" id="interes_total" style="font-weight: normal;">
+            <div class="col-sm-1 col-form-label" id="interes_total" style="font-weight: normal;">
               {{ $credito->interes_total }}
             </div>
-            <label class="col-sm-2 col-form-label" style="text-align: right;"><b>Cargos y otros (S/):</b></label>
-            <div class="col-sm-2 col-form-label" id="cargo_total" style="font-weight: normal;">
+            <label class="col-sm-2 col-form-label" style="text-align: right;"><b>C. Ss./Otros:</b></label>
+            <div class="col-sm-1 col-form-label" id="total_comision" style="font-weight: normal;">
+              0.00
+            </div>
+            <label class="col-sm-2 col-form-label" style="text-align: right;"><b>Cargos (S/):</b></label>
+            <div class="col-sm-1 col-form-label" id="total_cargo" style="font-weight: normal;">
               0.00
             </div>
             <label class="col-sm-2 col-form-label" style="text-align: right;"><b>Total a Pagar (S/):</b></label>
-            <div class="col-sm-2 col-form-label" id="total_pagar" style="font-weight: normal;">
+            <div class="col-sm-1 col-form-label" id="total_pagar" style="font-weight: normal;">
               {{ $credito->total_pagar }}
             </div>
           </div>
@@ -285,7 +289,8 @@
                   }else{
                       $('#table-cronograma > tbody').html(res.cronograma);
                       $('#interes_total').html(res.interes_total);
-                      $('#cargo_total').html(res.cargo_total);
+                      $('#total_cargo').html(res.total_cargo);
+                      $('#total_comision').html(res.total_comision);
                       $('#total_pagar').html(res.total_pagar);
                     
                       $('#tasa_tem_minima').val(res.tasa_tem_minima);

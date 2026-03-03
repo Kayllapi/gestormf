@@ -7,7 +7,7 @@
         }
     </style>
     <div class="modal-header">
-        <h5 class="modal-title">FICHA DE REMATE</h5>
+        <h5 class="modal-title">FICHA DE LIQUIDACIÓN</h5>
         <button type="button" class="btn-close" id="modal-close-exportar-venta" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <div class="modal-body">

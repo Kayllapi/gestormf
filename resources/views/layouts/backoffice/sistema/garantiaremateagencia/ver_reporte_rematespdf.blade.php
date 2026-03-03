@@ -17,14 +17,6 @@
       body {
           margin-top: 1.2cm;
           margin-left: 0.7cm;
-          margin-right: 0.7cm;
-          margin-bottom: 0cm;
-      }
-
-      /** Defina ahora los márgenes reales de cada página en el PDF **/
-      body {
-          margin-top: 1.2cm;
-          margin-left: 0.7cm;
           margin-right: 0.5cm;
           margin-bottom: 2cm;
       }

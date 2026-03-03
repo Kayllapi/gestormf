@@ -67,16 +67,20 @@
             </div>
           </div-->
           <div class="mb-1">
-            <span class="badge d-block">Días de Tolerancia para liquidación de garantias prendarias y porcentaje de Descuento</span>
+            <span class="badge d-block">Días de Tolerancia para liquidación de garantias prendarias, Descuento y Precio</span>
           </div>
           <div class="row mt-1">
             <label class="col-sm-1 col-form-label" style="text-align: right;">Días:</label>
-            <div class="col-sm-3">
+            <div class="col-sm-1">
               <input type="number" class="form-control" step="any" id="dias_tolerancia" value="{{ configuracion($tienda->id,'dias_tolerancia')['valor'] }}">
             </div>
-            <label class="col-sm-4 col-form-label" style="text-align: right;">% de Descuento Liquidación:</label>
-            <div class="col-sm-4">
+            <label class="col-sm-4 col-form-label" style="text-align: right;">% de Desc. Liquid. de VC</label>
+            <div class="col-sm-1">
               <input type="number" class="form-control" step="any" id="porcentaje_descuento_liquidacion" value="{{ configuracion($tienda->id,'porcentaje_descuento_liquidacion')['valor'] }}">
+            </div>
+            <label class="col-sm-4 col-form-label" style="text-align: right;">% de Incre. de Precio Liquid.</label>
+            <div class="col-sm-1">
+              <input type="number" class="form-control" step="any" id="porcentaje_precio_liquidacion" value="{{ configuracion($tienda->id,'porcentaje_precio_liquidacion')['valor'] }}">
             </div>
           </div>
           <div class="mb-1">

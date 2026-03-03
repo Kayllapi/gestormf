@@ -7,20 +7,20 @@
         <div class="col-sm-12">
             <div class="row">
                 <label for="cliente" class="col-sm-2 col-form-label">N° DE CUENTA</label>
-                <div class="col-sm-4">
+                <div class="col-sm-3">
                     <input type="text" class="form-control" id="cliente" value="C{{ $credito->cuenta }}" disabled>
                 </div>
-                <label for="saldo" class="col-sm-3 col-form-label">Saldo de Deuda Programada (C+I): S/.</label>
+                <label for="saldo" class="col-sm-5 col-form-label">Saldo de Deuda Programada (C+I+C.Ss/Otros+Cargo): S/.</label>
                 <div class="col-sm-2">
-                    <input type="number" class="form-control" id="saldo" value="" disabled>
+                    <input type="number" class="form-control" id="saldo_deudaprogramada" value="{{ $cronograma['select_cuota'] }}" disabled>
                 </div>
             </div>
             <div class="row">
                 <label for="cliente" class="col-sm-2 col-form-label">CLIENTE</label>
-                <div class="col-sm-4">
+                <div class="col-sm-3">
                     <input type="text" class="form-control" id="cliente" value="{{ $credito->clientenombrecompleto }}" disabled>
                 </div>
-                <label for="saldo" class="col-sm-3 col-form-label">Saldo de Deuda Total (C+I+Ic+M): S/.</label>
+                <label for="saldo" class="col-sm-5 col-form-label">Saldo de Deuda Total (C+I+C.Ss/Otros+Cargo+IC+IM+Custodia): S/.</label>
                 <div class="col-sm-2">
                     <input type="number" class="form-control" id="saldo" value="{{ $cronograma['cuota_pendiente'] }}" disabled>
                 </div>
@@ -121,8 +121,20 @@
         <div class="col-sm-12">
             <div class="row">
                 <div class="col-sm-6"></div>
-                <button type="button" class="btn btn-primary col-sm-3" onclick="generarfichaLiquidacion()">GENERAR FICHA DE LIQUIDACIÓN</button>
-                <button type="button" class="btn btn-primary col-sm-3 me-1" onclick="registrarprecioLiquidacion()">REGISTRAR PRECIO LIQUIDACIÓN</button>
+                <div class="col-sm-3">
+                <button type="button" class="btn btn-primary" onclick="generarfichaLiquidacion()">GENERAR FICHA DE LIQUIDACIÓN</button>
+                </div>
+                @if($credito->idliquidaciongarantia==0)
+                <div class="col-sm-3">
+                <button type="button" class="btn btn-primary me-1" onclick="registrarprecioLiquidacion()" id="btn_precio_liquidacion">REGISTRAR PRECIO LIQUIDACIÓN</button>
+                </div>
+                @else
+                <div class="col-sm-3">
+                <div class="alert alert-danger me-1" style="padding-top: 4px;padding-bottom: 4px;">
+                    <b>¡Ya tiene una Ficha de Liquidación!</b>
+                </div>
+                </div>
+                @endif
             </div>
         </div>
     </div>
@@ -145,7 +157,13 @@
 
     function generarfichaLiquidacion() {
         var idcredito = {{ $credito->id }};
-        modal({ route:"{{url('backoffice/'.$tienda->id.'/garantiaremateagencia/0/edit?view=ver_generarficha_liquidacion')}}&idcredito="+idcredito,  size: 'modal-fullscreen' });
+        if({{number_format($credito_garantias->sum('precioliquidacion'), 2)}}<{{ $cronograma['select_cuota'] }}){
+            var mensaje = "El precio liquidación total (S/. {{number_format($credito_garantias->sum('precioliquidacion'), 2)}}) debe ser >= a la deuda programada (S/. {{$cronograma['select_cuota']}})";
+            modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });  
+            return false;
+        }
+        $('#btn_precio_liquidacion').addClass('d-none');
+        modal({ route:"{{url('backoffice/'.$tienda->id.'/garantiaremateagencia/0/edit?view=ver_generarficha_liquidacion')}}&precio_liquidacion_total={{ number_format($credito_garantias->sum('precioliquidacion'), 2) }}&idcredito="+idcredito,  size: 'modal-fullscreen' });
     }
 
     function registrarprecioLiquidacion() {
@@ -156,6 +174,6 @@
             return false;
         }
         var idcreditogarantia = selectedRow.data('idcreditogarantia');
-        modal({ route:"{{url('backoffice/'.$tienda->id.'/garantiaremateagencia/0/edit?view=ver_registrarprecio_liquidacion')}}&idcreditogarantia="+idcreditogarantia,  size: 'modal-sm' });
+        modal({ route:"{{url('backoffice/'.$tienda->id.'/garantiaremateagencia/0/edit?view=ver_registrarprecio_liquidacion')}}&saldo_deudaprogramada={{ $cronograma['select_cuota'] }}&idcreditogarantia="+idcreditogarantia,  size: 'modal-sm' });
     }
 </script>

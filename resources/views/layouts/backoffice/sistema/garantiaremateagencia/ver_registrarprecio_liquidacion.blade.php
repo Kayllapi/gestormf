@@ -4,6 +4,8 @@
         method: 'PUT',
         data:{
             view: 'registrar_precio_liquidacion',
+            idcredito: '{{$credito->id}}',
+            saldo_deudaprogramada: '{{$saldo_deudaprogramada}}',
         }
     },
     function(resultado){
@@ -19,7 +21,7 @@
         <div class="row">
             <label for="precioliquidacion" class="col-sm-5 col-form-label">Precio de Liquidación *</label>
             <div class="col-sm-7">
-                <input type="number" class="form-control" id="precioliquidacion" value="{{ $credito_garantia->precioliquidacion }}">
+                <input type="number" class="form-control" id="precioliquidacion" value="{{ $credito_garantia->precioliquidacion }}" step="0.01">
             </div>
         </div>
     </div>

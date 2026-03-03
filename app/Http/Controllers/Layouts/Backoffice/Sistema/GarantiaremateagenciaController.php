@@ -451,7 +451,7 @@ class GarantiaremateagenciaController extends Controller
                 $request->idcredito,
                 $credito->idforma_credito,
                 $credito->modalidadproductocredito,
-                $request->numerocuota,
+                $credito->cuotas,
                 $total_descuento_capital,
                 $total_descuento_interes,
                 $total_descuento_comision,
@@ -471,7 +471,18 @@ class GarantiaremateagenciaController extends Controller
             ]);
         }
         elseif($request->input('view') == 'ver_generarficha_liquidacion'){
+          
+            $creditogara = DB::table('credito')->whereId($request->idcredito)->first();
+            
+            if($creditogara->idliquidaciongarantia==0){
+                DB::table('credito')->whereId($request->idcredito)->update([
+                    'fechaliquidaciongarantia' => now(),
+                    'idliquidaciongarantia' => 1,
+                    'idliquidaciongarantiaresponsable' => Auth::user()->id,
+                ]);
+            }
             $credito = DB::table('credito')->whereId($request->idcredito)->first();
+          
             return view(sistema_view().'/garantiaremateagencia/ver_generarficha_liquidacion',[
                 'tienda' => $tienda,
                 'credito' => $credito,
@@ -484,6 +495,7 @@ class GarantiaremateagenciaController extends Controller
                 'tienda' => $tienda,
                 'credito' => $credito,
                 'credito_garantia' => $credito_garantia,
+                'saldo_deudaprogramada' => $request->saldo_deudaprogramada,
             ]);
         }
         elseif (request('view') == 'ver_generarficha_liquidacionpdf') {
@@ -498,10 +510,12 @@ class GarantiaremateagenciaController extends Controller
               )
               ->orderBy('credito_garantia.fecharegistro_listaremate','asc')
               ->get();
+            $liquidaciongarantiaresponsable = DB::table('users')->whereId($credito->idliquidaciongarantiaresponsable)->first();
             $pdf = PDF::loadView(sistema_view().'/garantiaremateagencia/ver_generarficha_liquidacionpdf', compact(
                 'tienda',
                 'credito',
                 'credito_garantias',
+                'liquidaciongarantiaresponsable',
             ));
             $pdf->setPaper('A4', 'landscape');
             return $pdf->stream('GENERAR FICHA.pdf');
@@ -691,14 +705,31 @@ class GarantiaremateagenciaController extends Controller
                 'precioliquidacion.required' => 'El "Precio de Liquidación" es Obligatorio.',
             ];
             $this->validate($request,$rules,$messages);
+          
+            $precioliquidacion = DB::table('credito_garantia')
+                ->where('credito_garantia.idcredito',$request->idcredito)
+                ->where('credito_garantia.id','<>',$id)
+                ->sum('credito_garantia.precioliquidacion');
+          
+            $porcentaje_precio_liquidacion = configuracion($idtienda,'porcentaje_precio_liquidacion')['valor']/100;
+            $saldo_deudaprogramada_maximo = $request->saldo_deudaprogramada+($request->saldo_deudaprogramada*$porcentaje_precio_liquidacion);
+            $saldo_deudaprogramada_restante_maximo = $saldo_deudaprogramada_maximo-$precioliquidacion;
+          
+            if($saldo_deudaprogramada_restante_maximo < $request->input('precioliquidacion')){
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'El Precio de Liquidación como máximo debe ser S/. '.number_format($saldo_deudaprogramada_restante_maximo, 2, '.', '').'!!'
+                ]);
+            }
+          
 
             DB::table('credito_garantia')->whereId($id)->update([
                 'precioliquidacion'=>$request->input('precioliquidacion'),
             ]);
           
             return response()->json([
-                'resultado'           => 'CORRECTO',
-                'mensaje'             => 'Se ha registrado correctamente el precio de liquidación!!'
+                'resultado' => 'CORRECTO',
+                'mensaje'   => 'Se ha registrado correctamente el precio de liquidación!!'
             ]);
         }
     }

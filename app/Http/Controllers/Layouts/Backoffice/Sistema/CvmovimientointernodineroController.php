@@ -367,8 +367,10 @@ class CvmovimientointernodineroController extends Controller
                 ->where('idfuenteretiro', $request->idfuenteretiro_retiro3)
                 ->where('idtipomovimientointerno', 5)
                 ->where('idestadoeliminado', 1)
-                ->where('fecharegistro', '>=', now()->format('Y-m-d 00:00:00'))
-                ->where('fecharegistro', '<=', now()->format('Y-m-d 23:59:59'))
+                ->whereBetween('fecharegistro', [
+                    $fecharegularizacion->copy()->startOfDay(),
+                    $fecharegularizacion->copy()->endOfDay()
+                ])
                 ->first();
             if($dt!=''){
                 if ($request->idfuenteretiro_retiro3 == 6) {
@@ -1721,12 +1723,12 @@ class CvmovimientointernodineroController extends Controller
             }
 
             $dt =  DB::table('cvmovimientointernodinero')->whereId($id)->first();
-            if (!Carbon::parse($dt->fecharegistro)->isToday()) {
-                return response()->json([
-                    'resultado' => 'ERROR',
-                    'mensaje'   => 'No se puede eliminar el movimiento interno de dinero porque ya son operaciones cerradas.'
-                ]);
-            }
+            // if (!Carbon::parse($dt->fecharegistro)->isToday()) {
+            //     return response()->json([
+            //         'resultado' => 'ERROR',
+            //         'mensaje'   => 'No se puede eliminar el movimiento interno de dinero porque ya son operaciones cerradas.'
+            //     ]);
+            // }
             if ($dt->idcvarqueocaja_cierre != 0) {
                 return response()->json([
                     'resultado' => 'ERROR',

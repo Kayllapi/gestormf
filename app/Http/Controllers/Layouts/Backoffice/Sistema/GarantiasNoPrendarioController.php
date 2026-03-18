@@ -298,6 +298,7 @@ class GarantiasNoPrendarioController extends Controller
                 ->join('permiso','permiso.id','users_permiso.idpermiso')
                 ->whereIn('users_permiso.idpermiso',[1,2])
                 ->where('users_permiso.idtienda',$idtienda)
+                ->where('users_permiso.idestado',1)
                 ->select('users.*','permiso.nombre as nombrepermiso')
                 ->get();
         return view(sistema_view().'/garantiasnoprendario/modificar',[
@@ -314,6 +315,7 @@ class GarantiasNoPrendarioController extends Controller
                 ->join('permiso','permiso.id','users_permiso.idpermiso')
                 ->whereIn('users_permiso.idpermiso',[1,2])
                 ->where('users_permiso.idtienda',$idtienda)
+                ->where('users_permiso.idestado',1)
                 ->select('users.*','permiso.nombre as nombrepermiso')
                 ->get();
         return view(sistema_view().'/garantiasnoprendario/delete',[

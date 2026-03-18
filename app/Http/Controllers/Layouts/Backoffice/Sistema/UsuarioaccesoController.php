@@ -105,6 +105,14 @@ class UsuarioaccesoController extends Controller
             $this->validate($request,$rules,$messages);
 
             $accesos = json_decode($request->input('accesos'),true);
+          
+            if(count($accesos)==0){
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'Mínimo debe tener un cargo!!.'
+                ]);
+            }
+          
             $guardados = [];
             foreach($accesos as $value){
 
@@ -376,6 +384,113 @@ class UsuarioaccesoController extends Controller
                 ];
             }
         }*/
+        if($id=='show_table'){
+          
+            $where = [];
+            if($request->input('columns')[4]['search']['value']!=''){
+                $where[] = ['tienda.nombre','LIKE','%'.$request->input('columns')[4]['search']['value'].'%'];
+            }
+            if($request->input('columns')[5]['search']['value']!=''){
+                $where[] = ['tienda.nombreagencia','LIKE','%'.$request->input('columns')[5]['search']['value'].'%'];
+            }
+            if($request->input('columns')[6]['search']['value']!=''){
+                $where[] = ['permiso.nombre','LIKE','%'.$request->input('columns')[6]['search']['value'].'%'];
+            }
+            if($request->input('columns')[7]['search']['value']!=''){
+                $where[] = ['users.idestadousuario',$request->input('columns')[7]['search']['value']];
+            }
+          
+            $usuarios = DB::table('users')
+                ->leftJoin('users_permiso','users_permiso.idusers','users.id')
+                ->leftJoin('permiso','permiso.id','users_permiso.idpermiso')
+                ->leftJoin('tienda','tienda.id','users_permiso.idtienda')
+                ->where('users.idestado',1)
+                ->where('users.idtipousuario',1)
+                ->where('users.id','<>',1)
+                ->where('users.idtipousuario',1)
+                ->where('tienda.id',$idtienda)
+                ->where('users.codigo','LIKE','%'.$request->input('columns')[0]['search']['value'].'%')
+                ->where('users.identificacion','LIKE','%'.$request->input('columns')[1]['search']['value'].'%')
+                ->where('users.nombrecompleto','LIKE','%'.$request->input('columns')[2]['search']['value'].'%')
+                ->where('users.usuario','LIKE','%'.$request->input('columns')[3]['search']['value'].'%')
+                //->where('users.usuario','LIKE','%'.$request->input('columns')[4]['search']['value'].'%')
+                ///->where('users.usuario','LIKE','%'.$request->input('columns')[5]['search']['value'].'%')
+                ->where($where)
+                ->select(
+                    'users.*',
+                )
+                ->distinct()
+                ->orderBy('users.id','desc')
+                ->paginate($request->length,'*',null,($request->start/$request->length)+1);
+
+            $tabla = [];
+            foreach($usuarios as $value){
+
+
+                  $tienda_permiso = DB::table('users_permiso')
+                                      ->join('permiso','permiso.id','users_permiso.idpermiso')
+                                      ->join('tienda','tienda.id','users_permiso.idtienda')
+                                      ->where('users_permiso.idusers',$value->id)
+                                      ->select(
+                                        'users_permiso.*',
+                                        'permiso.nombre as nombrepermiso',
+                                        'tienda.nombre as tiendanombre',
+                                        'tienda.nombreagencia as nombreagencia',
+                                      )
+                                      ->get();
+
+
+                    $permiso = '';
+                    $permiso_tiendanombre = '';
+                    $permiso_nombreagencia = '';
+                    $permiso_nombrepermiso = '';
+                    foreach($tienda_permiso as $val_permiso){
+                        $permiso = $val_permiso->tiendanombre.' / '.$val_permiso->nombreagencia.' ('.$val_permiso->nombrepermiso.')'.'<br>'.$permiso;
+                        $permiso_tiendanombre = $val_permiso->tiendanombre.'<br>'.$permiso_tiendanombre;
+                        $permiso_nombreagencia = $val_permiso->nombreagencia.'<br>'.$permiso_nombreagencia;
+                        $permiso_nombrepermiso = $val_permiso->nombrepermiso.'<br>'.$permiso_nombrepermiso;
+                    }
+
+
+                $tabla[] = [
+                    'id'              => $value->id,
+                    'text'            => ($value->identificacion!=0?$value->identificacion.' - ':'').$value->nombrecompleto,
+                    'codigo'  => $value->codigo,
+                    'identificacion'  => $value->identificacion,
+                    'cliente'         => $value->nombrecompleto,
+                    'empresa'         => $permiso_tiendanombre,
+                    'agencia'         => $permiso_nombreagencia,
+                    'cargo'         => $permiso_nombrepermiso,
+                    'usuario'         => $value->usuario.' '.($idtienda==0?'('.$value->clave.')':''),
+                    'idestadousuario' => $value->idestadousuario,
+                    'opcion' => [
+                        // [
+                        //     'nombre'  => 'Editar',
+                        //     'onclick' => '/'.$idtienda.'/usuarioacceso/'.$value->id.'/edit?view=editar',
+                        //     'icono'   => 'edit'
+                        // ],
+                        [
+                            'nombre'  => 'Editar',
+                            'onclick' => '/'.$idtienda.'/usuarioacceso/'.$value->id.'/edit?view=permiso',
+                            'icono'   => 'edit'
+                        ],
+                        // [
+                        //     'nombre'  => 'Eliminar',
+                        //     'onclick' => '/'.$idtienda.'/usuarioacceso/'.$value->id.'/edit?view=eliminar',
+                        //     'icono'   => 'trash'
+                        // ]
+                    ]
+                ];
+            }
+            
+            return response()->json([
+                'start'           => $request->start,
+                'draw'            => $request->draw,
+                'recordsTotal'    => $request->length,
+                'recordsFiltered' => $usuarios->total(),
+                'data'            => $tabla,
+            ]);
+        }
     }
 
     public function edit(Request $request, $idtienda, $id)
@@ -650,7 +765,7 @@ class UsuarioaccesoController extends Controller
                 ]);
             }
 
-            json_usuarioacceso($idtienda);
+            //json_usuarioacceso($idtienda);
           
             return response()->json([
                 'resultado' => 'CORRECTO',
@@ -746,7 +861,7 @@ class UsuarioaccesoController extends Controller
                 'idestado' => 1
             ]);
             
-            json_usuarioacceso($idtienda);
+            //json_usuarioacceso($idtienda);
           
             return response()->json([
                 'resultado' => 'CORRECTO',
@@ -784,7 +899,7 @@ class UsuarioaccesoController extends Controller
                 ->where('idusers',$id)
                 ->delete();
             
-            json_usuarioacceso($idtienda);
+            //json_usuarioacceso($idtienda);
           
             return response()->json([
                 'resultado' => 'CORRECTO',

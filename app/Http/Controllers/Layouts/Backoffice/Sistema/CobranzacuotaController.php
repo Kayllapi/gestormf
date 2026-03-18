@@ -677,6 +677,23 @@ class CobranzacuotaController extends Controller
                 ]);
                 
                 $idestadocredito = 2;
+              
+                // quitar lista de remates
+                $credito_garantias = DB::table('credito_garantia')
+                    ->where('credito_garantia.idcredito',$request->idcredito)
+                    ->get();
+              
+                foreach($credito_garantias as $valuegarantia){
+                    DB::table('credito_garantia')->whereId($valuegarantia->id)->update([
+                        'fecharegistro_listaremate' => now(),
+                        'idresponsable_listaremate' => Auth::user()->id,
+                        'estado_listagarantia' => 0,
+                    ]);
+                }
+              
+                DB::table('credito')->whereId($request->idcredito)->update([
+                    'idliquidaciongarantia' => 2,
+                ]);
             }
             
             if($request->entregargarantia=='on'){

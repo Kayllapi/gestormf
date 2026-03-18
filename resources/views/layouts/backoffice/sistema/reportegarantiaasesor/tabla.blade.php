@@ -36,7 +36,7 @@
                                       <option value="2">GARANTIA REGULAR</option>
                                     </select>
                             </div>  
-                            <label for="corte" class="col-sm-1 col-form-label">ASESOR/EJEC.</label>
+                            <label for="corte" class="col-sm-1 col-form-label">ASES./EJEC.</label>
                             <div class="col-sm-12 col-md-3">
                                   <select class="form-control" id="idasesor">
                                       <option></option>
@@ -87,6 +87,28 @@
     sistema_select2({ input:'#idagencia',val:'{{$tienda->id}}' });
     sistema_select2({ input:'#idmodalidad' });
     sistema_select2({ input:'#idasesor',val:'{{Auth::user()->id}}' });
+  
+    cliente_tienda({{$tienda->id}});
+
+    $("#idagencia").on("change", function(e) {
+        var idtienda = $('#idagencia').val();
+        cliente_tienda(idtienda)
+    });
+  
+    function cliente_tienda(idtienda){
+        $.ajax({
+            url:"{{url('backoffice/'.$tienda->id.'/reportegarantia/show_asesor')}}",
+            type:'GET',
+            data: {
+                idtienda : idtienda
+            },
+            success: function (respuesta){
+                $('#idasesor').html(respuesta);  
+                sistema_select2({ input:'#idasesor',val:'{{Auth::user()->id}}' });
+            }
+        })
+    }
+  
     verpdf();
     function verpdf(){
         let idmodalidad = $('#idmodalidad').val();

@@ -87,7 +87,7 @@
                         <input type="text" id="profesion" class="form-control"  value="{{ $usuario->profesion }}">
                     </div>
                     <div class="col-sm-12">
-                        <label>Estado de Usuario: <span class="text-danger">(*)</span></label>
+                        <label>Estado de <span style="background-color: #ffce39;padding-left: 5px;padding-right: 5px;">Acceso</span> de Usuario: <span class="text-danger">(*)</span></label>
                         <select class="form-control" id="idestadousuario">
                             <option value="1">ACTIVADO</option>
                             <option value="2">DESACTIVADO</option>
@@ -101,7 +101,7 @@
                         <tr>
                             <th>Agencia</th>
                             <th>Cargo</th>
-                            <th>Estado</th>
+                            <th>Estado de <span style="background-color: #ffce39;padding-left: 5px;padding-right: 5px;">Cargos y Permisos</span></th>
                             <th width="10px"><button type="button" class="btn btn-success" onclick="agregar_permiso()"><i class="fa fa-plus"></i></button></th>
                         </tr>
                     </thead>

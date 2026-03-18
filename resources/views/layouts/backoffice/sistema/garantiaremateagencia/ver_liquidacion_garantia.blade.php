@@ -157,7 +157,7 @@
 
     function generarfichaLiquidacion() {
         var idcredito = {{ $credito->id }};
-        if({{number_format($credito_garantias->sum('precioliquidacion'), 2)}}<{{ $cronograma['select_cuota'] }}){
+        if({{$credito_garantias->sum('precioliquidacion')}}<{{ $cronograma['select_cuota'] }}){
             var mensaje = "El precio liquidación total (S/. {{number_format($credito_garantias->sum('precioliquidacion'), 2)}}) debe ser >= a la deuda programada (S/. {{$cronograma['select_cuota']}})";
             modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });  
             return false;

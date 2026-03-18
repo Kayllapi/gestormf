@@ -98,25 +98,25 @@ class PagoprestamoController extends Controller
               ->orderBy('credito_cobranzacuota.id','asc')
               ->get();
           
-          $html = '<table class="table table-hover table-bordered" id="table-lista-credito">
-              <thead class="table-dark" style="position: sticky;top: 0;">
+          $html = '<table class="table table-hover" id="table-lista-credito">
+              <thead class="table-dark" style="position: sticky;top: 0;z-index:1;">
                 <tr>
-                  <td style="text-align:center">N°</td>
-                  <td style="text-align:center">CLIENTE</td>
-                  <td style="text-align:center">CUOTAS</td>
-                  <td style="text-align:center">C. PAGADO</td>
-                  <td style="text-align:center">ACUENTA</td>
-                  <td style="text-align:center">INT. COM.</td>
-                  <td style="text-align:center">INT. MORA.</td>
-                  <td style="text-align:center">CUSTODIA&nbsp;</td>
-                  <td style="text-align:center">CXC</td>
-                  <td style="text-align:center">TOTAL (S/.)</td>
-                  <td style="text-align:center">FECHA</td>
-                  <td style="text-align:center">F/L. PAGO</td>
-                  <td style="text-align:center">L. BANCO</td>
-                  <td style="text-align:center">VALIDACIÓN</td>
-                  <td style="text-align:center">N° OPERACIÓN</td>
-                  <td style="text-align:center">RESPONSABLE</td>
+                  <th style="text-align:center">N°</th>
+                  <th style="text-align:center">CLIENTE</th>
+                  <th style="text-align:center">CUOTAS</th>
+                  <th style="text-align:center">C. PAGADO</th>
+                  <th style="text-align:center">ACUENTA</th>
+                  <th style="text-align:center">INT. COM.</th>
+                  <th style="text-align:center">INT. MORA.</th>
+                  <th style="text-align:center">CUSTODIA&nbsp;</th>
+                  <th style="text-align:center">CXC</th>
+                  <th style="text-align:center">TOTAL (S/.)</th>
+                  <th style="text-align:center">FECHA</th>
+                  <th style="text-align:center">F/L. PAGO</th>
+                  <th style="text-align:center">L. BANCO</th>
+                  <th style="text-align:center">VALIDACIÓN</th>
+                  <th style="text-align:center">N° OPERACIÓN</th>
+                  <th style="text-align:center">RESPONSABLE</th>
                 </tr>
               </thead>
               <tbody>';
@@ -213,29 +213,23 @@ class PagoprestamoController extends Controller
           if(count($credito_cobranzacuotas)==0){
               $html.= '<tr><td colspan="14" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
           }
-              $html .= '</tbody><tfoot class="table-dark" style="position: sticky;bottom: 0;">
+              $html .= '</tbody><tfoot class="table-dark" style="position: sticky;bottom: -1px;z-index:1;">
                 <tr>
-                  <td colspan="3" style="text-align:right">TOTAL S/.</td>
-                  <td style="text-align:right">'.number_format($total_amortizacion, 2, '.', '').'</td>
-                  <td style="text-align:right">'.number_format($total_acuenta, 2, '.', '').'</td>
-                  <td style="text-align:right">'.number_format($total_penalidad, 2, '.', '').'</td>
-                  <td style="text-align:right">'.number_format($total_compensatorio, 2, '.', '').'</td>
-                  <td style="text-align:right">'.number_format($total_tenencia, 2, '.', '').'</td>
-                  <td style="text-align:right">'.number_format($cobrar_cargo, 2, '.', '').'</td>
-                  <td style="text-align:right">'.number_format($total_totalcuota, 2, '.', '').'</td>
-                  <td colspan="6"></td>
+                  <th colspan="3" style="text-align:right">TOTAL (S/.)</th>
+                  <th style="text-align:right">'.number_format($total_amortizacion, 2, '.', '').'</th>
+                  <th style="text-align:right">'.number_format($total_acuenta, 2, '.', '').'</th>
+                  <th style="text-align:right">'.number_format($total_penalidad, 2, '.', '').'</th>
+                  <th style="text-align:right">'.number_format($total_compensatorio, 2, '.', '').'</th>
+                  <th style="text-align:right">'.number_format($total_tenencia, 2, '.', '').'</th>
+                  <th style="text-align:right">'.number_format($cobrar_cargo, 2, '.', '').'</th>
+                  <th style="text-align:right">'.number_format($total_totalcuota, 2, '.', '').'</th>
+                  <th colspan="6"></th>
                 </tr>
                 <tr>
-                  <td colspan="3" style="background-color: #198754 !important;text-align:right">RESUMEN:</td>
-                  <td style="background-color: #198754 !important;text-align:right;width:70px;">CAJA</td>
-                  <td style="background-color: #198754 !important;text-align:right;width:70px;">'.number_format($total_caja, 2, '.', '').'</td>
-                  <td style="background-color: #198754 !important;text-align:right;width:70px;">BANCO</td>
-                  <td style="background-color: #198754 !important;text-align:right;width:70px;">'.number_format($total_banco, 2, '.', '').'</td>
-                  <td style="background-color: #198754 !important;text-align:right;width:70px;">TRANSIT.</td>
-                  <td style="background-color: #198754 !important;text-align:right;width:70px;">'.number_format($total_extorno, 2, '.', '').'</td>
-                  <td style="background-color: #198754 !important;text-align:right;width:70px;">T. EFE. (S/.)</td>
-                  <td style="background-color: #198754 !important;text-align:right;width:70px;">'.number_format($total_caja+$total_banco, 2, '.', '').'</td>
-                  <td colspan="5"  style="background-color: #198754 !important;"></td>
+                  <th style="background-color: #9d9d9d !important;width:200px;text-align:center;" colspan="19">RESUMEN: &nbsp;&nbsp;&nbsp CAJA (S/.): '.number_format($total_caja, 2, '.', '').' &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                  BANCO (S/.): '.number_format($total_banco, 2, '.', '').' &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                  TRANSITORIO (S/.): '.number_format($total_extorno, 2, '.', '').' &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  TOTAL DE EFECT. (S/.): '.number_format($total_caja+$total_banco, 2, '.', '').'</th>
                 </tr>
               </tfoot>
             </table>';

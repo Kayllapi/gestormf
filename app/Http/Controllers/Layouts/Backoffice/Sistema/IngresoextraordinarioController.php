@@ -189,15 +189,12 @@ class IngresoextraordinarioController extends Controller
               $html.= '<tr><td colspan="11" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
           }
               $html .= '
-                <tr style="position: sticky;bottom: 0;">
-                  <td colspan="2" style="background-color: #144081 !important;text-align:right;color:#fff !important;">Total (S/.)</td>
-                  <td style="background-color: #144081 !important;text-align:right;color:#fff !important;">'.number_format($total, 2, '.', '').'</td>
-                  <td style="background-color: #144081 !important;text-align:right;color:#fff !important;">Caja (S/.)</td>
-                  <td style="background-color: #144081 !important;text-align:right;color:#fff !important;">'.number_format($total_caja, 2, '.', '').'</td>
-                  <td style="background-color: #144081 !important;text-align:right;color:#fff !important;">Banco (S/.)</td>
-                  <td style="background-color: #144081 !important;text-align:right;color:#fff !important;">'.number_format($total_banco, 2, '.', '').'</td>
-                  <td colspan="4" style="background-color: #144081 !important;text-align:right;color:#fff !important;"></td>
+                <tr style="position: sticky;bottom: -1px;z-index:1;">
+                  <th style="text-align:center;" colspan="10">RESUMEN: &nbsp;&nbsp;&nbsp Total (S/.): '.number_format($total, 2, '.', '').' &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  Caja (S/.): '.number_format($total_caja, 2, '.', '').' &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                  Banco (S/.): '.number_format($total_banco, 2, '.', '').'</th>
                 </tr>';
+          
             return array(
               'html' => $html
             );

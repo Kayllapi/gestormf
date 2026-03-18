@@ -178,12 +178,10 @@ class DesembolsadoController extends Controller
               $html.= '<tr><td colspan="17" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
           }
               $html .= '
-                <tr style="position: sticky;bottom: 0;">
-                  <td colspan="3" style="background-color: #144081 !important;text-align:right;color:#fff !important;">TOTAL GENERAL S/.</td>
-                  <td style="background-color: #144081 !important;text-align:right;color:#fff !important;">'.number_format($total_desembolsado, 2, '.', '').'</td>
-                  <td colspan="2" style="background-color: #144081 !important;text-align:right;color:#fff !important;">TOTAL REFINANCIADO S/.: '.number_format($total_refinanciado, 2, '.', '').'</td>
-                  <td colspan="2" style="background-color: #144081 !important;text-align:right;color:#fff !important;">TOTAL NETO S/.: '.number_format($total_neto, 2, '.', '').'</td>
-                  <td colspan="5" style="background-color: #144081 !important;"></td>
+                <tr style="position: sticky;bottom: -1px;z-index:1;">
+                  <th style="text-align:center;" colspan="13">RESUMEN: &nbsp;&nbsp;&nbsp TOTAL GENERAL (S/): '.number_format($total_desembolsado, 2, '.', '').' &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  TOTAL REFINANCIADO (S/.): '.number_format($total_refinanciado, 2, '.', '').' &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                  TOTAL NETO (S/.): '.number_format($total_neto, 2, '.', '').'</th>
                 </tr>';
           return array(
             'html' => $html

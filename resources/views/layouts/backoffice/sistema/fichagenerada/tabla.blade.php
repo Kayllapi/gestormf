@@ -8,7 +8,7 @@
       <div class="col-sm-12">
         <div class="card">
           <div class="card-body p-2" id="form-credito-result">
-            <div class="modal-body">
+            <div class="modal-body pb-0">
                 <div class="row">
                     <div class="col-md-4">
                       <div class="row">
@@ -37,7 +37,7 @@
                               <button type="button" class="btn btn-success" onclick="lista_credito()"><i class="fa-solid fa-search"></i> FILTRAR</button>
                           </div>
                           <div class="col-sm-12 col-md-2" style="text-align: right;">
-                              <button type="button" class="btn btn-danger" onclick="eliminar()"><i class="fa-solid fa-trash-can"></i> ELIMINAR</button>
+                              <button type="button" class="btn btn-danger" onclick="eliminar()"><i class="fa-solid fa-trash"></i> ELIMINAR</button>
                           </div>
                       </div>
                     </div>
@@ -48,20 +48,20 @@
         </div>
       </div>
   </div>
-      <div class="col-sm-12">
+      <div class="col-sm-12 mt-1">
         <div class="card">
-          <div class="card-body" style="
+          <div class="card-body">
+          <div style="
             overflow-y: scroll;
-            height: calc(100vh - 295px);
-            padding: 0;
-            margin-top: 5px;">
+            height: calc(100vh - 238px);
+            padding: 0;">
             <table class="table table-striped table-hover" id="table-lista-credito">
               <thead class="table-dark" style="position: sticky;top: 0;"> 
                 <tr>
-                  <th>CODIGO DE GARANTIA</th>
+                  <th>CóDIGO DE GARANTÍA</th>
                   <th>CLIENTE</th>
                   <th>RUC/DNI/CE</th>
-                  <th>TIPO DE GARANTIA</th>
+                  <th>TIPO DE GARANTÍA</th>
                   <th>DESCRIPCIÓN</th>
                   <th>Serie/Motor/N°Partida</th>
                   <th>MODELO</th>
@@ -79,11 +79,12 @@
               </tbody>
             </table>
           </div>
+          </div>
         </div>
       </div>
-      <div style="text-align: right;">
-        <button type="button" class="btn btn-info" onclick="exportar_pdf()" style="font-weight: bold;">
-          <i class="fa-solid fa-file-pdf" style="color:#000 !important;font-weight: bold;"></i> REPORTE</button>
+      <div class="text-end mt-1">
+        <button type="button" class="btn btn-info" onclick="exportar_pdf()">
+          <i class="fa-solid fa-file-pdf"></i> REPORTE</button>
       </div>
 </div>
 <script>

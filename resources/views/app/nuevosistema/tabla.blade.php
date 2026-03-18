@@ -40,7 +40,7 @@ if(!isset($check_id)){
             </th>
             @elseif($value['type']=='select')
             <th style="background-color: #c2c0c2 !important;">
-              <select class="form-select" style="width: 100%;" id="select_datatable{{$i}}">
+              <select class="form-select" style="width: 100%;" id="select_datatable{{$i}}" buscador="true">
                 <option value="">Buscar...</option>
                 <?php
                 $data = $value['data'];
@@ -215,7 +215,7 @@ $name_table = generateRandomString();
                           .draw();
                   }
               } );
-              $( 'select', this.footer() ).on( 'keyup change clear', function () {
+              $( 'select[buscador="true"]', this.footer() ).on( 'keyup change clear', function () {
                   if ( that.search() !== this.value ) {
                       that
                           .search( this.value )

@@ -18,10 +18,10 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-12">
+      <div class="col-sm-12 mt-1">
         <div class="card">
           <div class="card-body p-2">
-            <div class="modal-body">
+            <div class="modal-body pb-0">
               <div class="row">
                 <label class="col-sm-3 col-form-label" style="text-align: right;">Fecha inicio</label>
                 <div class="col-sm-2">
@@ -41,45 +41,42 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-12">
+      <div class="col-sm-12 mt-1">
         <div class="card">
-          <div class="card-body" style="
-            overflow-y: scroll;
-            height: calc(100vh - 390px);
-            padding: 0;
-            margin-top: 5px;
-            overflow-x: scroll;">
-            <table class="table table-striped table-hover table-bordered" id="table-lista-gastoadministrativooperativo">
-              <thead class="table-dark" style="position: sticky;top: 0;">
+          <div class="card-body">
+            <div style="overflow-y: scroll;height: calc(100vh - 401px);">
+            <table class="table table-striped table-hover" id="table-lista-gastoadministrativooperativo">
+              <thead class="table-dark" style="position: sticky;top: 0;z-index:1;">
                 <tr>
-                  <td rowspan="2" width="10px">N°</td>
-                  <td rowspan="2">Operación</td>
-                  <td rowspan="2">Monto (S/.)</td>
-                  <td rowspan="2">Fecha de gasto</td>
-                  <td rowspan="2">Descripción</td>
-                  <td style="text-align: center;" colspan="2">Sustento</td>
-                  <td rowspan="2">F. Pago</td>
-                  <td rowspan="2">Banco</td>
-                  <td rowspan="2">Validación</td>
-                  <td rowspan="2">Usuario</td>
+                  <th rowspan="2" width="10px">N°</th>
+                  <th rowspan="2">Operación</th>
+                  <th rowspan="2">Monto (S/.)</th>
+                  <th rowspan="2">Fecha de gasto</th>
+                  <th rowspan="2">Descripción</th>
+                  <th style="text-align: center;background-color: #9d9d9d !important;" colspan="2">Sustento</th>
+                  <th rowspan="2">F. Pago</th>
+                  <th rowspan="2">Banco</th>
+                  <th rowspan="2">Validación</th>
+                  <th rowspan="2">Usuario</th>
                 </tr>
                 <tr>
-                  <td>Comprobante</td>
-                  <td>N° y Detalle de Comp.</td>
+                  <th>Comprobante</th>
+                  <th>N° y Detalle de Comp.</th>
                 </tr>
               </thead>
               <tbody>
               
               </tbody>
             </table>
+            </div>
           </div>
         </div>
       </div>
   </div>
-  <div style="text-align: right;">
-    <button type="button" class="btn btn-info" onclick="exportar_pdf()" style="font-weight: bold;">
-      <i class="fa-solid fa-file-pdf" style="color:#000 !important;font-weight: bold;"></i> REPORTE PDF</button>
-  </div>
+      <div class="text-end mt-1">
+        <button type="button" class="btn btn-info" onclick="exportar_pdf()">
+          <i class="fa-solid fa-file-pdf"></i> REPORTE</button>
+      </div>
 </div>
 <script>
   lista_gastoadministrativooperativo();

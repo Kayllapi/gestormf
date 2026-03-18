@@ -41,6 +41,26 @@ class ReporteGarantiaController extends Controller
 
     public function show(Request $request, $idtienda, $id)
     {
+        if($id == 'show_asesor'){
+            $where = [];
+            if($request->idtienda!=0){
+                $where[] = ['users_permiso.idtienda', $request->idtienda];
+            }
+          
+            $usuarios = DB::table('users')
+                ->join('users_permiso','users_permiso.idusers','users.id')
+                ->join('permiso','permiso.id','users_permiso.idpermiso')
+                ->whereIn('users_permiso.idpermiso',[3,4,7])
+                ->where($where)
+                ->select('users.*','permiso.nombre as nombrepermiso')
+                ->get();
+          
+            $html = '<option></option><option value="0" selected>TODO</option>';
+            foreach($usuarios as $value){
+                $html .= '<option value="'.$value->id.'">'.$value->nombrecompleto.' ('.$value->nombrepermiso.')</option>';
+            }
+            return $html;
+        }
     }
 
     public function edit(Request $request, $idtienda, $id)
@@ -48,13 +68,13 @@ class ReporteGarantiaController extends Controller
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
         if($request->input('view') == 'pdf_reporte'){
           $where = [];
-          if($request->idagencia!=''){
+          if($request->idagencia!='' && $request->idagencia!=0){
               $where[] = ['credito.idtienda',$request->idagencia];
           }
           if($request->idmodalidad!='TODO'){
               $where[] = ['credito.idforma_credito',$request->idmodalidad];
           }
-          if($request->idasesor!=''){
+          if($request->idasesor!='' && $request->idasesor!=0){
               $where[] = ['credito.idasesor',$request->idasesor];
           }
           

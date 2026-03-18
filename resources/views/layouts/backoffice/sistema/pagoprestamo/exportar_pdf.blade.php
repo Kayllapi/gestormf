@@ -151,6 +151,7 @@
           $total_custodia = 0;
           $total_cuentaxcobrar = 0;
           $total_total = 0;
+          $total_extorno = 0;
           $total_caja = 0;
           $total_banco = 0;
           
@@ -231,6 +232,9 @@
               $total_cuentaxcobrar = $total_cuentaxcobrar+$t_cuentaxcobrar;
               $total_total = $total_total+$t_total;
             
+              if($value->idformapago==0){
+                  $total_extorno = $total_extorno+$t_total;
+              }
               if($value->idformapago==1){
                   $total_caja = $total_caja+$t_total;
               }
@@ -256,20 +260,12 @@
               </tfoot>
             </table><br>
             <table style="width:100%;">
-                <tfoot class="table-dark" style="position: sticky;bottom: 0;">
                 <tr>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;width:270px;">RESUMEN:</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;width:70px;">CAJA</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;width:70px;">'.number_format($total_caja, 2, '.', '').'</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;width:70px;">BANCO</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;width:70px;">'.number_format($total_banco, 2, '.', '').'</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;width:70px;">TRANSIT.</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;width:70px;">0.00</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;width:70px;"><u>T. EFE. (S/.)</u></td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;width:70px;"><u>'.number_format($total_caja+$total_banco, 2, '.', '').'</u></td>
-                  <td style="" colspan="4"></td>
+                  <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;font-weight: bold;text-align:center;" colspan="19">RESUMEN: &nbsp;&nbsp;&nbsp; CAJA (S/.): '.number_format($total_caja, 2, '.', '').' &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                  BANCO (S/.): '.number_format($total_banco, 2, '.', '').' &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                  TRANSITORIO (S/.): '.number_format($total_extorno, 2, '.', '').' &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  TOTAL DE EFECT. (S/.): '.number_format($total_caja+$total_banco, 2, '.', '').'</th>
                 </tr>
-              </tfoot>
             </table>';
             echo $html;
               ?>

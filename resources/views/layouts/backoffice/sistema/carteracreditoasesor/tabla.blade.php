@@ -104,9 +104,9 @@
       <div class="col-sm-12 mt-1 mb-1">
         <div class="card">
           <div class="card-body p-2">
-            <div class="modal-body p-0" style="overflow-y: scroll;height: calc(-305px + 100vh);">
+            <div class="modal-body p-0" style="overflow-y: scroll;height: calc(-271px + 100vh);">
             <table class="table table-striped table-hover" id="table-lista-credito">
-              <thead class="table-dark" style="position: sticky;top: 0;"> 
+              <thead class="table-dark" style="position: sticky;top: -1px;z-index:1;"> 
                 <tr>
                   <th>N°</th>
                   <th>CUENTA</th>
@@ -137,21 +137,15 @@
           </div>
         </div>
       </div>
-                              <div style="text-align: right;">
-                                <button type="button" class="btn btn-info" onclick="exportar_pdf()">
-                                  <i class="fa-solid fa-file-pdf" style="color:#000 !important;font-weight: bold;"></i> REPORTE PDF</button>
-                                <button type="button" class="btn btn-success" onclick="exportar_excel()">
-                                  <i class="fa-solid fa-file-excel" style="color:#000 !important;font-weight: bold;"></i> REPORTE EXCEL</button>
-                              </div>
 </div>
 <script>
   /*var d= new Date();
   var fechatotal = `${d.getFullYear()}-${(d.getMonth() + 1)}-${d.getDate()}`;
   $("#fecha_fin").val(fechatotal);*/
 
-  sistema_select2({ input:'#idagencia' });
+  sistema_select2({ input:'#idagencia',val:'{{$tienda->id}}' });
   sistema_select2({ input:'#idformacredito' });
-  sistema_select2({ input:'#idasesor' });
+  sistema_select2({ input:'#idasesor',val:'{{Auth::user()->id}}' });
   
   lista_credito();
   function lista_credito(){

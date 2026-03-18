@@ -2,7 +2,6 @@
 <div class="modal-header">
     <h5 class="modal-title">
         Usuarios
-        <a href="javascript:;" class="sistema-font" onclick="actualizar_tabla('usuarioacceso')"><i class="fa-solid fa-arrows-rotate"></i></a>
         <a href="javascript:;" 
             class="btn btn-primary" 
             onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/usuarioacceso/create?view=registrar&modulo=usuarioacceso')}}'})">
@@ -14,7 +13,8 @@
 <div class="modal-body">
     @include('app.nuevosistema.tabla',[
         'tabla' => '#tabla-usuarioacceso',
-        'route' => url('public/backoffice/tienda/'.$tienda->id.'/sistema_json/usuarioacceso.json'),
+        'route' => url('backoffice/'.$tienda->id.'/usuarioacceso/show_table'),
+        'type' => 'GET',
         'scrollY' => 'calc(-196px + 100vh)',
         'thead' => [
             ['data' => 'Código'],
@@ -24,7 +24,7 @@
             ['data' => 'Empresa'],
             ['data' => 'Agencia'],
             ['data' => 'Cargo'],
-            ['data' => 'Estado'],
+            ['data' => 'Estado de Acceso de Usuario'],
             ['data' => ''],
         ],
         'tbody' => [
@@ -49,11 +49,11 @@
             [
                 'data' => [
                     [
-                        'id' => 'ACTIVO',
+                        'id' => '1',
                         'text' => 'ACTIVO'
                     ],
                     [
-                        'id' => 'DESHABILITADO',
+                        'id' => '2',
                         'text' => 'DESHABILITADO'
                     ]
                 ],

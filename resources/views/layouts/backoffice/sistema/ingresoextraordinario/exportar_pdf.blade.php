@@ -167,14 +167,10 @@
               $html.= '<tr><td colspan="10" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
           }
               $html .= '
-                <tr style="position: sticky;bottom: 0;">
-                  <td colspan="2" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">Total (S/.)</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">'.number_format($total, 2, '.', '').'</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">Caja (S/.)</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">'.number_format($total_caja, 2, '.', '').'</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">Banco (S/.)</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">'.number_format($total_banco, 2, '.', '').'</td>
-                  <td colspan="3" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;"></td>
+                <tr>
+                  <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;" colspan="10">RESUMEN: &nbsp;&nbsp;&nbsp; Total (S/.): '.number_format($total, 2, '.', '').' &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  Caja (S/.): '.number_format($total_caja, 2, '.', '').' &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                  Banco (S/.): '.number_format($total_banco, 2, '.', '').'</th>
                 </tr>';
                 
             echo $html;

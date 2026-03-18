@@ -19,6 +19,28 @@ class GarantiaremateagenciaController extends Controller
     }
     public function index(Request $request,$idtienda)
     {
+        // ACTUALIZAR e eliminar durante el dia
+        $credito_garantias = DB::table('credito_garantia')
+              ->join('credito','credito.id','credito_garantia.idcredito')
+              ->join('users as cliente','cliente.id','credito_garantia.idcliente')
+              ->where('credito.idliquidaciongarantia',1)
+              ->select(
+                'credito.*',
+              )
+              ->get();
+      
+        $fecha = Carbon::now();
+        foreach($credito_garantias as $value){
+            $ultimafecha = date_format(date_create($value->fechaliquidaciongarantia),"Y-m-d").' 23:59:59';
+            if($fecha>=$ultimafecha){
+                DB::table('credito')->whereId($value->id)->update([
+                    'fechaliquidaciongarantia' => null,
+                    'idliquidaciongarantia' => 0,
+                    'idliquidaciongarantiaresponsable' => 0,
+                ]);
+            }
+        }
+        // FIN ACTUALIZAR 
       
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
       
@@ -47,8 +69,11 @@ class GarantiaremateagenciaController extends Controller
 
         if($id == 'showcliente_asignar'){
           $where = [];
-          $where[] = ['credito.idtienda',$request->idagencia];
 
+          if($request->idagencia!='' && $request->idagencia!=0){
+              $where[] = ['credito.idtienda',$request->idagencia];
+          }
+          
           if($request->idasesor!='' && $request->idasesor!=0){
               $where[] = ['credito.idasesor',$request->idasesor];
           }
@@ -306,7 +331,13 @@ class GarantiaremateagenciaController extends Controller
         }
         elseif($id == 'showcliente_destino'){
           $where = [];
-          //$where[] = ['credito_garantia.idtienda',$request->idagencia];
+          if($request->idagencia!='' && $request->idagencia!=0){
+              $where[] = ['credito.idtienda',$request->idagencia];
+          }
+          
+          if($request->idasesor!='' && $request->idasesor!=0){
+              $where[] = ['credito.idasesor',$request->idasesor];
+          }
           
           $credito_garantias = DB::table('credito_garantia')
               ->join('credito','credito.id','credito_garantia.idcredito')
@@ -348,6 +379,26 @@ class GarantiaremateagenciaController extends Controller
             ]);
           
         }
+        elseif($id == 'show_asesor'){
+            $where = [];
+            if($request->idtienda!=0){
+                $where[] = ['users_permiso.idtienda', $request->idtienda];
+            }
+          
+            $usuarios = DB::table('users')
+                ->join('users_permiso','users_permiso.idusers','users.id')
+                ->join('permiso','permiso.id','users_permiso.idpermiso')
+                ->whereIn('users_permiso.idpermiso',[3,4,7])
+                ->where($where)
+                ->select('users.*','permiso.nombre as nombrepermiso')
+                ->get();
+          
+            $html = '<option></option><option value="0" selected>TODO</option>';
+            foreach($usuarios as $value){
+                $html .= '<option value="'.$value->id.'">'.$value->nombrecompleto.' ('.$value->nombrepermiso.')</option>';
+            }
+            return $html;
+        }
     }
 
     public function edit(Request $request, $idtienda, $id)
@@ -358,7 +409,7 @@ class GarantiaremateagenciaController extends Controller
             $usuarios = DB::table('users')
                   ->join('users_permiso','users_permiso.idusers','users.id')
                   ->join('permiso','permiso.id','users_permiso.idpermiso')
-                  ->where('users_permiso.idpermiso',1)
+                  ->where('users_permiso.idpermiso',$request->idpermiso)
                   ->where('users_permiso.idtienda',$idtienda)
                   ->select('users.*','permiso.nombre as nombrepermiso')
                   ->get();
@@ -371,7 +422,7 @@ class GarantiaremateagenciaController extends Controller
             $usuarios = DB::table('users')
                   ->join('users_permiso','users_permiso.idusers','users.id')
                   ->join('permiso','permiso.id','users_permiso.idpermiso')
-                  ->where('users_permiso.idpermiso',1)
+                  ->where('users_permiso.idpermiso',$request->idpermiso)
                   ->where('users_permiso.idtienda',$idtienda)
                   ->select('users.*','permiso.nombre as nombrepermiso')
                   ->get();

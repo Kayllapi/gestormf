@@ -9,7 +9,7 @@
         <div class="card">
           <div class="card-body p-2" id="form-credito-result">
              
-            <div class="modal-body">
+            <div class="modal-body pb-0">
               
                 <div class="row">
                     <div class="col-sm-12 col-md-9">
@@ -99,40 +99,38 @@
         </div>
       </div>
   </div>
-      <div class="col-sm-12">
+      <div class="col-sm-12 mt-1">
         <div class="card">
-          <div class="card-body" style="
-            overflow-y: scroll;
-            height: calc(100vh - 295px);
-            padding: 0;
-            margin-top: 5px;">
+          <div class="card-body">
+          <div style="overflow-y: scroll;height: calc(100vh - 305px);">
             <table class="table table-striped table-hover" id="table-lista-credito">
-              <thead class="table-dark" style="position: sticky;top: 0;"> 
+              <thead class="table-dark" style="position: sticky;top: 0;z-index:1;"> 
                 <tr>
-                  <td>N°</td>
-                  <td>CLIENTE</td>
-                  <td>AVAL</td>
-                  <td width="10px">DESEMBOLSO</td>
-                  <td>CUOTAS</td>
-                  <td>F. PAGO</td>
-                  <td>F. DESEMBOLSO</td>
-                  <td>CAJERO</td>
-                  <td>OPERACIÓN EN</td>
-                  <td>VALIDACIÓN</td>
-                  <td>MODA. CRÉDITO</td>
-                  <td>ASESOR</td>
-                  <td width="10px"></td>
+                  <th>N°</th>
+                  <th>CLIENTE</th>
+                  <th>AVAL</th>
+                  <th width="10px">DESEMBOLSO</th>
+                  <th>CUOTAS</th>
+                  <th>F. PAGO</th>
+                  <th>F. DESEMBOLSO</th>
+                  <th>CAJERO</th>
+                  <th>OPERACIÓN EN</th>
+                  <th>VALIDACIÓN</th>
+                  <th>MODA. CRÉDITO</th>
+                  <th>ASESOR</th>
+                  <th width="10px"></th>
                 </tr>
               </thead>
               <tbody>
               </tbody>
             </table>
           </div>
+          </div>
         </div>
       </div>
-      <div style="text-align: right;">
-        <button type="button" class="btn btn-info" onclick="exportar_pdf()" style="font-weight: bold;">
-          <i class="fa-solid fa-file-pdf" style="color:#000 !important;font-weight: bold;"></i> REPORTE</button>
+      <div class="text-end mt-1">
+        <button type="button" class="btn btn-info" onclick="exportar_pdf()">
+          <i class="fa-solid fa-file-pdf"></i> REPORTE</button>
       </div>
 </div>
 <script>

@@ -66,8 +66,8 @@ function genera_cronograma($montosolicitado,$numerocuota,$fechainicio,$frecuenci
         
         if($tipotasa==2){
             if($frecuencia==2){
-                $interes_diaria = pow(1+($tasa/100), $db_frecuencia->dias/30.416)-1;
-                $interes_comision = pow(1+($comision/100), $db_frecuencia->dias/30.416)-1;
+                $interes_comision = pow(1+($comision/100), $db_frecuencia->dias/30)-1;
+                $interes_diaria = pow(1+($tasa/100), $db_frecuencia->dias/30)-1;
             }else{
                 if($frecuencia==4){
                     $interes_comision = $comision/100;
@@ -92,6 +92,7 @@ function genera_cronograma($montosolicitado,$numerocuota,$fechainicio,$frecuenci
   
         //dd($interes_diaria);
         $saldo = $montosolicitado;
+        //$saldo_comision1 = $montosolicitado;
         $suma_amortizacion = 0;
         $suma_interes = 0;
         $suma_cuota = 0;
@@ -135,22 +136,17 @@ function genera_cronograma($montosolicitado,$numerocuota,$fechainicio,$frecuenci
             }elseif($tipotasa==2){
               
                 $cuota_interes = number_format(round($saldo * $interes_diaria, 1), 2, '.', '');
-              
                 if($i == $numerocuota){
                     $cuota_amortizacion = number_format($total_amortizacion-$suma_amortizacion, 2, '.', '');
-                    //$cuota_interes = number_format($total_interes-$suma_interes, 2, '.', '');
                     $cuota_comisioncargo = number_format($cuota_comision1-$cuota_cargo1, 2, '.', '');
-                    //$cuotafinal = number_format($total_cuotafinal-$suma_cuotafinal, 2, '.', '');
-                  
-                    //$cuota_comision1 = number_format($total_comision1-$suma_comision1, 2, '.', '');
                     $cuota_cargo1 = number_format($total_cargo1-$suma_cargo1, 2, '.', '');
                 }else{
                     $cuota_amortizacion = number_format(round($cuota-$cuota_interes, 1), 2, '.', '');
                   
                 }
-                $cuota_comision1 = number_format(round($saldo*$interes_comision, 1), 2, '.', '');
+                $cuota_comision1 = number_format(round($saldo * $interes_comision, 1), 2, '.', '');
                 $cuotafinal = number_format($cuota+$cuota_comision1+$cuota_cargo1, 2, '.', '');
-                //$cuota_amortizacion = number_format(round($cuota-$cuota_interes, 1), 2, '.', '');
+              
             }
             
               

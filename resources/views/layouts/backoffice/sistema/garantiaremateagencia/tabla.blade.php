@@ -29,7 +29,7 @@
                               </div>
                             </div>
                           <div class="col-sm-12 col-md-6" style="text-align: right;">
-                              <button type="button" class="btn btn-success" onclick="actualizar_tabla_origen()"><i class="fa-solid fa-search"></i> FILTRAR</button>
+                              <button type="button" class="btn btn-success" onclick="actualizar_tabla_origen(),actualizar_tabla_destino()"><i class="fa-solid fa-search"></i> FILTRAR</button>
                           </div>
                         </div>
                         <div class="row mb-1">
@@ -52,19 +52,6 @@
                                 <div class="col-sm-9">
                                     <select class="form-control" id="idasesor">
                                       <option></option>
-                                      <option value="0" selected>TODO</option>
-                                      <?php
-                                      $usuarios = DB::table('users')
-                                          ->join('users_permiso','users_permiso.idusers','users.id')
-                                          ->join('permiso','permiso.id','users_permiso.idpermiso')
-                                          ->whereIn('users_permiso.idpermiso',[3,4,7])
-                                          ->where('users_permiso.idtienda',$tienda->id)
-                                          ->select('users.*','permiso.nombre as nombrepermiso')
-                                          ->get();
-                                      ?>
-                                      @foreach($usuarios as $value)
-                                      <option value="{{$value->id}}">{{$value->nombrecompleto}} ({{$value->nombrepermiso}})</option>
-                                      @endforeach
                                     </select>
                                 </div>
                               </div>
@@ -78,7 +65,7 @@
                     
                     @include('app.nuevosistema.tabla',[
                         'tabla' => '#tabla-origendes',
-                        'route' => url('backoffice/'.$tienda->id.'/garantiaremateagencia/showcliente_asignar?idagencia='.$tienda->id),
+                        'route' => url('backoffice/'.$tienda->id.'/garantiaremateagencia/showcliente_asignar?idagencia='.$tienda->id.'&idformacredito=CP&idasesor='.Auth::user()->id),
                         'check_id' => 'check_origen',
                         'scrollY' => 'calc(-321px  + 100vh)',
                         'dom' => 'rt',
@@ -146,7 +133,7 @@
                     <div style="text-align: center;background-color: #a7a7a7;padding: 2px;">LISTA DE REMATES</div>
                     @include('app.nuevosistema.tabla',[
                         'tabla' => '#tabla-destinodes',
-                        'route' => url('backoffice/'.$tienda->id.'/garantiaremateagencia/showcliente_destino'),
+                        'route' => url('backoffice/'.$tienda->id.'/garantiaremateagencia/showcliente_destino?idagencia='.$tienda->id.'&idasesor='.Auth::user()->id),
                         'check_id' => 'check_destino',
                         'scrollY' => 'calc(-321px  + 100vh)',
                         'dom' => 'rt',
@@ -179,7 +166,7 @@
                     ])
                 <input type="hidden" id="check_destino">
                   <button type="button" class="btn btn-warning1 mt-1" onclick="liquidacion_garantia()">
-                     LIQUIDACIÓN DE GARANTÍAS </button>
+                     LIQUIDACIÓN DE G. <span style="font-size: 11px;">(Selec. sin check)</span></button>
                   <button type="button" class="btn btn-info mt-1" onclick="reporte_remates()">
                      <i class="fa-solid fa-file-pdf"></i> REMATES </button>
                 </div>
@@ -217,7 +204,28 @@
     $(`#tabla-destinodes`).on("click", "tr", function(e) {
         $('#tabla-origendes > tbody > tr').removeClass('selected');
     });
-
+  
+  cliente_tienda({{$tienda->id}});
+  
+  $("#idagencia").on("change", function(e) {
+      var idtienda = $('#idagencia').val();
+      cliente_tienda(idtienda)
+  });
+  
+  function cliente_tienda(idtienda){
+      $.ajax({
+          url:"{{url('backoffice/'.$tienda->id.'/garantiaremateagencia/show_asesor')}}",
+          type:'GET',
+          data: {
+              idtienda : idtienda
+          },
+          success: function (respuesta){
+              $('#idasesor').html(respuesta);  
+              sistema_select2({ input:'#idasesor',val:'{{Auth::user()->id}}' });
+          }
+      })
+  }
+  
   $('#tabla-origendes').on('change', 'input[type="checkbox"]', function () {
       if ($(this).is(':checked')) {
           // Desmarcar todos los checks de la tabla DESTINO
@@ -254,7 +262,7 @@
         modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });  
           return false;
       }
-      modal({ route:"{{url('backoffice/'.$tienda->id.'/garantiaremateagencia/0/edit?view=autorizar')}}",  size: 'modal-sm' }); 
+      modal({ route:"{{url('backoffice/'.$tienda->id.'/garantiaremateagencia/0/edit?view=autorizar')}}&idpermiso=2",  size: 'modal-sm' }); 
   }
   
   function quitar_garantia(){
@@ -264,10 +272,8 @@
         modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });  
           return false;
       }
-      modal({ route:"{{url('backoffice/'.$tienda->id.'/garantiaremateagencia/0/edit?view=quitar')}}",  size: 'modal-sm' }); 
+      modal({ route:"{{url('backoffice/'.$tienda->id.'/garantiaremateagencia/0/edit?view=quitar')}}&idpermiso=2",  size: 'modal-sm' }); 
   }
-  
-  actualizar_tabla_origen();
   
   function actualizar_tabla_origen(){
         var root = '{{url('backoffice/'.$tienda->id.'/garantiaremateagencia/showcliente_asignar')}}?idagencia='+$('#idagencia').val()+'&idformacredito='+$('#idformacredito').val()+'&idasesor='+$('#idasesor').val();
@@ -275,7 +281,7 @@
   }
   
   function actualizar_tabla_destino(){
-        var root = '{{url('backoffice/'.$tienda->id.'/garantiaremateagencia/showcliente_destino')}}?idagencia='+$('#idagencia').val();
+        var root = '{{url('backoffice/'.$tienda->id.'/garantiaremateagencia/showcliente_destino')}}?idagencia='+$('#idagencia').val()+'&idasesor='+$('#idasesor').val();
         $('#tabla-destinodes').DataTable().ajax.url(root).load();
   }
 

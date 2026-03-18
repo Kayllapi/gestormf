@@ -120,7 +120,7 @@
                 </select>
             </div>
             <div class="col-sm-5">
-                <label class="col-form-label" style="text-align: right;">N° de Ficha o Comprobante *</label>
+                <label class="col-form-label" style="text-align: right;">N° de Ficha (Cuenta) o Comprobante *</label>
                 <input type="text" class="form-control" id="numeroficha">
             </div>
             <div class="col-sm-4 mt-2">

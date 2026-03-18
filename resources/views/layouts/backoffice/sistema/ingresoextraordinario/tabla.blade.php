@@ -18,10 +18,10 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-12">
+      <div class="col-sm-12 mt-1">
         <div class="card">
           <div class="card-body p-2">
-            <div class="modal-body">
+            <div class="modal-body pb-0">
               <div class="row">
                 <label class="col-sm-3 col-form-label" style="text-align: right;">Fecha inicio</label>
                 <div class="col-sm-2">
@@ -41,41 +41,38 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-12">
+      <div class="col-sm-12 mt-1">
         <div class="card">
-          <div class="card-body" style="
-            overflow-y: scroll;
-            height: calc(100vh - 355px);
-            padding: 0;
-            margin-top: 5px;
-            overflow-x: scroll;">
-            <table class="table table-striped table-hover table-bordered" id="table-lista-ingresoextraordinario">
-              <thead class="table-dark" style="position: sticky;top: 0;">
+          <div class="card-body">
+            <div style="overflow-y: scroll;height: calc(100vh - 368px);">
+            <table class="table table-striped table-hover" id="table-lista-ingresoextraordinario">
+              <thead class="table-dark" style="position: sticky;top: 0;z-index:1;">
                 <tr>
-                  <td width="10px">N°</td>
-                  <td>Operación</td>
-                  <td>Monto (S/.)</td>
-                  <td>Fecha de gasto</td>
-                  <td>Descripción</td>
-                  <td>Sustento</td>
-                  <td>F. Pago</td>
-                  <td>Banco</td>
-                  <td>Validación</td>
-                  <td>Usuario</td>
+                  <th width="10px">N°</th>
+                  <th>Operación</th>
+                  <th>Monto (S/.)</th>
+                  <th>Fecha de gasto</th>
+                  <th>Descripción</th>
+                  <th>Sustento</th>
+                  <th>F. Pago</th>
+                  <th>Banco</th>
+                  <th>Validación</th>
+                  <th>Usuario</th>
                 </tr>
               </thead>
               <tbody>
               
               </tbody>
+          </div>
             </table>
           </div>
         </div>
       </div>
   </div>
-  <div style="text-align: right;">
-    <button type="button" class="btn btn-info" onclick="exportar_pdf()" style="font-weight: bold;">
-      <i class="fa-solid fa-file-pdf" style="color:#000 !important;font-weight: bold;"></i> REPORTE PDF</button>
-  </div>
+      <div class="text-end mt-1">
+        <button type="button" class="btn btn-info" onclick="exportar_pdf()">
+          <i class="fa-solid fa-file-pdf"></i> REPORTE</button>
+      </div>
 </div>
 <script>
   lista_ingresoextraordinario();

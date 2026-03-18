@@ -17,6 +17,28 @@ class FichageneradaController extends Controller
     }
     public function index(Request $request,$idtienda)
     {
+        // ACTUALIZAR e eliminar durante el dia
+        $credito_garantias = DB::table('credito_garantia')
+              ->join('credito','credito.id','credito_garantia.idcredito')
+              ->join('users as cliente','cliente.id','credito_garantia.idcliente')
+              ->where('credito.idliquidaciongarantia',1)
+              ->select(
+                'credito.*',
+              )
+              ->get();
+      
+        $fecha = Carbon::now();
+        foreach($credito_garantias as $value){
+            $ultimafecha = date_format(date_create($value->fechaliquidaciongarantia),"Y-m-d").' 23:59:59';
+            if($fecha>=$ultimafecha){
+                DB::table('credito')->whereId($value->id)->update([
+                    'fechaliquidaciongarantia' => null,
+                    'idliquidaciongarantia' => 0,
+                    'idliquidaciongarantiaresponsable' => 0,
+                ]);
+            }
+        }
+        // FIN ACTUALIZAR 
       
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
       
@@ -58,6 +80,7 @@ class FichageneradaController extends Controller
           $credito_garantias = DB::table('credito_garantia')
               ->join('credito','credito.id','credito_garantia.idcredito')
               ->join('users as cliente','cliente.id','credito_garantia.idcliente')
+              ->whereIn('credito.idliquidaciongarantia',[1,2])
               ->where($where)
               ->select(
                 'credito_garantia.*',
@@ -130,6 +153,7 @@ class FichageneradaController extends Controller
               ->select(
                 'credito.*',
               )
+              ->orderBy('credito.id','desc')
               ->get();
           
             $agencia = DB::table('tienda')->whereId($request->idagencia)->first();
@@ -153,10 +177,20 @@ class FichageneradaController extends Controller
                 ->where('users_permiso.idtienda',$idtienda)
                 ->select('users.*','permiso.id as idpermiso','permiso.nombre as nombrepermiso')
                 ->get();
+            
+            $credito_garantia = DB::table('credito_garantia')
+                    ->whereId($id)
+                    ->first();
+          
+            $credito = DB::table('credito')
+                    ->whereId($credito_garantia->idcredito)
+                    ->first();
+          
             return view(sistema_view().'/fichagenerada/eliminar',[
                 'tienda' => $tienda,
                 'usuarios' => $usuarios,
                 'idcredito_garantia' => $id,
+                'credito' => $credito,
             ]);
         }
     }

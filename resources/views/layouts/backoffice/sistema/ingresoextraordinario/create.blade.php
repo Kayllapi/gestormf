@@ -10,7 +10,7 @@
         lista_ingresoextraordinario();
         load_nuevo_ingresoextraordinario();
     },this)"> 
-    <div class="modal-body">
+    <div class="modal-body pb-0">
        <div class="row justify-content-center">
           <div class="col-sm-12 col-md-6">
               <div class="row">

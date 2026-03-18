@@ -9,7 +9,7 @@
         <div class="card">
           <div class="card-body p-2" id="form-credito-result">
              
-            <div class="modal-body">
+            <div class="modal-body pb-0">
               
                 <div class="row">
                     <div class="col-sm-12 col-md-9">
@@ -88,17 +88,18 @@
                         </div>
                                 
                     </div>
-                            
                       <div class="col-sm-12 col-md-3" style="text-align: right;">
                           <div>
-                          <button type="button" class="btn btn-secondary mb-1" onclick="ticketpago()" style="font-weight: bold;width: 190px;">
+                          <button type="button" class="btn btn-primary mb-1" onclick="ticketpago()">
                             <i class="fa-solid fa-check" style="font-weight: bold;"></i> VOUCHER DE PAGO</button>
-                          <button type="button" class="btn btn-warning mb-1" onclick="ticketgarantia()" style="font-weight: bold;width: 190px;">
+                          </div>
+                          <div>
+                          <button type="button" class="btn btn-warning mb-1" onclick="ticketgarantia()">
                             <i class="fa-solid fa-check" style="font-weight: bold;"></i> V. ENTREGA DE GARANTÍA</button>
                           </div>
                           <div>
-                          <button type="button" class="btn btn-danger" onclick="extornar()" style="font-weight: bold;width: 190px;">
-                            <i class="fa-solid fa-ban" style="font-weight: bold;"></i> EXTORNAR PAGO</button>
+                          <button type="button" class="btn btn-danger" onclick="extornar()">
+                            <i class="fa-solid fa-trash" style="font-weight: bold;"></i> EXTORNAR PAGO</button>
                           </div>
                       </div>
                 </div>
@@ -108,19 +109,19 @@
         </div>
       </div>
   </div>
-      <div class="col-sm-12">
+      <div class="col-sm-12 mt-1">
         <div class="card">
-          <div class="card-body" id="tabla-pagoprestamo" style="
-            overflow-y: scroll;
-            height: calc(100vh - 295px);
-            padding-top: 0px;
-            padding-bottom: 0px;">
+          <div class="card-body">
+            <div style="overflow-y: scroll;height: calc(100vh - 305px);" id="tabla-pagoprestamo">
+            </div>
           </div>
+          <!--div class="card-body" id="tabla-pagoprestamo1">
+          </div-->
         </div>
       </div>
-      <div style="text-align: right;">
-        <button type="button" class="btn btn-info" onclick="exportar_pdf()" style="font-weight: bold;">
-          <i class="fa-solid fa-file-pdf" style="color:#000 !important;font-weight: bold;"></i> REPORTE</button>
+      <div class="text-end mt-1">
+        <button type="button" class="btn btn-info" onclick="exportar_pdf()">
+          <i class="fa-solid fa-file-pdf"></i> REPORTE</button>
       </div>
 </div>
 <style>
@@ -150,6 +151,7 @@
       },
       success: function (res){
         $('#tabla-pagoprestamo').html(res.html);
+        $('#tabla-pagoprestamo1').html(res.html1);
         $("tr#show_data_select").on("click", function() {
             $('tr.selected').removeClass('selected');
             $(this).addClass('selected');
@@ -161,7 +163,6 @@
     function validar(idcredito_cobranzacuota){
         modal({ route:"{{ url('backoffice/'.$tienda->id) }}/pagoprestamo/"+idcredito_cobranzacuota+"/edit?view=validar",  size: 'modal-sm' });
     }
- 
  
    function exportar_pdf(){
       let url = "{{ url('backoffice/'.$tienda->id) }}/pagoprestamo/0/edit?view=exportar&fecha_inicio="+$('#fecha_inicio').val()+
@@ -199,7 +200,7 @@
         alert('Debe de seleccionar un crédito.');   
         return false;
       }
-      let url = "{{ url('backoffice/'.$tienda->id) }}/pagoprestamo/"+idcredito_cobranzacuota+"/edit?view=extornar&tipo=admin";
+      let url = "{{ url('backoffice/'.$tienda->id) }}/pagoprestamo/"+idcredito_cobranzacuota+"/edit?view=extornar";
       modal({ route: url,  size: 'modal-sm' })
    }
 </script>  

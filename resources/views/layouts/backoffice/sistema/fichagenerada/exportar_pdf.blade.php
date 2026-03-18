@@ -116,8 +116,9 @@
   <main>
     <div class="container">
       <h4 align="center">HISTORIAL DE FICHA DE LIQUIDACIONES</h4>
-           <div align="center">Periodo: {{$fecha_inicio}} Al: {{$fecha_fin}}</div> <br>
+           <div align="center">Periodo: {{$fecha_inicio}} Al: {{$fecha_fin}}</div>
         @foreach($creditos as $valuecredito)
+          <br>
            <?php
             $liquidaciongarantiaresponsable = DB::table('users')->whereId($valuecredito->idliquidaciongarantiaresponsable)->first();
             ?>
@@ -152,13 +153,13 @@
           $credito_garantias = DB::table('credito_garantia')
               ->join('credito','credito.id','credito_garantia.idcredito')
               ->join('users as cliente','cliente.id','credito_garantia.idcliente')
+              ->where('credito.idliquidaciongarantia',1)
               ->where('credito_garantia.idcredito',$valuecredito->id)
               ->select(
                 'credito_garantia.*',
                 'cliente.nombrecompleto as clientenombrecompleto',
                 'cliente.identificacion as dni'
               )
-              ->orderBy('credito_garantia.fecharegistro_listaremate','asc')
               ->get();
                 
           $porcentaje_descuento_liquidacion = configuracion($tienda->id,'porcentaje_descuento_liquidacion')['valor'];
@@ -208,10 +209,10 @@
                     </tr>';
           }
             echo $html;
-              ?>
-      @endforeach          
+              ?>      
               </tbody>
-            </table>  
+            </table>
+      @endforeach      
                 
     </div>
   </main>

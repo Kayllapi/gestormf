@@ -11,3 +11,11 @@
 [03-Feb-2026 18:51:38 America/Bogota] PHP Fatal error:  Unparenthesized `a ? b : c ? d : e` is not supported. Use either `(a ? b : c) ? d : e` or `a ? b : (c ? d : e)` in /home/cqqqwjzl/sistema.transportessebas.com/storage/framework/views/c2149f5e51595608b01b65cd2a285d23.php on line 175
 [03-Feb-2026 18:51:44 America/Bogota] PHP Fatal error:  Unparenthesized `a ? b : c ? d : e` is not supported. Use either `(a ? b : c) ? d : e` or `a ? b : (c ? d : e)` in /home/cqqqwjzl/sistema.transportessebas.com/storage/framework/views/c2149f5e51595608b01b65cd2a285d23.php on line 175
 [20-Feb-2026 09:39:05 America/Bogota] PHP Fatal error:  Cannot declare class App\Http\Controllers\Layouts\Backoffice\Sistema\CarteradeclienteController, because the name is already in use in /home/cqqqwjzl/sistema.transportessebas.com/app/Http/Controllers/Layouts/Backoffice/Sistema/CarteradeclienteasesorController.php on line 0
+[13-Mar-2026 14:21:52 UTC] PHP Warning:  require(/home/cqqqwjzl/sistema.transportessebas.com/vendor/composer/../../app/Helpers/FunctionsPrestamo.php): Failed to open stream: No such file or directory in /home/cqqqwjzl/sistema.transportessebas.com/vendor/composer/autoload_real.php on line 39
+[13-Mar-2026 14:21:52 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/cqqqwjzl/sistema.transportessebas.com/vendor/composer/../../app/Helpers/FunctionsPrestamo.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home/cqqqwjzl/sistema.transportessebas.com/vendor/composer/autoload_real.php:39
+Stack trace:
+#0 /home/cqqqwjzl/sistema.transportessebas.com/vendor/composer/autoload_real.php(43): {closure}('d4834f8f0339425...', '/home/cqqqwjzl/...')
+#1 /home/cqqqwjzl/sistema.transportessebas.com/vendor/autoload.php(25): ComposerAutoloaderInitd48fc5d3d66808078877601631d5403a::getLoader()
+#2 /home/cqqqwjzl/sistema.transportessebas.com/index.php(34): require('/home/cqqqwjzl/...')
+#3 {main}
+  thrown in /home/cqqqwjzl/sistema.transportessebas.com/vendor/composer/autoload_real.php on line 39

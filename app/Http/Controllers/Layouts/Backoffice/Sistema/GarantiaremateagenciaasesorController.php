@@ -19,6 +19,28 @@ class GarantiaremateagenciaasesorController extends Controller
     }
     public function index(Request $request,$idtienda)
     {
+        // ACTUALIZAR e eliminar durante el dia
+        $credito_garantias = DB::table('credito_garantia')
+              ->join('credito','credito.id','credito_garantia.idcredito')
+              ->join('users as cliente','cliente.id','credito_garantia.idcliente')
+              ->where('credito.idliquidaciongarantia',1)
+              ->select(
+                'credito.*',
+              )
+              ->get();
+      
+        $fecha = Carbon::now();
+        foreach($credito_garantias as $value){
+            $ultimafecha = date_format(date_create($value->fechaliquidaciongarantia),"Y-m-d").' 23:59:59';
+            if($fecha>=$ultimafecha){
+                DB::table('credito')->whereId($value->id)->update([
+                    'fechaliquidaciongarantia' => null,
+                    'idliquidaciongarantia' => 0,
+                    'idliquidaciongarantiaresponsable' => 0,
+                ]);
+            }
+        }
+        // FIN ACTUALIZAR 
       
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
       

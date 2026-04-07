@@ -57,7 +57,7 @@
                 <div class="row">
                   <label class="col-sm-5 col-form-label" style="text-align: right;">TEM (%):</label>
                   <div class="col-sm-4">
-                    <input type="text" step="any" class="form-control" {{ $view_detalle=='false' ? 'disabled' : '' }} id="tasa_tem" value="{{ $credito->tasa_tem }}"  onkeyup="cal_tasa_tem()">
+                    <input type="text" step="any" class="form-control" {{ $view_detalle=='false' ? 'disabled' : '' }} id="tasa_tem" value="{{ $credito->tasa_tem }}">
                   </div>
                   <div class="col-sm-3">
                     <input type="number" step="any" class="form-control" {{ $view_detalle=='false' ? 'disabled' : '' }} id="tasa_tem_minima" value="0" disabled>
@@ -96,6 +96,12 @@
                   <label class="col-sm-5 col-form-label" style="text-align: right;">C. Ss./Otros (% mes):</label>
                   <div class="col-sm-7">
                     <input type="number" step="any" class="form-control" id="comision" value="0.00" disabled>
+                  </div>
+                </div>
+                <div class="row d-none">
+                  <label class="col-sm-5 col-form-label" style="text-align: right;">Cargo Mes S/.:</label>
+                  <div class="col-sm-7">
+                    <input type="number" step="any" class="form-control" id="cargomes" value="0.00">
                   </div>
                 </div>
                 @if($credito->idforma_credito==1 && $usuario->custodiagarantia_id==1)
@@ -203,12 +209,12 @@
         </div>
       </div>
       <script>
-        function cal_tasa_tem(){
+        /*function cal_tasa_tem(){
             var tasa_tem = parseFloat($('#tasa_tem').val());
             var comision = parseFloat($('#comision').val())
             var tasa_tcem = tasa_tem+comision;
             $('#tasa_tcem').val(tasa_tcem.toFixed(2))
-        }
+        }*/
         function cronograma(){
           
           let monto       = parseFloat($('#monto_solicitado').val());
@@ -223,6 +229,7 @@
           }
           
           let cargo       = $('#cargo').val();
+          let cargomes  = $('#cargomes').val();
           
           let tasa        = $('#tasa_tem').val();
           let tipotasa    = "{{$credito->modalidad_calculo}}" == 'Interes Simple' ? 1 : 2;
@@ -274,6 +281,7 @@
                   tipotasa: tipotasa,
                   dia_gracia: dia_gracia,
                   cargo: cargo,
+                  cargomes: cargomes,
                   idcredito: '{{ $credito->id }}'
               },
               success: function (res) {
@@ -400,6 +408,7 @@
     //$('#tasa_tem').val('');
     $('#tasa_tem_minima').val('');
     $('#tasa_tip').val('');
+    $('#tasa_tcem').val('0.00');
     $('#comision').val('');
     
     let monto       = $('#monto_solicitado').val();
@@ -413,25 +422,32 @@
     }
 
     @if($credito->idforma_credito==1 && $usuario->custodiagarantia_id==1)
-    var comision_gestion_garantia_cargo = parseFloat({{ configuracion($tienda->id,'comision_gestion_garantia_cargo')['valor'] }});
-    var monto_cobertura_garantia =  parseFloat($('#monto_cobertura_garantia').val());
-    var cargocom = 0;
-    if(frecuencia==1){
-        cargocom = ((comision_gestion_garantia_cargo/26)*numerocuota)/100;
-    }
-    else if(frecuencia==2){
-        cargocom = ((comision_gestion_garantia_cargo/4)*numerocuota)/100;
-    }
-    else if(frecuencia==3){
-        cargocom = ((comision_gestion_garantia_cargo/2)*numerocuota)/100;
-    }
-    else if(frecuencia==4){
-        cargocom = ((comision_gestion_garantia_cargo/1)*numerocuota)/100;
-    }
-    var cargo = cargocom*monto_cobertura_garantia;
-    $('#cargo').val(cargo.toFixed(2));
+        var comision_gestion_garantia_cargo = parseFloat({{ configuracion($tienda->id,'comision_gestion_garantia_cargo')['valor'] }});
+        var monto_cobertura_garantia =  parseFloat($('#monto_cobertura_garantia').val());
+        var cargocom = 0;
+        var cargocom_mes = 0;
+        if(frecuencia==1){
+            cargocom = ((comision_gestion_garantia_cargo/26)*numerocuota)/100;
+            cargocom_mes = ((comision_gestion_garantia_cargo/26)*26)/100;
+        }
+        else if(frecuencia==2){
+            cargocom = ((comision_gestion_garantia_cargo/4)*numerocuota)/100;
+            cargocom_mes = ((comision_gestion_garantia_cargo/4)*4)/100;
+        }
+        else if(frecuencia==3){
+            cargocom = ((comision_gestion_garantia_cargo/2)*numerocuota)/100;
+            cargocom_mes = ((comision_gestion_garantia_cargo/2)*2)/100;
+        }
+        else if(frecuencia==4){
+            cargocom = ((comision_gestion_garantia_cargo/1)*numerocuota)/100;
+            cargocom_mes = ((comision_gestion_garantia_cargo/1)*1)/100;
+        }
+        var cargo = cargocom*monto_cobertura_garantia;
+        var cargomes = cargocom_mes*monto_cobertura_garantia;
+        $('#cargo').val(cargo.toFixed(2));
+        $('#cargomes').val(cargomes.toFixed(2));
     @else
-    $('#cargo').val('0.00');
+        $('#cargomes').val('0.00');
     @endif
 
     $.ajax({

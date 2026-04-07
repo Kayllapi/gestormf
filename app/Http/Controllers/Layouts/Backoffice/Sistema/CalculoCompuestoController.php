@@ -207,11 +207,32 @@ class CalculoCompuestoController extends Controller
                         <th>'.$cronograma['total_cargo'].'</th>
                         <th>'.$cronograma['total_cuotafinal'].'</th>
                       </tr>';
+          
+          $cargomes = $request->cargomes/$request->input('monto');
+          $tasa_tcem = number_format($tasa_tem+$comision_cargo+($cargomes*100),2,'.','');
+          if($request->input('tipotasa')==2){
+              $resultado_tir = tir($cronograma['data_tir']);
+              //dd($resultado_tir);
+              $TCES = round($resultado_tir * 100, 2);
+              if($request->input('frecuencia')==1){
+                  $tasa_tcem = round((pow(1 + $resultado_tir, 30) - 1)*100, 2);
+              }
+              elseif($request->input('frecuencia')==2){
+                  $tasa_tcem = round((pow(1 + $resultado_tir, 30/7) - 1)*100, 2);
+              }
+              elseif($request->input('frecuencia')==3){
+                  $tasa_tcem =  round((pow(1 + $resultado_tir, 2) - 1)*100, 2);
+              }
+              elseif($request->input('frecuencia')==4){
+                  $tasa_tcem = round($resultado_tir*100, 2);
+              }
+          }
           return array(
             'cronograma' => $html,
             'tasa_tem' => $tasa_tem,
             'tasa_tem_minima' => $tasa_tem_minima,
             'tasa_tip' => $tasa_tip,
+            'tasa_tcem' => $tasa_tcem,
             'cargootros' => $comision_cargo,
             'interes_total' => $cronograma['total_interes'],
             'total_cargo' => $cronograma['total_cargo'],

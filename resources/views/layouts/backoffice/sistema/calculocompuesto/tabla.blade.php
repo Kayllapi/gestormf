@@ -62,6 +62,12 @@
                     </div>
                   </div>  
                   </div>
+                  <div class="row">
+                    <label class="col-sm-5 col-form-label" style="text-align: right;">TCEM (%):</label>
+                    <div class="col-sm-7">
+                      <input type="number" step="any" class="form-control" id="tasa_tcem" value="0.00" disabled>
+                    </div>
+                  </div> 
                 </div>
                 <div class="col-md-6">
                   <div class="row">
@@ -71,13 +77,13 @@
                     </div>
                   </div>
                   <div class="row">
-                    <label class="col-sm-4 col-form-label" style="text-align: right;">Fecha Desembolso:</label>
+                    <label class="col-sm-4 col-form-label" style="text-align: right;">Fecha de Cálculo:</label>
                     <div class="col-sm-8">
                       <input type="date" class="form-control" id="fecha_desembolso" value="{{ date('Y-m-d') }}" disabled>
                     </div>
                   </div>
                   <div class="row">
-                    <label class="col-sm-4 col-form-label" style="text-align: right;">C. Ss./Otros (%):</label>
+                    <label class="col-sm-4 col-form-label" style="text-align: right;">C. Ss./Otros (% mes):</label>
                     <div class="col-sm-8">
                       <input type="number" step="any" class="form-control" id="comision" value="" disabled>
                     </div>
@@ -86,7 +92,13 @@
                     </div>
                   </div>
                   <div class="row">
-                    <label class="col-sm-4 col-form-label" style="text-align: right;">Cargo:</label>
+                    <label class="col-sm-5 col-form-label" style="text-align: right;">Cargo Mes S/.:</label>
+                    <div class="col-sm-7">
+                      <input type="number" step="any" class="form-control" id="cargomes" value="0.00">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <label class="col-sm-4 col-form-label" style="text-align: right;">Cargo S/.:</label>
                     <div class="col-sm-8">
                       <input type="number" step="any" class="form-control" id="cargo" value="0.00" disabled>
                     </div>
@@ -234,6 +246,7 @@
     }
 
     let cargo       = $('#cargo').val();
+    let cargomes  = $('#cargomes').val();
 
     let tasa        = $('#tasa_tem').val();
     let tipotasa    = 2;
@@ -272,6 +285,7 @@
             tipotasa: tipotasa,
             dia_gracia: dia_gracia,
             cargo: cargo,
+            cargomes: cargomes,
             producto: idproducto
 
         },
@@ -281,6 +295,7 @@
                 //$('#tasa_tem_minima').val('0.00');
                 //$('#tasa_tem').val('0.00');
                 $('#tasa_tip').val('0.00');
+                $('#tasa_tcem').val('0.00');
                 $('#comision').val('0.00');
                 alert(res.mensaje);
             }else{
@@ -293,6 +308,7 @@
                 $('#tasa_tem_minima').val(res.tasa_tem_minima);
                 $('#tasa_tem').val(res.tasa_tem);
                 $('#tasa_tip').val(res.tasa_tip);
+                $('#tasa_tcem').val(res.tasa_tcem);
                 $('#comision').val(res.cargootros);
             }
         }
@@ -315,6 +331,11 @@
     $('#tasa_tip').val(tip.toFixed(2))
   }
   function showtasa(){
+    $('#tasa_tem_minima').val('');
+    $('#tasa_tip').val('');
+    $('#tasa_tcem').val('0.00');
+    $('#comision').val('');
+    
     let monto       = parseFloat($('#monto_solicitado').val());
     let numerocuota = parseFloat($('#cuotas').val());
     let frecuencia  = $('#idforma_pago_credito').val();
@@ -322,20 +343,27 @@
 
     var comision_gestion_garantia_cargo = parseFloat({{ configuracion($tienda->id,'comision_gestion_garantia_cargo')['valor'] }});
     var cargocom = 0;
+    var cargocom_mes = 0;
     if(frecuencia==1){
         cargocom = ((comision_gestion_garantia_cargo/26)*numerocuota)/100;
+        cargocom_mes = ((comision_gestion_garantia_cargo/26)*26)/100;
     }
     else if(frecuencia==2){
         cargocom = ((comision_gestion_garantia_cargo/4)*numerocuota)/100;
+        cargocom_mes = ((comision_gestion_garantia_cargo/4)*4)/100;
     }
     else if(frecuencia==3){
         cargocom = ((comision_gestion_garantia_cargo/2)*numerocuota)/100;
+        cargocom_mes = ((comision_gestion_garantia_cargo/2)*2)/100;
     }
     else if(frecuencia==4){
         cargocom = ((comision_gestion_garantia_cargo/1)*numerocuota)/100;
+        cargocom_mes = ((comision_gestion_garantia_cargo/1)*1)/100;
     }
     var cargo = cargocom*monto;
+    var cargomes = cargocom_mes*monto;
     $('#cargo').val(cargo.toFixed(2));
+    $('#cargomes').val(cargomes.toFixed(2));
 
     $.ajax({
       url:"{{url('backoffice/0/calculocompuesto/showtasa')}}",

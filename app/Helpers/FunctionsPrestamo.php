@@ -4,7 +4,7 @@ use Carbon\Carbon;
 ############# NUEVO SISTEMA DE CREDITOS
 #######################################
 function genera_cronograma($montosolicitado,$numerocuota,$fechainicio,$frecuencia,$tasa,$tipotasa,$dia_gracia,$comision,$cargo){
- 
+
         //dia de gracia
         $fechacero = $fechainicio;
         $fechainicio = date_create($fechainicio);
@@ -19,6 +19,9 @@ function genera_cronograma($montosolicitado,$numerocuota,$fechainicio,$frecuenci
 
         $feriados = DB::table('feriados')->get();
         $db_frecuencia = DB::table('forma_pago_credito')->whereId($frecuencia)->first();
+  
+        $data_tir = [];
+        $data_tir[] = -$montosolicitado;
 
         $cuota_amortizacion = 0;
         $cuota_interes = 0;
@@ -50,7 +53,7 @@ function genera_cronograma($montosolicitado,$numerocuota,$fechainicio,$frecuenci
   
         $total_comision = number_format(round((($montosolicitado*$tasa_tip_comision)/100), 1), 2, '.', '');
   
-        $total_cargo = number_format($cargo, 2, '.', '');
+        $total_cargo = number_format(round($cargo,1), 2, '.', '');
         
         $cuota_comisioncargo = number_format($cuota_comision+$cuota_cargo, 2, '.', '');
         $total_comisioncargo = number_format($total_comision+$total_cargo, 2, '.', '');
@@ -77,11 +80,27 @@ function genera_cronograma($montosolicitado,$numerocuota,$fechainicio,$frecuenci
                     $interes_diaria = pow(1+($tasa/100), $db_frecuencia->dias/30)-1;
                 }
             }
+          
+            //-----------
+          
+            $interes_diaria = number_format($interes_diaria, 6, '.', '');
+            $interes_comision = number_format($interes_comision, 6, '.', '');
+          
+            $tasacombinada = ((1 + $interes_diaria) * (1 + $interes_comision) - 1) * 100;
+            $tasacombinada = number_format($tasacombinada, 4, '.', '');
+            $cuota = number_format($montosolicitado * $tasacombinada/100 * pow(1 + $tasacombinada/100, $numerocuota) / (pow(1 + $tasacombinada/100, $numerocuota) - 1), 2, '.', '');
+            //dd($cuota);
+            //-----------
+          
             //dd($tasa_tip_interes);
-            $cuota = number_format(round($montosolicitado*(($interes_diaria*pow(1+$interes_diaria,$numerocuota))/(pow(1+$interes_diaria,$numerocuota)-1)),1), 2, '.', '');
+            //$cuota = number_format(round($montosolicitado*(($interes_diaria*pow(1+$interes_diaria,$numerocuota))/(pow(1+$interes_diaria,$numerocuota)-1)),1), 2, '.', '');
+           
             $total_cuota = number_format(round($cuota*$numerocuota, 1), 2, '.', '');
             $total_interes = number_format(round($total_cuota-$montosolicitado, 1), 2, '.', '');
             $total_cuotafinal = number_format(round($total_cuota+$total_comisioncargo, 1), 2, '.', '');
+          
+            $cuota = number_format(round($montosolicitado * $tasacombinada/100 * pow(1 + $tasacombinada/100, $numerocuota) / (pow(1 + $tasacombinada/100, $numerocuota) - 1),1), 2, '.', '');
+            
         }else{
             $cuota_amortizacion = number_format(round($montosolicitado/$numerocuota, 1), 2, '.', '');
             $cuota_interes = number_format(round((($montosolicitado*$tasa)/100)/$numerocuota, 1), 2, '.', '');
@@ -135,19 +154,26 @@ function genera_cronograma($montosolicitado,$numerocuota,$fechainicio,$frecuenci
                 $cuotafinal = number_format($cuota_amortizacion+$cuota_interes+$cuota_comisioncargo, 2, '.', '');
             }elseif($tipotasa==2){
               
-                $cuota_interes = number_format(round($saldo * $interes_diaria, 1), 2, '.', '');
+                //$cuota_interes = number_format(round($saldo * $interes_diaria, 1), 2, '.', '');
+                $cuota_interes = number_format(round($saldo * $interes_diaria,1), 2, '.', '');
+                //$cuota_comision1 = number_format(round($saldo * $interes_comision, 1), 2, '.', '');
+                $cuota_comision1 = number_format(round($saldo * $interes_comision,1), 2, '.', '');
                 if($i == $numerocuota){
-                    $cuota_amortizacion = number_format($total_amortizacion-$suma_amortizacion, 2, '.', '');
-                    $cuota_comisioncargo = number_format($cuota_comision1-$cuota_cargo1, 2, '.', '');
-                    $cuota_cargo1 = number_format($total_cargo1-$suma_cargo1, 2, '.', '');
-                }else{
-                    $cuota_amortizacion = number_format(round($cuota-$cuota_interes, 1), 2, '.', '');
+                    //$cuota_comisioncargo = number_format($cuota_comision1-$cuota_cargo1, 2, '.', '');
                   
+                    $cuota_amortizacion = number_format($total_amortizacion-$suma_amortizacion, 2, '.', '');
+                    $cuota_cargo1 = number_format($total_cargo1-$suma_cargo1, 2, '.', '');
+                    $cuota = number_format($total_cuota-$suma_cuota, 2, '.', '');
+                }else{
+                    //$cuota_amortizacion = number_format(round($cuota-$cuota_interes-$cuota_comision1, 1), 2, '.', '');
+                    $cuota_amortizacion = number_format($cuota-$cuota_interes-$cuota_comision1, 2, '.', '');
                 }
-                $cuota_comision1 = number_format(round($saldo * $interes_comision, 1), 2, '.', '');
-                $cuotafinal = number_format($cuota+$cuota_comision1+$cuota_cargo1, 2, '.', '');
+                $cuotafinal = number_format($cuota+$cuota_cargo1, 2, '.', '');
               
             }
+          
+          
+            $data_tir[] = (float)$cuotafinal;
             
               
             array_push($cronograma,[
@@ -198,7 +224,7 @@ function genera_cronograma($montosolicitado,$numerocuota,$fechainicio,$frecuenci
         else if ( $frecuencia == 4) {
           $total_propuesta = $cronograma_cuotapago;
         }
-  
+
         return ([
             'cronograma' => $cronograma,
             'tipotasa' => $tipotasa,
@@ -213,9 +239,11 @@ function genera_cronograma($montosolicitado,$numerocuota,$fechainicio,$frecuenci
             'cuota_comisioncargo' => number_format($cuota_comision+$cuota_cargo, 2, '.', ''),
             'total_comision' => $suma_comision1,
             'total_cargo' => $suma_cargo1,
+            'total_cargomes' => $total_cargo,
             'total_comisioncargo' => $suma_comisioncargo,
             'total_cuotafinal' => $suma_cuotafinal,
             'total_propuesta' => $total_propuesta,
+            'data_tir' => $data_tir,
         ]);
 }
 
@@ -293,7 +321,49 @@ function cronograma_fecha($frecuencia,$fechainicio,$feriados){
     ];
 }
 
+function tir(array $flujos, float $estimado = 0.1, int $maxIter = 1000, float $tolerancia = 1e-10): ?float
+{
+    $tienePositivo = false;
+    $tieneNegativo = false;
 
+    foreach ($flujos as $flujo) {
+        if ($flujo > 0) $tienePositivo = true;
+        if ($flujo < 0) $tieneNegativo = true;
+    }
+
+    if (!$tienePositivo || !$tieneNegativo) {
+        return null;
+    }
+
+    $tasa = $estimado;
+
+    for ($i = 0; $i < $maxIter; $i++) {
+        $van = 0.0;
+        $derivada = 0.0;
+
+        foreach ($flujos as $t => $flujo) {
+            $van += $flujo / pow(1 + $tasa, $t);
+
+            if ($t > 0) {
+                $derivada += -$t * $flujo / pow(1 + $tasa, $t + 1);
+            }
+        }
+
+        if (abs($derivada) < $tolerancia) {
+            return null;
+        }
+
+        $nuevaTasa = $tasa - ($van / $derivada);
+
+        if (abs($nuevaTasa - $tasa) < $tolerancia) {
+            return $nuevaTasa;
+        }
+
+        $tasa = $nuevaTasa;
+    }
+
+    return null;
+}
 
 #########################################
 ############# ANTIGUO SISTEMA DE CREDITOS

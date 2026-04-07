@@ -19,3 +19,33 @@ Stack trace:
 #2 /home/cqqqwjzl/sistema.transportessebas.com/index.php(34): require('/home/cqqqwjzl/...')
 #3 {main}
   thrown in /home/cqqqwjzl/sistema.transportessebas.com/vendor/composer/autoload_real.php on line 39
+[20-Mar-2026 15:10:32 UTC] PHP Warning:  require(/home/cqqqwjzl/sistema.transportessebas.com/vendor/composer/../../app/Helpers/FunctionsPrestamo.php): Failed to open stream: No such file or directory in /home/cqqqwjzl/sistema.transportessebas.com/vendor/composer/autoload_real.php on line 39
+[20-Mar-2026 15:10:32 UTC] PHP Warning:  require(/home/cqqqwjzl/sistema.transportessebas.com/vendor/composer/../../app/Helpers/FunctionsPrestamo.php): Failed to open stream: No such file or directory in /home/cqqqwjzl/sistema.transportessebas.com/vendor/composer/autoload_real.php on line 39
+[20-Mar-2026 15:10:32 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/cqqqwjzl/sistema.transportessebas.com/vendor/composer/../../app/Helpers/FunctionsPrestamo.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home/cqqqwjzl/sistema.transportessebas.com/vendor/composer/autoload_real.php:39
+Stack trace:
+#0 /home/cqqqwjzl/sistema.transportessebas.com/vendor/composer/autoload_real.php(43): {closure}('d4834f8f0339425...', '/home/cqqqwjzl/...')
+#1 /home/cqqqwjzl/sistema.transportessebas.com/vendor/autoload.php(25): ComposerAutoloaderInitd48fc5d3d66808078877601631d5403a::getLoader()
+#2 /home/cqqqwjzl/sistema.transportessebas.com/index.php(34): require('/home/cqqqwjzl/...')
+#3 {main}
+  thrown in /home/cqqqwjzl/sistema.transportessebas.com/vendor/composer/autoload_real.php on line 39
+[20-Mar-2026 15:15:24 UTC] PHP Warning:  require(/home/cqqqwjzl/sistema.transportessebas.com/vendor/composer/../../app/Helpers/FunctionsPrestamo.php): Failed to open stream: No such file or directory in /home/cqqqwjzl/sistema.transportessebas.com/vendor/composer/autoload_real.php on line 39
+[20-Mar-2026 15:15:24 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/cqqqwjzl/sistema.transportessebas.com/vendor/composer/../../app/Helpers/FunctionsPrestamo.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home/cqqqwjzl/sistema.transportessebas.com/vendor/composer/autoload_real.php:39
+Stack trace:
+#0 /home/cqqqwjzl/sistema.transportessebas.com/vendor/composer/autoload_real.php(43): {closure}('d4834f8f0339425...', '/home/cqqqwjzl/...')
+#1 /home/cqqqwjzl/sistema.transportessebas.com/vendor/autoload.php(25): ComposerAutoloaderInitd48fc5d3d66808078877601631d5403a::getLoader()
+#2 /home/cqqqwjzl/sistema.transportessebas.com/index.php(34): require('/home/cqqqwjzl/...')
+#3 {main}
+  thrown in /home/cqqqwjzl/sistema.transportessebas.com/vendor/composer/autoload_real.php on line 39
+[24-Mar-2026 14:36:39 UTC] PHP Warning:  require(/home/cqqqwjzl/sistema.transportessebas.com/vendor/composer/../../app/Helpers/FunctionsPrestamo.php): Failed to open stream: No such file or directory in /home/cqqqwjzl/sistema.transportessebas.com/vendor/composer/autoload_real.php on line 39
+[24-Mar-2026 14:36:39 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/cqqqwjzl/sistema.transportessebas.com/vendor/composer/../../app/Helpers/FunctionsPrestamo.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home/cqqqwjzl/sistema.transportessebas.com/vendor/composer/autoload_real.php:39
+Stack trace:
+#0 /home/cqqqwjzl/sistema.transportessebas.com/vendor/composer/autoload_real.php(43): {closure}('d4834f8f0339425...', '/home/cqqqwjzl/...')
+#1 /home/cqqqwjzl/sistema.transportessebas.com/vendor/autoload.php(25): ComposerAutoloaderInitd48fc5d3d66808078877601631d5403a::getLoader()
+#2 /home/cqqqwjzl/sistema.transportessebas.com/index.php(34): require('/home/cqqqwjzl/...')
+#3 {main}
+  thrown in /home/cqqqwjzl/sistema.transportessebas.com/vendor/composer/autoload_real.php on line 39
+[01-Apr-2026 07:53:45 UTC] PHP Parse error:  syntax error, unexpected '|', expecting variable (T_VARIABLE) in /home/cqqqwjzl/sistema.transportessebas.com/vendor/nunomaduro/termwind/src/Functions.php on line 17
+[01-Apr-2026 07:53:45 UTC] PHP Parse error:  syntax error, unexpected '|', expecting variable (T_VARIABLE) in /home/cqqqwjzl/sistema.transportessebas.com/vendor/nunomaduro/termwind/src/Functions.php on line 17
+[01-Apr-2026 07:53:45 UTC] PHP Parse error:  syntax error, unexpected '|', expecting variable (T_VARIABLE) in /home/cqqqwjzl/sistema.transportessebas.com/vendor/nunomaduro/termwind/src/Functions.php on line 17
+[01-Apr-2026 07:53:45 UTC] PHP Parse error:  syntax error, unexpected '|', expecting variable (T_VARIABLE) in /home/cqqqwjzl/sistema.transportessebas.com/vendor/nunomaduro/termwind/src/Functions.php on line 17
+[01-Apr-2026 07:53:53 UTC] PHP Parse error:  syntax error, unexpected '|', expecting variable (T_VARIABLE) in /home/cqqqwjzl/sistema.transportessebas.com/vendor/nunomaduro/termwind/src/Functions.php on line 17

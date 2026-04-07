@@ -1219,18 +1219,21 @@ class CreditoController extends Controller
 
           if($request->input('tipotasa')==2){
               $resultado_tir = tir($cronograma['data_tir']);
-              $TCES = round($resultado_tir * 100, 2);
+              $resultado_tir_round = round($resultado_tir, 2);
+              $TCES = round($resultado_tir * 100, 0);
+
               if($request->input('frecuencia')==1){
-                  $tasa_tcem = round((pow(1 + $resultado_tir, 30) - 1)*100, 2);
+                  $tasa_tcem = round((pow(1 + $resultado_tir_round, 30) - 1)*100, 2);
               }
               elseif($request->input('frecuencia')==2){
-                  $tasa_tcem = round((pow(1 + $resultado_tir, 30/7) - 1)*100, 2);
+                  $tasa_tcem = round((pow(1 + $resultado_tir_round, 30/7) - 1)*100, 2);
+                  // dd($tasa_tcem);
               }
               elseif($request->input('frecuencia')==3){
-                  $tasa_tcem =  round((pow(1 + $resultado_tir, 2) - 1)*100, 2);
+                  $tasa_tcem =  round((pow(1 + $resultado_tir_round, 2) - 1)*100, 2);
               }
               elseif($request->input('frecuencia')==4){
-                  $tasa_tcem = round($resultado_tir*100, 2);
+                  $tasa_tcem = round($resultado_tir_round*100, 2);
               }
           }
           

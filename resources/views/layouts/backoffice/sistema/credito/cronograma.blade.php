@@ -305,7 +305,7 @@
                       $('#tasa_tem').val(res.tasa_tem);
                       $('#tasa_tip').val(res.tasa_tip);
                       $('#tasa_tcem').val(res.tasa_tcem);
-                      $('#comision').val(res.cargootros);
+                      $('#comision').val(res.total_comision); // anterior estaba "cargootros"
                   }
               }
           });
@@ -463,7 +463,7 @@
       success: function (res){
         $('#tasa_tem_minima').val(res.tasa_tem_minima);
         $('#tasa_tip').val(res.tasa_tip);
-        $('#comision').val(res.cargootros);
+        // $('#comision').val(res.cargootros);
       }
     })
   }

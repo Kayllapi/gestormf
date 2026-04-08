@@ -93,7 +93,7 @@
                   </div>
                 </div>
                 <div class="row">
-                  <label class="col-sm-5 col-form-label" style="text-align: right;">C. Ss./Recupero (% mes):</label>
+                  <label class="col-sm-5 col-form-label" style="text-align: right;">C. Ss. Recupero (% mes):</label>
                   <div class="col-sm-7">
                     <input type="number" step="any" class="form-control" id="comision" value="0.00" disabled>
                   </div>
@@ -193,7 +193,7 @@
             <div class="col-sm-1 col-form-label" id="interes_total" style="font-weight: normal;">
               {{ $credito->interes_total }}
             </div>
-            <label class="col-sm-2 col-form-label" style="text-align: right;"><b>Costo. Ss./Recupero:</b></label>
+            <label class="col-sm-2 col-form-label" style="text-align: right;"><b>Costo. Ss. Recupero:</b></label>
             <div class="col-sm-1 col-form-label" id="total_comision" style="font-weight: normal;">
               0.00
             </div>
@@ -322,7 +322,7 @@
                   <th class="text-end">Capital</th>
                   <th class="text-end">Amortización</th>
                   <th class="text-end">Interés</th>
-                  <th class="text-end">C. Ss./Recupero</th>
+                  <th class="text-end">C. Ss. Recupero</th>
                   <th class="text-end">Cargo/Custodia</th>
                   <th class="text-end">Cuota</th>
                 </thead>

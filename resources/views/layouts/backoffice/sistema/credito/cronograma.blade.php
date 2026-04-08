@@ -93,7 +93,7 @@
                   </div>
                 </div>
                 <div class="row">
-                  <label class="col-sm-5 col-form-label" style="text-align: right;">C. Ss. Recaudo (% mes):</label>
+                  <label class="col-sm-5 col-form-label" style="text-align: right;">C. Ss. Recaudo (S/. mes):</label>
                   <div class="col-sm-7">
                     <input type="number" step="any" class="form-control" id="comision" value="0.00" disabled>
                   </div>
@@ -106,7 +106,7 @@
                 </div>
                 @if($credito->idforma_credito==1 && $usuario->custodiagarantia_id==1)
                 <div class="row">
-                  <label class="col-sm-5 col-form-label" style="text-align: right;">Cargo/Custodia S/.:</label>
+                  <label class="col-sm-5 col-form-label" style="text-align: right;">Cargo*Custodia S/.:</label>
                   <div class="col-sm-7">
                     <input type="number" step="any" class="form-control" {{ $view_detalle=='false' ? 'disabled' : '' }} id="cargo" value="{{ $credito->cargo }}" disabled>
                   </div>

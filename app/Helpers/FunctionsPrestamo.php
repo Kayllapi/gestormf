@@ -3,6 +3,10 @@ use Carbon\Carbon;
 #######################################
 ############# NUEVO SISTEMA DE CREDITOS
 #######################################
+function truncar($numero, $decimales = 2) {
+    $factor = pow(10, $decimales);
+    return floor($numero * $factor) / $factor;
+}
 function genera_cronograma($montosolicitado,$numerocuota,$fechainicio,$frecuencia,$tasa,$tipotasa,$dia_gracia,$comision,$cargo){
 
         //dia de gracia
@@ -103,8 +107,8 @@ function genera_cronograma($montosolicitado,$numerocuota,$fechainicio,$frecuenci
             
         }else{
             $cuota_amortizacion = number_format(round($montosolicitado/$numerocuota, 1), 2, '.', '');
-            $cuota_interes = number_format(round((($montosolicitado*$tasa)/100)/$numerocuota, 1), 2, '.', '');
-            $total_interes = number_format(round((($montosolicitado*$tasa)/100), 1), 2, '.', '');
+            $cuota_interes = number_format((($montosolicitado*$tasa)/100)/$numerocuota, 2, '.', '');
+            $total_interes = number_format((($montosolicitado*$tasa)/100), 2, '.', '');
         }
   
   
@@ -155,7 +159,7 @@ function genera_cronograma($montosolicitado,$numerocuota,$fechainicio,$frecuenci
             }elseif($tipotasa==2){
               
                 //$cuota_interes = number_format(round($saldo * $interes_diaria, 1), 2, '.', '');
-                $cuota_interes = number_format(round($saldo * $interes_diaria,1), 2, '.', '');
+                $cuota_interes = number_format($saldo * $interes_diaria, 2, '.', '');
                 //$cuota_comision1 = number_format(round($saldo * $interes_comision, 1), 2, '.', '');
                 $cuota_comision1 = number_format(round($saldo * $interes_comision,1), 2, '.', '');
                 if($i == $numerocuota){

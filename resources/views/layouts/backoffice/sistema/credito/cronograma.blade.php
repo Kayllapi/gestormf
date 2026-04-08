@@ -112,7 +112,7 @@
                   </div>
                 </div>
                 <div class="row">
-                  <label class="col-sm-12 text-end" style="color: #b32121;">Costo por custodia de garantia para cargo: ({{ configuracion($tienda->id,'comision_gestion_garantia_cargo')['valor'] }}% de Garantía Mensual)</label>
+                  <label class="col-sm-12 text-end" style="color: #b32121;">Costo por custodia de garantia para cargo: ({{ configuracion($tienda->id,'comision_gestion_garantia_cargo')['valor'] }}% de Cobertura de Garantía Mensual)</label>
                 </div>
                 @else
                 <div class="row">

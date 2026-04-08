@@ -1219,7 +1219,7 @@ class CreditoController extends Controller
 
           if($request->input('tipotasa')==2){
               $resultado_tir = tir($cronograma['data_tir']);
-              $resultado_tir_round = round($resultado_tir, 2);
+              $resultado_tir_round = round($resultado_tir, 10);
               $TCES = round($resultado_tir * 100, 0);
 
               if($request->input('frecuencia')==1){

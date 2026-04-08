@@ -77,7 +77,7 @@
                     </div>
                   </div>
                   <div class="row">
-                    <label class="col-sm-4 col-form-label" style="text-align: right;">C. Ss./Otros (%):</label>
+                    <label class="col-sm-4 col-form-label" style="text-align: right;">C. Ss./Recupero (%):</label>
                     <div class="col-sm-8">
                       <input type="number" step="any" class="form-control" id="comision" value="" disabled>
                     </div>
@@ -97,7 +97,7 @@
                     <label class="chk" style="width: 100%;">
                         <input type="checkbox" id="cargo_check" checked>
                         <span class="checkmark"></span>
-                        <span style="color: #b32121;">Costo por custodia de garantia para cargo: ({{ configuracion($tienda->id,'comision_gestion_garantia_cargo')['valor'] }}% Mensual)</span>
+                        <span style="color: #b32121;">Costo por custodia de garantia para cargo: ({{ configuracion($tienda->id,'comision_gestion_garantia_cargo')['valor'] }}% de Cobertura Mensual)</span>
                     </label>
                     </label>
                   </div>
@@ -125,11 +125,11 @@
               <div class="col-sm-1 col-form-label" id="interes_total" style="font-weight: normal;">
                 0.00
               </div>
-              <label class="col-sm-2 col-form-label" style="text-align: right;"><b>C. Ss./Otros:</b></label>
+              <label class="col-sm-2 col-form-label" style="text-align: right;"><b>C. Ss./Recupero:</b></label>
               <div class="col-sm-1 col-form-label" id="total_comision" style="font-weight: normal;">
                 0.00
               </div>
-              <label class="col-sm-2 col-form-label" style="text-align: right;"><b>Cargos (S/):</b></label>
+              <label class="col-sm-2 col-form-label" style="text-align: right;"><b>Cargos/Custodia (S/):</b></label>
               <div class="col-sm-1 col-form-label" id="total_cargo" style="font-weight: normal;">
                 0.00
               </div>
@@ -149,8 +149,8 @@
                 <th>Capital</th>
                 <th>Amortización</th>
                 <th>Interés</th>
-                <th>C. Ss./Otros (%)</th>
-                <th>Cargo</th>
+                <th>C. Ss./Recupero (%)</th>
+                <th>Cargo/Custodia</th>
                 <th>Cuota</th>
               </thead>
               <tbody>

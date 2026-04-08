@@ -1221,7 +1221,7 @@ class CreditoController extends Controller
               $resultado_tir = tir($cronograma['data_tir']);
 
               // $resultado_tir_round = round($resultado_tir, 10);
-              $factor = pow(10, 12);
+              $factor = pow(10, 10);
               $resultado_tir = floor($resultado_tir * $factor) / $factor;
 
               $TCES = round($resultado_tir * 100, 0);

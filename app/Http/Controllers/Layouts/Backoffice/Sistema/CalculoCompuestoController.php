@@ -212,7 +212,10 @@ class CalculoCompuestoController extends Controller
           $tasa_tcem = number_format($tasa_tem+$comision_cargo+($cargomes*100),2,'.','');
           if($request->input('tipotasa')==2){
               $resultado_tir = tir($cronograma['data_tir']);
-              //dd($resultado_tir);
+
+              $factor = pow(10, 10);
+              $resultado_tir = floor($resultado_tir * $factor) / $factor;
+
               $TCES = round($resultado_tir * 100, 2);
               if($request->input('frecuencia')==1){
                   $tasa_tcem = round((pow(1 + $resultado_tir, 30) - 1)*100, 2);

@@ -189,21 +189,29 @@
         </div>
         <div class="col-sm-12 col-md-9">
           <div class="row">
-            <label class="col-sm-2 col-form-label" style="text-align: right;"><b>Interés Total (S/):</b></label>
-            <div class="col-sm-1 col-form-label" id="interes_total" style="font-weight: normal;">
-              {{ $credito->interes_total }}
+            <div class="col-sm-3">
+              <label class="col-form-label" style="text-align: right;"><b>Interés Total (S/):</b></label>
+              <span class="col-form-label" id="interes_total" style="font-weight: normal;">
+                {{ $credito->interes_total }}
+              </span>
             </div>
-            <label class="col-sm-2 col-form-label" style="text-align: right;"><b>Costo. Ss. Recaudo:</b></label>
-            <div class="col-sm-1 col-form-label" id="total_comision" style="font-weight: normal;">
-              0.00
+            <div class="col-sm-3">
+              <label class="col-form-label" style="text-align: right;"><b>Costo. Ss. Recaudo (S/):</b></label>
+              <span class="col-form-label" id="total_comision" style="font-weight: normal;">
+                0.00
+              </span>
             </div>
-            <label class="col-sm-2 col-form-label" style="text-align: right;"><b>Cargo x Custodia (S/):</b></label>
-            <div class="col-sm-1 col-form-label" id="total_cargo" style="font-weight: normal;">
-              0.00
+            <div class="col-sm-3">
+              <label class="col-form-label" style="text-align: right;"><b>Cargo x Custodia (S/):</b></label>
+              <span class="col-form-label" id="total_cargo" style="font-weight: normal;">
+                0.00
+              </span>
             </div>
-            <label class="col-sm-2 col-form-label" style="text-align: right;"><b>Total a Pagar (S/):</b></label>
-            <div class="col-sm-1 col-form-label" id="total_pagar" style="font-weight: normal;">
-              {{ $credito->total_pagar }}
+            <div class="col-sm-3">
+              <label class="col-form-label" style="text-align: right;"><b>Total a Pagar (S/):</b></label>
+              <span class="col-form-label" id="total_pagar" style="font-weight: normal;">
+                {{ $credito->total_pagar }}
+              </span>
             </div>
           </div>
         </div>

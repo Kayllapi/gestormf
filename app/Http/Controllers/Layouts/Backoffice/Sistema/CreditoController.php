@@ -1172,7 +1172,7 @@ class CreditoController extends Controller
             4 => 1,
           ];
           $dias = $frecuenciaDiasMap[$request->input('frecuencia')];
-          $tasa_tip = number_format(($tasa_tem / $dias) * $request->input('numerocuota'), 2, '.', '');
+          $tasa_tip = number_format(($tasa_tem / $dias) * $request->input('numerocuota'), 8, '.', '');
           if($credito->modalidad_calculo == 'Interes Compuesto'){
               $tasa_tip = $tasa_tem;
           }
@@ -1245,7 +1245,7 @@ class CreditoController extends Controller
             'cronograma' => $html,
             'tasa_tem' => $tasa_tem,
             'tasa_tem_minima' => $tasa_tem_minima,
-            'tasa_tip' => $tasa_tip,
+            'tasa_tip' => number_format($tasa_tip, 2, '.', ''),
             'tasa_tcem' => $tasa_tcem,
             'cargootros' => $comision_cargo,
             'interes_total' => $cronograma['total_interes'],

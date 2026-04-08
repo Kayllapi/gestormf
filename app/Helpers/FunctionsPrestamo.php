@@ -3,10 +3,6 @@ use Carbon\Carbon;
 #######################################
 ############# NUEVO SISTEMA DE CREDITOS
 #######################################
-function truncar($numero, $decimales = 2) {
-    $factor = pow(10, $decimales);
-    return floor($numero * $factor) / $factor;
-}
 function genera_cronograma($montosolicitado,$numerocuota,$fechainicio,$frecuencia,$tasa,$tipotasa,$dia_gracia,$comision,$cargo){
 
         //dia de gracia
@@ -137,6 +133,8 @@ function genera_cronograma($montosolicitado,$numerocuota,$fechainicio,$frecuenci
                 'cuotafinal' => $cuota,
             ]);
         $saldo = $saldo-$cuota;*/
+
+        $diferencia_acumulada = 0;
             
         for ($i=1; $i < ($numerocuota+1); $i++){
              
@@ -155,7 +153,21 @@ function genera_cronograma($montosolicitado,$numerocuota,$fechainicio,$frecuenci
                 }else{
                     
                 }
-                $cuotafinal = number_format($cuota_amortizacion+$cuota_interes+$cuota_comisioncargo, 2, '.', '');
+
+                // Cuota redondeada al menor y ajuste en la última cuota
+                $cuota_real = $cuota_amortizacion + $cuota_interes + $cuota_comisioncargo;
+                $cuota_redondeada = floor($cuota_real * 10) / 10;
+                $diferencia = $cuota_real - $cuota_redondeada;
+
+                $diferencia_acumulada += $diferencia;
+
+                $cuotafinal = number_format($cuota_redondeada, 2, '.', '');
+
+                if($i == $numerocuota){
+                    $cuotafinal = $cuota_redondeada + $diferencia_acumulada;
+                    $cuotafinal = number_format($cuotafinal, 2, '.', '');
+                }
+                // $cuotafinal = number_format($cuota_amortizacion+$cuota_interes+$cuota_comisioncargo, 2, '.', ''); // anterior
             }elseif($tipotasa==2){
               
                 //$cuota_interes = number_format(round($saldo * $interes_diaria, 1), 2, '.', '');

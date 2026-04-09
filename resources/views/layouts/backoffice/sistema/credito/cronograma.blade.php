@@ -105,28 +105,33 @@
                   </div>
                 </div>
                 @if($credito->idforma_credito==1 && $usuario->custodiagarantia_id==1)
-                <div class="row">
-                  <label class="col-sm-5 col-form-label" style="text-align: right;">Cargo x Custodia S/.:</label>
-                  <div class="col-sm-7">
-                    <input type="number" step="any" class="form-control" {{ $view_detalle=='false' ? 'disabled' : '' }} id="cargo" value="{{ $credito->cargo }}" disabled>
-                  </div>
-                </div>
-                <div class="row">
-                  <label class="col-sm-12 text-end" style="color: #b32121;">Costo por custodia de garantia para cargo: ({{ configuracion($tienda->id,'comision_gestion_garantia_cargo')['valor'] }}% de Cobertura de Garantía Mensual)</label>
-                </div>
+                    <div class="row">
+                      <label class="col-sm-5 col-form-label" style="text-align: right;">Cargo x Custodia S/.:</label>
+                      <div class="col-sm-7">
+                        <input type="number" step="any" class="form-control" {{ $view_detalle=='false' ? 'disabled' : '' }} id="cargo" value="{{ $credito->cargo }}" disabled>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <label class="col-sm-12 text-end" style="color: #b32121;">Costo por custodia de garantia para cargo: ({{ configuracion($tienda->id,'comision_gestion_garantia_cargo')['valor'] }}% de Cobertura de Garantía Mensual)</label>
+                    </div>
                 @else
-                <div class="row">
-                  <label class="col-sm-5 col-form-label" style="text-align: right;">Cargo S/.:</label>
-                  <div class="col-sm-7">
-                    <input type="number" step="any" class="form-control" {{ $view_detalle=='false' ? 'disabled' : '' }} id="cargo" value="{{ $credito->cargo }}">
-                  </div>
-                </div>
-                @if($credito->idforma_credito==1 && $usuario->custodiagarantia_id==0)
-                <div class="row">
-                  <label class="col-sm-2"></label>
-                  <label class="col-sm-10 text-end" style="color: #b32121;">Seleccionar Depositario.</label>
-                </div>
-                @endif
+                    <div class="row">
+                      <label class="col-sm-5 col-form-label" style="text-align: right;">Cargo x Custodia S/.:</label>
+                      <div class="col-sm-7">
+                        <input type="number" step="any" class="form-control" {{ $view_detalle=='false' ? 'disabled' : '' }} id="cargo" value="{{ $credito->cargo }}">
+                      </div>
+                    </div>
+                    @if ($usuario->custodiagarantia_id==2)
+                        <div class="row">
+                          <label class="col-sm-12 text-end" style="color: #b32121;">Costo por custodia de garantia para cargo: ({{ configuracion($tienda->id,'comision_gestion_garantia_convenio')['valor'] }}% de Convenio con Acreedor Mensual)</label>
+                        </div>
+                    @endif
+                    @if($credito->idforma_credito==1 && $usuario->custodiagarantia_id==0)
+                        <div class="row">
+                          <label class="col-sm-2"></label>
+                          <label class="col-sm-10 text-end" style="color: #b32121;">Seleccionar Depositario.</label>
+                        </div>
+                    @endif
                 @endif
                 @if($view_detalle!='false')
                 <div class="row">

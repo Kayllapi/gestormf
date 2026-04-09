@@ -93,7 +93,7 @@
                   </div>
                 </div>
                 <div class="row">
-                  <label class="col-sm-5 col-form-label" style="text-align: right;">C. Ss. Recaudo S/.:</label>
+                  <label class="col-sm-5 col-form-label" style="text-align: right;">Ss. Recaudo S/.:</label>
                   <div class="col-sm-7">
                     <input type="number" step="any" class="form-control" id="comision" value="0.00" disabled>
                   </div>
@@ -196,7 +196,7 @@
               </span>
             </div>
             <div class="col-sm-3">
-              <label class="col-form-label" style="text-align: right;"><b>Costo. Ss. Recaudo (S/):</b></label>
+              <label class="col-form-label" style="text-align: right;"><b>Ss. Recaudo (S/):</b></label>
               <span class="col-form-label" id="total_comision" style="font-weight: normal;">
                 0.00
               </span>
@@ -330,7 +330,7 @@
                   <th class="text-end">Capital</th>
                   <th class="text-end">Amortización</th>
                   <th class="text-end">Interés</th>
-                  <th class="text-end">C. Ss. Recaudo</th>
+                  <th class="text-end">Ss. Recaudo</th>
                   <th class="text-end">Cargo x Custodia</th>
                   <th class="text-end">Cuota</th>
                 </thead>

@@ -114,6 +114,7 @@ function genera_cronograma($montosolicitado,$numerocuota,$fechainicio,$frecuenci
         //$saldo_comision1 = $montosolicitado;
         $suma_amortizacion = 0;
         $suma_interes = 0;
+        $suma_cuota_prestamo = 0;
         $suma_cuota = 0;
         $suma_comisioncargo = 0;
         $suma_cuotafinal = 0;
@@ -191,6 +192,7 @@ function genera_cronograma($montosolicitado,$numerocuota,$fechainicio,$frecuenci
           
             $data_tir[] = (float)$cuotafinal;
             
+            $cuota_prestamo = $cuota_amortizacion + $cuota_interes;
               
             array_push($cronograma,[
                 //'numero' => str_pad($i, 2, "0", STR_PAD_LEFT),
@@ -200,6 +202,7 @@ function genera_cronograma($montosolicitado,$numerocuota,$fechainicio,$frecuenci
                 'saldo' => number_format($saldo, 2, '.', ''),
                 'amortizacion' => $cuota_amortizacion,
                 'interes' => $cuota_interes,
+                'cuota_prestamo' => number_format($cuota_prestamo, 2, '.', ''),
                 'cuota' => $cuota,
                 'comision' => $cuota_comision1,
                 'cargo' => $cuota_cargo1,
@@ -218,6 +221,7 @@ function genera_cronograma($montosolicitado,$numerocuota,$fechainicio,$frecuenci
             $saldo = $saldo-$cuota_amortizacion;
             $suma_amortizacion = number_format($suma_amortizacion+$cuota_amortizacion, 2, '.', '');
             $suma_interes = number_format($suma_interes+$cuota_interes, 2, '.', '');
+            $suma_cuota_prestamo = number_format($suma_cuota_prestamo+$cuota_prestamo, 2, '.', '');
             $suma_cuota = number_format($suma_cuota+$cuota, 2, '.', '');
             $suma_comisioncargo = number_format($suma_comisioncargo+($cuota_comision1+$cuota_cargo1), 2, '.', '');
             $suma_cuotafinal = number_format($suma_cuotafinal+$cuotafinal, 2, '.', '');
@@ -249,6 +253,7 @@ function genera_cronograma($montosolicitado,$numerocuota,$fechainicio,$frecuenci
             'cuota_pago' => $cronograma_cuotapago,
             'total_amortizacion' => $suma_amortizacion,
             'total_interes' => $suma_interes,
+            'total_cuota_prestamo' => $suma_cuota_prestamo,
             'total_cuota' => $suma_cuota,
             'cuota_comision' => number_format($cuota_comision, 2, '.', ''),
             'cuota_cargo' => number_format($cuota_cargo, 2, '.', ''),

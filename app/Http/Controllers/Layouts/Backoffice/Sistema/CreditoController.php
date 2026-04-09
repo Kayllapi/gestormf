@@ -1215,7 +1215,8 @@ class CreditoController extends Controller
                       </tr>';
           
           $cargomes = $request->cargomes/$request->input('monto');
-          $tasa_tcem = number_format($tasa_tem+$comision_cargo+($cargomes*100),2,'.','');
+          // $tasa_tcem = number_format($tasa_tem+$comision_cargo+($cargomes*100),2,'.','');
+          $tasa_tcem = 0;
 
           if($request->input('tipotasa')==2){
               $resultado_tir = tir($cronograma['data_tir']);
@@ -1231,7 +1232,6 @@ class CreditoController extends Controller
               }
               elseif($request->input('frecuencia')==2){
                   $tasa_tcem = round((pow(1 + $resultado_tir, 30/7) - 1)*100, 2);
-                  // dd($tasa_tcem);
               }
               elseif($request->input('frecuencia')==3){
                   $tasa_tcem =  round((pow(1 + $resultado_tir, 2) - 1)*100, 2);
@@ -1239,6 +1239,23 @@ class CreditoController extends Controller
               elseif($request->input('frecuencia')==4){
                   $tasa_tcem = round($resultado_tir*100, 2);
               }
+          } elseif($request->input('tipotasa')==1) {
+            if($request->input('frecuencia')==1){
+                $calculo = ($cronograma['total_interes']/$request->input('numerocuota')*26)/$request->input('monto');
+                $tasa_tcem = round($calculo*100, 2);
+            }
+            elseif($request->input('frecuencia')==2){
+                $calculo = ($cronograma['total_interes']/$request->input('numerocuota')*4)/$request->input('monto');
+                $tasa_tcem = round($calculo*100, 2);
+            }
+            elseif($request->input('frecuencia')==3){
+                $calculo = ($cronograma['total_interes']/$request->input('numerocuota')*2)/$request->input('monto');
+                $tasa_tcem = round($calculo*100, 2);
+            }
+            elseif($request->input('frecuencia')==4){
+                $calculo = ($cronograma['total_interes']/$request->input('numerocuota'))/$request->input('monto');
+                $tasa_tcem = round($calculo*100, 2);
+            }
           }
           
           return array(
@@ -1246,7 +1263,7 @@ class CreditoController extends Controller
             'tasa_tem' => $tasa_tem,
             'tasa_tem_minima' => $tasa_tem_minima,
             'tasa_tip' => number_format($tasa_tip, 2, '.', ''),
-            'tasa_tcem' => $tasa_tcem,
+            'tasa_tcem' => number_format($tasa_tcem, 2, '.', ''),
             'cargootros' => $comision_cargo,
             'interes_total' => $cronograma['total_interes'],
             'total_cargo' => $cronograma['total_cargo'],

@@ -103,12 +103,12 @@
                         <label class="custom-radio" style="color: #b32121;">
                             <input type="radio" name="cargo_check" id="cargo_check" value="1" checked>
                             <span></span>
-                            Costo por custodia de garantia para cargo: ({{ configuracion($tienda->id,'comision_gestion_garantia_cargo')['valor'] }} Cobertura de Garantía)
+                            Costo por custodia de garantia para cargo: ({{ configuracion($tienda->id,'comision_gestion_garantia_cargo')['valor'] }}% Cobertura de Garantía)
                         </label>
                         <label class="custom-radio" style="color: #b32121;">
                             <input type="radio" name="cargo_check" id="cargo_check" value="2">
                             <span></span>
-                            Costo por custodia de garantia para cargo: ({{ configuracion($tienda->id,'comision_gestion_garantia_convenio')['valor'] }} Convenio con Acreedor)
+                            Costo por custodia de garantia para cargo: ({{ configuracion($tienda->id,'comision_gestion_garantia_convenio')['valor'] }}% Convenio con Acreedor)
                         </label>
                     </label>
                   </div>

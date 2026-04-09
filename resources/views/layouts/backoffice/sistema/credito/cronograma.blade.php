@@ -452,7 +452,9 @@
         }
         var cargo = cargocom*monto_cobertura_garantia;
         var cargomes = cargocom_mes*monto_cobertura_garantia;
-        $('#cargo').val(cargo.toFixed(2));
+
+        let redondeado = (Math.round(cargo * 10) / 10).toFixed(2);
+        $('#cargo').val(redondeado);
         $('#cargomes').val(cargomes.toFixed(2));
     @else
         $('#cargomes').val('0.00');

@@ -30,7 +30,7 @@
                     <label class="col-sm-5 col-form-label" style="text-align: right;">Frecuencia de Pago:</label>
                     <div class="col-sm-7">
                       <select class="form-control" id="idforma_pago_credito" onchange="mostrar_tarifario_tasa();">
-                        
+                        <option></option>
                         @foreach($forma_pago_credito as $value)
                           <option value="{{ $value->id }}">{{ $value->nombre }}</option>
                         @endforeach

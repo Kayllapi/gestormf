@@ -113,7 +113,8 @@
                     </div>
                     <div class="row">
                       <label class="col-sm-12 text-end" style="color: #b32121;">Gasto x custodia de garantía para cargo: (
-                        <span tabindex="0"  data-bs-container="body" data-bs-toggle="popover" data-trigger="focus" data-bs-placement="right" data-bs-content="{{ configuracion($tienda->id,'comision_gestion_garantia_cargo')['valor'] }} %">
+                        <span tabindex="0"  data-bs-container="body" data-bs-toggle="popover" data-trigger="focus" data-bs-placement="right"
+                          data-bs-content="{{ configuracion($tienda->id,'comision_gestion_garantia_cargo')['valor'] }} % Mensual, de Cobertura">
                           Acreedor
                         </span>)</label>
                     </div>
@@ -127,7 +128,8 @@
                     @if ($usuario->custodiagarantia_id==2)
                         <div class="row">
                           <label class="col-sm-12 text-end" style="color: #b32121;">Gasto x custodia de garantía para cargo: (
-                        <span tabindex="0"  data-bs-container="body" data-bs-toggle="popover" data-trigger="focus" data-bs-placement="right" data-bs-content="{{ configuracion($tienda->id,'comision_gestion_garantia_convenio')['valor'] }} %">
+                        <span tabindex="0"  data-bs-container="body" data-bs-toggle="popover" data-trigger="focus" data-bs-placement="right"
+                          data-bs-content="{{ configuracion($tienda->id,'comision_gestion_garantia_convenio')['valor'] }} % Mensual, de Cobertura">
                           Convenio con Acreedor
                         </span>)</label>
                         </div>

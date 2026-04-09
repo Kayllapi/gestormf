@@ -338,7 +338,7 @@
                   <th class="text-end">Cuota de Préstamo <br> (Int. + Cap.)</th>
                   <th class="text-end">Ss. Recaudo</th>
                   <th class="text-end">Cargo x Custodia</th>
-                  <th class="text-end">Total a Pagar</th>
+                  <th class="text-end">Total a Pagar <br> (Int. + Cap. + Gas.)</th>
                 </thead>
                 <tbody>
                   <tr>

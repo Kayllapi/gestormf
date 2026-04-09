@@ -462,6 +462,34 @@
         $('#cargo').val(redondeado);
         $('#cargomes').val(cargomes.toFixed(2));
     @else
+        @if($usuario->custodiagarantia_id==2)
+            var comision_gestion_garantia_convenio = parseFloat({{ configuracion($tienda->id,'comision_gestion_garantia_convenio')['valor'] }});
+            var monto_cobertura_garantia =  parseFloat($('#monto_cobertura_garantia').val());
+            var cargocom = 0;
+            var cargocom_mes = 0;
+            if(frecuencia==1){
+                cargocom = ((comision_gestion_garantia_convenio/26)*numerocuota)/100;
+                cargocom_mes = ((comision_gestion_garantia_convenio/26)*26)/100;
+            }
+            else if(frecuencia==2){
+                cargocom = ((comision_gestion_garantia_convenio/4)*numerocuota)/100;
+                cargocom_mes = ((comision_gestion_garantia_convenio/4)*4)/100;
+            }
+            else if(frecuencia==3){
+                cargocom = ((comision_gestion_garantia_convenio/2)*numerocuota)/100;
+                cargocom_mes = ((comision_gestion_garantia_convenio/2)*2)/100;
+            }
+            else if(frecuencia==4){
+                cargocom = ((comision_gestion_garantia_convenio/1)*numerocuota)/100;
+                cargocom_mes = ((comision_gestion_garantia_convenio/1)*1)/100;
+            }
+            var cargo = cargocom*monto_cobertura_garantia;
+            var cargomes = cargocom_mes*monto_cobertura_garantia;
+
+            let redondeado = (Math.round(cargo * 10) / 10).toFixed(2);
+            $('#cargo').val(redondeado);
+            $('#cargomes').val(cargomes.toFixed(2));
+        @endif
         $('#cargomes').val('0.00');
     @endif
 

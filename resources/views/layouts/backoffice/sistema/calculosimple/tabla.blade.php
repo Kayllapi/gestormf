@@ -60,7 +60,13 @@
                       <input type="number" step="any" class="form-control" id="tasa_tip" value="0.00" disabled>
                       <input type="hidden" step="any" class="form-control" id="tasa_tip_2" value="0.00" disabled>
                     </div>
-                  </div>  
+                  </div>
+                  <div class="row">
+                    <label class="col-sm-5 col-form-label" style="text-align: right;">TCEM (%):</label>
+                    <div class="col-sm-7">
+                      <input type="number" step="any" class="form-control" id="tasa_tcem" value="0.00" disabled>
+                    </div>
+                  </div>
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -94,10 +100,15 @@
                   <div class="row">
                     <label class="col-sm-4"></label>
                     <label class="col-sm-8">
-                        <label class="chk" style="width: 100%;">
-                            <input type="checkbox" id="cargo_check" checked>
-                            <span class="checkmark"></span>
-                            <span style="color: #b32121;">Costo por custodia de garantia para cargo: ({{ configuracion($tienda->id,'comision_gestion_garantia_cargo')['valor'] }}% de Cobertura Mensual)</span>
+                        <label class="custom-radio" style="color: #b32121;">
+                            <input type="radio" name="cargo_check" id="cargo_check" value="1" checked>
+                            <span></span>
+                            Costo por custodia de garantia para cargo: ({{ configuracion($tienda->id,'comision_gestion_garantia_cargo')['valor'] }}% de Cobertura Mensual)
+                        </label>
+                        <label class="custom-radio" style="color: #b32121;">
+                            <input type="radio" name="cargo_check" id="cargo_check" value="2">
+                            <span></span>
+                            Costo por custodia de garantia para cargo: ({{ configuracion($tienda->id,'comision_gestion_garantia_convenio')['valor'] }}% de Convenio con Acreedor Mensual)
                         </label>
                     </label>
                   </div>
@@ -191,14 +202,13 @@
 <script>
   @include('app.nuevosistema.select2',['input'=>'#idforma_pago_credito'])
 
-  $('#cargo_check').on('change', function () {
-    if ($(this).is(':checked')) {
-        $('#cargo').prop('disabled',true);
-        showtasa();
-    } else {
-        $('#cargo').removeAttr('disabled');
-        $('#cargo').val('0.00');
-    }
+  $('input[name="cargo_check"]').on('change', function () {
+      let tipo = $('input[name="cargo_check"]:checked').val();
+      if (tipo == 1) {
+          showtasa();
+      } else if (tipo == 2) {
+          showtasa();
+      }
   });
 
 show_producto_credito()
@@ -282,6 +292,7 @@ function cronograma(){
               //$('#tasa_tem_minima').val('0.00');
               //$('#tasa_tem').val('0.00');
               $('#tasa_tip').val('0.00');
+              $('#tasa_tcem').val('0.00');
               $('#comision').val('0.00');
               alert(res.mensaje);
           }else{
@@ -294,6 +305,7 @@ function cronograma(){
               $('#tasa_tem_minima').val(res.tasa_tem_minima);
               $('#tasa_tem').val(res.tasa_tem);
               $('#tasa_tip').val(res.tasa_tip);
+              $('#tasa_tcem').val(res.tasa_tcem);
               $('#comision').val(res.cargootros);
           }
       }
@@ -322,6 +334,13 @@ function showtasa(){
   let idproducto = $('#idcredito_prendatario').val();
 
   var comision_gestion_garantia_cargo = parseFloat({{ configuracion($tienda->id,'comision_gestion_garantia_cargo')['valor'] }});
+  let tipo = $('input[name="cargo_check"]:checked').val();
+  if (tipo == 1) {
+      comision_gestion_garantia_cargo = parseFloat({{ configuracion($tienda->id,'comision_gestion_garantia_cargo')['valor'] }});
+  } else if (tipo == 2) {
+      comision_gestion_garantia_cargo = parseFloat({{ configuracion($tienda->id,'comision_gestion_garantia_convenio')['valor'] }});
+  }
+
   var cargocom = 0;
   if(frecuencia==1){
       cargocom = ((comision_gestion_garantia_cargo/26)*numerocuota)/100;

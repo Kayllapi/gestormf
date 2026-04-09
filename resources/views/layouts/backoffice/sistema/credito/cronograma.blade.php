@@ -112,7 +112,7 @@
                       </div>
                     </div>
                     <div class="row">
-                      <label class="col-sm-12 text-end" style="color: #b32121;">Costo por custodia de garantia para cargo: ({{ configuracion($tienda->id,'comision_gestion_garantia_cargo')['valor'] }}% Cobertura de Garantía)</label>
+                      <label class="col-sm-12 text-end" style="color: #b32121;">Gasto x custodia de garantía para cargo: (Acreedor)</label>
                     </div>
                 @else
                     <div class="row">
@@ -123,7 +123,7 @@
                     </div>
                     @if ($usuario->custodiagarantia_id==2)
                         <div class="row">
-                          <label class="col-sm-12 text-end" style="color: #b32121;">Costo por custodia de garantia para cargo: ({{ configuracion($tienda->id,'comision_gestion_garantia_convenio')['valor'] }}% Convenio con Acreedor)</label>
+                          <label class="col-sm-12 text-end" style="color: #b32121;">Gasto x custodia de garantía para cargo: (Convenio con Acreedor)</label>
                         </div>
                     @endif
                     @if($credito->idforma_credito==1 && $usuario->custodiagarantia_id==0)

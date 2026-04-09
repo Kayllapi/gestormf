@@ -112,7 +112,10 @@
                       </div>
                     </div>
                     <div class="row">
-                      <label class="col-sm-12 text-end" style="color: #b32121;">Gasto x custodia de garantía para cargo: (Acreedor)</label>
+                      <label class="col-sm-12 text-end" style="color: #b32121;">Gasto x custodia de garantía para cargo: (
+                        <span tabindex="0"  data-bs-container="body" data-bs-toggle="popover" data-trigger="focus" data-bs-placement="right" data-bs-content="{{ configuracion($tienda->id,'comision_gestion_garantia_cargo')['valor'] }} %">
+                          Acreedor
+                        </span>)</label>
                     </div>
                 @else
                     <div class="row">
@@ -123,7 +126,10 @@
                     </div>
                     @if ($usuario->custodiagarantia_id==2)
                         <div class="row">
-                          <label class="col-sm-12 text-end" style="color: #b32121;">Gasto x custodia de garantía para cargo: (Convenio con Acreedor)</label>
+                          <label class="col-sm-12 text-end" style="color: #b32121;">Gasto x custodia de garantía para cargo: (
+                        <span tabindex="0"  data-bs-container="body" data-bs-toggle="popover" data-trigger="focus" data-bs-placement="right" data-bs-content="{{ configuracion($tienda->id,'comision_gestion_garantia_convenio')['valor'] }} %">
+                          Convenio con Acreedor
+                        </span>)</label>
                         </div>
                     @endif
                     @if($credito->idforma_credito==1 && $usuario->custodiagarantia_id==0)
@@ -511,6 +517,9 @@
       }
     })
   }
-  
+
+  $('#cont-popover-cuota').popover({
+    trigger: 'focus'
+  });
 </script>    
 

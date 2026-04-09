@@ -394,6 +394,5 @@ function show_tarifario_producto(){
     }
   })
 }
-  
 </script>   
 

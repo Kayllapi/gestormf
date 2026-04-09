@@ -103,12 +103,12 @@
                         <label class="custom-radio" style="color: #b32121;">
                             <input type="radio" name="cargo_check" id="cargo_check" value="1" checked>
                             <span></span>
-                            Costo por custodia de garantia para cargo: ({{ configuracion($tienda->id,'comision_gestion_garantia_cargo')['valor'] }}% de Cobertura Mensual)
+                            Costo por custodia de garantia para cargo: ({{ configuracion($tienda->id,'comision_gestion_garantia_cargo')['valor'] }} Cobertura de Garantía)
                         </label>
                         <label class="custom-radio" style="color: #b32121;">
                             <input type="radio" name="cargo_check" id="cargo_check" value="2">
                             <span></span>
-                            Costo por custodia de garantia para cargo: ({{ configuracion($tienda->id,'comision_gestion_garantia_convenio')['valor'] }}% de Convenio con Acreedor Mensual)
+                            Costo por custodia de garantia para cargo: ({{ configuracion($tienda->id,'comision_gestion_garantia_convenio')['valor'] }} Convenio con Acreedor)
                         </label>
                     </label>
                   </div>
@@ -306,7 +306,7 @@ function cronograma(){
               $('#tasa_tem').val(res.tasa_tem);
               $('#tasa_tip').val(res.tasa_tip);
               $('#tasa_tcem').val(res.tasa_tcem);
-              $('#comision').val(res.cargootros);
+              $('#comision').val(res.total_comision); // cargootros anterior
           }
       }
   });

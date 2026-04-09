@@ -114,7 +114,7 @@
             </div>
           </div>
           <div class="mb-1">
-            <span class="badge d-block">Costo por gestión de garantia (Custodia de garantia con Convenio de ACREEDOR)</span>
+            <span class="badge d-block">Costo por gestión de garantia (Custodia de garantia de Convenio con ACREEDOR)</span>
           </div>
           <div class="row mt-1">
             <label class="col-sm-8 col-form-label" style="text-align: right;">Costo Mensual (%):</label>

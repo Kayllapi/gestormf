@@ -190,6 +190,7 @@ class CalculoSimpleController extends Controller
                         <td>'.$value['saldo'].'</td>
                         <td>'.$value['amortizacion'].'</td>
                         <td>'.$value['interes'].'</td>
+                        <td>'.$value['cuota_prestamo'].'</td>
                         <td>'.$value['comision'].'</td>
                         <td>'.$value['cargo'].'</td>
                         <td>'.$value['cuotafinal'].'</td>
@@ -201,6 +202,7 @@ class CalculoSimpleController extends Controller
                         <th>TOTAL</th>
                         <th>'.$cronograma['total_amortizacion'].'</th>
                         <th>'.$cronograma['total_interes'].'</th>
+                        <th>'.$cronograma['total_cuota_prestamo'].'</th>
                         <th>'.$cronograma['total_comision'].'</th>
                         <th>'.$cronograma['total_cargo'].'</th>
                         <th>'.$cronograma['total_cuotafinal'].'</th>

@@ -77,7 +77,7 @@
                     </div>
                   </div>
                   <div class="row">
-                    <label class="col-sm-4 col-form-label" style="text-align: right;">C. Ss./Recupero (%):</label>
+                    <label class="col-sm-4 col-form-label" style="text-align: right;">Ss. Recaudo S/.:</label>
                     <div class="col-sm-8">
                       <input type="number" step="any" class="form-control" id="comision" value="" disabled>
                     </div>
@@ -86,7 +86,7 @@
                     </div>
                   </div>
                   <div class="row">
-                    <label class="col-sm-4 col-form-label" style="text-align: right;">Cargo:</label>
+                    <label class="col-sm-4 col-form-label" style="text-align: right;">Cargo x Custodia S/.:</label>
                     <div class="col-sm-8">
                       <input type="number" step="any" class="form-control" id="cargo" value="0.00" disabled>
                     </div>
@@ -94,11 +94,11 @@
                   <div class="row">
                     <label class="col-sm-4"></label>
                     <label class="col-sm-8">
-                    <label class="chk" style="width: 100%;">
-                        <input type="checkbox" id="cargo_check" checked>
-                        <span class="checkmark"></span>
-                        <span style="color: #b32121;">Costo por custodia de garantia para cargo: ({{ configuracion($tienda->id,'comision_gestion_garantia_cargo')['valor'] }}% de Cobertura Mensual)</span>
-                    </label>
+                        <label class="chk" style="width: 100%;">
+                            <input type="checkbox" id="cargo_check" checked>
+                            <span class="checkmark"></span>
+                            <span style="color: #b32121;">Costo por custodia de garantia para cargo: ({{ configuracion($tienda->id,'comision_gestion_garantia_cargo')['valor'] }}% de Cobertura Mensual)</span>
+                        </label>
                     </label>
                   </div>
                   <div class="row">
@@ -125,11 +125,11 @@
               <div class="col-sm-1 col-form-label" id="interes_total" style="font-weight: normal;">
                 0.00
               </div>
-              <label class="col-sm-2 col-form-label" style="text-align: right;"><b>C. Ss./Recupero:</b></label>
+              <label class="col-sm-2 col-form-label" style="text-align: right;"><b>Ss. Recaudo (S/):</b></label>
               <div class="col-sm-1 col-form-label" id="total_comision" style="font-weight: normal;">
                 0.00
               </div>
-              <label class="col-sm-2 col-form-label" style="text-align: right;"><b>Cargos/Custodia (S/):</b></label>
+              <label class="col-sm-2 col-form-label" style="text-align: right;"><b>Cargo x Custodia (S/):</b></label>
               <div class="col-sm-1 col-form-label" id="total_cargo" style="font-weight: normal;">
                 0.00
               </div>
@@ -149,9 +149,10 @@
                 <th>Capital</th>
                 <th>Amortización</th>
                 <th>Interés</th>
-                <th>C. Ss./Recupero (%)</th>
-                <th>Cargo/Custodia</th>
-                <th>Cuota</th>
+                <th>Cuota de Préstamo <br> (Int. + Cap.)</th>
+                <th>Ss. Recaudo</th>
+                <th>Cargo x Custodia</th>
+                <th>Total a Pagar <br> (Int. + Cap. + Gast.)</th>
               </thead>
               <tbody>
 

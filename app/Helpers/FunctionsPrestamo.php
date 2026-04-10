@@ -3,6 +3,10 @@ use Carbon\Carbon;
 #######################################
 ############# NUEVO SISTEMA DE CREDITOS
 #######################################
+function truncar($numero, $decimales = 2) {
+    $factor = pow(10, $decimales);
+    return floor($numero * $factor) / $factor;
+}
 function genera_cronograma($montosolicitado,$numerocuota,$fechainicio,$frecuencia,$tasa,$tipotasa,$dia_gracia,$comision,$cargo){
 
         //dia de gracia
@@ -82,13 +86,12 @@ function genera_cronograma($montosolicitado,$numerocuota,$fechainicio,$frecuenci
             }
           
             //-----------
+            $interes_diaria = truncar($interes_diaria, 10);
+            // $interes_comision = number_format($interes_comision, 6, '.', '');
           
-            $interes_diaria = number_format($interes_diaria, 6, '.', '');
-            $interes_comision = number_format($interes_comision, 6, '.', '');
-          
-            $tasacombinada = ((1 + $interes_diaria) * (1 + $interes_comision) - 1) * 100;
-            $tasacombinada = number_format($tasacombinada, 4, '.', '');
-            $cuota = number_format($montosolicitado * $tasacombinada/100 * pow(1 + $tasacombinada/100, $numerocuota) / (pow(1 + $tasacombinada/100, $numerocuota) - 1), 2, '.', '');
+            // $tasacombinada = ((1 + $interes_diaria) * (1 + $interes_comision) - 1) * 100;
+            // $tasacombinada = number_format($tasacombinada, 4, '.', '');
+            $cuota = round($montosolicitado * $interes_diaria * pow(1 + $interes_diaria, $numerocuota) / (pow(1 + $interes_diaria, $numerocuota) - 1), 2);
             //-----------
           
             //dd($tasa_tip_interes);
@@ -98,7 +101,7 @@ function genera_cronograma($montosolicitado,$numerocuota,$fechainicio,$frecuenci
             $total_interes = number_format(round($total_cuota-$montosolicitado, 1), 2, '.', '');
             $total_cuotafinal = number_format(round($total_cuota+$total_comisioncargo, 1), 2, '.', '');
           
-            $cuota = number_format(round($montosolicitado * $tasacombinada/100 * pow(1 + $tasacombinada/100, $numerocuota) / (pow(1 + $tasacombinada/100, $numerocuota) - 1),1), 2, '.', '');
+            // $cuota = number_format(round($montosolicitado * $tasacombinada/100 * pow(1 + $tasacombinada/100, $numerocuota) / (pow(1 + $tasacombinada/100, $numerocuota) - 1),1), 2, '.', '');
             
         }else{
             $cuota_amortizacion = number_format(round($montosolicitado/$numerocuota, 1), 2, '.', '');

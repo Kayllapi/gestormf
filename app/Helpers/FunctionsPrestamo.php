@@ -40,7 +40,6 @@ function genera_cronograma($montosolicitado,$numerocuota,$fechainicio,$frecuenci
         $total_cuota = 0;
         $total_cuotafinal = 0;
       
-      
         $frecuenciaDiasMap = [
           1 => 26,
           2 => 4,
@@ -139,7 +138,25 @@ function genera_cronograma($montosolicitado,$numerocuota,$fechainicio,$frecuenci
         $saldo = $saldo-$cuota;*/
 
         $diferencia_acumulada = 0;
-            
+
+        // -------------
+        $total_comision_tipotasa2 = 0;
+        $interes_comision = $comision/100;
+
+        if($frecuencia==1){
+            $total_comision_tipotasa2 = round((($interes_comision/26) * $numerocuota) * $montosolicitado, 1);
+        }
+        elseif($frecuencia==2){
+            $total_comision_tipotasa2 = round((($interes_comision/4) * $numerocuota) * $montosolicitado, 1);
+        }
+        elseif($frecuencia==3){
+            $total_comision_tipotasa2 =  round((($interes_comision/2) * $numerocuota) * $montosolicitado, 1);
+        }
+        elseif($frecuencia==4){
+            $total_comision_tipotasa2 = round(($interes_comision * $numerocuota) * $montosolicitado, 1);
+        }
+        // -------------
+
         for ($i=1; $i < ($numerocuota+1); $i++){
              
             $fecha = cronograma_fecha($frecuencia,$fechainicio,$feriados);
@@ -176,27 +193,12 @@ function genera_cronograma($montosolicitado,$numerocuota,$fechainicio,$frecuenci
                 $cuota = $cuota_amortizacion + $cuota_interes;
             }elseif($tipotasa==2){
                 $cuota_interes = number_format($saldo * $interes_diaria, 2, '.', '');
-                // $cuota_comision1 = round($saldo * $interes_comision,1);
-                $interes_comision = $comision/100;
-                if($frecuencia==1){
-                    $cuota_comision1 = round(((($interes_comision/26) * $numerocuota) * $montosolicitado) / $numerocuota, 1);
-                }
-                elseif($frecuencia==2){
-                    $cuota_comision1 = round(((($interes_comision/4) * $numerocuota) * $montosolicitado) / $numerocuota, 1);
-                }
-                elseif($frecuencia==3){
-                    $cuota_comision1 =  round(((($interes_comision/2) * $numerocuota) * $montosolicitado) / $numerocuota, 1);
-                }
-                elseif($frecuencia==4){
-                    $cuota_comision1 = round((($interes_comision * $numerocuota) * $montosolicitado) / $numerocuota, 1);
-                }
-
+                
                 if($i == $numerocuota){
-                    //$cuota_comisioncargo = number_format($cuota_comision1-$cuota_cargo1, 2, '.', '');
-                  
                     $cuota_amortizacion = number_format($total_amortizacion-$suma_amortizacion, 2, '.', '');
                     $cuota_cargo1 = number_format($total_cargo1-$suma_cargo1, 2, '.', '');
                     $cuota = number_format($total_cuota-$suma_cuota, 2, '.', '');
+                    $cuota_comision1 = $total_comision_tipotasa2 - $suma_comision1;
                 }else{
                     //$cuota_amortizacion = number_format(round($cuota-$cuota_interes-$cuota_comision1, 1), 2, '.', '');
                     $cuota_amortizacion = $cuota-$cuota_interes;

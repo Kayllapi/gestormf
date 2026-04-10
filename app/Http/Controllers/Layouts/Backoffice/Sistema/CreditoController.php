@@ -1185,7 +1185,7 @@ class CreditoController extends Controller
                 $tasa_tip,
                 $request->input('tipotasa'),
                 $request->input('dia_gracia'),
-                $comision_cargo,
+                $tasa_tem, // anterior estaba $comision_cargo,
                 $request->input('cargo')
           );
           

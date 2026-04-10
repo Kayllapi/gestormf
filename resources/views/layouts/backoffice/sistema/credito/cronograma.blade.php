@@ -230,12 +230,6 @@
         </div>
       </div>
       <script>
-        /*function cal_tasa_tem(){
-            var tasa_tem = parseFloat($('#tasa_tem').val());
-            var comision = parseFloat($('#comision').val())
-            var tasa_tcem = tasa_tem+comision;
-            $('#tasa_tcem').val(tasa_tcem.toFixed(2))
-        }*/
         function cronograma(){
           
           let monto       = parseFloat($('#monto_solicitado').val());

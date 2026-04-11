@@ -83,24 +83,14 @@ function genera_cronograma($montosolicitado,$numerocuota,$fechainicio,$frecuenci
                     $interes_diaria = pow(1+($tasa/100), $db_frecuencia->dias/30)-1;
                 }
             }
-          
-            //-----------
+
             $interes_diaria = truncar($interes_diaria, 10);
-            // $interes_comision = number_format($interes_comision, 6, '.', '');
-          
-            // $tasacombinada = ((1 + $interes_diaria) * (1 + $interes_comision) - 1) * 100;
-            // $tasacombinada = number_format($tasacombinada, 4, '.', '');
             $cuota = $montosolicitado * $interes_diaria * pow(1 + $interes_diaria, $numerocuota) / (pow(1 + $interes_diaria, $numerocuota) - 1);
-            //-----------
-          
-            //dd($tasa_tip_interes);
-            //$cuota = number_format(round($montosolicitado*(($interes_diaria*pow(1+$interes_diaria,$numerocuota))/(pow(1+$interes_diaria,$numerocuota)-1)),1), 2, '.', '');
-           
-            $total_cuota = number_format(round($cuota*$numerocuota, 1), 2, '.', '');
+
+            $total_cuota = round($cuota*$numerocuota, 2);
             $total_interes = number_format(round($total_cuota-$montosolicitado, 1), 2, '.', '');
             $total_cuotafinal = number_format(round($total_cuota+$total_comisioncargo, 1), 2, '.', '');
-          
-            // $cuota = number_format(round($montosolicitado * $tasacombinada/100 * pow(1 + $tasacombinada/100, $numerocuota) / (pow(1 + $tasacombinada/100, $numerocuota) - 1),1), 2, '.', '');
+
             $cuota = round($cuota, 2);
             
         }else{
@@ -108,10 +98,7 @@ function genera_cronograma($montosolicitado,$numerocuota,$fechainicio,$frecuenci
             $cuota_interes = number_format((($montosolicitado*$tasa)/100)/$numerocuota, 2, '.', '');
             $total_interes = number_format((($montosolicitado*$tasa)/100), 2, '.', '');
         }
-  
-  
-  
-        //dd($interes_diaria);
+
         $saldo = $montosolicitado;
         //$saldo_comision1 = $montosolicitado;
         $suma_amortizacion = 0;
@@ -193,18 +180,17 @@ function genera_cronograma($montosolicitado,$numerocuota,$fechainicio,$frecuenci
                 $cuota = $cuota_amortizacion + $cuota_interes;
             }elseif($tipotasa==2){
                 $cuota_interes = number_format($saldo * $interes_diaria, 2, '.', '');
-                
+
                 if($i == $numerocuota){
                     $cuota_amortizacion = number_format($total_amortizacion-$suma_amortizacion, 2, '.', '');
                     $cuota_cargo1 = number_format($total_cargo1-$suma_cargo1, 2, '.', '');
-                    $cuota = number_format($total_cuota-$suma_cuota, 2, '.', '');
+                    $cuota = $total_cuota - $suma_cuota;
                     $cuota_comision1 = $total_comision_tipotasa2 - $suma_comision1;
                 }else{
                     //$cuota_amortizacion = number_format(round($cuota-$cuota_interes-$cuota_comision1, 1), 2, '.', '');
                     $cuota_amortizacion = $cuota-$cuota_interes;
                 }
                 $cuotafinal = number_format($cuota+$cuota_cargo1, 2, '.', '');
-              
             }
           
             $data_tir[] = (float)$cuotafinal;
@@ -217,7 +203,7 @@ function genera_cronograma($montosolicitado,$numerocuota,$fechainicio,$frecuenci
                 'saldo' => number_format($saldo, 2, '.', ''),
                 'amortizacion' => number_format($cuota_amortizacion, 2, '.', ''),
                 'interes' => $cuota_interes,
-                'cuota' => $cuota,
+                'cuota' => number_format($cuota, 2, '.', ''),
                 'comision' => number_format($cuota_comision1, 2, '.', ''),
                 'cargo' => $cuota_cargo1,
                 'comisioncargo' => $cuota_comisioncargo,
@@ -235,7 +221,7 @@ function genera_cronograma($montosolicitado,$numerocuota,$fechainicio,$frecuenci
             $saldo = $saldo-$cuota_amortizacion;
             $suma_amortizacion = number_format($suma_amortizacion+$cuota_amortizacion, 2, '.', '');
             $suma_interes = number_format($suma_interes+$cuota_interes, 2, '.', '');
-            $suma_cuota = number_format($suma_cuota+$cuota, 2, '.', '');
+            $suma_cuota = $suma_cuota + $cuota;
             $suma_comisioncargo = number_format($suma_comisioncargo+($cuota_comision1+$cuota_cargo1), 2, '.', '');
             $suma_cuotafinal = number_format($suma_cuotafinal+$cuotafinal, 2, '.', '');
           
@@ -266,7 +252,7 @@ function genera_cronograma($montosolicitado,$numerocuota,$fechainicio,$frecuenci
             'cuota_pago' => $cronograma_cuotapago,
             'total_amortizacion' => $suma_amortizacion,
             'total_interes' => $suma_interes,
-            'total_cuota' => $suma_cuota,
+            'total_cuota' => number_format($suma_cuota, 2, '.', ''),
             'cuota_comision' => number_format($cuota_comision, 2, '.', ''),
             'cuota_cargo' => number_format($cuota_cargo, 2, '.', ''),
             'cuota_comisioncargo' => number_format($cuota_comision+$cuota_cargo, 2, '.', ''),

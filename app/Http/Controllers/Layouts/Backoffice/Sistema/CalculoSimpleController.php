@@ -242,6 +242,7 @@ class CalculoSimpleController extends Controller
           );
         }
         else if($id="showtarifarioproducto"){
+            $credito_prendatario = DB::table('credito_prendatario')->whereId($request->idproducto)->first();
            $tarifario_producto = DB::table('tarifario')
                             ->join('forma_pago_credito','forma_pago_credito.id','tarifario.idforma_pago_credito')
                             ->join('credito_prendatario','credito_prendatario.id','tarifario.idcredito_prendatario')
@@ -264,10 +265,10 @@ class CalculoSimpleController extends Controller
                         <td>{$value->nombreproducto}</td>
                       </tr>";
           }
-          return  $data;
+            return response()->json([
+                'data' => $data,
+                'credito_prendatario' => $credito_prendatario
+            ]);
         }
-
     }
-
-    
 }

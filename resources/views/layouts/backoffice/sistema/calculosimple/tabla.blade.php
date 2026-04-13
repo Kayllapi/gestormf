@@ -94,10 +94,10 @@
                   <div class="row">
                     <label class="col-sm-4 col-form-label" style="text-align: right;">Cargo x Custodia S/.:</label>
                     <div class="col-sm-8">
-                      <input type="number" step="any" class="form-control" id="cargo" value="0.00" disabled>
+                      <input type="number" step="any" class="form-control" id="cargo" value="0.00">
                     </div>
                   </div>
-                  <div class="row">
+                  <div class="row d-none" id="cont_mensaje_custodia">
                     <label class="col-sm-4"></label>
                     <label class="col-sm-8">
                         <label class="custom-radio" style="color: #b32121;">
@@ -227,7 +227,6 @@ function show_producto_credito(){
       });
       $('#idcredito_prendatario').html(option_select);
       sistema_select2({ input:'#idcredito_prendatario'});
-
     }
   })
 }
@@ -390,7 +389,14 @@ function show_tarifario_producto(){
       idforma_pago_credito: idforma_pago_credito,
     },
     success: function (res){
-      $('#table-tarifario-producto > tbody').html(res);
+      $('#table-tarifario-producto > tbody').html(res.data);
+        if(res.credito_prendatario){
+          if (res.credito_prendatario.garantiaprendatario == "SI") {
+            $('#cont_mensaje_custodia').removeClass('d-none');
+          } else {
+            $('#cont_mensaje_custodia').addClass('d-none');
+          }
+        }
     }
   })
 }

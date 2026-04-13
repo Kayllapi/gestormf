@@ -152,7 +152,7 @@
           </div>
         </div>
         <div class="row mt-3 justify-content-center">
-          <div class="col-sm-12 col-md-7">
+          <div class="col-sm-12 col-md-8">
             <table class="table table-striped" id="table-cronograma">
               <thead>
                 <th>Cuota N°</th>
@@ -175,7 +175,7 @@
               </tbody>
             </table>
           </div>
-          <div class="col-sm-12 col-md-5">
+          <div class="col-sm-12 col-md-4">
             <table class="table table-striped" id="table-tarifario-producto">
               <thead>
                 <tr>

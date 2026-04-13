@@ -1243,19 +1243,19 @@ class CreditoController extends Controller
               }
           } elseif($request->input('tipotasa')==1) {
             if($request->input('frecuencia')==1){
-                $calculo = ($cronograma['total_interes']/$request->input('numerocuota')*26)/$request->input('monto');
+                $calculo = ($cronograma['total_cargo']/$request->input('numerocuota')*26)/$request->input('monto');
                 $tasa_tcem = round(($calculo*100)+$tasa_tem, 2);
             }
             elseif($request->input('frecuencia')==2){
-                $calculo = ($cronograma['total_interes']/$request->input('numerocuota')*4)/$request->input('monto');
+                $calculo = ($cronograma['total_cargo']/$request->input('numerocuota')*4)/$request->input('monto');
                 $tasa_tcem = round(($calculo*100)+$tasa_tem, 2);
             }
             elseif($request->input('frecuencia')==3){
-                $calculo = ($cronograma['total_interes']/$request->input('numerocuota')*2)/$request->input('monto');
+                $calculo = ($cronograma['total_cargo']/$request->input('numerocuota')*2)/$request->input('monto');
                 $tasa_tcem = round(($calculo*100)+$tasa_tem, 2);
             }
             elseif($request->input('frecuencia')==4){
-                $calculo = ($cronograma['total_interes']/$request->input('numerocuota'))/$request->input('monto');
+                $calculo = ($cronograma['total_cargo']/$request->input('numerocuota'))/$request->input('monto');
                 $tasa_tcem = round(($calculo*100)+$tasa_tem, 2);
             }
           }

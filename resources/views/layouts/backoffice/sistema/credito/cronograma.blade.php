@@ -122,7 +122,7 @@
                     <div class="row">
                       <label class="col-sm-5 col-form-label" style="text-align: right;">Cargo x Custodia S/.:</label>
                       <div class="col-sm-7">
-                        <input type="number" step="any" class="form-control" {{ $view_detalle=='false' ? 'disabled' : '' }} id="cargo" value="{{ $credito->cargo }}">
+                        <input type="number" step="any" class="form-control" {{ $view_detalle=='false' ? 'disabled' : '' }} id="cargo" value="{{ $credito->cargo }}" disabled>
                       </div>
                     </div>
                     @if ($usuario->custodiagarantia_id==2)

@@ -160,10 +160,10 @@
                 <th>Capital</th>
                 <th>Amortización</th>
                 <th>Interés</th>
-                <th>Cuota de Préstamo <br> (Int. + Cap.)</th>
+                <th>Cargo x Custodia Garant.</th>
+                <th>Cuota de Préstamo <br> (Int. + Cap. + Cust.)</th>
                 <th>Ss. Recaudo</th>
-                <th>Cargo x Custodia</th>
-                <th>Total a Pagar <br> (Int. + Cap. + Gast.)</th>
+                <th>Total a Pagar</th>
               </thead>
               <tbody>
 

@@ -190,9 +190,9 @@ class CalculoSimpleController extends Controller
                         <td>'.$value['saldo'].'</td>
                         <td>'.$value['amortizacion'].'</td>
                         <td>'.$value['interes'].'</td>
-                        <td>'.$value['cuota_prestamo'].'</td>
-                        <td>'.$value['comision'].'</td>
                         <td>'.$value['cargo'].'</td>
+                        <td>'.$value['cuota'].'</td>
+                        <td>'.$value['comision'].'</td>
                         <td>'.$value['cuotafinal'].'</td>
                       </tr>';
           }
@@ -202,29 +202,29 @@ class CalculoSimpleController extends Controller
                         <th>TOTAL</th>
                         <th>'.$cronograma['total_amortizacion'].'</th>
                         <th>'.$cronograma['total_interes'].'</th>
-                        <th>'.$cronograma['total_cuota_prestamo'].'</th>
-                        <th>'.$cronograma['total_comision'].'</th>
                         <th>'.$cronograma['total_cargo'].'</th>
+                        <th>'.$cronograma['total_cuota'].'</th>
+                        <th>'.$cronograma['total_comision'].'</th>
                         <th>'.$cronograma['total_cuotafinal'].'</th>
                       </tr>';
 
             // tipotasa = 1 Interes Simple
             $tasa_tcem = 0;
             if($request->input('frecuencia')==1){
-                $calculo = ($cronograma['total_interes']/$request->input('numerocuota')*26)/$request->input('monto');
-                $tasa_tcem = round($calculo*100, 2);
+                $calculo = ($cronograma['total_cargo']/$request->input('numerocuota')*26)/$request->input('monto');
+                $tasa_tcem = round(($calculo*100)+$tasa_tem, 2);
             }
             elseif($request->input('frecuencia')==2){
-                $calculo = ($cronograma['total_interes']/$request->input('numerocuota')*4)/$request->input('monto');
-                $tasa_tcem = round($calculo*100, 2);
+                $calculo = ($cronograma['total_cargo']/$request->input('numerocuota')*4)/$request->input('monto');
+                $tasa_tcem = round(($calculo*100)+$tasa_tem, 2);
             }
             elseif($request->input('frecuencia')==3){
-                $calculo = ($cronograma['total_interes']/$request->input('numerocuota')*2)/$request->input('monto');
-                $tasa_tcem = round($calculo*100, 2);
+                $calculo = ($cronograma['total_cargo']/$request->input('numerocuota')*2)/$request->input('monto');
+                $tasa_tcem = round(($calculo*100)+$tasa_tem, 2);
             }
             elseif($request->input('frecuencia')==4){
-                $calculo = ($cronograma['total_interes']/$request->input('numerocuota'))/$request->input('monto');
-                $tasa_tcem = round($calculo*100, 2);
+                $calculo = ($cronograma['total_cargo']/$request->input('numerocuota'))/$request->input('monto');
+                $tasa_tcem = round(($calculo*100)+$tasa_tem, 2);
             }
 
           return array(

@@ -104,7 +104,6 @@ function genera_cronograma($montosolicitado,$numerocuota,$fechainicio,$frecuenci
         //$saldo_comision1 = $montosolicitado;
         $suma_amortizacion = 0;
         $suma_interes = 0;
-        $suma_cuota_prestamo = 0;
         $suma_cuota = 0;
         $suma_comisioncargo = 0;
         $suma_cuotafinal = 0;

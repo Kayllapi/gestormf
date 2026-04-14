@@ -1066,8 +1066,8 @@ class CobranzacuotaController extends Controller
                 <th>Fecha</th>
                 <th>Amort.</th>
                 <th>Interes</th>
-                <th>Cargo x <br> Cust. Garant</th>
-                <th>Ss. <br>Recaudo.</th>
+                <th>Car. x <br> Cust. Garant</th>
+                <th>Ss. <br>Recau.</th>
                 <th>Cuota</th>
                 <th><span style="background-color: #ffb2b2 !important;font-weight: bold;">Vencido</span></th>
                 <th>Custo.</th>

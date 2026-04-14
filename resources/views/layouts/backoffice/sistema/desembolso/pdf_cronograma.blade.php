@@ -145,8 +145,8 @@
               <th style="border-bottom: 2px solid #000;">CAPITAL</th>
               <th style="border-bottom: 2px solid #000;">AMORTIZACIÓN</th>
               <th style="border-bottom: 2px solid #000;">INTERES</th>
-              <th style="border-bottom: 2px solid #000;">COM DE Ss. Y DESGRAV.</th>
-              <th style="border-bottom: 2px solid #000;">CARGO</th>
+              <th style="border-bottom: 2px solid #000;">CARGO x Custodia</th>
+              <th style="border-bottom: 2px solid #000;">Ss. RECAUDO.</th>
               <th style="border-bottom: 2px solid #000;">CUOTA A PAGAR</th>
             </tr>
             <?php
@@ -163,8 +163,8 @@
               <td style="text-align: right;">{{$value->capital}}</td>
               <td style="text-align: right;">{{$value->amortizacion}}</td>
               <td style="text-align: right;">{{$value->interes}}</td>
-              <td style="text-align: right;">{{$value->comision}}</td>
               <td style="text-align: right;">{{$value->cargo}}</td>
+              <td style="text-align: right;">{{$value->comision}}</td>
               <td style="text-align: right;">{{$value->cuota_real}}</td>
             </tr>
             <?php
@@ -179,8 +179,8 @@
               <td style="border-top: 2px solid #000;" colspan="3" align="center">*****TOTALES*****</td>
               <td style="border-top: 2px solid #000;text-align: right;">{{number_format($total_amortizacion, 2, '.', '')}}</td>
               <td style="border-top: 2px solid #000;text-align: right;">{{number_format($total_interes, 2, '.', '')}}</td>
-              <td style="border-top: 2px solid #000;text-align: right;">{{number_format($total_comision, 2, '.', '')}}</td>
               <td style="border-top: 2px solid #000;text-align: right;">{{number_format($total_cargo, 2, '.', '')}}</td>
+              <td style="border-top: 2px solid #000;text-align: right;">{{number_format($total_comision, 2, '.', '')}}</td>
               <td style="border-top: 2px solid #000;text-align: right;">{{number_format($total_total, 2, '.', '')}}</td>
             </tr>
           </table>

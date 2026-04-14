@@ -192,8 +192,9 @@ class CalculoCompuestoController extends Controller
                         <td class="text-end">'.$value['saldo'].'</td>
                         <td class="text-end">'.$value['amortizacion'].'</td>
                         <td class="text-end">'.$value['interes'].'</td>
-                        <td class="text-end">'.$value['comision'].'</td>
                         <td class="text-end">'.$value['cargo'].'</td>
+                        <td class="text-end">'.$value['cuotafinal'].'</td>
+                        <td class="text-end">'.$value['comision'].'</td>
                         <td class="text-end">'.$value['cuotafinal'].'</td>
                       </tr>';
           }
@@ -203,8 +204,9 @@ class CalculoCompuestoController extends Controller
                         <th class="text-end">TOTAL</th>
                         <th class="text-end">'.$cronograma['total_amortizacion'].'</th>
                         <th class="text-end">'.$cronograma['total_interes'].'</th>
-                        <th class="text-end">'.$cronograma['total_comision'].'</th>
                         <th class="text-end">'.$cronograma['total_cargo'].'</th>
+                        <th class="text-end">'.$cronograma['total_cuotafinal'].'</th>
+                        <th class="text-end">'.$cronograma['total_comision'].'</th>
                         <th class="text-end">'.$cronograma['total_cuotafinal'].'</th>
                       </tr>';
           

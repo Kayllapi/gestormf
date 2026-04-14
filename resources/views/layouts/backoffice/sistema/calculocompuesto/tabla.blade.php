@@ -83,7 +83,7 @@
                     </div>
                   </div>
                   <div class="row">
-                    <label class="col-sm-4 col-form-label" style="text-align: right;">C. Ss./Otros (% mes):</label>
+                    <label class="col-sm-4 col-form-label" style="text-align: right;">Ss. Recaudo S/.:</label>
                     <div class="col-sm-8">
                       <input type="number" step="any" class="form-control" id="comision" value="" disabled>
                     </div>
@@ -91,7 +91,7 @@
                       <input type="number" step="any" class="form-control" id="monto_cargos_otros" value="0.00" disabled>
                     </div>
                   </div>
-                  <div class="row">
+                  <div class="row d-none">
                     <label class="col-sm-4 col-form-label" style="text-align: right;">Cargo Mes S/.:</label>
                     <div class="col-sm-8">
                       <input type="number" step="any" class="form-control" id="cargomes" value="0.00">
@@ -147,7 +147,7 @@
               <div class="col-sm-1 col-form-label" id="interes_total" style="font-weight: normal;">
                 0.00
               </div>
-              <label class="col-sm-2 col-form-label" style="text-align: right;"><b>C. Ss./Otros:</b></label>
+              <label class="col-sm-2 col-form-label" style="text-align: right;"><b>Ss. Recaudo (S/):</b></label>
               <div class="col-sm-1 col-form-label" id="total_comision" style="font-weight: normal;">
                 0.00
               </div>
@@ -163,7 +163,7 @@
           </div>
         </div>
         <div class="row mt-3 justify-content-center">
-          <div class="col-sm-12 col-md-7">
+          <div class="col-sm-12 col-md-8">
             <table class="table table-striped" id="table-cronograma">
               <thead>
                 <th>Cuota N°</th>
@@ -171,9 +171,10 @@
                 <th class="text-end">Capital</th>
                 <th class="text-end">Amortización</th>
                 <th class="text-end">Interés</th>
-                <th class="text-end">C. Ss./Otros (%)</th>
-                <th class="text-end">Cargo</th>
-                <th class="text-end">Cuota</th>
+                <th class="text-end">Cargo x Custodia Garant.</th>
+                <th class="text-end">Cuota de Préstamo <br> (Int. + Cap. + Cust.)</th>
+                <th class="text-end">Ss. Recaudo</th>
+                <th class="text-end">Total a Pagar</th>
               </thead>
               <tbody>
                 <tr>
@@ -184,7 +185,7 @@
               </tbody>
             </table>
           </div>
-          <div class="col-sm-12 col-md-5">
+          <div class="col-sm-12 col-md-4">
             <table class="table table-striped" id="table-tarifario-producto">
               <thead>
                 <tr>

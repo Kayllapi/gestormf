@@ -141,17 +141,19 @@
           <table style="width:100%;">
             <tr>
               <th style="border-bottom: 2px solid #000;">CUOTA</th>
-              <th style="border-bottom: 2px solid #000;">F. VENCIMIENTO</th>
+              <th style="border-bottom: 2px solid #000;">F. VENC.</th>
               <th style="border-bottom: 2px solid #000;">CAPITAL</th>
               <th style="border-bottom: 2px solid #000;">AMORTIZACIÓN</th>
               <th style="border-bottom: 2px solid #000;">INTERES</th>
-              <th style="border-bottom: 2px solid #000;">C. x CUSTODIA. G.</th>
+              <th style="border-bottom: 2px solid #000;">CARGO x CUSTODIA. G.</th>
+              <th style="border-bottom: 2px solid #000;">CUOTA DE PRESTAMO <br>(Int. + Cap. + Cust.)</th>
               <th style="border-bottom: 2px solid #000;">Ss. RECAUDO.</th>
               <th style="border-bottom: 2px solid #000;">TOTAL A PAGAR</th>
             </tr>
             <?php
             $total_amortizacion = 0;
             $total_interes = 0;
+            $total_cuota = 0;
             $total_comision = 0;
             $total_cargo = 0;
             $total_total = 0;
@@ -164,12 +166,14 @@
               <td style="text-align: right;">{{$value->amortizacion}}</td>
               <td style="text-align: right;">{{$value->interes}}</td>
               <td style="text-align: right;">{{$value->cargo}}</td>
+              <td style="text-align: right;">{{($value->amortizacion+$value->interes+$value->cargo)}}</td>
               <td style="text-align: right;">{{$value->comision}}</td>
               <td style="text-align: right;">{{$value->cuota_real}}</td>
             </tr>
             <?php
             $total_amortizacion = $total_amortizacion+$value->amortizacion;
             $total_interes = $total_interes+$value->interes;
+            $total_cuota = $total_cuota+($value->amortizacion+$value->interes+$value->cargo);
             $total_comision = $total_comision+$value->comision;
             $total_cargo = $total_cargo+$value->cargo;
             $total_total = $total_total+$value->cuota_real;
@@ -180,6 +184,7 @@
               <td style="border-top: 2px solid #000;text-align: right;">{{number_format($total_amortizacion, 2, '.', '')}}</td>
               <td style="border-top: 2px solid #000;text-align: right;">{{number_format($total_interes, 2, '.', '')}}</td>
               <td style="border-top: 2px solid #000;text-align: right;">{{number_format($total_cargo, 2, '.', '')}}</td>
+              <td style="border-top: 2px solid #000;text-align: right;">{{number_format($total_cuota, 2, '.', '')}}</td>
               <td style="border-top: 2px solid #000;text-align: right;">{{number_format($total_comision, 2, '.', '')}}</td>
               <td style="border-top: 2px solid #000;text-align: right;">{{number_format($total_total, 2, '.', '')}}</td>
             </tr>

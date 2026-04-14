@@ -189,7 +189,7 @@ function genera_cronograma($montosolicitado,$numerocuota,$fechainicio,$frecuenci
                     //$cuota_amortizacion = number_format(round($cuota-$cuota_interes-$cuota_comision1, 1), 2, '.', '');
                     $cuota_amortizacion = $cuota-$cuota_interes;
                 }
-                $cuotafinal = number_format($cuota+$cuota_cargo1, 2, '.', '');
+                $cuotafinal = number_format($cuota+$cuota_cargo1+$cuota_comision1, 2, '.', '');
             }
           
             $data_tir[] = (float)$cuotafinal;

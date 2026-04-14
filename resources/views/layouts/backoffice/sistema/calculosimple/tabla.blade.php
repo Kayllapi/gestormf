@@ -94,7 +94,7 @@
                   <div class="row">
                     <label class="col-sm-4 col-form-label" style="text-align: right;">Cargo x Custodia S/.:</label>
                     <div class="col-sm-8">
-                      <input type="number" step="any" class="form-control" id="cargo" value="0.00">
+                      <input type="number" step="any" class="form-control" id="cargo" value="0.00" disabled>
                     </div>
                   </div>
                   <div class="row d-none" id="cont_mensaje_custodia">
@@ -109,6 +109,11 @@
                             <input type="radio" name="cargo_check" id="cargo_check" value="2">
                             <span></span>
                             Gasto x custodia de garantía para cargo: (Convenio con Acreedor)
+                        </label>
+                        <label class="custom-radio" style="color: #b32121;">
+                            <input type="radio" name="cargo_check" id="cargo_check" value="3">
+                            <span></span>
+                            Externo
                         </label>
                     </label>
                   </div>
@@ -208,6 +213,8 @@
           showtasa();
       } else if (tipo == 2) {
           showtasa();
+      } else if (tipo == 3) {
+          $('#cargo').prop('disabled', false);
       }
   });
 
@@ -249,16 +256,19 @@ function cronograma(){
   let tipotasa    = 1;
 
   if(monto<=0){
-      alert("Monto de Préstamo debe ser mayor a 0.00.");
+      mensaje = 'Monto de Préstamo debe ser mayor a 0.00.';
+      modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
       return false;
   }
   if(numerocuota<=0){
-      alert("El Número de Cuotas debe ser mayor a 0.");
+      mensaje = 'El Número de Cuotas debe ser mayor a 0.';
+      modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
       return false;
   }
 
   if(dia_gracia<0){
-      alert("El día de gracia debe ser mayor o igual a 0!!.");
+      mensaje = 'El día de gracia debe ser mayor o igual a 0!!.';
+      modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
       return false;
   }
  
@@ -293,7 +303,8 @@ function cronograma(){
               $('#tasa_tip').val('0.00');
               $('#tasa_tcem').val('0.00');
               $('#comision').val('0.00');
-              alert(res.mensaje);
+
+              modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+res.mensaje, size: 'modal-sm' });
           }else{
               $('#table-cronograma > tbody').html(res.cronograma);
               $('#interes_total').html(res.interes_total);
@@ -333,25 +344,36 @@ function showtasa(){
   let idproducto = $('#idcredito_prendatario').val();
 
   var comision_gestion_garantia_cargo = parseFloat({{ configuracion($tienda->id,'comision_gestion_garantia_cargo')['valor'] }});
+  var cargocom = 0;
+
+  if ($('#cont_mensaje_custodia').hasClass('d-none')) {
+    comision_gestion_garantia_cargo = 0;
+  }
+
   let tipo = $('input[name="cargo_check"]:checked').val();
   if (tipo == 1) {
       comision_gestion_garantia_cargo = parseFloat({{ configuracion($tienda->id,'comision_gestion_garantia_cargo')['valor'] }});
   } else if (tipo == 2) {
       comision_gestion_garantia_cargo = parseFloat({{ configuracion($tienda->id,'comision_gestion_garantia_convenio')['valor'] }});
+  } else {
+      comision_gestion_garantia_cargo = 0;
   }
 
-  var cargocom = 0;
-  if(frecuencia==1){
-      cargocom = ((comision_gestion_garantia_cargo/26)*numerocuota)/100;
-  }
-  else if(frecuencia==2){
-      cargocom = ((comision_gestion_garantia_cargo/4)*numerocuota)/100;
-  }
-  else if(frecuencia==3){
-      cargocom = ((comision_gestion_garantia_cargo/2)*numerocuota)/100;
-  }
-  else if(frecuencia==4){
-      cargocom = ((comision_gestion_garantia_cargo/1)*numerocuota)/100;
+  if ($('#cont_mensaje_custodia').hasClass('d-none')) {
+    cargocom = $('#cargo').val();
+  } else {
+    if(frecuencia==1){
+        cargocom = ((comision_gestion_garantia_cargo/26)*numerocuota)/100;
+    }
+    else if(frecuencia==2){
+        cargocom = ((comision_gestion_garantia_cargo/4)*numerocuota)/100;
+    }
+    else if(frecuencia==3){
+        cargocom = ((comision_gestion_garantia_cargo/2)*numerocuota)/100;
+    }
+    else if(frecuencia==4){
+        cargocom = ((comision_gestion_garantia_cargo/1)*numerocuota)/100;
+    }
   }
   var cargo = cargocom*monto;
   $('#cargo').val(cargo.toFixed(2));

@@ -1070,7 +1070,7 @@ class CobranzacuotaController extends Controller
                 <th>Ss. <br>Recau.</th>
                 <th>Cuota</th>
                 <th><span style="background-color: #ffb2b2 !important;font-weight: bold;">Vencido</span></th>
-                <th>Custo.</th>
+                <th>P. Cus.</th>
                 <th style="width:10px;">Int. Comp.</th>
                 <th style="width:10px;">Int. morat.</th>
                 <th>Cuota Total</th>

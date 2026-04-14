@@ -391,11 +391,11 @@ function showtasa(){
         frecuencia: frecuencia,
     },
     success: function (res){
-      let { monto, cuotas, tem , cargos_otros } =  res;
+      let { monto, cuotas, tem , total_comision } =  res;
       $('#monto_max_credito').val(monto);
       $('#coutas_max_credito').val(cuotas);
       $('#tasa_tem_minima').val(tem);
-      $('#comision').val(cargos_otros);
+      $('#comision').val(total_comision);
     }
   })
 }

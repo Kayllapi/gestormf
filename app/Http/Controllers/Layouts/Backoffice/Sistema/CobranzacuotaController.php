@@ -1066,8 +1066,8 @@ class CobranzacuotaController extends Controller
                 <th>Fecha</th>
                 <th>Amort.</th>
                 <th>Interes</th>
-                <th>C. Ss./ <br>Otros.</th>
-                <th>Cargo</th>
+                <th>Cargo x Custodia</th>
+                <th>Ss. <br>Recaudo.</th>
                 <th>Cuota</th>
                 <th><span style="background-color: #ffb2b2 !important;font-weight: bold;">Vencido</span></th>
                 <th>Custo.</th>
@@ -1129,8 +1129,8 @@ class CobranzacuotaController extends Controller
                             <td style="'.$value['style'].'text-align:center;">'.$value['fecha'].'</td>
                             <td style="'.$value['style'].'text-align:right;" pagar="'.$value['pagar_amortizacion'].'" descontar="'.$value['descontar_amortizacion'].'">'.$value['amortizacion'].'</td>
                             <td style="'.$value['style'].'text-align:right;" pagar="'.$value['pagar_interes'].'" descontar="'.$value['descontar_interes'].'">'.$value['interes'].'</td>
-                            <td style="'.$value['style'].'text-align:right;" pagar="'.$value['pagar_comision'].'" descontar="'.$value['descontar_comision'].'">'.$value['comision'].'</td>
                             <td style="'.$value['style'].'text-align:right;" pagar="'.$value['pagar_cargo'].'" descontar="'.$value['descontar_cargo'].'">'.$value['cargo'].'</td>
+                            <td style="'.$value['style'].'text-align:right;" pagar="'.$value['pagar_comision'].'" descontar="'.$value['descontar_comision'].'">'.$value['comision'].'</td>
                             <td style="'.$value['style'].'text-align:right;" pagar="'.$value['pagar_cuota'].'" descontar="'.$value['descontar_cuota'].'">'.$value['cuota'].'</td>
                             <td style="'.$value['style'].'text-align:right;background-color: #CFECC5 !important;">
                             <span style="'.($value['atraso_dias']>0?'color: #ff4343 !important;':'').'font-weight: bold;">
@@ -1153,8 +1153,8 @@ class CobranzacuotaController extends Controller
                 <th></th>
                 <th style="text-align:right;">'.$cronograma['total_amortizacion'].'</th>
                 <th style="text-align:right;">'.$cronograma['total_interes'].'</th>
-                <th style="text-align:right;">'.$cronograma['total_comision'].'</th>
                 <th style="text-align:right;">'.$cronograma['total_cargo'].'</th>
+                <th style="text-align:right;">'.$cronograma['total_comision'].'</th>
                 <th style="text-align:right;">'.$cronograma['total_cuota'].'</th>
                 <th></th>
                 <th style="text-align:right;">'.$cronograma['total_tenencia'].'</th>

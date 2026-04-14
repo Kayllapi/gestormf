@@ -210,8 +210,10 @@
   $('input[name="cargo_check"]').on('change', function () {
       let tipo = $('input[name="cargo_check"]:checked').val();
       if (tipo == 1) {
+          $('#cargo').prop('disabled', true);
           showtasa();
       } else if (tipo == 2) {
+          $('#cargo').prop('disabled', true);
           showtasa();
       } else if (tipo == 3) {
           $('#cargo').val(0.00);
@@ -412,7 +414,7 @@ function show_tarifario_producto(){
       idforma_pago_credito: idforma_pago_credito,
     },
     success: function (res){
-      $('#table-tarifario-producto > tbody').html(res.data);
+        $('#table-tarifario-producto > tbody').html(res.data);
         if(res.credito_prendatario){
           if (res.credito_prendatario.garantiaprendatario == "SI") {
             $('#cont_mensaje_custodia').removeClass('d-none');

@@ -189,23 +189,23 @@ class CalculoCompuestoController extends Controller
             $html .= '<tr>
                         <td>'.$value['numero'].'</td>
                         <td>'.$value['fecha'].'</td>
-                        <td>'.$value['saldo'].'</td>
-                        <td>'.$value['amortizacion'].'</td>
-                        <td>'.$value['interes'].'</td>
-                        <td>'.$value['comision'].'</td>
-                        <td>'.$value['cargo'].'</td>
-                        <td>'.$value['cuotafinal'].'</td>
+                        <td class="text-end">'.$value['saldo'].'</td>
+                        <td class="text-end">'.$value['amortizacion'].'</td>
+                        <td class="text-end">'.$value['interes'].'</td>
+                        <td class="text-end">'.$value['comision'].'</td>
+                        <td class="text-end">'.$value['cargo'].'</td>
+                        <td class="text-end">'.$value['cuotafinal'].'</td>
                       </tr>';
           }
           $html .= '<tr>
                         <th></th>
                         <th></th>
-                        <th>TOTAL</th>
-                        <th>'.$cronograma['total_amortizacion'].'</th>
-                        <th>'.$cronograma['total_interes'].'</th>
-                        <th>'.$cronograma['total_comision'].'</th>
-                        <th>'.$cronograma['total_cargo'].'</th>
-                        <th>'.$cronograma['total_cuotafinal'].'</th>
+                        <th class="text-end">TOTAL</th>
+                        <th class="text-end">'.$cronograma['total_amortizacion'].'</th>
+                        <th class="text-end">'.$cronograma['total_interes'].'</th>
+                        <th class="text-end">'.$cronograma['total_comision'].'</th>
+                        <th class="text-end">'.$cronograma['total_cargo'].'</th>
+                        <th class="text-end">'.$cronograma['total_cuotafinal'].'</th>
                       </tr>';
           
           $cargomes = $request->cargomes/$request->input('monto');
@@ -245,29 +245,33 @@ class CalculoCompuestoController extends Controller
           );
         }
         else if($id="showtarifarioproducto"){
-           $tarifario_producto = DB::table('tarifario')
-                            ->join('forma_pago_credito','forma_pago_credito.id','tarifario.idforma_pago_credito')
-                            ->join('credito_prendatario','credito_prendatario.id','tarifario.idcredito_prendatario')
-                            ->where('tarifario.idcredito_prendatario',$request->idproducto)
-                            ->where('tarifario.idforma_pago_credito',$request->idforma_pago_credito)
-                            ->select(
-                                'tarifario.*',
-                                 'credito_prendatario.nombre as nombreproducto',
-                                'forma_pago_credito.nombre as nombreformapago',          
-                            )
-                            ->orderBy('tarifario.id','desc')
-                            ->get();
-          $data = "";
-          foreach($tarifario_producto as $value){
-            $data .= "<tr>
-                        <td>{$value->nombreformapago}</td>
-                        <td>{$value->monto}</td>
-                        <td>{$value->cuotas}</td>
-                        <td>{$value->tem}</td>
-                        <td>{$value->nombreproducto}</td>
-                      </tr>";
-          }
-          return  $data;
+            $credito_prendatario = DB::table('credito_prendatario')->whereId($request->idproducto)->first();
+            $tarifario_producto = DB::table('tarifario')
+                                ->join('forma_pago_credito','forma_pago_credito.id','tarifario.idforma_pago_credito')
+                                ->join('credito_prendatario','credito_prendatario.id','tarifario.idcredito_prendatario')
+                                ->where('tarifario.idcredito_prendatario',$request->idproducto)
+                                ->where('tarifario.idforma_pago_credito',$request->idforma_pago_credito)
+                                ->select(
+                                    'tarifario.*',
+                                    'credito_prendatario.nombre as nombreproducto',
+                                    'forma_pago_credito.nombre as nombreformapago',          
+                                )
+                                ->orderBy('tarifario.id','desc')
+                                ->get();
+            $data = "";
+            foreach($tarifario_producto as $value){
+                $data .= "<tr>
+                            <td>{$value->nombreformapago}</td>
+                            <td>{$value->monto}</td>
+                            <td>{$value->cuotas}</td>
+                            <td>{$value->tem}</td>
+                            <td>{$value->nombreproducto}</td>
+                        </tr>";
+            }
+            return response()->json([
+                'data' => $data,
+                'credito_prendatario' => $credito_prendatario
+            ]);
         }
 
     }

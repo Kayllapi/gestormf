@@ -92,25 +92,35 @@
                     </div>
                   </div>
                   <div class="row">
-                    <label class="col-sm-5 col-form-label" style="text-align: right;">Cargo Mes S/.:</label>
-                    <div class="col-sm-7">
+                    <label class="col-sm-4 col-form-label" style="text-align: right;">Cargo Mes S/.:</label>
+                    <div class="col-sm-8">
                       <input type="number" step="any" class="form-control" id="cargomes" value="0.00">
                     </div>
                   </div>
                   <div class="row">
-                    <label class="col-sm-4 col-form-label" style="text-align: right;">Cargo S/.:</label>
+                    <label class="col-sm-4 col-form-label" style="text-align: right;">Cargo x Custodia S/.:</label>
                     <div class="col-sm-8">
                       <input type="number" step="any" class="form-control" id="cargo" value="0.00" disabled>
                     </div>
                   </div>
-                  <div class="row">
+                  <div class="row d-none" id="cont_mensaje_custodia">
                     <label class="col-sm-4"></label>
                     <label class="col-sm-8">
-                    <label class="chk" style="width: 100%;">
-                        <input type="checkbox" id="cargo_check" checked>
-                        <span class="checkmark"></span>
-                        <span style="color: #b32121;">Costo por custodia de garantia para cargo: ({{ configuracion($tienda->id,'comision_gestion_garantia_cargo')['valor'] }}% Mensual)</span>
-                    </label>
+                        <label class="custom-radio" style="color: #b32121;">
+                            <input type="radio" name="cargo_check" id="cargo_check" value="1" checked>
+                            <span></span>
+                            Gasto x custodia de garantía para cargo: (Acreedor)
+                        </label>
+                        <label class="custom-radio" style="color: #b32121;">
+                            <input type="radio" name="cargo_check" id="cargo_check" value="2">
+                            <span></span>
+                            Gasto x custodia de garantía para cargo: (Convenio con Acreedor)
+                        </label>
+                        <label class="custom-radio" style="color: #b32121;">
+                            <input type="radio" name="cargo_check" id="cargo_check" value="3">
+                            <span></span>
+                            Externo
+                        </label>
                     </label>
                   </div>
                   <div class="row">
@@ -158,12 +168,12 @@
               <thead>
                 <th>Cuota N°</th>
                 <th>Fecha de Pago</th>
-                <th>Capital</th>
-                <th>Amortización</th>
-                <th>Interés</th>
-                <th>C. Ss./Otros (%)</th>
-                <th>Cargo</th>
-                <th>Cuota</th>
+                <th class="text-end">Capital</th>
+                <th class="text-end">Amortización</th>
+                <th class="text-end">Interés</th>
+                <th class="text-end">C. Ss./Otros (%)</th>
+                <th class="text-end">Cargo</th>
+                <th class="text-end">Cuota</th>
               </thead>
               <tbody>
                 <tr>
@@ -201,14 +211,18 @@
 <script>
   @include('app.nuevosistema.select2',['input'=>'#idforma_pago_credito'])
 
-  $('#cargo_check').on('change', function () {
-    if ($(this).is(':checked')) {
-        $('#cargo').prop('disabled',true);
-        showtasa();
-    } else {
-        $('#cargo').removeAttr('disabled');
-        $('#cargo').val('0.00');
-    }
+  $('input[name="cargo_check"]').on('change', function () {
+      let tipo = $('input[name="cargo_check"]:checked').val();
+      if (tipo == 1) {
+          $('#cargo').prop('disabled', true);
+          showtasa();
+      } else if (tipo == 2) {
+          $('#cargo').prop('disabled', true);
+          showtasa();
+      } else if (tipo == 3) {
+          $('#cargo').val(0.00);
+          $('#cargo').prop('disabled', false);
+      }
   });
 
   show_producto_credito()
@@ -252,16 +266,19 @@
     let tipotasa    = 2;
 
     if(monto<=0){
-        alert("Monto de Préstamo debe ser mayor a 0.00.");
+        mensaje = 'Monto de Préstamo debe ser mayor a 0.00.';
+        modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
         return false;
     }
     if(numerocuota<=0){
-        alert("El Número de Cuotas debe ser mayor a 0.");
+        mensaje = 'El Número de Cuotas debe ser mayor a 0.';
+        modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
         return false;
     }
 
     if(dia_gracia<0){
-        alert("El día de gracia debe ser mayor o igual a 0!!.");
+        mensaje = 'El día de gracia debe ser mayor o igual a 0!!.';
+        modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
         return false;
     }
 
@@ -297,7 +314,7 @@
                 $('#tasa_tip').val('0.00');
                 $('#tasa_tcem').val('0.00');
                 $('#comision').val('0.00');
-                alert(res.mensaje);
+                modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+res.mensaje, size: 'modal-sm' });
             }else{
                 $('#table-cronograma > tbody').html(res.cronograma);
                 $('#interes_total').html(res.interes_total);
@@ -344,21 +361,28 @@
     var comision_gestion_garantia_cargo = parseFloat({{ configuracion($tienda->id,'comision_gestion_garantia_cargo')['valor'] }});
     var cargocom = 0;
     var cargocom_mes = 0;
-    if(frecuencia==1){
-        cargocom = ((comision_gestion_garantia_cargo/26)*numerocuota)/100;
-        cargocom_mes = ((comision_gestion_garantia_cargo/26)*26)/100;
-    }
-    else if(frecuencia==2){
-        cargocom = ((comision_gestion_garantia_cargo/4)*numerocuota)/100;
-        cargocom_mes = ((comision_gestion_garantia_cargo/4)*4)/100;
-    }
-    else if(frecuencia==3){
-        cargocom = ((comision_gestion_garantia_cargo/2)*numerocuota)/100;
-        cargocom_mes = ((comision_gestion_garantia_cargo/2)*2)/100;
-    }
-    else if(frecuencia==4){
-        cargocom = ((comision_gestion_garantia_cargo/1)*numerocuota)/100;
-        cargocom_mes = ((comision_gestion_garantia_cargo/1)*1)/100;
+
+    if ($('#cont_mensaje_custodia').hasClass('d-none')) {
+      comision_gestion_garantia_cargo = 0;
+      cargocom = $('#cargo').val();
+      cargocom_mes = $('#cargomes').val();
+    } else {
+      if(frecuencia==1){
+          cargocom = ((comision_gestion_garantia_cargo/26)*numerocuota)/100;
+          cargocom_mes = ((comision_gestion_garantia_cargo/26)*26)/100;
+      }
+      else if(frecuencia==2){
+          cargocom = ((comision_gestion_garantia_cargo/4)*numerocuota)/100;
+          cargocom_mes = ((comision_gestion_garantia_cargo/4)*4)/100;
+      }
+      else if(frecuencia==3){
+          cargocom = ((comision_gestion_garantia_cargo/2)*numerocuota)/100;
+          cargocom_mes = ((comision_gestion_garantia_cargo/2)*2)/100;
+      }
+      else if(frecuencia==4){
+          cargocom = ((comision_gestion_garantia_cargo/1)*numerocuota)/100;
+          cargocom_mes = ((comision_gestion_garantia_cargo/1)*1)/100;
+      }
     }
     var cargo = cargocom*monto;
     var cargomes = cargocom_mes*monto;
@@ -398,7 +422,16 @@
           idforma_pago_credito: idforma_pago_credito,
       },
       success: function (res){
-        $('#table-tarifario-producto > tbody').html(res);
+        $('#table-tarifario-producto > tbody').html(res.data);
+        if(res.credito_prendatario){
+          if (res.credito_prendatario.garantiaprendatario == "SI") {
+            $('#cont_mensaje_custodia').removeClass('d-none');
+            $('#cargo').prop('disabled', true);
+          } else {
+            $('#cont_mensaje_custodia').addClass('d-none');
+            $('#cargo').prop('disabled', false);
+          }
+        }
       }
     })
   }

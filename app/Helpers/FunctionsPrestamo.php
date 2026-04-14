@@ -203,7 +203,7 @@ function genera_cronograma($montosolicitado,$numerocuota,$fechainicio,$frecuenci
                 }
             }
           
-            $data_tir[] = (float)$cuotafinal;
+            $data_tir[] = (float)($cuota+$cuota_cargo1);
             
             array_push($cronograma,[
                 //'numero' => str_pad($i, 2, "0", STR_PAD_LEFT),

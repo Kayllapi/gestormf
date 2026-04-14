@@ -145,7 +145,7 @@
               <th style="border-bottom: 2px solid #000;">CAPITAL</th>
               <th style="border-bottom: 2px solid #000;">AMORTIZACIÓN</th>
               <th style="border-bottom: 2px solid #000;">INTERES</th>
-              <th style="border-bottom: 2px solid #000;">C. x CUST. GARANTÍA</th>
+              <th style="border-bottom: 2px solid #000;">C. x CUSTODIA. G.</th>
               <th style="border-bottom: 2px solid #000;">Ss. RECAUDO.</th>
               <th style="border-bottom: 2px solid #000;">CUOTA A PAGAR</th>
             </tr>

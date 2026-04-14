@@ -147,7 +147,7 @@
               <th style="border-bottom: 2px solid #000;">INTERES</th>
               <th style="border-bottom: 2px solid #000;">C. x CUSTODIA. G.</th>
               <th style="border-bottom: 2px solid #000;">Ss. RECAUDO.</th>
-              <th style="border-bottom: 2px solid #000;">CUOTA A PAGAR</th>
+              <th style="border-bottom: 2px solid #000;">TOTAL A PAGAR</th>
             </tr>
             <?php
             $total_amortizacion = 0;

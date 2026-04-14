@@ -214,6 +214,7 @@
       } else if (tipo == 2) {
           showtasa();
       } else if (tipo == 3) {
+          $('#cargo').val(0.00);
           $('#cargo').prop('disabled', false);
       }
   });

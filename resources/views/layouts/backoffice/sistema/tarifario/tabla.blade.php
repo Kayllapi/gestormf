@@ -27,7 +27,7 @@
                   <td>MONTO (<=)</td>
                   <td>CUOTA (<=)</td>
                   <td>TEM %</td>
-                  <td>SERVICIOS/OTROS %</td>
+                  <td>Ss. RECAUDO %</td>
                   <td>FORMA DE PAGO</td>
                   <td>TIPO DE CRÉDITO</td>
                   <td>PRODUCTO</td>

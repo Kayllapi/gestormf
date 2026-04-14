@@ -62,7 +62,7 @@
             </div>
           </div>
           <div class="row">
-            <label class="col-sm-3 col-form-label">Servicios/Otros (%):</label>
+            <label class="col-sm-3 col-form-label">Ss. Recaudo (%):</label>
             <div class="col-sm-6">
               <input type="number" class="form-control" step="any" id="cargos_otros" value="{{ $tarifario->cargos_otros }}">
             </div>

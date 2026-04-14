@@ -431,6 +431,7 @@
           } else {
             $('#cont_mensaje_custodia').addClass('d-none');
             $('#cargo').prop('disabled', false);
+            $('#cargo').val(0.00);
           }
         }
       }

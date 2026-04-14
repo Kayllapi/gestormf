@@ -416,9 +416,10 @@ function show_tarifario_producto(){
         if(res.credito_prendatario){
           if (res.credito_prendatario.garantiaprendatario == "SI") {
             $('#cont_mensaje_custodia').removeClass('d-none');
-            $('#cargo').prop('disabled', false);
+            $('#cargo').prop('disabled', true);
           } else {
             $('#cont_mensaje_custodia').addClass('d-none');
+            $('#cargo').prop('disabled', false);
           }
         }
     }

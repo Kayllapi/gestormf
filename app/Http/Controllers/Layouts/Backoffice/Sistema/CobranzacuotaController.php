@@ -1073,7 +1073,7 @@ class CobranzacuotaController extends Controller
                 <th>P. Cus.</th>
                 <th style="width:10px;">Int. Comp.</th>
                 <th style="width:10px;">Int. morat.</th>
-                <th>Pago Total</th>
+                <th>P. Total</th>
                 <!--th>Acuenta</th-->
               </tr>
               </thead>

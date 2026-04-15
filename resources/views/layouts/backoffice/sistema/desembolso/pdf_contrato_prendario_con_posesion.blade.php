@@ -180,7 +180,7 @@ CON GARANTÍA MOBILIARIA CON POSESIÓN</title>
     <div style="margin-top:5px;"><b>II.  SOBRE EL CRÉDITO</b></div>
     <b>2.1.</b> EL ACREEDOR otorga a EL/LOS PRESTATARIO(S), la suma de S/. <b>{{ $credito->monto_solicitado }}</b>, en condición de préstamo, 
     con pago <b>{{strtoupper($credito->forma_pago_credito_nombre)}}</b> en <b>{{$credito->cuotas}}</b> cuota(s), debiéndose pagar un total de S/. <b>{{ $credito->total_pagar }}</b> 
-    al terminar el plazo pactado, que incluye capital más los intereses, comisión de servicio y gastos (cargos), a la tasa de interés, tasa de comisión de servicio y cargos establecidos en Hoja de Resumen del crédito;  conforme lo informado y 
+    al terminar el plazo pactado, que incluye capital más los intereses, cargo por custodia de garantía y servicio de recaudo, a la tasa de interés, costo de cargo y costo de servicio establecidos en Hoja de Resumen del crédito;  conforme lo informado y 
     aceptación de estos por parte de EL/LOS PRESTATARIO(S). <br>
     <b>2.2.</b> EL/LOS PRESTATARIO(S) se obliga a pagar a EL ACREEDOR el préstamo otorgado por este último más los intereses, comisión de 
     servicio y gastos (cargos), en la forma y plazo de pagos convenido de ambas partes conforme numeral 2.1; debiendo pagar en la misma moneda del crédito, en las oficinas o agencias de EL ACREEDOR en forma de efectivo, transferencia bancaria, depósitos en cuenta, entre otras; para lo cual se le otorga 

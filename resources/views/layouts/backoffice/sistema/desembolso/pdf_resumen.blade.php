@@ -239,7 +239,7 @@
       <br>
       <table style="width:100%; border: 2px solid #000;">
         <tr>
-          <td colspan="3">PENALIDADES POR INCUMPLIMIENTO DE PAGO DE CUOTA (se considera {{ $credito->config_dias_tolerancia_garantia }} días de tolerancia ): </td>
+          <td colspan="3">TOLERANCIA POR INCUMPLIMIENTO DE PAGO DE CUOTA: (se considera {{ $credito->config_dias_tolerancia_garantia }} días de tolerancia ): </td>
         </tr>
         @if($credito->idforma_credito==1)
    

@@ -402,7 +402,7 @@
             <hr style="border: 1px solid #000;">
             <span style="padding-top:10px;"><b>{{ $usuario->nombrecompleto }}</b></span>
             <br>
-            <span><b>DNI: </b>{{ $usuario->identificacion }}</span>
+            <span><b>RUC/DNI/CE: </b>{{ $usuario->identificacion }}</span>
             <br>
             <span><b>Domicilio: </b>{{ $usuario->direccion }}, {{ $distrito }} - {{ $provincia }} - {{ $departamento }}</span>
             <br>
@@ -414,7 +414,7 @@
             <hr style="border: 1px solid #000;">
             <span style="padding-top:10px;"><b><?php echo $aval!=''?$aval->nombrecompleto:'' ?></b></span>
             <br>
-            <span><b>DNI: </b><?php echo $aval!=''?$aval->identificacion:'' ?></span>
+            <span><b>RUC/DNI/CE: </b><?php echo $aval!=''?$aval->identificacion:'' ?></span>
             <br>
             <span><b>Domicilio: </b> {{ $aval!=''?$aval->direccion:'' }}, {{ $distritoaval }} - {{ $provinciaaval }} - {{ $departamentoaval }}</span>
             <br>

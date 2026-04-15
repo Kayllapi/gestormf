@@ -243,8 +243,8 @@
         </tr>
         @if($credito->idforma_credito==1)
    
-        <tr style="border-top: 2px solid #000;">
-          <td colspan="3">Por custodia de garantía prendaria al vencimiento del plazo x dia (hasta {{ $credito->config_dias_maximo_penalidad }} días):</td>
+        <tr>
+          <td colspan="3" style="border-top: 1px solid #000;">Por custodia de garantía prendaria al vencimiento del plazo x dia (hasta {{ $credito->config_dias_maximo_penalidad }} días):</td>
         </tr>
         <br>
         <tr>
@@ -289,7 +289,7 @@
           </td>
         </tr-->
         <tr>
-          <td colspan="3"  style="border-top: 2px solid #000;">
+          <td colspan="3"  style="border-top: 1px solid #000;">
             Tasa Moratoria Mensual: {{ $credito->config_tasa_moratoria }}%
           </td>
         </tr>

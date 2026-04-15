@@ -107,7 +107,7 @@
   </header>
   <main>
     <div class="container">
-      <h4 align="center">CRONOGRAMA DE PAGOS</h4>
+      <h4 align="center" style="margin: 0">CRONOGRAMA DE PAGOS</h4>
     
           <table style="width:100%;">
             <tr>
@@ -191,6 +191,7 @@
           </table>
       <div class="row">
         <div class="col">
+          <p>- (*) </p>
           <p>- Estimado Cliente al pagar exija su comprobante respectivo.</p>
           <p>- Pague puntual sus cuotas y evite penalidades, gastos e interes adicional.</p>
         </div>

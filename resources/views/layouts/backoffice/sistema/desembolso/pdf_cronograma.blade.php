@@ -107,7 +107,7 @@
   </header>
   <main>
     <div class="container">
-      <h4 align="center" style="margin: 0">CRONOGRAMA DE PAGOS</h4>
+      <h4 align="center" style="margin: 0">CRONOGRAMA DE PAGOS (*)</h4>
     
           <table style="width:100%;">
             <tr>
@@ -147,7 +147,7 @@
               <th style="border-bottom: 2px solid #000;">INTERES</th>
               <th style="border-bottom: 2px solid #000;">CARGO x <br>CUSTODIA. G.</th>
               <th style="border-bottom: 2px solid #000;">CUOTA DE PRESTAMO <br>(Int. + Cap. + Cust.)</th>
-              <th style="border-bottom: 2px solid #000;">Ss. RECAUDO (*)</th>
+              <th style="border-bottom: 2px solid #000;">Ss. RECAUDO (**)</th>
               <th style="border-bottom: 2px solid #000;">TOTAL A PAGAR</th>
             </tr>
             <?php
@@ -189,9 +189,10 @@
               <td style="border-top: 2px solid #000;text-align: right;">{{number_format($total_total, 2, '.', '')}}</td>
             </tr>
           </table>
-      <div class="row">
+      <div class="row" style="margin-top: -15px;">
         <div class="col">
-          <p>- (*): Alternativo </p>
+          <p>- (*): Calculado con ajuste de céntimos en la última cuota para facilitar el pago en efectivo, manteniendo el costo total del crédito pactado</p>
+          <p>- (**): Alternativo </p>
           <p>- Estimado Cliente al pagar exija su comprobante respectivo.</p>
           <p>- Pague puntual sus cuotas y evite penalidades, gastos e interes adicional.</p>
         </div>

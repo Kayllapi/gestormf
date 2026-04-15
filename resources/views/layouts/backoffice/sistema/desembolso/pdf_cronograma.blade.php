@@ -137,7 +137,7 @@
               <td><b>MODALIDAD CRÉDITO:</b> {{ strtoupper($credito->modalidad_credito_nombre) }}</td>
             </tr>
           </table>
-          <div style="width:101.3%; margin-top: 4px; border-bottom: 1px solid #5f5f5f;"></div>
+          <div style="width:100%; margin-top: 4px; border-bottom: 1px solid #5f5f5f;"></div>
           <table style="width:100%;">
             <tr>
               <th style="border-bottom: 2px solid #000;">CUOTA</th>

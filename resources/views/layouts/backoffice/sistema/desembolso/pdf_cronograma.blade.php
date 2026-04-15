@@ -191,7 +191,7 @@
           </table>
       <div class="row">
         <div class="col">
-          <p>- (*) </p>
+          <p>- (*): Alternativo </p>
           <p>- Estimado Cliente al pagar exija su comprobante respectivo.</p>
           <p>- Pague puntual sus cuotas y evite penalidades, gastos e interes adicional.</p>
         </div>

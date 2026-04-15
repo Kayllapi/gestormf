@@ -357,7 +357,7 @@ CON GARANTÍA MOBILIARIA CON POSESIÓN</title>
       </div>
       <div style="width:100px;margin-top: 10px;height:100px;float:left;margin-right:10px;border: 1px solid #000;">
       </div>
-      <div style="width:157px;margin-top: -55px;float:left;">
+      <div style="width:157px;margin-top: -50px;float:left;">
             @if($tienda->firma!='')
             <div style="text-align:center">
             <img src="{{ url('public/backoffice/tienda/'.$tienda->id.'/sistema/'.$tienda->firma) }}" width="100px" alt="firma"></div>

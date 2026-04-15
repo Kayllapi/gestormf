@@ -190,10 +190,10 @@
             </tr>
           </table>
       <div class="row" style="margin-top: -5px;">
-        <div class="col" style="line-height: 1.6;">
+        <div class="col" style="line-height: 1.3;">
           <p style="margin: 0;">- (*): Calculado con ajuste de céntimos en la última cuota para facilitar el pago en efectivo, manteniendo el costo total del crédito pactado</p>
           <p style="margin: 0;">- (**): Alternativo </p>
-          <div style="margin-top: 4px; border-bottom: 1px solid #5f5f5f;"></div>
+          <div style="width:100%; margin-top: 4px; border-bottom: 1px solid #5f5f5f;"></div>
           <p style="margin: 0;">- Estimado Cliente al pagar exija su comprobante respectivo.</p>
           <p style="margin: 0;">- Pague puntual sus cuotas y evite penalidades, gastos e interes adicional.</p>
         </div>

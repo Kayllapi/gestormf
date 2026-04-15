@@ -116,7 +116,7 @@
             </tr>
             <tr>
               <td><b>NOMBRE:</b> {{ $usuario->nombrecompleto }}</td>
-              <td><b>DOC.IDENTIDAD:</b> {{ $usuario->identificacion }}</td>
+              <td><b>RUC/DNI/CE:</b> {{ $usuario->identificacion }}</td>
             </tr>
             <tr>
               <td><b>CUENTA:</b> C{{ str_pad($credito->cuenta, 8, "0", STR_PAD_LEFT) }}</td>

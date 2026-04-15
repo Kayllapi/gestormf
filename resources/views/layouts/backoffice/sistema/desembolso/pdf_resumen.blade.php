@@ -291,7 +291,7 @@
      <b>GESTIÓN DE DEPÓSITARIOS</b>
       <table style="width:100%; border: 2px solid #000;">
         <tr>
-          <td colspan="2"><b>Depositario (Custodia de Garantía:</b> {{ $credito->constituciongarantia_nombre }}</td>
+          <td colspan="2"><b>Depositario (Custodia de Garantía):</b> {{ $credito->constituciongarantia_nombre }}</td>
         </tr>
         <tr>
           <td colspan="2"><b>Depósitario:</b> {{ $credito->custodiagarantia_nombre }}</td>

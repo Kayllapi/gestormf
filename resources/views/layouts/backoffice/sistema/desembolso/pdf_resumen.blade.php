@@ -322,7 +322,7 @@
         </tr>
       </table>
         <br>
-      <b>POLIZA DE SEGUROS</b>
+      <b>PÓLIZA DE SEGUROS</b>
       <table class="table" style="width:100%; border: 2px solid #000;">
         <tr>
           <td><b>N° de Póliza</b></td>

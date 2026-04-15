@@ -300,9 +300,7 @@
           <td colspan="2"><b>Depositario (Custodia de Garantía):</b> {{ $credito->constituciongarantia_nombre }} </td>
         </tr>
         <tr>
-          <td colspan="2"><b>Depósitario:</b> {{ $credito->custodiagarantia_nombre }} - 
-            @if($usuario->custodiagarantia_id==1) {{ configuracion($tienda->id,'comision_gestion_garantia_cargo')['valor'] }} @else {{ configuracion($tienda->id,'comision_gestion_garantia_convenio')['valor'] }} @endif
-            %
+          <td colspan="2"><b>Depósitario:</b> {{ $credito->custodiagarantia_nombre }} - {{ $credito->custodiagarantia_comision }} % Mes
           </td>
         </tr>
         <tr>

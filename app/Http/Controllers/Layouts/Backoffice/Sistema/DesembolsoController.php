@@ -248,7 +248,7 @@ class DesembolsoController extends Controller
             'garantias.*'
           )
           ->get();
-        //dd($credito->custodiagarantia_id);
+
         $nomcredito = '';
         if($credito->idforma_credito==1){
             if($credito->constituciongarantia_id==1){

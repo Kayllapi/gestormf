@@ -4904,10 +4904,18 @@ class CreditoController extends Controller
             if($credito->idforma_credito==1){
                 
                 $cliente = DB::table('users')->whereId($credito->idcliente)->first();
+
+                $comision = 0;
+                if ($cliente->custodiagarantia_id==1) {
+                  $comision = configuracion($idtienda,'comision_gestion_garantia_cargo')['valor'];
+                } elseif ($cliente->custodiagarantia_id==2) {
+                  $comision = configuracion($idtienda,'comision_gestion_garantia_convenio')['valor'];
+                }
                 //depositario
                 DB::table('credito')->whereId($credito->id)->update([
                   'custodiagarantia_id' => $cliente->custodiagarantia_id,
                   'custodiagarantia_nombre' => $cliente->custodiagarantia_nombre,
+                  'custodiagarantia_comision' => $comision,
                   'gd_nombre' => $cliente->gd_nombre,
                   'gd_doeruc' => $cliente->gd_doeruc,
                   'gd_direccion' => $cliente->gd_direccion,
@@ -4957,6 +4965,7 @@ class CreditoController extends Controller
                 DB::table('credito')->whereId($credito->id)->update([
                   'custodiagarantia_id' => 0,
                   'custodiagarantia_nombre' => '',
+                  'custodiagarantia_comision' => 0,
                   'gd_nombre' => '',
                   'gd_doeruc' => '',
                   'gd_direccion' => '',

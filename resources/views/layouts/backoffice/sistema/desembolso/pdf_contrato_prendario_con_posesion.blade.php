@@ -208,9 +208,8 @@ CON GARANTÍA MOBILIARIA CON POSESIÓN</title>
     constituida por EL/LOS PRESTATARIO(S) conforme este contrato, bastará que esta sea comunicada a EL/LOS PRESTATARIO(S) por los medios directos 
     previstos en el Contrato, por lo menos con tres (3) días de anticipación. Las causales que permitirán a EL ACREEDOR resolver de pleno derecho 
     el presente Contrato son las siguientes:<br>
-    <b>3.1.</b> Al incumplimiento de pago de EL/LOS PRESTATARIO(S) sea el saldo o total del préstamo incluido intereses, comisión de servicio 
-    y gastos. En créditos pagaderos hasta 2 meses de plazo y vencido, o en créditos pagaderos mayor a 2 meses de plazo, con 90 días a más de vencido la cuota de pago; 
-    EL/LOS PRESTATARIO(S) tendrá(n) <b>{{ $credito->config_dias_tolerancia }}</b> días para su cancelación total o regularización, pagando custodia de ser caso del bien(s) en garantía, 
+    <b>3.1.</b> Al incumplimiento de pago de EL/LOS PRESTATARIO(S) sea el saldo o total del préstamo incluido intereses, gastos y comisión de servicio. En créditos pagaderos hasta 2 meses de plazo y vencido, o en créditos pagaderos mayor a 2 meses de plazo, con 90 días a más de vencido la cuota de pago; 
+    EL/LOS PRESTATARIO(S) tendrá(n) <b>{{ $credito->config_dias_tolerancia }}</b> días para su cancelación total o regularización, pagando custodia adicional de ser caso del bien(s) en garantía, 
     interés compensatorio y moratorio más cargos. Caso contrario EL ACREEDOR ejecutará la(s) garantía(s) entregada(s) en numeral 4.1. <br>
     <b>3.2.</b> EL/LOS PRESTATARIO(S) incurre en los supuestos previstos en el artículo 175 de Ley General del Sistema Financiero y del Sistema 
     de Seguros y Orgánica de la Superintendencia de Banca y Seguros, Ley N° 26702 <br>

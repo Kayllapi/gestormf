@@ -261,7 +261,6 @@
           <td><b>{{ $value->nombre }}:</b> S/. {{ $value->penalidad }}</td>
         @endforeach
         </tr>
-        <br>
         @endif
     <?php
     /*$penalidad = 0;

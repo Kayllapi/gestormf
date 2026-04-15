@@ -319,7 +319,8 @@ CON GARANTÍA MOBILIARIA CON POSESIÓN</title>
     menor de cinco (5) días útiles.
     
     <div style="margin-top:5px;"><b>X. ACEPTACIÓN DEL CONTRATO</b></div>
-    En mi condición de EL/LOS PRESTATARIO(S), declaro haber recibido la hoja de resumen del préstamo, cronograma de pagos y el dinero respectivo; asimismo la información sobre las políticas y condiciones del préstamo, aceptando las mismas. 
+    En mi condición de EL/LOS PRESTATARIO(S), declaro haber recibido la hoja de resumen del préstamo, cronograma de pagos y el dinero respectivo; asimismo la información sobre las políticas y condiciones del préstamo, aceptando las mismas.
+    <br>
     En fe a la verdad, suscribimos el presente contrato en la ciudad de 
     
     <?php

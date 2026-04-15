@@ -195,14 +195,13 @@ CON GARANTÍA MOBILIARIA CON POSESIÓN</title>
     con EL/LOS PRESTATARIO(S), para lo cual será de aplicación el numeral 1.2 del Contrato.<br>
     <b>2.5.</b> EL ACREEDOR queda facultada a refinanciar la deuda de EL/LOS PRESTATARIO(S) en caso de incumplimiento de pago para lo cual 
     se incluirá el monto total de la deuda vencida, en una liquidación de saldo deudor conforme a sus reglas internas, como el 
-    importe del capital por pagar más intereses, custodia de garantía, servicios de recaudo, intereses compensatorios y moratorios y 
+    importe del capital por pagar más intereses, custodia de garantía, servicios de recaudo, intereses compensatorios y moratorios, y 
     cargos establecidos en la Hoja Resumen del crédito. Bastando la intervención en dicha operación de cualquiera de los obligados.<br>
     <b>2.6.</b> Derechos y exigencias de Pagos Anticipados, serán a solicitud expresa de EL/LOS PRESTATARIO(S) como una opción y se 
     considerará las cuotas programadas a más de 30 días; de la misma forma, optará realizar de manera expresa pago de adelanto de cuotas. 
     Donde EL/LOS PRESTATARIO(S) declara haber sido informado con anterioridad al otorgamiento del crédito, considerándose para ello: (a) 
-    El Pago Anticipado conlleva a la aplicación del monto al capital del crédito, con reducción de los intereses, comisión de servicio y 
-    gastos al día del pago. (b) El Adelanto de Cuotas supone la aplicación del monto pagado a las cuotas inmediatamente posteriores a la 
-    exigible en el periodo, sin que se produzca reducción de los intereses, comisión de servicio y gastos al día del pago.
+    El Pago Anticipado conlleva a la aplicación del monto al capital del crédito, con reducción de los intereses, gastos y comisión de servicio al día del pago. (b) El Adelanto de Cuotas supone la aplicación del monto pagado a las cuotas inmediatamente posteriores a la 
+    exigible en el periodo, sin que se produzca reducción de los intereses, gastos y comisión de servicio al día del pago.
     
     <div style="margin-top:5px;"><b>III. RESOLUCIÓN DEL CONTRATO POR INCUMPLIMIENTO DE PAGO Y OTROS</b></div>
     EL ACREEDOR podrá dar por vencidos todos los plazos del Préstamo resolviendo el Contrato y solicitando la ejecución de la Garantía Mobiliaria 

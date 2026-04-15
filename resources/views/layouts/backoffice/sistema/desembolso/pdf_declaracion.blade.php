@@ -126,7 +126,7 @@
           }
         ?>
       <div>
-        <p  style="text-align: justify;">Yo, <b>{{ $usuario->nombrecompleto }}</b>, identificado (a) con DNI N° <b>{{ $usuario->identificacion }}</b> , con domicilio en <b>{{ $usuario->direccion }}</b>,
+        <p  style="text-align: justify;">Yo, <b>{{ $usuario->nombrecompleto }}</b>, identificado (a) con RUC/DNI/CE N° <b>{{ $usuario->identificacion }}</b> , con domicilio en <b>{{ $usuario->direccion }}</b>,
           Distrito de {{ $distrito }}, Provincia de {{ $provincia }}, Departamento de {{ $departamento }}.
           <br><br>
           <b>DECLARO BAJO JURAMENTO:</b>
@@ -194,7 +194,7 @@
             <hr style="border: 1px solid #000; margin-top: 50px;">
             <span style="padding-top:10px;"><b>{{ $usuario->nombrecompleto }}</b></span>
             <br>
-            <span>DNI: {{ $usuario->identificacion }}</span>
+            <span>RUC/DNI/CE: {{ $usuario->identificacion }}</span>
             <br>
             <span>Domicilio: {{ $usuario->direccion }}</span>
             <br>

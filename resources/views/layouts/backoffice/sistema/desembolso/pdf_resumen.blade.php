@@ -140,10 +140,10 @@
         </tr>
         <tr>
           <td><b>Destino de Crédito:</b> {{ $credito->tipo_destino_credito_nombre }}</td>
-          <td><b>Modalidad de Crédito:</b> {{ $credito->modalidad_credito_nombre }}</td>
+          <td><b>Lugar de Recaudo en:</b> Domicilio / Negocio</td>
         </tr>
         <tr>
-          <td></td>
+          <td><b>Modalidad de Crédito:</b> {{ $credito->modalidad_credito_nombre }}</td>
           @if($credito->cuotas==1)
           <td><b>Tasa de Interes Compensatorio Efectivo Mensual (TEM):</b> {{ $credito->tasa_tip }} %</td>
           @else

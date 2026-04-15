@@ -169,7 +169,7 @@
           <td colspan="2">
               <b>Garantia del Cliente</b>
           </td>
-          <td width="90px">
+          <td width="115px">
               <b>Cobertura Real (S/.)</b>
           </td>
         </tr>
@@ -206,7 +206,7 @@
           <td colspan="2">
               <b>Garantia del Aval</b>
           </td>
-          <td width="90px">
+          <td width="115px">
               <b>Cobertura Real (S/.)</b>
           </td>
         </tr>

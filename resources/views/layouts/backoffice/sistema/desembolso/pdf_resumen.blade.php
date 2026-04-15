@@ -127,7 +127,7 @@
           <td><b>Interes Compensatorio de Periodo a Pagar S/.:</b> {{ $credito->interes_total }}</td>
         </tr>
         <tr>
-          <td><b>DNI:</b> {{ $credito->docuementocliente }}</td>
+          <td><b>RUC/DNI/CE:</b> {{ $credito->docuementocliente }}</td>
           <td><b>Cargo x Custodia de Garantía S/.:</b> {{ $credito->total_cargo }}</td>
         </tr>
         <tr>
@@ -288,7 +288,7 @@
         </tr-->
         <tr>
           <td colspan="3"  style="border-top: 1px solid #000;">
-            Tasa Moratoria Mensual: {{ $credito->config_tasa_moratoria }}%
+            <b>Tasa Moratoria Mensual:</b> {{ $credito->config_tasa_moratoria }}%
           </td>
         </tr>
       </table>
@@ -310,7 +310,7 @@
           <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            &nbsp;&nbsp;&nbsp;&nbsp;<b>DOI/RUC:</b> {{ $credito->gd_doeruc }}</td>
+            &nbsp;&nbsp;&nbsp;&nbsp;<b>RUC/DNI/CE:</b> {{ $credito->gd_doeruc }}</td>
         </tr>
         <tr>
           <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -324,7 +324,7 @@
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             &nbsp;&nbsp;&nbsp;&nbsp;<b>A. y N. R. Legal:</b> {{ $credito->gd_representante_nombre }}</td>
-          <td><b>Reprentante Legal (DOI) :</b> {{ $credito->gd_representante_doeruc }}</td>
+          <td><b>Reprentante Legal (DNI) :</b> {{ $credito->gd_representante_doeruc }}</td>
         </tr>
       </table>
         <br>

@@ -140,7 +140,7 @@
         </tr>
         <tr>
           <td><b>Destino de Crédito:</b> {{ $credito->tipo_destino_credito_nombre }}</td>
-          <td><b>Lugar de Recaudo en:</b> Domicilio / Negocio</td>
+          <td><b>Lugar de Recaudo:</b> Domicilio / Negocio</td>
         </tr>
         <tr>
           <td><b>Modalidad de Crédito:</b> {{ $credito->modalidad_credito_nombre }}</td>

@@ -157,7 +157,7 @@
           <td></td>
           <td>
             @if (configuracion($tienda->id,'activar_tcem')['valor'] == '1')
-              <b>TCEM (%):</b> {{ $credito->tasa_tcem }} %
+              <b>TCEM:</b> {{ $credito->tasa_tcem }} %
             @endif
           </td>
         </tr>

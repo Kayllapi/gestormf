@@ -333,7 +333,7 @@ CON GARANTÍA MOBILIARIA CON POSESIÓN</title>
 
 <br><br>
 <br><br>
-      <div style="width:175px;margin-top: 20px;float:left;margin-right:5px;">
+      <div style="width:175px;margin-top: 15px;float:left;margin-right:5px;">
         <div class="linea"></div>
             <span style="padding-top:10px;"><b>{{ $usuario->nombrecompleto }}</b></span>
             <br>
@@ -345,7 +345,7 @@ CON GARANTÍA MOBILIARIA CON POSESIÓN</title>
       </div>
       <div style="width:100px;margin-top: 10px;height:100px;float:left;margin-right:10px;border: 1px solid #000;">
       </div>
-      <div style="width:175px;margin-top: 20px;float:left;margin-right:5px;">
+      <div style="width:175px;margin-top: 15px;float:left;margin-right:5px;">
         <div class="linea"></div>
             <span style="padding-top:10px;"><b><?php echo $aval!=''?$aval->nombrecompleto:'' ?></b></span>
             <br>

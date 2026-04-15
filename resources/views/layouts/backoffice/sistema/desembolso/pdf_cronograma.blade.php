@@ -192,14 +192,15 @@
       <div class="row" style="margin-top: -15px;">
         <div class="col">
           <p>- (*): Calculado con ajuste de céntimos en la última cuota para facilitar el pago en efectivo, manteniendo el costo total del crédito pactado</p>
-          <p>- (**): Alternativo </p>
+          <p style="margin-bottom: 5px; border-bottom: 1px solid #5f5f5f;">- (**): Alternativo </p>
           <p>- Estimado Cliente al pagar exija su comprobante respectivo.</p>
           <p>- Pague puntual sus cuotas y evite penalidades, gastos e interes adicional.</p>
         </div>
-        <div class="col" style="margin-top:16px;font-size: 22px;">
+        {{-- <div class="col" style="margin-top:16px;font-size: 22px;">
           <strong>CEL.: {{ $tienda->numerotelefono }}</strong>
-        </div>
+        </div> --}}
       </div>
+      <p align="center" style="margin-bottom: 0px;"><b>CEL.: {{ $tienda->numerotelefono }}</b></p>
       <p align="center"><b>{{ $tienda->paginaweb }}</b></p>
     </div>
   </main>

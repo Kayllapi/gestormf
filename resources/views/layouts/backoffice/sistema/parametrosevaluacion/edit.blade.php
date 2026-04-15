@@ -133,6 +133,22 @@
               <input type="number" class="form-control" step="any" id="rango_tope_dependiente" value="{{ configuracion($tienda->id,'rango_tope_dependiente')['valor'] }}">
             </div>
           </div>
+          <div class="row mt-1">
+            <label class="col-sm-8 col-form-label" style="text-align: right;">Tasa de Interes Compensatorio Efectivo Mensual (TEM):</label>
+            <label class="col-sm-2 chk" style="margin-top: 6px;">
+                <input type="checkbox" name="activar_tem" id="activar_tem" {{ configuracion($tienda->id,'activar_tem')['valor'] == '1' ? 'checked' : '' }}>
+                <span class="checkmark"></span>
+                <span>Activar</span>
+            </label>
+          </div>
+          <div class="row mt-1">
+            <label class="col-sm-8 col-form-label" style="text-align: right;">TCEM (%):</label>
+            <label class="col-sm-2 chk" style="margin-top: 6px;">
+                <input type="checkbox" name="activar_tcem" id="activar_tcem" {{ configuracion($tienda->id,'activar_tcem')['valor'] == '1' ? 'checked' : '' }}>
+                <span class="checkmark"></span>
+                <span>Activar</span>
+            </label>
+          </div>
         </div>
         <script>
           function calc_rango_menor(){

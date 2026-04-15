@@ -144,14 +144,22 @@
         </tr>
         <tr>
           <td><b>Modalidad de Crédito:</b> {{ $credito->modalidad_credito_nombre }}</td>
-          @if($credito->cuotas==1)
-          <td><b>Tasa de Interes Compensatorio Efectivo Mensual (TEM):</b> {{ $credito->tasa_tip }} %</td>
-          @else
-          <td><b>Tasa de Interes Compensatorio Efectivo Mensual (TEM):</b> {{ $credito->tasa_tem }} %</td>
-          @endif
+          <td>
+            @if (configuracion($tienda->id,'activar_tem')['valor'] == '1')
+              @if($credito->cuotas==1)
+                <b>Tasa de Interes Compensatorio Efectivo Mensual (TEM):</b> {{ $credito->tasa_tip }} %
+              @else
+                <b>Tasa de Interes Compensatorio Efectivo Mensual (TEM):</b> {{ $credito->tasa_tem }} %
+              @endif
+            @endif
+          </td>
         </tr>
           <td></td>
-          <td><b>TCEM (%):</b> {{ $credito->tasa_tcem }} %</td>
+          <td>
+            @if (configuracion($tienda->id,'activar_tcem')['valor'] == '1')
+              <b>TCEM (%):</b> {{ $credito->tasa_tcem }} %
+            @endif
+          </td>
         </tr>
       </table>
       <table style="width:100%; border: 2px solid #000;border-top:0px solid #000;">

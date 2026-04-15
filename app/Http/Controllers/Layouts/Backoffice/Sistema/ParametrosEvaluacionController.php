@@ -71,7 +71,6 @@ class ParametrosEvaluacionController extends Controller
 
     public function update(Request $request, $idtienda, $id)
     {
-        
         if($request->input('view') == 'editar') {
             $capital = json_decode($request->input('capital'), true);
             foreach($capital as $value){
@@ -79,8 +78,10 @@ class ParametrosEvaluacionController extends Controller
                 'capital_agencia' => $value['capital']
               ]);
             }
-             
-         
+
+            $activar_tem = $request->activar_tem ? 1 : 0;
+            $activar_tcem = $request->activar_tcem ? 1 : 0;
+
             configuracion_update($idtienda,'provision_gastos_familiares',$request->provision_gastos_familiares);
             configuracion_update($idtienda,'porcentaje_min_muestra',$request->porcentaje_min_muestra);
             configuracion_update($idtienda,'reporte_institucional',$request->reporte_institucional);
@@ -94,20 +95,18 @@ class ParametrosEvaluacionController extends Controller
             configuracion_update($idtienda,'rango_diferencia',$request->rango_diferencia);
             configuracion_update($idtienda,'rango_tope_dependiente',$request->rango_tope_dependiente);
             configuracion_update($idtienda,'entidades_maxima',$request->entidades_maxima);
+            configuracion_update($idtienda,'activar_tem',$activar_tem);
+            configuracion_update($idtienda,'activar_tcem',$activar_tcem);
+
             return response()->json([
                 'resultado' => 'CORRECTO',
                 'mensaje'   => 'Se ha actualizado correctamente.'
             ]);
         }
-    
     }
 
 
     public function destroy(Request $request, $idtienda, $id)
     {
-      
-   
-      
-    
     }
 }

@@ -198,8 +198,7 @@
           <p style="margin: 0;">- Pague puntual y evite interes compensatorio adicional, mora, penalidades y gastos.</p>
         </div>
       </div>
-      <p align="center" style="margin: 0; margin-bottom: 5px;"><b>CEL.: {{ $tienda->numerotelefono }}</b></p>
-      <p align="center" style="margin: 0;"><b>{{ $tienda->paginaweb }}</b></p>
+      <p align="center" style="margin: 0;"><b>CEL.: {{ $tienda->numerotelefono }} // {{ $tienda->paginaweb }}</b></p>
     </div>
   </main>
 </body>

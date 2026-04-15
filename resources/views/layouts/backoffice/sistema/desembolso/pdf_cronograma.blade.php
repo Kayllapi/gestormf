@@ -195,7 +195,7 @@
           <p style="margin: 0;">- (**): Alternativo </p>
           <div style="width:101.3%; margin-top: 4px; border-bottom: 1px solid #5f5f5f;"></div>
           <p style="margin: 0;">- Estimado Cliente al pagar exija su comprobante respectivo.</p>
-          <p style="margin: 0;">- Pague puntual y evite interes compensatorio adicional, mora y gastos.</p>
+          <p style="margin: 0;">- Pague puntual y evite interes compensatorio adicional, mora, penalidades y gastos.</p>
         </div>
       </div>
       <p align="center" style="margin: 0; margin-bottom: 5px;"><b>CEL.: {{ $tienda->numerotelefono }}</b></p>

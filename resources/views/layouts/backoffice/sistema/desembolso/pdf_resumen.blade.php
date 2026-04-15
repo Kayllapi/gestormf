@@ -128,11 +128,11 @@
         </tr>
         <tr>
           <td><b>DNI:</b> {{ $credito->docuementocliente }}</td>
-          <td><b>Com. de Ss y Desgravamen de Periodo S/.:</b> {{ $credito->total_comision }}</td>
+          <td><b>Cargo x Custodia S/.:</b> {{ $credito->total_cargo }}</td>
         </tr>
         <tr>
           <td><b>Tipo de Cliente:</b> {{ $credito->tipo_operacion_credito_nombre }}</td>
-          <td><b>Cargo de Periodo S/.:</b> {{ $credito->total_cargo }}</td>
+          <td><b>Ss. Recaudo S/.:</b> {{ $credito->total_comision }}</td>
         </tr>
         <tr>
           <td><b>Frecuencia de pago:</b> {{ $credito->forma_pago_credito_nombre }}</td>

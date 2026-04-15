@@ -353,7 +353,7 @@
       <table class="table" style="width:100%; border: 2px solid #000;">
         <tr>
           <td><b>Nombres y Apellidos</b></td>
-          <td><b>DOI</b></td>
+          <td><b>RUC/DNI</b></td>
           <td><b>Dirección</b></td>
           <td><b>Distrito - Provincia - Departamento</b></td>
         </tr>

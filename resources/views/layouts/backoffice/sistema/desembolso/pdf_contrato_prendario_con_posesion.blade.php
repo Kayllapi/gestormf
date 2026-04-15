@@ -186,7 +186,7 @@ CON GARANTÍA MOBILIARIA CON POSESIÓN</title>
     <b>{{ $credito->config_dias_tolerancia_garantia }}</b> días de tolerancia para el pago de las cuotas respectivas. Vencido los días 
     de tolerancia EL/LOS PRESTATARIO(S) pagará(n) el interés compensatorio y moratorio, custodia de garantía y cargos adiconales de ser el 
     caso, desde el primer día de su vencimiento, conforme tasas y penalidades establecidas en la hoja de resumen del crédito.<br>
-    <b>2.3.</b> EL/LOS PRESTATARIO(S) solicita(n) voluntariamente el servicio de recaudo de cuota a domicilio y/o negocio, y por ser un servicio alternativo autoriza(n) expresamente no forme parte del costo financiero directo del crédito conforme Resolución SBS N° 3274-2017; asimismo EL/LOS PRESTATARIO(S) declara(n) conocer que dispone(n) de canal de pago gratuito sin servicio de recaudo (Ventanilla).<br>
+    <b>2.3.</b> EL/LOS PRESTATARIO(S) solicita(n) voluntariamente el servicio de recaudo de cuota a domicilio y/o negocio, y por ser un servicio alternativo autoriza(n) expresamente no forme parte del costo financiero directo del crédito conforme Resolución SBS N° 3274-2017; asimismo EL/LOS PRESTATARIO(S) declara(n) conocer que dispone(n) de canal de pago gratuito (Ventanilla) sin servicio de recaudo.<br>
     <b>2.4.</b> EL/LOS PRESTATARIO(S) podrá(n) solicitar ampliar su crédito vigente conforme amerite, disponiendo el monto parcial o 
     total de lo pagado a cuenta del crédito, conforme políticas establecidas. Para lo cual EL ACREEDOR procederá al recalculo del nuevo 
     capital adeudado por EL/LOS PRESTATARIO(S). El nuevo saldo de capital comprenderá los intereses, cargo por custodia de garantía y servicio de recaudo

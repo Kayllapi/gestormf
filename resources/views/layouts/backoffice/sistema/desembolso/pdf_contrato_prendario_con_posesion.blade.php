@@ -195,7 +195,7 @@ CON GARANTÍA MOBILIARIA CON POSESIÓN</title>
     con EL/LOS PRESTATARIO(S), para lo cual será de aplicación el numeral 1.2 del Contrato.<br>
     <b>2.5.</b> EL ACREEDOR queda facultada a refinanciar la deuda de EL/LOS PRESTATARIO(S) en caso de incumplimiento de pago para lo cual 
     se incluirá el monto total de la deuda vencida, en una liquidación de saldo deudor conforme a sus reglas internas, como el 
-    importe del capital saldo por pagar más intereses, servicios, intereses compensatorios y moratorios, custodia de garantía y 
+    importe del capital por pagar más intereses, custodia de garantía, servicios de recaudo, intereses compensatorios y moratorios y 
     cargos establecidos en la Hoja Resumen del crédito. Bastando la intervención en dicha operación de cualquiera de los obligados.<br>
     <b>2.6.</b> Derechos y exigencias de Pagos Anticipados, serán a solicitud expresa de EL/LOS PRESTATARIO(S) como una opción y se 
     considerará las cuotas programadas a más de 30 días; de la misma forma, optará realizar de manera expresa pago de adelanto de cuotas. 

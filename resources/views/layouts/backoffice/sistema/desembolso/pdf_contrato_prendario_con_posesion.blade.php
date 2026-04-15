@@ -153,7 +153,7 @@ CON GARANTÍA MOBILIARIA CON POSESIÓN</title>
           }
           }
           ?>
-      <h4 align="center" style="font-size:13px;margin-top:2px;margin-bottom:2px;">CONTRATO DE CRÉDITO <br>CON GARANTÍA MOBILIARIA CON POSESIÓN</h4>
+      <h4 align="center" style="font-size:13px;margin-top:2px;margin-bottom:2px;">CONTRATO DE CRÉDITO CON GARANTÍA MOBILIARIA CON POSESIÓN</h4>
       <!--div style="position:absolute; left:700px;top: 60px;">{{ $credito->cuenta!=''?$credito->cuenta:'00000000' }}</div-->
   <div style="text-align: justify;">
     Los que suscriben, por una parte, <b>{{ $tienda->nombre }}</b>, con RUC N° <b>{{ $tienda->ruc }}</b> y domicilio legal para 

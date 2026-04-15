@@ -128,7 +128,7 @@
         </tr>
         <tr>
           <td><b>DNI:</b> {{ $credito->docuementocliente }}</td>
-          <td><b>Cargo x Custodia S/.:</b> {{ $credito->total_cargo }}</td>
+          <td><b>Cargo x Custodia de Garantía S/.:</b> {{ $credito->total_cargo }}</td>
         </tr>
         <tr>
           <td><b>Tipo de Cliente:</b> {{ $credito->tipo_operacion_credito_nombre }}</td>

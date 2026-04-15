@@ -182,8 +182,7 @@ CON GARANTÍA MOBILIARIA CON POSESIÓN</title>
     con pago <b>{{strtoupper($credito->forma_pago_credito_nombre)}}</b> en <b>{{$credito->cuotas}}</b> cuota(s), debiéndose pagar un total de S/. <b>{{ $credito->total_pagar }}</b> 
     al terminar el plazo pactado, que incluye capital más los intereses, cargo por custodia de garantía y servicio de recaudo, a la tasa de interés, costo de cargo y costo de servicio establecidos en Hoja de Resumen del crédito;  conforme lo informado y 
     aceptación de estos por parte de EL/LOS PRESTATARIO(S). <br>
-    <b>2.2.</b> EL/LOS PRESTATARIO(S) se obliga a pagar a EL ACREEDOR el préstamo otorgado por este último más los intereses, comisión de 
-    servicio y gastos (cargos), en la forma y plazo de pagos convenido de ambas partes conforme numeral 2.1; debiendo pagar en la misma moneda del crédito, para lo cual se le otorga 
+    <b>2.2.</b> EL/LOS PRESTATARIO(S) se obliga a pagar a EL ACREEDOR el préstamo otorgado por este último más los intereses, cargo por custodia de garantía y servicio de recaudo, en la forma y plazo de pagos convenido de ambas partes conforme numeral 2.1; debiendo pagar en la misma moneda del crédito, para lo cual se le otorga 
     <b>{{ $credito->config_dias_tolerancia_garantia }}</b> días de tolerancia para el pago de las cuotas respectivas. Vencido los días 
     de tolerancia EL/LOS PRESTATARIO(S) pagará(n) el interés compensatorio y moratorio, custodia de garantía y cargos adiconales de ser el 
     caso, desde el primer día de su vencimiento, conforme tasas y penalidades establecidas en la hoja de resumen del crédito.<br>

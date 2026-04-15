@@ -170,7 +170,7 @@
               <b>Garantia del Cliente</b>
           </td>
           <td width="90px">
-              <b>Cobertura Real</b>
+              <b>Cobertura Real (S/.)</b>
           </td>
         </tr>
         @if(count($garantias)>0)
@@ -207,7 +207,7 @@
               <b>Garantia del Aval</b>
           </td>
           <td width="90px">
-              <b>Cobertura Real</b>
+              <b>Cobertura Real (S/.)</b>
           </td>
         </tr>
         @if(count($garantiasaval)>0)

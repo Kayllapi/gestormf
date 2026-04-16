@@ -189,7 +189,7 @@ CON GARANTÍA MOBILIARIA CON POSESIÓN</title>
     <b>2.3.</b> EL/LOS PRESTATARIO(S) solicita(n) voluntariamente el servicio de recaudo de cuota a domicilio y/o negocio, y por ser un servicio alternativo autoriza(n) expresamente no forme parte del costo financiero directo del crédito conforme Resolución SBS N° 3274-2017; asimismo EL/LOS PRESTATARIO(S) declara(n) conocer que dispone(n) de canal de pago gratuito (Ventanilla) sin servicio de recaudo.<br>
     <b>2.4.</b> EL/LOS PRESTATARIO(S) podrá(n) solicitar ampliar su crédito vigente conforme amerite, disponiendo el monto parcial o 
     total de lo pagado a cuenta del crédito, conforme políticas establecidas. Para lo cual EL ACREEDOR procederá al recalculo del nuevo 
-    capital adeudado por EL/LOS PRESTATARIO(S). El nuevo saldo de capital comprenderá los intereses, cargo por custodia de garantía y servicio de recaudo
+    capital adeudado por EL/LOS PRESTATARIO(S) que comprenderá lo dispuesto, capital saldo más los intereses, cargo por custodia de garantía y servicio de recaudo
     en caso correspondan. La Ampliación generará la novación del Contrato de Crédito, por lo que, previamente se requerirá aceptación expresa de EL/LOS PRESTATARIO(S) 
     dejándose constancia de ello. De procederse con esta operación, EL ACREEDOR alcanzará los documentos correspondientes que detallen las nuevas condiciones pactadas 
     con EL/LOS PRESTATARIO(S), para lo cual será de aplicación el numeral 1.2 del Contrato.<br>

@@ -128,7 +128,8 @@
       let idcredito_garantia = $('#table-lista-credito > tbody > tr.selected').attr('idcredito');
                         
       if(idcredito_garantia == "" || idcredito_garantia == undefined ){
-        alert('Debe de seleccionar un crédito.');   
+        mensaje = 'Debe de seleccionar una ficha.';
+        modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' }); 
         return false;
       }
         modal({ route:"{{ url('backoffice/'.$tienda->id) }}/fichagenerada/"+idcredito_garantia+"/edit?view=eliminar",  size: 'modal-sm' });

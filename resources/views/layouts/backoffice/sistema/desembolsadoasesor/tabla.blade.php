@@ -156,7 +156,8 @@
       let idcredito = $('#table-lista-credito > tbody > tr.selected').attr('idcredito');
                         
       if(idcredito == "" || idcredito == undefined ){
-        alert('Debe de seleccionar un crédito.');   
+        mensaje = 'Debe de seleccionar un crédito.';
+        modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
         return false;
       }
       let url = "{{ url('backoffice/'.$tienda->id) }}/desembolsado/"+idcredito+"/edit?view=desembolsar";

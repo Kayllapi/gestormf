@@ -131,11 +131,13 @@
       var idultimocredito_completa = $('#idultimocredito_completa').val();
     
       if(idselectevaluacion== 1 && idultimocredito_resumida==0){
-          alert('No tiene un crédito con evaluación resumida');
+        mensaje = 'No tiene un crédito con evaluación resumida';
+        modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
           return false;
       }
       else if(idselectevaluacion== 2 && idultimocredito_completa==0){
-          alert('No tiene un crédito con evaluación completa');
+        mensaje = 'No tiene un crédito con evaluación completa';
+        modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
           return false;
       }
     

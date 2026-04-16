@@ -269,7 +269,7 @@ CON GARANTÍA MOBILIARIA CON POSESIÓN</title>
     por EL/LOS PRESTATARIO(S), este asumirá todas las responsabilidades civiles y penales, frente a EL ACREEDOR y terceros. En tal caso EL ACREEDOR, 
     procederá a resolver el presente Contrato en virtud a Resolución SBS N° 3274-2017 artículos 40 y 41, quedando EL/LOS PRESTATARIO(S) obligado(s) a 
     pagar a EL ACREEDOR un monto igual al saldo del Préstamo, intereses, gastos y comisión de servicio  más los intereses compensatorios y moratorios de obligaciones impagas.
-    EL/LOS PRESTATARIO(S) reconoce que, como parte de la evaluación para el otorgamiento del préstamo, EL ACREEDOR le solicitó la presentación del 
+    EL/LOS PRESTATARIO(S) reconoce(n) que, como parte de la evaluación para el otorgamiento del préstamo, EL ACREEDOR le solicitó la presentación del 
     comprobante de pago de la adquisición del (de los) bien(es) materia de la garantía mobiliaria. Al no contar con dicho comprobante, EL/LOS PRESTATARIO(S) 
     suscribe(n) la presente declaración jurada, la cual forma parte integral del contrato de préstamo.<br>
     <b>4.4.</b> La Posesión y Custodia en calidad de DEPOSITARIO de la(s) Garantía(s) Mobiliaria(s) constituida en numeral 

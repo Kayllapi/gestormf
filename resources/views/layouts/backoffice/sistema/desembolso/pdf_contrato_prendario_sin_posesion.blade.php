@@ -302,7 +302,7 @@ En caso EL/LOS PRESTATARIO(S) mantenga la calidad de DEPOSITARIO deberá contrat
     cláusula 4.1, realmente le corresponden y no contienen adulteraciones. De determinarse lo contrario a lo declarado por EL/LOS PRESTATARIO(S), este asumirá 
     todas las responsabilidades civiles y penales, frente a EL ACREEDOR y terceros. En tal caso EL ACREEDOR, procederá a resolver el presente Contrato en 
     virtud a Resolución SBS N° 3274-2017 artículos 40 y 41, quedando EL/LOS PRESTATARIO(S) obligado(s) a pagar a EL ACREEDOR un monto igual al saldo del Préstamo, 
-    intereses y comisiones de servicio más los intereses compensatorios y moratorios de obligaciones impagas y gastos.<br>
+    gastos y comisión de servicio más los intereses compensatorios y moratorios de obligaciones impagas y gastos.<br>
 EL/LOS PRESTATARIO(S) reconoce(n) que, como parte de la evaluación para el otorgamiento del préstamo, EL ACREEDOR le solicitó la presentación del comprobante de pago 
     de la adquisición del (de los) bien(es) materia de la garantía mobiliaria. Al no contar con dicho comprobante, EL/LOS PRESTATARIO(S) suscribe(n) la presente declaración 
     jurada, la cual forma parte integral del contrato de préstamo.<br>

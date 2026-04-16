@@ -208,7 +208,7 @@ CON GARANTÍA MOBILIARIA SIN POSESIÓN</title>
     Donde EL/LOS PRESTATARIO(S) declara haber sido informado con anterioridad al otorgamiento del crédito, considerándose para ello: (a) 
     El Pago Anticipado conlleva a la aplicación del monto al capital del crédito, con reducción de los intereses, gastos y comisión de servicio
     al día del pago. (b) El Adelanto de Cuotas supone la aplicación del monto pagado a las cuotas inmediatamente posteriores a la 
-    exigible en el periodo, sin que se produzca reducción de los intereses, comisión de servicio y gastos al día del pago.
+    exigible en el periodo, sin que se produzca reducción de los intereses, gastos y comisión de servicio al día del pago.
     
 <br><br>
 <b>III. RESOLUCIÓN DEL CONTRATO POR INCUMPLIMIENTO DE PAGO Y OTROS</b>

@@ -195,7 +195,7 @@ CON GARANTÍA MOBILIARIA SIN POSESIÓN</title>
     gratuito (Ventanilla) sin servicio de recaudo <br>
     <b>2.4.</b> EL/LOS PRESTATARIO(S) podrá(n) solicitar ampliar su crédito vigente conforme amerite, disponiendo el monto parcial o total de 
     lo pagado a cuenta del crédito, conforme políticas establecidas. Para lo cual EL ACREEDOR procederá al recalculo del nuevo capital adeudado 
-    por EL/LOS PRESTATARIO(S). El nuevo saldo de capital comprenderá los intereses, cargo por custodia de garantía y servicio de recaudo en caso correspondan. 
+    por EL/LOS PRESTATARIO(S) que comprenderá lo dispuesto, capital saldo más los intereses, cargo por custodia de garantía y servicio de recaudo en caso correspondan. 
     La Ampliación generará la novación del Contrato de Crédito, por lo que, previamente se requerirá aceptación expresa de EL/LOS PRESTATARIO(S) dejándose 
     constancia de ello. De procederse con esta operación, EL ACREEDOR alcanzará los documentos correspondientes que detallen las nuevas condiciones 
     pactadas con EL/LOS PRESTATARIO(S), para lo cual será de aplicación el numeral 1.2 del Contrato.<br>

@@ -176,7 +176,8 @@
       let idcredito_cobranzacuota = $('#table-lista-credito > tbody > tr.selected').attr('idcredito_cobranzacuota');
                         
       if(idcredito_cobranzacuota == "" || idcredito_cobranzacuota == undefined ){
-        alert('Debe de seleccionar un crédito.');   
+        mensaje = 'Debe de seleccionar un crédito.';
+        modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
         return false;
       }
       let url = "{{ url('backoffice/'.$tienda->id) }}/pagoprestamo/"+idcredito_cobranzacuota+"/edit?view=ticket";
@@ -186,7 +187,8 @@
       let idcredito_cobranzacuota = $('#table-lista-credito > tbody > tr.selected').attr('idcredito_cobranzacuota');
                         
       if(idcredito_cobranzacuota == "" || idcredito_cobranzacuota == undefined ){
-        alert('Debe de seleccionar un crédito.');   
+        mensaje = 'Debe de seleccionar un crédito.';
+        modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
         return false;
       }
       let url = "{{ url('backoffice/'.$tienda->id) }}/pagoprestamo/"+idcredito_cobranzacuota+"/edit?view=ticket_garantia";
@@ -197,7 +199,8 @@
       let idcredito_cobranzacuota = $('#table-lista-credito > tbody > tr.selected').attr('idcredito_cobranzacuota');
                         
       if(idcredito_cobranzacuota == "" || idcredito_cobranzacuota == undefined ){
-        alert('Debe de seleccionar un crédito.');   
+        mensaje = 'Debe de seleccionar un crédito.';
+        modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
         return false;
       }
       let url = "{{ url('backoffice/'.$tienda->id) }}/pagoprestamo/"+idcredito_cobranzacuota+"/edit?view=extornar";

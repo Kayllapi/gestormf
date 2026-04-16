@@ -172,8 +172,8 @@ CON GARANTÍA MOBILIARIA SIN POSESIÓN</title>
     clasificación del Préstamo otorgados a EL/LOS PRESTATARIO(S), conforme lo dispuesto en la Circular SBS N° 133-2010.<br>
     <b>1.2.</b> Los Canales de contratación que pone a disposición El ACREEDOR para atender a EL/LOS PRESTATARIO(S) son las oficinas y agencias, 
     página web, llamadas telefónicas, aplicaciones móviles, entre otros. EL ACREEDOR verificará la identidad de EL/LOS PRESTATARIO(S), 
-    dejando constancia de su aceptación a través de las herramientas que tenga implementadas a tales efectos, conforme al marco legal aplicable 
-    de ser el caso. Igualmente, durante la ejecución del presente contrato, EL ACREEDOR podrá usar medios directos de comunicación como: cartas a domicilio, 
+    dejando constancia de su aceptación a través de las herramientas que tenga implementadas a tales efectos, conforme al marco legal aplicable.
+    Igualmente, durante la ejecución del presente contrato, EL ACREEDOR podrá usar medios directos de comunicación como: cartas a domicilio, 
     (simple o notarial) mensajes de texto SMS, llamadas telefónicas y otros canales digitales; también podrá utilizar los medios indirectos, 
     la escrita, audio visual, página web y otras determinadas por EL ACREEDOR.
     
@@ -182,29 +182,32 @@ CON GARANTÍA MOBILIARIA SIN POSESIÓN</title>
 <br>
     <b>2.1.</b> EL ACREEDOR otorga a EL/LOS PRESTATARIO(S), la suma de S/. <b>{{ $credito->monto_solicitado }}</b>, en condición de préstamo, 
     con pago <b>{{strtoupper($credito->forma_pago_credito_nombre)}}</b> en <b>{{$credito->cuotas}}</b> cuota(s), debiéndose pagar un total de S/. <b>{{ $credito->total_pagar }}</b> 
-    al terminar el plazo pactado, que incluye capital más los intereses, comisión de servicio y gastos (cargos), a la tasa de interés, tasa de comisión de servicio y cargos establecidos en Hoja de Resumen del crédito; conforme lo informado y 
+    al terminar el plazo pactado, que incluye capital más los intereses, , cargos por custodia de garantía y servicio de recaudo, a la tasa de interés, costo de cargo y costo de servicio 
+    establecidos en Hoja de Resumen del crédito; conforme lo informado y 
     aceptación de estos por parte de EL/LOS PRESTATARIO(S). <br>
-    <b>2.2.</b> EL/LOS PRESTATARIO(S) se obliga a pagar a EL ACREEDOR el préstamo otorgado por este último más los intereses, comisión de servicio y gastos (cargos), 
+    <b>2.2.</b> EL/LOS PRESTATARIO(S) se obliga a pagar a EL ACREEDOR el préstamo otorgado por este último más los intereses, cargos por custodia de garantía y servicio de recaudo, 
     en la forma y plazo de pagos convenido de ambas partes conforme numeral 2.1; debiendo pagar en la misma moneda del crédito, 
-    en las oficinas o agencias de EL ACREEDOR en forma de efectivo, transferencia bancaria, depósitos en cuenta, entre otras; 
     para lo cual se le otorga <b>{{ $credito->config_dias_tolerancia_garantia }}</b> días de tolerancia para el pago de las cuotas respectivas. Vencido los días de tolerancia 
     EL/LOS PRESTATARIO(S) pagará(n) el interés compensatorio y moratorio, custodia de garantía y cargos adicionales de ser el caso, 
     desde el primer día de su vencimiento, conforme tasas y penalidades establecidas en la hoja de resumen del crédito.<br>
-    <b>2.3.</b> EL/LOS PRESTATARIO(S) podrá(n) solicitar ampliar su crédito vigente conforme amerite, disponiendo el monto parcial o total de 
+    <b>2.3</b> EL/LOS PRESTATARIO(S) solicita(n) voluntariamente el servicio de recaudo de cuota a domicilio y/o negocio, y por ser un servicio alternativo autoriza(n) expresamente 
+    no forme parte del costo financiero directo del crédito conforme Resolución SBS N° 3274-2017; asimismo EL/LOS PRESTATARIO(S) declara(n) conocer que dispone(n) de canal de pago 
+    gratuito (Ventanilla) sin servicio de recaudo <br>
+    <b>2.4.</b> EL/LOS PRESTATARIO(S) podrá(n) solicitar ampliar su crédito vigente conforme amerite, disponiendo el monto parcial o total de 
     lo pagado a cuenta del crédito, conforme políticas establecidas. Para lo cual EL ACREEDOR procederá al recalculo del nuevo capital adeudado 
-    por EL/LOS PRESTATARIO(S). El nuevo saldo de capital comprenderá los intereses, las comisiones de servicio, gastos(cargos) en caso correspondan. 
+    por EL/LOS PRESTATARIO(S). El nuevo saldo de capital comprenderá los intereses, cargo por custodia de garantía y servicio de recaudo en caso correspondan. 
     La Ampliación generará la novación del Contrato de Crédito, por lo que, previamente se requerirá aceptación expresa de EL/LOS PRESTATARIO(S) dejándose 
     constancia de ello. De procederse con esta operación, EL ACREEDOR alcanzará los documentos correspondientes que detallen las nuevas condiciones 
     pactadas con EL/LOS PRESTATARIO(S), para lo cual será de aplicación el numeral 1.2 del Contrato.<br>
-    <b>2.4.</b> EL ACREEDOR queda facultada a refinanciar la deuda de EL/LOS PRESTATARIO(S) en caso de incumplimiento de pago para lo cual 
+    <b>2.5.</b> EL ACREEDOR queda facultada a refinanciar la deuda de EL/LOS PRESTATARIO(S) en caso de incumplimiento de pago para lo cual 
     se incluirá el monto total de la deuda vencida, en una liquidación de saldo deudor conforme a sus reglas internas, como el 
-    importe del capital saldo por pagar más intereses, servicios, intereses compensatorios y moratorios, custodia de garantía y 
+    importe del capital por pagar más intereses, custodia de garantía, servicios de recaudo, intereses compensatorios y moratorios, y 
     cargos establecidos en la Hoja Resumen del crédito. Bastando la intervención en dicha operación de cualquiera de los obligados.<br>
-    <b>2.5.</b> Derechos y exigencias de Pagos Anticipados, serán a solicitud expresa de EL/LOS PRESTATARIO(S) como una opción y se 
+    <b>2.6.</b> Derechos y exigencias de Pagos Anticipados, serán a solicitud expresa de EL/LOS PRESTATARIO(S) como una opción y se 
     considerará las cuotas programadas a más de 30 días; de la misma forma, optará realizar de manera expresa pago de adelanto de cuotas. 
     Donde EL/LOS PRESTATARIO(S) declara haber sido informado con anterioridad al otorgamiento del crédito, considerándose para ello: (a) 
-    El Pago Anticipado conlleva a la aplicación del monto al capital del crédito, con reducción de los intereses, comisión de servicio y 
-    gastos al día del pago. (b) El Adelanto de Cuotas supone la aplicación del monto pagado a las cuotas inmediatamente posteriores a la 
+    El Pago Anticipado conlleva a la aplicación del monto al capital del crédito, con reducción de los intereses, gastos y comisión de servicio
+    al día del pago. (b) El Adelanto de Cuotas supone la aplicación del monto pagado a las cuotas inmediatamente posteriores a la 
     exigible en el periodo, sin que se produzca reducción de los intereses, comisión de servicio y gastos al día del pago.
     
 <br><br>

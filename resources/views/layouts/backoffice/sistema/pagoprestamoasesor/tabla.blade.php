@@ -143,7 +143,7 @@
       let idcredito = $('#tabla-pagoprestamo > tbody > tr.selected').attr('idcredito');
                         
       if(idcredito == "" || idcredito == undefined ){
-        mensaje = 'Debe de seleccionar un crédito.';
+        mensaje = 'Debe seleccionar registro de pago.';
         modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
         return false;
       }
@@ -155,7 +155,7 @@
       let idcredito_cobranzacuota = $('#table-lista-credito > tbody > tr.selected').attr('idcredito_cobranzacuota');
                         
       if(idcredito_cobranzacuota == "" || idcredito_cobranzacuota == undefined ){
-        mensaje = 'Debe de seleccionar un crédito.';
+        mensaje = 'Debe seleccionar registro de pago.';
         modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
         return false;
       }
@@ -166,7 +166,7 @@
       let idcredito_cobranzacuota = $('#table-lista-credito > tbody > tr.selected').attr('idcredito_cobranzacuota');
                         
       if(idcredito_cobranzacuota == "" || idcredito_cobranzacuota == undefined ){
-        mensaje = 'Debe de seleccionar un crédito.';
+        mensaje = 'Debe seleccionar registro de pago.';
         modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
         return false;
       }

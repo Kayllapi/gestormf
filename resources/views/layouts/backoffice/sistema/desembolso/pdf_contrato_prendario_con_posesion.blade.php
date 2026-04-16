@@ -19,7 +19,7 @@ CON GARANTÍA MOBILIARIA CON POSESIÓN</title>
           margin-top: 1.2cm;
           margin-left: 0.7cm;
           margin-right: 0.5cm;
-          margin-bottom: 2cm;
+          margin-bottom: 1cm;
       }
 
       header {

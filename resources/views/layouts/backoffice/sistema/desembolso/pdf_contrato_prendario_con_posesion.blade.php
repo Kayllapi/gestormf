@@ -8,7 +8,7 @@ CON GARANTÍA MOBILIARIA CON POSESIÓN</title>
     <style>
       *{
         font-family:helvetica;
-        font-size:12px;
+        font-size:11.5px;
       }
       @page {
           margin: 0cm 0cm;

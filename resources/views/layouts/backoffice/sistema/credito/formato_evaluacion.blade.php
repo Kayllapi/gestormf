@@ -458,13 +458,21 @@
         <div class="col-sm-12 col-md-2">
           <table class="table table-bordered">
             <tr>
-              <td style="background-color: #144081 !important; color:white !important;">CUOTA / EXCEDENTE (%)</td>
+              <td style="
+                    background-color: #b7b6b7 !important;
+                    color: #000000 !important;
+                    text-align: center;
+                    font-weight: 700;">CUOTA / EXCEDENTE (%)</td>
             </tr>
             <tr>
               <td><input type="text" disabled value="{{ $credito_formato_evaluacion ? $credito_formato_evaluacion->resultado_cuota_excedente : '0.00' }}" class="form-control campo_moneda" id="resultado_cuota_excedente"></td>
             </tr>
             <tr>
-              <td style="background-color: #144081 !important; color:white !important;">RESULTADO</td>
+              <td style="
+                    background-color: #b7b6b7 !important;
+                    color: #000000 !important;
+                    text-align: center;
+                    font-weight: 700;">RESULTADO</td>
             </tr>
             <tr>
               <td><input type="text" disabled value="{{ $credito_formato_evaluacion ? $credito_formato_evaluacion->estado_evaluacion : '0.00' }}" 

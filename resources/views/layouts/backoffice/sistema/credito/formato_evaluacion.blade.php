@@ -271,7 +271,11 @@
           <table class="table table-bordered mt-2" width="100%">
             <tbody>
               <tr>
-                <td style="background-color: #144081 !important; color:white !important;text-align:center;">EXCEDENTE MENSUAL DISPONIBLE (S/.)</td>
+                <td style="
+                    background-color: #b7b6b7 !important;
+                    color: #000000 !important;
+                    text-align: center;
+                    font-weight: 700;">EXCEDENTE MENSUAL DISPONIBLE (S/.)</td>
               </tr>
               <tr>
                 <td><input type="text" value="{{ $credito_formato_evaluacion ? $credito_formato_evaluacion->excedente_mensual_disponible : '0.00' }}" disabled class="form-control campo_moneda" id="excedente_mensual_disponible"></td>

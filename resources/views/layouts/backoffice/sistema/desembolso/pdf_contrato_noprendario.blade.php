@@ -170,12 +170,12 @@
     <b>II.	SOBRE EL PRÉSTAMO </b>
     <br>
     <b>2.1.</b>	EL ACREEDOR otorga a EL/LOS PRESTATARIO(S), la suma de S/. <b>{{ $credito->monto_solicitado }}</b>, en condición de préstamo, con pago <b>{{strtoupper($credito->forma_pago_credito_nombre)}}</b> en <b>{{$credito->cuotas}}</b> cuota(s), 
-    debiéndose pagar un total de S/. <b>{{ $credito->total_pagar }}</b> al terminar el plazo, que incluye capital más los intereses, comisión de servicio y gastos, 
+    debiéndose pagar un total de S/. <b>{{ $credito->total_pagar }}</b> al terminar el plazo, que incluye capital más los intereses, cargos y servicio de recaudo, 
     conforme lo informado y aceptación de estos por parte de EL/LOS PRESTATARIO(S) y/o SU(S) AVAL/FIADOR(ES) SOLIDARIO(S). 
     La entrega del monto total del préstamo, hoja de resumen y el cronograma de pagos, se realizan en el momento de firmado del presente contrato y del título valor. 
     <br>
-    <b>2.2.</b>	EL/LOS PRESTATARIO(S) se obliga(n) a pagar a EL ACREEDOR el monto total de préstamo otorgado por este último más los intereses, comisión de servicio y gastos, 
-    en la forma y plazo de pagos convenido de ambas partes conforme numeral 2.1., para lo cual se otorga <b>{{ $credito->config_dias_tolerancia_garantia }}</b> días de tolerancia para los pagos respectivos. 
+    <b>2.2.</b>	EL/LOS PRESTATARIO(S) se obliga(n) a pagar a EL ACREEDOR el monto total de préstamo otorgado por este último más los intereses, cargos y servicio de recaudo, 
+    en la forma y plazo de pagos convenido de ambas partes conforme numeral 2.1. debiendo pagar en la misma moneda del crédito, para lo cual se otorga <b>{{ $credito->config_dias_tolerancia_garantia }}</b> días de tolerancia para los pagos respectivos. 
     Vencida el plazo convenido y los días de tolerancia EL/LOS PRESTATARIO(S) pagará(n) el interés compensatorio y moratorio más gastos, desde el primer día 
     de su vencimiento conforme las tasas de hoja de resumen de crédito.
     <br>
@@ -199,13 +199,13 @@
       
     ?>
 
-    <b>2.3.</b>	EL/LOS PRESTATARIO(S) efectuará sus pagos en el establecimiento de pago respectivo de EL ACREEDOR; asimismo EL/LOS PRESTATARIO(S) autoriza(n) expresamente a EL ACREEDOR para cobro del préstamo en domicilio y/o local de negocio de ser el caso.
+    <b>2.3.</b>	EL/LOS PRESTATARIO(S) solicita(n) voluntariamente el servicio de recaudo de cuota a domicilio y/o negocio, y por ser un servicio alternativo autoriza(n) expresamente no forme parte del costo financiero directo del crédito conforme Resolución SBS N° 3274-2017; asimismo EL/LOS PRESTATARIO(S) declara(n) conocer que dispone(n) de canal de pago gratuito (Ventanilla) sin servicio de recaudo.
     <br>
     <b>2.4.</b>	EL/LOS PRESTATARIO(S) y/o SU(S) AVAL/FIADOR(ES) SOLIDARIO(S) autorizan expresamente a EL ACREEDOR, a efectuar las gestiones de cobranza en su domicilio, centro laboral y/o negocio, a través de mecanismos idóneos y permitidos por el Código de Protección y Defensa del Consumidor y sus normas modificatorias.
     <div style="width:100%; height:5px;"></div>
     <b>III.	 RESOLUCIÓN DE CONTRATO SIN PREVIO AVISO</b>
     <br>
-    EL ACREEDOR deja expresa constancia que, en cualquiera de los siguientes supuestos tendrá la facultad de dar por vencidos todos los plazos pactados y proceder a la cobranza del saldo no pagado del crédito, intereses, comisión de servicio y gastos; asimismo los intereses compensatorios, moratorios pactados y cargos adeudados.
+    EL ACREEDOR deja expresa constancia que, en cualquiera de los siguientes supuestos tendrá la facultad de dar por vencidos todos los plazos pactados y proceder a la cobranza del saldo no pagado del crédito, intereses, cargos y servicio de recaudo; asimismo los intereses compensatorios, moratorios pactados y gastos adeudados.
     <br>
     <b>3.1.</b>	Si EL/LOS PRESTATARIO(S) incumplen el pago total o parcial de una o más de las cuotas pactadas o cualquiera de sus obligaciones, EL ACREEDOR tendrá la facultad de dar por vencidos los plazos del crédito otorgados bajo las condiciones del presente contrato.
     <br>

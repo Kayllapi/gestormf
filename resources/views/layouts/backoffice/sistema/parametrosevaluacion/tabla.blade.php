@@ -20,7 +20,5 @@
     pagina({ route:"{{url('backoffice')}}/{{$tienda->id}}/parametrosevaluacion/0/edit?view=editar", result:'#form-credito-result'});
     
   }
-
-
 </script>  
 

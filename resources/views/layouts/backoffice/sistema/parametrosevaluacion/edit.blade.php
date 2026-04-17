@@ -49,7 +49,7 @@
                     <tr id="{{ $value->id }}">
                       <td>{{ $key+1 }}</td>
                       <td>{{ $value->nombreagencia }}</td>
-                      <td><input type="number" step="any" capital_agencia value="{{ $value->capital_agencia }}" class="form-control"></td>
+                      <td><input type="number" step="any" capital_agencia value="{{ $value->capital_agencia }}" class="form-control" disabled></td>
                     </tr>
                   @endforeach
                 </tbody>

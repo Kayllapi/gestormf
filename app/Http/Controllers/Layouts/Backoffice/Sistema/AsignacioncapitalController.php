@@ -387,7 +387,11 @@ class AsignacioncapitalController extends Controller
                     //->where($where)
                     ->sum('asignacioncapital.monto');
                 
-                $monto = number_format($monto_suma-$monto_resta, 2, '.', '');  
+                $monto = number_format($monto_suma-$monto_resta, 2, '.', ''); 
+                
+                DB::table('tienda')->whereId($value->id)->update([
+                    'capital_agencia' => $monto
+                ]);
               
                 $html .= "<tr>
                               <td>{$value->nombreagencia}</td>

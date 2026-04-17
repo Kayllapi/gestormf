@@ -382,14 +382,14 @@
       <div class="row">
         <div class="col-sm-12 col-md-10">
           <table class="table table-bordered" id="table-propuesta">
-            <thead>
+            <thead style="border-color: #616161 !important;">
               <tr>
                 <th colspan=10 class="text-center">PROPUESTA</th>
               </tr>
               <tr>
                 <th rowspan=2>DESTINO DE CRÉDITO</th>
                 <th rowspan=2>Producto</th>
-                <th colspan=2>Plazo</th>
+                <th colspan=2 style="text-align: center">Plazo</th>
                 <th rowspan=2>FORMA DE PAGO</th>
                 <th rowspan=2 width="80px">Monto Préstamo</th>
                 <th rowspan=2 width="80px">TEM</th>

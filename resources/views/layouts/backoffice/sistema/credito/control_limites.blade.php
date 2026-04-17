@@ -364,16 +364,16 @@
           <div class="row">
             <div class="col-sm-12 col-md-8">
               <div class="row">
-                <label class="col-sm-6 col-form-label" style="text-align: right;">Apellidos y Nombres:</label>
-                <div class="col-sm-6">
+                <label class="col-sm-5 col-form-label" style="text-align: right;">Apellidos y Nombres:</label>
+                <div class="col-sm-7">
                   <input type="text" step="any" class="form-control" value="{{ $credito->nombreavalcredito }}" disabled>
                 </div>
               </div>
               
               @if($users_prestamo_aval->dni_pareja!='' or $users_prestamo_aval->nombrecompleto_pareja!='')
               <div class="row">
-                <label class="col-sm-6 col-form-label" style="text-align: right;">PAREJA:</label>
-                <div class="col-sm-6">
+                <label class="col-sm-5 col-form-label" style="text-align: right;">PAREJA:</label>
+                <div class="col-sm-7">
                   <input type="text" step="any" class="form-control" value="{{ $users_prestamo_aval->nombrecompleto_pareja }}" disabled>
                 </div>
               </div>
@@ -381,7 +381,7 @@
             </div>
             <div class="col-sm-12 col-md-4">
               <div class="row">
-                <label class="col-sm-3 col-form-label" style="text-align: right;">RUC/DNI/CE:</label>
+                <label class="col-sm-5 col-form-label" style="text-align: right;">RUC/DNI/CE:</label>
                 <div class="col-sm-7">
                   <input type="text" step="any" class="form-control" value="{{ $credito->documentoaval }}" disabled>
                 </div>
@@ -389,7 +389,7 @@
               @if($users_prestamo_aval->dni_pareja!='' or $users_prestamo_aval->nombrecompleto_pareja!='')
               
               <div class="row">
-                <label class="col-sm-3 col-form-label" style="text-align: right;">DNI/CE:</label>
+                <label class="col-sm-5 col-form-label" style="text-align: right;">DNI/CE:</label>
                 <div class="col-sm-7">
                   <input type="text" step="any" class="form-control" value="{{ $users_prestamo_aval->dni_pareja }}" disabled>
                 </div>

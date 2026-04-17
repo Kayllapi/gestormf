@@ -285,7 +285,7 @@
         </div>
         <div class="col-sm-12 col-md-6">
           <table class="table table-bordered" id="table-deudas">
-            <thead style="border-color: #616161 !important;">
+            <thead style="border-color: transparent !important;">
               <tr>
                 <th rowspan=2 width="100px">Deudas</th>
                 <th style="text-align: center;">Inst. Finan.</th>
@@ -382,9 +382,9 @@
       <div class="row">
         <div class="col-sm-12 col-md-10">
           <table class="table table-bordered" id="table-propuesta">
-            <thead style="border-color: #616161 !important;">
+            <thead style="border-color: transparent !important;">
               <tr>
-                <th colspan=10 class="text-center">PROPUESTA</th>
+                <th colspan=10 class="text-center" style="background-color: #7b7b7b !important;">PROPUESTA</th>
               </tr>
               <tr>
                 <th rowspan=2>DESTINO DE CRÉDITO</th>

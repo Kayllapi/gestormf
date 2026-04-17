@@ -355,7 +355,7 @@
               </tr>
               <tr>
                 <td colspan="6">
-                  (*): PROVISIONAR LÍNEAS DE CRÉDITO NO USADAS: Consumo a 24 meses Cptal. de trabajo a 36 meses
+                  (*): PROVISIONAR LÍNEAS DE CRÉDITO NO USADAS: Consumo a 24 meses Capital de trabajo a 36 meses
                 </td>
               </tr>
             </tfoot>

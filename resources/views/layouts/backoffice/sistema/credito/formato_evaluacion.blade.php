@@ -278,7 +278,7 @@
                     font-weight: 700;">EXCEDENTE MENSUAL DISPONIBLE (S/.)</td>
               </tr>
               <tr>
-                <td><input type="text" value="{{ $credito_formato_evaluacion ? $credito_formato_evaluacion->excedente_mensual_disponible : '0.00' }}" disabled class="form-control campo_moneda" id="excedente_mensual_disponible"></td>
+                <td><input type="text" value="{{ $credito_formato_evaluacion ? $credito_formato_evaluacion->excedente_mensual_disponible : '0.00' }}" disabled class="form-control campo_moneda fw-bold" id="excedente_mensual_disponible"></td>
               </tr>
             </tbody>
           </table>
@@ -369,7 +369,7 @@
                 <td style="background-color: #c8c8c8 !important;" class="fw-bold">TOTAL</td>
                 <td style="background-color: #c8c8c8 !important;">
                   <input type="text" valida_input_vacio value="{{ $credito_formato_evaluacion ? $credito_formato_evaluacion->entidad_financiera_total : '0.00' }}" 
-                         class="form-control campo_moneda" disabled id="entidad_financiera_total"></td>
+                         class="form-control campo_moneda fw-bold" disabled id="entidad_financiera_total"></td>
               </tr>
             </tbody>
           </table>

@@ -402,7 +402,7 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
       </ul>
       <style>
         .m_click337 {
-            margin-left: 20px;
+            margin-left: 40px;
         }
         .menu_click {
               padding-bottom: 6px;

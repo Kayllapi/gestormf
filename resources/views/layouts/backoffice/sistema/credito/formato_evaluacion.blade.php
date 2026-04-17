@@ -291,7 +291,7 @@
                 <th style="text-align: center;">Inst. Finan.</th>
                 <th rowspan=2>Saldo Capital</th>
                 <th rowspan=2>Cuota Mensual</th>
-                <th rowspan=2 colspan=2 style="background-color: #a6a9ab !important;">CUOTA Ampliación/Compra de deuda</th>
+                <th rowspan=2 colspan=2 style="background-color: #a6a9ab !important; text-align: center;">CUOTA Ampliación/Compra de deuda</th>
               </tr>
               <tr>
                 <th>PROVISIONAR LÍNEAS DE CRÉDITO NO USADAS: Consumo a 24 meses Cptal. de trabajo a 36 meses</th>

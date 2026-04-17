@@ -341,14 +341,11 @@
         <table class="table table-bordered">
           <thead>
             <tr>
-              <th rowspan=2 width="50px">Deudas</th>
+              <th width="50px">Deudas</th>
               <th>Inst. Finan.</th>
-              <th rowspan=2>Saldo Capital</th>
-              <th rowspan=2>Cuota Mensual</th>
-              <th rowspan=2>CUOTA Ampliación/Compra de deuda</th>
-            </tr>
-            <tr>
-              <th>PROVISIONAR LÍNEAS DE CRÉDITO NO USADAS: Consumo a 24 meses Cptal. de trabajo a 36 meses</th>
+              <th>Saldo Capital</th>
+              <th>Cuota Mensual</th>
+              <th>Cuota <br> Ampliación/Compra de deuda</th>
             </tr>
           </thead>
           <tbody>
@@ -388,6 +385,11 @@
               <td class="campo_moneda">{{ $credito_formato_evaluacion ? $credito_formato_evaluacion->total_saldo_capital : '0.00' }}</td>
               <td class="campo_moneda">{{ $credito_formato_evaluacion ? $credito_formato_evaluacion->total_couta_mensual : '0.00' }}</td>
               <td class="campo_moneda">{{ $credito_formato_evaluacion ? $credito_formato_evaluacion->total_couta_ampliacion : '0.00' }}</td>
+            </tr>
+            <tr>
+              <td colspan="5">
+                (*): PROVISIONAR LÍNEAS DE CRÉDITO NO USADAS: Consumo a 24 meses Capital de trabajo a 36 meses
+              </td>
             </tr>
           </tfoot>
         </table>

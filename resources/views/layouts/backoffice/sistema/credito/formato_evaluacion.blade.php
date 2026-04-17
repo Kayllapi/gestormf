@@ -280,7 +280,7 @@
           </table>
         </div>
         <div class="col-sm-12 col-md-6">
-          <table class="table table-bordered" id="table-deudas">
+          <table class="table table-bordered" id="table-deudas" style="border-color: #0a0a0a !important;">
             <thead>
               <tr>
                 <th rowspan=2 width="100px">Deudas</th>

@@ -435,10 +435,10 @@
               <th rowspan=2>Producto</th>
               <th colspan=2>Plazo</th>
               <th rowspan=2>FORMA DE PAGO</th>
-              <th rowspan=2>Monto Préstamo</th>
+              <th rowspan=2>Monto Préstamo (S/.)</th>
               <th rowspan=2>TEM</th>
 
-              <th rowspan=2>Servicios / Otros (S/.)</th>
+              <th rowspan=2>Servicios Recaudo (S/.)</th>
               <th rowspan=2>Cargos (S/.)</th>
               <th rowspan=2 >Cuota de Pago {{$nombre_forma_pago}} (S/.)</th>
             </tr>

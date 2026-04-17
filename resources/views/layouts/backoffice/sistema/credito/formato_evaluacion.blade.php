@@ -57,37 +57,36 @@
           @endif
           
         </div>
-        <div class="col-sm-12 col-md-5">
+        <div class="col-sm-12 col-md-4">
           <div class="row">
-            <label class="col-sm-3 col-form-label" style="text-align: right;">F. EVALUACIÓN:</label>
-            <div class="col-sm-7">
+            <label class="col-sm-4 col-form-label" style="text-align: right;">F. EVALUACIÓN:</label>
+            <div class="col-sm-6">
               <input type="date" step="any" class="form-control" value="{{ $credito_formato_evaluacion ? $credito_formato_evaluacion->fecha : date_format(date_create($credito->fecha),'d/m/Y') }}"  id="fecha_desembolso" disabled>
             </div>
           </div>
           <div class="row">
-            <label class="col-sm-3 col-form-label" style="text-align: right;">RUC/DNI/CE:</label>
-            <div class="col-sm-7">
+            <label class="col-sm-4 col-form-label" style="text-align: right;">RUC/DNI/CE:</label>
+            <div class="col-sm-6">
               <input type="text" step="any" class="form-control" value="{{ $credito->docuementocliente }}" disabled>
             </div>
           </div>
           @if($users_prestamo->dni_pareja!='' or $users_prestamo->nombrecompleto_pareja!='')
           <div class="row">
-            <label class="col-sm-3 col-form-label" style="text-align: right;">RUC/DNI/CE:</label>
-            <div class="col-sm-7">
+            <label class="col-sm-4 col-form-label" style="text-align: right;">RUC/DNI/CE:</label>
+            <div class="col-sm-6">
               <input type="text" step="any" class="form-control" value="{{ $users_prestamo->dni_pareja }}" disabled>
             </div>
           </div>
           @endif
-          
         </div>
-        <div class="col-sm-12 col-md-2">
+        <div class="col-sm-12 col-md-3">
           <div class="row">
-            <label class="col-sm-6 col-form-label" style="text-align: right;">NRO:</label>
-            <div class="col-sm-6">
+            <label class="col-sm-5 col-form-label" style="text-align: right;">NRO:</label>
+            <div class="col-sm-7">
               <input type="text" step="any" class="form-control" value="S{{ str_pad($credito->id, 8, '0', STR_PAD_LEFT)  }}" disabled>
             </div>
-            <label class="col-sm-6 col-form-label" style="text-align: right;">ASESOR (A):</label>
-            <div class="col-sm-6">
+            <label class="col-sm-5 col-form-label" style="text-align: right;">ASESOR (A):</label>
+            <div class="col-sm-7">
               <input type="text" step="any" class="form-control" value="{{ Auth::user()->nombre }}" disabled>
             </div>
           </div>

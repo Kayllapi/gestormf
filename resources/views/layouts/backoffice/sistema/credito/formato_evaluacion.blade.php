@@ -82,12 +82,12 @@
         </div>
         <div class="col-sm-12 col-md-2">
           <div class="row">
-            <label class="col-sm-5 col-form-label" style="text-align: right;">NRO:</label>
-            <div class="col-sm-7">
+            <label class="col-sm-6 col-form-label" style="text-align: right;">NRO:</label>
+            <div class="col-sm-6">
               <input type="text" step="any" class="form-control" value="S{{ str_pad($credito->id, 8, '0', STR_PAD_LEFT)  }}" disabled>
             </div>
-            <label class="col-sm-5 col-form-label" style="text-align: right;">ASESOR (A):</label>
-            <div class="col-sm-7">
+            <label class="col-sm-6 col-form-label" style="text-align: right;">ASESOR (A):</label>
+            <div class="col-sm-6">
               <input type="text" step="any" class="form-control" value="{{ Auth::user()->nombre }}" disabled>
             </div>
           </div>

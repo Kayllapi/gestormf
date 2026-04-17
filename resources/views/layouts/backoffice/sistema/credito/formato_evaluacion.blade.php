@@ -285,7 +285,7 @@
         </div>
         <div class="col-sm-12 col-md-6">
           <table class="table table-bordered" id="table-deudas">
-            <thead style="border-color: #0a0a0a !important;">
+            <thead style="border-color: #616161 !important;">
               <tr>
                 <th rowspan=2 width="100px">Deudas</th>
                 <th style="text-align: center;">Inst. Finan.</th>

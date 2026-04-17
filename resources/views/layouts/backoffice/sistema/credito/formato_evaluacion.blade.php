@@ -156,8 +156,8 @@
             </tbody>
             <tfoot>
               <tr tr_encabezado>
-                <td >TOTAL (S/)</td>
-                <td><input type="text" disabled class="form-control campo_moneda" id="total_ingresos_mensuales" value="{{ $credito_formato_evaluacion ? $credito_formato_evaluacion->total_ingresos_mensuales : '0.00' }}"></td>
+                <td style="font-weight: 700">TOTAL (S/.)</td>
+                <td><input type="text" disabled class="form-control campo_moneda" id="total_ingresos_mensuales" style="font-weight: 700" value="{{ $credito_formato_evaluacion ? $credito_formato_evaluacion->total_ingresos_mensuales : '0.00' }}"></td>
                 <td></td>
               </tr>
             </tfoot>
@@ -262,8 +262,8 @@
             </tbody>
             <tfoot>
               <tr tr_encabezado>
-                <td >TOTAL (S/.)</td>
-                <td><input type="text" disabled class="form-control campo_moneda" id="total_egresos_mensuales" value="{{ $credito_formato_evaluacion ? $credito_formato_evaluacion->total_egresos_mensuales : '0.00' }}"></td>
+                <td style="font-weight: 700">TOTAL (S/.)</td>
+                <td><input type="text" disabled class="form-control campo_moneda" id="total_egresos_mensuales" style="font-weight: 700" value="{{ $credito_formato_evaluacion ? $credito_formato_evaluacion->total_egresos_mensuales : '0.00' }}"></td>
                 <td></td>
               </tr>
             </tfoot>
@@ -340,10 +340,10 @@
                 <td></td>
               </tr>
               <tr>
-                <td style="background-color: #c8c8c8 !important;" colspan=2>TOTAL (S/.)</td>
-                <td style="background-color: #c8c8c8 !important;"><input type="text" valida_input_vacio value="{{ $credito_formato_evaluacion ? $credito_formato_evaluacion->total_saldo_capital : '0.00' }}" class="form-control campo_moneda" disabled id="total_saldo_capital"></td>
-                <td style="background-color: #c8c8c8 !important;"><input type="text" valida_input_vacio value="{{ $credito_formato_evaluacion ? $credito_formato_evaluacion->total_couta_mensual : '0.00' }}" class="form-control campo_moneda" disabled id="total_couta_mensual"></td>
-                <td style="background-color: #c8c8c8 !important;"><input type="text" valida_input_vacio value="{{ $credito_formato_evaluacion ? $credito_formato_evaluacion->total_couta_ampliacion : '0.00' }}" class="form-control campo_moneda" disabled id="total_couta_ampliacion"></td>
+                <td style="background-color: #c8c8c8 !important; font-weight: 700;" colspan=2>TOTAL (S/.)</td>
+                <td style="background-color: #c8c8c8 !important;"><input style="font-weight: 700;" type="text" valida_input_vacio value="{{ $credito_formato_evaluacion ? $credito_formato_evaluacion->total_saldo_capital : '0.00' }}" class="form-control campo_moneda" disabled id="total_saldo_capital"></td>
+                <td style="background-color: #c8c8c8 !important;"><input style="font-weight: 700;" type="text" valida_input_vacio value="{{ $credito_formato_evaluacion ? $credito_formato_evaluacion->total_couta_mensual : '0.00' }}" class="form-control campo_moneda" disabled id="total_couta_mensual"></td>
+                <td style="background-color: #c8c8c8 !important;"><input style="font-weight: 700;" type="text" valida_input_vacio value="{{ $credito_formato_evaluacion ? $credito_formato_evaluacion->total_couta_ampliacion : '0.00' }}" class="form-control campo_moneda" disabled id="total_couta_ampliacion"></td>
                 <td style="background-color: #c8c8c8 !important;"></td>
               </tr>
             </tfoot>
@@ -445,8 +445,9 @@
             
             <tfoot>
               <tr>
-                <td class="color_totales" colspan=9 align="right">PAGO MES (S/.)</td>
-                <td class="color_totales"><input type="text" class="form-control campo_moneda" 
+                <td class="color_totales" colspan=9 align="right" style="font-weight: 700;">PAGO MES (S/.)</td>
+                <td class="color_totales"><input type="text" class="form-control campo_moneda"
+                                                 style="font-weight: 700;" 
                                                  value="{{ $credito->total_propuesta }}" id="total_propuesta" disabled></td>
               </tr>
               <tr>

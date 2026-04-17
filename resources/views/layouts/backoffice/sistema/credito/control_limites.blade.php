@@ -157,15 +157,6 @@
     </div>
       <div class="mb-1 mt-2">
         <span class="badge d-block">
-          {{-- @if($credito->idevaluacion == 1)
-            VI. 
-          @else
-            @if($users_prestamo->idfuenteingreso == 2)
-              VII.
-            @else
-              IX.
-            @endif
-          @endif --}}
           @if ($users_prestamo->idfuenteingreso == 1)
               @if($credito->idevaluacion == 1)
                 VI. 
@@ -179,7 +170,6 @@
       </div>
       <div class="mb-1 mt-2">
         <span class="badge d-block" style="background-color: #aaa;color: #000;">
-          {{-- {{ $credito->idevaluacion == 1 ? '6.1':($users_prestamo->idfuenteingreso == 2?'7.1':'9.1') }} GARANTÍAS DEL CLIENTE --}}
           {{ $users_prestamo->idfuenteingreso == 1 ? ($credito->idevaluacion == 1 ? '6.1' : '9.1') : ($users_prestamo->idfuenteingreso == 2 ? '7.1' : '') }}  GARANTÍAS DEL CLIENTE
         </span>
       </div>
@@ -250,7 +240,6 @@
       </div>
       <div class="mb-1 mt-2">
         <span class="badge d-block" style="background-color: #aaa;color: #000;">
-          {{-- {{ $credito->idevaluacion == 1 ? '6.1.1':($users_prestamo->idfuenteingreso == 2?'7.1.1':'9.1.1') }}  --}}
           {{ $users_prestamo->idfuenteingreso == 1 ? ($credito->idevaluacion == 1 ? '6.1.1' : '9.1.1') : ($users_prestamo->idfuenteingreso == 2 ? '7.1.1' : '') }} SALDO DE DEUDA VIGENTE DEL CLIENTE
         </span>
       </div>
@@ -354,7 +343,6 @@
       </div>
       <div class="mb-1 mt-2">
         <span class="badge d-block" style="background-color: #aaa;color: #000;">
-          {{-- {{ $credito->idevaluacion == 1 ? '6.2':($users_prestamo->idfuenteingreso == 2?'7.2':'9.2') }}  --}}
           {{ $users_prestamo->idfuenteingreso == 1 ? ($credito->idevaluacion == 1 ? '6.2' : '9.2') : ($users_prestamo->idfuenteingreso == 2 ? '7.2' : '') }} GARANTIAS DEL GARANTE(AVAL)/FIADOR
         </span>
       </div>
@@ -537,7 +525,6 @@
       
       <div class="mb-1 mt-2">
         <span class="badge d-block" style="background-color: #aaa;color: #000;">
-          {{-- {{ $credito->idevaluacion == 1 ? '6.2.1':($users_prestamo->idfuenteingreso == 2?'7.2.1':'9.2.1') }} --}}
           {{ $users_prestamo->idfuenteingreso == 1 ? ($credito->idevaluacion == 1 ? '6.2.1' : '9.2.1') : ($users_prestamo->idfuenteingreso == 2 ? '7.2.1' : '') }} SALDO DE DEUDA VIGENTE DEL AVAL
         </span>
       </div>
@@ -640,7 +627,6 @@
           <input type="hidden" id="total_garantia_aval" value="{{number_format($total_saldo_vigente_propio+$total_saldo_vigente_aval, 2, '.', '')}}">
       <div class="mb-1 mt-2">
         <span class="badge d-block" style="background-color: #aaa;color: #000;">
-          {{-- {{ $credito->idevaluacion == 1 ? '6.3':($users_prestamo->idfuenteingreso == 2?'7.3':'9.3') }} --}}
           {{ $users_prestamo->idfuenteingreso == 1 ? ($credito->idevaluacion == 1 ? '6.3' : '9.3') : ($users_prestamo->idfuenteingreso == 2 ? '7.3' : '') }} VINCULACIÓN POR RIESGO ÚNICO
         </span>
       </div>
@@ -735,7 +721,6 @@
       </div>
       <div class="mb-1 mt-2">
         <span class="badge d-block" style="background-color: #aaa;color: #000;">
-          {{-- {{ $credito->idevaluacion == 1 ? '6.4':($users_prestamo->idfuenteingreso == 2?'7.4':'9.4') }} --}}
           {{ $users_prestamo->idfuenteingreso == 1 ? ($credito->idevaluacion == 1 ? '6.4' : '9.4') : ($users_prestamo->idfuenteingreso == 2 ? '7.4' : '') }} DETERMINACIÓN DE LIMITES
         </span>
       </div>
@@ -763,14 +748,14 @@
           <script>
             determina_resultado();
             function determina_resultado(){
-              let saldo_capital_empresa = parseFloat("{{$saldo_capital_empresa}}");
-              let saldo_deducciones_empresa = parseFloat("{{$saldo_deducciones_empresa}}");
               let credito_solicitado = parseFloat("{{$credito->monto_solicitado}}");
-              
+              let total_saldodeuda_cliente_propio = parseFloat($('#total_saldodeuda_cliente_propio').val());
+              let total_saldodeuda_cliente_aval = parseFloat($('#total_saldodeuda_cliente_aval').val());
+              let total_saldodeuda_aval_propio = parseFloat($('#total_saldodeuda_aval_propio').val());
               let total_vinculo_deudor = parseFloat($('#total_vinculo_deudor').val());
-              let total_financiado_deudor = ( total_vinculo_deudor + credito_solicitado + saldo_capital_empresa ) - saldo_deducciones_empresa;
               
-              //console.log(total_vinculo_deudor,credito_solicitado,saldo_capital_empresa,saldo_deducciones_empresa)
+              let total_financiado_deudor = ( credito_solicitado + total_saldodeuda_cliente_propio + total_saldodeuda_cliente_aval + total_saldodeuda_aval_propio + total_vinculo_deudor );
+              
               
               $('#total_financiado_deudor').val(total_financiado_deudor.toFixed(2))
               
@@ -803,7 +788,6 @@
       </div>
       <div class="mb-1 mt-2">
         <span class="badge d-block" style="background-color: #aaa;color: #000;">
-          {{-- {{ $credito->idevaluacion == 1 ? '6.5':($users_prestamo->idfuenteingreso == 2?'7.5':'9.5') }} --}}
           {{ $users_prestamo->idfuenteingreso == 1 ? ($credito->idevaluacion == 1 ? '6.5' : '9.5') : ($users_prestamo->idfuenteingreso == 2 ? '7.5' : '') }} COMENTARIOS SOBRE LA VINCULACIÓN
         </span>
       </div>

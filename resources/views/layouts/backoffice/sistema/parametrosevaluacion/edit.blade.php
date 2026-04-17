@@ -35,25 +35,28 @@
           <div class="row mt-1">
             <label class="col-sm-5 col-form-label" style="text-align: right;">ASIGNACION DE CAPITAL A AGENCIA:</label>
             <div class="col-sm-7">
-              
-              <table class="table table-bordered" id="table-capital-agencia">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Agencia</th>
-                    <th>Capital</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  @foreach($agencias as $key => $value)
-                    <tr id="{{ $value->id }}">
-                      <td>{{ $key+1 }}</td>
-                      <td>{{ $value->nombreagencia }}</td>
-                      <td><input type="number" step="any" capital_agencia value="{{ $value->capital_agencia }}" class="form-control" disabled></td>
-                    </tr>
-                  @endforeach
-                </tbody>
-              </table>
+              <div class="card">
+                <div class="card-body" style="overflow-y: scroll;height: 150px;padding: 0;margin-top: 5px;overflow-x: scroll;">
+                  <table class="table table-bordered" id="table-capital-agencia">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Agencia</th>
+                        <th>Capital</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @foreach($agencias as $key => $value)
+                        <tr id="{{ $value->id }}">
+                          <td>{{ $key+1 }}</td>
+                          <td>{{ $value->nombreagencia }}</td>
+                          <td><input type="number" step="any" capital_agencia value="{{ $value->capital_agencia }}" class="form-control" disabled></td>
+                        </tr>
+                      @endforeach
+                    </tbody>
+                  </table>
+                </div>
+              </div>
               <script>
                 function json_agencia_capital(){
                   let data = [];

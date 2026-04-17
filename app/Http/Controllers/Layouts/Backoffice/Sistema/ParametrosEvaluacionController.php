@@ -55,7 +55,9 @@ class ParametrosEvaluacionController extends Controller
         
       
       $tienda = DB::table('tienda')->whereId($idtienda)->first();
-      $agencias = DB::table('tienda')->get();
+      $agencias = DB::table('tienda')
+        ->orderBy('tienda.nombre','ASC')
+        ->get();
       
       
       if($request->input('view') == 'editar') {

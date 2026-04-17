@@ -290,14 +290,18 @@
           <table class="table table-bordered" id="table-deudas">
             <thead style="border-color: transparent !important;">
               <tr>
-                <th rowspan=2 width="100px">Deudas</th>
-                <th style="text-align: center;">Inst. Finan.</th>
-                <th rowspan=2>Saldo Capital</th>
-                <th rowspan=2>Cuota Mensual</th>
-                <th rowspan=2 colspan=2 style="background-color: #a6a9ab !important; text-align: center;">CUOTA Ampliación/Compra de deuda</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th colspan=2 style="background-color: #a6a9ab !important; text-align: center;">CUOTA</th>
               </tr>
               <tr>
-                <th>PROVISIONAR LÍNEAS DE CRÉDITO NO USADAS: Consumo a 24 meses Cptal. de trabajo a 36 meses</th>
+                <th rowspan=2 width="100px">Deudas</th>
+                <th rowspan=2 style="text-align: center;">Inst. Finan.</th>
+                <th rowspan=2>Saldo Capital</th>
+                <th rowspan=2>Cuota Mensual (*)</th>
+                <th colspan=2 style="background-color: #a6a9ab !important; text-align: center;">Ampliación/Compra de deuda</th>
               </tr>
             </thead>
             <tbody>
@@ -348,6 +352,11 @@
                 <td style="background-color: #c8c8c8 !important;"><input style="font-weight: 700;" type="text" valida_input_vacio value="{{ $credito_formato_evaluacion ? $credito_formato_evaluacion->total_couta_mensual : '0.00' }}" class="form-control campo_moneda" disabled id="total_couta_mensual"></td>
                 <td style="background-color: #c8c8c8 !important;"><input style="font-weight: 700;" type="text" valida_input_vacio value="{{ $credito_formato_evaluacion ? $credito_formato_evaluacion->total_couta_ampliacion : '0.00' }}" class="form-control campo_moneda" disabled id="total_couta_ampliacion"></td>
                 <td style="background-color: #c8c8c8 !important;"></td>
+              </tr>
+              <tr>
+                <td colspan="6">
+                  (*): PROVISIONAR LÍNEAS DE CRÉDITO NO USADAS: Consumo a 24 meses Cptal. de trabajo a 36 meses
+                </td>
               </tr>
             </tfoot>
           </table>

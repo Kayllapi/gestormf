@@ -147,7 +147,7 @@
             <td class="border-td">{{ $users_prestamo->nombrecompleto_pareja }}</td>
           </tr>
           <tr>
-            <td>RUC/DNI/CE:</td>
+            <td>DNI/CE:</td>
             <td class="border-td">{{ $users_prestamo->dni_pareja }}</td>
           </tr>
           @endif

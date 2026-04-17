@@ -406,7 +406,7 @@
                 <th rowspan=2 width="80px">Monto Préstamo</th>
                 <th rowspan=2 width="80px">TEM</th>
                 
-                <th rowspan=2 width="80px">Servicios / Otros (S/.)</th>
+                <th rowspan=2 width="80px">Servicios de Recaudo (S/.)</th>
                 <th rowspan=2 width="80px">Cargos (S/.)</th>
                 <th rowspan=2 width="80px">Cuota de Pago <span id="nombre_frecuencia_pago">Diario</span> (S/.)</th>
               </tr>

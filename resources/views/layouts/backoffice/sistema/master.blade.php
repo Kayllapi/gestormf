@@ -374,22 +374,35 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
                       <i class="{{ $value->icono }}"></i> {{ $value->nombre }}</a>
                     <ul class="dropdown-menu">
                     <?php
-                    $submodulos = DB::table('permisoacceso')
-                                  ->join('modulo','modulo.id','permisoacceso.idmodulo')
-                                  ->where('permisoacceso.idpermiso',user_permiso()->idpermiso)
-                                  ->where('modulo.idestado',1)
-                                  ->where('modulo.vista','<>','SOLO-ACCESO')
-                                  ->where('modulo.idmodulo',$value->id)
-                                  ->select('modulo.*')
-                                  ->orderBy('modulo.orden','asc')
-                                  ->get();
+                        $submodulos = DB::table('permisoacceso')
+                                    ->join('modulo','modulo.id','permisoacceso.idmodulo')
+                                    ->where('permisoacceso.idpermiso',user_permiso()->idpermiso)
+                                    ->where('modulo.idestado',1)
+                                    ->where('modulo.vista','<>','SOLO-ACCESO')
+                                    ->where('modulo.idmodulo',$value->id)
+                                    ->select('modulo.*')
+                                    ->orderBy('modulo.orden','asc')
+                                    ->get();
+                        $grupoActual = null;
                     ?>
                     @foreach($submodulos as $subvalue)
-                          <?php
-                            $href = str_replace('{idtienda}', $tienda->id, $subvalue->vista);?>       
-                          <li><a href="javascript:;"  class="dropdown-item" style="font-size: 13px;"
-                          onclick="pagina({route:'{{url($href)}}?view=tabla',result:'#cuerposistema'}),menu_click({{ $value->id }})">
-                            <i class="{{ $subvalue->icono }}"></i> {{ $subvalue->nombre }}</a></li>                  
+                        @php $grupo = floor($subvalue->orden / 100); @endphp
+                        @if($grupoActual !== null && $grupo != $grupoActual)
+                            <li><hr class="dropdown-divider my-0" style="opacity:1;"></li>
+                        @endif
+                        @php
+                            $grupoActual = $grupo;
+                            $href = str_replace('{idtienda}', $tienda->id, $subvalue->vista);
+                        @endphp
+                        <li>
+                            <a href="javascript:;"
+                                class="dropdown-item"
+                                style="font-size: 13px;"
+                                onclick="pagina({route:'{{url($href)}}?view=tabla',result:'#cuerposistema'}),
+                                menu_click({{ $value->id }})">
+                                <i class="{{ $subvalue->icono }}"></i> {{ $subvalue->nombre }}
+                            </a>
+                        </li>                  
                     @endforeach
                     </ul>
                 </li>    

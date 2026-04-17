@@ -280,11 +280,11 @@
           </table>
         </div>
         <div class="col-sm-12 col-md-6">
-          <table class="table table-bordered" id="table-deudas" style="border-color: #0a0a0a !important;">
-            <thead>
+          <table class="table table-bordered" id="table-deudas">
+            <thead style="border-color: #0a0a0a !important;">
               <tr>
                 <th rowspan=2 width="100px">Deudas</th>
-                <th>Inst. Finan.</th>
+                <th style="text-align: center;">Inst. Finan.</th>
                 <th rowspan=2>Saldo Capital</th>
                 <th rowspan=2>Cuota Mensual</th>
                 <th rowspan=2 colspan=2>CUOTA Ampliación/Compra de deuda</th>

@@ -387,10 +387,10 @@
                 <th colspan=10 class="text-center" style="background-color: #a6a9ab !important;">PROPUESTA</th>
               </tr>
               <tr>
-                <th rowspan=2>DESTINO DE CRÉDITO</th>
+                <th rowspan=2>Destino de Crédito</th>
                 <th rowspan=2>Producto</th>
                 <th colspan=2 style="text-align: center">Plazo</th>
-                <th rowspan=2>FORMA DE PAGO</th>
+                <th rowspan=2>Forma de Pago</th>
                 <th rowspan=2 width="80px">Monto Préstamo</th>
                 <th rowspan=2 width="80px">TEM</th>
                 

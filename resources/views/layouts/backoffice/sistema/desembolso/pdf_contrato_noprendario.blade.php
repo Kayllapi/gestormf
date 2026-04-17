@@ -239,7 +239,7 @@
 
     <div style="width:100%; height:5px;"></div>
     <b>VII.	DEL AVAL SOLIDARIO Y GARANTÍAS</b><br>
-    <b>7.1.</b>	SU(S) AVAL/FIADOR(ES) SOLIDARIO(S) deja(n) expresa constancia que su fianza es por plazo indeterminado; además de solidaria, indivisible e ilimitada: responder por el pago del capital, más intereses, comisión de servicio, interés compensatorios y moratorios más gastos y cargos de la presente obligación y cualquier otra obligación de cargo de EL/LOS PRESTATARIO(S). 
+    <b>7.1.</b>	SU(S) AVAL/FIADOR(ES) SOLIDARIO(S) deja(n) expresa constancia que su fianza es por plazo indeterminado; además de solidaria, indivisible e ilimitada: responder por el pago del capital, más intereses, cargos y servicio de recaudo, interés compensatorios y moratorios más gastos de la presente obligación y cualquier otra obligación de cargo de EL/LOS PRESTATARIO(S). 
     <br>
     <b>7.2.</b>	El procedimiento de ejecución de las Garantías que presenta(n) EL/LOS PRESTATARIO(S) y/o SU(S) AVAL/FIADOR(ES) SOLIDARIO(S) será conforme ley N° 28677 de garantías y Ley N° 27287 de títulos y valores.
     <div style="width:100%; height:5px;"></div>

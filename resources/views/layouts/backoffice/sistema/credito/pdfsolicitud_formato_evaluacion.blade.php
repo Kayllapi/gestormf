@@ -138,7 +138,7 @@
             <td class="border-td">{{ $credito->nombreclientecredito }}</td>
           </tr>
           <tr>
-            <td>DNI/RUC:</td>
+            <td>RUC/DNI/CE:</td>
             <td class="border-td">{{ $credito->docuementocliente }}</td>
           </tr>
           @if($users_prestamo->dni_pareja!='' or $users_prestamo->nombrecompleto_pareja!='')
@@ -147,7 +147,7 @@
             <td class="border-td">{{ $users_prestamo->nombrecompleto_pareja }}</td>
           </tr>
           <tr>
-            <td>DNI:</td>
+            <td>RUC/DNI/CE:</td>
             <td class="border-td">{{ $users_prestamo->dni_pareja }}</td>
           </tr>
           @endif
@@ -191,9 +191,13 @@
             <td>Tipo de cliente:</td>
             <td class="border-td">{{ $credito->tipo_operacion_credito_nombre }}</td>
           </tr>
-          <tr>  
+          <tr>
             <td>Destino de Crédito:</td>
             <td class="border-td">{{ $credito->tipo_destino_credito_nombre}}</td>
+          </tr>
+          <tr>
+            <td>Asesor (a):</td>
+            <td class="border-td">{{ Auth::user()->nombre }}</td>
           </tr>
         </table>
       </div>

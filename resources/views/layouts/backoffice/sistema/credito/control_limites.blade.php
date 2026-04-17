@@ -78,6 +78,12 @@
               @endif
             </div>
           </div>
+          <div class="row">
+            <label class="col-sm-4 col-form-label" style="text-align: right;">ASESOR (A):</label>
+            <div class="col-sm-8">
+              <input type="text" step="any" class="form-control" value="{{ Auth::user()->nombre }}" disabled>
+            </div>
+          </div>
         </div>
         <div class="col-sm-12 col-md-3">
           <div class="row">

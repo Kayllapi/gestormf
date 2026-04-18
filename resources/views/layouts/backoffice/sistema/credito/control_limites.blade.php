@@ -250,7 +250,7 @@
       <div class="row">
         <div class="col-sm-4">
           <table class="table table-bordered" id="table-garantia-cliente-propio">
-            <thead>
+            <thead style="border: 1px solid transparent !important;">
               <tr>
                 <th colspan="2" style="text-align: center;">PROPIOS</th>
               </tr>
@@ -296,7 +296,7 @@
           <input type="hidden" id="total_saldodeuda_cliente_propio" value="{{number_format($total_saldo_vigente_propio, 2, '.', '')}}">
         <div class="col-sm-4">
           <table class="table table-bordered" id="table-garantia-cliente-aval">
-            <thead>
+            <thead style="border: 1px solid transparent !important;">
               <tr>
                 <th colspan="2" style="text-align: center;">AVALADO</th>
               </tr>
@@ -540,7 +540,7 @@
       <div class="row">
         <div class="col-sm-4">
           <table class="table table-bordered" id="table-garantia-aval-propio">
-            <thead>
+            <thead style="border: 1px solid transparent !important;">
               <tr>
                 <th colspan="2" style="text-align: center;">PROPIOS</th>
               </tr>
@@ -593,7 +593,7 @@
           <input type="hidden" id="total_saldodeuda_aval_propio_input" value="{{number_format($total_saldo_vigente_propio_input, 2, '.', '')}}">
         <div class="col-sm-4">
           <table class="table table-bordered" id="table-garantia-aval-aval">
-            <thead>
+            <thead style="border: 1px solid transparent !important;">
               <tr>
                 <th colspan="2" style="text-align: center;">AVALADO</th>
               </tr>

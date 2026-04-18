@@ -152,16 +152,19 @@
             <td class="border-td" width="130px">{{ date_format(date_create($credito->fecha),'Y-m-d') }}</td>
           </tr>
           <tr>
-            <td>DNI/RUC</td>
+            <td>RUC/DNI/CE</td>
             <td class="border-td">{{ $credito->docuementocliente }}</td>
           </tr>
           @if($users_prestamo->dni_pareja!='' or $users_prestamo->nombrecompleto_pareja!='')
           <tr>
-            <td>DNI:</td>
+            <td>DNI/CE:</td>
             <td class="border-td">{{ $users_prestamo->dni_pareja }}</td>
           </tr>
           @endif
-          
+          <tr>
+            <td>ASESOR (A):</td>
+            <td class="border-td">{{ Auth::user()->nombre }}</td>
+          </tr>
         </table>
       </div>
       <div class="col">
@@ -171,7 +174,7 @@
             <td class="border-td" width="130px">{{ $credito->nombreavalcredito }}</td>
           </tr>
           <tr>
-            <td>DNI</td>
+            <td>DNI/CE</td>
             <td class="border-td">{{ $credito->documentoaval }}</td>
           </tr>
         </table>

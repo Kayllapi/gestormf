@@ -731,8 +731,6 @@
               <td>Capital Asignado</td>
               <td width="100px"><input type="text" disabled class="form-control campo_moneda" value="{{ $tienda->capital_agencia }}" id="reporte_institucional"></td>
               <td width="300px"><input type="text" disabled class="form-control campo_moneda" value="{{ configuracion($tienda->id,'capital_asignado')['valor'] }}" id="capital_asignado"></td>
-              
-
             </tr>
             <tr>
               <td colspan="2">Total financiado al Deudor y Deudores vinculados (Incluido propuesta) ( S/.)</td>
@@ -742,7 +740,7 @@
               <td>Resultado (%)</td>
               <td><input type="text" class="form-control campo_moneda" style="width:60px;"
                          value="{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->porcentaje_resultado : '0.00' }}" disabled id="porcentaje_resultado"></td>
-              <td><input type="text" class="form-control text-center" value="{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->estado_resultado : '0.00' }}" disabled id="estado_resultado"></td>
+              <td width="150px"><input type="text" class="form-control text-center" value="{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->estado_resultado : '0.00' }}" disabled id="estado_resultado"></td>
             </tr>
           </table>
           <script>
@@ -756,9 +754,7 @@
               
               let total_financiado_deudor = ( credito_solicitado + total_saldodeuda_cliente_propio + total_saldodeuda_cliente_aval + total_saldodeuda_aval_propio + total_vinculo_deudor );
               
-              
               $('#total_financiado_deudor').val(total_financiado_deudor.toFixed(2))
-              
               
               let reporte_institucional = parseFloat($('#reporte_institucional').val());
               let porcentaje_resultado = (total_financiado_deudor/reporte_institucional) * 100;

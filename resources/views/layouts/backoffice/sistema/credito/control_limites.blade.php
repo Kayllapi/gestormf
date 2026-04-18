@@ -753,7 +753,7 @@
               <td>Resultado (%)</td>
               <td><input type="text" class="form-control campo_moneda" style="width:60px;"
                          value="{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->porcentaje_resultado : '0.00' }}" disabled id="porcentaje_resultado"></td>
-              <td width="150px"><input type="text" class="form-control text-center" value="{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->estado_resultado : '0.00' }}" disabled id="estado_resultado"></td>
+              <td width="150px"><input type="text" class="form-control text-center fw-bold" value="{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->estado_resultado : '0.00' }}" disabled id="estado_resultado"></td>
             </tr>
           </table>
           <script>

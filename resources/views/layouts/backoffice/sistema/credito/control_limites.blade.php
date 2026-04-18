@@ -306,7 +306,10 @@
               </tr>
             </thead>
             <tbody>
-                  <?php $total_saldo_vigente_aval = 0; ?>
+              <?php 
+                $total_saldo_vigente_aval = 0; 
+                $cuentas_aval = [];
+              ?>
               @if($view_detalle=='false')
                   @if($credito_cuantitativa_control_limites)
                   <?php
@@ -317,7 +320,8 @@
                         <td>{{ $value->cuenta }}</td>
                         <td class="campo_moneda">{{ $value->saldo_vigente }}</td>
                     </tr>
-                    <?php $total_saldo_vigente_aval = $total_saldo_vigente_aval+$value->saldo_vigente; ?>
+                    <?php $cuentas_aval[] = $value->cuenta; ?>
+                    <?php $total_saldo_vigente_aval += $value->saldo_vigente; ?>
                   @endforeach
                 @endif
               @else
@@ -326,7 +330,8 @@
                         <td>{{ $value['cuenta'] }}</td>
                         <td class="campo_moneda">{{ $value['saldo_vigente'] }}</td>
                     </tr>
-                    <?php $total_saldo_vigente_aval = $total_saldo_vigente_aval+$value['saldo_vigente']; ?>
+                    <?php $cuentas_aval[] = $value['cuenta']; ?>
+                    <?php $total_saldo_vigente_aval += $value['saldo_vigente']; ?>
                   @endforeach
               @endif
             </tbody>
@@ -546,6 +551,7 @@
             </thead>
             <tbody>
                   <?php $total_saldo_vigente_propio = 0; ?>
+                  <?php $total_saldo_vigente_propio_input = 0; ?>
               @if($view_detalle=='false')
                   @if($credito_cuantitativa_control_limites)
                   <?php
@@ -556,7 +562,10 @@
                         <td>{{ $value->cuenta }}</td>
                         <td class="campo_moneda">{{ $value->saldo_vigente }}</td>
                     </tr>
-                    <?php $total_saldo_vigente_propio = $total_saldo_vigente_propio+$value->saldo_vigente; ?>
+                    <?php $total_saldo_vigente_propio += $value->saldo_vigente; ?>
+                    @if(!in_array($value->cuenta, $cuentas_aval))
+                        <?php $total_saldo_vigente_propio_input += $value->saldo_vigente; ?>
+                    @endif
                   @endforeach
                 @endif
               @else
@@ -565,7 +574,10 @@
                         <td>{{ $value['cuenta'] }}</td>
                         <td class="campo_moneda">{{ $value['saldo_vigente'] }}</td>
                     </tr>
-                    <?php $total_saldo_vigente_propio = $total_saldo_vigente_propio+$value['saldo_vigente']; ?>
+                    <?php $total_saldo_vigente_propio += $value['saldo_vigente']; ?>
+                    @if(!in_array($value['cuenta'], $cuentas_aval))
+                        <?php $total_saldo_vigente_propio_input += $value['saldo_vigente']; ?>
+                    @endif
                   @endforeach
               @endif
             </tbody>
@@ -578,6 +590,7 @@
           </table>
         </div>
           <input type="hidden" id="total_saldodeuda_aval_propio" value="{{number_format($total_saldo_vigente_propio, 2, '.', '')}}">
+          <input type="hidden" id="total_saldodeuda_aval_propio_input" value="{{number_format($total_saldo_vigente_propio_input, 2, '.', '')}}">
         <div class="col-sm-4">
           <table class="table table-bordered" id="table-garantia-aval-aval">
             <thead>
@@ -636,7 +649,7 @@
             <b style="background-color:yellow">REGISTRAR SALDO DE PRÉSTAMO VIGENTE</b>
           </p>
           <table class="table table-bordered" id="table-vinculo-deudor">
-            <thead>
+            <thead style="border: 1px solid transparent !important;">
               <tr>
                 <th rowspan=3 style="width:100px;">DNI CLIENTE</th>
                 <th rowspan=3>APELLIDOS Y NOMBRES</th>
@@ -749,10 +762,10 @@
               let credito_solicitado = parseFloat("{{$credito->monto_solicitado}}");
               let total_saldodeuda_cliente_propio = parseFloat($('#total_saldodeuda_cliente_propio').val());
               let total_saldodeuda_cliente_aval = parseFloat($('#total_saldodeuda_cliente_aval').val());
-              let total_saldodeuda_aval_propio = parseFloat($('#total_saldodeuda_aval_propio').val());
+              let total_saldodeuda_aval_propio_input = parseFloat($('#total_saldodeuda_aval_propio_input').val());
               let total_vinculo_deudor = parseFloat($('#total_vinculo_deudor').val());
               
-              let total_financiado_deudor = ( credito_solicitado + total_saldodeuda_cliente_propio + total_saldodeuda_cliente_aval + total_saldodeuda_aval_propio + total_vinculo_deudor );
+              let total_financiado_deudor = ( credito_solicitado + total_saldodeuda_cliente_propio + total_saldodeuda_cliente_aval + total_saldodeuda_aval_propio_input + total_vinculo_deudor );
               
               $('#total_financiado_deudor').val(total_financiado_deudor.toFixed(2))
               

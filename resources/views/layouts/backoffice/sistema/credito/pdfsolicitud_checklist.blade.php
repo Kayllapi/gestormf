@@ -462,8 +462,8 @@
         <table class="">
           <thead>
             <tr>
-              <th width=200px class="border-td">Asesor de créditos</th>
-              <th width=200px class="border-td">Ejecutivo de operaciones</th>
+              <th width=200px class="border-td">Asesor(a) de créditos</th>
+              <th width=200px class="border-td">Ejecutivo(a) de operaciones</th>
             </tr>
           </thead>
           <tbody>

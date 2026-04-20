@@ -2327,6 +2327,285 @@ class CreditoController extends Controller
                                             'giro_economico_evaluacion.nombre as nombregiro_economico_evaluacion'
                                           )
                                           ->first();
+
+        $credito_aval = DB::table('credito')->where('credito.idcliente',$credito->idaval)->first();
+          $idcredito_aval_idcliente = 0;
+          $idcredito_aval_idaval = 0;
+          if($credito_aval){
+              $idcredito_aval_idcliente = $credito_aval->idcliente;
+              $idcredito_aval_idaval = $credito_aval->idaval;
+          }
+
+        $lista_credito_garantia_cliente_propio = DB::table('credito')
+              ->join('credito_garantia','credito_garantia.idcredito','credito.id')
+              ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
+              ->where('credito_garantia.idcredito','<>',$credito->id)
+              ->where('credito_garantia.idcliente',$credito->idcliente)
+              ->where('credito_garantia.tipo','CLIENTE')
+              ->where('credito.estado','DESEMBOLSADO')
+              ->where('credito.idforma_credito',2)
+              ->where('credito.idestadocredito',1)
+              ->select(
+                  'credito.id as idcredito',
+                  'credito.idforma_credito as idforma_credito',
+                  'credito.cuenta as credito_cuenta',
+                  'credito_prendatario.modalidad as modalidadproductocredito',
+                  DB::raw('CONCAT("PROPIO") as tipoprestamo')
+              )
+              ->distinct()
+              ->get();
+        $lista_credito_garantia_cliente_aval = DB::table('credito')
+              ->join('credito_garantia','credito_garantia.idcredito','credito.id')
+              ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
+              ->where('credito_garantia.idcliente',$credito->idcliente)
+              ->where('credito_garantia.tipo','AVAL')
+              ->where('credito.estado','DESEMBOLSADO')
+              ->where('credito.idforma_credito',2)
+              ->where('credito.idestadocredito',1)
+              ->select(
+                  'credito.id as idcredito',
+                  'credito.idforma_credito as idforma_credito',
+                  'credito.cuenta as credito_cuenta',
+                  'credito_prendatario.modalidad as modalidadproductocredito',
+                  DB::raw('CONCAT("AVALADO") as tipoprestamo')
+              )
+              ->get();
+
+        $lista_credito_garantia_aval_propio = DB::table('credito')
+              ->join('credito_garantia','credito_garantia.idcredito','credito.id')
+              ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
+              ->where('credito_garantia.idcredito','<>',$credito->id)
+              ->where('credito_garantia.idcliente',$idcredito_aval_idcliente)
+              ->where('credito_garantia.tipo','CLIENTE')
+              ->where('credito.estado','DESEMBOLSADO')
+              ->where('credito.idforma_credito',2)
+              ->where('credito.idestadocredito',1)
+              ->select(
+                  'credito.id as idcredito',
+                  'credito.idforma_credito as idforma_credito',
+                  'credito.cuenta as credito_cuenta',
+                  'credito_prendatario.modalidad as modalidadproductocredito',
+                  DB::raw('CONCAT("PROPIO") as tipoprestamo')
+              )
+              ->distinct()
+              ->get();
+        
+          $lista_credito_garantia_aval_aval = DB::table('credito')
+              ->join('credito_garantia','credito_garantia.idcredito','credito.id')
+              ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
+              ->where('credito_garantia.idcliente',$idcredito_aval_idcliente)
+              ->where('credito_garantia.tipo','AVAL')
+              ->where('credito.estado','DESEMBOLSADO')
+              ->where('credito.idforma_credito',2)
+              ->where('credito.idestadocredito',1)
+              ->select(
+                  'credito.id as idcredito',
+                  'credito.idforma_credito as idforma_credito',
+                  'credito.cuenta as credito_cuenta',
+                  'credito_prendatario.modalidad as modalidadproductocredito',
+                  DB::raw('CONCAT("AVALADO") as tipoprestamo')
+              )
+              ->get();
+                                    
+        $credito_saldodeduda_cliente_propio = [];
+          $credito_saldodeduda_cliente_aval = [];
+        
+          foreach($lista_credito_garantia_cliente_propio as $valuec){
+
+              $credito_descuentocuotas = DB::table('credito_descuentocuota')
+                    ->where('credito_descuentocuota.idcredito',$valuec->idcredito)
+                    ->where('credito_descuentocuota.idestadocredito_descuentocuota',1)
+                    ->first();
+              $total_descuento_capital = 0; 
+              $total_descuento_interes = 0; 
+              $total_descuento_comision = 0; 
+              $total_descuento_cargo = 0;  
+              $total_descuento_penalidad = 0; 
+              $total_descuento_tenencia = 0; 
+              $total_descuento_compensatorio = 0; 
+              $total_descuento_total = 0; 
+              if($credito_descuentocuotas){
+                  if(1000>=$credito_descuentocuotas->numerocuota_fin){
+                      $total_descuento_capital = $credito_descuentocuotas->capital;
+                      $total_descuento_interes = $credito_descuentocuotas->interes;
+                      $total_descuento_comision = $credito_descuentocuotas->comision;
+                      $total_descuento_cargo = $credito_descuentocuotas->cargo;
+                      $total_descuento_penalidad = $credito_descuentocuotas->penalidad;
+                      $total_descuento_tenencia = $credito_descuentocuotas->tenencia;
+                      $total_descuento_compensatorio = $credito_descuentocuotas->compensatorio;
+                      $total_descuento_total = $credito_descuentocuotas->total;
+                  }
+              }
+              $cronograma = select_cronograma(
+                  $tienda->id,
+                  $valuec->idcredito,
+                  $valuec->idforma_credito,
+                  $valuec->modalidadproductocredito,
+                  1000,
+                  $total_descuento_capital,
+                  $total_descuento_interes,
+                  $total_descuento_comision,
+                  $total_descuento_cargo,
+                  $total_descuento_penalidad,
+                  $total_descuento_tenencia,
+                  $total_descuento_compensatorio
+              );
+
+              $credito_saldodeduda_cliente_propio[] = [
+                  'idforma_credito' => $valuec->idforma_credito,
+                  'modalidad' => $valuec->modalidadproductocredito,
+                  'cuenta' => 'C'.str_pad($valuec->credito_cuenta, 8, "0", STR_PAD_LEFT),
+                  'saldo_vigente' => $cronograma['saldo_capital'],
+              ];
+          }
+          foreach($lista_credito_garantia_cliente_aval as $valuec){
+
+              $credito_descuentocuotas = DB::table('credito_descuentocuota')
+                    ->where('credito_descuentocuota.idcredito',$valuec->idcredito)
+                    ->where('credito_descuentocuota.idestadocredito_descuentocuota',1)
+                    ->first();
+              $total_descuento_capital = 0; 
+              $total_descuento_interes = 0; 
+              $total_descuento_comision = 0; 
+              $total_descuento_cargo = 0;  
+              $total_descuento_penalidad = 0; 
+              $total_descuento_tenencia = 0; 
+              $total_descuento_compensatorio = 0; 
+              $total_descuento_total = 0; 
+              if($credito_descuentocuotas){
+                  if(1000>=$credito_descuentocuotas->numerocuota_fin){
+                      $total_descuento_capital = $credito_descuentocuotas->capital;
+                      $total_descuento_interes = $credito_descuentocuotas->interes;
+                      $total_descuento_comision = $credito_descuentocuotas->comision;
+                      $total_descuento_cargo = $credito_descuentocuotas->cargo;
+                      $total_descuento_penalidad = $credito_descuentocuotas->penalidad;
+                      $total_descuento_tenencia = $credito_descuentocuotas->tenencia;
+                      $total_descuento_compensatorio = $credito_descuentocuotas->compensatorio;
+                      $total_descuento_total = $credito_descuentocuotas->total;
+                  }
+              }
+              $cronograma = select_cronograma(
+                  $tienda->id,
+                  $valuec->idcredito,
+                  $valuec->idforma_credito,
+                  $valuec->modalidadproductocredito,
+                  1000,
+                  $total_descuento_capital,
+                  $total_descuento_interes,
+                  $total_descuento_comision,
+                  $total_descuento_cargo,
+                  $total_descuento_penalidad,
+                  $total_descuento_tenencia,
+                  $total_descuento_compensatorio
+              );
+
+              $credito_saldodeduda_cliente_aval[] = [
+                  'idforma_credito' => $valuec->idforma_credito,
+                  'modalidad' => $valuec->modalidadproductocredito,
+                  'cuenta' => 'C'.str_pad($valuec->credito_cuenta, 8, "0", STR_PAD_LEFT),
+                  'saldo_vigente' => $cronograma['saldo_capital'],
+              ];
+          }
+
+        $credito_saldodeduda_aval_propio = [];
+          $credito_saldodeduda_aval_aval = [];
+        
+          foreach($lista_credito_garantia_aval_propio as $valuec){
+
+              $credito_descuentocuotas = DB::table('credito_descuentocuota')
+                    ->where('credito_descuentocuota.idcredito',$valuec->idcredito)
+                    ->where('credito_descuentocuota.idestadocredito_descuentocuota',1)
+                    ->first();
+              $total_descuento_capital = 0; 
+              $total_descuento_interes = 0; 
+              $total_descuento_comision = 0; 
+              $total_descuento_cargo = 0;  
+              $total_descuento_penalidad = 0; 
+              $total_descuento_tenencia = 0; 
+              $total_descuento_compensatorio = 0; 
+              $total_descuento_total = 0; 
+              if($credito_descuentocuotas){
+                  if(1000>=$credito_descuentocuotas->numerocuota_fin){
+                      $total_descuento_capital = $credito_descuentocuotas->capital;
+                      $total_descuento_interes = $credito_descuentocuotas->interes;
+                      $total_descuento_comision = $credito_descuentocuotas->comision;
+                      $total_descuento_cargo = $credito_descuentocuotas->cargo;
+                      $total_descuento_penalidad = $credito_descuentocuotas->penalidad;
+                      $total_descuento_tenencia = $credito_descuentocuotas->tenencia;
+                      $total_descuento_compensatorio = $credito_descuentocuotas->compensatorio;
+                      $total_descuento_total = $credito_descuentocuotas->total;
+                  }
+              }
+              $cronograma = select_cronograma(
+                  $tienda->id,
+                  $valuec->idcredito,
+                  $valuec->idforma_credito,
+                  $valuec->modalidadproductocredito,
+                  1000,
+                  $total_descuento_capital,
+                  $total_descuento_interes,
+                  $total_descuento_comision,
+                  $total_descuento_cargo,
+                  $total_descuento_penalidad,
+                  $total_descuento_tenencia,
+                  $total_descuento_compensatorio
+              );
+
+              $credito_saldodeduda_aval_propio[] = [
+                  'idforma_credito' => $valuec->idforma_credito,
+                  'modalidad' => $valuec->modalidadproductocredito,
+                  'cuenta' => 'C'.str_pad($valuec->credito_cuenta, 8, "0", STR_PAD_LEFT),
+                  'saldo_vigente' => $cronograma['saldo_capital'],
+              ];
+          }
+          foreach($lista_credito_garantia_aval_aval as $valuec){
+
+              $credito_descuentocuotas = DB::table('credito_descuentocuota')
+                    ->where('credito_descuentocuota.idcredito',$valuec->idcredito)
+                    ->where('credito_descuentocuota.idestadocredito_descuentocuota',1)
+                    ->first();
+              $total_descuento_capital = 0; 
+              $total_descuento_interes = 0; 
+              $total_descuento_comision = 0; 
+              $total_descuento_cargo = 0;  
+              $total_descuento_penalidad = 0; 
+              $total_descuento_tenencia = 0; 
+              $total_descuento_compensatorio = 0; 
+              $total_descuento_total = 0; 
+              if($credito_descuentocuotas){
+                  if(1000>=$credito_descuentocuotas->numerocuota_fin){
+                      $total_descuento_capital = $credito_descuentocuotas->capital;
+                      $total_descuento_interes = $credito_descuentocuotas->interes;
+                      $total_descuento_comision = $credito_descuentocuotas->comision;
+                      $total_descuento_cargo = $credito_descuentocuotas->cargo;
+                      $total_descuento_penalidad = $credito_descuentocuotas->penalidad;
+                      $total_descuento_tenencia = $credito_descuentocuotas->tenencia;
+                      $total_descuento_compensatorio = $credito_descuentocuotas->compensatorio;
+                      $total_descuento_total = $credito_descuentocuotas->total;
+                  }
+              }
+              $cronograma = select_cronograma(
+                  $tienda->id,
+                  $valuec->idcredito,
+                  $valuec->idforma_credito,
+                  $valuec->modalidadproductocredito,
+                  1000,
+                  $total_descuento_capital,
+                  $total_descuento_interes,
+                  $total_descuento_comision,
+                  $total_descuento_cargo,
+                  $total_descuento_penalidad,
+                  $total_descuento_tenencia,
+                  $total_descuento_compensatorio
+              );
+
+              $credito_saldodeduda_aval_aval[] = [
+                  'idforma_credito' => $valuec->idforma_credito,
+                  'modalidad' => $valuec->modalidadproductocredito,
+                  'cuenta' => 'C'.str_pad($valuec->credito_cuenta, 8, "0", STR_PAD_LEFT),
+                  'saldo_vigente' => $cronograma['saldo_capital'],
+              ];
+          }
         
         $pdf = PDF::loadView(sistema_view().'/credito/pdfsolicitud_control_limites',[
           'users_prestamo'    => $users_prestamo,
@@ -2346,6 +2625,11 @@ class CreditoController extends Controller
           'credito_evaluacion_cuantitativa' => $credito_evaluacion_cuantitativa,
           'credito_garantias_cliente' => $credito_garantias_cliente,
           'credito_garantias_aval' => $credito_garantias_aval,
+          'credito_saldodeduda_cliente_propio' => $credito_saldodeduda_cliente_propio,
+          'credito_saldodeduda_cliente_aval' => $credito_saldodeduda_cliente_aval,
+          'credito_saldodeduda_aval_propio' => $credito_saldodeduda_aval_propio,
+          'credito_saldodeduda_aval_aval' => $credito_saldodeduda_aval_aval,
+          'view_detalle' => $request->detalle
         ]); 
         $pdf->setPaper('A4');
         return $pdf->stream('SOLICITUD CONTROL Y LIMITES.pdf');

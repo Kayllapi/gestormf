@@ -314,135 +314,345 @@
         </table>
       </div>
     </div>
+    <span class="badge subtitle">
+      {{ $users_prestamo->idfuenteingreso == 1 ? ($credito->idevaluacion == 1 ? '6.1.1' : '9.1.1') : ($users_prestamo->idfuenteingreso == 2 ? '7.1.1' : '') }} SALDO DE DEUDA VIGENTE DEL CLIENTE
+    </span>
+    <input type="hidden" id="cliente_saldo_vigente_cliente_det" value="{{json_encode($credito_garantias_cliente)}}">
+    <input type="hidden" id="cliente_saldo_vigente_aval_det" value="{{json_encode($credito_garantias_aval)}}">
+    <div class="row">
+        <div class="col" style="width:100px;">
+            <table class="table" id="table-garantia-cliente-propio">
+              <thead style="border: 1px solid transparent !important;">
+                <tr>
+                  <th colspan="2" style="text-align: center;">PROPIOS</th>
+                </tr>
+                <tr>
+                  <th>CUENTA</th>
+                  <th>SALDOS (S/.)</th>
+                </tr>
+              </thead>
+              <tbody>
+                    <?php $total_saldo_vigente_propio = 0; ?>
+                @if($view_detalle=='false')
+                    @if($credito_cuantitativa_control_limites)
+                    <?php
+                      $saldo_vigente = json_decode($credito_cuantitativa_control_limites->credito_saldodeduda_cliente_propio_det);
+                //dd($saldo_vigente);
+                    ?>
+                    @foreach($saldo_vigente as $value)
+                      <tr>
+                          <td>{{ $value->cuenta }}</td>
+                          <td class="campo_moneda">{{ $value->saldo_vigente }}</td>
+                      </tr>
+                      <?php $total_saldo_vigente_propio = $total_saldo_vigente_propio+$value->saldo_vigente; ?>
+                    @endforeach
+                  @endif
+                @else
+                    @foreach($credito_saldodeduda_cliente_propio as $value)
+                      <tr>
+                          <td>{{ $value['cuenta'] }}</td>
+                          <td class="campo_moneda">{{ $value['saldo_vigente'] }}</td>
+                      </tr>
+                      <?php $total_saldo_vigente_propio = $total_saldo_vigente_propio+$value['saldo_vigente']; ?>
+                    @endforeach
+                @endif
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>TOTAL</th>
+                  <th class="campo_moneda">{{number_format($total_saldo_vigente_propio, 2, '.', '')}}</th>
+                </tr>
+              </tfoot>
+            </table>
+        </div>
+        <input type="hidden" id="total_saldodeuda_cliente_propio" value="{{number_format($total_saldo_vigente_propio, 2, '.', '')}}">
+        <div class="col" style="width:360px;">
+            <table class="table" id="table-garantia-cliente-aval">
+              <thead style="border: 1px solid transparent !important;">
+                <tr>
+                  <th colspan="2" style="text-align: center;">AVALADO</th>
+                </tr>
+                <tr>
+                  <th>CUENTA</th>
+                  <th>SALDOS (S/.)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php 
+                  $total_saldo_vigente_aval = 0; 
+                  $cuentas_aval = [];
+                ?>
+                @if($view_detalle=='false')
+                    @if($credito_cuantitativa_control_limites)
+                    <?php
+                      $saldo_vigente = json_decode($credito_cuantitativa_control_limites->credito_saldodeduda_cliente_aval_det);
+                    ?>
+                    @foreach($saldo_vigente as $value)
+                      <tr>
+                          <td>{{ $value->cuenta }}</td>
+                          <td class="campo_moneda">{{ $value->saldo_vigente }}</td>
+                      </tr>
+                      <?php $cuentas_aval[] = $value->cuenta; ?>
+                      <?php $total_saldo_vigente_aval += $value->saldo_vigente; ?>
+                    @endforeach
+                  @endif
+                @else
+                    @foreach($credito_saldodeduda_cliente_aval as $value)
+                      <tr>
+                          <td>{{ $value['cuenta'] }}</td>
+                          <td class="campo_moneda">{{ $value['saldo_vigente'] }}</td>
+                      </tr>
+                      <?php $cuentas_aval[] = $value['cuenta']; ?>
+                      <?php $total_saldo_vigente_aval += $value['saldo_vigente']; ?>
+                    @endforeach
+                @endif
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>TOTAL</th>
+                  <th class="campo_moneda">{{number_format($total_saldo_vigente_aval, 2, '.', '')}}</th>
+                </tr>
+              </tfoot>
+            </table>
+        </div>
+        <input type="hidden" id="total_saldodeuda_cliente_aval" value="{{number_format($total_saldo_vigente_aval, 2, '.', '')}}">
+        <input type="hidden" id="total_garantia_cliente" value="{{number_format($total_saldo_vigente_propio+$total_saldo_vigente_aval, 2, '.', '')}}">
+    </div>
     <br>
     <span class="badge subtitle">
       {{ $users_prestamo->idfuenteingreso == 1 ? ($credito->idevaluacion == 1 ? '6.2' : '9.2') : ($users_prestamo->idfuenteingreso == 2 ? '7.2' : '') }} GARANTÍAS Y DEUDAS DEL GARANTE(AVAL)/FIADOR
     </span>
-    
     @if($users_prestamo_aval!='')
-    <div class="row">
-      <div class="col">
-        <table class="">
-          <tbody>
-            <tr>
-              <td width="55px">Ape. y Nom:</td>
-              <td width="195px">{{ $credito->nombreavalcredito }}</td>
-              <td>DNI:</td>
-              <td width="50px">{{ $credito->documentoaval }}</td>
-            </tr>
-            @if($users_prestamo_aval->dni_pareja!='' or $users_prestamo_aval->nombrecompleto_pareja!='')
-            <tr>
-              <td>PAREJA:</td>
-              <td>{{ $users_prestamo_aval->nombrecompleto_pareja }}</td>
-              <td>DNI:</td>
-              <td>{{ $users_prestamo_aval->dni_pareja }}</td>
-            </tr>
-            @endif
-          </tbody>
-        </table>
-      </div>
-      <div class="col">
-        <span>N° DE ENTIDADES FINANCIERAS (Se considera deuda interna y Líneas de creditos sin uso)</span>
-        <table class="table" width="390px">
-          <thead>
-            <tr>
-              <th>Deudores</th>
-              <th>Como</th>
-              <th style="text-align: center;">N°</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td rowspan="2">Garante (Aval)/Fiador</td>
-              <td>P.Natural</td>
-              <td class="campo_moneda">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->cantidad_garante_natural : '0.00' }}</td>
-            </tr>
-            <tr>
-              <td>P.Jurídica</td>
-              <td class="campo_moneda">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->cantidad_garante_juridico : '0.00' }}</td>
-            </tr>
-            <tr>
-              <td rowspan="2">Pareja de Garante (Aval)/ fiador</td>
-              <td>P.Natural</td>
-              <td class="campo_moneda">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->cantidad_pareja_natural : '0.00' }}</td>
-            </tr>
-            <tr>
-              <td>P.Jurídica</td>
-              <td class="campo_moneda">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->cantidad_pareja_juridico : '0.00' }}</td>
-            </tr>
-            <tr>
-              <td class="color_totales campo_moneda" style="text-align: right;" colspan=2>TOTAL S/.</td>
-              <td class="color_totales campo_moneda" >{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->total_deuda : '0.00' }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="col">
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th rowspan="2">Garantías presentadas por el Aval</th>
-              <th colspan="2">Saldo de Prést. vigente (S/)</th>
-              <th rowspan="2">Propuesta</th>
-              <th rowspan="2">Descripción de garantía en Propuesta</th>
-              <th rowspan="2">Valor de mercado (S/.)</th>
-              <th rowspan="2">Valor comercial (Tasado) (S/.)</th>
-              <th rowspan="2">Valor de realización(tasado) (S/.)</th>
-            </tr>
-            <tr>
-              <th style="width:40px;">Propio</th>
-              <th style="width:40px;">Avalado</th>
-            </tr>
-          </thead>
-          <tbody>
-            @php
-              $garantia_cliente_aval = 0;
-            @endphp             
-            @forelse($credito_garantias_aval as $value)
-              <?php
-                $monto_anterior_aval = DB::table('credito_garantia')
-                                            ->join('credito','credito.id','credito_garantia.idcredito')
-                                            ->where('credito_garantia.idgarantias',0)
-                                            ->where('credito_garantia.idcliente',$value->idcliente)
-                                            ->where('credito_garantia.idgarantias_noprendarias',$value->idcliente)
-                                            ->where('credito_garantia.idcredito','<>',$value->idcredito)
-                                            ->orderby('credito_garantia.id','desc')
-                                            ->sum('credito.monto_solicitado');
-              ?>
-              @php
-                $propuesta_aval = $credito->monto_solicitado;
-                $garantia_cliente_aval = $monto_anterior_aval + $propuesta_aval;
-              @endphp
+      <div class="row">
+        <div class="col">
+          <table class="">
+            <tbody>
               <tr>
-                <td>{{ $value->nombretipogarantia }}</td>
-                <td class="campo_moneda">{{ $monto_anterior }}</td>
-                <td class="campo_moneda">{{ $monto_anterior }}</td>
-                <td class="campo_moneda">{{ $propuesta_aval }}</td>
-                <td>{{ $value->descripcion_garantia }}</td>
+                <td width="55px">Ape. y Nom:</td>
+                <td width="195px">{{ $credito->nombreavalcredito }}</td>
+                <td>DNI:</td>
+                <td width="50px">{{ $credito->documentoaval }}</td>
+              </tr>
+              @if($users_prestamo_aval->dni_pareja!='' or $users_prestamo_aval->nombrecompleto_pareja!='')
+              <tr>
+                <td>PAREJA:</td>
+                <td>{{ $users_prestamo_aval->nombrecompleto_pareja }}</td>
+                <td>DNI:</td>
+                <td>{{ $users_prestamo_aval->dni_pareja }}</td>
+              </tr>
+              @endif
+            </tbody>
+          </table>
+        </div>
+        <div class="col">
+          <span>N° DE ENTIDADES FINANCIERAS (Se considera deuda interna y Líneas de creditos sin uso)</span>
+          <table class="table" width="390px">
+            <thead>
+              <tr>
+                <th>Deudores</th>
+                <th>Como</th>
+                <th style="text-align: center;">N°</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td rowspan="2">Garante (Aval)/Fiador</td>
+                <td>P.Natural</td>
+                <td class="campo_moneda">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->cantidad_garante_natural : '0.00' }}</td>
+              </tr>
+              <tr>
+                <td>P.Jurídica</td>
+                <td class="campo_moneda">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->cantidad_garante_juridico : '0.00' }}</td>
+              </tr>
+              <tr>
+                <td rowspan="2">Pareja de Garante (Aval)/ fiador</td>
+                <td>P.Natural</td>
+                <td class="campo_moneda">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->cantidad_pareja_natural : '0.00' }}</td>
+              </tr>
+              <tr>
+                <td>P.Jurídica</td>
+                <td class="campo_moneda">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->cantidad_pareja_juridico : '0.00' }}</td>
+              </tr>
+              <tr>
+                <td class="color_totales campo_moneda" style="text-align: right;" colspan=2>TOTAL S/.</td>
+                <td class="color_totales campo_moneda" >{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->total_deuda : '0.00' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th rowspan="2">Garantías presentadas por el Aval</th>
+                <th colspan="2">Saldo de Prést. vigente (S/)</th>
+                <th rowspan="2">Propuesta</th>
+                <th rowspan="2">Descripción de garantía en Propuesta</th>
+                <th rowspan="2">Valor de mercado (S/.)</th>
+                <th rowspan="2">Valor comercial (Tasado) (S/.)</th>
+                <th rowspan="2">Valor de realización(tasado) (S/.)</th>
+              </tr>
+              <tr>
+                <th style="width:40px;">Propio</th>
+                <th style="width:40px;">Avalado</th>
+              </tr>
+            </thead>
+            <tbody>
+              @php
+                $garantia_cliente_aval = 0;
+              @endphp             
+              @forelse($credito_garantias_aval as $value)
+                <?php
+                  $monto_anterior_aval = DB::table('credito_garantia')
+                                              ->join('credito','credito.id','credito_garantia.idcredito')
+                                              ->where('credito_garantia.idgarantias',0)
+                                              ->where('credito_garantia.idcliente',$value->idcliente)
+                                              ->where('credito_garantia.idgarantias_noprendarias',$value->idcliente)
+                                              ->where('credito_garantia.idcredito','<>',$value->idcredito)
+                                              ->orderby('credito_garantia.id','desc')
+                                              ->sum('credito.monto_solicitado');
+                ?>
+                @php
+                  $propuesta_aval = $credito->monto_solicitado;
+                  $garantia_cliente_aval = $monto_anterior_aval + $propuesta_aval;
+                @endphp
+                <tr>
+                  <td>{{ $value->nombretipogarantia }}</td>
+                  <td class="campo_moneda">{{ $monto_anterior }}</td>
+                  <td class="campo_moneda">{{ $monto_anterior }}</td>
+                  <td class="campo_moneda">{{ $propuesta_aval }}</td>
+                  <td>{{ $value->descripcion_garantia }}</td>
 
-                <td class="campo_moneda">{{ $value->valor_mercado_garantia }}</td>
-                <td class="campo_moneda">{{ $value->valor_comercial_garantia }}</td>
-                <td class="campo_moneda">{{ $value->valor_realizacion_garantia }}</td>
+                  <td class="campo_moneda">{{ $value->valor_mercado_garantia }}</td>
+                  <td class="campo_moneda">{{ $value->valor_comercial_garantia }}</td>
+                  <td class="campo_moneda">{{ $value->valor_realizacion_garantia }}</td>
+                </tr>
+              @empty
+              <tr>
+                  <td>Sin Garantia</td>
+                  <td class="campo_moneda">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->saldo_noprendario_aval : '0.00' }}</td>
+                  <td class="campo_moneda">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->propuesta_noprendario_aval : '0.00' }}</td>
+                  <td class="color_totales" colspan=5></td>
+                </tr>
+              @endforelse
+              <tr>
+                <td class="color_totales campo_moneda">TOTAL S/.</td>
+                <td class="color_totales campo_moneda" colspan=3>{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->total_garantia_aval : $garantia_cliente_aval }}</td>
+                <td class="color_totales" colspan=4></td>
               </tr>
-            @empty
-            <tr>
-                <td>Sin Garantia</td>
-                <td class="campo_moneda">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->saldo_noprendario_aval : '0.00' }}</td>
-                <td class="campo_moneda">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->propuesta_noprendario_aval : '0.00' }}</td>
-                <td class="color_totales" colspan=5></td>
-              </tr>
-            @endforelse
-            <tr>
-              <td class="color_totales campo_moneda">TOTAL S/.</td>
-              <td class="color_totales campo_moneda" colspan=3>{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->total_garantia_aval : $garantia_cliente_aval }}</td>
-              <td class="color_totales" colspan=4></td>
-            </tr>
-          </tbody>
-        </table>
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
-    <br>
+      <br>
     @endif
+    <span class="badge subtitle">
+      {{ $users_prestamo->idfuenteingreso == 1 ? ($credito->idevaluacion == 1 ? '6.2.1' : '9.2.1') : ($users_prestamo->idfuenteingreso == 2 ? '7.2.1' : '') }} SALDO DE DEUDA VIGENTE DEL AVAL
+    </span>
+      <input type="hidden" id="credito_saldodeduda_aval_propio_det" value="{{json_encode($credito_saldodeduda_aval_propio)}}">
+      <input type="hidden" id="credito_saldodeduda_aval_aval_det" value="{{json_encode($credito_saldodeduda_aval_aval)}}">
+      <div class="row">
+        <div class="col" style="width:100px;">
+          <table class="table table-bordered" id="table-garantia-aval-propio">
+            <thead style="border: 1px solid transparent !important;">
+              <tr>
+                <th colspan="2" style="text-align: center;">PROPIOS</th>
+              </tr>
+              <tr>
+                <th>CUENTA</th>
+                <th>SALDOS (S/.)</th>
+              </tr>
+            </thead>
+            <tbody>
+                  <?php $total_saldo_vigente_propio = 0; ?>
+                  <?php $total_saldo_vigente_propio_input = 0; ?>
+              @if($view_detalle=='false')
+                  @if($credito_cuantitativa_control_limites)
+                  <?php
+                    $saldo_vigente = json_decode($credito_cuantitativa_control_limites->credito_saldodeduda_aval_propio_det);
+                  ?>
+                  @foreach($saldo_vigente as $value)
+                    <tr>
+                        <td>{{ $value->cuenta }}</td>
+                        <td class="campo_moneda">{{ $value->saldo_vigente }}</td>
+                    </tr>
+                    <?php $total_saldo_vigente_propio += $value->saldo_vigente; ?>
+                    @if(!in_array($value->cuenta, $cuentas_aval))
+                        <?php $total_saldo_vigente_propio_input += $value->saldo_vigente; ?>
+                    @endif
+                  @endforeach
+                @endif
+              @else
+                  @foreach($credito_saldodeduda_aval_propio as $value)
+                    <tr>
+                        <td>{{ $value['cuenta'] }}</td>
+                        <td class="campo_moneda">{{ $value['saldo_vigente'] }}</td>
+                    </tr>
+                    <?php $total_saldo_vigente_propio += $value['saldo_vigente']; ?>
+                    @if(!in_array($value['cuenta'], $cuentas_aval))
+                        <?php $total_saldo_vigente_propio_input += $value['saldo_vigente']; ?>
+                    @endif
+                  @endforeach
+              @endif
+            </tbody>
+            <tfoot>
+              <tr>
+                <th>TOTAL</th>
+                <th class="campo_moneda">{{number_format($total_saldo_vigente_propio, 2, '.', '')}}</th>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+          <input type="hidden" id="total_saldodeuda_aval_propio" value="{{number_format($total_saldo_vigente_propio, 2, '.', '')}}">
+          <input type="hidden" id="total_saldodeuda_aval_propio_input" value="{{number_format($total_saldo_vigente_propio_input, 2, '.', '')}}">
+        <div class="col" style="width:300px;">
+          <table class="table table-bordered" id="table-garantia-aval-aval">
+            <thead style="border: 1px solid transparent !important;">
+              <tr>
+                <th colspan="2" style="text-align: center;">AVALADO</th>
+              </tr>
+              <tr>
+                <th>CUENTA</th>
+                <th>SALDOS (S/.)</th>
+              </tr>
+            </thead>
+            <tbody>
+                  <?php $total_saldo_vigente_aval = 0; ?>
+              @if($view_detalle=='false')
+                  @if($credito_cuantitativa_control_limites)
+                  <?php
+                    $saldo_vigente = json_decode($credito_cuantitativa_control_limites->credito_saldodeduda_aval_aval_det);
+                  ?>
+                  @foreach($saldo_vigente as $value)
+                    <tr>
+                        <td>{{ $value->cuenta }}</td>
+                        <td class="campo_moneda">{{ $value->saldo_vigente }}</td>
+                    </tr>
+                    <?php $total_saldo_vigente_aval = $total_saldo_vigente_aval+$value->saldo_vigente; ?>
+                  @endforeach
+                @endif
+              @else
+                  @foreach($credito_saldodeduda_aval_aval as $value)
+                    <tr>
+                        <td>{{ $value['cuenta'] }}</td>
+                        <td class="campo_moneda">{{ $value['saldo_vigente'] }}</td>
+                    </tr>
+                    <?php $total_saldo_vigente_aval = $total_saldo_vigente_aval+$value['saldo_vigente']; ?>
+                  @endforeach
+              @endif
+            </tbody>
+            <tfoot>
+              <tr>
+                <th>TOTAL</th>
+                <th class="campo_moneda">{{number_format($total_saldo_vigente_aval, 2, '.', '')}}</th>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+      <input type="hidden" id="total_saldodeuda_aval_aval" value="{{number_format($total_saldo_vigente_aval, 2, '.', '')}}">
+      <input type="hidden" id="total_garantia_aval" value="{{number_format($total_saldo_vigente_propio+$total_saldo_vigente_aval, 2, '.', '')}}">
+    <br>          
     <span class="badge subtitle">
       {{ $users_prestamo->idfuenteingreso == 1 ? ($credito->idevaluacion == 1 ? '6.3' : '9.3') : ($users_prestamo->idfuenteingreso == 2 ? '7.3' : '') }} VINCULACIÓN POR RIESGO ÚNICO
     </span>

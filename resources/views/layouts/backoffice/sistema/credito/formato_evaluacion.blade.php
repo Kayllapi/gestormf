@@ -365,7 +365,7 @@
           <table class="table table-bordered mt-2" style="width: 300px;" id="table-entidad-financiera">
             <thead>
               <tr>
-                <th colspan="2">N° DE ENTIDADES FINANCIERAS</th>
+                <th colspan="2">N° DE ENTIDADES FINANCIERAS ADEUDADAS</th>
                 </tr>
             </thead>
             <tbody>

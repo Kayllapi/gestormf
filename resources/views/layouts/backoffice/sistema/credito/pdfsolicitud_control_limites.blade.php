@@ -222,7 +222,7 @@
     <span class="badge subtitle">
       {{ $users_prestamo->idfuenteingreso == 1 ? ($credito->idevaluacion == 1 ? '6.1' : '9.1') : ($users_prestamo->idfuenteingreso == 2 ? '7.1' : '') }}  GARANTÍAS Y DEUDAS DEL CLIENTE
     </span>
-    <div class="row">
+    {{-- <div class="row">
       <div class="col">
         <table class="table">
           <thead>
@@ -313,7 +313,64 @@
           </tbody>
         </table>
       </div>
-    </div>
+    </div> --}}
+    <div class="row">
+        <div class="col">
+          <input type="hidden" id="cliente_saldo_vigente_cliente_det" value="{{json_encode($credito_garantias_cliente)}}">
+          <input type="hidden" id="cliente_saldo_vigente_aval_det" value="{{json_encode($credito_garantias_aval)}}">
+          <table class="table" id="table-garantia-cliente">
+            <thead>
+              <tr>
+                <th>Garantías presentadas por el cliente</th>
+                <th>Descripción de garantía en Propuesta</th>
+                <th style="width:150px;">Valor de mercado (S/.)</th>
+                <th style="width:150px;">Valor comercial (Tasado) (S/.)</th>
+                <th style="width:150px;">Valor de realización (tasado) (S/.)</th>
+              </tr>
+            </thead>
+            <tbody>
+              @if($view_detalle=='false')
+                  @if($credito_cuantitativa_control_limites)
+                  <?php
+                    $saldo_vigente = json_decode($credito_cuantitativa_control_limites->cliente_saldo_vigente_cliente_det);
+                  ?>
+                  @foreach($saldo_vigente as $value)
+                    <tr>
+                        <td>{{ $value->garantias_noprendarias_tipo_garantia_noprendaria }}</td>
+                        <td>{{ $value->descripcion }}</td>
+                        <td class="campo_moneda">{{ $value->valor_mercado==0?'':$value->valor_mercado }}</td>
+                        <td class="campo_moneda">{{ $value->valor_comercial==0?'':$value->valor_comercial }}</td>
+                        <td class="campo_moneda">{{ $value->valor_realizacion==0?'':$value->valor_realizacion }}</td>
+                    </tr>
+                  @endforeach
+                  @if(count($saldo_vigente)==0)
+                  <tr>
+                    <td colspan="8">Sin Garantia</td>
+                  </tr>
+                  @endif
+                @endif
+              @else
+                  @foreach($credito_garantias_cliente as $value)
+                    <tr>
+                        <td>{{ $value->garantias_noprendarias_tipo_garantia_noprendaria }}</td>
+                        <td>{{ $value->descripcion }}</td>
+                        <td class="campo_moneda">{{ $value->valor_mercado==0?'':$value->valor_mercado }}</td>
+                        <td class="campo_moneda">{{ $value->valor_comercial==0?'':$value->valor_comercial }}</td>
+                        <td class="campo_moneda">{{ $value->valor_realizacion==0?'':$value->valor_realizacion }}</td>
+                    </tr>
+                  @endforeach
+                  @if(count($credito_garantias_cliente)==0)
+                  <tr>
+                    <td colspan="5">Sin Garantia</td>
+                  </tr>
+                  @else
+                  @endif
+              @endif
+            </tbody>
+          </table>
+          
+        </div>
+      </div>
     <span class="badge subtitle">
       {{ $users_prestamo->idfuenteingreso == 1 ? ($credito->idevaluacion == 1 ? '6.1.1' : '9.1.1') : ($users_prestamo->idfuenteingreso == 2 ? '7.1.1' : '') }} SALDO DE DEUDA VIGENTE DEL CLIENTE
     </span>

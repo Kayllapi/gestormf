@@ -42,7 +42,7 @@
   
     ?>
     <div class="modal-header" style="border-bottom: 0;">
-        <h5 class="modal-title">GARANTIAS Y LIMITES </h5>
+        <h5 class="modal-title">GARANTÍAS Y LIMITES </h5>
         <button type="button" class="btn-close text-white" id="modal-close-garantia-cliente" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <div class="modal-body modal-body-cualitativa">
@@ -166,11 +166,11 @@
           @elseif ($users_prestamo->idfuenteingreso == 2)
             VII.
           @endif
-          GARANTIAS Y LIMITES</span>
+          GARANTÍAS Y LIMITES</span>
       </div>
       <div class="mb-1 mt-2">
         <span class="badge d-block" style="background-color: #aaa;color: #000;">
-          {{ $users_prestamo->idfuenteingreso == 1 ? ($credito->idevaluacion == 1 ? '6.1' : '9.1') : ($users_prestamo->idfuenteingreso == 2 ? '7.1' : '') }}  GARANTÍAS DEL CLIENTE
+          {{ $users_prestamo->idfuenteingreso == 1 ? ($credito->idevaluacion == 1 ? '6.1' : '9.1') : ($users_prestamo->idfuenteingreso == 2 ? '7.1' : '') }}  GARANTÍAS y DEUDAS DEL CLIENTE
         </span>
       </div>
       <div class="row">
@@ -348,7 +348,7 @@
       </div>
       <div class="mb-1 mt-2">
         <span class="badge d-block" style="background-color: #aaa;color: #000;">
-          {{ $users_prestamo->idfuenteingreso == 1 ? ($credito->idevaluacion == 1 ? '6.2' : '9.2') : ($users_prestamo->idfuenteingreso == 2 ? '7.2' : '') }} GARANTIAS DEL GARANTE(AVAL)/FIADOR
+          {{ $users_prestamo->idfuenteingreso == 1 ? ($credito->idevaluacion == 1 ? '6.2' : '9.2') : ($users_prestamo->idfuenteingreso == 2 ? '7.2' : '') }} GARANTIAS y DEUDAS DEL GARANTE(AVAL)/FIADOR
         </span>
       </div>
       @if($users_prestamo_aval!='')

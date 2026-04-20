@@ -202,7 +202,7 @@
         </table>
       </div>
     </div>
-    <span class="badge">I.  INGRESOS Y GASTOS</span>
+    <span class="badge">I.  INGRESOS, GASTOS y DEUDAS</span>
     <div class="row">
       <div class="col" style="width:159px;">
         <table class="table">
@@ -397,7 +397,7 @@
         <table class="table table-bordered mt-2" width="100%" id="table-entidad-financiera">
           <tbody>
             <tr>
-              <td colspan=2>N° DE ENTIDADES FINANCIERAS</td>
+              <td colspan=2>N° DE ENTIDADES FINANCIERAS ADEUDADAS</td>
             </tr>
             <tr>
               <td width="200px">CLIENTE</td>

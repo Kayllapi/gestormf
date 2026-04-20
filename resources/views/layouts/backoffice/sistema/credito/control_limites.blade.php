@@ -170,7 +170,7 @@
       </div>
       <div class="mb-1 mt-2">
         <span class="badge d-block" style="background-color: #aaa;color: #000;">
-          {{ $users_prestamo->idfuenteingreso == 1 ? ($credito->idevaluacion == 1 ? '6.1' : '9.1') : ($users_prestamo->idfuenteingreso == 2 ? '7.1' : '') }}  GARANTÍAS y DEUDAS DEL CLIENTE
+          {{ $users_prestamo->idfuenteingreso == 1 ? ($credito->idevaluacion == 1 ? '6.1' : '9.1') : ($users_prestamo->idfuenteingreso == 2 ? '7.1' : '') }}  GARANTÍAS Y DEUDAS DEL CLIENTE
         </span>
       </div>
       <div class="row">
@@ -348,7 +348,7 @@
       </div>
       <div class="mb-1 mt-2">
         <span class="badge d-block" style="background-color: #aaa;color: #000;">
-          {{ $users_prestamo->idfuenteingreso == 1 ? ($credito->idevaluacion == 1 ? '6.2' : '9.2') : ($users_prestamo->idfuenteingreso == 2 ? '7.2' : '') }} GARANTIAS y DEUDAS DEL GARANTE(AVAL)/FIADOR
+          {{ $users_prestamo->idfuenteingreso == 1 ? ($credito->idevaluacion == 1 ? '6.2' : '9.2') : ($users_prestamo->idfuenteingreso == 2 ? '7.2' : '') }} GARANTÍAS Y DEUDAS DEL GARANTE(AVAL)/FIADOR
         </span>
       </div>
       @if($users_prestamo_aval!='')
@@ -734,7 +734,7 @@
       </div>
       <div class="mb-1 mt-2">
         <span class="badge d-block" style="background-color: #aaa;color: #000;">
-          {{ $users_prestamo->idfuenteingreso == 1 ? ($credito->idevaluacion == 1 ? '6.4' : '9.4') : ($users_prestamo->idfuenteingreso == 2 ? '7.4' : '') }} DETERMINACIÓN DE LIMITES
+          {{ $users_prestamo->idfuenteingreso == 1 ? ($credito->idevaluacion == 1 ? '6.4' : '9.4') : ($users_prestamo->idfuenteingreso == 2 ? '7.4' : '') }} DETERMINACIÓN DE LíMITES
         </span>
       </div>
       <div class="row">

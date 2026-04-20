@@ -72,7 +72,7 @@
           </div>
           @if($users_prestamo->dni_pareja!='' or $users_prestamo->nombrecompleto_pareja!='')
           <div class="row">
-            <label class="col-sm-4 col-form-label" style="text-align: right;">RUC/DNI/CE:</label>
+            <label class="col-sm-4 col-form-label" style="text-align: right;">DNI/CE:</label>
             <div class="col-sm-6">
               <input type="text" step="any" class="form-control" value="{{ $users_prestamo->dni_pareja }}" disabled>
             </div>

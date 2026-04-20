@@ -119,7 +119,7 @@
         </tbody> 
       </table>
       <div class="mb-1 mt-2">
-        <span class="badge d-block">I. INGRESOS Y GASTOS</span>
+        <span class="badge d-block">I. INGRESOS, GASTOS y DEUDAS</span>
       </div>
       <div class="row">
         <div class="col-sm-12 col-md-3">

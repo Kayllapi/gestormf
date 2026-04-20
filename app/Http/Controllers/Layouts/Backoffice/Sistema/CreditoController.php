@@ -2318,15 +2318,6 @@ class CreditoController extends Controller
                                       'tipo_garantia_noprendaria.nombre as nombretipogarantia',
                                   )
                                  ->get();*/
-        
-       $credito_evaluacion_resumida = DB::table('credito_evaluacion_resumida')
-                                          ->leftJoin('giro_economico_evaluacion','giro_economico_evaluacion.id','credito_evaluacion_resumida.idgiro_economico_evaluacion')
-                                          ->where('credito_evaluacion_resumida.idcredito',$id)
-                                          ->select(
-                                            'credito_evaluacion_resumida.*',
-                                            'giro_economico_evaluacion.nombre as nombregiro_economico_evaluacion'
-                                          )
-                                          ->first();
 
         $credito_aval = DB::table('credito')->where('credito.idcliente',$credito->idaval)->first();
           $idcredito_aval_idcliente = 0;
@@ -2335,47 +2326,28 @@ class CreditoController extends Controller
               $idcredito_aval_idcliente = $credito_aval->idcliente;
               $idcredito_aval_idaval = $credito_aval->idaval;
           }
-
-        $lista_credito_garantia_cliente_propio = DB::table('credito')
-              ->join('credito_garantia','credito_garantia.idcredito','credito.id')
-              ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
-              ->where('credito_garantia.idcredito','<>',$credito->id)
-              ->where('credito_garantia.idcliente',$credito->idcliente)
+          //-------- GARANTIAS DE CLIENTE
+        
+          $credito_garantias_cliente = DB::table('credito_garantia')
+              ->where('credito_garantia.idcredito',$credito->id)
+              ->where('credito_garantia.idgarantias',0)
               ->where('credito_garantia.tipo','CLIENTE')
-              ->where('credito.estado','DESEMBOLSADO')
-              ->where('credito.idforma_credito',2)
-              ->where('credito.idestadocredito',1)
               ->select(
-                  'credito.id as idcredito',
-                  'credito.idforma_credito as idforma_credito',
-                  'credito.cuenta as credito_cuenta',
-                  'credito_prendatario.modalidad as modalidadproductocredito',
-                  DB::raw('CONCAT("PROPIO") as tipoprestamo')
-              )
-              ->distinct()
-              ->get();
-        $lista_credito_garantia_cliente_aval = DB::table('credito')
-              ->join('credito_garantia','credito_garantia.idcredito','credito.id')
-              ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
-              ->where('credito_garantia.idcliente',$credito->idcliente)
-              ->where('credito_garantia.tipo','AVAL')
-              ->where('credito.estado','DESEMBOLSADO')
-              ->where('credito.idforma_credito',2)
-              ->where('credito.idestadocredito',1)
-              ->select(
-                  'credito.id as idcredito',
-                  'credito.idforma_credito as idforma_credito',
-                  'credito.cuenta as credito_cuenta',
-                  'credito_prendatario.modalidad as modalidadproductocredito',
-                  DB::raw('CONCAT("AVALADO") as tipoprestamo')
+                  'credito_garantia.idgarantias_noprendarias as idgarantias_noprendarias',
+                  'credito_garantia.idgarantias as idgarantias',
+                  'credito_garantia.garantias_noprendarias_tipo_garantia_noprendaria as garantias_noprendarias_tipo_garantia_noprendaria',
+                  'credito_garantia.descripcion as descripcion',
+                  'credito_garantia.valor_mercado as valor_mercado',
+                  'credito_garantia.valor_comercial as valor_comercial',
+                  'credito_garantia.valor_realizacion as valor_realizacion',
               )
               ->get();
-
-        $lista_credito_garantia_aval_propio = DB::table('credito')
+        
+          $lista_credito_garantia_cliente_propio = DB::table('credito')
               ->join('credito_garantia','credito_garantia.idcredito','credito.id')
               ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
               ->where('credito_garantia.idcredito','<>',$credito->id)
-              ->where('credito_garantia.idcliente',$idcredito_aval_idcliente)
+              ->where('credito_garantia.idcliente',$credito->idcliente)
               ->where('credito_garantia.tipo','CLIENTE')
               ->where('credito.estado','DESEMBOLSADO')
               ->where('credito.idforma_credito',2)
@@ -2390,10 +2362,10 @@ class CreditoController extends Controller
               ->distinct()
               ->get();
         
-          $lista_credito_garantia_aval_aval = DB::table('credito')
+          $lista_credito_garantia_cliente_aval = DB::table('credito')
               ->join('credito_garantia','credito_garantia.idcredito','credito.id')
               ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
-              ->where('credito_garantia.idcliente',$idcredito_aval_idcliente)
+              ->where('credito_garantia.idcliente',$credito->idcliente)
               ->where('credito_garantia.tipo','AVAL')
               ->where('credito.estado','DESEMBOLSADO')
               ->where('credito.idforma_credito',2)
@@ -2406,8 +2378,8 @@ class CreditoController extends Controller
                   DB::raw('CONCAT("AVALADO") as tipoprestamo')
               )
               ->get();
-                                    
-        $credito_saldodeduda_cliente_propio = [];
+        
+          $credito_saldodeduda_cliente_propio = [];
           $credito_saldodeduda_cliente_aval = [];
         
           foreach($lista_credito_garantia_cliente_propio as $valuec){
@@ -2506,8 +2478,60 @@ class CreditoController extends Controller
                   'saldo_vigente' => $cronograma['saldo_capital'],
               ];
           }
-
-        $credito_saldodeduda_aval_propio = [];
+          //-------- GARANTIAS DE AVAL
+        
+          $credito_garantias_aval = DB::table('credito_garantia')
+              ->where('credito_garantia.idcredito',$credito->id)
+              ->where('credito_garantia.idgarantias',0)
+              ->where('credito_garantia.tipo','AVAL')
+              ->select(
+                  'credito_garantia.idgarantias_noprendarias as idgarantias_noprendarias',
+                  'credito_garantia.idgarantias as idgarantias',
+                  'credito_garantia.garantias_noprendarias_tipo_garantia_noprendaria as garantias_noprendarias_tipo_garantia_noprendaria',
+                  'credito_garantia.descripcion as descripcion',
+                  'credito_garantia.valor_mercado as valor_mercado',
+                  'credito_garantia.valor_comercial as valor_comercial',
+                  'credito_garantia.valor_realizacion as valor_realizacion',
+              )
+              ->get();
+          //dump($idcredito_aval_idcliente);
+          $lista_credito_garantia_aval_propio = DB::table('credito')
+              ->join('credito_garantia','credito_garantia.idcredito','credito.id')
+              ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
+              ->where('credito_garantia.idcredito','<>',$credito->id)
+              ->where('credito_garantia.idcliente',$idcredito_aval_idcliente)
+              ->where('credito_garantia.tipo','CLIENTE')
+              ->where('credito.estado','DESEMBOLSADO')
+              ->where('credito.idforma_credito',2)
+              ->where('credito.idestadocredito',1)
+              ->select(
+                  'credito.id as idcredito',
+                  'credito.idforma_credito as idforma_credito',
+                  'credito.cuenta as credito_cuenta',
+                  'credito_prendatario.modalidad as modalidadproductocredito',
+                  DB::raw('CONCAT("PROPIO") as tipoprestamo')
+              )
+              ->distinct()
+              ->get();
+        
+          $lista_credito_garantia_aval_aval = DB::table('credito')
+              ->join('credito_garantia','credito_garantia.idcredito','credito.id')
+              ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
+              ->where('credito_garantia.idcliente',$idcredito_aval_idcliente)
+              ->where('credito_garantia.tipo','AVAL')
+              ->where('credito.estado','DESEMBOLSADO')
+              ->where('credito.idforma_credito',2)
+              ->where('credito.idestadocredito',1)
+              ->select(
+                  'credito.id as idcredito',
+                  'credito.idforma_credito as idforma_credito',
+                  'credito.cuenta as credito_cuenta',
+                  'credito_prendatario.modalidad as modalidadproductocredito',
+                  DB::raw('CONCAT("AVALADO") as tipoprestamo')
+              )
+              ->get();
+        
+          $credito_saldodeduda_aval_propio = [];
           $credito_saldodeduda_aval_aval = [];
         
           foreach($lista_credito_garantia_aval_propio as $valuec){
@@ -2606,7 +2630,16 @@ class CreditoController extends Controller
                   'saldo_vigente' => $cronograma['saldo_capital'],
               ];
           }
-        
+
+          $credito_evaluacion_resumida = DB::table('credito_evaluacion_resumida')
+              ->leftJoin('giro_economico_evaluacion','giro_economico_evaluacion.id','credito_evaluacion_resumida.idgiro_economico_evaluacion')
+              ->where('credito_evaluacion_resumida.idcredito',$id)
+              ->select(
+                'credito_evaluacion_resumida.*',
+                'giro_economico_evaluacion.nombre as nombregiro_economico_evaluacion'
+              )
+              ->first();
+
         $pdf = PDF::loadView(sistema_view().'/credito/pdfsolicitud_control_limites',[
           'users_prestamo'    => $users_prestamo,
           'users_prestamo_aval'    => $users_prestamo_aval,

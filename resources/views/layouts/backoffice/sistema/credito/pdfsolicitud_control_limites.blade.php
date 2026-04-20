@@ -213,8 +213,8 @@
           IX.
           @endif
           @endif
-          GARANTIAS Y LIMITES</span>
-    <span class="badge subtitle">{{ $credito->idevaluacion == 1 ? '6.1':($users_prestamo->idfuenteingreso == 2?'7.1':'9.1') }} GARANTÍAS DEL CLIENTE</span>
+          GARANTÍAS Y LÍMITES</span>
+    <span class="badge subtitle">{{ $credito->idevaluacion == 1 ? '6.1':($users_prestamo->idfuenteingreso == 2?'7.1':'9.1') }} GARANTÍAS Y DEUDAS DEL CLIENTE</span>
     <div class="row">
       <div class="col">
         <table class="table">
@@ -308,7 +308,7 @@
       </div>
     </div>
     <br>
-    <span class="badge subtitle">{{ $credito->idevaluacion == 1 ? '6.2':($users_prestamo->idfuenteingreso == 2?'7.2':'9.2') }} GARANTIAS DEL GARANTE(AVAL)/FIADOR</span>
+    <span class="badge subtitle">{{ $credito->idevaluacion == 1 ? '6.2':($users_prestamo->idfuenteingreso == 2?'7.2':'9.2') }} GARANTÍAS Y DEUDAS DEL GARANTE(AVAL)/FIADOR</span>
     
     @if($users_prestamo_aval!='')
     <div class="row">
@@ -353,7 +353,7 @@
               <td class="campo_moneda">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->cantidad_garante_juridico : '0.00' }}</td>
             </tr>
             <tr>
-              <td rowspan="2">Pareja de Garante/ fiador</td>
+              <td rowspan="2">Pareja de Garante (Aval)/ fiador</td>
               <td>P.Natural</td>
               <td class="campo_moneda">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->cantidad_pareja_natural : '0.00' }}</td>
             </tr>

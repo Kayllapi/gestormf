@@ -430,7 +430,7 @@
                 </td>
               </tr>
               <tr>
-                <td style="background-color: #efefef !important;" rowspan="2">Pareja de Garante/ fiador</td>
+                <td style="background-color: #efefef !important;" rowspan="2">Pareja de Garante (Aval)/ fiador</td>
                 <td style="background-color: #efefef !important;">P.Natural</td>
                 <td style="background-color: #efefef !important;">
                   <input 

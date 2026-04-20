@@ -166,7 +166,8 @@
           @elseif ($users_prestamo->idfuenteingreso == 2)
             VII.
           @endif
-          GARANTÍAS Y LIMITES</span>
+          GARANTÍAS Y LÍMITES
+        </span>
       </div>
       <div class="mb-1 mt-2">
         <span class="badge d-block" style="background-color: #aaa;color: #000;">

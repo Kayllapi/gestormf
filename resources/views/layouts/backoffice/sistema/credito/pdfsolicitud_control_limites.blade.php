@@ -205,16 +205,18 @@
     
     <span class="badge">
           @if($credito->idevaluacion == 1)
-          VI. 
+            VI. 
           @else
-          @if($users_prestamo->idfuenteingreso == 2)
-          VII.
-          @else
-          IX.
-          @endif
+            @if($users_prestamo->idfuenteingreso == 2)
+              VII.
+            @else
+              IX.
+            @endif
           @endif
           GARANTÍAS Y LÍMITES</span>
-    <span class="badge subtitle">{{ $credito->idevaluacion == 1 ? '6.1':($users_prestamo->idfuenteingreso == 2?'7.1':'9.1') }} GARANTÍAS Y DEUDAS DEL CLIENTE</span>
+    <span class="badge subtitle">
+      {{ $users_prestamo->idfuenteingreso == 1 ? ($credito->idevaluacion == 1 ? '6.1' : '9.1') : ($users_prestamo->idfuenteingreso == 2 ? '7.1' : '') }}  GARANTÍAS Y DEUDAS DEL CLIENTE
+    </span>
     <div class="row">
       <div class="col">
         <table class="table">
@@ -308,7 +310,9 @@
       </div>
     </div>
     <br>
-    <span class="badge subtitle">{{ $credito->idevaluacion == 1 ? '6.2':($users_prestamo->idfuenteingreso == 2?'7.2':'9.2') }} GARANTÍAS Y DEUDAS DEL GARANTE(AVAL)/FIADOR</span>
+    <span class="badge subtitle">
+      {{ $users_prestamo->idfuenteingreso == 1 ? ($credito->idevaluacion == 1 ? '6.2' : '9.2') : ($users_prestamo->idfuenteingreso == 2 ? '7.2' : '') }} GARANTÍAS Y DEUDAS DEL GARANTE(AVAL)/FIADOR
+    </span>
     
     @if($users_prestamo_aval!='')
     <div class="row">
@@ -434,7 +438,9 @@
     </div>
     <br>
     @endif
-    <span class="badge subtitle">{{ $credito->idevaluacion == 1 ? '6.3':($users_prestamo->idfuenteingreso == 2?'7.3':'9.3') }} VINCULACIÓN POR RIESGO ÚNICO</span>
+    <span class="badge subtitle">
+      {{ $users_prestamo->idfuenteingreso == 1 ? ($credito->idevaluacion == 1 ? '6.3' : '9.3') : ($users_prestamo->idfuenteingreso == 2 ? '7.3' : '') }} VINCULACIÓN POR RIESGO ÚNICO
+    </span>
 
     <div class="row">
       <div class="col">
@@ -487,7 +493,9 @@
         </table>
       </div>
     </div>
-    <span class="badge subtitle">{{ $credito->idevaluacion == 1 ? '6.4':($users_prestamo->idfuenteingreso == 2?'7.4':'9.4') }} DETERMINACIÓN DE LIMITES</span>
+    <span class="badge subtitle">
+      {{ $users_prestamo->idfuenteingreso == 1 ? ($credito->idevaluacion == 1 ? '6.4' : '9.4') : ($users_prestamo->idfuenteingreso == 2 ? '7.4' : '') }} DETERMINACIÓN DE LíMITES
+    </span>
     <div class="row">
       <div class="col">
         <table class="table" style="width:500px !important;">
@@ -509,7 +517,9 @@
     
     <div class="row" >
       <div class="col" style="width:100%;">
-        <span class="badge subtitle">{{ $credito->idevaluacion == 1 ? '6.5':($users_prestamo->idfuenteingreso == 2?'7.5':'9.5') }} COMENTARIOS SOBRE LA VINCULACIÓN</span>
+        <span class="badge subtitle">
+          {{ $users_prestamo->idfuenteingreso == 1 ? ($credito->idevaluacion == 1 ? '6.5' : '9.5') : ($users_prestamo->idfuenteingreso == 2 ? '7.5' : '') }} COMENTARIOS SOBRE LA VINCULACIÓN
+        </span>
         <div class="row">
           <textarea style="border:solid 1px #000000;" id="fortalezas_negocio" class="form-control">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->comentarios : '' }}</textarea>
         </div>

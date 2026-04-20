@@ -204,16 +204,17 @@
     </div>
     
     <span class="badge">
+      @if ($users_prestamo->idfuenteingreso == 1)
           @if($credito->idevaluacion == 1)
             VI. 
           @else
-            @if($users_prestamo->idfuenteingreso == 2)
-              VII.
-            @else
-              IX.
-            @endif
+            IX.
           @endif
-          GARANTÍAS Y LÍMITES</span>
+      @elseif ($users_prestamo->idfuenteingreso == 2)
+        VII.
+      @endif
+      GARANTÍAS Y LÍMITES
+    </span>
     <span class="badge subtitle">
       {{ $users_prestamo->idfuenteingreso == 1 ? ($credito->idevaluacion == 1 ? '6.1' : '9.1') : ($users_prestamo->idfuenteingreso == 2 ? '7.1' : '') }}  GARANTÍAS Y DEUDAS DEL CLIENTE
     </span>

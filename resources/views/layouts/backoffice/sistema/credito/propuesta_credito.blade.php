@@ -1748,12 +1748,13 @@
     
     $('#result_ampliaciondeuda').removeAttr('style').html('');
     if(monto_compra_deuda==0){
-        $('#result_ampliaciondeuda').attr('style',`background-color: #dd1010;
-    color: #fff;
-    text-align: center;
-    font-weight: bold;
-    padding: 5px;
-    border-radius: 5px;`).html('Es Obligatorio seleccionar una Amplación de deuda!!');
+        $('#result_ampliaciondeuda').attr('style',`background-color: #ff6666;
+            border-color: #ff6666;
+            color: #93222c !important;
+            text-align: center;
+            font-weight: bold;
+            padding: 5px;
+            border-radius: 5px;`).html('Es Obligatorio seleccionar una Amplación de deuda!!');
     }
     
     $('#monto_compra_deuda').val(monto_compra_deuda.toFixed(2))

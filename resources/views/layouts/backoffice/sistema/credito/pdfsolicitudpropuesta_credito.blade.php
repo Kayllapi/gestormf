@@ -183,7 +183,7 @@
             <td class="border-td">{{ $credito->nombreclientecredito }}</td>
           </tr>
           <tr>
-            <td>DNI/RUC::</td>
+            <td>RUC/DNI/CE:</td>
             <td class="border-td">{{ $credito->docuementocliente }}</td>
           </tr>
           @if($users_prestamo->dni_pareja!='' or $users_prestamo->nombrecompleto_pareja!='')
@@ -194,7 +194,7 @@
           @endif
           @if($users_prestamo->dni_pareja!='' or $users_prestamo->nombrecompleto_pareja!='')
           <tr>
-            <td>DNI:</td>
+            <td>DNI/CE:</td>
             <td class="border-td">{{ $users_prestamo->dni_pareja }}</td>
           </tr>
           @endif
@@ -390,7 +390,7 @@
                 <tr>
                   <th style="width:140px;">A. y N. de Aval(Garante)/Fiador:</th>
                   <td>{{ $credito->nombreavalcredito }}</td>
-                  <th style="width:30px;">DNI:</th>
+                  <th style="width:30px;">RUC/DNI/CE:</th>
                   <td style="width:50px;">{{ $credito->documentoaval }}</td>
                 </tr>    
                 @if($users_prestamo_aval!='')
@@ -398,7 +398,7 @@
                       <tr>
                         <th>Pareja Aval(Garante)/Fiador:</th>
                         <td>{{ $users_prestamo_aval->nombrecompleto_pareja }}</td>
-                        <th>DNI:</th>
+                        <th>DNI/CE:</th>
                         <td>{{ $users_prestamo_aval->dni_pareja }}</td>
                       </tr>
                     @endif

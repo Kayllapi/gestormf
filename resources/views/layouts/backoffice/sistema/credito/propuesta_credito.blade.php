@@ -1444,7 +1444,7 @@
                 <tr>
                     <td class="doble-subrayado">Cuota total/excedente total</td>
                     <td class="doble-subrayado">%</td>
-                    <td class="doble-subrayado campo_numero campo_moneda">{{ $solvencia_cuota_total }}</td>
+                    <td class="doble-subrayado campo_numero campo_moneda" style="{{$res_solvencia_relacion_cuota_style}}">{{ $solvencia_cuota_total }}</td>
                     <td class="doble-subrayado">{{ $solvencia_cuota_total_res }}</td>
                     <td class="doble-subrayado" colspan=2>{{ $credito_propuesta ? $credito_propuesta->solvencia_cuota_total_res_coment : '' }}</td>
                     <td class="doble-subrayado">Se exije &lt; 100% conforme política</td>

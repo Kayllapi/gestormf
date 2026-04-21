@@ -1748,7 +1748,7 @@
     
     $('#result_ampliaciondeuda').removeAttr('style').html('');
     if(monto_compra_deuda==0){
-        $('#result_ampliaciondeuda').attr('style',`background-color: #ff6666;
+        $('#result_ampliaciondeuda').attr('style',`background-color: #ffc9ca;
             border-color: #ff6666;
             color: #93222c !important;
             text-align: center;

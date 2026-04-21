@@ -273,7 +273,7 @@
             </tr>
             <tr>
               <td>1.12</td>
-              <td colspan=2>Verificar el Visado de cada documento por el ejecutivo(a) de créditos y las firmas y huellas digitales respectivas requeridas  en el expediente en general</td>
+              <td colspan=2>Verificar el Visado de cada documento por el ejecutivo(a) de créditos, las firmas y huellas digitales respectivas requeridas  en el expediente en general</td>
               <td></td>
             </tr>
             <tr>

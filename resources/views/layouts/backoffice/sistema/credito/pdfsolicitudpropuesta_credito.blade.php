@@ -978,7 +978,7 @@
             </tr>
             @endif
             <tr>
-              <th colspan=7><b>SOLVENCIA</b></th>
+              <th colspan=7 style="text-align: left"><b>CAPACIDAD DE PAGO</b></th>
             </tr>
             @if($users_prestamo->idfuenteingreso == 1)
             <tr>
@@ -1060,7 +1060,7 @@
             </tr>
             @endif
             <tr>
-              <th colspan=7><b>LIMITES</b></th>
+              <th colspan=7 style="text-align: left"><b>OTROS RATIOS</b></th>
             </tr>
             <tr>
               <td>Financiamiento por VRU</td>

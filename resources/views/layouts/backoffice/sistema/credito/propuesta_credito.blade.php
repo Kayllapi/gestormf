@@ -1535,7 +1535,7 @@
     text-align: center;
     font-weight: bold;">Cuota total/excedente total "NO ES VIABLE"</div>
           @else
-          <button type="button" class="btn btn-dark" 
+          <button type="button" class="btn btn-info" 
                   onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=solicitudpropuesta_credito&tipo=1')}}', size: 'modal-fullscreen' })"
                   
                   id="boton_imprimir"

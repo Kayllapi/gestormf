@@ -351,7 +351,7 @@
                 <tr>
                   <th style="width:200px;">A. y N. de Aval(Garante)/Fiador:</th>
                   <td>{{ $credito->nombreavalcredito }}</td>
-                  <th style="width:50px;">DNI/CE:</th>
+                  <th style="width:50px;">RUC/DNI/CE:</th>
                   <td style="width:90px;">{{ $credito->documentoaval }}</td>
                 </tr>    
                 @if($users_prestamo_aval!='')

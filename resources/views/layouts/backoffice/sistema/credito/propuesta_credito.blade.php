@@ -1384,7 +1384,160 @@
         </div>
       </div>
       @endif
-      @if($credito->idevaluacion == 1)
+      @if( $credito->idevaluacion == 2 or $users_prestamo->idfuenteingreso == 2)
+        <div class="mb-1 mt-2">
+          <span class="badge d-block">RESULTADOS DE EVALUACIÓN:</span>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th width="200px">Indicadores</th>
+                  <th width="10px"></th>
+                  <th width="70px">Ratios</th>
+                  <th>Resultado</th>
+                  <th colspan=2>Comentarios</th>
+                  <th width="210px">Exigencias/Particularidades</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th colspan=7><b>CAPACIDAD DE PAGO</b></th>
+                </tr>
+                @if($users_prestamo->idfuenteingreso == 1)
+                  <tr>
+                    <td>Liquidez</td>
+                    <td>Veces</td>
+                    <td class="campo_numero">{{ $solvencia_liquidez }}</td>
+                    <td><div class="cuadro-input">{{ $solvencia_liquidez_res }}</div></td>
+                    <td colspan="2"><div class="cuadro-input">Por cada sol de obligaciones cuenta con S/ {{ $solvencia_liquidez }} para pagar en el corto plazo </div></td>
+                    <td><div class="cuadro-input">Se exije >1</div></td>
+                  </tr>
+                  <tr>
+                    <td>Liquidez Ácida</td>
+                    <td>Veces</td>
+                    <td class="campo_numero">{{ $solvencia_liquidez_acida }}</td>
+                    <td><div class="cuadro-input">{{ $solvencia_liquidez_acida_res }}</div></td>
+                    <td colspan="2"><div class="cuadro-input">Por cada sol de obligaciones cuenta de inmediato S/ {{ $solvencia_liquidez_acida }} para pagar en muy corto plazo</div></td>
+                    <td><div class="cuadro-input">Óptimo >1</div></td>
+                  </tr>
+                  <tr>
+                    <td>Endeudamiento Patrim. con propuesta</td>
+                    <td>Veces</td>
+                    <td class="campo_numero">{{ $solvencia_endeudamiento_propuesta }}</td>
+                    <td><div class="cuadro-input">{{ $solvencia_endeudamiento_propuesta_res }}</div></td>
+                    <td colspan=2><div class="cuadro-input">{{ $solvencia_endeudamiento_propuesta_res_coment }}</div></td>
+                    <td><div class="cuadro-input">Usualmente &lt;1 (maximo considerado 0.85). Particularidad; en los giros de alta rotación ó servicios puede ser >1</div></td>
+                  </tr>
+                @endif
+                {{-- <tr>
+                  <td class="doble-subrayado">Relación cuota/excedente</td>
+                  <td class="doble-subrayado">%</td>
+                  <td>
+                    <input type="text" class="form-control doble-subrayado campo_moneda" disabled id="res_solvencia_relacion_cuota" value="{{ $res_solvencia_relacion_cuota }}">
+                  </td>
+                  <td><div class="cuadro-input doble-subrayado" style="{{$res_solvencia_relacion_cuota_style}}">{{ $res_solvencia_relacion_cuota_res }}</div></td>
+                  <td colspan=2><input type="text" class="form-control color_cajatexto doble-subrayado" {{ $view_detalle=='false' ? 'disabled' : '' }}  id="res_solvencia_relacion_cuota_coment" value="{{ $credito_propuesta ? $credito_propuesta->res_solvencia_relacion_cuota_coment : '' }}"></td>
+                  <td><div class="cuadro-input doble-subrayado">Se exije < 100% conforme política</div></td>
+                </tr> --}}
+                <tr>
+                    <td class="doble-subrayado">Cuota total/excedente total</td>
+                    <td class="doble-subrayado">%</td>
+                    <td class="doble-subrayado campo_numero campo_moneda">{{ $solvencia_cuota_total }}</td>
+                    <td class="doble-subrayado">{{ $solvencia_cuota_total_res }}</td>
+                    <td class="doble-subrayado" colspan=2>{{ $credito_propuesta ? $credito_propuesta->solvencia_cuota_total_res_coment : '' }}</td>
+                    <td class="doble-subrayado">Se exije &lt; 100% conforme política</td>
+                </tr>
+                @if($users_prestamo->idfuenteingreso == 1)
+                  <tr>
+                    <td>Préstamo / capital de trabajo Neto</td>
+                    <td>%</td>
+                    <td class="campo_numero campo_moneda">{{ $solvencia_capital_trabajo_neto }}</td>
+                    <td><div class="cuadro-input">{{ $solvencia_capital_trabajo_neto_res }}</div></td>
+                    <td colspan=2><div class="cuadro-input">{{ $solvencia_capital_trabajo_neto_res_coment }}</div></td>
+                    <td><div class="cuadro-input">Usualmente:&lt;100% (maximo considerado 85%). Particularidad: en giros de alta rotación ó servicios puede ser >100% o (-)</div></td>
+                  </tr>
+                  <tr>
+                    <td>Capital de trabajo</td>
+                    <td>S/</td>
+                    <td class="campo_numero campo_moneda">{{ $solvencia_capital_trabajo }}</td>
+                    <td></td>
+                    <td colspan=2>{{ $credito_propuesta ? $credito_propuesta->solvencia_capital_trabajo_res_coment : '' }}</td>
+                    <td><div class="cuadro-input">Giros de alta rotación ó servicios puede ser (-)</div></td>
+                  </tr>
+                  <tr>
+                    <th colspan=7><b>GESTIÓN</b></th>
+                  </tr>
+                  <tr>
+                    <td>Plazo prom.rotación de invent.</td>
+                    <td>Días</td>
+                    <td class="campo_numero campo_moneda">{{ $gestion_rotacion_inventario }}</td>
+                    <td><div class="cuadro-input">{{ $gestion_rotacion_inventario_res }}</div></td>
+                    <td colspan="2"><div class="cuadro-input">{{ $gestion_rotacion_inventario_res_coment }} {{ $gestion_rotacion_inventario }} días</div></td>
+                    <td><div class="cuadro-input"></td>
+                  </tr>
+                  <tr>
+                    <td>Plazo promedio de cobranza</td>
+                    <td>Días</td>
+                    <td class="campo_numero campo_moneda">{{ $gestion_promedio_cobranza }}</td>
+                    <td><div class="cuadro-input">{{ $gestion_promedio_cobranza_res }}</div></td>
+                    <td colspan="2"><div class="cuadro-input">{{ $gestion_promedio_cobranza_res_coment }} {{ $gestion_promedio_cobranza }} días</div></td>
+                    <td><div class="cuadro-input">Plazo máximo adecuado de 30 a 45 días </td>
+                  </tr>
+                  <tr>
+                    <td>Plazo promedio de pago</td>
+                    <td>Días</td>
+                    <td class="campo_numero campo_moneda">{{ $gestion_promedio_pago }}</td>
+                    <td><div class="cuadro-input">{{ $gestion_promedio_pago_res }}</div></td>
+                    <td colspan=2><div class="cuadro-input">{{ $gestion_promedio_pago_res_coment }}</div></td>
+                    <td><div class="cuadro-input">CALCE: Plazo Prom.Cobranza &lt; Plazo Prom. Pago</div></td>
+                  </tr>
+                @endif
+                <tr>
+                  <th colspan=7><b>OTROS RATIOS</b></th>
+                </tr>
+                <tr>
+                  <td>Financiamiento por VRU</td>
+                  <td>%</td>
+                  <td class="campo_numero campo_moneda">{{ $limites_financiamiento_vru }}</td>
+                  <td><div class="cuadro-input">{{ $limites_financiamiento_vru_res }}</div></td>
+                  <td colspan=2>{{ $credito_propuesta ? $credito_propuesta->limites_financiamiento_vru_res_coment : '' }}</td>
+                  <td></td>
+                </tr>
+                <tr>
+                    <td class="doble-subrayado">N° de entidades (Cliente y Pareja)</td>
+                    <td class="doble-subrayado">N°</td>
+                    <?php
+                        $limites_numero_entidades = 0;
+                        if($_GET['tipo'] == 'evaluacion_completa'){
+                            $limites_numero_entidades = $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->total_deuda : 0;
+                        }else{
+                              if($users_prestamo->idfuenteingreso == 2){
+                                  $limites_numero_entidades = $credito_formato_evaluacion ? $credito_formato_evaluacion->entidad_financiera_total : 0;
+                              }else{
+                                  $limites_numero_entidades = $credito_evaluacion_resumida ? $credito_evaluacion_resumida->total_deuda : 0;
+                              }
+                        }
+                        $entidad_maxima = configuracion($tienda->id,'entidades_maxima')['valor'];
+                        $limites_numero_entidades_res = '';
+                        if ($limites_numero_entidades > $entidad_maxima) {
+                          $limites_numero_entidades_res = "Se sugiere no proceder o coverturar la propuesta";
+                        } else if ($limites_numero_entidades <= $entidad_maxima) {
+                          $limites_numero_entidades_res = "Proceder con propuesta";
+                        }
+                    ?>
+                    <td class="doble-subrayado campo_numero campo_moneda">{{ $limites_numero_entidades }}</td>
+                    <td class="doble-subrayado">{{ $limites_numero_entidades_res }}</td>
+                    <td class="doble-subrayado"colspan=2>{{ $credito_propuesta ? $credito_propuesta->limites_numero_entidades_res_coment : '' }}</td>
+                    <td class="doble-subrayado"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      @endif
+      {{-- @if($credito->idevaluacion == 1)
       <div class="mb-1 mt-2">
         <span class="badge d-block">RESULTADOS DE EVALUACIÓN:</span>
       </div>
@@ -1499,7 +1652,7 @@
           </table>
         </div>
       </div>
-      @endif
+      @endif --}}
               <?php
               $excedente_propuesta_con_deduccion = $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->excedente_propuesta_con_deduccion : 0;
               $rango_tope = configuracion($tienda->id,'rango_tope')['valor'];

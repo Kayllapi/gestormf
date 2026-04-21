@@ -1103,7 +1103,7 @@
     </div>
     @endif 
   
-    @if( $credito->idevaluacion == 1)
+    {{-- @if( $credito->idevaluacion == 1)
       
     <span class="badge">RESULTADOS DE EVALUACIÓN:</span>
     <div class="row">
@@ -1210,7 +1210,7 @@
       </div>
     </div>
     
-    @endif 
+    @endif  --}}
     <div class="row" >
       <div class="col" style="margin-left:215px;margin-top:60px;">
         <div style="width:300px;height:1px;border-bottom:1px solid #000;"></div>

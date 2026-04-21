@@ -652,7 +652,7 @@
           <table class="table table-bordered" id="table-vinculo-deudor">
             <thead style="border: 1px solid transparent !important;">
               <tr>
-                <th rowspan=3 style="width:100px;">DNI CLIENTE</th>
+                <th rowspan=3 style="width:100px;">DNI/CE CLIENTE</th>
                 <th rowspan=3>APELLIDOS Y NOMBRES</th>
                 <th colspan=5 style="text-align:center;">FORMA DE VINCULACIÓN</th>
                 

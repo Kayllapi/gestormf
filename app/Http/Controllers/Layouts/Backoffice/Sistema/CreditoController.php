@@ -1909,7 +1909,9 @@ class CreditoController extends Controller
                 'giro_economico_evaluacion.nombre as nombregiro_economico_evaluacion'
               )
               ->first();
-        
+
+          $credito_formato_evaluacion = DB::table('credito_formato_evaluacion')->where('credito_formato_evaluacion.idcredito',$id)->first();
+
           return view(sistema_view().'/credito/control_limites',[
               'users_prestamo'    => $users_prestamo,
               'users_prestamo_aval'    => $users_prestamo_aval,
@@ -1932,8 +1934,10 @@ class CreditoController extends Controller
               'credito_saldodeduda_cliente_aval' => $credito_saldodeduda_cliente_aval,
               'credito_saldodeduda_aval_propio' => $credito_saldodeduda_aval_propio,
               'credito_saldodeduda_aval_aval' => $credito_saldodeduda_aval_aval,
-              'view_detalle' => $request->detalle
+              'view_detalle' => $request->detalle,
+              'credito_formato_evaluacion' => $credito_formato_evaluacion,
           ]);
+
       }
       else if( $request->input('view') == 'deudas' ){
         
@@ -2640,6 +2644,8 @@ class CreditoController extends Controller
               )
               ->first();
 
+        $credito_formato_evaluacion = DB::table('credito_formato_evaluacion')->where('credito_formato_evaluacion.idcredito',$id)->first();
+
         $pdf = PDF::loadView(sistema_view().'/credito/pdfsolicitud_control_limites',[
           'users_prestamo'    => $users_prestamo,
           'users_prestamo_aval'    => $users_prestamo_aval,
@@ -2662,7 +2668,8 @@ class CreditoController extends Controller
           'credito_saldodeduda_cliente_aval' => $credito_saldodeduda_cliente_aval,
           'credito_saldodeduda_aval_propio' => $credito_saldodeduda_aval_propio,
           'credito_saldodeduda_aval_aval' => $credito_saldodeduda_aval_aval,
-          'view_detalle' => $request->detalle
+          'view_detalle' => $request->detalle,
+          'credito_formato_evaluacion' => $credito_formato_evaluacion,
         ]); 
         $pdf->setPaper('A4');
         return $pdf->stream('SOLICITUD CONTROL Y LIMITES.pdf');
@@ -3170,7 +3177,7 @@ class CreditoController extends Controller
         $diasdegracia = DB::table('diasdegracia')->where('diasdegracia.nombre',$tipocredito)->first();
         
         $credito_formato_evaluacion = DB::table('credito_formato_evaluacion')->where('credito_formato_evaluacion.idcredito',$id)->first();
-        
+
         return view(sistema_view().'/credito/propuesta_credito',[
           'credito_propuesta' => $credito_propuesta,
           'credito_evaluacion_cualitativa' => $credito_evaluacion_cualitativa,

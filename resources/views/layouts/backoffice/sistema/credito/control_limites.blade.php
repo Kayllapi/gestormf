@@ -765,8 +765,9 @@
               let total_saldodeuda_cliente_aval = parseFloat($('#total_saldodeuda_cliente_aval').val());
               let total_saldodeuda_aval_propio_input = parseFloat($('#total_saldodeuda_aval_propio_input').val());
               let total_vinculo_deudor = parseFloat($('#total_vinculo_deudor').val());
+              let entidad_financiera_pareja = parseFloat({{ $credito_formato_evaluacion ? $credito_formato_evaluacion->entidad_financiera_pareja : '0.00' }});
               
-              let total_financiado_deudor = ( credito_solicitado + total_saldodeuda_cliente_propio + total_saldodeuda_cliente_aval + total_saldodeuda_aval_propio_input + total_vinculo_deudor );
+              let total_financiado_deudor = ( credito_solicitado + total_saldodeuda_cliente_propio + total_saldodeuda_cliente_aval + total_saldodeuda_aval_propio_input + total_vinculo_deudor + entidad_financiera_pareja);
               
               $('#total_financiado_deudor').val(total_financiado_deudor.toFixed(2))
               

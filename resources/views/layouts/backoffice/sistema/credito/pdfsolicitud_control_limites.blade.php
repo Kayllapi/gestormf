@@ -148,10 +148,6 @@
               @endif
             </td>
           </tr>
-          <!--tr>
-            <td>DESCRIPCIÓN DE ACTIVIDAD:</td>
-            <td class="border-td">{{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->descripcion_actividad : '' }}</td>
-          </tr-->
           <tr>
             <td>ASESOR (A):</td>
             <td class="border-td">{{ Auth::user()->nombre }}</td>
@@ -178,7 +174,6 @@
             <td>EJERCICIO:</td>
             <td class="border-td">{{ $users_prestamo->db_idforma_ac_economica }}</td>
           </tr>
-          
         </table>
       </div>
       <div class="col">
@@ -206,7 +201,6 @@
         </table>
       </div>
     </div>
-    
     <span class="badge">
       @if ($users_prestamo->idfuenteingreso == 1)
           @if($credito->idevaluacion == 1)
@@ -219,101 +213,9 @@
       @endif
       GARANTÍAS Y LÍMITES
     </span>
-    <span class="badge subtitle">
+    <span class="subtitle">
       {{ $users_prestamo->idfuenteingreso == 1 ? ($credito->idevaluacion == 1 ? '6.1' : '9.1') : ($users_prestamo->idfuenteingreso == 2 ? '7.1' : '') }}  GARANTÍAS Y DEUDAS DEL CLIENTE
     </span>
-    {{-- <div class="row">
-      <div class="col">
-        <table class="table">
-          <thead>
-            <tr>
-              <th rowspan="2">Garantías presentadas por el cliente</th>
-              <th colspan="2">Saldo de Prést. vigente (S/)</th>
-              <th rowspan="2">Propuesta</th>
-              <th rowspan="2">Descripción de garantía en Propuesta</th>
-              <th rowspan="2">Valor de mercado (S/.)</th>
-              <th rowspan="2">Valor comercial (Tasado) (S/.)</th>
-              <th rowspan="2">Valor de realización(tasado) (S/.)</th>
-            </tr>
-            <tr>
-              <th style="width:40px;">Propio</th>
-              <th style="width:40px;">Avalado</th>
-            </tr>
-          </thead>
-          <tbody>
-              <?php
-                $garantia_cliente = 0;
-                $key=0;
-              ?>
-            @foreach($credito_garantias_cliente as $value)
-              <?php
-                  $td_propio = '';
-                  $td_propuesta = '';
-                  if($key == 0){
-                    $cliente_saldo_vigente_cliente = $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->cliente_saldo_vigente_cliente : '0.00';
-                    $monto_propuesta = $credito->monto_solicitado;
-                    $cantidad_filas = count($credito_garantias_cliente);
-                    $td_propio = '<td rowspan="'.$cantidad_filas.'" class="campo_moneda">'.$cliente_saldo_vigente_cliente.'</td>
-                                    <td rowspan="'.$cantidad_filas.'"></td>';
-                    $td_propuesta = '<td rowspan="'.$cantidad_filas.'" class="campo_moneda">'.$monto_propuesta.'</td>';
-                  }
-                  $key++;
-                    
-                  $garantia_cliente = $monto_propuesta+$cliente_saldo_vigente_cliente;
-              ?>
-              <tr>
-                <td>{{ $value->nombretipogarantia }}</td>
-                  <?php echo $td_propio; ?>
-                  <?php echo $td_propuesta; ?>
-                <td>{{ $value->descripcion_garantia }}</td>
-                <td class="campo_moneda">{{ $value->valor_mercado_garantia }}</td>
-                <td class="campo_moneda">{{ $value->valor_comercial_garantia }}</td>
-                <td class="campo_moneda">{{ $value->valor_realizacion_garantia }}</td>
-              </tr>
-            @endforeach
-            @foreach($credito_garantias_aval as $value)
-              <?php
-                  $td_propio = '';
-                  $td_propuesta = '';
-                  if($key == 0){
-                    $cliente_saldo_vigente_aval = $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->cliente_saldo_vigente_aval : '0.00';
-                    $monto_propuesta = $credito->monto_solicitado;
-                    $cantidad_filas = count($credito_garantias_aval);
-                    $td_propio = '<td rowspan="'.$cantidad_filas.'" class="campo_moneda">'.$cliente_saldo_vigente_aval.'</td>
-                                    <td rowspan="'.$cantidad_filas.'"></td>';
-                    $td_propuesta = '<td rowspan="'.$cantidad_filas.'" class="campo_moneda">'.$monto_propuesta.'</td>';
-                  }
-                  $key++;
-                    
-                  $garantia_cliente = $monto_propuesta+$cliente_saldo_vigente_aval;
-              ?>
-              <tr>
-                <td>{{ $value->nombretipogarantia }}</td>
-                  <?php echo $td_propio; ?>
-                  <?php echo $td_propuesta; ?>
-                <td>{{ $value->descripcion_garantia }}</td>
-                <td class="campo_moneda">{{ $value->valor_mercado_garantia }}</td>
-                <td class="campo_moneda">{{ $value->valor_comercial_garantia }}</td>
-                <td class="campo_moneda">{{ $value->valor_realizacion_garantia }}</td>
-              </tr>
-            @endforeach
-            @if($key==0)
-            <tr>
-                <td>Sin Garantia</td>
-                <td class="campo_moneda">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->saldo_noprendario_cliente : '0.00' }}</td>
-                <td class="campo_moneda">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->propuesta_noprendario_cliente : '0.00' }}</td>
-                <td class="color_totales" colspan=5></td>
-            </tr>
-            @endif
-            <tr>
-              <td class="campo_moneda">TOTAL S/.</td>
-              <td colspan=3 class="campo_moneda">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->total_garantia_cliente : $garantia_cliente }}</td>
-              <td colspan=4></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div> --}}
     <div class="row">
         <div class="col">
           <input type="hidden" id="cliente_saldo_vigente_cliente_det" value="{{json_encode($credito_garantias_cliente)}}">
@@ -368,10 +270,9 @@
               @endif
             </tbody>
           </table>
-          
         </div>
       </div>
-    <span class="badge subtitle">
+    <span class="subtitle">
       {{ $users_prestamo->idfuenteingreso == 1 ? ($credito->idevaluacion == 1 ? '6.1.1' : '9.1.1') : ($users_prestamo->idfuenteingreso == 2 ? '7.1.1' : '') }} SALDO DE DEUDA VIGENTE DEL CLIENTE
     </span>
     <input type="hidden" id="cliente_saldo_vigente_cliente_det" value="{{json_encode($credito_garantias_cliente)}}">
@@ -389,29 +290,29 @@
                 </tr>
               </thead>
               <tbody>
-                    <?php $total_saldo_vigente_propio = 0; ?>
-                @if($view_detalle=='false')
-                    @if($credito_cuantitativa_control_limites)
-                    <?php
-                      $saldo_vigente = json_decode($credito_cuantitativa_control_limites->credito_saldodeduda_cliente_propio_det);
-                    ?>
-                    @foreach($saldo_vigente as $value)
-                      <tr>
-                          <td>{{ $value->cuenta }}</td>
-                          <td class="campo_moneda">{{ $value->saldo_vigente }}</td>
-                      </tr>
-                      <?php $total_saldo_vigente_propio = $total_saldo_vigente_propio+$value->saldo_vigente; ?>
-                    @endforeach
+                  <?php $total_saldo_vigente_propio = 0; ?>
+                  @if($view_detalle=='false')
+                      @if($credito_cuantitativa_control_limites)
+                      <?php
+                        $saldo_vigente = json_decode($credito_cuantitativa_control_limites->credito_saldodeduda_cliente_propio_det);
+                      ?>
+                      @foreach($saldo_vigente as $value)
+                        <tr>
+                            <td>{{ $value->cuenta }}</td>
+                            <td class="campo_moneda">{{ $value->saldo_vigente }}</td>
+                        </tr>
+                        <?php $total_saldo_vigente_propio = $total_saldo_vigente_propio+$value->saldo_vigente; ?>
+                      @endforeach
+                    @endif
+                  @else
+                      @foreach($credito_saldodeduda_cliente_propio as $value)
+                        <tr>
+                            <td>{{ $value['cuenta'] }}</td>
+                            <td class="campo_moneda">{{ $value['saldo_vigente'] }}</td>
+                        </tr>
+                        <?php $total_saldo_vigente_propio = $total_saldo_vigente_propio+$value['saldo_vigente']; ?>
+                      @endforeach
                   @endif
-                @else
-                    @foreach($credito_saldodeduda_cliente_propio as $value)
-                      <tr>
-                          <td>{{ $value['cuenta'] }}</td>
-                          <td class="campo_moneda">{{ $value['saldo_vigente'] }}</td>
-                      </tr>
-                      <?php $total_saldo_vigente_propio = $total_saldo_vigente_propio+$value['saldo_vigente']; ?>
-                    @endforeach
-                @endif
               </tbody>
               <tfoot>
                 <tr>
@@ -474,8 +375,7 @@
         <input type="hidden" id="total_saldodeuda_cliente_aval" value="{{number_format($total_saldo_vigente_aval, 2, '.', '')}}">
         <input type="hidden" id="total_garantia_cliente" value="{{number_format($total_saldo_vigente_propio+$total_saldo_vigente_aval, 2, '.', '')}}">
     </div>
-    <br>
-    <span class="badge subtitle">
+    <span class="subtitle">
       {{ $users_prestamo->idfuenteingreso == 1 ? ($credito->idevaluacion == 1 ? '6.2' : '9.2') : ($users_prestamo->idfuenteingreso == 2 ? '7.2' : '') }} GARANTÍAS Y DEUDAS DEL GARANTE(AVAL)/FIADOR
     </span>
     @if($users_prestamo_aval!='')
@@ -547,7 +447,6 @@
           </table>
         </div>
       </div>
-      <br>
       @endif
       <div class="row" container-garantias-aval>
         <div class="col-sm-12">
@@ -603,7 +502,7 @@
           </table>
         </div>
       </div>
-    <span class="badge subtitle">
+    <span class="subtitle">
       {{ $users_prestamo->idfuenteingreso == 1 ? ($credito->idevaluacion == 1 ? '6.2.1' : '9.2.1') : ($users_prestamo->idfuenteingreso == 2 ? '7.2.1' : '') }} SALDO DE DEUDA VIGENTE DEL AVAL
     </span>
       <input type="hidden" id="credito_saldodeduda_aval_propio_det" value="{{json_encode($credito_saldodeduda_aval_propio)}}">
@@ -708,33 +607,28 @@
         </div>
       </div>
       <input type="hidden" id="total_saldodeuda_aval_aval" value="{{number_format($total_saldo_vigente_aval, 2, '.', '')}}">
-      <input type="hidden" id="total_garantia_aval" value="{{number_format($total_saldo_vigente_propio+$total_saldo_vigente_aval, 2, '.', '')}}">
-    <br>          
-    <span class="badge subtitle">
+      <input type="hidden" id="total_garantia_aval" value="{{number_format($total_saldo_vigente_propio+$total_saldo_vigente_aval, 2, '.', '')}}">        
+    <span class="subtitle" style="margin: 0 !important;">
       {{ $users_prestamo->idfuenteingreso == 1 ? ($credito->idevaluacion == 1 ? '6.3' : '9.3') : ($users_prestamo->idfuenteingreso == 2 ? '7.3' : '') }} VINCULACIÓN POR RIESGO ÚNICO
     </span>
-
     <div class="row">
       <div class="col">
         <span>Deudores Vinculados con los que conforma Riesgo Único (Revisar Reporte, de existir Vinculación registrar) <br>
-      <b>REGISTRAR SALDO DE PRÉSTAMO VIGENTE</b></span>
+        <b>REGISTRAR SALDO DE PRÉSTAMO VIGENTE</b></span>
         <table class="table table-bordered" id="table-vinculo-deudor">
           <thead>
             <tr>
               <th rowspan=3>CODIGO DE CLIENTE</th>
               <th rowspan=3>APELLIDOS Y NOMBRES</th>
               <th colspan=5>FORMA DE VINCULACIÓN</th>
-
               <th rowspan=3>{{ $tienda->nombre }} </th>
             </tr>
             <tr>
-
               <th colspan=2>Por propiedad Directa</th>
               <th colspan=2>Por Propiedad Indirecta</th>
               <th>Gestión</th>
             </tr>
             <tr>
-
               <th>Pertenece al Cliente (%)</th>
               <th>Pertenece al Vinculado (%)</th>
               <th>Pertenece al Cliente (%)</th>
@@ -759,13 +653,16 @@
           <tfoot>
             <tr>
               <td class="color_totales campo_moneda" colspan=7>TOTAL S/.</td>
-              <td class="color_totales campo_moneda">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->total_vinculo_deudor : '0.00' }}</td>
+              <td class="color_totales campo_moneda">
+                {{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->total_vinculo_deudor : '0.00' }}
+                <input type="hidden" value="{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->total_vinculo_deudor : '0.00' }}" id="total_vinculo_deudor">
+              </td>
             </tr>
           </tfoot>
         </table>
       </div>
     </div>
-    <span class="badge subtitle">
+    <span class="subtitle">
       {{ $users_prestamo->idfuenteingreso == 1 ? ($credito->idevaluacion == 1 ? '6.4' : '9.4') : ($users_prestamo->idfuenteingreso == 2 ? '7.4' : '') }} DETERMINACIÓN DE LíMITES
     </span>
     <div class="row">
@@ -784,7 +681,7 @@
           <table>
             <tr>
               <td>Resultado (%)</td>
-              <td class="border-td" width="30px">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->porcentaje_resultado : '0.00' }}</td>
+              <td class="border-td" width="30px" id="total_financiado_deudor">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->porcentaje_resultado : '0.00' }}</td>
               <td width="211px">
               <td class="border-td" width="130px" style="text-align:center;background-color: #e5e5e5 !important; color: #000 !important;">
                 <b>{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->estado_resultado : '0.00' }}</b>
@@ -801,7 +698,7 @@
               let total_vinculo_deudor = parseFloat($('#total_vinculo_deudor').val());
               let total_financiado_deudor = ( credito_solicitado + total_saldodeuda_cliente_propio + total_saldodeuda_cliente_aval + total_saldodeuda_aval_propio_input + total_vinculo_deudor );
               
-              $('#total_financiado_deudor').val(total_financiado_deudor.toFixed(2))
+              $('#total_financiado_deudor').html(total_financiado_deudor.toFixed(2))
               
               let reporte_institucional = parseFloat($('#reporte_institucional').val());
               let porcentaje_resultado = (total_financiado_deudor/reporte_institucional) * 100;
@@ -818,15 +715,13 @@
                 $('#estado_resultado ').addClass('bg-success');
               }else{
               }
-              
             }
           </script>
       </div>
     </div>
-    
     <div class="row" >
       <div class="col" style="width:100%;">
-        <span class="badge subtitle">
+        <span class="subtitle">
           {{ $users_prestamo->idfuenteingreso == 1 ? ($credito->idevaluacion == 1 ? '6.5' : '9.5') : ($users_prestamo->idfuenteingreso == 2 ? '7.5' : '') }} COMENTARIOS SOBRE LA VINCULACIÓN
         </span>
         <div class="row">
@@ -838,7 +733,6 @@
         <p align="center">Asesor(a) de Créditos: {{ Auth::user()->codigo }} <br>Firma y Sello</p>		
       </div>
     </div>
-
   </main>
 </body>
 </html>

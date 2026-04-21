@@ -481,7 +481,7 @@
     </span>
     @if($users_prestamo_aval!='')
       <div class="row" container-garantias-aval>
-        <div class="col" style="width:150px;">
+        <div class="col" style="width:200px;">
           <table class="table">
             <tr>
               <td>Apellidos y Nombres:</td>
@@ -495,7 +495,7 @@
             @endif
           </table>
         </div>
-        <div class="col" style="width:150px;">
+        <div class="col" style="width:100px;">
           <table class="table">
             <tr>
               <td>RUC/DNI/CE:</td>
@@ -509,21 +509,23 @@
             @endif
           </table>
         </div>
-        <div class="col-sm-12 col-md-6">
-          <p>N° DE ENTIDADES FINANCIERAS (Se considera deuda interna y Líneas de creditos sin uso)</p>
+        <div class="col" style="width:419px;">
           <table class="table" id="tabla-entidadesfinancieras">
             <thead>
               <tr>
-                <th style="background-color: #c8c8c8 !important;color: #000 !important;">Deudores</th>
-                <th style="background-color: #c8c8c8 !important;color: #000 !important;">Como</th>
-                <th style="background-color: #c8c8c8 !important;color: #000 !important;text-align: center;" width="100px">N°</th>
+                <td colspan="3">N° DE ENTIDADES FINANCIERAS (Se considera deuda interna y Líneas de creditos sin uso)</td>
+              </tr>
+              <tr>
+                <th>Deudores</th>
+                <th>Como</th>
+                <th width="100px">N°</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td style="background-color: #efefef !important;" rowspan="2">Garante (Aval)/Fiador</td>
-                <td style="background-color: #efefef !important;">P.Natural</td>
-                <td style="background-color: #efefef !important;">
+                <td rowspan="2">Garante (Aval)/Fiador</td>
+                <td>P.Natural</td>
+                <td>
                   <input 
                          type="text" valida_input_vacio 
                          style="padding: 4px;" 
@@ -535,8 +537,8 @@
                 </td>
               </tr>
               <tr>
-                <td style="background-color: #efefef !important;">P.Jurídica</td>
-                <td style="background-color: #efefef !important;">
+                <td>P.Jurídica</td>
+                <td>
                   <input 
                          type="text" valida_input_vacio 
                          style="padding: 4px;" 
@@ -548,9 +550,9 @@
                 </td>
               </tr>
               <tr>
-                <td style="background-color: #efefef !important;" rowspan="2">Pareja de Garante (Aval)/ fiador</td>
-                <td style="background-color: #efefef !important;">P.Natural</td>
-                <td style="background-color: #efefef !important;">
+                <td rowspan="2">Pareja de Garante (Aval)/ fiador</td>
+                <td>P.Natural</td>
+                <td>
                   <input 
                          type="text" valida_input_vacio 
                          style="padding: 4px;" 
@@ -562,8 +564,8 @@
                 </td>
               </tr>
               <tr>
-                <td style="background-color: #efefef !important;">P.Jurídica</td>
-                <td style="background-color: #efefef !important;">
+                <td>P.Jurídica</td>
+                <td>
                   <input 
                          type="text" valida_input_vacio 
                          style="padding: 4px;" 
@@ -575,8 +577,8 @@
                 </td>
               </tr>
               <tr>
-                <td class="color_totales" style="background-color: #c8c8c8 !important;text-align: right;" colspan=2>TOTAL S/.</td>
-                <td class="color_totales" style="background-color: #c8c8c8 !important;">
+                <td class="color_totales" style="text-align: right;" colspan=2>TOTAL S/.</td>
+                <td class="color_totales">
                   <input 
                          type="text" valida_input_vacio
                          style="padding: 4px;" 

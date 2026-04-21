@@ -392,8 +392,8 @@
         <div class="col">
           <table>
             <tr>
-              <td width="80px">Apellidos y Nombres:</td>
-              <td class="border-td" width="80px">{{ $credito->nombreavalcredito }}</td>
+              <td width="90px">Apellidos y Nombres:</td>
+              <td class="border-td" width="110px">{{ $credito->nombreavalcredito }}</td>
             </tr>
             @if($users_prestamo_aval->dni_pareja!='' or $users_prestamo_aval->nombrecompleto_pareja!='')
             <tr>
@@ -407,21 +407,21 @@
           <table>
             <tr>
               <td>RUC/DNI/CE:</td>
-              <td class="border-td" width="80px">{{ $credito->documentoaval }}</td>
+              <td class="border-td" width="50px">{{ $credito->documentoaval }}</td>
             </tr>
             @if($users_prestamo_aval->dni_pareja!='' or $users_prestamo_aval->nombrecompleto_pareja!='')
             <tr>
               <td>DNI/CE:</td>
-              <td class="border-td" width="80px">{{ $users_prestamo_aval->dni_pareja }}</td>
+              <td class="border-td">{{ $users_prestamo_aval->dni_pareja }}</td>
             </tr>
             @endif
           </table>
         </div>
-        <div class="col" style="width:400px;">
+        <div class="col">
           <table class="table table-bordered" id="table-vinculo-deudor">
             <thead>
               <tr>
-                <th colspan="3">N° DE ENTIDADES FINANCIERAS (Se considera deuda interna y Líneas de creditos sin uso)</th>
+                <th colspan="3" width="350px">N° DE ENTIDADES FINANCIERAS (Se considera deuda interna y Líneas de creditos sin uso)</th>
               </tr>
               <tr>
                 <th>Deudores</th>

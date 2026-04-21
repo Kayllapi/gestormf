@@ -1103,7 +1103,7 @@
   
     @if( $credito->idevaluacion == 1)
       
-    <span class="badge">RESULTADOS DE EVALUACIÓN RESUMIDA:</span>
+    <span class="badge">RESULTADOS DE EVALUACIÓN:</span>
     <div class="row">
       <div class="col">
         <table class="table">

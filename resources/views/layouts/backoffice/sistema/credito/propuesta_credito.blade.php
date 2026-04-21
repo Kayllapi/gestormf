@@ -1384,7 +1384,7 @@
       @endif
       @if($credito->idevaluacion == 1)
       <div class="mb-1 mt-2">
-        <span class="badge d-block">RESULTADOS DE EVALUACIÓN RESUMIDA:</span>
+        <span class="badge d-block">RESULTADOS DE EVALUACIÓN:</span>
       </div>
       <div class="row">
         <div class="col-sm-12">

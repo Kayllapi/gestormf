@@ -174,7 +174,7 @@
             <td class="border-td" width="130px">{{ $credito->nombreavalcredito }}</td>
           </tr>
           <tr>
-            <td>DNI/CE</td>
+            <td>RUC/DNI/CE</td>
             <td class="border-td">{{ $credito->documentoaval }}</td>
           </tr>
         </table>

@@ -1119,7 +1119,7 @@
           </thead>
           <tbody>
             <tr>
-              <th colspan=7 style="text-align:left;"><b>SOLVENCIA</b></th>
+              <th colspan=7 style="text-align:left;"><b>CAPACIDAD DE PAGO</b></th>
             </tr>
             <tr>
               <td class="doble-subrayado">Relación cuota/excedente</td>

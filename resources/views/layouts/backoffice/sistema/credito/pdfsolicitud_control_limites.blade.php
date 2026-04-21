@@ -784,7 +784,7 @@
                 color: #000 !important;" class="campo_moneda">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->estado_resultado : '0.00' }}</td>
           </tr>
         </table> --}}
-          <table style="width:400px !important;">
+          <table style="width:500px !important;">
             <tr style="display: none;">
               <td>Capital Asignado</td>
               <td width="30px" class="border-td">{{ $tienda->capital_agencia }}</td>

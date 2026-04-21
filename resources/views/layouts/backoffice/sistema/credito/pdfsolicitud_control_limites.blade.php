@@ -377,15 +377,15 @@
     <input type="hidden" id="cliente_saldo_vigente_cliente_det" value="{{json_encode($credito_garantias_cliente)}}">
     <input type="hidden" id="cliente_saldo_vigente_aval_det" value="{{json_encode($credito_garantias_aval)}}">
     <div class="row">
-        <div class="col" style="width:110px;">
+        <div class="col">
             <table class="table table-bordered">
               <thead>
                 <tr>
                   <th colspan="2" style="text-align: center;">PROPIOS</th>
                 </tr>
                 <tr>
-                  <th>CUENTA</th>
-                  <th>SALDOS (S/.)</th>
+                  <th width="80px">CUENTA</th>
+                  <th width="80px">SALDOS (S/.)</th>
                 </tr>
               </thead>
               <tbody>
@@ -422,15 +422,15 @@
             </table>
         </div>
         <input type="hidden" id="total_saldodeuda_cliente_propio" value="{{number_format($total_saldo_vigente_propio, 2, '.', '')}}">
-        <div class="col" style="width:200px;">
+        <div class="col">
             <table class="table table-bordered">
               <thead>
                 <tr>
                   <th colspan="2" style="text-align: center;">AVALADO</th>
                 </tr>
                 <tr>
-                  <th>CUENTA</th>
-                  <th>SALDOS (S/.)</th>
+                  <th width="80px">CUENTA</th>
+                  <th width="80px">SALDOS (S/.)</th>
                 </tr>
               </thead>
               <tbody>
@@ -524,7 +524,7 @@
               <tr>
                 <td rowspan="2">Garante (Aval)/Fiador</td>
                 <td>P.Natural</td>
-                <td>{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->cantidad_garante_natural : '0.00' }}</td>
+                <td class="campo_moneda">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->cantidad_garante_natural : '0.00' }}</td>
               </tr>
               <tr>
                 <td>P.Jurídica</td>
@@ -533,15 +533,15 @@
               <tr>
                 <td rowspan="2">Pareja de Garante (Aval)/ fiador</td>
                 <td>P.Natural</td>
-                <td>{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->cantidad_pareja_natural : '0.00' }}</td>
+                <td class="campo_moneda">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->cantidad_pareja_natural : '0.00' }}</td>
               </tr>
               <tr>
                 <td>P.Jurídica</td>
-                <td>{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->cantidad_pareja_juridico : '0.00' }}</td>
+                <td class="campo_moneda">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->cantidad_pareja_juridico : '0.00' }}</td>
               </tr>
               <tr>
                 <td style="text-align: right;" colspan=2>TOTAL S/.</td>
-                <td>{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->total_deuda : '0.00' }}</td>
+                <td class="campo_moneda">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->total_deuda : '0.00' }}</td>
               </tr>
             </tbody>
           </table>
@@ -609,15 +609,15 @@
       <input type="hidden" id="credito_saldodeduda_aval_propio_det" value="{{json_encode($credito_saldodeduda_aval_propio)}}">
       <input type="hidden" id="credito_saldodeduda_aval_aval_det" value="{{json_encode($credito_saldodeduda_aval_aval)}}">
       <div class="row">
-        <div class="col" style="width:120px;">
+        <div class="col">
           <table class="table table-bordered" id="table-garantia-aval-propio">
             <thead>
               <tr>
                 <th colspan="2" style="text-align: center;">PROPIOS</th>
               </tr>
               <tr>
-                <th>CUENTA</th>
-                <th>SALDOS (S/.)</th>
+                <th width="80px">CUENTA</th>
+                <th width="80px">SALDOS (S/.)</th>
               </tr>
             </thead>
             <tbody>
@@ -662,15 +662,15 @@
         </div>
           <input type="hidden" id="total_saldodeuda_aval_propio" value="{{number_format($total_saldo_vigente_propio, 2, '.', '')}}">
           <input type="hidden" id="total_saldodeuda_aval_propio_input" value="{{number_format($total_saldo_vigente_propio_input, 2, '.', '')}}">
-        <div class="col" style="width:200px;">
+        <div class="col">
           <table class="table table-bordered" id="table-garantia-aval-aval">
             <thead>
               <tr>
                 <th colspan="2" style="text-align: center;">AVALADO</th>
               </tr>
               <tr>
-                <th>CUENTA</th>
-                <th>SALDOS (S/.)</th>
+                <th width="80px">CUENTA</th>
+                <th width="80px">SALDOS (S/.)</th>
               </tr>
             </thead>
             <tbody>
@@ -770,20 +770,6 @@
     </span>
     <div class="row">
       <div class="col">
-        {{-- <table class="table" style="width:500px !important;">
-          <tr>
-            <td colspan="2">Total financiado al Deudor y Deudores vinculados (Incluido propuesta) ( S/.)</td>
-            <td class="campo_moneda">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->total_financiado_deudor : '0.00' }}</td>
-          </tr>
-          <tr>
-            <td style="background-color: #e5e5e5 !important;
-                color: #000 !important;">Resultado (%)</td>
-            <td style="background-color: #e5e5e5 !important;
-                color: #000 !important;" class="campo_moneda">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->porcentaje_resultado : '0.00' }}</td>
-            <td style="background-color: #e5e5e5 !important;
-                color: #000 !important;" class="campo_moneda">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->estado_resultado : '0.00' }}</td>
-          </tr>
-        </table> --}}
           <table style="width:450px !important;">
             <tr style="display: none;">
               <td>Capital Asignado</td>
@@ -800,7 +786,8 @@
               <td>Resultado (%)</td>
               <td class="border-td" width="30px">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->porcentaje_resultado : '0.00' }}</td>
               <td width="210px">
-              <td class="border-td">
+              <td class="border-td" style="text-align:center;background-color: #e5e5e5 !important;
+              color: #000 !important;">
                 {{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->estado_resultado : '0.00' }}
               </td>
             </tr>

@@ -226,7 +226,7 @@
             </tr>
             <tr>
               <td>1.4</td>
-              <td>Formato de evaluación de Crédito (Citar número)</td>
+              <td>Formato de evaluación de Crédito (Citar Nro)</td>
               <td></td>
               <td></td>
             </tr>

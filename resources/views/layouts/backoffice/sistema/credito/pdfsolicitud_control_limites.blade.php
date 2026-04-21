@@ -389,11 +389,11 @@
     </span>
     @if($users_prestamo_aval!='')
       <div class="row" container-garantias-aval>
-        <div class="col" style="width:200px;">
+        <div class="col">
           <table>
             <tr>
-              <td>Apellidos y Nombres:</td>
-              <td class="border-td">{{ $credito->nombreavalcredito }}</td>
+              <td width="80px">Apellidos y Nombres:</td>
+              <td class="border-td" width="80px">{{ $credito->nombreavalcredito }}</td>
             </tr>
             @if($users_prestamo_aval->dni_pareja!='' or $users_prestamo_aval->nombrecompleto_pareja!='')
             <tr>
@@ -403,16 +403,16 @@
             @endif
           </table>
         </div>
-        <div class="col" style="width:110px;">
+        <div class="col">
           <table>
             <tr>
               <td>RUC/DNI/CE:</td>
-              <td class="border-td">{{ $credito->documentoaval }}</td>
+              <td class="border-td" width="80px">{{ $credito->documentoaval }}</td>
             </tr>
             @if($users_prestamo_aval->dni_pareja!='' or $users_prestamo_aval->nombrecompleto_pareja!='')
             <tr>
               <td>DNI/CE:</td>
-              <td class="border-td">{{ $users_prestamo_aval->dni_pareja }}</td>
+              <td class="border-td" width="80px">{{ $users_prestamo_aval->dni_pareja }}</td>
             </tr>
             @endif
           </table>

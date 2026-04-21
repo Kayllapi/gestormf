@@ -378,8 +378,8 @@
     <input type="hidden" id="cliente_saldo_vigente_aval_det" value="{{json_encode($credito_garantias_aval)}}">
     <div class="row">
         <div class="col" style="width:110px;">
-            <table class="table" id="table-garantia-cliente-propio">
-              <thead style="border: 1px solid transparent !important;">
+            <table class="table table-bordered">
+              <thead>
                 <tr>
                   <th colspan="2" style="text-align: center;">PROPIOS</th>
                 </tr>
@@ -394,7 +394,6 @@
                     @if($credito_cuantitativa_control_limites)
                     <?php
                       $saldo_vigente = json_decode($credito_cuantitativa_control_limites->credito_saldodeduda_cliente_propio_det);
-                //dd($saldo_vigente);
                     ?>
                     @foreach($saldo_vigente as $value)
                       <tr>
@@ -424,8 +423,8 @@
         </div>
         <input type="hidden" id="total_saldodeuda_cliente_propio" value="{{number_format($total_saldo_vigente_propio, 2, '.', '')}}">
         <div class="col" style="width:200px;">
-            <table class="table" id="table-garantia-cliente-aval">
-              <thead style="border: 1px solid transparent !important;">
+            <table class="table table-bordered">
+              <thead>
                 <tr>
                   <th colspan="2" style="text-align: center;">AVALADO</th>
                 </tr>
@@ -482,110 +481,67 @@
     @if($users_prestamo_aval!='')
       <div class="row" container-garantias-aval>
         <div class="col" style="width:200px;">
-          <table class="table">
+          <table>
             <tr>
               <td>Apellidos y Nombres:</td>
-              <td>{{ $credito->nombreavalcredito }}</td>
+              <td class="border-td">{{ $credito->nombreavalcredito }}</td>
             </tr>
             @if($users_prestamo_aval->dni_pareja!='' or $users_prestamo_aval->nombrecompleto_pareja!='')
             <tr>
               <td>PAREJA:</td>
-              <td>{{ $users_prestamo_aval->nombrecompleto_pareja }}</td>
+              <td class="border-td">{{ $users_prestamo_aval->nombrecompleto_pareja }}</td>
             </tr>
             @endif
           </table>
         </div>
-        <div class="col" style="width:100px;">
-          <table class="table">
+        <div class="col" style="width:110px;">
+          <table>
             <tr>
               <td>RUC/DNI/CE:</td>
-              <td>{{ $credito->documentoaval }}</td>
+              <td class="border-td">{{ $credito->documentoaval }}</td>
             </tr>
             @if($users_prestamo_aval->dni_pareja!='' or $users_prestamo_aval->nombrecompleto_pareja!='')
             <tr>
               <td>DNI/CE:</td>
-              <td>{{ $users_prestamo_aval->dni_pareja }}</td>
+              <td class="border-td">{{ $users_prestamo_aval->dni_pareja }}</td>
             </tr>
             @endif
           </table>
         </div>
-        <div class="col" style="width:419px;">
-          <table class="table" id="tabla-entidadesfinancieras">
+        <div class="col" style="width:400px;">
+          <table class="table table-bordered" id="table-vinculo-deudor">
             <thead>
               <tr>
-                <td colspan="3">N° DE ENTIDADES FINANCIERAS (Se considera deuda interna y Líneas de creditos sin uso)</td>
+                <th colspan="3">N° DE ENTIDADES FINANCIERAS (Se considera deuda interna y Líneas de creditos sin uso)</th>
               </tr>
               <tr>
                 <th>Deudores</th>
                 <th>Como</th>
-                <th width="100px">N°</th>
+                <th>N°</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td rowspan="2">Garante (Aval)/Fiador</td>
                 <td>P.Natural</td>
-                <td>
-                  <input 
-                         type="text" valida_input_vacio 
-                         style="padding: 4px;" 
-                         onkeyup="total_deudas()" 
-                         onkeydown="total_deudas()" 
-                         {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto campo_moneda " 
-                         value="{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->cantidad_garante_natural : '0.00' }}" 
-                         id="cantidad_garante_natural">
-                </td>
+                <td>{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->cantidad_garante_natural : '0.00' }}</td>
               </tr>
               <tr>
                 <td>P.Jurídica</td>
-                <td>
-                  <input 
-                         type="text" valida_input_vacio 
-                         style="padding: 4px;" 
-                         onkeyup="total_deudas()" 
-                         onkeydown="total_deudas()" 
-                         {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto campo_moneda" 
-                         value="{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->cantidad_garante_juridico : '0.00' }}" 
-                         id="cantidad_garante_juridico">
-                </td>
+                <td>{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->cantidad_garante_juridico : '0.00' }}</td>
               </tr>
               <tr>
                 <td rowspan="2">Pareja de Garante (Aval)/ fiador</td>
                 <td>P.Natural</td>
-                <td>
-                  <input 
-                         type="text" valida_input_vacio 
-                         style="padding: 4px;" 
-                         onkeyup="total_deudas()" 
-                         onkeydown="total_deudas()" 
-                         {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto campo_moneda" 
-                         value="{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->cantidad_pareja_natural : '0.00' }}" 
-                         id="cantidad_pareja_natural">
-                </td>
+                <td>{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->cantidad_pareja_natural : '0.00' }}</td>
               </tr>
               <tr>
                 <td>P.Jurídica</td>
-                <td>
-                  <input 
-                         type="text" valida_input_vacio 
-                         style="padding: 4px;" 
-                         onkeyup="total_deudas()" 
-                         onkeydown="total_deudas()"
-                         {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto campo_moneda" 
-                         value="{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->cantidad_pareja_juridico : '0.00' }}" 
-                         id="cantidad_pareja_juridico">
-                </td>
+                <td>{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->cantidad_pareja_juridico : '0.00' }}</td>
               </tr>
               <tr>
-                <td class="color_totales" style="text-align: right;" colspan=2>TOTAL S/.</td>
-                <td class="color_totales">
-                  <input 
-                         type="text" valida_input_vacio
-                         style="padding: 4px;" 
-                         disabled class="form-control campo_moneda" 
-                         value="{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->total_deuda : '0.00' }}" 
-                         id="total_deuda">
-                </td>
+                <td style="text-align: right;" colspan=2>TOTAL S/.</td>
+                <td>{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->total_deuda : '0.00' }}</td>
               </tr>
             </tbody>
           </table>
@@ -654,8 +610,8 @@
       <input type="hidden" id="credito_saldodeduda_aval_aval_det" value="{{json_encode($credito_saldodeduda_aval_aval)}}">
       <div class="row">
         <div class="col" style="width:120px;">
-          <table class="table" id="table-garantia-aval-propio">
-            <thead style="border: 1px solid transparent !important;">
+          <table class="table table-bordered" id="table-garantia-aval-propio">
+            <thead>
               <tr>
                 <th colspan="2" style="text-align: center;">PROPIOS</th>
               </tr>
@@ -707,8 +663,8 @@
           <input type="hidden" id="total_saldodeuda_aval_propio" value="{{number_format($total_saldo_vigente_propio, 2, '.', '')}}">
           <input type="hidden" id="total_saldodeuda_aval_propio_input" value="{{number_format($total_saldo_vigente_propio_input, 2, '.', '')}}">
         <div class="col" style="width:200px;">
-          <table class="table" id="table-garantia-aval-aval">
-            <thead style="border: 1px solid transparent !important;">
+          <table class="table table-bordered" id="table-garantia-aval-aval">
+            <thead>
               <tr>
                 <th colspan="2" style="text-align: center;">AVALADO</th>
               </tr>

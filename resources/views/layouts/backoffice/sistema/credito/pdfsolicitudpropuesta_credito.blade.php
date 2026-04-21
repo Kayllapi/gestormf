@@ -168,7 +168,7 @@
             <td class="border-td">{{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->fecha : date('Y-m-d') }}</td>
           </tr>
           <tr>
-            <td>ASESOR:</td>
+            <td>ASESOR (A):</td>
             <td class="border-td">{{ $credito->usuario_asesor }}</td>
           </tr>
         </table>

@@ -1069,6 +1069,7 @@
                 // Fila 15
                 $limites_financiamiento_vru = $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->porcentaje_resultado : 0;
                 $limites_financiamiento_vru_res = ($limites_financiamiento_vru <= $tope_capital_asignado) ? "Dentro del límite permisible - Proceder propuesta" : "Fuera de límite permisible - Suspender propuesta";
+                $limites_financiamiento_vru_style = ($limites_financiamiento_vru <= $tope_capital_asignado) ? "" : "color:red;";
                 
                 ############## RESULTADO EVALUACION RESUMIDA #############
                 $validadar_resultado = 0;
@@ -1501,7 +1502,7 @@
                   <td>Financiamiento por VRU</td>
                   <td>%</td>
                   <td class="campo_numero campo_moneda">{{ $limites_financiamiento_vru }}</td>
-                  <td><div class="cuadro-input">{{ $limites_financiamiento_vru_res }}</div></td>
+                  <td><div class="cuadro-input" style="{{$limites_financiamiento_vru_style}}">{{ $limites_financiamiento_vru_res }}</div></td>
                   <td colspan=2>{{ $credito_propuesta ? $credito_propuesta->limites_financiamiento_vru_res_coment : '' }}</td>
                   <td></td>
                 </tr>
@@ -1521,14 +1522,16 @@
                         }
                         $entidad_maxima = configuracion($tienda->id,'entidades_maxima')['valor'];
                         $limites_numero_entidades_res = '';
+                        $limites_numero_entidades_style = '';
                         if ($limites_numero_entidades > $entidad_maxima) {
                           $limites_numero_entidades_res = "Se sugiere no proceder o coverturar la propuesta";
+                          $limites_numero_entidades_style = "color:red;";
                         } else if ($limites_numero_entidades <= $entidad_maxima) {
                           $limites_numero_entidades_res = "Proceder con propuesta";
                         }
                     ?>
                     <td class="doble-subrayado campo_numero campo_moneda">{{ $limites_numero_entidades }}</td>
-                    <td class="doble-subrayado">{{ $limites_numero_entidades_res }}</td>
+                    <td class="doble-subrayado" style="{{$limites_numero_entidades_style}}">{{ $limites_numero_entidades_res }}</td>
                     <td class="doble-subrayado"colspan=2>{{ $credito_propuesta ? $credito_propuesta->limites_numero_entidades_res_coment : '' }}</td>
                     <td class="doble-subrayado"></td>
                 </tr>

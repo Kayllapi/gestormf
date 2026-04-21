@@ -118,14 +118,14 @@
         </div>
         <div class="col-sm-12 col-md-6">
           <div class="row">
-            <label class="col-sm-3 col-form-label" style="text-align: right;">DNI/RUC:</label>
+            <label class="col-sm-3 col-form-label" style="text-align: right;">RUC/DNI/CE:</label>
             <div class="col-sm-7">
               <input type="text" step="any" class="form-control" value="{{ $credito->docuementocliente }}" disabled>
             </div>
           </div>
           @if($users_prestamo->dni_pareja!='' or $users_prestamo->nombrecompleto_pareja!='')
           <div class="row">
-            <label class="col-sm-3 col-form-label" style="text-align: right;">DNI:</label>
+            <label class="col-sm-3 col-form-label" style="text-align: right;">DNI/CE:</label>
             <div class="col-sm-7">
               <input type="text" step="any" class="form-control" value="{{ $users_prestamo->dni_pareja }}" disabled>
             </div>
@@ -351,7 +351,7 @@
                 <tr>
                   <th style="width:200px;">A. y N. de Aval(Garante)/Fiador:</th>
                   <td>{{ $credito->nombreavalcredito }}</td>
-                  <th style="width:50px;">DNI:</th>
+                  <th style="width:50px;">DNI/CE:</th>
                   <td style="width:90px;">{{ $credito->documentoaval }}</td>
                 </tr>    
                 @if($users_prestamo_aval!='')
@@ -359,7 +359,7 @@
                       <tr>
                         <th>Pareja Aval(Garante)/Fiador:</th>
                         <td>{{ $users_prestamo_aval->nombrecompleto_pareja }}</td>
-                        <th>DNI:</th>
+                        <th>DNI/CE:</th>
                         <td>{{ $users_prestamo_aval->dni_pareja }}</td>
                       </tr>
                     @endif

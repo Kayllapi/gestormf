@@ -770,7 +770,7 @@
     </span>
     <div class="row">
       <div class="col">
-        <table class="table" style="width:500px !important;">
+        {{-- <table class="table" style="width:500px !important;">
           <tr>
             <td colspan="2">Total financiado al Deudor y Deudores vinculados (Incluido propuesta) ( S/.)</td>
             <td class="campo_moneda">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->total_financiado_deudor : '0.00' }}</td>
@@ -783,7 +783,53 @@
             <td style="background-color: #e5e5e5 !important;
                 color: #000 !important;" class="campo_moneda">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->estado_resultado : '0.00' }}</td>
           </tr>
-        </table>
+        </table> --}}
+          <table style="width:400px !important;">
+            <tr style="display: none;">
+              <td>Capital Asignado</td>
+              <td width="30px" class="border-td">{{ $tienda->capital_agencia }}</td>
+              <td width="130px" class="border-td">{{ configuracion($tienda->id,'capital_asignado')['valor'] }}</td>
+            </tr>
+            <tr>
+              <td colspan="2">Total financiado al Deudor y Deudores vinculados (Incluido propuesta) ( S/.)</td>
+              <td class="border-td" width="130px">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->total_financiado_deudor : '0.00' }}</td>
+            </tr>
+            <tr>
+              <td>Resultado (%)</td>
+              <td class="border-td" width="30px">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->porcentaje_resultado : '0.00' }}</td>
+              <td class="border-td">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->estado_resultado : '0.00' }}</td>
+            </tr>
+          </table>
+          <script>
+            determina_resultado();
+            function determina_resultado(){
+              let credito_solicitado = parseFloat("{{$credito->monto_solicitado}}");
+              let total_saldodeuda_cliente_propio = parseFloat($('#total_saldodeuda_cliente_propio').val());
+              let total_saldodeuda_cliente_aval = parseFloat($('#total_saldodeuda_cliente_aval').val());
+              let total_saldodeuda_aval_propio_input = parseFloat($('#total_saldodeuda_aval_propio_input').val());
+              let total_vinculo_deudor = parseFloat($('#total_vinculo_deudor').val());
+              let total_financiado_deudor = ( credito_solicitado + total_saldodeuda_cliente_propio + total_saldodeuda_cliente_aval + total_saldodeuda_aval_propio_input + total_vinculo_deudor );
+              
+              $('#total_financiado_deudor').val(total_financiado_deudor.toFixed(2))
+              
+              let reporte_institucional = parseFloat($('#reporte_institucional').val());
+              let porcentaje_resultado = (total_financiado_deudor/reporte_institucional) * 100;
+              $('#porcentaje_resultado').val(porcentaje_resultado.toFixed(2))
+              
+              let capital_asignado = parseFloat($('#capital_asignado').val());
+              $('#estado_resultado ').val('Suspender Propuesta');
+              $('#estado_resultado ').removeClass('bg-success');
+              $('#estado_resultado ').addClass('bg-danger');
+              
+              if(porcentaje_resultado <= capital_asignado ){
+                $('#estado_resultado ').val('Continuar Propuesta');
+                $('#estado_resultado ').removeClass('bg-danger');
+                $('#estado_resultado ').addClass('bg-success');
+              }else{
+              }
+              
+            }
+          </script>
       </div>
     </div>
     

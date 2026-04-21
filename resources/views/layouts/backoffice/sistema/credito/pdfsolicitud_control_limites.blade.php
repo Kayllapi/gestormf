@@ -377,7 +377,7 @@
     <input type="hidden" id="cliente_saldo_vigente_cliente_det" value="{{json_encode($credito_garantias_cliente)}}">
     <input type="hidden" id="cliente_saldo_vigente_aval_det" value="{{json_encode($credito_garantias_aval)}}">
     <div class="row">
-        <div class="col" style="width:100px;">
+        <div class="col" style="width:110px;">
             <table class="table" id="table-garantia-cliente-propio">
               <thead style="border: 1px solid transparent !important;">
                 <tr>
@@ -423,7 +423,7 @@
             </table>
         </div>
         <input type="hidden" id="total_saldodeuda_cliente_propio" value="{{number_format($total_saldo_vigente_propio, 2, '.', '')}}">
-        <div class="col" style="width:360px;">
+        <div class="col" style="width:200px;">
             <table class="table" id="table-garantia-cliente-aval">
               <thead style="border: 1px solid transparent !important;">
                 <tr>
@@ -653,8 +653,8 @@
       <input type="hidden" id="credito_saldodeduda_aval_propio_det" value="{{json_encode($credito_saldodeduda_aval_propio)}}">
       <input type="hidden" id="credito_saldodeduda_aval_aval_det" value="{{json_encode($credito_saldodeduda_aval_aval)}}">
       <div class="row">
-        <div class="col" style="width:100px;">
-          <table class="table table-bordered" id="table-garantia-aval-propio">
+        <div class="col" style="width:120px;">
+          <table class="table" id="table-garantia-aval-propio">
             <thead style="border: 1px solid transparent !important;">
               <tr>
                 <th colspan="2" style="text-align: center;">PROPIOS</th>
@@ -706,8 +706,8 @@
         </div>
           <input type="hidden" id="total_saldodeuda_aval_propio" value="{{number_format($total_saldo_vigente_propio, 2, '.', '')}}">
           <input type="hidden" id="total_saldodeuda_aval_propio_input" value="{{number_format($total_saldo_vigente_propio_input, 2, '.', '')}}">
-        <div class="col" style="width:300px;">
-          <table class="table table-bordered" id="table-garantia-aval-aval">
+        <div class="col" style="width:200px;">
+          <table class="table" id="table-garantia-aval-aval">
             <thead style="border: 1px solid transparent !important;">
               <tr>
                 <th colspan="2" style="text-align: center;">AVALADO</th>

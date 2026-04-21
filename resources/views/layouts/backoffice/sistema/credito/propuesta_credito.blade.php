@@ -1502,7 +1502,7 @@
                   <td>Financiamiento por VRU</td>
                   <td>%</td>
                   <td class="campo_numero campo_moneda">{{ $limites_financiamiento_vru }}</td>
-                  <td><div class="cuadro-input" style="{{$limites_financiamiento_vru_style}}">{{ $limites_financiamiento_vru_res }}</div></td>
+                  <td style="{{$limites_financiamiento_vru_style}}">{{ $limites_financiamiento_vru_res }}</td>
                   <td colspan=2>{{ $credito_propuesta ? $credito_propuesta->limites_financiamiento_vru_res_coment : '' }}</td>
                   <td></td>
                 </tr>

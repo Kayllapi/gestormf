@@ -1406,7 +1406,11 @@
               <tr>
                 <td class="doble-subrayado">Relación cuota/excedente</td>
                 <td class="doble-subrayado">%</td>
-                <td><input type="text" class="form-control doble-subrayado campo_moneda" disabled id="res_solvencia_relacion_cuota" value="{{ $res_solvencia_relacion_cuota }}"></td>
+                <td>
+                  <input type="text" class="form-control doble-subrayado campo_moneda" disabled id="res_solvencia_relacion_cuota"
+                    value="{{ $credito_formato_evaluacion ? $credito_formato_evaluacion->resultado_cuota_excedente : '0.00' }}">
+                    {{-- {{ $res_solvencia_relacion_cuota }} --}}
+                </td>
                 <td><div class="cuadro-input doble-subrayado" style="{{$res_solvencia_relacion_cuota_style}}">{{ $res_solvencia_relacion_cuota_res }}</div></td>
                 <td colspan=2><input type="text" class="form-control color_cajatexto doble-subrayado" {{ $view_detalle=='false' ? 'disabled' : '' }}  id="res_solvencia_relacion_cuota_coment" value="{{ $credito_propuesta ? $credito_propuesta->res_solvencia_relacion_cuota_coment : '' }}"></td>
                 <td><div class="cuadro-input doble-subrayado">Se exije < 100% conforme política</div></td>

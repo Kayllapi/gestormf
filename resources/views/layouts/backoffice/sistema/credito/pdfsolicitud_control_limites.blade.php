@@ -528,7 +528,7 @@
               </tr>
               <tr>
                 <td>P.Jurídica</td>
-                <td>{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->cantidad_garante_juridico : '0.00' }}</td>
+                <td class="campo_moneda">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->cantidad_garante_juridico : '0.00' }}</td>
               </tr>
               <tr>
                 <td rowspan="2">Pareja de Garante (Aval)/ fiador</td>
@@ -785,10 +785,9 @@
             <tr>
               <td>Resultado (%)</td>
               <td class="border-td" width="30px">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->porcentaje_resultado : '0.00' }}</td>
-              <td width="210px">
-              <td class="border-td" style="text-align:center;background-color: #e5e5e5 !important;
-              color: #000 !important;">
-                {{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->estado_resultado : '0.00' }}
+              <td width="211px">
+              <td class="border-td" width="130px" style="text-align:center;background-color: #e5e5e5 !important; color: #000 !important;">
+                <b>{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->estado_resultado : '0.00' }}</b>
               </td>
             </tr>
           </table>

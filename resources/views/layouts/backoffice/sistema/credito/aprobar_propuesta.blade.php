@@ -77,8 +77,6 @@
                 $relacion_couta_ingreso = configuracion($tienda->id,'relacion_couta_ingreso')['valor'];
                 $relacion_cuota_venta = configuracion($tienda->id,'relacion_cuota_venta')['valor'];
                 
-              
-  
                 // $res_solvencia_relacion_cuota = $credito_evaluacion_resumida ? $credito_evaluacion_resumida->indicador_solvencia_cuotas : 0;
                 $res_solvencia_relacion_cuota = $credito_formato_evaluacion ? $credito_formato_evaluacion->resultado_cuota_excedente : 0;
                 if ($res_solvencia_relacion_cuota > $rango_tope) {

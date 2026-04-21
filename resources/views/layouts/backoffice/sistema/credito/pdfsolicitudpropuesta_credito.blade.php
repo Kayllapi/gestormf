@@ -270,7 +270,7 @@
         <table width="80%">
           <tbody>
             <tr>
-              <td>Monto a Financiar:</td>
+              <td>Monto a Financiar (S/.):</td>
               <td class="border-td campo_numero">{{ $credito->monto_solicitado }}</td>
               <td>Días de Gracia:</td>
               <td class="border-td campo_numero">{{ $credito->dia_gracia }}</td>

@@ -228,7 +228,7 @@
           <table class="table">
             <tbody>
               <tr>
-                <td style="text-align: right;">Monto a Financiar:</td>
+                <td style="text-align: right;">Monto a Financiar (S/.):</td>
                 <td><input type="text" class="form-control campo_moneda" disabled id="monto_financiar" value="{{ $credito->monto_solicitado }}"></td>
                 <td style="text-align: right;">Días de Gracia:</td>
                 <td><input type="text" class="form-control campo_moneda" disabled id="dias_de_gracia" value="{{ $credito->dia_gracia }}"></td>

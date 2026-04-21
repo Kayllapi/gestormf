@@ -290,7 +290,10 @@
                 </tr>
               </thead>
               <tbody>
-                  <?php $total_saldo_vigente_propio = 0; ?>
+                  <?php
+                    $total_saldo_vigente_propio = 0;
+                    $total_financiado_deudor = 0;
+                  ?>
                   @if($view_detalle=='false')
                       @if($credito_cuantitativa_control_limites)
                       <?php
@@ -323,6 +326,9 @@
             </table>
         </div>
         <input type="hidden" id="total_saldodeuda_cliente_propio" value="{{number_format($total_saldo_vigente_propio, 2, '.', '')}}">
+        @php
+            $total_financiado_deudor = $total_financiado_deudor + $total_saldo_vigente_propio;
+        @endphp
         <div class="col">
             <table class="table table-bordered">
               <thead>
@@ -373,6 +379,9 @@
             </table>
         </div>
         <input type="hidden" id="total_saldodeuda_cliente_aval" value="{{number_format($total_saldo_vigente_aval, 2, '.', '')}}">
+        @php
+            $total_financiado_deudor = $total_financiado_deudor + $total_saldo_vigente_aval;
+        @endphp
         <input type="hidden" id="total_garantia_cliente" value="{{number_format($total_saldo_vigente_propio+$total_saldo_vigente_aval, 2, '.', '')}}">
     </div>
     <span class="subtitle">
@@ -561,6 +570,9 @@
         </div>
           <input type="hidden" id="total_saldodeuda_aval_propio" value="{{number_format($total_saldo_vigente_propio, 2, '.', '')}}">
           <input type="hidden" id="total_saldodeuda_aval_propio_input" value="{{number_format($total_saldo_vigente_propio_input, 2, '.', '')}}">
+          @php
+            $total_financiado_deudor = $total_financiado_deudor + $total_saldo_vigente_propio_input;
+        @endphp
         <div class="col">
           <table class="table table-bordered" id="table-garantia-aval-aval">
             <thead>
@@ -656,6 +668,9 @@
               <td class="color_totales campo_moneda">
                 {{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->total_vinculo_deudor : '0.00' }}
                 <input type="hidden" value="{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->total_vinculo_deudor : '0.00' }}" id="total_vinculo_deudor">
+                @php
+                    $total_financiado_deudor = $total_financiado_deudor + ($credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->total_vinculo_deudor : 0);
+                @endphp
               </td>
             </tr>
           </tfoot>
@@ -667,6 +682,10 @@
     </span>
     <div class="row">
       <div class="col">
+          @php
+              $total_financiado_deudor = $total_financiado_deudor + $credito->monto_solicitado;
+              $total_financiado_deudor = $total_financiado_deudor + ($credito_formato_evaluacion ? $credito_formato_evaluacion->saldo_capita_pareja : 0);
+          @endphp
           <table style="width:450px !important;">
             <tr style="display: none;">
               <td>Capital Asignado</td>
@@ -675,13 +694,17 @@
             </tr>
             <tr>
               <td colspan="2">Total financiado al Deudor y Deudores vinculados (Incluido propuesta) ( S/.)</td>
-              <td class="border-td" width="130px">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->total_financiado_deudor : '0.00' }}</td>
+              <td class="border-td" width="130px" >
+                {{-- {{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->total_financiado_deudor : '0.00' }} --}}
+                {{ $total_financiado_deudor }}
+                <input type="hidden" id="total_financiado_deudor" value="{{ $total_financiado_deudor }}">
+              </td>
             </tr>
           </table>
           <table>
             <tr>
               <td>Resultado (%)</td>
-              <td class="border-td" width="30px" id="total_financiado_deudor">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->porcentaje_resultado : '0.00' }}</td>
+              <td class="border-td" width="30px">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->porcentaje_resultado : '0.00' }}</td>
               <td width="211px">
               <td class="border-td" width="130px" style="text-align:center;background-color: #e5e5e5 !important; color: #000 !important;">
                 <b>{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->estado_resultado : '0.00' }}</b>
@@ -697,9 +720,10 @@
               let total_saldodeuda_aval_propio_input = parseFloat($('#total_saldodeuda_aval_propio_input').val());
               let total_vinculo_deudor = parseFloat($('#total_vinculo_deudor').val());
               let entidad_financiera_pareja = parseFloat("{{ $credito_formato_evaluacion ? $credito_formato_evaluacion->saldo_capita_pareja : '0.00' }}");
-              let total_financiado_deudor = ( credito_solicitado + total_saldodeuda_cliente_propio + total_saldodeuda_cliente_aval + total_saldodeuda_aval_propio_input + total_vinculo_deudor + entidad_financiera_pareja );
-              
-              $('#total_financiado_deudor').html(total_financiado_deudor.toFixed(2))
+              // let total_financiado_deudor = ( credito_solicitado + total_saldodeuda_cliente_propio + total_saldodeuda_cliente_aval + total_saldodeuda_aval_propio_input + total_vinculo_deudor + entidad_financiera_pareja );
+              // $('#total_financiado_deudor').html(total_financiado_deudor.toFixed(2))
+
+              let total_financiado_deudor = parseFloat($('#total_financiado_deudor').val());
               
               let reporte_institucional = parseFloat($('#reporte_institucional').val());
               let porcentaje_resultado = (total_financiado_deudor/reporte_institucional) * 100;

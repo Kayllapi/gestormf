@@ -828,7 +828,9 @@
               ############## RESULTADO EVALUACION RESUMIDA #############
               // SOLVENCIA 
               // Fila 01
-              $res_solvencia_relacion_cuota = $credito_evaluacion_resumida ? $credito_evaluacion_resumida->indicador_solvencia_cuotas : 0;
+              // $res_solvencia_relacion_cuota = $credito_evaluacion_resumida ? $credito_evaluacion_resumida->indicador_solvencia_cuotas : 0;
+              $res_solvencia_relacion_cuota = $credito_formato_evaluacion ? $credito_formato_evaluacion->resultado_cuota_excedente : 0;
+              
               if ($res_solvencia_relacion_cuota > 0 && $res_solvencia_relacion_cuota <= $rango_tope) {
                   $res_solvencia_relacion_cuota_res = "No evidencia Sobreendeudamiento EXISTE COBERTURA";
               } elseif ($res_solvencia_relacion_cuota > $rango_tope) {
@@ -1124,7 +1126,7 @@
             <tr>
               <td class="doble-subrayado">Relación cuota/excedente</td>
               <td class="doble-subrayado">%</td>
-              <td class="doble-subrayado campo_numero">{{ $credito_formato_evaluacion ? $credito_formato_evaluacion->resultado_cuota_excedente : 0 }}</td>
+              <td class="doble-subrayado campo_numero">{{ $res_solvencia_relacion_cuota }}</td>
               <td class="doble-subrayado">{{ $res_solvencia_relacion_cuota_res }}</td>
               <td class="doble-subrayado" colspan=2>{{ $credito_propuesta ? $credito_propuesta->res_solvencia_relacion_cuota_coment : '' }}</td>
               <td class="doble-subrayado">Se exije &lt; 100% conforme política</td>

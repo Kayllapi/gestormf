@@ -784,7 +784,7 @@
                 color: #000 !important;" class="campo_moneda">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->estado_resultado : '0.00' }}</td>
           </tr>
         </table> --}}
-          <table style="width:500px !important;">
+          <table style="width:450px !important;">
             <tr style="display: none;">
               <td>Capital Asignado</td>
               <td width="30px" class="border-td">{{ $tienda->capital_agencia }}</td>
@@ -794,10 +794,15 @@
               <td colspan="2">Total financiado al Deudor y Deudores vinculados (Incluido propuesta) ( S/.)</td>
               <td class="border-td" width="130px">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->total_financiado_deudor : '0.00' }}</td>
             </tr>
+          </table>
+          <table>
             <tr>
               <td>Resultado (%)</td>
               <td class="border-td" width="30px">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->porcentaje_resultado : '0.00' }}</td>
-              <td class="border-td">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->estado_resultado : '0.00' }}</td>
+              <td width="210px">
+              <td class="border-td">
+                {{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->estado_resultado : '0.00' }}
+              </td>
             </tr>
           </table>
           <script>
@@ -842,7 +847,7 @@
           <textarea style="border:solid 1px #000000;" id="fortalezas_negocio" class="form-control">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->comentarios : '' }}</textarea>
         </div>
       </div>
-      <div class="col" style="margin-left:215px;margin-top:60px;">
+      <div class="col" style="margin-left:215px;margin-top:30px;">
         <div style="width:300px;height:1px;border-bottom:1px solid #000;"></div>
         <p align="center">Asesor(a) de Créditos: {{ Auth::user()->codigo }} <br>Firma y Sello</p>		
       </div>

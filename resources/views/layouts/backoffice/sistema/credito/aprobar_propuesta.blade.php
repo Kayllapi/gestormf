@@ -72,8 +72,9 @@
           $estado_imprimir = 0;
           $validadar_resultado = 0;
           $validar_evaluacion = 0;
+          $rango_tope = configuracion($tienda->id,'rango_tope')['valor'];
+
           if($users_prestamo->idfuenteingreso == 1){
-                $rango_tope = configuracion($tienda->id,'rango_tope')['valor'];
                 $relacion_couta_ingreso = configuracion($tienda->id,'relacion_couta_ingreso')['valor'];
                 $relacion_cuota_venta = configuracion($tienda->id,'relacion_cuota_venta')['valor'];
                 
@@ -142,12 +143,26 @@
       <div class="row mt-1">
         <div class="col" style="flex: 0 0 0%;">
           @if($credito->idevaluacion==1)
-              @if($credito_evaluacion_resumida && $credito->idforma_credito!=1)
+              @php
+                  $res_solvencia_relacion_cuota = $credito_formato_evaluacion ? $credito_formato_evaluacion->resultado_cuota_excedente : 0;
+              @endphp
+              @if ($res_solvencia_relacion_cuota > 0 && $res_solvencia_relacion_cuota <= $rango_tope)
+                  <button type="submit" class="btn btn-success">
+                <i class="fa-solid fa-check"></i> SI, PASAR A PROCESO</button>
+              @elseif ($res_solvencia_relacion_cuota > $rango_tope)
+                  @php
+                      $validad_eva_resumida = 1;
+                  @endphp
+              @elseif ($res_solvencia_relacion_cuota <= 0)
+                  @php
+                      $validad_eva_resumida = 1;
+                  @endphp
+              @elseif($credito_evaluacion_resumida && $credito->idforma_credito!=1)
+                
                   @if($credito_evaluacion_resumida->estado_credito_general=='CRÉDITO VIABLE')
                   
                   <button type="submit" class="btn btn-success">
                     <i class="fa-solid fa-check"></i> SI, PASAR A PROCESO</button>
-                
                   @else
                   <?php
                   $validad_eva_resumida = 1;

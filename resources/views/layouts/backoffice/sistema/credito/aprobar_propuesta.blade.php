@@ -79,7 +79,8 @@
                 
               
   
-                $res_solvencia_relacion_cuota = $credito_evaluacion_resumida ? $credito_evaluacion_resumida->indicador_solvencia_cuotas : 0;
+                // $res_solvencia_relacion_cuota = $credito_evaluacion_resumida ? $credito_evaluacion_resumida->indicador_solvencia_cuotas : 0;
+                $res_solvencia_relacion_cuota = $credito_formato_evaluacion ? $credito_formato_evaluacion->resultado_cuota_excedente : 0;
                 if ($res_solvencia_relacion_cuota > $rango_tope) {
                     $validadar_resultado++;
                 } elseif ($res_solvencia_relacion_cuota <= 0) {

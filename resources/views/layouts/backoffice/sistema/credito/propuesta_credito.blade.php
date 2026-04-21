@@ -179,12 +179,12 @@
           <table class="table table-bordered">
             <thead>
               <tr>
-                <th>Vinculación con:</th>
-                <th>{{ $tienda->nombre }} (Saldo Financiado)</th>
+                {{-- <th>Vinculación con:</th> --}}
+                <th>Total financiado al Deudor y Deudores vinculados en: {{ $tienda->nombre }} (Saldo Financiado)</th>
               </tr>
             </thead>
             <tbody>
-              @if($credito->idevaluacion == 2)
+              {{-- @if($credito->idevaluacion == 2)
               <?php
               $saldocapital_regulada = 0;
               foreach($entidad_regulada as $value){
@@ -212,7 +212,10 @@
                 <td><input type="text" class="form-control" disabled value="{{ $value->saldo }}" style="text-align: right;"></td>
               </tr>
               @endif
-              @endforeach
+              @endforeach --}}
+              <tr>
+                <td><input type="text" class="form-control" disabled value="{{ $credito_cuantitativa_control_limites->total_financiado_deudor }}" style="text-align: right;"></td>
+              </tr>
             </tbody>
           </table>
         </div>

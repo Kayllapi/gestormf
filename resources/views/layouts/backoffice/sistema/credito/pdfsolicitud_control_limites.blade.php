@@ -685,6 +685,9 @@
           @php
               $total_financiado_deudor = $total_financiado_deudor + $credito->monto_solicitado;
               $total_financiado_deudor = $total_financiado_deudor + ($credito_formato_evaluacion ? $credito_formato_evaluacion->saldo_capita_pareja : 0);
+
+              $reporte_institucional = $tienda->capital_agencia;
+              $porcentaje_resultado = round(($total_financiado_deudor/$reporte_institucional)*100, 2);
           @endphp
           <table style="width:450px !important;">
             <tr style="display: none;">
@@ -704,7 +707,12 @@
           <table>
             <tr>
               <td>Resultado (%)</td>
-              <td class="border-td" width="30px">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->porcentaje_resultado : '0.00' }}</td>
+              <td class="border-td" width="30px">
+                {{-- <input type="text" class="form-control campo_moneda" style="width:60px;"
+                      value="{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->porcentaje_resultado : '0.00' }}" disabled id="porcentaje_resultado"> --}}
+                <input type="hidden" id="reporte_institucional" value="{{ $reporte_institucional }}">
+                {{ $porcentaje_resultado }}
+              </td>
               <td width="211px">
               <td class="border-td" width="130px" style="text-align:center;background-color: #e5e5e5 !important; color: #000 !important;">
                 <b>{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->estado_resultado : '0.00' }}</b>

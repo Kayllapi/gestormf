@@ -1069,7 +1069,7 @@
                 // Fila 15
                 $limites_financiamiento_vru = $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->porcentaje_resultado : 0;
                 $limites_financiamiento_vru_res = ($limites_financiamiento_vru <= $tope_capital_asignado) ? "Dentro del límite permisible - Proceder propuesta" : "Fuera de límite permisible - Suspender propuesta";
-                $limites_financiamiento_vru_style = ($limites_financiamiento_vru <= $tope_capital_asignado) ? "" : "color:red;";
+                $limites_financiamiento_vru_style = ($limites_financiamiento_vru <= $tope_capital_asignado) ? "" : "color:#e80505;";
                 
                 ############## RESULTADO EVALUACION RESUMIDA #############
                 $validadar_resultado = 0;
@@ -1083,11 +1083,11 @@
                     $res_solvencia_relacion_cuota_res = "No evidencia Sobreendeudamiento EXISTE COBERTURA";
                 } elseif ($res_solvencia_relacion_cuota > $rango_tope) {
                     $res_solvencia_relacion_cuota_res = "Evidencia Sobreendeudamiento NO EXISTE COBERTURA";
-                    $res_solvencia_relacion_cuota_style = 'color:red;';
+                    $res_solvencia_relacion_cuota_style = 'color:#e80505;';
                     $validadar_resultado++;
                 } elseif ($res_solvencia_relacion_cuota <= 0) {
                     $res_solvencia_relacion_cuota_res = "Sobreendeudamiento NO TIENE EXCEDENTE";
-                    $res_solvencia_relacion_cuota_style = 'color:red;';
+                    $res_solvencia_relacion_cuota_style = 'color:#e80505;';
                     $validadar_resultado++;
                 } else {
                     $res_solvencia_relacion_cuota_res = 0;

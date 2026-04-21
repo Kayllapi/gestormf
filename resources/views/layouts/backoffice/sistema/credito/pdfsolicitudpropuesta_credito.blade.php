@@ -242,12 +242,12 @@
           <table class="table" style="width:100%;">
             <thead>
               <tr>
-                <th>Vinculación con:</th>
-                <th>{{ $tienda->nombre }} (Saldo Financiado)</th>
+                {{-- <th>Vinculación con:</th> --}}
+                <th>Total financiado al Deudor y Deudores vinculados en: {{ $tienda->nombre }} (Saldo Financiado)</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
+              {{-- <tr>
                 <td>{{ $valor_serif }}</td>
                 <td style="width:80px;" class="campo_numero">{{ $saldo_financiado }}</td>
               </tr>
@@ -256,7 +256,10 @@
                 <td>{{ $value->cliente }}</td>
                 <td style="width:80px;" class="campo_numero">{{ $value->saldo }}</td>
               </tr>
-              @endforeach
+              @endforeach --}}
+              <tr>
+                <td style="text-align: right">S/. {{ $credito_cuantitativa_control_limites->total_financiado_deudor }}</td>
+              </tr>
             </tbody>
           </table>
       </div>

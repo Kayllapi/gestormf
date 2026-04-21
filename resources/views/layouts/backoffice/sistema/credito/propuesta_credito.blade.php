@@ -214,7 +214,7 @@
               @endif
               @endforeach --}}
               <tr>
-                <td><input type="text" class="form-control" disabled value="{{ $credito_cuantitativa_control_limites->total_financiado_deudor }}" style="text-align: right;"></td>
+                <td><input type="text" class="form-control" disabled value="S/. {{ $credito_cuantitativa_control_limites->total_financiado_deudor }}" style="text-align: right;"></td>
               </tr>
             </tbody>
           </table>

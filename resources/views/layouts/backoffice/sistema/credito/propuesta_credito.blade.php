@@ -1525,7 +1525,7 @@
                         $limites_numero_entidades_style = '';
                         if ($limites_numero_entidades > $entidad_maxima) {
                           $limites_numero_entidades_res = "Se sugiere no proceder o coverturar la propuesta";
-                          $limites_numero_entidades_style = "color:red;";
+                          $limites_numero_entidades_style = "color:#e80505;";
                         } else if ($limites_numero_entidades <= $entidad_maxima) {
                           $limites_numero_entidades_res = "Proceder con propuesta";
                         }

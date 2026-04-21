@@ -3232,6 +3232,7 @@ class CreditoController extends Controller
                                           ->first();
         
         $credito_formato_evaluacion = DB::table('credito_formato_evaluacion')->where('credito_formato_evaluacion.idcredito',$id)->first();
+        // dd($users_prestamo, $credito);
         
         return view(sistema_view().'/credito/aprobar_propuesta',[
           'users_prestamo'    => $users_prestamo,

@@ -706,14 +706,14 @@
           <table class="table table-bordered" id="table-propuesta">
             <thead style="border: 1px solid transparent;">
               <tr>
-                <th colspan=10 class="text-center">PROPUESTA</th>
+                <th colspan=10 class="text-center" style="background-color: #a6a9ab !important;">PROPUESTA</th>
               </tr>
               <tr>
-                <th rowspan=2>DESTINO DE CRÉDITO</th>
+                <th rowspan=2>Destino de Crédito</th>
                 <th rowspan=2>Producto</th>
                 <th colspan=2>Plazo</th>
-                <th rowspan=2>FORMA DE PAGO</th>
-                <th rowspan=2>Monto Préstamo</th>
+                <th rowspan=2>Forma de Pago</th>
+                <th rowspan=2>Monto Préstamo (S/.)</th>
                 <th rowspan=2>TEM</th>
                 
                 <th rowspan=2>Servicios/Otros (S/.)</th>

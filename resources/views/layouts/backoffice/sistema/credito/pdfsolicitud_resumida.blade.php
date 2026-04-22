@@ -313,7 +313,7 @@
               <td class="campo_moneda">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->cantidad_garante_juridico : '0.00' }}</td>
             </tr>
             <tr>
-              <td style="" rowspan="2">Pareja de Garante/ fiador</td>
+              <td style="" rowspan="2">Pareja de Garante (Aval)/Fiador</td>
               <td style="">P.Natural</td>
               <td class="campo_moneda">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->cantidad_pareja_natural : '0.00' }}</td>
             </tr>

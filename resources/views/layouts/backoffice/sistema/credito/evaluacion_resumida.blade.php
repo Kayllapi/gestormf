@@ -25,7 +25,7 @@
     
   
     <div class="modal-header" style="border-bottom: 0;">
-        <h5 class="modal-title">EVALUACION RESUMIDA </h5>
+        <h5 class="modal-title">EVALUACIÓN RESUMIDA </h5>
         <button type="button" class="btn-close text-white" id="modal-close-garantia-cliente" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <div class="mb-1 mt-2">
@@ -168,7 +168,7 @@
         </div>
       </div>
       <div class="mb-1 mt-2">
-        <span class="badge d-block">II. EVALUACION CUALITATIVA</span>
+        <span class="badge d-block">II. EVALUACIÓN CUALITATIVA</span>
       </div>
       
       <div class="mb-1 mt-2">
@@ -288,7 +288,7 @@
                          id="cantidad_garante_juridico" disabled></td>
               </tr>
               <tr>
-                <td style="background-color: #efefef !important;" rowspan="2">Pareja de Garante/ fiador</td>
+                <td style="background-color: #efefef !important;" rowspan="2">Pareja de Garante (Aval)/Fiador</td>
                 <td style="background-color: #efefef !important;">P.Natural</td>
                 <td style="background-color: #efefef !important;">
                   <input type="text" valida_input_vacio style="padding: 4px;" 

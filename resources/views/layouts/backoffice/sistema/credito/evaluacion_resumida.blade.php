@@ -704,7 +704,7 @@
       <div class="row mt-2">
         <div class="col-sm-12">
           <table class="table table-bordered" id="table-propuesta">
-            <thead>
+            <thead style="border: 1px solid transparent;">
               <tr>
                 <th colspan=10 class="text-center">PROPUESTA</th>
               </tr>
@@ -1078,7 +1078,7 @@
         @endif
         <div class="col" style="flex: 0 0 0%;">
           <button type="button" 
-                  class="btn btn-dark" 
+                  class="btn btn-info" 
                   onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=solicitud_resumida')}}', size: 'modal-fullscreen' })"
                   id="boton_imprimir">
             <i class="fa-solid fa-file-pdf"></i> IMPRIMIR</button>

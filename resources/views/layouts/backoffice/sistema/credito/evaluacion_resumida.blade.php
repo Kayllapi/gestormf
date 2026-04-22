@@ -723,7 +723,7 @@
                 <th rowspan=2>Monto Préstamo (S/.)</th>
                 <th rowspan=2>TEM</th>
                 
-                <th rowspan=2>Servicios/Otros (S/.)</th>
+                <th rowspan=2>Servicios/Recaudo (S/.)</th>
                 <th rowspan=2>Cargos (S/.)</th>
                 <th rowspan=2 >Cuota de Pago <span id="nombre_frecuencia_pago">Diario</span> (S/.)</th>
               </tr>

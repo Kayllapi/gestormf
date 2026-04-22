@@ -705,7 +705,7 @@
         
         <table>
             <tr>
-              <td colspan="2"> (1): Indicador de Solvencia</td>
+              <td colspan="2"> (1): Indicador de Capacidad de Pago</td>
               <td class="border-td">{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->estado_indicador_solvencia : '' }}</td>
             </tr>
             <tr>
@@ -742,7 +742,7 @@
         <table>
           <thead>
             <tr>
-              <th colspan=2 style="background-color: #efefef !important;color: #000 !important;border:solid 1px #000000;">INDICADOR DE SOLVENCIA (1)</th>
+              <th colspan=2 style="background-color: #efefef !important;color: #000 !important;border:solid 1px #000000;">INDICADOR DE CAPACIDAD DE PAGO (1)</th>
             </tr>
           </thead>
           <tbody>

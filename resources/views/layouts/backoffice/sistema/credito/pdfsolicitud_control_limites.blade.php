@@ -642,7 +642,7 @@
         <table class="table table-bordered" id="table-vinculo-deudor">
           <thead>
             <tr>
-              <th rowspan=3>DNI/CE CLIENTE</th>
+              <th rowspan=3>RUC/DNI/CE CLIENTE</th>
               <th rowspan=3>APELLIDOS Y NOMBRES</th>
               <th colspan=5>FORMA DE VINCULACIÓN</th>
               <th rowspan=3>{{ $tienda->nombre }} </th>

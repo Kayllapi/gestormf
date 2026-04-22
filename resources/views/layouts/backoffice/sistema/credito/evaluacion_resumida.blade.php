@@ -787,7 +787,7 @@
         <div class="col-sm-12 col-md-5">
           <table class="table">
             <tr>
-              <td colspan="2"> (1): Indicador de Solvencia</td>
+              <td colspan="2"> (1): Indicador de Capacidad de Pago</td>
               <td><input type="text" class="form-control" disabled id="estado_indicador_solvencia" value="{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->estado_indicador_solvencia : '' }}"></td>
             </tr>
             <tr>
@@ -821,7 +821,7 @@
           <table class="table table-bordered">
             <thead>
               <tr>
-                <th colspan=2>INDICADOR DE SOLVENCIA (1)</th>
+                <th colspan=2>INDICADOR DE CAPACIDAD DE PAGO (1)</th>
               </tr>
             </thead>
             <tbody>

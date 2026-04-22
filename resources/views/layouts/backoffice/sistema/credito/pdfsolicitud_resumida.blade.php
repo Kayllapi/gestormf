@@ -365,7 +365,7 @@
     </div>
     
     <span class="badge subtitle">2.3 REFERENCIAS</span>
-    <div class="row">
+    <div class="row" >
       <div class="col">
         <table class="table">
           <thead>
@@ -378,18 +378,28 @@
             </tr>
           </thead>
           <tbody>
-            @foreach($referencia_cliente as $key => $value)
-              @php
-                $fuente = DB::table('f_tiporeferencia')->whereId($value->fuente)->first();
-              @endphp
+            @if($referencia_cliente)
+              @foreach($referencia_cliente as $key => $value)
+                @php
+                  $fuente = DB::table('f_tiporeferencia')->whereId($value->fuente)->first();
+                @endphp
+                <tr>
+                  <td>{{ $key+1 }}</td>
+                  <td>{{ $fuente->nombre }}</td>
+                  <td>{{ $value->nombre }}</td>
+                  <td>{{ $value->vinculo }}</td>
+                  <td>{{ $value->celular }}</td>
+                </tr>
+              @endforeach
+            @else
               <tr>
-                <td>{{ $key+1 }}</td>
-                <td>{{ $fuente->nombre }}</td>
-                <td>{{ $value->nombre }}</td>
-                <td>{{ $value->vinculo }}</td>
-                <td>{{ $value->celular }}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
               </tr>
-            @endforeach
+            @endif
           </tbody>
         </table>
       </div>

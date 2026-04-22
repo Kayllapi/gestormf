@@ -848,7 +848,7 @@
             <tbody>
               <tr>
                 <td>R. Cuota Mensual/Ingreso Mensual (%)</td>
-                <td><input type="text" class="form-control campo_moneda" value="{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->relacion_cuota_mensual : '0.00' }}" disabled id="relacion_cuota_mensual"></td>
+                <td width="70px"><input type="text" class="form-control campo_moneda" value="{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->relacion_cuota_mensual : '0.00' }}" disabled id="relacion_cuota_mensual"></td>
               </tr>
             </tbody>
             <thead>

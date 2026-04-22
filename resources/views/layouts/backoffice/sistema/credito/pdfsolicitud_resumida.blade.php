@@ -378,28 +378,18 @@
             </tr>
           </thead>
           <tbody>
-            @if($referencia_cliente)
-              @foreach($referencia_cliente as $key => $value)
-                @php
-                  $fuente = DB::table('f_tiporeferencia')->whereId($value->fuente)->first();
-                @endphp
-                <tr>
-                  <td>{{ $key+1 }}</td>
-                  <td>{{ $fuente->nombre }}</td>
-                  <td>{{ $value->nombre }}</td>
-                  <td>{{ $value->vinculo }}</td>
-                  <td>{{ $value->celular }}</td>
-                </tr>
-              @endforeach
-            @else
+            @foreach($referencia_cliente as $key => $value)
+              @php
+                $fuente = DB::table('f_tiporeferencia')->whereId($value->fuente)->first();
+              @endphp
               <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>{{ $key+1 }}</td>
+                <td>{{ $fuente->nombre }}</td>
+                <td>{{ $value->nombre }}</td>
+                <td>{{ $value->vinculo }}</td>
+                <td>{{ $value->celular }}</td>
               </tr>
-            @endif
+            @endforeach
           </tbody>
         </table>
       </div>

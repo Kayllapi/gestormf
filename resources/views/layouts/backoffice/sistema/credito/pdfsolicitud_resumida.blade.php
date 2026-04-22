@@ -272,7 +272,7 @@
                 </div>
                 <div class="col-md-5">
                   <div class="row">
-                    <label class="col-sm-3 col-form-label" style="text-align: right;">DNI: {{ $credito->documentoaval }}</label>
+                    <label class="col-sm-3 col-form-label" style="text-align: right;">RUC/DNI/CE: {{ $credito->documentoaval }}</label>
                   </div>
                 </div>
               </div>
@@ -285,7 +285,7 @@
                 </div>
                 <div class="col-md-5">
                   <div class="row">
-                    <label class="col-sm-3 col-form-label" style="text-align: right;">DNI: {{ $users_prestamo_aval->dni_pareja }}</label>
+                    <label class="col-sm-3 col-form-label" style="text-align: right;">DNI/CE: {{ $users_prestamo_aval->dni_pareja }}</label>
                   </div>
                 </div>
               </div>

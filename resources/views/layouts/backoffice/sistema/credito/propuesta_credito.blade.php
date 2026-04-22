@@ -214,7 +214,7 @@
               @endif
               @endforeach --}}
               <tr>
-                <td><input type="text" class="form-control" disabled value="S/. {{ $credito_cuantitativa_control_limites->total_financiado_deudor }}" style="text-align: right;"></td>
+                <td><input type="text" class="form-control" disabled value="S/. {{ $credito_cuantitativa_control_limites->total_financiado_deudor ?? '0.00' }}" style="text-align: right;"></td>
               </tr>
             </tbody>
           </table>
@@ -1540,7 +1540,8 @@
           </div>
         </div>
       @endif
-      {{-- @if($credito->idevaluacion == 1)
+      @if($credito->idevaluacion == 1)
+      {{-- @if($credito->idfuenteingreso == 1) --}}
       <div class="mb-1 mt-2">
         <span class="badge d-block">RESULTADOS DE EVALUACIÓN:</span>
       </div>
@@ -1655,7 +1656,7 @@
           </table>
         </div>
       </div>
-      @endif --}}
+      @endif
               <?php
               $excedente_propuesta_con_deduccion = $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->excedente_propuesta_con_deduccion : 0;
               $rango_tope = configuracion($tienda->id,'rango_tope')['valor'];

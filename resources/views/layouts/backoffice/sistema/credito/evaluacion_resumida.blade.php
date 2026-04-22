@@ -645,7 +645,7 @@
                 <td style="background-color: #efefef !important;"><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto campo_moneda" value="{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->gasto_vivienda : 0 }}" suma id="gasto_vivienda"></td>
               </tr>
               <tr>
-                <th style="background-color: #c8c8c8 !important;">Servicios</th>
+                <th style="background-color: #efefef !important;">Servicios</th>
                 <td style="background-color: #c8c8c8 !important;"><input type="text" class="form-control campo_moneda fw-bold" value="{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->total_servicios : 0 }}" suma id="total_servicios" disabled></td>
               </tr>
               <tr>

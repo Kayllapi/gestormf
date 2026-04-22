@@ -902,13 +902,15 @@
           let indicador_solvencia_cuotas = parseFloat($('#indicador_solvencia_cuotas').val())
           let rango_tope = parseFloat("{{ configuracion($tienda->id,'rango_tope')['valor'] }}")
           let estado_indicador_solvencia = '';
-          
+          $('#estado_indicador_solvencia').css('color', 'black');
           if (indicador_solvencia_cuotas < 0) {
             estado_indicador_solvencia = "NO VIABLE";
+            $('#estado_indicador_solvencia').css('color', 'red');
           } else if (indicador_solvencia_cuotas <= rango_tope) {
             estado_indicador_solvencia = "VIABLE";
           } else if (indicador_solvencia_cuotas > rango_tope){
             estado_indicador_solvencia = "NO VIABLE";
+            $('#estado_indicador_solvencia').css('color', 'red');
           }
           $('#estado_indicador_solvencia').val(estado_indicador_solvencia);
           
@@ -916,12 +918,15 @@
           let relacion_couta_ingreso = parseFloat("{{ configuracion($tienda->id,'relacion_couta_ingreso')['valor'] }}");
           
           let estado_indicador_cuota_ingreso = '';
+          $('#estado_indicador_cuota_ingreso').css('color', 'black');
           if (relacion_cuota_mensual < 0) {
             estado_indicador_cuota_ingreso = "NO VIABLE";
+            $('#estado_indicador_cuota_ingreso').css('color', 'red');
           } else if (relacion_cuota_mensual <= relacion_couta_ingreso) {
             estado_indicador_cuota_ingreso = "VIABLE";
           } else if (relacion_cuota_mensual > relacion_couta_ingreso){
             estado_indicador_cuota_ingreso = "NO VIABLE";
+            $('#estado_indicador_cuota_ingreso').css('color', 'red');
           }
           $('#estado_indicador_cuota_ingreso').val(estado_indicador_cuota_ingreso);
           
@@ -933,6 +938,7 @@
           let relacion_cuota_venta = parseFloat("{{ configuracion($tienda->id,'relacion_cuota_venta')['valor'] }}");
           
           let estado_indicador_cuota_venta_diario = '';
+          $('#estado_indicador_cuota_venta_diario').css('color', 'black');
           if (relacion_cuota_venta_diaria < 0) {
             estado_indicador_cuota_venta_diario = "NO VIABLE";
           } else if (relacion_cuota_venta_diaria === 0) {
@@ -941,44 +947,52 @@
             estado_indicador_cuota_venta_diario = "VIABLE";
           } else if (relacion_cuota_venta_diaria > relacion_cuota_venta) {
             estado_indicador_cuota_venta_diario = "NO VIABLE";
+            $('#estado_indicador_cuota_venta_diario').css('color', 'red');
           }
           $('#estado_indicador_cuota_venta_diario').val(estado_indicador_cuota_venta_diario);
           
           let estado_indicador_cuota_venta_semanal = '';
+          $('#estado_indicador_cuota_venta_semanal').css('color', 'black');
           if (relacion_cuota_venta_semanal < 0) {
             estado_indicador_cuota_venta_semanal = "NO VIABLE";
+            $('#estado_indicador_cuota_venta_semanal').css('color', 'red');
           } else if (relacion_cuota_venta_semanal === 0) {
             estado_indicador_cuota_venta_semanal = "----";
           } else if (relacion_cuota_venta_semanal <= relacion_cuota_venta) {
             estado_indicador_cuota_venta_semanal = "VIABLE";
           } else if (relacion_cuota_venta_semanal > relacion_cuota_venta) {
             estado_indicador_cuota_venta_semanal = "NO VIABLE";
+            $('#estado_indicador_cuota_venta_semanal').css('color', 'red');
           }
           $('#estado_indicador_cuota_venta_semanal').val(estado_indicador_cuota_venta_semanal);
           
           let estado_indicador_cuota_venta_quincenal = '';
+          $('#estado_indicador_cuota_venta_quincenal').css('color', 'black');
           if (relacion_cuota_venta_quincenal < 0) {
             estado_indicador_cuota_venta_quincenal = "NO VIABLE";
+            $('#estado_indicador_cuota_venta_quincenal').css('color', 'red');
           } else if (relacion_cuota_venta_quincenal === 0) {
             estado_indicador_cuota_venta_quincenal = "----";
           } else if (relacion_cuota_venta_quincenal <= relacion_cuota_venta) {
             estado_indicador_cuota_venta_quincenal = "VIABLE";
           } else if (relacion_cuota_venta_quincenal > relacion_cuota_venta) {
             estado_indicador_cuota_venta_quincenal = "NO VIABLE";
+            $('#estado_indicador_cuota_venta_quincenal').css('color', 'red');
           }
           $('#estado_indicador_cuota_venta_quincenal').val(estado_indicador_cuota_venta_quincenal);
           
           let estado_indicador_cuota_venta_mensual = '';
+          $('#estado_indicador_cuota_venta_mensual').css('color', 'black');
           if (relacion_cuota_venta_mensual < 0) {
             estado_indicador_cuota_venta_mensual = "NO VIABLE";
+            $('#estado_indicador_cuota_venta_mensual').css('color', 'red');
           } else if (relacion_cuota_venta_mensual === 0) {
             estado_indicador_cuota_venta_mensual = "----";
           } else if (relacion_cuota_venta_mensual <= relacion_cuota_venta) {
             estado_indicador_cuota_venta_mensual = "VIABLE";
-            
           } else if (relacion_cuota_venta_mensual > relacion_cuota_venta) {
             estado_indicador_cuota_venta_mensual = "NO VIABLE";
-            
+            $('#estado_indicador_cuota_venta_mensual').css('color', 'red');
           }
           $('#estado_indicador_cuota_venta_mensual').val(estado_indicador_cuota_venta_mensual);
           

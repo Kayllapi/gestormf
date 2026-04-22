@@ -654,11 +654,11 @@
               <th style="color: #000 !important;" colspan=10>PROPUESTA</th>
             </tr>
             <tr>
-              <th style="color: #000 !important;" rowspan=2>DESTINO DE CRÉDITO</th>
+              <th style="color: #000 !important;" rowspan=2>Destino de Ccrédito</th>
               <th style="color: #000 !important;" rowspan=2>Producto</th>
               <th style="color: #000 !important;" colspan=2>Plazo</th>
-              <th style="color: #000 !important;" rowspan=2>FORMA DE PAGO</th>
-              <th style="color: #000 !important;" rowspan=2>Monto Préstamo</th>
+              <th style="color: #000 !important;" rowspan=2>Forma de Pago</th>
+              <th style="color: #000 !important;" rowspan=2>Monto Préstamo (S/.)</th>
               <th style="color: #000 !important;" rowspan=2>TEM</th>
 
               <th style="color: #000 !important;" rowspan=2>Servicios/Otros (S/.)</th>

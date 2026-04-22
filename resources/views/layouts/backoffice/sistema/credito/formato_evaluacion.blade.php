@@ -531,7 +531,7 @@
         </div>
       </div>
       <div class="mb-1 mt-2">
-        <span class="badge d-block">IV. COMENTARIOS: CAPACIDAD DE PAGO, ING. ADICIONALES, DES. CRÉDITOS VIGENTES Y ACUMULACIÓN PATRIMONIAL</span>
+        <span class="badge d-block">IV. COMENTARIOS: CAPACIDAD DE PAGO, ING. ADICIONALES, DEST. CRÉDITOS VIGENTES Y ACUMULACIÓN PATRIMONIAL</span>
       </div>
       <div class="row">
         <div class="col-sm-12">
@@ -539,7 +539,7 @@
         </div>
       </div>
       <div class="mb-1 mt-2">
-        <span class="badge d-block">V. SUS. HISTORIAL DE PAGO INTERNO Y EXTERNO, REFERENCIAS PERSONALES Y BANCARIAS. ENDEUDAMIENTO</span>
+        <span class="badge d-block">V. SUST. HISTORIAL DE PAGO INTERNO Y EXTERNO, REFERENCIAS PERSONALES Y BANCARIAS. ENDEUDAMIENTO</span>
       </div>
       <div class="row">
         <div class="col-sm-12">

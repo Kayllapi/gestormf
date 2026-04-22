@@ -661,7 +661,7 @@
               <th style="color: #000 !important;" rowspan=2>Monto Préstamo (S/.)</th>
               <th style="color: #000 !important;" rowspan=2>TEM</th>
 
-              <th style="color: #000 !important;" rowspan=2>Servicios/Otros (S/.)</th>
+              <th style="color: #000 !important;" rowspan=2>Servicios de Recaudo (S/.)</th>
               <th style="color: #000 !important;" rowspan=2>Cargos (S/.)</th>
               <th style="color: #000 !important;" rowspan=2 >Cuota de Pago {{$nombre_forma_pago}} (S/.)</th>
             </tr>

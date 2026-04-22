@@ -223,13 +223,13 @@
     </div>
     
     <span class="badge">II. EVALUACIÓN CUALITATIVA</span>
-    <span class="badge subtitle">2.1 N° DE ENTIDADES FINANCIERAS (Se considera deuda interna y Líneas de creditos sin uso)</span>
+    <span class="badge subtitle">2.1 N° DE ENTIDADES FINANCIERAS ADEUDADAS (Se considera deuda interna y Líneas de creditos sin uso)</span>
     <div class="row">
       <div class="col">
         <table class="table">
             <thead>
               <tr>
-                <th style="color: #000 !important;" width="100px">Deudores</th>
+                <th style="color: #000 !important;" width="100px">Deudores (Cliente)</th>
                 <th style="color: #000 !important;" width="100px">Como</th>
                 <th style="color: #000 !important;text-align: center;" width="50px">N°</th>
               </tr>
@@ -297,7 +297,7 @@
         <table class="table">
           <thead>
             <tr>
-              <th style="color: #000 !important;" width="100px">Codeudores</th>
+              <th style="color: #000 !important;" width="100px">Codeudores (Aval)</th>
               <th style="color: #000 !important;" width="100px">Como</th>
               <th style="color: #000 !important;text-align: center;" width="50px">N°</th>
             </tr>

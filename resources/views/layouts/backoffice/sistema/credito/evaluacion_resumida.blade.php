@@ -172,14 +172,14 @@
       </div>
       
       <div class="mb-1 mt-2">
-        <span class="badge d-block" style="background-color: #aaa;color: #000;">2.1 N° DE ENTIDADES FINANCIERAS (Se considera deuda interna y Líneas de creditos sin uso)</span>
+        <span class="badge d-block" style="background-color: #aaa;color: #000;">2.1 N° DE ENTIDADES FINANCIERAS ADEUDADAS (Se considera deuda interna y Líneas de creditos sin uso)</span>
       </div>
       <div class="row">
         <div class="col-sm-12 col-md-4">
           <table class="table table-bordered" id="tabla-entidadesfinancieras">
             <thead>
               <tr>
-                <th style="background-color: #c8c8c8 !important;color: #000 !important;">Deudores</th>
+                <th style="background-color: #c8c8c8 !important;color: #000 !important;">Deudores (Cliente)</th>
                 <th style="background-color: #c8c8c8 !important;color: #000 !important;">Como</th>
                 <th style="background-color: #c8c8c8 !important;color: #000 !important;text-align: center;" width="100px">N°</th>
               </tr>
@@ -264,7 +264,7 @@
           <table class="table table-bordered" id="tabla-entidadesfinancieras">
             <thead>
               <tr>
-                <th style="background-color: #c8c8c8 !important;color: #000 !important;">Codeudores</th>
+                <th style="background-color: #c8c8c8 !important;color: #000 !important;">Codeudores (Aval)</th>
                 <th style="background-color: #c8c8c8 !important;color: #000 !important;">Como</th>
                 <th style="background-color: #c8c8c8 !important;color: #000 !important;text-align: center;" width="100px">N°</th>
               </tr>

@@ -529,15 +529,15 @@
         </table>
       </div>
     </div>
-    <span class="badge">III. COMENTARIOS SOBRE CENTRO LABORAL TIPO DE CONTRATO ANTIGÜEDAD, CONTINUIDAD Y FORTALEZAS IDENTIFICADAS</span>
+    <span class="badge">III. COMENTARIOS: CENTRO LABORAL, T. CONTRATO, ANTIGÜEDAD, CONTINUIDAD Y FORTALEZAS</span>
     <div class="row">
       <textarea style="border:solid 1px #000000;">{{ $credito_formato_evaluacion ? $credito_formato_evaluacion->comentario_centro_laboral : '' }}</textarea>
     </div>
-    <span class="badge">IV. COMENTARIOS SOBRE CAPACIDAD DE PAGO, INGRESOS ADICIONALES, DESTINO DE LOS CRÉDITOS VIGENTES,  ACUMULACIÓN PATRIMONIAL</span>
+    <span class="badge">IV. COMENTARIOS: CAPACIDAD DE PAGO, ING. ADICIONALES, DES. CRÉDITOS VIGENTES Y ACUMULACIÓN PATRIMONIAL</span>
     <div class="row">
       <textarea style="border:solid 1px #000000;">{{ $credito_formato_evaluacion ? $credito_formato_evaluacion->comentario_capacidad_pago : '' }}</textarea>
     </div>
-    <span class="badge">V. SUSTENTO DEL HISTORIAL DE PAGO INTERNO Y EXTERNO, REFERENCIAS PERSONALES Y BANCARIAS, ENDEUDAMIENTO</span>
+    <span class="badge">V. SUS. HISTORIAL DE PAGO INTERNO Y EXTERNO, REFERENCIAS PERSONALES Y BANCARIAS. ENDEUDAMIENTO</span>
     <div class="row">
       <textarea style="border:solid 1px #000000;">{{ $credito_formato_evaluacion ? $credito_formato_evaluacion->sustento_historial_pago : '' }}</textarea>
     </div>

@@ -28,6 +28,9 @@
         <h5 class="modal-title">EVALUACION RESUMIDA </h5>
         <button type="button" class="btn-close text-white" id="modal-close-garantia-cliente" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
+    <div class="mb-1 mt-2">
+        <span class="badge d-block">I. INFORMACIÓN DEL CLIENTE</span>
+      </div>
     @php
       $referencia_cliente = $credito_evaluacion_resumida ? ( is_null($credito_evaluacion_resumida->referencia) ? [] : json_decode($credito_evaluacion_resumida->referencia) ) : [];
       $dias = $credito_evaluacion_resumida ? ( $credito_evaluacion_resumida->venta_diaria == "" ? [] : json_decode($credito_evaluacion_resumida->venta_diaria) ) : [];

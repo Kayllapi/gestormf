@@ -737,7 +737,7 @@
               <td class="border-td">{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->estado_indicador_cuota_venta_mensual : '' }}</td>
             </tr>
             <tr>
-              <td colspan=3 align="center" class="border-td" style="background-color: #e5e5e5 !important;
+              <td colspan=3 align="center" class="border-td" style="background-color: #efefef !important;
               color: #000 !important;"><b>{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->estado_credito_general : '' }}</b></td>
             </tr>
           </table>
@@ -770,7 +770,7 @@
         <table class="">
           <thead>
             <tr>
-              <th colspan=2 style="background-color: #e5e5e5 !important;color: #000 !important;border:solid 1px #000000;">RELACIÓN CUOTA /INGRESO (2)</th>
+              <th colspan=2 style="background-color: #efefef !important;color: #000 !important;border:solid 1px #000000;">RELACIÓN CUOTA /INGRESO (2)</th>
             </tr>
           </thead>
           <tbody>
@@ -779,7 +779,7 @@
               <td class="border-td campo_moneda" width="40px">{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->relacion_cuota_mensual : '0.00' }}</td>
             </tr>
             <tr>
-              <th colspan=2 style="background-color: #e5e5e5 !important;color: #000 !important;border:solid 1px #000000;">RELACIÓN CUOTA/ VENTA (3)</th>
+              <th colspan=2 style="background-color: #efefef !important;color: #000 !important;border:solid 1px #000000;">RELACIÓN CUOTA/ VENTA (3)</th>
             </tr>
             <tr>
               <td>R. Cuota diaria/ Venta diaria (%)</td>

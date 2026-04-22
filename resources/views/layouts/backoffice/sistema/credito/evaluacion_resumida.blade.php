@@ -97,7 +97,7 @@
             </div>
           </div>
           <div class="row">
-            <label class="col-sm-3 col-form-label" style="text-align: right;">DNI/RUC:</label>
+            <label class="col-sm-3 col-form-label" style="text-align: right;">RUC/DNI/CE:</label>
             <div class="col-sm-7">
               <input type="text" step="any" class="form-control" value="{{ $credito->docuementocliente }}" disabled>
             </div>
@@ -230,7 +230,7 @@
                 </div>
                 <div class="col-md-5">
                   <div class="row">
-                    <label class="col-sm-3 col-form-label" style="text-align: right;">DNI:</label>
+                    <label class="col-sm-3 col-form-label" style="text-align: right;">DNI/CE:</label>
                     <div class="col-sm-9">
                         <input type="text" step="any" class="form-control" value="{{ $credito->documentoaval }}" disabled>
                     </div>
@@ -249,7 +249,7 @@
                 </div>
                 <div class="col-md-5">
                   <div class="row">
-                    <label class="col-sm-3 col-form-label" style="text-align: right;">DNI:</label>
+                    <label class="col-sm-3 col-form-label" style="text-align: right;">DNI/CE:</label>
                     <div class="col-sm-9">
                       <input type="text" step="any" class="form-control" value="{{ $users_prestamo_aval->dni_pareja }}" disabled>
                     </div>

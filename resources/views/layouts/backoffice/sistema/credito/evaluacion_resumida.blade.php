@@ -250,8 +250,8 @@
                 </div>
                 <div class="col-md-5">
                   <div class="row">
-                    <label class="col-sm-3 col-form-label" style="text-align: right;">DNI/CE:</label>
-                    <div class="col-sm-9">
+                    <label class="col-sm-5 col-form-label" style="text-align: right;">DNI/CE:</label>
+                    <div class="col-sm-7">
                       <input type="text" step="any" class="form-control" value="{{ $users_prestamo_aval->dni_pareja }}" disabled>
                     </div>
                   </div>

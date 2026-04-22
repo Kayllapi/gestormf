@@ -210,8 +210,9 @@
                                                                          value="{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->cantidad_pareja_juridico : '0.00' }}" id="cantidad_pareja_juridico"></td>
               </tr>
               <tr>
-                <td style="background-color: #c8c8c8 !important;text-align: right;" colspan=2>TOTAL</td>
-                <td style="background-color: #c8c8c8 !important;"><input type="text" style="padding: 4px;" disabled class="form-control campo_moneda" 
+                <td style="background-color: #c8c8c8 !important;text-align: right; font-weight: bold;" colspan=2>TOTAL</td>
+                <td style="background-color: #c8c8c8 !important;">
+                  <input type="text" style="padding: 4px;" disabled class="form-control campo_moneda fw-bold" 
                                                                          value="{{ $credito_evaluacion_resumida ? number_format($credito_evaluacion_resumida->total_deuda, 2, '.', '') : '0.00' }}" id="total_deuda"></td>
               </tr>
             </tbody>
@@ -305,10 +306,10 @@
                          id="cantidad_garante_pareja_juridico" disabled></td>
               </tr>
               <tr>
-                <td style="background-color: #c8c8c8 !important;text-align: right;" colspan=2>TOTAL</td>
+                <td style="background-color: #c8c8c8 !important;text-align: right; font-weight: bold;" colspan=2>TOTAL</td>
                 <td style="background-color: #c8c8c8 !important;">
                   <input type="text" style="padding: 4px;" disabled 
-                         class="form-control campo_moneda" 
+                         class="form-control campo_moneda fw-bold"
                          value="{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->total_deuda : '0.00' }}" id="total_deuda_garante"></td>
               </tr>
             </tbody>
@@ -443,7 +444,7 @@
               @endif
               <tr total>
                 <th colspan="2" style="background-color: #c8c8c8 !important;color: #000 !important;">Venta Semanal</th>
-                <td style="background-color: #c8c8c8 !important;color: #000 !important;"><input type="text" id="venta_total_dias" step="any" class="form-control campo_moneda" value="{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->venta_total_dias : '0.00' }}" disabled></td>
+                <td style="background-color: #c8c8c8 !important;color: #000 !important;"><input type="text" id="venta_total_dias" step="any" class="form-control campo_moneda fw-bold" value="{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->venta_total_dias : '0.00' }}" disabled></td>
               </tr>
             </tbody>
           </table>
@@ -485,7 +486,7 @@
               
               <tr total>
                 <th style="background-color: #c8c8c8 !important;color: #000 !important;">Venta Mensual</th>
-                <td style="background-color: #c8c8c8 !important;color: #000 !important;"><input type="text" id="venta_total_mensual" step="any" class="form-control campo_moneda" value="{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->venta_total_mensual : '0.00' }}" disabled></td>
+                <td style="background-color: #c8c8c8 !important;color: #000 !important;"><input type="text" id="venta_total_mensual" step="any" class="form-control campo_moneda fw-bold" value="{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->venta_total_mensual : '0.00' }}" disabled></td>
               </tr>
             </tbody>
           </table>
@@ -522,7 +523,7 @@
               </tr>
               <tr>
                 <td style="background-color: #c8c8c8 !important;"><b>Utilidad Bruta</b></td>
-                <td style="background-color: #c8c8c8 !important;"><input type="text" class="form-control" valida_input_vacio id="ingresos_op_utilidad_bruta" value="{{ encontrar_valor('ingresos_op_utilidad_bruta', $ingresos_gastos) }}" disabled></td>
+                <td style="background-color: #c8c8c8 !important;"><input type="text" class="form-control fw-bold" valida_input_vacio id="ingresos_op_utilidad_bruta" value="{{ encontrar_valor('ingresos_op_utilidad_bruta', $ingresos_gastos) }}" disabled></td>
                 <td></td>
               </tr>
               <tr>
@@ -602,7 +603,7 @@
             <tfoot>
               <tr>
                 <td style="background-color: #c8c8c8 !important;"><b> Total Ingreso (S/.)</b></td>
-                <td style="background-color: #c8c8c8 !important;"><input type="text" class="form-control" valida_input_vacio id="ingresos_op_total" value="{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->ingresos_op_total : '0.00' }}" disabled></td>
+                <td style="background-color: #c8c8c8 !important;"><input type="text" class="form-control fw-bold" valida_input_vacio id="ingresos_op_total" value="{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->ingresos_op_total : '0.00' }}" disabled></td>
                 <td></td>
               </tr>
             </tfoot>
@@ -645,7 +646,7 @@
               </tr>
               <tr>
                 <th style="background-color: #c8c8c8 !important;">Servicios</th>
-                <td style="background-color: #c8c8c8 !important;"><input type="text" class="form-control campo_moneda" value="{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->total_servicios : 0 }}" suma id="total_servicios" disabled></td>
+                <td style="background-color: #c8c8c8 !important;"><input type="text" class="form-control campo_moneda fw-bold" value="{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->total_servicios : 0 }}" suma id="total_servicios" disabled></td>
               </tr>
               <tr>
                 <td style="background-color: #efefef !important;">Agua</td>
@@ -674,7 +675,7 @@
               </tr>
               <tr>
                 <th style="background-color: #c8c8c8 !important;">Total Gasto Familiar (S/.)</th>
-                <td style="background-color: #c8c8c8 !important;"><input type="text" disabled class="form-control campo_moneda" value="{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->gasto_total : 0 }}" id="gasto_total"></td>
+                <td style="background-color: #c8c8c8 !important;"><input type="text" disabled class="form-control campo_moneda fw-bold" value="{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->gasto_total : 0 }}" id="gasto_total"></td>
               </tr>
             </tbody>
           </table>
@@ -772,8 +773,8 @@
             
             <tfoot>
               <tr>
-                <td class="color_totales" colspan=9 align="right">PAGO MES (S/.)</td>
-                <td class="color_totales"><input type="text" class="form-control campo_moneda" value="{{ $credito->total_propuesta }}" id="total_propuesta" disabled></td>
+                <td class="color_totales fw-bold" colspan=9 align="right">PAGO MES (S/.)</td>
+                <td class="color_totales"><input type="text" class="form-control campo_moneda fw-bold" value="{{ $credito->total_propuesta }}" id="total_propuesta" disabled></td>
               </tr>
               <tr>
                 <td colspan=10 class="text-center" id="mensaje_error_cronograma"></td>

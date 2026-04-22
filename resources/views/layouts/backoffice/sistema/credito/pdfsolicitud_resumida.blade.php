@@ -254,8 +254,8 @@
                 <td class="campo_moneda">{{ $credito_evaluacion_resumida ? number_format($credito_evaluacion_resumida->cantidad_pareja_juridico, 2, '.', '') : '0.00' }}</td>
               </tr>
               <tr>
-                <td style="text-align: right;" colspan=2>TOTAL</td>
-                <td class="campo_moneda">{{ $credito_evaluacion_resumida ? number_format($credito_evaluacion_resumida->total_deuda, 2, '.', '') : '0.00' }}</td>
+                <td style="text-align: right;font-weight: bold;" colspan=2>TOTAL</td>
+                <td class="campo_moneda" style="font-weight: bold;">{{ $credito_evaluacion_resumida ? number_format($credito_evaluacion_resumida->total_deuda, 2, '.', '') : '0.00' }}</td>
               </tr>
             </tbody>
           </table>
@@ -322,8 +322,8 @@
               <td class="campo_moneda">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->cantidad_pareja_juridico : '0.00' }}</td>
             </tr>
             <tr>
-              <td style="text-align: right;" colspan=2>TOTAL</td>
-              <td class="campo_moneda">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->total_deuda : '0.00' }}</td>
+              <td style="text-align: right;font-weight: bold;" colspan=2>TOTAL</td>
+              <td class="campo_moneda" style="font-weight: bold;">{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->total_deuda : '0.00' }}</td>
             </tr>
           </tbody>
         </table>
@@ -418,8 +418,8 @@
               @endforeach
             @endif
             <tr total>
-              <th colspan="2" style="color: #000 !important;">Venta Semanal</th>
-              <td style="color: #000 !important;" class="campo_moneda">{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->venta_total_dias : '0.00' }}</td>
+              <th colspan="2" style="color: #000 !important;font-weight: bold;">Venta Semanal</th>
+              <td style="color: #000 !important;font-weight: bold;" class="campo_moneda">{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->venta_total_dias : '0.00' }}</td>
             </tr>
           </tbody>
         </table>
@@ -443,8 +443,8 @@
               @endif
 
             <tr total>
-              <th style="color: #000 !important;">Venta Mensual</th>
-              <td style="color: #000 !important;" class="campo_moneda">{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->venta_total_mensual : '0.00' }}</td>
+              <th style="color: #000 !important;font-weight: bold;">Venta Mensual</th>
+              <td style="color: #000 !important;font-weight: bold;" class="campo_moneda">{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->venta_total_mensual : '0.00' }}</td>
             </tr>
           </tbody>
         </table>
@@ -483,8 +483,8 @@
               <td></td>
             </tr>
             <tr>
-              <td>Utilidad Bruta</td>
-              <td class="campo_moneda">{{ encontrar_valor('ingresos_op_utilidad_bruta', $ingresos_gastos) }}</td>
+              <td style="font-weight: bold;">Utilidad Bruta</td>
+              <td class="campo_moneda" style="font-weight: bold;">{{ encontrar_valor('ingresos_op_utilidad_bruta', $ingresos_gastos) }}</td>
               <td></td>
             </tr>
             <tr>
@@ -560,8 +560,8 @@
           </tbody>
           <tfoot>
             <tr>
-              <td> Total Ingreso (S/.)</td>
-              <td class="campo_moneda">{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->ingresos_op_total : '0.00' }}</td>
+              <td style="font-weight: bold;"> Total Ingreso (S/.)</td>
+              <td class="campo_moneda" style="font-weight: bold;">{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->ingresos_op_total : '0.00' }}</td>
               <td></td>
             </tr>
           </tfoot>
@@ -601,8 +601,8 @@
               <td class="campo_moneda">{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->gasto_vivienda : 0 }}</td>
             </tr>
             <tr>
-              <th style="">Servicios</th>
-              <td class="campo_moneda">{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->total_servicios : 0 }}</td>
+              <th style="font-weight: bold;">Servicios</th>
+              <td class="campo_moneda" style="font-weight: bold;">{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->total_servicios : 0 }}</td>
             </tr>
             <tr>
               <td>Agua</td>
@@ -630,7 +630,7 @@
             </tr>
             <tr>
               <th style="">Total Gasto Familiar (S/.)</th>
-              <td class="campo_moneda">{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->gasto_total : 0 }}</td>
+              <td class="campo_moneda" style="font-weight: bold;">{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->gasto_total : 0 }}</td>
             </tr>
           </tbody>
         </table>
@@ -695,8 +695,8 @@
           </tbody>
           <tfoot>
             <tr>
-              <td class="color_totales" colspan=9 align="right">PAGO MES (S/.)</td>
-              <td class="color_totales campo_moneda">{{ $credito->total_propuesta }}</td>
+              <td class="color_totales" colspan=9 align="right" style="font-weight: bold;">PAGO MES (S/.)</td>
+              <td class="color_totales campo_moneda" style="font-weight: bold;">{{ $credito->total_propuesta }}</td>
             </tr>
           </tfoot>
         </table>
@@ -770,7 +770,7 @@
         <table class="">
           <thead>
             <tr>
-              <th colspan=2 style="background-color: #efefef !important;color: #000 !important;border:solid 1px #000000;">RELACION CUOTA /INGRESO (2)</th>
+              <th colspan=2 style="background-color: #e5e5e5 !important;color: #000 !important;border:solid 1px #000000;">RELACIÓN CUOTA /INGRESO (2)</th>
             </tr>
           </thead>
           <tbody>
@@ -779,7 +779,7 @@
               <td class="border-td campo_moneda" width="40px">{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->relacion_cuota_mensual : '0.00' }}</td>
             </tr>
             <tr>
-              <th colspan=2 style="background-color: #efefef !important;color: #000 !important;border:solid 1px #000000;">RELACIÓN CUOTA/ VENTA (3)</th>
+              <th colspan=2 style="background-color: #e5e5e5 !important;color: #000 !important;border:solid 1px #000000;">RELACIÓN CUOTA/ VENTA (3)</th>
             </tr>
             <tr>
               <td>R. Cuota diaria/ Venta diaria (%)</td>

@@ -48,6 +48,18 @@
           font-size:12px;
       }
       footer > .page:after { content: counter(page, decimal-leading-zero); }
+      .page {
+          position: absolute;
+          left:50%;
+          margin-left: -5px;
+          bottom:-5px;
+      }
+      .datafooter {
+        position: absolute;
+        bottom: -5px;
+        text-align: right;
+        right: 0px;
+      }
 
       .saltopagina{
         display:block;
@@ -99,15 +111,10 @@
       .subtable{
         padding-left:10px;
       }
-        
-        
-        
+
       .campo_moneda {
           text-align: right;
       } 
-  
-  
-
      </style>
 </head>
 <body>

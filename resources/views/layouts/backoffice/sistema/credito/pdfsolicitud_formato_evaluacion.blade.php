@@ -38,7 +38,7 @@
       }
       footer {
           position: fixed; 
-          bottom: 0cm; 
+          bottom: 0.1cm; 
           left: 0.7cm; 
           right: 0.7cm;
           height: 1cm;

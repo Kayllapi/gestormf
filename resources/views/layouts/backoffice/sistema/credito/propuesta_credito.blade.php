@@ -449,7 +449,7 @@
                             $monto_compra_deuda_det = json_decode($credito_propuesta->monto_compra_deuda_det,true);
                         ?>
                         <td rowspan="{{count($monto_compra_deuda_det)}}"></td>
-                        <td rowspan="{{count($monto_compra_deuda_det)}}">Ampliación de deuda</td>
+                        <td rowspan="{{count($monto_compra_deuda_det)}}">Ampliación de deudaaaa</td>
                         @if($monto_compra_deuda_det!='')
                             @foreach($monto_compra_deuda_det as $value_det)
                                 <?php
@@ -480,9 +480,9 @@
                         <td rowspan="{{count($monto_compra_deuda_det)}}" class="border-td">
                               <input type="text" class="form-control" 
                                      value="{{ $credito_propuesta ? $credito_propuesta->detalle_monto_compra_deuda : '' }}" disabled></td>
-                    @else
+                  @else
                         <td rowspan="{{count($saldo_prestamo_vigente_propio)==0?1:count($saldo_prestamo_vigente_propio)}}"></td>
-                        <td rowspan="{{count($saldo_prestamo_vigente_propio)==0?1:count($saldo_prestamo_vigente_propio)}}" style="width:300px">Ampliación de deuda</td>
+                        <td rowspan="{{count($saldo_prestamo_vigente_propio)==0?1:count($saldo_prestamo_vigente_propio)}}" style="width:300px">Ampliación de deudaxxxxx</td>
                         @foreach($saldo_prestamo_vigente_propio as $value)
                           @if($i==0)
                             <?php
@@ -1693,7 +1693,7 @@
       $('#error_monto_compra').removeClass('d-none');
       
       @if($credito->idmodalidad_credito==2 && count($saldo_prestamo_vigente_propio)>0)
-      $('#boton_guardar').attr('disabled',true);
+      // $('#boton_guardar').attr('disabled',true);
       @endif
     }else{
       $('#error_monto_compra').addClass('d-none');

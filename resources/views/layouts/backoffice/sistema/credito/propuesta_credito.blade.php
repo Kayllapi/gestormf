@@ -1467,12 +1467,15 @@
                     </tr>
                   @endif
                   <tr>
+                    <th colspan=7><b>LÍMITES</b></th>
+                  </tr>
+                  <tr>
                     <td>Financiamiento por VRU</td>
                     <td>%</td>
                     <td class="campo_moneda">{{ $limites_financiamiento_vru }}</td>
                     <td><span style="{{$limites_financiamiento_vru_style}}">{{ $limites_financiamiento_vru_res }}</span></td>
                     <td colspan=2>{{ $credito_propuesta ? $credito_propuesta->limites_financiamiento_vru_res_coment : '' }}</td>
-                    <td>Máximo exigido {{ configuracion($tienda->id,'capital_asignado')['valor'] }} %</td>
+                    <td><div class="cuadro-input">Máximo exigido {{ configuracion($tienda->id,'capital_asignado')['valor'] }} %</div></td>
                   </tr>
                   @if($credito->idevaluacion == 1)
                     <tr>
@@ -1498,7 +1501,7 @@
                       <td class="doble-subrayado  campo_moneda">{{ $limites_numero_entidades }}</td>
                       <td><span class="doble-subrayado" style="{{$limites_numero_entidades_style}}">{{ $limites_numero_entidades_res }}</span></td>
                       <td colspan=2><input type="text" {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto doble-subrayado" value="{{ $credito_propuesta ? $credito_propuesta->limites_numero_entidades_res_coment : '' }}"></td>
-                      <td class="doble-subrayado">{{ configuracion($tienda->id,'entidades_maxima')['valor'] }} Entidades</td>
+                      <td class=""><div class="cuadro-input doble-subrayado">{{ configuracion($tienda->id,'entidades_maxima')['valor'] }} Entidades</div></td>
                     </tr>
                   @endif
                 </tbody>

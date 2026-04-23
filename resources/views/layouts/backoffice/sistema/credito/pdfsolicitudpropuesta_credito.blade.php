@@ -1046,6 +1046,9 @@
                   </tr>
                 @endif
                 <tr>
+                  <th colspan=7><b>LÍMITES</b></th>
+                </tr>
+                <tr>
                   <td>Financiamiento por VRU</td>
                   <td>%</td>
                   <td class="campo_moneda">{{ $limites_financiamiento_vru }}</td>

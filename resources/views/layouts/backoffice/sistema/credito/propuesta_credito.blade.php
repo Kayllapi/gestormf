@@ -1533,18 +1533,18 @@
                 <tr>
                   <td class="doble-subrayado">Cuota total/excedente total</td>
                   <td class="doble-subrayado">%</td>
-                  <td class="doble-subrayado campo_moneda">{{ $solvencia_cuota_total }}</td>
+                  <td class="doble-subrayado">{{ $solvencia_cuota_total }}</td>
                   <td><span class="doble-subrayado" style="{{$res_solvencia_relacion_cuota_style}}">{{ $solvencia_cuota_total_res }}</span></td>
                   <td class="doble-subrayado" colspan=2>{{ $credito_propuesta ? $credito_propuesta->solvencia_cuota_total_res_coment : '' }}</td>
                   <td class="doble-subrayado">Se exije &lt; 100% conforme política</td>
                 </tr>
                 <tr>
-                  <th colspan=7><b>OTROS RATIOS</b></th>
+                  <th colspan=7><b>LÍMITES</b></th>
                 </tr>
                 <tr>
                   <td>Financiamiento por VRU</td>
                   <td>%</td>
-                  <td class="campo_moneda">{{ $limites_financiamiento_vru }}</td>
+                  <td>{{ $limites_financiamiento_vru }}</td>
                   <td><span style="{{$limites_financiamiento_vru_style}}">{{ $limites_financiamiento_vru_res }}</span></td>
                   <td colspan=2>{{ $credito_propuesta ? $credito_propuesta->limites_financiamiento_vru_res_coment : '' }}</td>
                   <td>Máximo exigido {{ configuracion($tienda->id,'capital_asignado')['valor'] }} %</td>
@@ -1573,7 +1573,7 @@
                   @endphp
                   <td class="doble-subrayado">N° de entidades (Cliente y Pareja)</td>
                   <td class="doble-subrayado">N°</td>
-                  <td class="doble-subrayado campo_moneda">{{ $limites_numero_entidades }}</td>
+                  <td class="doble-subrayado">{{ $limites_numero_entidades }}</td>
                   <td><span class="doble-subrayado" style="{{$limites_numero_entidades_style}}">{{ $limites_numero_entidades_res }}</span></td>
                   <td class="doble-subrayado"colspan=2>{{ $credito_propuesta ? $credito_propuesta->limites_numero_entidades_res_coment : '' }}</td>
                   <td class="doble-subrayado">{{ configuracion($tienda->id,'entidades_maxima')['valor'] }} Entidades</td>

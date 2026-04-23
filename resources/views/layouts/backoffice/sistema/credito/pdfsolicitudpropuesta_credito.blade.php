@@ -524,7 +524,7 @@
                           C{{ str_pad($credito_det->cuenta, 8, "0", STR_PAD_LEFT) }} - {{$credito_det->nombreproductocredito}}
                       </td>
                       <td class="border-td campo_numero">
-                          {{ $credito_propuesta ? $credito_propuesta->monto_compra_deuda : '0.00' }}
+                          {{ $value_det['monto_compra_deuda'] }}
                       </td>
                       {{-- SOLO en la primera fila --}}
                       @if($index == 0)

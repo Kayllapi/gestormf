@@ -202,6 +202,17 @@
           @endif
         </div>
         <div class="col" style="flex: 1 0 0%;">
+          @if($validadar_ampliacion==1)
+            <div style="width: 300px;
+              background-color: #ffc9ca;
+              border: 1px solid #ff6666 !important;
+              border-radius: 5px;
+              padding: 5px;
+              color: #93222c;
+              text-align: center;
+              font-weight: bold;">No Ha seleccionado Ningun Crédito a ampliar.</div>
+          @endif
+
           @if($validad_eva_resumida==1)
           <div style="width: 300px;
     background-color: #ffc9ca;
@@ -238,7 +249,7 @@
     color: #93222c;
     text-align: center;
     font-weight: bold;">Cuota/excedente "NO ES VIABLE"</div>
-          @elseif($validadar_ampliacion==1)
+          {{-- @elseif($validadar_ampliacion==1)
           <div style="width: 300px;
     background-color: #ffc9ca;
     border: 1px solid #ff6666 !important;
@@ -246,7 +257,7 @@
     padding: 5px;
     color: #93222c;
     text-align: center;
-    font-weight: bold;">No Ha seleccionado Ningun Crédito a ampliar.</div>
+    font-weight: bold;">No Ha seleccionado Ningun Crédito a ampliar.</div> --}}
           @elseif($credito->idforma_credito==1 && $validadar_custodia==0)
           <div style="width: 300px;
     background-color: #ffc9ca;

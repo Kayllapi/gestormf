@@ -450,63 +450,102 @@
         </table>
       </div>
     </div>
-    @if($credito->idmodalidad_credito==2)
-    <span class="badge">DESTINO, AMPLIACIÓN Y ENTREGA DE CRÉDITO:</span>
-    <div class="row">
-      <div class="col">
-              <?php
-                  $monto_compra_deuda_det = json_decode($credito_propuesta->monto_compra_deuda_det,true);
-              ?>
-        <table>
-          <tbody>
-            <tr>
-              <td>Destino:</td>
-              <td style="width:200px" class="border-td" colspan="2">{{ $credito->tipo_destino_credito_nombre}}</td>
-              <td style="width:80px" class="border-td campo_numero">{{ $credito->monto_solicitado }}</td>
-              <td style="width:50px">Detalle:</td>
-              <td class="border-td">
-                @if($credito->idevaluacion == 1)
-                {{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->detalle_destino_prestamo : '' }}
-                @else
-                {{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->detalle_destino_prestamo : '' }}
+    @if($credito->idmodalidad_credito==2) {{-- Ampliada --}}
+      <span class="badge">DESTINO, AMPLIACIÓN Y ENTREGA DE CRÉDITO:</span>
+      <div class="row">
+        <div class="col">
+          <?php
+            $monto_compra_deuda_det = json_decode($credito_propuesta->monto_compra_deuda_det,true);
+          ?>
+          <table>
+            <tbody>
+              <tr>
+                <td>Destino:</td>
+                <td style="width:200px" class="border-td" colspan="2">{{ $credito->tipo_destino_credito_nombre}}</td>
+                <td style="width:50px" class="border-td campo_numero">{{ $credito->monto_solicitado }}</td>
+                <td style="width:50px">Detalle:</td>
+                <td style="width:230px" class="border-td">
+                  @if($credito->idevaluacion == 1)
+                  {{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->detalle_destino_prestamo : '' }}
+                  @else
+                  {{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->detalle_destino_prestamo : '' }}
+                  @endif
+                </td>
+              </tr>
+              {{-- <tr>
+                <td rowspan="{{count($monto_compra_deuda_det)}}"></td>
+                <td rowspan="{{count($monto_compra_deuda_det)}}">Ampliación de deuda</td>
+                @if($monto_compra_deuda_det!='')
+                    @foreach($monto_compra_deuda_det as $value_det)
+                        <?php
+                            $credito_det = DB::table('credito')
+                                ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
+                                ->where('credito.id',$value_det['idcredito'])
+                                ->select(
+                                    'credito.*',
+                                    'credito_prendatario.nombre as nombreproductocredito',
+                                    'credito_prendatario.modalidad as modalidadproductocredito',
+                                )
+                                ->first();
+                        ?>
+                          <td style="width:250px" class="border-td">
+                            C{{ str_pad($credito_det->cuenta, 8, "0", STR_PAD_LEFT) }} - {{$credito_det->nombreproductocredito}}
+                          </td>
+                          <td style="width:100px" class="border-td campo_numero">{{ $credito_propuesta ? $credito_propuesta->monto_compra_deuda : '0.00' }}</td>  
+                    @endforeach
                 @endif
-              </td>
-            </tr>
-            <tr>
-              <td rowspan="{{count($monto_compra_deuda_det)}}"></td>
-              <td rowspan="{{count($monto_compra_deuda_det)}}">Ampliación de deuda</td>
-              @if($monto_compra_deuda_det!='')
-                  @foreach($monto_compra_deuda_det as $value_det)
-                      <?php
-                          $credito_det = DB::table('credito')
-                              ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
-                              ->where('credito.id',$value_det['idcredito'])
-                              ->select(
-                                  'credito.*',
-                                  'credito_prendatario.nombre as nombreproductocredito',
-                                  'credito_prendatario.modalidad as modalidadproductocredito',
-                              )
-                              ->first();
-                      ?>
-                        <td style="width:250px" class="border-td">
+                <td rowspan="{{count($monto_compra_deuda_det)}}">Detalle:</td>
+                <td rowspan="{{count($monto_compra_deuda_det)}}" class="border-td">{{ $credito_propuesta ? $credito_propuesta->detalle_monto_compra_deuda : '' }}</td>
+              </tr> --}}
+              @php
+                $total = count($monto_compra_deuda_det);
+              @endphp
+              @if($total > 0)
+                @foreach($monto_compra_deuda_det as $index => $value_det)
+                  <?php
+                    $credito_det = DB::table('credito')
+                      ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
+                      ->where('credito.id',$value_det['idcredito'])
+                      ->select(
+                          'credito.*',
+                          'credito_prendatario.nombre as nombreproductocredito',
+                          'credito_prendatario.modalidad as modalidadproductocredito',
+                      )
+                      ->first();
+                  ?>
+                  <tr>
+                      {{-- SOLO en la primera fila --}}
+                      @if($index == 0)
+                          <td rowspan="{{ $total }}"></td>
+                          <td rowspan="{{ $total }}">Ampliación de deuda</td>
+                      @endif
+                      {{-- Datos dinámicos --}}
+                      <td style="width:250px" class="border-td">
                           C{{ str_pad($credito_det->cuenta, 8, "0", STR_PAD_LEFT) }} - {{$credito_det->nombreproductocredito}}
-                        </td>
-                        <td style="width:100px" class="border-td">{{ $credito_propuesta ? $credito_propuesta->monto_compra_deuda : '0.00' }}</td>  
-                  @endforeach
+                      </td>
+                      <td class="border-td campo_numero">
+                          {{ $credito_propuesta ? $credito_propuesta->monto_compra_deuda : '0.00' }}
+                      </td>
+                      {{-- SOLO en la primera fila --}}
+                      @if($index == 0)
+                          <td rowspan="{{ $total }}">Detalle:</td>
+                          <td rowspan="{{ $total }}" class="border-td">
+                              {{ $credito_propuesta ? $credito_propuesta->detalle_monto_compra_deuda : '' }}
+                          </td>
+                      @endif
+                  </tr>
+                @endforeach
               @endif
-              <td rowspan="{{count($monto_compra_deuda_det)}}">Detalle:</td>
-              <td rowspan="{{count($monto_compra_deuda_det)}}" class="border-td">{{ $credito_propuesta ? $credito_propuesta->detalle_monto_compra_deuda : '' }}</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td colspan="2">Neto a Entregar (S/)</td>
-              <td class="border-td campo_numero">{{ $credito_propuesta ? (number_format($credito->monto_solicitado - $credito_propuesta->monto_compra_deuda, 2, '.', '')) : '0.00' }}</td>
-              <td colspan="2" rowspan="{{count($monto_compra_deuda_det)}}"></td>
-            </tr>
-          </tbody>
-        </table>
+              <tr>
+                <td></td>
+                <td colspan="2">Neto a Entregar (S/)</td>
+                <td class="border-td campo_numero">{{ $credito_propuesta ? (number_format($credito->monto_solicitado - $credito_propuesta->monto_compra_deuda, 2, '.', '')) : '0.00' }}</td>
+                <td colspan="2" rowspan="{{count($monto_compra_deuda_det)}}"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
     @endif
      @if($users_prestamo->idfuenteingreso == 1)
     <span class="badge">SOBRE EL NEGOCIO:</span>

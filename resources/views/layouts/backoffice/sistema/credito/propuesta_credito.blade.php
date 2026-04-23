@@ -449,7 +449,7 @@
                             $monto_compra_deuda_det = json_decode($credito_propuesta->monto_compra_deuda_det,true);
                         ?>
                         <td rowspan="{{count($monto_compra_deuda_det)}}"></td>
-                        <td rowspan="{{count($monto_compra_deuda_det)}}">Ampliación de deudaaaa</td>
+                        <td rowspan="{{count($monto_compra_deuda_det)}}">Ampliación de deuda</td>
                         @if($monto_compra_deuda_det!='')
                             @foreach($monto_compra_deuda_det as $value_det)
                                 <?php
@@ -482,51 +482,50 @@
                                      value="{{ $credito_propuesta ? $credito_propuesta->detalle_monto_compra_deuda : '' }}" disabled></td>
                   @else
                         <td rowspan="{{count($saldo_prestamo_vigente_propio)==0?1:count($saldo_prestamo_vigente_propio)}}"></td>
-                        <td rowspan="{{count($saldo_prestamo_vigente_propio)==0?1:count($saldo_prestamo_vigente_propio)}}" style="width:300px">Ampliación de deudaxxxxx</td>
+                        <td rowspan="{{count($saldo_prestamo_vigente_propio)==0?1:count($saldo_prestamo_vigente_propio)}}" style="width:300px">Ampliación de deuda</td>
                         @foreach($saldo_prestamo_vigente_propio as $value)
                           @if($i==0)
                             <?php
+                              // descuento cuota
+                              $credito_descuentocuotas = DB::table('credito_descuentocuota')
+                                    ->where('credito_descuentocuota.idcredito',$value->id)
+                                    ->where('credito_descuentocuota.idestadocredito_descuentocuota',1)
+                                    ->first();
+                              $total_descuento_capital = 0; 
+                              $total_descuento_interes = 0; 
+                              $total_descuento_comision = 0; 
+                              $total_descuento_cargo = 0;  
+                              $total_descuento_penalidad = 0; 
+                              $total_descuento_tenencia = 0; 
+                              $total_descuento_compensatorio = 0; 
+                              $total_descuento_total = 0; 
+                              if($credito_descuentocuotas){
+                                  if(1000>=$credito_descuentocuotas->numerocuota_fin){
+                                      $total_descuento_capital = $credito_descuentocuotas->capital;
+                                      $total_descuento_interes = $credito_descuentocuotas->interes;
+                                      $total_descuento_comision = $credito_descuentocuotas->comision;
+                                      $total_descuento_cargo = $credito_descuentocuotas->cargo;
+                                      $total_descuento_penalidad = $credito_descuentocuotas->penalidad;
+                                      $total_descuento_tenencia = $credito_descuentocuotas->tenencia;
+                                      $total_descuento_compensatorio = $credito_descuentocuotas->compensatorio;
+                                      $total_descuento_total = $credito_descuentocuotas->total;
+                                  }
+                              }
 
-                            // descuento cuota
-                            $credito_descuentocuotas = DB::table('credito_descuentocuota')
-                                  ->where('credito_descuentocuota.idcredito',$value->id)
-                                  ->where('credito_descuentocuota.idestadocredito_descuentocuota',1)
-                                  ->first();
-                            $total_descuento_capital = 0; 
-                            $total_descuento_interes = 0; 
-                            $total_descuento_comision = 0; 
-                            $total_descuento_cargo = 0;  
-                            $total_descuento_penalidad = 0; 
-                            $total_descuento_tenencia = 0; 
-                            $total_descuento_compensatorio = 0; 
-                            $total_descuento_total = 0; 
-                            if($credito_descuentocuotas){
-                                if(1000>=$credito_descuentocuotas->numerocuota_fin){
-                                    $total_descuento_capital = $credito_descuentocuotas->capital;
-                                    $total_descuento_interes = $credito_descuentocuotas->interes;
-                                    $total_descuento_comision = $credito_descuentocuotas->comision;
-                                    $total_descuento_cargo = $credito_descuentocuotas->cargo;
-                                    $total_descuento_penalidad = $credito_descuentocuotas->penalidad;
-                                    $total_descuento_tenencia = $credito_descuentocuotas->tenencia;
-                                    $total_descuento_compensatorio = $credito_descuentocuotas->compensatorio;
-                                    $total_descuento_total = $credito_descuentocuotas->total;
-                                }
-                            }
-
-                            $cronograma = select_cronograma(
-                                $tienda->id,
-                                $value->id,
-                                $value->idforma_credito,
-                                $value->modalidadproductocredito,
-                                1000,
-                                $total_descuento_capital,
-                                $total_descuento_interes,
-                                $total_descuento_comision,
-                                $total_descuento_cargo,
-                                $total_descuento_penalidad,
-                                $total_descuento_tenencia,
-                                $total_descuento_compensatorio
-                            );
+                              $cronograma = select_cronograma(
+                                  $tienda->id,
+                                  $value->id,
+                                  $value->idforma_credito,
+                                  $value->modalidadproductocredito,
+                                  1000,
+                                  $total_descuento_capital,
+                                  $total_descuento_interes,
+                                  $total_descuento_comision,
+                                  $total_descuento_cargo,
+                                  $total_descuento_penalidad,
+                                  $total_descuento_tenencia,
+                                  $total_descuento_compensatorio
+                              );
                             ?>
                             <td style="width:250px">
                               <input type="text" class="form-control" 

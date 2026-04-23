@@ -1077,6 +1077,7 @@
 
         if ($res_solvencia_relacion_cuota > 0 && $res_solvencia_relacion_cuota <= $rango_tope) {
             $res_solvencia_relacion_cuota_res = "No evidencia Sobreendeudamiento EXISTE COBERTURA";
+            $res_solvencia_relacion_cuota_style = '';
         } elseif ($res_solvencia_relacion_cuota > $rango_tope) {
             $res_solvencia_relacion_cuota_res = "Evidencia Sobreendeudamiento NO EXISTE COBERTURA";
             $res_solvencia_relacion_cuota_style = 'color:#e80505;';
@@ -1087,11 +1088,13 @@
             $validadar_resultado++;
         } else {
             $res_solvencia_relacion_cuota_res = 0;
+            $res_solvencia_relacion_cuota_style = '';
         }
 
         $res_solvencia_relacion_cuota_resumida = $credito_evaluacion_resumida ? $credito_evaluacion_resumida->indicador_solvencia_cuotas : 0;
         if ($res_solvencia_relacion_cuota_resumida > 0 && $res_solvencia_relacion_cuota_resumida <= $rango_tope) {
             $res_solvencia_relacion_cuota_res = "No evidencia Sobreendeudamiento EXISTE COBERTURA";
+            $res_solvencia_relacion_cuota_style = '';
         } elseif ($res_solvencia_relacion_cuota_resumida > $rango_tope) {
             $res_solvencia_relacion_cuota_res = "Evidencia Sobreendeudamiento NO EXISTE COBERTURA";
             $res_solvencia_relacion_cuota_style = 'color:#e80505;';
@@ -1102,6 +1105,7 @@
             $validadar_resultado++;
         } else {
             $res_solvencia_relacion_cuota_res = 0;
+            $res_solvencia_relacion_cuota_style = '';
         }
         // OTROS RATIOS
         // Fila 02

@@ -935,17 +935,17 @@
             <table class="table" style="width:100%;">
               <thead>
                 <tr>
-                  <th width="200px">Indicadores</th>
+                  <th width="150px">Indicadores</th>
                   <th width="10px"></th>
-                  <th width="70px">Ratios</th>
-                  <th>Resultado</th>
+                  <th width="30px">Ratios</th>
+                  <th width="160px">Resultado</th>
                   <th colspan=2>Comentarios</th>
-                  <th width="210px">Exigencias/Particularidades</th>
+                  <th width="160px">Exigencias/Particularidades</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <th colspan=7><b>CAPACIDAD DE PAGO</b></th>
+                  <th colspan=7 style="text-align: left;"><b>CAPACIDAD DE PAGO</b></th>
                 </tr>
                 <tr>
                   <td class="doble-subrayado">Relación cuota/excedente</td>
@@ -956,7 +956,7 @@
                   <td><div class="cuadro-input doble-subrayado">Se exije < 100% conforme política</div></td>
                 </tr>
                 <tr>
-                  <th colspan=7><b>OTROS RATIOS</b></th>
+                  <th colspan=7 style="text-align: left;"><b>OTROS RATIOS</b></th>
                 </tr>
                 <tr>
                   <td>R. Cuota Mensual/Ingreso Mensual</td>
@@ -1054,17 +1054,17 @@
           <table class="table" style="width:100%;">
             <thead>
               <tr>
-                <th width="200px">Indicadores</th>
+                <th width="150px">Indicadores</th>
                 <th width="10px"></th>
-                <th width="70px">Ratios</th>
-                <th>Resultado</th>
+                <th width="30px">Ratios</th>
+                <th width="160px">Resultado</th>
                 <th colspan=2>Comentarios</th>
-                <th width="210px">Exigencias/Particularidades</th>
+                <th width="160px">Exigencias/Particularidades</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <th colspan=7><b>CAPACIDAD DE PAGO</b></th>
+                <th colspan=7 style="text-align: left;"><b>CAPACIDAD DE PAGO</b></th>
               </tr>
               <tr>
                 <td class="doble-subrayado">Cuota total/excedente total</td>
@@ -1075,7 +1075,7 @@
                 <td class="doble-subrayado">Se exije &lt; 100% conforme política</td>
               </tr>
               <tr>
-                <th colspan=7><b>LÍMITES</b></th>
+                <th colspan=7 style="text-align: left;"><b>LÍMITES</b></th>
               </tr>
               <tr>
                 <td>Financiamiento por VRU</td>

@@ -1046,7 +1046,7 @@
                   </tr>
                 @endif
                 <tr>
-                  <th colspan=7><b>LÍMITES</b></th>
+                  <th colspan=7 style="text-align: left;"><b>LÍMITES</b></th>
                 </tr>
                 <tr>
                   <td>Financiamiento por VRU</td>

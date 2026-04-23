@@ -897,19 +897,18 @@
       </div>
       @endif
       <script>
-      
-            function json_fenomenos(){
-              let data = [];
-              $(`#table-fenomeno > tbody > tr`).each(function() {
-                  let fenomeno = $(this).find('td select[fenomeno]').val();
-                  let descripcion = $(this).find('td input[descripcion]').val();
-                  data.push({ 
-                      fenomeno: fenomeno,
-                      descripcion: descripcion,
-                  });
+        function json_fenomenos(){
+          let data = [];
+          $(`#table-fenomeno > tbody > tr`).each(function() {
+              let fenomeno = $(this).find('td select[fenomeno]').val();
+              let descripcion = $(this).find('td input[descripcion]').val();
+              data.push({ 
+                  fenomeno: fenomeno,
+                  descripcion: descripcion,
               });
-              return JSON.stringify(data);
-            }
+          });
+          return JSON.stringify(data);
+        }
       </script>
       @php
         $tem_propuesta = $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->propuesta_tem : 0;
@@ -1693,10 +1692,12 @@
       
       @if($credito->idmodalidad_credito==2 && count($saldo_prestamo_vigente_propio)>0)
       $('#boton_guardar').attr('disabled',true);
+      $('#boton_imprimir').attr('disabled',true);
       @endif
     }else{
       $('#error_monto_compra').addClass('d-none');
       $('#boton_guardar').attr('disabled',false);
+      $('#boton_imprimir').attr('disabled',false);
     }
     let neto_destino_credito = monto_destino_credito - monto_compra_deuda;
     $('#neto_destino_credito').val(neto_destino_credito.toFixed(2))

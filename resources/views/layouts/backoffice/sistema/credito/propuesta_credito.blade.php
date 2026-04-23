@@ -1073,7 +1073,6 @@
         // SOLVENCIA 
         // Fila 01
         $res_solvencia_relacion_cuota_style = '';
-        // $res_solvencia_relacion_cuota = $credito_evaluacion_resumida ? $credito_evaluacion_resumida->indicador_solvencia_cuotas : 0;
         $res_solvencia_relacion_cuota = $credito_formato_evaluacion ? $credito_formato_evaluacion->resultado_cuota_excedente : 0;
 
         if ($res_solvencia_relacion_cuota > 0 && $res_solvencia_relacion_cuota <= $rango_tope) {
@@ -1083,6 +1082,21 @@
             $res_solvencia_relacion_cuota_style = 'color:#e80505;';
             $validadar_resultado++;
         } elseif ($res_solvencia_relacion_cuota <= 0) {
+            $res_solvencia_relacion_cuota_res = "Sobreendeudamiento NO TIENE EXCEDENTE";
+            $res_solvencia_relacion_cuota_style = 'color:#e80505;';
+            $validadar_resultado++;
+        } else {
+            $res_solvencia_relacion_cuota_res = 0;
+        }
+
+        $res_solvencia_relacion_cuota_resumida = $credito_evaluacion_resumida ? $credito_evaluacion_resumida->indicador_solvencia_cuotas : 0;
+        if ($res_solvencia_relacion_cuota_resumida > 0 && $res_solvencia_relacion_cuota_resumida <= $rango_tope) {
+            $res_solvencia_relacion_cuota_res = "No evidencia Sobreendeudamiento EXISTE COBERTURA";
+        } elseif ($res_solvencia_relacion_cuota_resumida > $rango_tope) {
+            $res_solvencia_relacion_cuota_res = "Evidencia Sobreendeudamiento NO EXISTE COBERTURA";
+            $res_solvencia_relacion_cuota_style = 'color:#e80505;';
+            $validadar_resultado++;
+        } elseif ($res_solvencia_relacion_cuota_resumida <= 0) {
             $res_solvencia_relacion_cuota_res = "Sobreendeudamiento NO TIENE EXCEDENTE";
             $res_solvencia_relacion_cuota_style = 'color:#e80505;';
             $validadar_resultado++;
@@ -1410,7 +1424,7 @@
                   <tr>
                     <td class="doble-subrayado">Relación cuota/excedente</td>
                     <td class="doble-subrayado">%</td>
-                    <td class="doble-subrayado campo_moneda">{{ $res_solvencia_relacion_cuota }}</td>
+                    <td class="doble-subrayado campo_moneda">{{ $res_solvencia_relacion_cuota_resumida }}</td>
                     <td><span class="doble-subrayado" style="{{$res_solvencia_relacion_cuota_style}}">{{ $res_solvencia_relacion_cuota_res }}</span></td>
                     <td colspan=2><input type="text" class="form-control color_cajatexto doble-subrayado" {{ $view_detalle=='false' ? 'disabled' : '' }}  id="res_solvencia_relacion_cuota_coment" value="{{ $credito_propuesta ? $credito_propuesta->res_solvencia_relacion_cuota_coment : '' }}"></td>
                     <td><div class="cuadro-input doble-subrayado">Se exije < 100% conforme política</div></td>

@@ -831,8 +831,8 @@
                 <td style="width:100px;"><input type="text" class="form-control campo_moneda" value="{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->indicador_solvencia_excedente : '0.00' }}" id="indicador_solvencia_excedente" disabled></td>
               </tr>
               <tr>
-                <td>Relación Cuota/ excedente (%)</td>
-                <td><input type="text" class="form-control campo_moneda" value="{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->indicador_solvencia_cuotas : '0.00' }}" id="indicador_solvencia_cuotas" disabled></td>
+                <td class="fw-bold">Relación Cuota/ excedente (%)</td>
+                <td><input type="text" class="form-control campo_moneda fw-bold" value="{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->indicador_solvencia_cuotas : '0.00' }}" id="indicador_solvencia_cuotas" disabled></td>
               </tr>
             </tbody>
           </table>

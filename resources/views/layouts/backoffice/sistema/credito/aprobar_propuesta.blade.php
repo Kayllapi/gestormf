@@ -153,11 +153,11 @@
                     <i class="fa-solid fa-check"></i> SI, PASAR A PROCESO
                   </button>
                 @elseif ($res_solvencia_relacion_cuota > $rango_tope)
-                  @php $validad_eva_resumida = 1; @endphp
+                  @php $validad_eva_resumida = 0; @endphp
                 @elseif ($res_solvencia_relacion_cuota <= 0)
-                  @php $validad_eva_resumida = 1; @endphp
+                  @php $validad_eva_resumida = 0; @endphp
                 @else
-                  @php $validad_eva_resumida = 1; @endphp
+                  @php $validad_eva_resumida = 0; @endphp
                 @endif
               @else
                 @if($credito_evaluacion_resumida->estado_credito_general=='CRÉDITO VIABLE')

@@ -1626,18 +1626,20 @@
         <div class="col" style="flex: 0 0 0%;">
           @if($validadar_resultado==3)
           <div style="width: 300px;
-    background-color: #dc3545;
+    background-color: #ffc9ca;
+    border: 1px solid #ff6666 !important;
     border-radius: 5px;
     padding: 5px;
-    color: #fff;
+    color: #93222c;
     text-align: center;
     font-weight: bold;">NO ES VIABLE</div>
           @elseif($estado_imprimir==1)
           <div style="width: 300px;
-    background-color: #dc3545;
+    background-color: #ffc9ca;
+    border: 1px solid #ff6666 !important;
     border-radius: 5px;
     padding: 5px;
-    color: #fff;
+    color: #93222c;
     text-align: center;
     font-weight: bold;">Cuota total/excedente total "NO ES VIABLE"</div>
           @else

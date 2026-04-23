@@ -401,7 +401,7 @@
         </div>
       </div>
       <div class="mb-1 mt-2">
-        <span class="badge d-block">DESTINO DEL CRÉDITO: </span>
+        <span class="badge d-block">DESTINO, AMPLIACIÓN Y ENTREGA DE CRÉDITO: </span>
       </div>
       <div class="row">
         <div class="col-sm-12 col-md-12">

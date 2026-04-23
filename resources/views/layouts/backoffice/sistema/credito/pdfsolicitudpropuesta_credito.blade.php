@@ -451,7 +451,7 @@
       </div>
     </div>
     @if($credito->idmodalidad_credito==2)
-    <span class="badge">DESTINO DEL CRÉDITO:</span>
+    <span class="badge">DESTINO, AMPLIACIÓN Y ENTREGA DE CRÉDITO:</span>
     <div class="row">
       <div class="col">
               <?php

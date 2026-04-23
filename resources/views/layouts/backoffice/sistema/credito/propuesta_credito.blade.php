@@ -2019,7 +2019,7 @@
                   <td class="campo_moneda">{{ $limites_financiamiento_vru }}</td>
                   <td><span style="{{$limites_financiamiento_vru_style}}">{{ $limites_financiamiento_vru_res }}</span></td>
                   <td colspan=2>{{ $credito_propuesta ? $credito_propuesta->limites_financiamiento_vru_res_coment : '' }}</td>
-                  <td></td>
+                  <td>Máximo exigido %</td>
                 </tr>
                 <tr>
                   @php
@@ -2048,7 +2048,7 @@
                   <td class="doble-subrayado campo_moneda">{{ $limites_numero_entidades }}</td>
                   <td><span class="doble-subrayado" style="{{$limites_numero_entidades_style}}">{{ $limites_numero_entidades_res }}</span></td>
                   <td class="doble-subrayado"colspan=2>{{ $credito_propuesta ? $credito_propuesta->limites_numero_entidades_res_coment : '' }}</td>
-                  <td class="doble-subrayado"></td>
+                  <td class="doble-subrayado">Entidades</td>
                 </tr>
               </tbody>
             </table>

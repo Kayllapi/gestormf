@@ -499,7 +499,7 @@
             </tr>
             <tr>
               <td></td>
-              <td colspan="2">Neto (S/)</td>
+              <td colspan="2">Neto a Entregar (S/)</td>
               <td class="border-td campo_numero">{{ $credito_propuesta ? (number_format($credito->monto_solicitado - $credito_propuesta->monto_compra_deuda, 2, '.', '')) : '0.00' }}</td>
               <td colspan="2" rowspan="{{count($monto_compra_deuda_det)}}"></td>
             </tr>

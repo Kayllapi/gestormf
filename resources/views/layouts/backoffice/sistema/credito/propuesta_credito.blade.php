@@ -672,7 +672,7 @@
               @endif 
               <tr>
                 <td></td>
-                <td colspan="2">Neto (S/)</td>
+                <td colspan="2">Neto a Entregar (S/)</td>
                 <td><input type="text" class="form-control campo_moneda" disabled id="neto_destino_credito" 
                            value="{{ $credito_propuesta ? (number_format($credito->monto_solicitado - $credito_propuesta->monto_compra_deuda, 2, '.', '')) : '0.00' }}"></td>
                 

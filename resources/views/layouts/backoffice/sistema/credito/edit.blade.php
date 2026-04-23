@@ -138,7 +138,21 @@
   @include('app.nuevosistema.select2',['input'=>'#idmodalidad_credito', 'val' => $credito->idmodalidad_credito ])
   
   $("#idforma_credito").on("change", function(e) {
+    let idforma_credito = $("#idforma_credito").find('option:selected').val();
     show_producto_credito();
+
+    var html_idmodalidad_credito = '<option></option>';
+
+    if(idforma_credito==1){
+          html_idmodalidad_credito += '<option value="1">Regular</option>';
+    }else{
+        @foreach($modalidad_credito as $value)
+          html_idmodalidad_credito += '<option value="{{ $value->id }}">{{ $value->nombre }}</option>';
+        @endforeach
+    }
+    sistema_select2({ input:'#idmodalidad_credito', val: '{{ $credito->idmodalidad_credito }}'});
+
+    $('#idmodalidad_credito').html(html_idmodalidad_credito);
   });
   show_producto_credito();
   function show_producto_credito(){
@@ -166,4 +180,4 @@
 //   function eliminar_credito(vista){
 //     modal({ route:"{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=')}}"+vista });  
 //   }
-</script>    
+</script>

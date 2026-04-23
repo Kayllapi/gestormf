@@ -1693,7 +1693,7 @@
       $('#error_monto_compra').removeClass('d-none');
       
       @if($credito->idmodalidad_credito==2 && count($saldo_prestamo_vigente_propio)>0)
-      // $('#boton_guardar').attr('disabled',true);
+      $('#boton_guardar').attr('disabled',true);
       @endif
     }else{
       $('#error_monto_compra').addClass('d-none');

@@ -5066,10 +5066,10 @@ class CreditoController extends Controller
               ->get();
           
           if($credito->idmodalidad_credito == 2 && count(json_decode($request->input('monto_compra_deuda_det'))) == 0 && count($saldo_prestamo_vigente_propio)>0){
-              // return response()->json([
-              //   'resultado' => 'ERROR',
-              //   'mensaje'   => 'Es Obligatorio seleccionar mínimo una ampliación de deuda	.'
-              // ]);
+              return response()->json([
+                'resultado' => 'ERROR',
+                'mensaje'   => 'Es Obligatorio seleccionar mínimo una ampliación de deuda	.'
+              ]);
           }
           
           $credito_propuesta = DB::table('credito_propuesta')->where('credito_propuesta.idcredito',$id)->first();

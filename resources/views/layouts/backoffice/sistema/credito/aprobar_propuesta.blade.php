@@ -1,29 +1,27 @@
 <form action="javascript:;" 
-      onsubmit="callback({
-          route: '{{ url('backoffice/'.$tienda->id.'/credito/'.$credito->id) }}',
-          method: 'PUT',
-          data:{
-              view: 'aprobar_propuesta',
-          }
-      },
-      function(res){
-        removecarga({input:'#mx-carga'})
-        $('#success-message').removeClass('d-none');
-        $('#success-message').text(res.mensaje);
-        setTimeout(function() {
-          $('#success-message').addClass('d-none');
-        }, 5000);
-        lista_credito();
-        load_nuevo_credito();
-        $('#close_confirmacionproceso').click();
-        $('#close_opcionescredito').click();
-                
-      },this)"> 
-
-  
+  onsubmit="callback({
+      route: '{{ url('backoffice/'.$tienda->id.'/credito/'.$credito->id) }}',
+      method: 'PUT',
+      data:{
+        view: 'aprobar_propuesta',
+      }
+  },
+  function(res){
+    removecarga({input:'#mx-carga'})
+    $('#success-message').removeClass('d-none');
+    $('#success-message').text(res.mensaje);
+    setTimeout(function() {
+      $('#success-message').addClass('d-none');
+    }, 5000);
+    lista_credito();
+    load_nuevo_credito();
+    $('#close_confirmacionproceso').click();
+    $('#close_opcionescredito').click();
+            
+  },this)">
     <div class="modal-header" style="border-bottom: 0;">
-        <h5 class="modal-title">PROCESO DE APROBACIÓN DE CRÉDITO </h5>
-        <button type="button" class="btn-close text-white" id="modal-close-garantia-cliente" data-bs-dismiss="modal" aria-label="Close"></button>
+      <h5 class="modal-title">PROCESO DE APROBACIÓN DE CRÉDITO </h5>
+      <button type="button" class="btn-close text-white" id="modal-close-garantia-cliente" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <div class="modal-body modal-body-cualitativa">
       <div class="row">
@@ -57,152 +55,154 @@
         </div>
       </div>
       @if($credito->monto_solicitado<=0)
-      <div class="row m-3">
-        <div class="col-sm-12">
-          <h5 class="text-center text-danger">No puedes aprobar un Crédito en 0.00</h5>
+        <div class="row m-3">
+          <div class="col-sm-12">
+            <h5 class="text-center text-danger">No puedes aprobar un Crédito en 0.00</h5>
+          </div>
         </div>
-      </div>
       @else
-      <div class="row m-3">
-        <div class="col-sm-12">
-          <h5 class="text-center text-danger">¿Seguro que desea aprobar el crédito?</h5>
+        <div class="row m-3">
+          <div class="col-sm-12">
+            <h5 class="text-center text-danger">¿Seguro que desea aprobar el crédito?</h5>
+          </div>
         </div>
-      </div>
-      <?php
+        @php
           $estado_imprimir = 0;
           $validadar_resultado = 0;
           $validar_evaluacion = 0;
+          $validadar_ampliacion = 0;
+          $validadar_custodia = 0;
+          $validad_eva_resumida  = 0;
           $rango_tope = configuracion($tienda->id,'rango_tope')['valor'];
 
-          if($users_prestamo->idfuenteingreso == 1){
-                $relacion_couta_ingreso = configuracion($tienda->id,'relacion_couta_ingreso')['valor'];
-                $relacion_cuota_venta = configuracion($tienda->id,'relacion_cuota_venta')['valor'];
-                
-                // $res_solvencia_relacion_cuota = $credito_evaluacion_resumida ? $credito_evaluacion_resumida->indicador_solvencia_cuotas : 0;
-                $res_solvencia_relacion_cuota = $credito_formato_evaluacion ? $credito_formato_evaluacion->resultado_cuota_excedente : 0;
-                if ($res_solvencia_relacion_cuota > $rango_tope) {
-                    $validadar_resultado++;
-                } elseif ($res_solvencia_relacion_cuota <= 0) {
-                    $validadar_resultado++;
-                }
-  
-                $res_ratios_cuota_ingreso_mensual = $credito_evaluacion_resumida ? $credito_evaluacion_resumida->relacion_cuota_mensual : 0;
-                if ($res_ratios_cuota_ingreso_mensual > $relacion_couta_ingreso) {
-                    $validadar_resultado++;
-                }
-  
-                $res_ratios_venta_cuota_diaria = $credito_evaluacion_resumida ? $credito_evaluacion_resumida->relacion_cuota_venta_diaria : 0;
-                if ($res_ratios_venta_cuota_diaria > $relacion_cuota_venta) {
-                    $validadar_resultado++;
-                }
-  
-              $excedente_propuesta_con_deduccion = $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->excedente_propuesta_con_deduccion : 0;
-              $rango_tope = configuracion($tienda->id,'rango_tope')['valor'];
-              if ($excedente_propuesta_con_deduccion < 0) {
-                  $estado_imprimir = 1;
-              } else if ($excedente_propuesta_con_deduccion <= $rango_tope) {
-                
-              } else if ($excedente_propuesta_con_deduccion > $rango_tope){
-                  $estado_imprimir = 1;
-              }
-              if($validadar_resultado==3){
-                  $estado_imprimir = 1;
-              }
-            
-          }elseif($users_prestamo->idfuenteingreso == 2){ // Dependiente
-              if($credito_formato_evaluacion){
-                  if($credito_formato_evaluacion->estado_evaluacion=='CRÉDITO NO VIABLE'){
-                      $validar_evaluacion = 1;
-                      $estado_imprimir = 2;
-                  }
-              }
-          }
-  
           //validar ampliado
-        $credito_propuesta = DB::table('credito_propuesta')->where('credito_propuesta.idcredito',$credito->id)->first();
-          $validadar_ampliacion = 0;
-          if($credito->idmodalidad_credito == 2){
+          $credito_propuesta = DB::table('credito_propuesta')->where('credito_propuesta.idcredito',$credito->id)->first();
+          if($credito->idmodalidad_credito == 2){ // Ampliado
             if($credito_propuesta){
               if($credito_propuesta->monto_compra_deuda_det==''){
-                  $validadar_ampliacion = 1;
+                $validadar_ampliacion = 1;
               }
             }else{
-                $validadar_ampliacion = 1;
+              $validadar_ampliacion = 1;
+            }
+          } else {
+            if($users_prestamo->idfuenteingreso == 1){
+                  $relacion_couta_ingreso = configuracion($tienda->id,'relacion_couta_ingreso')['valor'];
+                  $relacion_cuota_venta = configuracion($tienda->id,'relacion_cuota_venta')['valor'];
+                  
+                  // $res_solvencia_relacion_cuota = $credito_evaluacion_resumida ? $credito_evaluacion_resumida->indicador_solvencia_cuotas : 0;
+                  $res_solvencia_relacion_cuota = $credito_formato_evaluacion ? $credito_formato_evaluacion->resultado_cuota_excedente : 0;
+                  if ($res_solvencia_relacion_cuota > $rango_tope) {
+                      $validadar_resultado++;
+                  } elseif ($res_solvencia_relacion_cuota <= 0) {
+                      $validadar_resultado++;
+                  }
+  
+                  $res_ratios_cuota_ingreso_mensual = $credito_evaluacion_resumida ? $credito_evaluacion_resumida->relacion_cuota_mensual : 0;
+                  if ($res_ratios_cuota_ingreso_mensual > $relacion_couta_ingreso) {
+                      $validadar_resultado++;
+                  }
+  
+                  $res_ratios_venta_cuota_diaria = $credito_evaluacion_resumida ? $credito_evaluacion_resumida->relacion_cuota_venta_diaria : 0;
+                  if ($res_ratios_venta_cuota_diaria > $relacion_cuota_venta) {
+                      $validadar_resultado++;
+                  }
+  
+                $excedente_propuesta_con_deduccion = $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->excedente_propuesta_con_deduccion : 0;
+                $rango_tope = configuracion($tienda->id,'rango_tope')['valor'];
+                if ($excedente_propuesta_con_deduccion < 0) {
+                    $estado_imprimir = 1;
+                } else if ($excedente_propuesta_con_deduccion <= $rango_tope) {
+                  
+                } else if ($excedente_propuesta_con_deduccion > $rango_tope){
+                    $estado_imprimir = 1;
+                }
+                if($validadar_resultado==3){
+                    $estado_imprimir = 1;
+                }
+              
+            }elseif($users_prestamo->idfuenteingreso == 2){ // Dependiente
+                if($credito_formato_evaluacion){
+                    if($credito_formato_evaluacion->estado_evaluacion=='CRÉDITO NO VIABLE'){
+                        $validar_evaluacion = 1;
+                        $estado_imprimir = 2;
+                    }
+                }
+            }
+
+            if($credito->idforma_credito==1){
+                $cliente = DB::table('users')->whereId($credito->idcliente)->first();
+                if($cliente->custodiagarantia_id!=0){
+                    $validadar_custodia = 1;
+                }
             }
           }
-          $validadar_custodia = 0;
-          if($credito->idforma_credito==1){
-              $cliente = DB::table('users')->whereId($credito->idcliente)->first();
-              if($cliente->custodiagarantia_id!=0){
-                  $validadar_custodia = 1;
-              }
-          }
-  $validad_eva_resumida  = 0;
-              ?>
-      <div class="row mt-1">
-        <div class="col" style="flex: 0 0 0%;">
-          @if($credito->idevaluacion==1) {{-- Resumida --}}
-            @if($credito_evaluacion_resumida && $credito->idforma_credito!=1)
-             {{-- Independiente --}}
-              {{-- @if($users_prestamo->idfuenteingreso == 1)
-                @php
-                  $res_solvencia_relacion_cuota = $credito_formato_evaluacion ? $credito_formato_evaluacion->resultado_cuota_excedente : 0;
-                @endphp
-                @if ($res_solvencia_relacion_cuota > 0 && $res_solvencia_relacion_cuota <= $rango_tope)
-                  <button type="submit" class="btn btn-success">
-                    <i class="fa-solid fa-check"></i> SI, PASAR A PROCESO
-                  </button>
-                @elseif ($res_solvencia_relacion_cuota > $rango_tope)
-                  @php $validad_eva_resumida = 1; @endphp
-                @elseif ($res_solvencia_relacion_cuota <= 0)
-                  @php $validad_eva_resumida = 1; @endphp
-                @else
-                  @php $validad_eva_resumida = 1; @endphp
-                @endif
-              @else --}}
-                @if($credito_evaluacion_resumida->estado_credito_general=='CRÉDITO VIABLE')
-                  <button type="submit" class="btn btn-success">
-                  <i class="fa-solid fa-check"></i> SI, PASAR A PROCESO</button>
-                @else
-                <?php
-                $validad_eva_resumida = 1;
-                ?>
-                @endif
-              {{-- @endif --}}
-            @else
-              {{-- Dependiente --}}
-              {{-- @if($users_prestamo->idfuenteingreso == 2)
-                @php
-                  $res_solvencia_relacion_cuota = $credito_formato_evaluacion ? $credito_formato_evaluacion->resultado_cuota_excedente : 0;
-                @endphp
-                @if ($res_solvencia_relacion_cuota > 0 && $res_solvencia_relacion_cuota <= $rango_tope)
-                  <button type="submit" class="btn btn-success">
-                    <i class="fa-solid fa-check"></i> SI, PASAR A PROCESO
-                  </button>
-                @elseif ($res_solvencia_relacion_cuota > $rango_tope)
-                  @php $validad_eva_resumida = 1; @endphp
-                @elseif ($res_solvencia_relacion_cuota <= 0)
-                  @php $validad_eva_resumida = 1; @endphp
-                @else
-                  @php $validad_eva_resumida = 1; @endphp
-                @endif
-              @else --}}
-                @if($credito->idforma_credito==1 && $validadar_custodia==1)
-                  <button type="submit" class="btn btn-success">
-                  <i class="fa-solid fa-check"></i> SI, PASAR A PROCESO</button>
-                @endif
-              {{-- @endif --}}
+
+        @endphp
+        <div class="row mt-1">
+          <div class="col" style="flex: 0 0 0%;">
+            @if($credito->idevaluacion==1) {{-- Resumida --}}
+              @if($credito_evaluacion_resumida && $credito->idforma_credito!=1)
+              {{-- Independiente --}}
+                {{-- @if($users_prestamo->idfuenteingreso == 1)
+                  @php
+                    $res_solvencia_relacion_cuota = $credito_formato_evaluacion ? $credito_formato_evaluacion->resultado_cuota_excedente : 0;
+                  @endphp
+                  @if ($res_solvencia_relacion_cuota > 0 && $res_solvencia_relacion_cuota <= $rango_tope)
+                    <button type="submit" class="btn btn-success">
+                      <i class="fa-solid fa-check"></i> SI, PASAR A PROCESO
+                    </button>
+                  @elseif ($res_solvencia_relacion_cuota > $rango_tope)
+                    @php $validad_eva_resumida = 1; @endphp
+                  @elseif ($res_solvencia_relacion_cuota <= 0)
+                    @php $validad_eva_resumida = 1; @endphp
+                  @else
+                    @php $validad_eva_resumida = 1; @endphp
+                  @endif
+                @else --}}
+                  @if($credito_evaluacion_resumida->estado_credito_general=='CRÉDITO VIABLE')
+                    <button type="submit" class="btn btn-success">
+                    <i class="fa-solid fa-check"></i> SI, PASAR A PROCESO</button>
+                  @else
+                  <?php
+                  $validad_eva_resumida = 1;
+                  ?>
+                  @endif
+                {{-- @endif --}}
+              @else
+                {{-- Dependiente --}}
+                {{-- @if($users_prestamo->idfuenteingreso == 2)
+                  @php
+                    $res_solvencia_relacion_cuota = $credito_formato_evaluacion ? $credito_formato_evaluacion->resultado_cuota_excedente : 0;
+                  @endphp
+                  @if ($res_solvencia_relacion_cuota > 0 && $res_solvencia_relacion_cuota <= $rango_tope)
+                    <button type="submit" class="btn btn-success">
+                      <i class="fa-solid fa-check"></i> SI, PASAR A PROCESO
+                    </button>
+                  @elseif ($res_solvencia_relacion_cuota > $rango_tope)
+                    @php $validad_eva_resumida = 1; @endphp
+                  @elseif ($res_solvencia_relacion_cuota <= 0)
+                    @php $validad_eva_resumida = 1; @endphp
+                  @else
+                    @php $validad_eva_resumida = 1; @endphp
+                  @endif
+                @else --}}
+                  @if($credito->idforma_credito==1 && $validadar_custodia==1)
+                    <button type="submit" class="btn btn-success">
+                    <i class="fa-solid fa-check"></i> SI, PASAR A PROCESO</button>
+                  @endif
+                {{-- @endif --}}
+              @endif
+            @else {{-- 2 Completo, otros --}}
+              @if($estado_imprimir==0 && $validadar_ampliacion==0)
+                <button type="submit" class="btn btn-success">
+                  <i class="fa-solid fa-check"></i> SI, PASAR A PROCESO
+                </button>
+              @endif
             @endif
-          @else {{-- 2 Completo, otros --}}
-            @if($estado_imprimir==0 && $validadar_ampliacion==0)
-              <button type="submit" class="btn btn-success">
-                <i class="fa-solid fa-check"></i> SI, PASAR A PROCESO
-              </button>
-            @endif
-          @endif
         </div>
-        <div class="col" style="flex: 1 0 0%;">
-          @if($validad_eva_resumida==1)
+      <div class="col" style="flex: 1 0 0%;">
+        @if($validad_eva_resumida==1)
           <div style="width: 300px;
     background-color: #ffc9ca;
     border: 1px solid #ff6666 !important;

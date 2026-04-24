@@ -1196,7 +1196,6 @@
         }
         // Fila 07
       @endphp
-      @dd($users_prestamo)
       @if ($users_prestamo->idfuenteingreso == 1) {{-- Independiente --}}
         {{-- RESULTADOS DE EVALUACIÓN --}}
         @if ($credito->idevaluacion == 2) {{-- Completo --}}

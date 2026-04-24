@@ -723,6 +723,7 @@
     @endif
     @php
       $tem_propuesta = $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->propuesta_tem : 0;
+      $rango_tope_dependiente = configuracion($tienda->id,'rango_tope_dependiente')['valor'];
       $rango_menor = configuracion($tienda->id,'rango_menor')['valor'];
       $rango_tope = configuracion($tienda->id,'rango_tope')['valor'];
       $tope_capital_asignado = configuracion($tienda->id,'capital_asignado')['valor'];
@@ -813,7 +814,7 @@
             $solvencia_cuota_total = $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->excedente_propuesta_con_deduccion : 0 ;
         }
         
-      if ($solvencia_cuota_total <= $rango_menor && $solvencia_cuota_total>=0) {
+      if ($solvencia_cuota_total <= $rango_tope_dependiente && $solvencia_cuota_total>=0) {
           $solvencia_cuota_total_res = "No evidencia Sobreendeudamiento - Existe Cobertura";
       } else {
           $solvencia_cuota_total_res = "Evidencia Sobreendeudamiento - No Existe Cobertura";
@@ -876,6 +877,7 @@
       $limites_financiamiento_vru_res = ($limites_financiamiento_vru <= $tope_capital_asignado) ? "Dentro del límite permisible - Proceder propuesta" : "Fuera de límite permisible - Suspender propuesta";
 
       ############## RESULTADO EVALUACION RESUMIDA #############
+      $validadar_resultado = 0;
       // SOLVENCIA 
       // Fila 01
       $res_solvencia_relacion_cuota = $credito_formato_evaluacion ? $credito_formato_evaluacion->resultado_cuota_excedente : 0;

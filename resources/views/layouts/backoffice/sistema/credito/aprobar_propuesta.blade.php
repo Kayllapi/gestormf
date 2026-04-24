@@ -202,24 +202,37 @@
             @endif
         </div>
       <div class="col" style="flex: 1 0 0%;">
+        @elseif($validadar_ampliacion==1)
+          <div style="width: 300px;
+            background-color: #ffc9ca;
+            border: 1px solid #ff6666 !important;
+            border-radius: 5px;
+            padding: 5px;
+            color: #93222c;
+            text-align: center;
+            font-weight: bold;">No Ha seleccionado Ningun Crédito a ampliar.
+          </div>
+        @endif
         @if($validad_eva_resumida==1)
           <div style="width: 300px;
-    background-color: #ffc9ca;
-    border: 1px solid #ff6666 !important;
-    border-radius: 5px;
-    padding: 5px;
-    color: #93222c;
-    text-align: center;
-    font-weight: bold;">CRÉDITO NO VIABLE</div>
+            background-color: #ffc9ca;
+            border: 1px solid #ff6666 !important;
+            border-radius: 5px;
+            padding: 5px;
+            color: #93222c;
+            text-align: center;
+            font-weight: bold;">CRÉDITO NO VIABLE
+          </div>
           @elseif($validadar_resultado==3)
           <div style="width: 300px;
-    background-color: #ffc9ca;
-    border: 1px solid #ff6666 !important;
-    border-radius: 5px;
-    padding: 5px;
-    color: #93222c;
-    text-align: center;
-    font-weight: bold;">NO ES VIABLE</div>
+            background-color: #ffc9ca;
+            border: 1px solid #ff6666 !important;
+            border-radius: 5px;
+            padding: 5px;
+            color: #93222c;
+            text-align: center;
+            font-weight: bold;">NO ES VIABLE
+          </div>
           @elseif($estado_imprimir==1)
             <div style="width: 300px;
               background-color: #ffc9ca;
@@ -240,15 +253,16 @@
               text-align: center;
               font-weight: bold;">Cuota/excedente "NO ES VIABLE"
             </div>
-          @elseif($validadar_ampliacion==1)
-          <div style="width: 300px;
-    background-color: #ffc9ca;
-    border: 1px solid #ff6666 !important;
-    border-radius: 5px;
-    padding: 5px;
-    color: #93222c;
-    text-align: center;
-    font-weight: bold;">No Ha seleccionado Ningun Crédito a ampliar.</div>
+          {{-- @elseif($validadar_ampliacion==1)
+            <div style="width: 300px;
+              background-color: #ffc9ca;
+              border: 1px solid #ff6666 !important;
+              border-radius: 5px;
+              padding: 5px;
+              color: #93222c;
+              text-align: center;
+              font-weight: bold;">No Ha seleccionado Ningun Crédito a ampliar.
+            </div> --}}
           @elseif($credito->idforma_credito==1 && $validadar_custodia==0)
             <div style="width: 300px;
               background-color: #ffc9ca;

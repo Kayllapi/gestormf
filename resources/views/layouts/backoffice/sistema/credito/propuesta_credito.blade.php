@@ -912,6 +912,7 @@
       </script>
       @php
         $tem_propuesta = $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->propuesta_tem : 0;
+        $rango_tope_dependiente = configuracion($tienda->id,'rango_tope_dependiente')['valor'];
         $rango_menor = configuracion($tienda->id,'rango_menor')['valor'];
         $rango_tope = configuracion($tienda->id,'rango_tope')['valor'];
         $tope_capital_asignado = configuracion($tienda->id,'capital_asignado')['valor'];
@@ -1004,11 +1005,12 @@
             $solvencia_cuota_total = $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->excedente_propuesta_con_deduccion : 0 ;
         }
         $stylebackground_solvencia_cuota_total = '';
-        if ($solvencia_cuota_total <= $rango_menor && $solvencia_cuota_total>=0) {
-            $solvencia_cuota_total_res = "No evidencia Sobreendeudamiento - Existe Cobertura";
+        if ($solvencia_cuota_total <= $rango_tope_dependiente && $solvencia_cuota_total>=0) { // antes estaba el $rango_menor
+          $solvencia_cuota_total_res = "No evidencia Sobreendeudamiento - Existe Cobertura";
+          $stylebackground_solvencia_cuota_total = '';
         } else {
             $solvencia_cuota_total_res = "Evidencia Sobreendeudamiento - No Existe Cobertura";
-            $stylebackground_solvencia_cuota_total = 'color:red;';
+            $stylebackground_solvencia_cuota_total = 'color:#e80505;';
         }
         // Fila 10
         $solvencia_capital_trabajo_neto = $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_prestamo : 0;
@@ -1553,7 +1555,7 @@
                   <td class="doble-subrayado">Cuota total/excedente total</td>
                   <td class="doble-subrayado">%</td>
                   <td class="doble-subrayado">{{ $solvencia_cuota_total }}</td>
-                  <td><span class="doble-subrayado" style="{{$res_solvencia_relacion_cuota_style}}">{{ $solvencia_cuota_total_res }}</span></td>
+                  <td><span class="doble-subrayado" style="{{$stylebackground_solvencia_cuota_total}}">{{ $solvencia_cuota_total_res }}</span></td>
                   <td class="doble-subrayado" colspan=2>{{ $credito_propuesta ? $credito_propuesta->solvencia_cuota_total_res_coment : '' }}</td>
                   <td class="doble-subrayado">Se exije &lt; 100% conforme política</td>
                 </tr>

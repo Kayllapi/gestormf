@@ -179,7 +179,10 @@
                     @php
                       $res_solvencia_relacion_cuota = $credito_formato_evaluacion ? $credito_formato_evaluacion->resultado_cuota_excedente : 0;
                     @endphp
-                    @if ($res_solvencia_relacion_cuota > 0 && $res_solvencia_relacion_cuota <= $rango_tope)
+                    @if ($res_solvencia_relacion_cuota > 0
+                        && $res_solvencia_relacion_cuota <= $rango_tope
+                        && $validadar_ampliacion == 0
+                      )
                       <button type="submit" class="btn btn-success">
                         <i class="fa-solid fa-check"></i> SI, PASAR A PROCESO
                       </button>

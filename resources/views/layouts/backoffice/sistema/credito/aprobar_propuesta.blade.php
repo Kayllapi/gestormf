@@ -202,7 +202,7 @@
             @endif
         </div>
       <div class="col" style="flex: 1 0 0%;">
-        @elseif($validadar_ampliacion==1)
+        @if($validadar_ampliacion==1)
           <div style="width: 300px;
             background-color: #ffc9ca;
             border: 1px solid #ff6666 !important;

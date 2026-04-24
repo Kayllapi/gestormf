@@ -796,7 +796,7 @@
               <td><input type="text" class="form-control" disabled id="estado_indicador_cuota_ingreso" value="{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->estado_indicador_cuota_ingreso : '' }}"></td>
             </tr>
             <tr>
-              <td> (3): Indicador de Relación Cuota/Venta (Periodo)</td>
+              <td> (3): Indicador de Relación Cuota/Venta (Del Periodo)</td>
               <td><b>a. Diaria</b></td>
               <td><input type="text" class="form-control" disabled id="estado_indicador_cuota_venta_diario" value="{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->estado_indicador_cuota_venta_diario : '' }}"></td>
             </tr>

@@ -705,19 +705,17 @@
     
     <div class="row">
       <div class="col">
-        
-        
         <table>
             <tr>
               <td colspan="2"> (1): Indicador de Capacidad de Pago</td>
               <td class="border-td">{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->estado_indicador_solvencia : '' }}</td>
             </tr>
             <tr>
-              <td colspan="2"> (2): Indicador de Relación Cuota /Ingreso</td>
+              <td colspan="2"> (2): Indicador de Relación Cuota/Ingreso (Mensual)</td>
               <td class="border-td">{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->estado_indicador_cuota_ingreso : '' }}</td>
             </tr>
             <tr>
-              <td> (3): Indicador de Relación Cuota/Venta</td>
+              <td> (3): Indicador de Relación Cuota/Venta (Del Periodo)</td>
               <td width="50px"><b>a. Diaria</b></td>
               <td class="border-td">{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->estado_indicador_cuota_venta_diario : '' }}</td>
             </tr>

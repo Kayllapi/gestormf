@@ -785,18 +785,18 @@
       </div>
       
       <div class="row mt-2">
-        <div class="col-sm-12 col-md-5">
+        <div class="col-sm-12 col-md-6">
           <table class="table">
             <tr>
               <td colspan="2"> (1): Indicador de Capacidad de Pago</td>
               <td><input type="text" class="form-control" disabled id="estado_indicador_solvencia" value="{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->estado_indicador_solvencia : '' }}"></td>
             </tr>
             <tr>
-              <td colspan="2"> (2): Indicador de Relación Cuota /Ingreso</td>
+              <td colspan="2"> (2): Indicador de Relación Cuota/Ingreso (Mensual)</td>
               <td><input type="text" class="form-control" disabled id="estado_indicador_cuota_ingreso" value="{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->estado_indicador_cuota_ingreso : '' }}"></td>
             </tr>
             <tr>
-              <td> (3): Indicador de Relación Cuota/Venta</td>
+              <td> (3): Indicador de Relación Cuota/Venta (Periodo)</td>
               <td><b>a. Diaria</b></td>
               <td><input type="text" class="form-control" disabled id="estado_indicador_cuota_venta_diario" value="{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->estado_indicador_cuota_venta_diario : '' }}"></td>
             </tr>
@@ -838,7 +838,7 @@
           </table>
           
         </div>
-        <div class="col-sm-12 col-md-4">
+        <div class="col-sm-12 col-md-3">
           <table class="table table-bordered">
             <thead>
               <tr>

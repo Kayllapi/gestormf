@@ -85,59 +85,59 @@
             }else{
               $validadar_ampliacion = 1;
             }
-          } else {
-            if($users_prestamo->idfuenteingreso == 1){
-                  $relacion_couta_ingreso = configuracion($tienda->id,'relacion_couta_ingreso')['valor'];
-                  $relacion_cuota_venta = configuracion($tienda->id,'relacion_cuota_venta')['valor'];
-                  
-                  // $res_solvencia_relacion_cuota = $credito_evaluacion_resumida ? $credito_evaluacion_resumida->indicador_solvencia_cuotas : 0;
-                  $res_solvencia_relacion_cuota = $credito_formato_evaluacion ? $credito_formato_evaluacion->resultado_cuota_excedente : 0;
-                  if ($res_solvencia_relacion_cuota > $rango_tope) {
-                      $validadar_resultado++;
-                  } elseif ($res_solvencia_relacion_cuota <= 0) {
-                      $validadar_resultado++;
-                  }
-  
-                  $res_ratios_cuota_ingreso_mensual = $credito_evaluacion_resumida ? $credito_evaluacion_resumida->relacion_cuota_mensual : 0;
-                  if ($res_ratios_cuota_ingreso_mensual > $relacion_couta_ingreso) {
-                      $validadar_resultado++;
-                  }
-  
-                  $res_ratios_venta_cuota_diaria = $credito_evaluacion_resumida ? $credito_evaluacion_resumida->relacion_cuota_venta_diaria : 0;
-                  if ($res_ratios_venta_cuota_diaria > $relacion_cuota_venta) {
-                      $validadar_resultado++;
-                  }
-  
-                $excedente_propuesta_con_deduccion = $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->excedente_propuesta_con_deduccion : 0;
-                $rango_tope = configuracion($tienda->id,'rango_tope')['valor'];
-                if ($excedente_propuesta_con_deduccion < 0) {
-                    $estado_imprimir = 1;
-                } else if ($excedente_propuesta_con_deduccion <= $rango_tope) {
-                  
-                } else if ($excedente_propuesta_con_deduccion > $rango_tope){
-                    $estado_imprimir = 1;
-                }
-                if($validadar_resultado==3){
-                    $estado_imprimir = 1;
-                }
-              
-            }elseif($users_prestamo->idfuenteingreso == 2){ // Dependiente
-                if($credito_formato_evaluacion){
-                    if($credito_formato_evaluacion->estado_evaluacion=='CRÉDITO NO VIABLE'){
-                        $validar_evaluacion = 1;
-                        $estado_imprimir = 2;
-                    }
-                }
+          }
+
+          // dd('usuario',$users_prestamo);
+          if($users_prestamo->idfuenteingreso == 1){ // Independiente
+            $relacion_couta_ingreso = configuracion($tienda->id,'relacion_couta_ingreso')['valor'];
+            $relacion_cuota_venta = configuracion($tienda->id,'relacion_cuota_venta')['valor'];
+
+            // $res_solvencia_relacion_cuota = $credito_evaluacion_resumida ? $credito_evaluacion_resumida->indicador_solvencia_cuotas : 0;
+            $res_solvencia_relacion_cuota = $credito_formato_evaluacion ? $credito_formato_evaluacion->resultado_cuota_excedente : 0;
+            if ($res_solvencia_relacion_cuota > $rango_tope) {
+                $validadar_resultado++;
+            } elseif ($res_solvencia_relacion_cuota <= 0) {
+                $validadar_resultado++;
             }
 
-            if($credito->idforma_credito==1){
-                $cliente = DB::table('users')->whereId($credito->idcliente)->first();
-                if($cliente->custodiagarantia_id!=0){
-                    $validadar_custodia = 1;
-                }
+            $res_ratios_cuota_ingreso_mensual = $credito_evaluacion_resumida ? $credito_evaluacion_resumida->relacion_cuota_mensual : 0;
+            if ($res_ratios_cuota_ingreso_mensual > $relacion_couta_ingreso) {
+                $validadar_resultado++;
+            }
+
+            $res_ratios_venta_cuota_diaria = $credito_evaluacion_resumida ? $credito_evaluacion_resumida->relacion_cuota_venta_diaria : 0;
+            if ($res_ratios_venta_cuota_diaria > $relacion_cuota_venta) {
+                $validadar_resultado++;
+            }
+
+            $excedente_propuesta_con_deduccion = $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->excedente_propuesta_con_deduccion : 0;
+            $rango_tope = configuracion($tienda->id,'rango_tope')['valor'];
+            if ($excedente_propuesta_con_deduccion < 0) {
+              $estado_imprimir = 1;
+            } else if ($excedente_propuesta_con_deduccion <= $rango_tope) {
+
+            } else if ($excedente_propuesta_con_deduccion > $rango_tope){
+              $estado_imprimir = 1;
+            }
+            if($validadar_resultado==3){
+              $estado_imprimir = 1;
+            }
+          }elseif($users_prestamo->idfuenteingreso == 2){ // Dependiente
+            // dd($credito_formato_evaluacion);
+            if($credito_formato_evaluacion){
+              if($credito_formato_evaluacion->estado_evaluacion=='CRÉDITO NO VIABLE'){
+                $validar_evaluacion = 1;
+                $estado_imprimir = 2;
+              }
             }
           }
 
+          if($credito->idforma_credito==1){ // Prendario
+            $cliente = DB::table('users')->whereId($credito->idcliente)->first();
+            if($cliente->custodiagarantia_id!=0){
+              $validadar_custodia = 1;
+            }
+          }
         @endphp
         <div class="row mt-1">
           <div class="col" style="flex: 0 0 0%;">
@@ -221,23 +221,25 @@
     text-align: center;
     font-weight: bold;">NO ES VIABLE</div>
           @elseif($estado_imprimir==1)
-          <div style="width: 300px;
-    background-color: #ffc9ca;
-    border: 1px solid #ff6666 !important;
-    border-radius: 5px;
-    padding: 5px;
-    color: #93222c;
-    text-align: center;
-    font-weight: bold;">Cuota total/excedente total "NO ES VIABLE"</div>
+            <div style="width: 300px;
+              background-color: #ffc9ca;
+              border: 1px solid #ff6666 !important;
+              border-radius: 5px;
+              padding: 5px;
+              color: #93222c;
+              text-align: center;
+              font-weight: bold;">Cuota total/excedente total "NO ES VIABLE"
+            </div>
           @elseif($validar_evaluacion==1)
-          <div style="width: 300px;
-    background-color: #ffc9ca;
-    border: 1px solid #ff6666 !important;
-    border-radius: 5px;
-    padding: 5px;
-    color: #93222c;
-    text-align: center;
-    font-weight: bold;">Cuota/excedente "NO ES VIABLE"</div>
+            <div style="width: 300px;
+              background-color: #ffc9ca;
+              border: 1px solid #ff6666 !important;
+              border-radius: 5px;
+              padding: 5px;
+              color: #93222c;
+              text-align: center;
+              font-weight: bold;">Cuota/excedente "NO ES VIABLE"
+            </div>
           @elseif($validadar_ampliacion==1)
           <div style="width: 300px;
     background-color: #ffc9ca;
@@ -248,16 +250,17 @@
     text-align: center;
     font-weight: bold;">No Ha seleccionado Ningun Crédito a ampliar.</div>
           @elseif($credito->idforma_credito==1 && $validadar_custodia==0)
-          <div style="width: 300px;
-    background-color: #ffc9ca;
-    border: 1px solid #ff6666 !important;
-    border-radius: 5px;
-    padding: 5px;
-    color: #93222c;
-    text-align: center;
-    font-weight: bold;">No Ha seleccionado Ningun Depósitario.</div>
+            <div style="width: 300px;
+              background-color: #ffc9ca;
+              border: 1px solid #ff6666 !important;
+              border-radius: 5px;
+              padding: 5px;
+              color: #93222c;
+              text-align: center;
+              font-weight: bold;">No Ha seleccionado Ningun Depósitario.
+            </div>
           @else
-          <div id="success-message" class="alert alert-success d-none" style="text-align:left;"></div>
+            <div id="success-message" class="alert alert-success d-none" style="text-align:left;"></div>
           @endif
         </div>
         <div class="col" style="flex: 0 0 0%;">

@@ -996,33 +996,69 @@
           }
           $('#estado_indicador_cuota_venta_mensual').val(estado_indicador_cuota_venta_mensual);
           
-          if(estado_indicador_solvencia == "VIABLE" ||  estado_indicador_cuota_ingreso == "VIABLE" || estado_indicador_cuota_venta_diario == "VIABLE" || estado_indicador_cuota_venta_semanal == "VIABLE" || estado_indicador_cuota_venta_quincenal == "VIABLE" || estado_indicador_cuota_venta_mensual == "VIABLE" ){
+          /*
+          1 estado_indicador_solvencia == "VIABLE"
+          2 estado_indicador_cuota_ingreso == "VIABLE"
+          3 estado_indicador_cuota_venta_diario == "VIABLE"
+            estado_indicador_cuota_venta_semanal == "VIABLE"
+            estado_indicador_cuota_venta_quincenal == "VIABLE"
+            estado_indicador_cuota_venta_mensual == "VIABLE"
+          */
+          primera_validacion = (estado_indicador_solvencia == "VIABLE");
+          segunda_validacion = (estado_indicador_cuota_ingreso == "VIABLE");
+          tercera_validacion = (estado_indicador_cuota_venta_diario == "VIABLE" || estado_indicador_cuota_venta_semanal == "VIABLE" || estado_indicador_cuota_venta_quincenal == "VIABLE" || estado_indicador_cuota_venta_mensual == "VIABLE");
+          if (primera_validacion && segunda_validacion && tercera_validacion) {
             $('#estado_credito_general').removeClass('bg-danger');
             $('#estado_credito_general').addClass('bg-success'); 
             $('#estado_credito_general').html('CRÉDITO VIABLE');
-            //$('#boton_guardar').attr('disabled',false);
-            //validar boton
-
             @if($credito->idmodalidad_credito==2 || $credito->idmodalidad_credito==3)
                 let ingresos_op_ampliacion_regulada = parseFloat($('#ingresos_op_ampliacion_regulada').val())
                 let ingresos_op_ampliacion_noregulada = parseFloat($('#ingresos_op_ampliacion_noregulada').val())
-                //$('#boton_guardar').attr('disabled',false);
                 if(ingresos_op_ampliacion_regulada<=0 && ingresos_op_ampliacion_noregulada<=0){
-                   // $('#boton_guardar').attr('disabled',true);
                 }
             @endif
-          }else{
+          } else if (segunda_validacion && tercera_validacion) {
+            $('#estado_credito_general').removeClass('bg-danger');
+            $('#estado_credito_general').addClass('bg-success'); 
+            $('#estado_credito_general').html('CRÉDITO VIABLE');
+            @if($credito->idmodalidad_credito==2 || $credito->idmodalidad_credito==3)
+                let ingresos_op_ampliacion_regulada = parseFloat($('#ingresos_op_ampliacion_regulada').val())
+                let ingresos_op_ampliacion_noregulada = parseFloat($('#ingresos_op_ampliacion_noregulada').val())
+                if(ingresos_op_ampliacion_regulada<=0 && ingresos_op_ampliacion_noregulada<=0){
+                }
+            @endif
+          } else if (primera_validacion) {
+            $('#estado_credito_general').removeClass('bg-danger');
+            $('#estado_credito_general').addClass('bg-success'); 
+            $('#estado_credito_general').html('CRÉDITO VIABLE');
+            @if($credito->idmodalidad_credito==2 || $credito->idmodalidad_credito==3)
+                let ingresos_op_ampliacion_regulada = parseFloat($('#ingresos_op_ampliacion_regulada').val())
+                let ingresos_op_ampliacion_noregulada = parseFloat($('#ingresos_op_ampliacion_noregulada').val())
+                if(ingresos_op_ampliacion_regulada<=0 && ingresos_op_ampliacion_noregulada<=0){
+                }
+            @endif
+          }
+          // if(estado_indicador_solvencia == "VIABLE" ||  estado_indicador_cuota_ingreso == "VIABLE" || estado_indicador_cuota_venta_diario == "VIABLE" || estado_indicador_cuota_venta_semanal == "VIABLE" || estado_indicador_cuota_venta_quincenal == "VIABLE" || estado_indicador_cuota_venta_mensual == "VIABLE" ){
+          //   $('#estado_credito_general').removeClass('bg-danger');
+          //   $('#estado_credito_general').addClass('bg-success'); 
+          //   $('#estado_credito_general').html('CRÉDITO VIABLE');
+          //   //$('#boton_guardar').attr('disabled',false);
+          //   //validar boton
+
+          //   @if($credito->idmodalidad_credito==2 || $credito->idmodalidad_credito==3)
+          //       let ingresos_op_ampliacion_regulada = parseFloat($('#ingresos_op_ampliacion_regulada').val())
+          //       let ingresos_op_ampliacion_noregulada = parseFloat($('#ingresos_op_ampliacion_noregulada').val())
+          //       //$('#boton_guardar').attr('disabled',false);
+          //       if(ingresos_op_ampliacion_regulada<=0 && ingresos_op_ampliacion_noregulada<=0){
+          //          // $('#boton_guardar').attr('disabled',true);
+          //       }
+          //   @endif
+          // }
+          else{
             $('#estado_credito_general').removeClass('bg-success');
             $('#estado_credito_general').addClass('bg-danger');
             $('#estado_credito_general').html('CRÉDITO NO VIABLE');
-            //$('#boton_guardar').attr('disabled',true);
           }
-          /*
-          $('#estado_indicador_cuota_venta_mensual').removeClass('bg-danger');
-            $('#estado_indicador_cuota_venta_mensual').addClass('bg-success text-white');
-          $('#estado_indicador_cuota_venta_mensual').removeClass('bg-success');
-            $('#estado_indicador_cuota_venta_mensual').addClass('bg-danger text-white');
-            */
         }
         calcular_relacion_cuota();
         function calcular_relacion_cuota(){

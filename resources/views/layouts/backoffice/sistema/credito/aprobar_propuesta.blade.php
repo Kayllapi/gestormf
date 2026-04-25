@@ -170,7 +170,6 @@
                   @endphp
                 @endif --}}
               {{-- @endif --}}
-              @dd($credito_evaluacion_resumida)
               @if($credito_evaluacion_resumida && $users_prestamo->idfuenteingreso == 1) {{-- Independiente --}}
                 @php
                   $res_solvencia_relacion_cuota = $credito_formato_evaluacion ? $credito_formato_evaluacion->resultado_cuota_excedente : 0;

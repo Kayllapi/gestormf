@@ -187,7 +187,7 @@
                 @elseif ($res_solvencia_relacion_cuota <= 0)
                   @php $validad_eva_resumida = 1; @endphp
                 @else
-                  @php $validad_eva_resumida = 1; @endphp
+                  @php $validad_eva_resumida = 0; @endphp
                 @endif
               @elseif($users_prestamo->idfuenteingreso == 2) {{-- Dependiente --}}
                 @php

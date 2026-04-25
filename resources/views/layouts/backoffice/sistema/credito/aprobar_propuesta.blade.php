@@ -177,6 +177,8 @@
                   <button type="submit" class="btn btn-success">
                     <i class="fa-solid fa-check"></i> SI, PASAR A PROCESO
                   </button>
+                @elseif($credito_evaluacion_resumida->estado_credito_general=='CRÉDITO VIABLE')
+                  @php $validad_eva_resumida = 0; @endphp
                 @else
                   @php $validad_eva_resumida = 1; @endphp
                 @endif

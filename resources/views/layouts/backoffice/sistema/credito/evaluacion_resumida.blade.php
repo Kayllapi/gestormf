@@ -816,7 +816,7 @@
               <td><input type="text" class="form-control" disabled id="estado_indicador_cuota_venta_mensual" value="{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->estado_indicador_cuota_venta_mensual : '' }}"></td>
             </tr>
           </table>
-            <div id="estado_credito_general" class="alert bg-success text-white mt-2 fw-bold">CRÉDITO NO VIABLE</div>
+          <div id="estado_credito_general" class="alert bg-success text-white mt-2 fw-bold">CRÉDITO NO VIABLE</div>
         </div>
         <div class="col-sm-12 col-md-3">
           <table class="table table-bordered">

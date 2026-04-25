@@ -880,16 +880,16 @@
       $validadar_resultado = 0;
       // SOLVENCIA 
       // Fila 01
-      $res_solvencia_relacion_cuota = $credito_formato_evaluacion ? $credito_formato_evaluacion->resultado_cuota_excedente : 0;
-      if ($res_solvencia_relacion_cuota > 0 && $res_solvencia_relacion_cuota <= $rango_tope) {
-          $res_solvencia_relacion_cuota_res = "No evidencia Sobreendeudamiento EXISTE COBERTURA";
-      } elseif ($res_solvencia_relacion_cuota > $rango_tope) {
-          $res_solvencia_relacion_cuota_res = "Evidencia Sobreendeudamiento NO EXISTE COBERTURA";
-      } elseif ($res_solvencia_relacion_cuota <= 0) {
-          $res_solvencia_relacion_cuota_res = "Sobreendeudamiento NO TIENE EXCEDENTE";
-      } else {
-          $res_solvencia_relacion_cuota_res = 0;
-      }
+      // $res_solvencia_relacion_cuota = $credito_formato_evaluacion ? $credito_formato_evaluacion->resultado_cuota_excedente : 0;
+      // if ($res_solvencia_relacion_cuota > 0 && $res_solvencia_relacion_cuota <= $rango_tope) {
+      //     $res_solvencia_relacion_cuota_res = "No evidencia Sobreendeudamiento EXISTE COBERTURA";
+      // } elseif ($res_solvencia_relacion_cuota > $rango_tope) {
+      //     $res_solvencia_relacion_cuota_res = "Evidencia Sobreendeudamiento NO EXISTE COBERTURA";
+      // } elseif ($res_solvencia_relacion_cuota <= 0) {
+      //     $res_solvencia_relacion_cuota_res = "Sobreendeudamiento NO TIENE EXCEDENTE";
+      // } else {
+      //     $res_solvencia_relacion_cuota_res = 0;
+      // }
 
       $res_solvencia_relacion_cuota_resumida = $credito_evaluacion_resumida ? $credito_evaluacion_resumida->indicador_solvencia_cuotas : 0;
         if ($res_solvencia_relacion_cuota_resumida > 0 && $res_solvencia_relacion_cuota_resumida <= $rango_tope) {

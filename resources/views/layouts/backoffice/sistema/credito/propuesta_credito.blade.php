@@ -1075,23 +1075,22 @@
         // SOLVENCIA 
         // Fila 01
         $res_solvencia_relacion_cuota_style = '';
-        $res_solvencia_relacion_cuota = $credito_formato_evaluacion ? $credito_formato_evaluacion->resultado_cuota_excedente : 0;
-
-        if ($res_solvencia_relacion_cuota > 0 && $res_solvencia_relacion_cuota <= $rango_tope) {
-            $res_solvencia_relacion_cuota_res = "No evidencia Sobreendeudamiento EXISTE COBERTURA";
-            $res_solvencia_relacion_cuota_style = '';
-        } elseif ($res_solvencia_relacion_cuota > $rango_tope) {
-            $res_solvencia_relacion_cuota_res = "Evidencia Sobreendeudamiento NO EXISTE COBERTURA";
-            $res_solvencia_relacion_cuota_style = 'color:#e80505;';
-            $validadar_resultado++;
-        } elseif ($res_solvencia_relacion_cuota <= 0) {
-            $res_solvencia_relacion_cuota_res = "Sobreendeudamiento NO TIENE EXCEDENTE";
-            $res_solvencia_relacion_cuota_style = 'color:#e80505;';
-            $validadar_resultado++;
-        } else {
-            $res_solvencia_relacion_cuota_res = 0;
-            $res_solvencia_relacion_cuota_style = '';
-        }
+        // $res_solvencia_relacion_cuota = $credito_formato_evaluacion ? $credito_formato_evaluacion->resultado_cuota_excedente : 0;
+        // if ($res_solvencia_relacion_cuota > 0 && $res_solvencia_relacion_cuota <= $rango_tope) {
+        //     $res_solvencia_relacion_cuota_res = "No evidencia Sobreendeudamiento EXISTE COBERTURA";
+        //     $res_solvencia_relacion_cuota_style = '';
+        // } elseif ($res_solvencia_relacion_cuota > $rango_tope) {
+        //     $res_solvencia_relacion_cuota_res = "Evidencia Sobreendeudamiento NO EXISTE COBERTURA";
+        //     $res_solvencia_relacion_cuota_style = 'color:#e80505;';
+        //     $validadar_resultado++;
+        // } elseif ($res_solvencia_relacion_cuota <= 0) {
+        //     $res_solvencia_relacion_cuota_res = "Sobreendeudamiento NO TIENE EXCEDENTE";
+        //     $res_solvencia_relacion_cuota_style = 'color:#e80505;';
+        //     $validadar_resultado++;
+        // } else {
+        //     $res_solvencia_relacion_cuota_res = 0;
+        //     $res_solvencia_relacion_cuota_style = '';
+        // }
 
         $res_solvencia_relacion_cuota_resumida = $credito_evaluacion_resumida ? $credito_evaluacion_resumida->indicador_solvencia_cuotas : 0;
         if ($res_solvencia_relacion_cuota_resumida > 0 && $res_solvencia_relacion_cuota_resumida <= $rango_tope) {
@@ -1605,23 +1604,23 @@
         </div>
       @endif
 
-              <?php
-              $excedente_propuesta_con_deduccion = $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->excedente_propuesta_con_deduccion : 0;
-              $rango_tope = configuracion($tienda->id,'rango_tope')['valor'];
-              $estado_imprimir = 0;
-              if ($excedente_propuesta_con_deduccion < 0) {
-                  $estado_imprimir = 1;
-              } else if ($excedente_propuesta_con_deduccion <= $rango_tope) {
-                
-              } else if ($excedente_propuesta_con_deduccion > $rango_tope){
-                  $estado_imprimir = 1;
-              }
-      
-              if($validadar_resultado==3){
-                  $estado_imprimir = 1;
-              }
-              ?>
-      
+      <?php
+        $excedente_propuesta_con_deduccion = $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->excedente_propuesta_con_deduccion : 0;
+        $rango_tope = configuracion($tienda->id,'rango_tope')['valor'];
+        $estado_imprimir = 0;
+        if ($excedente_propuesta_con_deduccion < 0) {
+            $estado_imprimir = 1;
+        } else if ($excedente_propuesta_con_deduccion <= $rango_tope) {
+          
+        } else if ($excedente_propuesta_con_deduccion > $rango_tope){
+            $estado_imprimir = 1;
+        }
+
+        if($validadar_resultado==3){
+            $estado_imprimir = 1;
+        }
+      ?>
+
       <div class="row mt-1">
         <div class="col" style="flex: 0 0 0%;">
           @if($view_detalle!='false')
@@ -1631,29 +1630,31 @@
         </div>
         <div class="col" style="flex: 0 0 0%;">
           @if($validadar_resultado==3)
-          <div style="width: 300px;
-    background-color: #ffc9ca;
-    border: 1px solid #ff6666 !important;
-    border-radius: 5px;
-    padding: 5px;
-    color: #93222c;
-    text-align: center;
-    font-weight: bold;">NO ES VIABLE</div>
+            <div style="width: 300px;
+              background-color: #ffc9ca;
+              border: 1px solid #ff6666 !important;
+              border-radius: 5px;
+              padding: 5px;
+              color: #93222c;
+              text-align: center;
+              font-weight: bold;">NO ES VIABLE
+            </div>
           @elseif($estado_imprimir==1)
-          <div style="width: 300px;
-    background-color: #ffc9ca;
-    border: 1px solid #ff6666 !important;
-    border-radius: 5px;
-    padding: 5px;
-    color: #93222c;
-    text-align: center;
-    font-weight: bold;">Cuota total/excedente total "NO ES VIABLE"</div>
+            <div style="width: 300px;
+              background-color: #ffc9ca;
+              border: 1px solid #ff6666 !important;
+              border-radius: 5px;
+              padding: 5px;
+              color: #93222c;
+              text-align: center;
+              font-weight: bold;">Cuota total/excedente total "NO ES VIABLE"
+            </div>
           @else
-          <button type="button" class="btn btn-info" 
-                  onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=solicitudpropuesta_credito&tipo=1')}}', size: 'modal-fullscreen' })"
-                  
-                  id="boton_imprimir"
-                  ><i class="fa-solid fa-file-pdf"></i> IMPRIMIR</button>
+            <button type="button" class="btn btn-info" 
+              onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=solicitudpropuesta_credito&tipo=1')}}', size: 'modal-fullscreen' })"
+              id="boton_imprimir">
+              <i class="fa-solid fa-file-pdf"></i> IMPRIMIR
+            </button>
           @endif
         </div>
         <div class="col" style="flex: 1 0 0%;">

@@ -171,7 +171,7 @@
                 @endif --}}
               {{-- @endif --}}
               @if($credito_evaluacion_resumida && $users_prestamo->idfuenteingreso == 1) {{-- Independiente --}}
-                @php
+                {{-- @php
                   $res_solvencia_relacion_cuota = $credito_formato_evaluacion ? $credito_formato_evaluacion->resultado_cuota_excedente : 0;
                 @endphp
                 @if ($res_solvencia_relacion_cuota > 0
@@ -188,6 +188,15 @@
                   @php $validad_eva_resumida = 1; @endphp
                 @else
                   @php $validad_eva_resumida = 0; @endphp
+                @endif --}}
+                @if ($credito_evaluacion_resumida->estado_credito_general=='CRÉDITO VIABLE'
+                    && $validadar_ampliacion == 0
+                  )
+                  <button type="submit" class="btn btn-success">
+                    <i class="fa-solid fa-check"></i> SI, PASAR A PROCESO
+                  </button>
+                @else
+                  @php $validad_eva_resumida = 1; @endphp
                 @endif
               @elseif($users_prestamo->idfuenteingreso == 2) {{-- Dependiente --}}
                 @php

@@ -77,7 +77,6 @@
 
         //validar ampliado
         $credito_propuesta = DB::table('credito_propuesta')->where('credito_propuesta.idcredito',$credito->id)->first();
-        dd($credito);
         if($credito->idmodalidad_credito == 2){ // Ampliado
           if($credito_propuesta){
             if($credito_propuesta->monto_compra_deuda_det==''){

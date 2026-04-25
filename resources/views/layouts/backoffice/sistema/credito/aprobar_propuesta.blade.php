@@ -79,7 +79,7 @@
         $credito_propuesta = DB::table('credito_propuesta')->where('credito_propuesta.idcredito',$credito->id)->first();
         if($credito->idmodalidad_credito == 2){ // Ampliado
           if($credito_propuesta){
-            if($credito_propuesta->monto_compra_deuda_det==''){
+            if($credito_propuesta->monto_compra_deuda_det=='' || $credito_propuesta->monto_compra_deuda_det=="[]"){
               $validadar_ampliacion = 1;
             }
           }else{
@@ -171,24 +171,6 @@
                 @endif --}}
               {{-- @endif --}}
               @if($credito_evaluacion_resumida && $users_prestamo->idfuenteingreso == 1) {{-- Independiente --}}
-                {{-- @php
-                  $res_solvencia_relacion_cuota = $credito_formato_evaluacion ? $credito_formato_evaluacion->resultado_cuota_excedente : 0;
-                @endphp
-                @if ($res_solvencia_relacion_cuota > 0
-                    && $res_solvencia_relacion_cuota <= $rango_tope
-                    && $validadar_ampliacion == 0
-                    && $credito_evaluacion_resumida->estado_credito_general=='CRÉDITO VIABLE'
-                  )
-                  <button type="submit" class="btn btn-success">
-                    <i class="fa-solid fa-check"></i> SI, PASAR A PROCESO
-                  </button>
-                @elseif ($res_solvencia_relacion_cuota > $rango_tope)
-                  @php $validad_eva_resumida = 1; @endphp
-                @elseif ($res_solvencia_relacion_cuota <= 0)
-                  @php $validad_eva_resumida = 1; @endphp
-                @else
-                  @php $validad_eva_resumida = 0; @endphp
-                @endif --}}
                 @if ($credito_evaluacion_resumida->estado_credito_general=='CRÉDITO VIABLE'
                     && $validadar_ampliacion == 0
                   )

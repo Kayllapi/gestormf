@@ -199,8 +199,8 @@
                                                                          value="{{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->cantidad_pareja_juridico : 0 }}" id="cantidad_pareja_juridico" {{ $view_detalle=='false' ? 'disabled' : ''  }}></td>
               </tr>
               <tr>
-                <td style="background-color: #c8c8c8 !important;text-align: right;" colspan=2>TOTAL</td>
-                <td style="background-color: #c8c8c8 !important;"><input type="number" style="padding: 4px;" disabled class="form-control text-center" 
+                <td style="background-color: #c8c8c8 !important;text-align: right; font-weight: bold;" colspan=2>TOTAL</td>
+                <td style="background-color: #c8c8c8 !important;"><input type="number" style="padding: 4px;" disabled class="form-control text-center fw-bold" 
                                                                          value="{{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->total_deuda : 0 }}" id="total_deuda" {{ $view_detalle=='false' ? 'disabled' : ''  }}></td>
               </tr>
             </tbody>
@@ -433,8 +433,8 @@
                          value="{{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->gasto_vivienda : 0 }}" suma id="gasto_vivienda" {{ $view_detalle=='false' ? 'disabled' : ''  }}></td>
               </tr>
               <tr>
-                <th style="background-color: #c8c8c8 !important;">Servicios</th>
-                <td style="background-color: #c8c8c8 !important;"><input type="text" class="form-control campo_moneda" value="{{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->total_servicios : 0 }}" suma id="total_servicios" disabled></td>
+                <th style="background-color: #efefef !important;">Servicios</th>
+                <td style="background-color: #efefef !important;"><input type="text" class="form-control campo_moneda fw-bold" value="{{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->total_servicios : 0 }}" suma id="total_servicios" disabled></td>
               </tr>
               <tr>
                 <td style="background-color: #efefef !important;">Agua</td>
@@ -469,12 +469,12 @@
               <tr>
                 <td style="background-color: #efefef !important;">Otros gastos personales ({{ configuracion($tienda->id,'provision_gastos_familiares')['valor'] }}%)</td>
                 <td style="background-color: #efefef !important;">
-                  <input type="text" class="form-control campo_moneda" value="{{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->gasto_otros : 0 }}" 
+                  <input type="text" class="form-control campo_moneda fw-bold" value="{{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->gasto_otros : 0 }}" 
                                                                          suma id="gasto_otros" disabled></td>
               </tr>
               <tr>
-                <th style="background-color: #c8c8c8 !important;">Total Gasto Familiar (S/.)</th>
-                <td style="background-color: #c8c8c8 !important;"><input type="text" disabled class="form-control campo_moneda" value="{{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->gasto_total : 0 }}" id="gasto_total"></td>
+                <th style="background-color: #c8c8c8 !important; font-weight: bold;">Total Gasto Familiar (S/.)</th>
+                <td style="background-color: #c8c8c8 !important;"><input type="text" disabled class="form-control campo_moneda fw-bold" value="{{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->gasto_total : 0 }}" id="gasto_total"></td>
               </tr>
             </tbody>
           </table>
@@ -483,12 +483,12 @@
           <table>
             <tr>
               <td>Número total de hijos</td>
-              <td><input type="text" valida_input_vacio class="form-control color_cajatexto" 
+              <td><input type="text" valida_input_vacio class="form-control color_cajatexto fw-bold" 
                          value="{{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->total_hijos : 0 }}" id="total_hijos" style="width:100px;" {{ $view_detalle=='false' ? 'disabled' : ''  }}></td>
             </tr>
             <tr>
               <td>Número de hijos dependientes </td>
-              <td><input type="text" valida_input_vacio class="form-control color_cajatexto" 
+              <td><input type="text" valida_input_vacio class="form-control color_cajatexto fw-bold" 
                          value="{{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->total_hijos_dependientes : 0 }}" id="total_hijos_dependientes" style="width:100px;" {{ $view_detalle=='false' ? 'disabled' : ''  }}></td>
             </tr>
           </table>

@@ -82,20 +82,19 @@
             </div>
           </div>
           <div class="row">
-            <label class="col-sm-3 col-form-label" style="text-align: right;">DNI/RUC:</label>
+            <label class="col-sm-3 col-form-label" style="text-align: right;">RUC/DNI/CE:</label>
             <div class="col-sm-7">
               <input type="text" step="any" class="form-control" value="{{ $credito->docuementocliente }}" disabled>
             </div>
           </div>
           @if($users_prestamo->dni_pareja!='' or $users_prestamo->nombrecompleto_pareja!='')
           <div class="row">
-            <label class="col-sm-3 col-form-label" style="text-align: right;">DNI:</label>
+            <label class="col-sm-3 col-form-label" style="text-align: right;">DNI/CE:</label>
             <div class="col-sm-7">
               <input type="text" step="any" class="form-control" value="{{ $users_prestamo->dni_pareja }}" disabled>
             </div>
           </div>
           @endif
-          
           <div class="row">
             <label class="col-sm-3 col-form-label" style="text-align: right;">EJERCICIO:</label>
             <div class="col-sm-7">
@@ -106,6 +105,12 @@
               @endif
             </div>
           </div>
+          <di class="row">
+            <label class="col-sm-3 col-form-label" style="text-align: right;">ASESOR(A):</label>
+            <div class="col-sm-7">
+              <input type="text" step="any" class="form-control" value="{{ Auth::user()->nombre }}" disabled>
+            </div>
+          </di>
         </div>
         <div class="col-sm-12 col-md-3">
           <div class="row">
@@ -246,7 +251,7 @@
         <div class="col-sm-12 col-md-6">
           <table>
             <tr>
-              <td>f) Estabilidad de los otros ingresos (marcar √)
+              <td>f) Estabilidad de los otros ingresos (marcar ✅)
                 <br>
                 <table class="m-2">
                   <tr>

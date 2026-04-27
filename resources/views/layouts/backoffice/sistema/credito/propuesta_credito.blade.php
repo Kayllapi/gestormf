@@ -410,38 +410,49 @@
               <tr>
                 <td style="width:80px">Destino:</td>
                 <td colspan="2">
-                  <input type="text" class="form-control" disabled id="tipo_destino_credito_nombre" 
-                         value="{{ $credito->tipo_destino_credito_nombre}}"></td>
+                  <input type="text"
+                    class="form-control"
+                    disabled
+                    id="tipo_destino_credito_nombre" 
+                    value="{{ $credito->tipo_destino_credito_nombre}}">
+                </td>
                 <td style="width:100px">
-                  <input type="text" class="form-control campo_moneda" disabled id="monto_destino_credito" 
-                         value="{{ $credito->monto_solicitado }}"></td>
+                  <input type="text"
+                    class="form-control campo_moneda"
+                    disabled
+                    id="monto_destino_credito" 
+                    value="{{ $credito->monto_solicitado }}">
+                </td>
                 <td style="width:100px">Detalle:</td>
                 <td>
-                    @if($credito->idevaluacion == 1)
-                    <input type="text" class="form-control" disabled id="detalle_destino_credito" 
-                           value="{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->detalle_destino_prestamo : '' }}">
-                    @else
-                    <input type="text" class="form-control" disabled id="detalle_destino_credito" 
-                           value="{{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->detalle_destino_prestamo : '' }}">
-                    @endif
-                    
+                  @if($credito->idevaluacion == 1)
+                    <input type="text" class="form-control"
+                      disabled
+                      id="detalle_destino_credito" 
+                      value="{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->detalle_destino_prestamo : '' }}">
+                  @else
+                    <input type="text" class="form-control"
+                      disabled
+                      id="detalle_destino_credito" 
+                      value="{{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->detalle_destino_prestamo : '' }}">
+                  @endif
                 </td>
               </tr>
-                  <?php
-                  $saldo_prestamo_vigente_propio = DB::table('credito')
-                      ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
-                      ->where('credito.idcliente',$credito->idcliente)
-                      ->where('credito.estado','DESEMBOLSADO')
-                      ->where('credito.idestadocredito',1)
-                      ->select(
-                          'credito.*',
-                          'credito_prendatario.nombre as nombreproductocredito',
-                          'credito_prendatario.modalidad as modalidadproductocredito',
-                      )
-                      ->distinct()
-                      ->get();
-                  $i=0;
-                  ?>
+              @php
+                $saldo_prestamo_vigente_propio = DB::table('credito')
+                  ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
+                  ->where('credito.idcliente',$credito->idcliente)
+                  ->where('credito.estado','DESEMBOLSADO')
+                  ->where('credito.idestadocredito',1)
+                  ->select(
+                      'credito.*',
+                      'credito_prendatario.nombre as nombreproductocredito',
+                      'credito_prendatario.modalidad as modalidadproductocredito',
+                  )
+                  ->distinct()
+                  ->get();
+                $i=0;
+              @endphp
               @if($credito->idmodalidad_credito==2 && count($saldo_prestamo_vigente_propio)>0)
                   @if($view_detalle=='false')
                       <tr>
@@ -672,9 +683,13 @@
               <tr>
                 <td></td>
                 <td colspan="2">Neto a Entregar (S/)</td>
-                <td><input type="text" class="form-control campo_moneda" disabled id="neto_destino_credito" 
-                           value="{{ $credito_propuesta ? (number_format($credito->monto_solicitado - $credito_propuesta->monto_compra_deuda, 2, '.', '')) : '0.00' }}"></td>
-                
+                <td>
+                  <input type="text"
+                    class="form-control campo_moneda"
+                    disabled
+                    id="neto_destino_credito" 
+                    value="{{ $credito_propuesta ? (number_format($credito->monto_solicitado - $credito_propuesta->monto_compra_deuda, 2, '.', '')) : $credito->monto_solicitado }}">
+                </td>
                 <td colspan="2" rowspan="{{count($saldo_prestamo_vigente_propio)}}"></td>
               </tr>
             </tbody>

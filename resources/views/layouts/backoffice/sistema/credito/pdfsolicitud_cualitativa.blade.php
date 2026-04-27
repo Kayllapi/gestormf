@@ -217,7 +217,7 @@
       </div>
     </div>
     <span class="badge">II. EVALUACIÓN CUALITATIVA</span>
-    <span class="badge subtitle">2.1 N° DE ENTIDADES FINANCIERAS (Se considera deuda interna y Líneas de creditos sin uso)</span>
+    <span class="badge subtitle">2.1 N° DE ENTIDADES FINANCIERAS ADEUDADAS (Se considera deuda interna y Líneas de creditos sin uso)</span>
     <div class="row">
       <div class="col">
         <table class="table">
@@ -248,8 +248,8 @@
               <td style="text-align: center;">{{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->cantidad_pareja_juridico : 0 }}</td>
             </tr>
             <tr>
-              <td style="text-align: right;" colspan=2>TOTAL</td>
-              <td style="text-align: center;">{{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->total_deuda : 0 }}</td>
+              <td style="text-align: right; font-weight: bold;" colspan=2>TOTAL</td>
+              <td style="text-align: center; font-weight: bold;">{{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->total_deuda : 0 }}</td>
             </tr>
           </tbody>
         </table>
@@ -489,8 +489,8 @@
               <td class="campo_moneda">{{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->gasto_vivienda : 0 }}</td>
             </tr>
             <tr>
-              <th style="background-color: #fff !important;" align="left">Servicios</th>
-              <td style="background-color: #fff !important;" class="campo_moneda">{{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->total_servicios : 0 }}</td>
+              <th style="background-color: #fff !important; font-weight: bold;" align="left">Servicios</th>
+              <td style="background-color: #fff !important; font-weight: bold;" class="campo_moneda">{{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->total_servicios : 0 }}</td>
             </tr>
             <tr>
               <td>Agua</td>
@@ -517,8 +517,8 @@
               <td class="campo_moneda">{{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->gasto_otros : 0 }}</td>
             </tr>
             <tr>
-              <th style="background-color: #fff !important;" align="left">Total Gasto Familiar (S/.)</th>
-              <td style="background-color: #fff !important;" class="campo_moneda">{{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->gasto_total : 0 }}</td>
+              <th style="background-color: #fff !important; font-weight: bold;" align="left">Total Gasto Familiar (S/.)</th>
+              <td style="background-color: #fff !important; font-weight: bold;" class="campo_moneda">{{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->gasto_total : 0 }}</td>
             </tr>
           </tbody>
         </table>
@@ -526,12 +526,12 @@
       <div class="col">
         <table>
           <tr>
-            <td>Número total de hijos</td>
-            <td class="border-td" width="50px" align="center">{{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->total_hijos : 0 }}</td>
+            <td style="font-weight: bold;">Número total de hijos</td>
+            <td class="border-td" style="font-weight: bold;" width="50px" align="center">{{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->total_hijos : 0 }}</td>
           </tr>
           <tr>
-            <td>Número de hijos dependientes </td>
-            <td class="border-td" width="50px" align="center">{{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->total_hijos_dependientes : 0 }}</td>
+            <td style="font-weight: bold;">Número de hijos dependientes </td>
+            <td class="border-td" style="font-weight: bold;" width="50px" align="center">{{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->total_hijos_dependientes : 0 }}</td>
           </tr>
         </table>
       </div>

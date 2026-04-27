@@ -24,6 +24,9 @@
         <h5 class="modal-title">EVALUACIÓN CUALITATIVA </h5>
         <button type="button" class="btn-close text-white" id="modal-close-garantia-cliente" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
+    <div class="mb-1 mt-2">
+      <span class="badge d-block">I. INFORMACIÓN DEL CLIENTE</span>
+    </div>
     <div class="modal-body modal-body-cualitativa">
       <div class="row">
         <div class="col-sm-12 col-md-6">

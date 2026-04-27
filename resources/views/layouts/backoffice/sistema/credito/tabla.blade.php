@@ -81,6 +81,7 @@
   }
   load_nuevo_credito();
   function load_nuevo_credito(){
+    limpiarErrores();
     pagina({ route:"{{url('backoffice/'.$tienda->id.'/credito/create?view=registrar')}}", result:'#form-credito-result'});
   }
 

@@ -266,9 +266,8 @@ function forminput(param) {
 }
 function formerror(param) {
         var errorsHtml= '';
-        var i=0
+        var i=0;
         $('.class-input').removeAttr('style');
-        //$('.error-input').remove();
         $('.errors').remove();
         $.each(param['dato'].responseJSON.errors, function( key, value ) {
             $('input#'+key).addClass('class-input').css('border','1px solid #f54708');
@@ -362,6 +361,8 @@ function callback(param={},callback,thisp=null) {
         },
         error:function(respuesta)
         {
+            limpiarErrores();
+
            if(respuesta.responseJSON.message=='Your email address is not verified.'){
               carga({
                     input:param['carga'],
@@ -383,6 +384,12 @@ function callback(param={},callback,thisp=null) {
 
         }
     });
+}
+function limpiarErrores(){
+    $('.errors').popover('dispose');
+    $('.errors').remove();
+    $('.popover').remove();
+    $('.class-input').removeAttr('style');
 }
 function pagina(param) {
     if(param['route']=='') {

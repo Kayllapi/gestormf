@@ -301,7 +301,11 @@
               </td>
             </tr>
             <tr>
-              <td>g) Gestión en general (marcar √) <br>
+              <td>g) Gestión en general (marcar <img 
+                    width="14"
+                    height="14"
+                    src="data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e"
+                  >) <br>
                 <table class="m-2">
                   <tr>
                     <td>Lleva registros de ventas, cuentas por cobrar y pagar</td>

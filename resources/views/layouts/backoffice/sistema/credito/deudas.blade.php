@@ -755,7 +755,7 @@
         @endif
         <div class="col" style="flex: 0 0 0%;">
           <button type="button" 
-                  class="btn btn-dark" 
+                  class="btn btn-info" 
                   onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=solicitud_deudas')}}', size: 'modal-fullscreen' })"
                   id="boton_imprimir"
                   >

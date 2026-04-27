@@ -286,24 +286,63 @@
             </tr>
             <tr>
               <td>
-                f) Estabilidad de los otros ingresos (marcar x):
+                f) Estabilidad de los otros ingresos (marcar <img 
+                    width="14"
+                    height="14"
+                    src="data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e"
+                  >):
                 <table class="subtable">
                   <tbody>
                     <tr>
                       <td>Asalariado fijo</td>
-                      <td>{{ $credito_evaluacion_cualitativa ? ( $credito_evaluacion_cualitativa->saladario_fijo == "SI" ? "(x)" : "( )" ) : "( )" }}</td>
+                      <td>
+                        {!! $credito_evaluacion_cualitativa 
+                          ? ( $credito_evaluacion_cualitativa->saladario_fijo == "SI" 
+                            ? "(<img width='12' height='12' src=\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e\">)" 
+                            : "( )" ) 
+                          : "( )" 
+                        !!}
+                      </td>
                       <td>Otros negocios</td>
-                      <td>{{ $credito_evaluacion_cualitativa ? ( $credito_evaluacion_cualitativa->otros_negocios == "SI" ? "(x)" : "( )" ) : "( )" }}</td>
+                      <td>
+                        {!! $credito_evaluacion_cualitativa 
+                          ? ( $credito_evaluacion_cualitativa->otros_negocios == "SI" 
+                            ? "(<img width='12' height='12' src=\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e\">)" 
+                            : "( )" ) 
+                          : "( )" 
+                        !!}
+                      </td>
                     </tr>
                     <tr>
                       <td>Alquiler de locales</td>
-                      <td>{{ $credito_evaluacion_cualitativa ? ( $credito_evaluacion_cualitativa->alquiler_local == "SI" ? "(x)" : "( )" ) : "( )" }}</td>
+                      <td>
+                        {!! $credito_evaluacion_cualitativa 
+                          ? ( $credito_evaluacion_cualitativa->alquiler_local == "SI" 
+                            ? "(<img width='12' height='12' src=\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e\">)" 
+                            : "( )" ) 
+                          : "( )" 
+                        !!}
+                      </td>
                       <td>No tiene</td>
-                      <td>{{ $credito_evaluacion_cualitativa ? ( $credito_evaluacion_cualitativa->no_tiene == "SI" ? "(x)" : "( )" ) : "( )" }}</td>
+                      <td>
+                        {!! $credito_evaluacion_cualitativa 
+                          ? ( $credito_evaluacion_cualitativa->no_tiene == "SI" 
+                            ? "(<img width='12' height='12' src=\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e\">)" 
+                            : "( )" ) 
+                          : "( )" 
+                        !!}
+                      </td>
                     </tr>
                     <tr>
                       <td>Pensionista</td>
-                      <td>{{ $credito_evaluacion_cualitativa ? ( $credito_evaluacion_cualitativa->pensionista == "SI" ? "(x)" : "( )" ) : "( )" }}</td>
+                      <td>
+                        {!! $credito_evaluacion_cualitativa 
+                          ? ( $credito_evaluacion_cualitativa->pensionista == "SI" 
+                            ? "(<img width='12' height='12' src=\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e\">)" 
+                            : "( )" ) 
+                          : "( )" 
+                        !!}
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -321,23 +360,58 @@
                 <table class="subtable">
                   <tr>
                     <td>Lleva registros de ventas, cuentas por cobrar y pagar</td>
-                    <td>{{ $credito_evaluacion_cualitativa ? ( $credito_evaluacion_cualitativa->registro_ventas_cuentas == "SI" ? "(x)" : "( )" ) : "( )" }}</td>
+                    <td>
+                      {!! $credito_evaluacion_cualitativa 
+                        ? ( $credito_evaluacion_cualitativa->registro_ventas_cuentas == "SI" 
+                          ? "(<img width='12' height='12' src=\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e\">)" 
+                          : "( )" ) 
+                        : "( )" 
+                      !!}
+                    </td>
                   </tr>
                   <tr>
                     <td>Pagos de impuestos al día</td>
-                    <td>{{ $credito_evaluacion_cualitativa ? ( $credito_evaluacion_cualitativa->pago_impuestos_dia == "SI" ? "(x)" : "( )" ) : "( )" }}</td>
+                    <td>
+                      {!! $credito_evaluacion_cualitativa 
+                        ? ( $credito_evaluacion_cualitativa->pago_impuestos_dia == "SI" 
+                          ? "(<img width='12' height='12' src=\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e\">)" 
+                          : "( )" ) 
+                        : "( )" 
+                      !!}
+                    </td>
                   </tr>
                   <tr>
                     <td>Pago de recibo de servicios báicos al día</td>
-                    <td>{{ $credito_evaluacion_cualitativa ? ( $credito_evaluacion_cualitativa->pago_servicios_dia == "SI" ? "(x)" : "( )" ) : "( )" }}</td>
+                    <td>
+                      {!! $credito_evaluacion_cualitativa 
+                        ? ( $credito_evaluacion_cualitativa->pago_servicios_dia == "SI" 
+                          ? "(<img width='12' height='12' src=\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e\">)" 
+                          : "( )" ) 
+                        : "( )" 
+                      !!}
+                    </td>
                   </tr>
                   <tr>  
                     <td>Política de orden en su establecimiento </td>
-                    <td>{{ $credito_evaluacion_cualitativa ? ( $credito_evaluacion_cualitativa->politica_orden == "SI" ? "(x)" : "( )" ) : "( )" }}</td>
+                    <td>
+                      {!! $credito_evaluacion_cualitativa 
+                        ? ( $credito_evaluacion_cualitativa->politica_orden == "SI" 
+                          ? "(<img width='12' height='12' src=\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e\">)" 
+                          : "( )" ) 
+                        : "( )" 
+                      !!}
+                    </td>
                   </tr>
                   <tr>
                     <td>Local cumple con normas municipales y legales</td>
-                    <td>{{ $credito_evaluacion_cualitativa ? ( $credito_evaluacion_cualitativa->normas_municipales == "SI" ? "(x)" : "( )" ) : "( )" }}</td>
+                    <td>
+                      {!! $credito_evaluacion_cualitativa 
+                        ? ( $credito_evaluacion_cualitativa->normas_municipales == "SI" 
+                          ? "(<img width='12' height='12' src=\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e\">)" 
+                          : "( )" ) 
+                        : "( )" 
+                      !!}
+                    </td>
                   </tr>
                 </table>
               </td>

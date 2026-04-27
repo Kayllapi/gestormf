@@ -330,6 +330,9 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
         .custom-radio span {
             transition: all 0.2s ease;
         }
+        .form-check-input:checked[type=checkbox] {
+            --bs-form-check-bg-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e");
+        }
         </style>
 </head>
 <body url="{{ url('/') }}">

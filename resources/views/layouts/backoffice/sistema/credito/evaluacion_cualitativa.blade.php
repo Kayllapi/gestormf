@@ -160,7 +160,7 @@
       
       <div class="mb-1 mt-2">
         <span class="badge d-block" style="background-color: #aaa;
-    color: #000;">2.1 N° DE ENTIDADES FINANCIERAS (Se considera deuda interna y Líneas de creditos sin uso)</span>
+    color: #000;">2.1 N° DE ENTIDADES FINANCIERAS ADEUDADAS (Se considera deuda interna y Líneas de creditos sin uso)</span>
       </div>
       <div class="row">
         <div class="col-sm-12 col-md-4">

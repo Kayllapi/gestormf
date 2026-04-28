@@ -233,7 +233,7 @@
               <th rowspan=2>Plazo Pendiente (meses)</th>
               <th rowspan=2>Cuota (Mensual)</th>
               <th rowspan=2>Saldo Capital</th>
-              <th rowspan=2>Cuota </th>
+              <th rowspan=2>Cuota (Mensual)</th>
               <th colspan=2>Saldo capital según cronograma</th>
             </tr>
             <tr>

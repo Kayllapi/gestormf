@@ -364,7 +364,7 @@
                 <th rowspan=2 width="80px">Plazo Pendiente (meses)</th>
                 <th rowspan=2 width="60px">Cuota (Mensual)</th>
                 <th rowspan=2 width="100px">Saldo Capital</th>
-                <th rowspan=2 width="100px">Cuota </th>
+                <th rowspan=2 width="100px">Cuota (Mensual)</th>
                 <th colspan=2>Saldo capital según cronograma</th>
               </tr>
               <tr>

@@ -50,6 +50,14 @@
               <input type="text" step="any" class="form-control" value="{{ $credito->nombreclientecredito }}" disabled>
             </div>
           </div>
+          @if($users_prestamo->dni_pareja!='' or $users_prestamo->nombrecompleto_pareja!='')
+            <div class="row">
+              <label class="col-sm-4 col-form-label" style="text-align: right;">PAREJA:</label>
+              <div class="col-sm-8">
+                <input type="text" step="any" class="form-control" value="{{ $users_prestamo->nombrecompleto_pareja }}" disabled>
+              </div>
+            </div>
+          @endif
           <div class="row">
             <label class="col-sm-4 col-form-label" style="text-align: right;">GIRO ECONÓMICO:</label>
             <div class="col-sm-8">
@@ -65,20 +73,19 @@
             </div>
           </div>
           <div class="row">
-            <label class="col-sm-3 col-form-label" style="text-align: right;">DNI/RUC:</label>
+            <label class="col-sm-3 col-form-label" style="text-align: right;">RUC/DNI/CE:</label>
             <div class="col-sm-7">
               <input type="text" step="any" class="form-control" value="{{ $credito->docuementocliente }}" disabled>
             </div>
           </div>
           @if($users_prestamo->dni_pareja!='' or $users_prestamo->nombrecompleto_pareja!='')
           <div class="row">
-            <label class="col-sm-3 col-form-label" style="text-align: right;">DNI:</label>
+            <label class="col-sm-3 col-form-label" style="text-align: right;">DNI/CE:</label>
             <div class="col-sm-7">
               <input type="text" step="any" class="form-control" value="{{ $users_prestamo->dni_pareja }}" disabled>
             </div>
           </div>
           @endif
-          
           <div class="row">
             <label class="col-sm-3 col-form-label" style="text-align: right;">EJERCICIO:</label>
             <div class="col-sm-7">
@@ -87,6 +94,12 @@
               @else
                 <input type="text" step="any" class="form-control" id="ejercicio_giro_economico" value="{{ $users_prestamo->db_idforma_ac_economica }}" disabled>
               @endif
+            </div>
+          </div>
+          <div class="row">
+            <label class="col-sm-3 col-form-label" style="text-align: right;">ASESOR(A):</label>
+            <div class="col-sm-7">
+              <input type="text" step="any" class="form-control" value="{{ Auth::user()->nombre }}" disabled>
             </div>
           </div>
         </div>
@@ -227,13 +240,13 @@
             </tbody>
             <tfoot>
               <tr>
-                <td class="color_totales" colspan=7 align="right">Sub Total Deuda</td>
-                <td class="color_totales"><input type="number" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_saldo_capital : '0.00' }}" class="form-control campo_moneda" id="total_saldo_capital" disabled></td>
-                <td class="color_totales"><input type="number" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_cuota : '0.00' }}" class="form-control campo_moneda" id="total_cuota" disabled></td>
-                <td class="color_totales"><input type="number" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_corto_plazo : '0.00' }}" class="form-control campo_moneda" id="total_corto_plazo" disabled></td>
-                <td class="color_totales"><input type="number" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_largo_plazo : '0.00' }}" class="form-control campo_moneda" id="total_largo_plazo" disabled></td>
-                <td class="color_totales"><input type="text" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_saldo_capital_deducciones : '0.00' }}" class="form-control campo_moneda" id="total_saldo_capital_deducciones" disabled></td>
-                <td class="color_totales"><input type="text" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_cuota_deducciones : '0.00' }}" class="form-control campo_moneda" id="total_cuota_deducciones" disabled></td>
+                <td class="color_totales fw-bold" colspan=7 align="right">Sub Total Deuda</td>
+                <td class="color_totales"><input type="number" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_saldo_capital : '0.00' }}" class="form-control campo_moneda fw-bold" id="total_saldo_capital" disabled></td>
+                <td class="color_totales"><input type="number" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_cuota : '0.00' }}" class="form-control campo_moneda fw-bold" id="total_cuota" disabled></td>
+                <td class="color_totales"><input type="number" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_corto_plazo : '0.00' }}" class="form-control campo_moneda fw-bold" id="total_corto_plazo" disabled></td>
+                <td class="color_totales"><input type="number" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_largo_plazo : '0.00' }}" class="form-control campo_moneda fw-bold" id="total_largo_plazo" disabled></td>
+                <td class="color_totales"><input type="text" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_saldo_capital_deducciones : '0.00' }}" class="form-control campo_moneda fw-bold" id="total_saldo_capital_deducciones" disabled></td>
+                <td class="color_totales"><input type="text" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_cuota_deducciones : '0.00' }}" class="form-control campo_moneda fw-bold" id="total_cuota_deducciones" disabled></td>
               
                 @if($view_detalle!='false')
                 <td class="color_totales"></td>
@@ -311,9 +324,9 @@
             </tbody>
             <tfoot>
               <tr>
-                <td class="color_totales" colspan=6 align="right">Sub Total Deuda</td>
-                <td class="color_totales"><input type="number" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_lc_linea_credito : '0.00' }}" class="form-control campo_moneda" id="total_lc_linea_credito" disabled></td>
-                <td class="color_totales"><input type="number" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_lc_cuotas : '0.00' }}" class="form-control campo_moneda" id="total_lc_cuotas" disabled></td>
+                <td class="color_totales fw-bold" colspan=6 align="right">Sub Total Deuda</td>
+                <td class="color_totales"><input type="number" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_lc_linea_credito : '0.00' }}" class="form-control campo_moneda fw-bold" id="total_lc_linea_credito" disabled></td>
+                <td class="color_totales"><input type="number" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_lc_cuotas : '0.00' }}" class="form-control campo_moneda fw-bold" id="total_lc_cuotas" disabled></td>
               
                 @if($view_detalle!='false')
                 <td class="color_totales"></td>
@@ -415,13 +428,13 @@
             </tbody>
             <tfoot>
               <tr>
-                <td class="color_totales" colspan=7 align="right">Sub Total Deuda</td>
-                <td class="color_totales"><input type="number" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_noregulada_saldo_capital : '0.00' }}" class="form-control campo_moneda" id="total_noregulada_saldo_capital" disabled></td>
-                <td class="color_totales"><input type="number" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_noregulada_cuota : '0.00' }}" class="form-control campo_moneda" id="total_noregulada_cuota" disabled></td>
-                <td class="color_totales"><input type="number" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_noregulada_corto_plazo : '0.00' }}" class="form-control campo_moneda" id="total_noregulada_corto_plazo" disabled></td>
-                <td class="color_totales"><input type="number" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_noregulada_largo_plazo : '0.00' }}" class="form-control campo_moneda" id="total_noregulada_largo_plazo" disabled></td>
-                <td class="color_totales"><input type="text" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_noregulada_saldo_capital_deducciones : '0.00' }}" class="form-control campo_moneda" id="total_noregulada_saldo_capital_deducciones" disabled></td>
-                <td class="color_totales"><input type="text" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_noregulada_cuota_deducciones : '0.00' }}" class="form-control campo_moneda" id="total_noregulada_cuota_deducciones" disabled></td>
+                <td class="color_totales fw-bold" colspan=7 align="right">Sub Total Deuda</td>
+                <td class="color_totales"><input type="number" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_noregulada_saldo_capital : '0.00' }}" class="form-control campo_moneda fw-bold" id="total_noregulada_saldo_capital" disabled></td>
+                <td class="color_totales"><input type="number" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_noregulada_cuota : '0.00' }}" class="form-control campo_moneda fw-bold" id="total_noregulada_cuota" disabled></td>
+                <td class="color_totales"><input type="number" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_noregulada_corto_plazo : '0.00' }}" class="form-control campo_moneda fw-bold" id="total_noregulada_corto_plazo" disabled></td>
+                <td class="color_totales"><input type="number" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_noregulada_largo_plazo : '0.00' }}" class="form-control campo_moneda fw-bold" id="total_noregulada_largo_plazo" disabled></td>
+                <td class="color_totales"><input type="text" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_noregulada_saldo_capital_deducciones : '0.00' }}" class="form-control campo_moneda fw-bold" id="total_noregulada_saldo_capital_deducciones" disabled></td>
+                <td class="color_totales"><input type="text" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_noregulada_cuota_deducciones : '0.00' }}" class="form-control campo_moneda fw-bold" id="total_noregulada_cuota_deducciones" disabled></td>
                
                 @if($view_detalle!='false')
                 <td class="color_totales"></td>
@@ -531,32 +544,32 @@
             </tbody>
             <tfoot>
               <tr totales>
-                <td class="color_totales" align="center"><b>TOTAL</b></td>
-                <td class="color_totales"><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('total_er_cplazo', $resumen) }}" disabled id="total_er_cplazo"></td>
-                <td class="color_totales"><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('total_er_lplazo', $resumen) }}" disabled id="total_er_lplazo"></td>
-                <td class="color_totales"><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('total_er_couta', $resumen) }}" disabled id="total_er_couta"></td>
-                <td class="color_totales"><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('total_enr_cplazo', $resumen) }}" disabled id="total_enr_cplazo"></td>
-                <td class="color_totales"><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('total_enr_lplazo', $resumen) }}" disabled id="total_enr_lplazo"></td>
-                <td class="color_totales"><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('total_enr_couta', $resumen) }}" disabled id="total_enr_couta"></td>
-                <td class="color_totales"><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('total_total_cplazo', $resumen) }}" disabled id="total_total_cplazo"></td>
-                <td class="color_totales"><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('total_total_lplazo', $resumen) }}" disabled id="total_total_lplazo"></td>
-                <td class="color_totales"><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('total_resumen', $resumen) }}" disabled id="total_resumen"></td>
-                <td class="color_totales"><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('total_total_couta', $resumen) }}" disabled id="total_total_couta"></td>
+                <td class="color_totales fw-bold" align="center"><b>TOTAL</b></td>
+                <td class="color_totales"><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('total_er_cplazo', $resumen) }}" disabled id="total_er_cplazo"></td>
+                <td class="color_totales"><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('total_er_lplazo', $resumen) }}" disabled id="total_er_lplazo"></td>
+                <td class="color_totales"><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('total_er_couta', $resumen) }}" disabled id="total_er_couta"></td>
+                <td class="color_totales"><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('total_enr_cplazo', $resumen) }}" disabled id="total_enr_cplazo"></td>
+                <td class="color_totales"><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('total_enr_lplazo', $resumen) }}" disabled id="total_enr_lplazo"></td>
+                <td class="color_totales"><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('total_enr_couta', $resumen) }}" disabled id="total_enr_couta"></td>
+                <td class="color_totales"><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('total_total_cplazo', $resumen) }}" disabled id="total_total_cplazo"></td>
+                <td class="color_totales"><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('total_total_lplazo', $resumen) }}" disabled id="total_total_lplazo"></td>
+                <td class="color_totales"><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('total_resumen', $resumen) }}" disabled id="total_resumen"></td>
+                <td class="color_totales"><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('total_total_couta', $resumen) }}" disabled id="total_total_couta"></td>
               </tr>
               <tr>
                  <td colspan=11></td>
               </tr>
               <tr nosumar>
                 <td class="color_totales" align="center"><b>Líneas de Crédito(tarjetas) No Utilizadas</b></td>
-                <td class="color_totales" colspan="2"><input type="text" class="form-control campo_moneda" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_resumen_linea_credito : '0.00' }}" disabled id="total_resumen_linea_credito"></td>
-                <td class="color_totales"><input type="text" class="form-control campo_moneda" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_resumen_cuotas_linea_credito : '0.00' }}" disabled id="total_resumen_cuotas_linea_credito"></td>
+                <td class="color_totales" colspan="2"><input type="text" class="form-control campo_moneda fw-bold" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_resumen_linea_credito : '0.00' }}" disabled id="total_resumen_linea_credito"></td>
+                <td class="color_totales"><input type="text" class="form-control campo_moneda fw-bold" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_resumen_cuotas_linea_credito : '0.00' }}" disabled id="total_resumen_cuotas_linea_credito"></td>
                 <td class="color_totales"></td>
                 <td class="color_totales"></td>
                 <td class="color_totales"></td>
                 <td class="color_totales"></td>
                 <td class="color_totales"></td>
                 <td class="color_totales"></td>
-                <td class="color_totales"><input type="text" class="form-control campo_moneda" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_resumen_cuotas_linea_credito2 : '0.00' }}" disabled id="total_resumen_cuotas_linea_credito2"></td>
+                <td class="color_totales"><input type="text" class="form-control campo_moneda fw-bold" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_resumen_cuotas_linea_credito2 : '0.00' }}" disabled id="total_resumen_cuotas_linea_credito2"></td>
               </tr>
             </tfoot>
             
@@ -658,8 +671,8 @@
             
             <tfoot>
               <tr>
-                <td class="color_totales" colspan=9 align="right">PAGO MES (S/.)</td>
-                <td class="color_totales"><input type="text" class="form-control campo_moneda" value="{{ $credito->total_propuesta }}" id="total_propuesta" disabled></td>
+                <td class="color_totales fw-bold" colspan=9 align="right">PAGO MES (S/.)</td>
+                <td class="color_totales"><input type="text" class="form-control campo_moneda fw-bold" value="{{ $credito->total_propuesta }}" id="total_propuesta" disabled></td>
               </tr>
               <tr>
                 <td colspan=10 class="text-center" id="mensaje_error_cronograma"></td>

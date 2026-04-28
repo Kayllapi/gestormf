@@ -146,10 +146,10 @@
             <td class="border-td">{{ $credito->nombreclientecredito }}</td>
           </tr>
           @if($users_prestamo->dni_pareja!='' or $users_prestamo->nombrecompleto_pareja!='')
-          <tr>
-            <td>PAREJA:</td>
-            <td class="border-td">{{ $users_prestamo->nombrecompleto_pareja }}</td>
-          </tr>
+            <tr>
+              <td>PAREJA:</td>
+              <td class="border-td">{{ $users_prestamo->nombrecompleto_pareja }}</td>
+            </tr>
           @endif
           <tr>
             <td>GIRO ECONÓMICO:</td>
@@ -168,12 +168,12 @@
             <td class="border-td" width="100px">{{ $credito_cuantitativa_deudas?date_format(date_create($credito_cuantitativa_deudas->fecha),'Y-m-d'):'' }}</td>
           </tr>
           <tr>
-            <td>DNI/RUC</td>
+            <td>RUC/DNI/CE</td>
             <td class="border-td">{{ $credito->docuementocliente }}</td>
           </tr>
           @if($users_prestamo->dni_pareja!='' or $users_prestamo->nombrecompleto_pareja!='')
           <tr>
-            <td>DNI:</td>
+            <td>DNI/CE:</td>
             <td class="border-td">{{ $users_prestamo->dni_pareja }}</td>
           </tr>
           @endif
@@ -181,7 +181,10 @@
             <td>EJERCICIO:</td>
             <td class="border-td">{{ $users_prestamo->db_idforma_ac_economica }}</td>
           </tr>
-          
+          <tr>
+            <td>ASESOR(A):</td>
+            <td class="border-td">{{ Auth::user()->nombre }}</td>
+          </tr>
         </table>
       </div>
       <div class="col">
@@ -273,13 +276,13 @@
           </tbody>
           <tfoot>
             <tr>
-              <td class="color_totales" colspan=7 align="right">Sub Total Deuda</td>
-              <td class="color_totales campo_moneda">{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_saldo_capital : '0.00' }}</td>
-              <td class="color_totales campo_moneda">{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_cuota : '0.00' }}</td>
-              <td class="color_totales campo_moneda">{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_corto_plazo : '0.00' }}</td>
-              <td class="color_totales campo_moneda">{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_largo_plazo : '0.00' }}</td>
-              <td class="color_totales campo_moneda">{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_saldo_capital_deducciones : '0.00' }}</td>
-              <td class="color_totales campo_moneda">{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_cuota_deducciones : '0.00' }}</td>
+              <td class="color_totales" style="font-weight: bold;" colspan=7 align="right">Sub Total Deuda</td>
+              <td class="color_totales campo_moneda" style="font-weight: bold;">{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_saldo_capital : '0.00' }}</td>
+              <td class="color_totales campo_moneda" style="font-weight: bold;">{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_cuota : '0.00' }}</td>
+              <td class="color_totales campo_moneda" style="font-weight: bold;">{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_corto_plazo : '0.00' }}</td>
+              <td class="color_totales campo_moneda" style="font-weight: bold;">{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_largo_plazo : '0.00' }}</td>
+              <td class="color_totales campo_moneda" style="font-weight: bold;">{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_saldo_capital_deducciones : '0.00' }}</td>
+              <td class="color_totales campo_moneda" style="font-weight: bold;">{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_cuota_deducciones : '0.00' }}</td>
 
             </tr>
           </tfoot>
@@ -332,9 +335,9 @@
           </tbody>
           <tfoot>
             <tr>
-              <td class="color_totales" colspan=6 align="right">Sub Total Deuda</td>
-              <td class="color_totales campo_moneda">{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_lc_linea_credito : '0.00' }}</td>
-              <td class="color_totales campo_moneda">{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_lc_cuotas : '0.00' }}</td>
+              <td class="color_totales" style="font-weight: bold;" colspan=6 align="right">Sub Total Deuda</td>
+              <td class="color_totales campo_moneda" style="font-weight: bold;">{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_lc_linea_credito : '0.00' }}</td>
+              <td class="color_totales campo_moneda" style="font-weight: bold;">{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_lc_cuotas : '0.00' }}</td>
               
             </tr>
           </tfoot>
@@ -403,13 +406,13 @@
           </tbody>
           <tfoot>
             <tr>
-              <td class="color_totales" colspan=7 align="right">Sub Total Deuda</td>
-              <td class="color_totales campo_moneda">{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_noregulada_saldo_capital : '0.00' }}</td>
-              <td class="color_totales campo_moneda">{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_noregulada_cuota : '0.00' }}</td>
-              <td class="color_totales campo_moneda">{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_noregulada_corto_plazo : '0.00' }}</td>
-              <td class="color_totales campo_moneda">{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_noregulada_largo_plazo : '0.00' }}</td>
-              <td class="color_totales campo_moneda">{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_noregulada_saldo_capital_deducciones : '0.00' }}</td>
-              <td class="color_totales campo_moneda">{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_noregulada_cuota_deducciones : '0.00' }}</td>
+              <td class="color_totales" style="font-weight: bold;" colspan=7 align="right">Sub Total Deuda</td>
+              <td class="color_totales campo_moneda" style="font-weight: bold;">{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_noregulada_saldo_capital : '0.00' }}</td>
+              <td class="color_totales campo_moneda" style="font-weight: bold;">{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_noregulada_cuota : '0.00' }}</td>
+              <td class="color_totales campo_moneda" style="font-weight: bold;">{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_noregulada_corto_plazo : '0.00' }}</td>
+              <td class="color_totales campo_moneda" style="font-weight: bold;">{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_noregulada_largo_plazo : '0.00' }}</td>
+              <td class="color_totales campo_moneda" style="font-weight: bold;">{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_noregulada_saldo_capital_deducciones : '0.00' }}</td>
+              <td class="color_totales campo_moneda" style="font-weight: bold;">{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_noregulada_cuota_deducciones : '0.00' }}</td>
             </tr>
           </tfoot>
         </table>
@@ -512,25 +515,25 @@
           </tbody>
           <tfoot>
             <tr totales>
-              <td align="right"><b>TOTAL</b></td>
-              <td class="campo_moneda">{{ encontrar_valor('total_er_cplazo', $resumen) }}</td>
-              <td class="campo_moneda">{{ encontrar_valor('total_er_lplazo', $resumen) }}</td>
-              <td class="campo_moneda">{{ encontrar_valor('total_er_couta', $resumen) }}</td>
-              <td class="campo_moneda">{{ encontrar_valor('total_enr_cplazo', $resumen) }}</td>
-              <td class="campo_moneda">{{ encontrar_valor('total_enr_lplazo', $resumen) }}</td>
-              <td class="campo_moneda">{{ encontrar_valor('total_enr_couta', $resumen) }}</td>
-              <td class="campo_moneda">{{ encontrar_valor('total_total_cplazo', $resumen) }}</td>
-              <td class="campo_moneda">{{ encontrar_valor('total_total_lplazo', $resumen) }}</td>
-              <td class="campo_moneda">{{ encontrar_valor('total_resumen', $resumen) }}</td>
-              <td class="campo_moneda">{{ encontrar_valor('total_total_couta', $resumen) }}</td>
+              <td style="font-weight: bold;" align="right"><b>TOTAL</b></td>
+              <td class="campo_moneda" style="font-weight: bold;">{{ encontrar_valor('total_er_cplazo', $resumen) }}</td>
+              <td class="campo_moneda" style="font-weight: bold;">{{ encontrar_valor('total_er_lplazo', $resumen) }}</td>
+              <td class="campo_moneda" style="font-weight: bold;">{{ encontrar_valor('total_er_couta', $resumen) }}</td>
+              <td class="campo_moneda" style="font-weight: bold;">{{ encontrar_valor('total_enr_cplazo', $resumen) }}</td>
+              <td class="campo_moneda" style="font-weight: bold;">{{ encontrar_valor('total_enr_lplazo', $resumen) }}</td>
+              <td class="campo_moneda" style="font-weight: bold;">{{ encontrar_valor('total_enr_couta', $resumen) }}</td>
+              <td class="campo_moneda" style="font-weight: bold;">{{ encontrar_valor('total_total_cplazo', $resumen) }}</td>
+              <td class="campo_moneda" style="font-weight: bold;">{{ encontrar_valor('total_total_lplazo', $resumen) }}</td>
+              <td class="campo_moneda" style="font-weight: bold;">{{ encontrar_valor('total_resumen', $resumen) }}</td>
+              <td class="campo_moneda" style="font-weight: bold;">{{ encontrar_valor('total_total_couta', $resumen) }}</td>
             </tr>
             <tr>
                <td colspan=11></td>
             </tr>
             <tr>
-              <td><b>Líneas de Crédito(tarjetas) No Utilizadas</b></td>
-              <td class="campo_moneda" colspan="2">{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_resumen_linea_credito : '0.00' }}</td>
-              <td class="campo_moneda">{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_resumen_cuotas_linea_credito : '0.00' }}</td>
+              <td style="font-weight: bold;"><b>Líneas de Crédito(tarjetas) No Utilizadas</b></td>
+              <td class="campo_moneda" style="font-weight: bold;" colspan="2">{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_resumen_linea_credito : '0.00' }}</td>
+              <td class="campo_moneda" style="font-weight: bold;">{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_resumen_cuotas_linea_credito : '0.00' }}</td>
               <td></td>
               <td></td>
               <td></td>
@@ -625,8 +628,8 @@
           </tbody>
           <tfoot>
             <tr>
-              <td class="color_totales" colspan=9 align="right">PAGO MES (S/.)</td>
-              <td class="color_totales campo_moneda">{{ $credito->total_propuesta }}</td>
+              <td class="color_totales" style="font-weight: bold;" colspan=9 align="right">PAGO MES (S/.)</td>
+              <td class="color_totales campo_moneda" style="font-weight: bold;">{{ $credito->total_propuesta }}</td>
             </tr>
           </tfoot>
         </table>

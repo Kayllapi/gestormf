@@ -416,7 +416,7 @@
                   <th colspan="2" nombre_producto>{{ $value->nombre_producto }}</th>
                 
                   @if($view_detalle!='false')
-                  <th ><button class="btn btn-danger" type="button" onclick="eliminar_producto_secundario(this)"><i class="fa fa-trash" style="color: #000;"></i></button></th>
+                  <th ><button class="btn btn-danger" type="button" onclick="eliminar_producto_secundario(this)"><i class="fa fa-trash"></i></button></th>
                   @endif
                 </tr>
                 <tr>  
@@ -665,7 +665,7 @@
                   <th colspan="2" nombre_producto>{{ $value->nombre_producto }}</th>
                 
                   @if($view_detalle!='false')
-                  <th ><button class="btn btn-danger" type="button" onclick="eliminar_producto_secundario(this)"><i class="fa fa-trash" style="color: #000;"></i></button></th>
+                  <th ><button class="btn btn-danger" type="button" onclick="eliminar_producto_secundario(this)"><i class="fa fa-trash"></i></button></th>
                   @endif
                 </tr>
                 <tr>  

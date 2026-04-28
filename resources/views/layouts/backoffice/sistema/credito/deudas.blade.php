@@ -160,8 +160,8 @@
                 <th rowspan=3>TIPO DE CRÉDITO</th>
                 <th rowspan=3>ENTIDAD FINANCIERA</th>
                 <th rowspan=3 width="80px">DEUDOR</th>
-                <th colspan=4>En moneda de origen (S/., $)</th>
-                <th colspan=4>En Soles (S/.)</th>
+                <th colspan=4 style="text-align: center">En moneda de origen (S/., $)</th>
+                <th colspan=4 style="text-align: center">En Soles (S/.)</th>
                 <th rowspan=2 colspan=2>DEDUCCIONES / COMPRA DE DEUDA O AMPLIACION (S/.)</th>
                 
                 @if($view_detalle!='false')
@@ -268,8 +268,8 @@
                 <th rowspan=3>TIPO DE CRÉDITO</th>
                 <th rowspan=3>ENTIDAD FINANCIERA</th>
                 <th rowspan=3>DEUDOR</th>
-                <th colspan=3>En moneda de origen (S/., $)</th>
-                <th colspan=2>En Soles (S/.)</th>
+                <th colspan=3 style="text-align: center">En moneda de origen (S/., $)</th>
+                <th colspan=2 style="text-align: center">En Soles (S/.)</th>
                 @if($view_detalle!='false')
                 <th rowspan=2>
                   <button type="button" class="btn btn-success" onclick="agrega_linea_credito()"><i class="fa fa-plus"></i></button>
@@ -347,8 +347,8 @@
                 <th rowspan=3>TIPO DE CRÉDITO</th>
                 <th rowspan=3>ENTIDAD FINANCIERA</th>
                 <th rowspan=3 width="80px">DEUDOR</th>
-                <th colspan=4>En moneda de origen (S/., $)</th>
-                <th colspan=4>En Soles (S/.)</th>
+                <th colspan=4 style="text-align: center">En moneda de origen (S/., $)</th>
+                <th colspan=4 style="text-align: center">En Soles (S/.)</th>
                 <th rowspan=2 colspan=2>DEDUCCIONES / COMPRA DE DEUDA O AMPLIACION (S/.)</th>
                 
           
@@ -454,10 +454,10 @@
             <thead>
               <tr>
                 <th rowspan=3>TIPO DE CRÉDITO CONSOLIDADO</th>
-                <th colspan=3>Entidades Reguladas</th>
-                <th colspan=3>Entidades No Reguladas</th>
+                <th colspan=3 style="text-align: center">Entidades Reguladas</th>
+                <th colspan=3 style="text-align: center">Entidades No Reguladas</th>
                 
-                <th colspan=4>TOTAL</th>
+                <th colspan=4 style="text-align: center">TOTAL</th>
               </tr>
               <tr>
                 <th colspan=2>Saldo Capital/Línea</th>

@@ -151,7 +151,7 @@
         <span class="badge d-block">IV. CÁLCULO DE MARGEN Y NIVEL VENTAS</span>
       </div>
       <div class="mb-1 mt-2">
-        <span class="badge d-block" style="background-color: #aaa;color: #000;">4.1 VENTAS DENTRO DE LA SEMANA (VENTAS CON FRECUENCIA DIARIA Y SEMANAL)</span>
+        <span class="badge d-block" style="background-color: #aaa;color: #000;">4.1 VENTAS DENTRO DE LA SEMANA (VENTAS CON <span style="background-color: #dfdf79 !important;">FRECUENCIA DIARIA Y SEMANAL</span>)</span>
       </div>
       <div class="row">
         <div class="col-sm-9">

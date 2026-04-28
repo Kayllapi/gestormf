@@ -174,7 +174,7 @@
                 <th rowspan=2 width="60px">Moneda Soles(1) Dólar(2)</th>
                 <th rowspan=2 width="100px">Saldo Capital</th>
                 <th rowspan=2 width="80px">Plazo Pendiente (meses)</th>
-                <th rowspan=2 width="60px">Cuota</th>
+                <th rowspan=2 width="60px">Cuota (Mensual)</th>
                 <th rowspan=2 width="100px">Saldo Capital</th>
                 <th rowspan=2 width="100px">Cuota </th>
                 <th colspan=2>Saldo capital según cronograma</th>
@@ -362,7 +362,7 @@
                 <th rowspan=2 width="60px">Moneda Soles(1) Dólar(2)</th>
                 <th rowspan=2 width="100px">Saldo Capital</th>
                 <th rowspan=2 width="80px">Plazo Pendiente (meses)</th>
-                <th rowspan=2 width="60px">Cuota</th>
+                <th rowspan=2 width="60px">Cuota (Mensual)</th>
                 <th rowspan=2 width="100px">Saldo Capital</th>
                 <th rowspan=2 width="100px">Cuota </th>
                 <th colspan=2>Saldo capital según cronograma</th>

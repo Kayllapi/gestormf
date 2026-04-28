@@ -202,9 +202,11 @@
                     @php $validad_eva_resumida = 0; @endphp
                   @endif
                 @else
-                  <button type="submit" class="btn btn-success">
-                    <i class="fa-solid fa-check"></i> SI, PASAR A PROCESO
-                  </button>
+                  @if ($validadar_ampliacion == 0)
+                    <button type="submit" class="btn btn-success">
+                      <i class="fa-solid fa-check"></i> SI, PASAR A PROCESO
+                    </button>
+                  @endif
                 @endif
               @endif
             @else

@@ -53,6 +53,14 @@
               <input type="text" step="any" class="form-control" value="{{ $credito->nombreclientecredito }}" disabled>
             </div>
           </div>
+          @if($users_prestamo->dni_pareja!='' or $users_prestamo->nombrecompleto_pareja!='')
+          <div class="row">
+            <label class="col-sm-4 col-form-label" style="text-align: right;">PAREJA:</label>
+            <div class="col-sm-8">
+              <input type="text" step="any" class="form-control" value="{{ $users_prestamo->nombrecompleto_pareja }}" disabled>
+            </div>
+          </div>
+          @endif
           <div class="row">
             <label class="col-sm-4 col-form-label" style="text-align: right;">GIRO ECONÓMICO:</label>
             <div class="col-sm-8">
@@ -69,14 +77,14 @@
             </div>
           </div>
           <div class="row">
-            <label class="col-sm-3 col-form-label" style="text-align: right;">DNI/RUC:</label>
+            <label class="col-sm-3 col-form-label" style="text-align: right;">RUC/DNI/CE:</label>
             <div class="col-sm-7">
               <input type="text" step="any" class="form-control" value="{{ $credito->docuementocliente }}" disabled>
             </div>
           </div>
           @if($users_prestamo->dni_pareja!='' or $users_prestamo->nombrecompleto_pareja!='')
           <div class="row">
-            <label class="col-sm-3 col-form-label" style="text-align: right;">DNI:</label>
+            <label class="col-sm-3 col-form-label" style="text-align: right;">DNI/CE:</label>
             <div class="col-sm-7">
               <input type="text" step="any" class="form-control" value="{{ $users_prestamo->dni_pareja }}" disabled>
             </div>
@@ -306,8 +314,8 @@
               </tr>
               @endif
               <tr total>
-                <th colspan="2" style="background-color: #c8c8c8 !important;color: #000 !important;">Venta Semanal (S/.)</th>
-                <td style="background-color: #c8c8c8 !important;color: #000 !important;"><input type="text" valida_input_vacio id="venta_total_dias" step="any" class="form-control campo_moneda" value="{{ $credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->venta_total_dias : '0.00' }}" disabled></td>
+                <th colspan="2" style="background-color: #c8c8c8 !important;color: #000 !important; font-weight: bold;">Venta Semanal (S/.)</th>
+                <td style="background-color: #c8c8c8 !important;color: #000 !important;"><input type="text" valida_input_vacio id="venta_total_dias" step="any" class="form-control campo_moneda fw-bold" value="{{ $credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->venta_total_dias : '0.00' }}" disabled></td>
               </tr>
             </tbody>
           </table>
@@ -316,25 +324,25 @@
           <table class="table table-bordered mb-2 mt-2">
             <thead>
               <tr>
-                <th style="background-color: #c8c8c8 !important;color: #000 !important;" width="150px">N° de Días</th>
-                <th style="background-color: #c8c8c8 !important;color: #000 !important;" ><input type="text" disabled id="numero_dias" class="form-control campo_moneda" value="{{ $credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->numero_dias : '0' }}"></th>
+                <th style="background-color: #c8c8c8 !important;color: #000 !important; font-weight: bold;" width="150px">N° de Días</th>
+                <th style="background-color: #c8c8c8 !important;color: #000 !important;" ><input type="text" disabled id="numero_dias" class="form-control campo_moneda fw-bold" value="{{ $credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->numero_dias : '0' }}"></th>
               </tr>
             </thead>
           </table>
           <table class="table table-bordered mb-2 mt-2">
             <thead>
               <tr>
-                <th style="background-color: #c8c8c8 !important;color: #000 !important;" width="150px">Venta mensual (S/.)</th>
-                <th style="background-color: #c8c8c8 !important;color: #000 !important;" ><input type="text" disabled id="venta_mensual" value="{{ $credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->venta_mensual : '0' }}" class="form-control campo_moneda"></th>
+                <th style="background-color: #c8c8c8 !important;color: #000 !important; font-weight: bold;" width="150px">Venta mensual (S/.)</th>
+                <th style="background-color: #c8c8c8 !important;color: #000 !important;" ><input type="text" disabled id="venta_mensual" value="{{ $credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->venta_mensual : '0' }}" class="form-control campo_moneda fw-bold"></th>
               </tr>
             </thead>
           </table>
           <table class="table table-bordered mb-2 mt-2">
             <thead>
               <tr>
-                <th style="background-color: #c8c8c8 !important;color: #000 !important;" width="40px">N°</th>
-                <th style="background-color: #c8c8c8 !important;color: #000 !important;" width="130px">Día/Recabo Datos</th>
-                <th style="background-color: #c8c8c8 !important;color: #000 !important;" >Ventas</th>
+                <th style="background-color: #c8c8c8 !important;color: #000 !important; font-weight: bold;" width="40px">N°</th>
+                <th style="background-color: #c8c8c8 !important;color: #000 !important; font-weight: bold;" width="130px">Día/Recabo Datos</th>
+                <th style="background-color: #c8c8c8 !important;color: #000 !important; font-weight: bold;" >Ventas</th>
               </tr>
             </thead>
             <tbody>
@@ -369,9 +377,9 @@
           <table class="table table-bordered mb-2 mt-2">
             <thead>
               <tr>
-                <th style="background-color: #c8c8c8 !important;color: #000 !important;" width="150px">Mg. De venta al mes(1) (S/.)</th>
+                <th style="background-color: #c8c8c8 !important;color: #000 !important; font-weight: bold;" width="150px">Mg. De venta al mes(1) (S/.)</th>
                 <th style="background-color: #c8c8c8 !important;color: #000 !important;" >
-                  <input type="text" disabled id="margen_ventas" value="{{ $credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->margen_ventas : '0.00' }}" class="form-control campo_moneda"></th>
+                  <input type="text" disabled id="margen_ventas" value="{{ $credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->margen_ventas : '0.00' }}" class="form-control campo_moneda fw-bold"></th>
               </tr>
             </thead>
           </table>
@@ -618,9 +626,9 @@
           <table class="table table-bordered mb-2 mt-2">
             <thead>
               <tr>
-                <th style="background-color: #c8c8c8 !important;color: #000 !important;" width="150px">Mg. De venta al mes(2) (S/.)</th>
+                <th style="background-color: #c8c8c8 !important;color: #000 !important; font-weight: bold;" width="150px">Mg. De venta al mes(2) (S/.)</th>
                 <th style="background-color: #c8c8c8 !important;color: #000 !important;" >
-                  <input type="text" disabled id="margen_ventas_mensual" value="{{ $credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->margen_ventas_mensual : '0.00' }}" class="form-control campo_moneda"></th>
+                  <input type="text" disabled id="margen_ventas_mensual" value="{{ $credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->margen_ventas_mensual : '0.00' }}" class="form-control campo_moneda fw-bold"></th>
               </tr>
             </thead>
           </table>

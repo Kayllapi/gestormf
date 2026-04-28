@@ -101,7 +101,7 @@
               @endif
             </div>
           </div>
-          <di class="row">
+          <div class="row">
             <label class="col-sm-3 col-form-label" style="text-align: right;">ASESOR(A):</label>
             <div class="col-sm-7">
               <input type="text" step="any" class="form-control" value="{{ Auth::user()->nombre }}" disabled>

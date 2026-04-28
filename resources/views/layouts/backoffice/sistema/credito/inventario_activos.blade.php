@@ -49,6 +49,14 @@
               <input type="text" step="any" class="form-control" value="{{ $credito->nombreclientecredito }}" disabled>
             </div>
           </div>
+          @if($users_prestamo->dni_pareja!='' or $users_prestamo->nombrecompleto_pareja!='')
+            <div class="row">
+              <label class="col-sm-4 col-form-label" style="text-align: right;">PAREJA:</label>
+              <div class="col-sm-8">
+                <input type="text" step="any" class="form-control" value="{{ $users_prestamo->nombrecompleto_pareja }}" disabled>
+              </div>
+            </div>
+          @endif
           <div class="row">
             <label class="col-sm-4 col-form-label" style="text-align: right;">GIRO ECONÓMICO:</label>
             <div class="col-sm-8">
@@ -64,20 +72,19 @@
             </div>
           </div>
           <div class="row">
-            <label class="col-sm-3 col-form-label" style="text-align: right;">DNI/RUC:</label>
+            <label class="col-sm-3 col-form-label" style="text-align: right;">RUC/DNI/CE:</label>
             <div class="col-sm-7">
               <input type="text" step="any" class="form-control" value="{{ $credito->docuementocliente }}" disabled>
             </div>
           </div>
           @if($users_prestamo->dni_pareja!='' or $users_prestamo->nombrecompleto_pareja!='')
-          <div class="row">
-            <label class="col-sm-3 col-form-label" style="text-align: right;">DNI:</label>
-            <div class="col-sm-7">
-              <input type="text" step="any" class="form-control" value="{{ $users_prestamo->dni_pareja }}" disabled>
+            <div class="row">
+              <label class="col-sm-3 col-form-label" style="text-align: right;">DNI/CE:</label>
+              <div class="col-sm-7">
+                <input type="text" step="any" class="form-control" value="{{ $users_prestamo->dni_pareja }}" disabled>
+              </div>
             </div>
-          </div>
           @endif
-          
           <div class="row">
             <label class="col-sm-3 col-form-label" style="text-align: right;">EJERCICIO:</label>
             <div class="col-sm-7">
@@ -88,6 +95,12 @@
               @endif
             </div>
           </div>
+          <div class="row">
+            <label class="col-sm-3 col-form-label" style="text-align: right;">ASESOR(A):</label>
+            <div class="col-sm-7">
+              <input type="text" step="any" class="form-control" value="{{ Auth::user()->nombre }}" disabled>
+            </div>
+          </di>
         </div>
         <div class="col-sm-12 col-md-4">
           <div class="row">

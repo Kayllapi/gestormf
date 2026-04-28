@@ -162,7 +162,7 @@
                 <th rowspan=3 width="80px">DEUDOR</th>
                 <th colspan=4 style="text-align: center">En moneda de origen (S/., $)</th>
                 <th colspan=4 style="text-align: center">En Soles (S/.)</th>
-                <th rowspan=2 colspan=2>DEDUCCIONES / COMPRA DE DEUDA O AMPLIACION (S/.)</th>
+                <th rowspan=2 style="text-align: center" colspan=2>DEDUCCIONES / COMPRA DE DEUDA O AMPLIACION (S/.)</th>
                 
                 @if($view_detalle!='false')
                 <th rowspan=3>
@@ -349,7 +349,7 @@
                 <th rowspan=3 width="80px">DEUDOR</th>
                 <th colspan=4 style="text-align: center">En moneda de origen (S/., $)</th>
                 <th colspan=4 style="text-align: center">En Soles (S/.)</th>
-                <th rowspan=2 colspan=2>DEDUCCIONES / COMPRA DE DEUDA O AMPLIACION (S/.)</th>
+                <th rowspan=2 style="text-align: center" colspan=2>DEDUCCIONES / COMPRA DE DEUDA O AMPLIACION (S/.)</th>
                 
           
                 @if($view_detalle!='false')
@@ -460,13 +460,13 @@
                 <th colspan=4 style="text-align: center">TOTAL</th>
               </tr>
               <tr>
-                <th colspan=2>Saldo Capital/Línea</th>
+                <th colspan=2 style="text-align: center">Saldo Capital/Línea</th>
                 
                 <th rowspan=2>Cuota</th>
-                <th colspan=2>Saldo Capital/Línea</th>
+                <th colspan=2 style="text-align: center">Saldo Capital/Línea</th>
                 
                 <th rowspan=2>Cuota</th>
-                <th colspan=3>Saldo Capital/Línea</th>
+                <th colspan=3 style="text-align: center">Saldo Capital/Línea</th>
                 <th rowspan=2>Cuota</th>
               </tr>
               <tr>
@@ -615,7 +615,7 @@
               <tr>
                 <th rowspan=2>DESTINO DE CRÉDITO</th>
                 <th rowspan=2>Producto</th>
-                <th colspan=2>Plazo</th>
+                <th colspan=2 style="text-align: center">Plazo</th>
                 <th rowspan=2>FORMA DE PAGO</th>
                 <th rowspan=2>Monto Préstamo (S/.)</th>
                 <th rowspan=2>TEM</th>

@@ -213,7 +213,7 @@
         </table>
       </div>
     </div>
-    <span class="badge">IV. CALCULO DE MARGEN Y NIVEL VENTAS</span>
+    <span class="badge">IV. CÁLCULO DE MARGEN Y NIVEL VENTAS</span>
     <span class="badge subtitle">4.1 VENTAS DENTRO DE LA SEMANA (VENTAS CON FRECUENCIA DIARIA Y SEMANAL)</span>
             <div style="margin-left:140px;">MARGEN DE VENTAS TOTAL CALCULADO: {{ $credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->margen_venta_calculado : '0.00' }}%</div>
 

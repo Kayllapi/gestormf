@@ -231,7 +231,7 @@
               <th rowspan=2>Moneda Soles(1) Dólar(2)</th>
               <th rowspan=2>Saldo Capital</th>
               <th rowspan=2>Plazo Pendiente (meses)</th>
-              <th rowspan=2>Cuota</th>
+              <th rowspan=2>Cuota (Mensual)</th>
               <th rowspan=2>Saldo Capital</th>
               <th rowspan=2>Cuota </th>
               <th colspan=2>Saldo capital según cronograma</th>
@@ -361,9 +361,9 @@
               <th rowspan=2>Moneda Soles(1) Dólar(2)</th>
               <th rowspan=2>Saldo Capital</th>
               <th rowspan=2>Plazo Pendiente (meses)</th>
-              <th rowspan=2>Cuota</th>
+              <th rowspan=2>Cuota (Mensual)</th>
               <th rowspan=2>Saldo Capital</th>
-              <th rowspan=2>Cuota </th>
+              <th rowspan=2>Cuota (Mensual) </th>
               <th colspan=2>Saldo capital según cronograma</th>
             </tr>
             <tr>
@@ -594,7 +594,7 @@
               <th rowspan=2>Monto Préstamo (S/.)</th>
               <th rowspan=2>TEM</th>
 
-              <th rowspan=2>Servicios/Otros (S/.)</th>
+              <th rowspan=2>Servicios de Recaudo (S/.)</th>
               <th rowspan=2>Cargos (S/.)</th>
               <th rowspan=2 >Cuota de Pago {{$nombre_forma_pago}} (S/.)</th>
             </tr>

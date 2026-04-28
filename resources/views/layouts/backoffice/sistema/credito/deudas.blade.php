@@ -176,7 +176,7 @@
                 <th rowspan=2 width="80px">Plazo Pendiente (meses)</th>
                 <th rowspan=2 width="60px">Cuota (Mensual)</th>
                 <th rowspan=2 width="100px">Saldo Capital</th>
-                <th rowspan=2 width="100px">Cuota </th>
+                <th rowspan=2 width="100px">Cuota (Mensual)</th>
                 <th colspan=2>Saldo capital según cronograma</th>
               </tr>
               <tr>
@@ -620,7 +620,7 @@
                 <th rowspan=2>Monto Préstamo (S/.)</th>
                 <th rowspan=2>TEM</th>
                 
-                <th rowspan=2>Servicios/Otros (S/.)</th>
+                <th rowspan=2>Servicios de Recaudo (S/.)</th>
                 <th rowspan=2>Cargos (S/.)</th>
                 <th rowspan=2 style="text-align: center">Cuota de Pago <span id="nombre_frecuencia_pago">Diario</span> (S/.)</th>
               </tr>

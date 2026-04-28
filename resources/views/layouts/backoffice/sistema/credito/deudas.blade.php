@@ -151,7 +151,6 @@
       <div class="mb-1 mt-2">
         <span class="badge d-block" style="background-color: #aaa;color: #000;">6.1 Entidades Reguladas</span>
       </div>
-      MODALIDAD CREDITO:
       <div class="row">
         <div class="col-sm-12">
           <table class="table table-bordered" id="table-credito-entidad-regulada">

@@ -106,7 +106,7 @@
             <div class="col-sm-7">
               <input type="text" step="any" class="form-control" value="{{ Auth::user()->nombre }}" disabled>
             </div>
-          </di>
+          </div>
         </div>
         <div class="col-sm-12 col-md-4">
           <div class="row">

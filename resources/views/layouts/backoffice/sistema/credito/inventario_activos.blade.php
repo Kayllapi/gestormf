@@ -184,9 +184,11 @@
             </tbody>
             <tfoot>
               <tr>
-                <td class="color_totales" style="text-align:right;" colspan=4>Inventario total de productos  (S/.)</td>
-                <td class="color_totales"><input type="text" id="total-inventario-producto" class="form-control campo_moneda" disabled 
-                                                 value="{{ $credito_cuantitativa_inventario ? $credito_cuantitativa_inventario->total_inventario : '0.00' }}"></td>
+                <td class="color_totales fw-bold" style="text-align:right;" colspan=4>Inventario total de productos (S/.)</td>
+                <td class="color_totales">
+                  <input type="text" id="total-inventario-producto" class="form-control campo_moneda fw-bold" disabled 
+                    value="{{ $credito_cuantitativa_inventario ? $credito_cuantitativa_inventario->total_inventario : '0.00' }}">
+                </td>
                 @if($view_detalle!='false')
                 <td class="color_totales"></td>
                 @endif
@@ -230,8 +232,8 @@
             </tbody>
             <tfoot>
               <tr>
-                <td class="color_totales" style="text-align:right;" colspan=4>Total de activos inmuebles  (S/.)</td>
-                <td class="color_totales"><input type="text" id="total-activos-inmuebles" class="form-control campo_moneda" disabled 
+                <td class="color_totales fw-bold" style="text-align:right;" colspan=4>Total de activos inmuebles  (S/.)</td>
+                <td class="color_totales"><input type="text" id="total-activos-inmuebles" class="form-control campo_moneda fw-bold" disabled 
                                                  value="{{ $credito_cuantitativa_inventario ? $credito_cuantitativa_inventario->total_inmuebles : '0.00' }}"></td>
             
                 @if($view_detalle!='false')
@@ -275,8 +277,8 @@
             </tbody>
             <tfoot>
               <tr>
-                <td class="color_totales" style="text-align:right;" colspan=4>Total de activos muebles (S/.)</td>
-                <td class="color_totales"><input type="text" id="total-activos-muebles" class="form-control campo_moneda" disabled 
+                <td class="color_totales fw-bold" style="text-align:right;" colspan=4>Total de activos muebles (S/.)</td>
+                <td class="color_totales"><input type="text" id="total-activos-muebles" class="form-control campo_moneda fw-bold" disabled 
                                                  value="{{ $credito_cuantitativa_inventario ? $credito_cuantitativa_inventario->total_muebles : '0.00' }}"></td>
                 @if($view_detalle!='false')
                 <td class="color_totales"></td>

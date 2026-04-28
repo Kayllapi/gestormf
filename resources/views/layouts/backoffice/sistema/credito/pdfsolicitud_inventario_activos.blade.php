@@ -238,8 +238,8 @@
           </tbody>
           <tfoot>
             <tr>
-              <td class="color_totales campo_moneda" colspan=4>Inventario total de productos  (S/.)</td>
-              <td class="color_totales campo_moneda">{{ $credito_cuantitativa_inventario ? $credito_cuantitativa_inventario->total_inventario : '0.00' }}</td>
+              <td class="color_totales campo_moneda" style="font-weight: bold" colspan=4>Inventario total de productos  (S/.)</td>
+              <td class="color_totales campo_moneda" style="font-weight: bold">{{ $credito_cuantitativa_inventario ? $credito_cuantitativa_inventario->total_inventario : '0.00' }}</td>
             </tr>
           </tfoot>
         </table>
@@ -268,8 +268,8 @@
           </tbody>
           <tfoot>
             <tr>
-              <td class="color_totales campo_moneda" colspan=4>Total de activos inmuebles  (S/.)</td>
-              <td class="color_totales campo_moneda">{{ $credito_cuantitativa_inventario ? $credito_cuantitativa_inventario->total_inmuebles : '0.00' }}</td>
+              <td class="color_totales campo_moneda" style="font-weight: bold" colspan=4>Total de activos inmuebles  (S/.)</td>
+              <td class="color_totales campo_moneda" style="font-weight: bold">{{ $credito_cuantitativa_inventario ? $credito_cuantitativa_inventario->total_inmuebles : '0.00' }}</td>
             </tr>
           </tfoot>
         </table>
@@ -297,8 +297,8 @@
           </tbody>
           <tfoot>
             <tr>
-              <td class="color_totales campo_moneda" colspan=4>Total de activos muebles (S/.)</td>
-              <td class="color_totales campo_moneda">{{ $credito_cuantitativa_inventario ? $credito_cuantitativa_inventario->total_muebles : '0.00' }}</td>
+              <td class="color_totales campo_moneda" style="font-weight: bold" colspan=4>Total de activos muebles (S/.)</td>
+              <td class="color_totales campo_moneda" style="font-weight: bold">{{ $credito_cuantitativa_inventario ? $credito_cuantitativa_inventario->total_muebles : '0.00' }}</td>
             </tr>
           </tfoot>
         </table>

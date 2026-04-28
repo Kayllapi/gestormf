@@ -622,7 +622,7 @@
                 
                 <th rowspan=2>Servicios/Otros (S/.)</th>
                 <th rowspan=2>Cargos (S/.)</th>
-                <th rowspan=2 >Cuota de Pago <span id="nombre_frecuencia_pago">Diario</span> (S/.)</th>
+                <th rowspan=2 style="text-align: center">Cuota de Pago <span id="nombre_frecuencia_pago">Diario</span> (S/.)</th>
               </tr>
               <tr>
                 <th>Pago</th>

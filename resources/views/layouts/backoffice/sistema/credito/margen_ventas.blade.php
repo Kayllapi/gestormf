@@ -238,8 +238,8 @@
                   <th style="background-color: #c8c8c8 !important;color: #000 !important;" colspan=5 align="right">Mg. de Venta</th>
                   <th style="background-color: #c8c8c8 !important;color: #000 !important;">
                     <div class="input-group">
-                        <input type="text" step="any" disabled id="porcentaje_margen" class="form-control campo_moneda" value="{{ $credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->porcentaje_margen : '0.00' }}">
-                        <span class="input-group-text">%</span>
+                        <input type="text" step="any" disabled id="porcentaje_margen" class="form-control campo_moneda fw-bold" value="{{ $credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->porcentaje_margen : '0.00' }}">
+                        <span class="input-group-text fw-bold">%</span>
                       </div>
                   </th>
                   <td style="background-color: #c8c8c8 !important;color: #000 !important;"></td>
@@ -549,11 +549,11 @@
                   <td></td>
                 </tr>
                 <tr>
-                  <th style="background-color: #c8c8c8 !important;color: #000 !important;" colspan=5 align="right">Mg. de Venta</th>
+                  <th style="background-color: #c8c8c8 !important;color: #000 !important; font-weight: bold;" colspan=5 align="right">Mg. de Venta</th>
                   <th style="background-color: #c8c8c8 !important;color: #000 !important;">
                     <div class="input-group">
-                        <input type="text" step="any" disabled id="porcentaje_margen_mensual" class="form-control campo_moneda" value="{{ $credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->porcentaje_margen_mensual : '0.00' }}">
-                        <span class="input-group-text">%</span>
+                        <input type="text" step="any" disabled id="porcentaje_margen_mensual" class="form-control campo_moneda fw-bold" value="{{ $credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->porcentaje_margen_mensual : '0.00' }}">
+                        <span class="input-group-text fw-bold">%</span>
                       </div>
                   </th>
                   <td style="background-color: #c8c8c8 !important;color: #000 !important;"></td>

@@ -261,8 +261,8 @@
               <td></td>
             </tr>
             <tr>
-              <td colspan=5 align="right">Mg. de Venta</td>
-              <td class="campo_moneda">{{ $credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->porcentaje_margen : '0.00' }}%</td>
+              <td colspan=5 align="right" style="font-weight: bold;">Mg. de Venta</td>
+              <td class="campo_moneda" style="font-weight: bold;">{{ $credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->porcentaje_margen : '0.00' }}%</td>
               <td></td>
               <td></td>
             </tr>
@@ -300,7 +300,7 @@
             @endforeach
             <tr total>
               <th colspan="2">Venta Semanal (S/.)</th>
-              <td class="campo_moneda">{{ $credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->venta_total_dias : '0.00' }}</td>
+              <td class="campo_moneda" style="font-weight: bold;">{{ $credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->venta_total_dias : '0.00' }}</td>
             </tr>
           </tbody>
         </table>
@@ -318,7 +318,7 @@
           <thead>
             <tr>
               <th>Venta mensual (S/.)</th>
-              <th class="campo_moneda" >{{ $credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->venta_mensual : '0' }}</th>
+              <th class="campo_moneda" style="font-weight: bold;">{{ $credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->venta_mensual : '0' }}</th>
             </tr>
           </thead>
         </table>
@@ -353,8 +353,8 @@
         <table class="table" width="220px">
           <thead>
             <tr>
-              <th>Mg. De venta al mes (1) (S/.)</th>
-              <th class="campo_moneda">{{ $credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->margen_ventas : '0.00' }}</th>
+              <th style="font-weight: bold;">Mg. De venta al mes (1) (S/.)</th>
+              <th class="campo_moneda" style="font-weight: bold;">{{ $credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->margen_ventas : '0.00' }}</th>
             </tr>
           </thead>
         </table>
@@ -449,8 +449,8 @@
               <td></td>
             </tr>
             <tr>
-              <th colspan=5 align="right">Mg. de Venta</th>
-              <th class="campo_moneda">{{ $credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->porcentaje_margen_mensual : '0.00' }}%</th>
+              <th colspan=5 align="right" style="font-weight: bold;">Mg. de Venta</th>
+              <th class="campo_moneda" style="font-weight: bold;">{{ $credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->porcentaje_margen_mensual : '0.00' }}%</th>
               <td></td>
               <td></td>
             </tr>
@@ -486,7 +486,7 @@
             @endforeach
             <tr total>
               <th>Venta Mensual (S/.)</th>
-              <td class="campo_moneda">{{ $credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->venta_total_mensual : '0.00' }}</td>
+              <td class="campo_moneda" style="font-weight: bold;">{{ $credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->venta_total_mensual : '0.00' }}</td>
             </tr>
           </tbody>
         </table>
@@ -505,8 +505,8 @@
         <table class="table" width="220px">
           <thead>
             <tr>
-              <th width="150px">Mg. De venta al mes (2) (S/.)</th>
-              <th class="campo_moneda">{{ $credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->margen_ventas_mensual : '0.00' }}</th>
+              <th width="150px" style="font-weight: bold;">Mg. De venta al mes (2) (S/.)</th>
+              <th class="campo_moneda" style="font-weight: bold;">{{ $credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->margen_ventas_mensual : '0.00' }}</th>
             </tr>
           </thead>
         </table>

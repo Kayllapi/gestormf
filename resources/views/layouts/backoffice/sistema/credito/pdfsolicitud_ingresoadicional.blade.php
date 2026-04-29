@@ -183,12 +183,12 @@
             <td class="border-td" width="100px">{{ $credito_cuantitativa_ingreso_adicional!=''?date_format(date_create($credito_cuantitativa_ingreso_adicional->fecha),'Y-m-d'):'' }}</td>
           </tr>
           <tr>
-            <td>DNI/RUC</td>
+            <td>RUC/DNI/CE</td>
             <td class="border-td">{{ $credito->docuementocliente }}</td>
           </tr>
           @if($users_prestamo->dni_pareja!='' or $users_prestamo->nombrecompleto_pareja!='')
           <tr>
-            <td>DNI:</td>
+            <td>DNI/CE:</td>
             <td class="border-td">{{ $users_prestamo->dni_pareja }}</td>
           </tr>
           @endif

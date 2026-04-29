@@ -32,7 +32,7 @@
     </div>
     <hr style="margin-top: 8px;margin-bottom: 8px;">
     @if($credito->conevaluacion == 'SI')
-      @if($users_prestamo->idfuenteingreso == 1)
+      @if($users_prestamo->idfuenteingreso == 1) {{-- independiente --}}
         <div class="col-sm-12 mt-2">
             <div class="row">
                 <div class="col-md-3">
@@ -127,7 +127,7 @@
                     onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=solicitud_checklist')}}', size: 'modal-fullscreen' })">
               CHECK LIST</button>
         </div>
-      @elseif($users_prestamo->idfuenteingreso == 2)
+      @elseif($users_prestamo->idfuenteingreso == 2) {{-- dependiente --}}
         <div class="col-md-9 mb-1">
             <button type="button" class="btn btn-secondary" style="color: #000;background-color: #00bf3e;border-color: #00bf3e;height: 50px;"
                     onclick="form_propuesta_credito()">
@@ -179,6 +179,11 @@
           PASAR A APROBACIÓN
         </button>
       </div>
+      <button type="button"
+        class="btn btn-warning1 mb-1"
+        onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=solicitud_checklist')}}', size: 'modal-fullscreen' })">
+        CHECK LIST
+      </button>
     @endif
   @endif
 

@@ -82,7 +82,7 @@
           </div>
           @endif
           <div class="row">
-            <label class="col-sm-4 col-form-label" style="text-align: right;">GIRO ECONÓMICO:</label>
+            <label class="col-sm-4 col-form-label" style="text-align: right;">GIRO ECONÓMICO PRINCIPAL:</label>
             <div class="col-sm-8">
               <input type="text" step="any" class="form-control" value="{{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->nombregiro_economico_evaluacion : '' }}" disabled>
             </div>

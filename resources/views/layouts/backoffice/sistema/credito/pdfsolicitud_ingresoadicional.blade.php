@@ -167,7 +167,7 @@
           </tr>
           @endif
           <tr>
-            <td>GIRO ECONÓMICO:</td>
+            <td>GIRO ECONÓMICO PRINCIPAL:</td>
             <td class="border-td">{{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->nombregiro_economico_evaluacion : '' }}</td>
           </tr>
           <tr>
@@ -196,7 +196,10 @@
             <td>EJERCICIO:</td>
             <td class="border-td">{{ $users_prestamo->db_idforma_ac_economica }}</td>
           </tr>
-          
+          <tr>
+            <td>ASESOR(A):</td>
+            <td class="border-td">{{ Auth::user()->nombre }}</td>
+          </tr>
         </table>
       </div>
       <div class="col">

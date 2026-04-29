@@ -5134,6 +5134,54 @@ class CreditoController extends Controller
             'mensaje'   => 'Se ha actualizado correctamente.'
           ]);
         }
+        else if( $request->input('view') == 'propuesta_credito_ampliado' ){
+
+          $credito = DB::table('credito')->whereId($id)->first();
+          
+          $saldo_prestamo_vigente_propio = DB::table('credito')
+            ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
+            ->where('credito.idcliente',$credito->idcliente)
+            ->where('credito.estado','DESEMBOLSADO')
+            ->where('credito.idestadocredito',1)
+            ->select(
+              'credito.*',
+              'credito_prendatario.nombre as nombreproductocredito',
+              'credito_prendatario.modalidad as modalidadproductocredito',
+            )
+            ->distinct()
+            ->get();
+          
+          if($credito->idmodalidad_credito == 2 && count(json_decode($request->input('monto_compra_deuda_det'))) == 0 && count($saldo_prestamo_vigente_propio)>0){
+            return response()->json([
+              'resultado' => 'ERROR',
+              'mensaje'   => 'Es Obligatorio seleccionar mínimo una ampliación de deuda	.'
+            ]);
+          }
+          
+          $credito_propuesta = DB::table('credito_propuesta')->where('credito_propuesta.idcredito',$id)->first();
+          
+          if($credito_propuesta){
+            DB::table('credito_propuesta')->whereId($credito_propuesta->id)->update([
+              'fecha' => Carbon::now(),
+              'monto_compra_deuda' => $request->input('monto_compra_deuda'),
+              'monto_compra_deuda_det' => $request->input('monto_compra_deuda_det'),
+              'neto_destino_credito' => $request->input('neto_destino_credito'),
+            ]);
+          }else{
+            DB::table('credito_propuesta')->insert([
+              'idcredito' => $id,
+              'fecha' => Carbon::now(),
+              'monto_compra_deuda' => $request->input('monto_compra_deuda'),
+              'monto_compra_deuda_det' => $request->input('monto_compra_deuda_det'),
+              'neto_destino_credito' => $request->input('neto_destino_credito'),
+            ]);
+          }
+
+          return response()->json([
+            'resultado' => 'CORRECTO',
+            'mensaje'   => 'Se ha actualizado correctamente.'
+          ]);
+        }
         else if( $request->input('view') == 'aprobar_propuesta' ){
           
            DB::table('credito')->whereId($id)->update([

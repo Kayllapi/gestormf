@@ -1,190 +1,209 @@
-<form action="javascript:;" 
-  onsubmit="">
-  <div class="modal-header">
-    <h5 class="modal-title">OPCIONES</h5>
-    <button type="button" class="btn-close" id="close_opcionescredito" data-bs-dismiss="modal" aria-label="Close"></button>
+<div class="modal-header">
+  <h5 class="modal-title">OPCIONES</h5>
+  <button type="button" class="btn-close" id="close_opcionescredito" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+  <div class="row" style="font-size: 14px;padding: 7px;">
+    <div class="col-md-5"><b>CLIENTE:</b> <span style="font-weight: normal;">{{ $usuario->nombrecompleto }}</span></div>
+    <div class="col-md-3"><b>F. INGRESO:</b> <span style="font-weight: normal;">{{ $users_prestamo->db_idfuenteingreso }}</span></div>
+    <div class="col-md-4" style="text-align: right;"><b>PRODUCTO:</b> <span style="font-weight: normal;">{{ $credito->nombreproductocredito }}</span></div>
   </div>
-  <div class="modal-body">
-    <div class="row" style="font-size: 14px;padding: 7px;">
-      <div class="col-md-5"><b>CLIENTE:</b> <span style="font-weight: normal;">{{ $usuario->nombrecompleto }}</span></div>
-      <div class="col-md-3"><b>F. INGRESO:</b> <span style="font-weight: normal;">{{ $users_prestamo->db_idfuenteingreso }}</span></div>
-      <div class="col-md-4" style="text-align: right;"><b>PRODUCTO:</b> <span style="font-weight: normal;">{{ $credito->nombreproductocredito }}</span></div>
+  @if($credito->idcredito_refinanciado!=0)
+    <p class="text-center" 
+      style="background-color: #dc3545;
+        padding: 10px;
+        border-radius: 5px;
+        color: #fff;
+        width: 80%;
+        margin: auto;">
+      El Crédito no fue refinanciado, elimine!!.
+    </p>
+  @else
+    <div class="col-sm-12 mt-2">
+      <button type="button" class="btn btn-success me-1" onclick="modal_credito_garantia('solicitud')">SOLICITUD CRÉDITO</button>
     </div>
-    @if($credito->idcredito_refinanciado!=0)
-      <p class="text-center" 
-        style="background-color: #dc3545;
-          padding: 10px;
-          border-radius: 5px;
-          color: #fff;
-          width: 80%;
-          margin: auto;">
-        El Crédito no fue refinanciado, elimine!!.
-      </p>
-    @else
-      <div class="col-sm-12 mt-2">
-        <button type="button" class="btn btn-success me-1" onclick="modal_credito_garantia('solicitud')">SOLICITUD CRÉDITO</button>
-      </div>
-      <div class="col-sm-12 mt-2">
-        <button type="button" class="btn btn-primary me-1" onclick="modal_credito_garantia('garantia_cliente')">GARANTIAS</button>
-        <button type="button"
-          class="btn btn-primary me-1" 
-          onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=cronograma')}}', size: 'modal-fullscreen' })">
-          CRONOGRAMA
-        </button>
-      </div>
-      <hr style="margin-top: 8px;margin-bottom: 8px;">
-      @if($credito->conevaluacion == 'SI')
-        @if($users_prestamo->idfuenteingreso == 1)
-          <div class="col-sm-12 mt-2">
-              <div class="row">
-                  <div class="col-md-3">
-                      <div class="form-check">
-                        <input class="form-check-input" type="radio" name="evaluacion" id="evaluacion_completa" onclick="guardar_tipoevaluacion(2)" 
-                              <?php echo $credito->idevaluacion==2?'checked':''?>>
-                        <label class="form-check-label" for="evaluacion_completa">
-                          Evaluación Completa
-                        </label>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="radio" name="evaluacion" id="evaluacion_resumida" onclick="guardar_tipoevaluacion(1)"
-                              <?php echo $credito->idevaluacion==1?'checked':($credito->idevaluacion==0?'checked':'')?>>
-                        <label class="form-check-label" for="evaluacion_resumida">
-                          Evaluación Resumida
-                        </label>
-                      </div>
-                  </div>
-                  <div class="col-md-9">
-                      <button type="button" class="btn btn-secondary" style="color: #000;background-color: #00bf3e;border-color: #00bf3e;height: 50px;"
-                              onclick="form_propuesta_credito()">
-                        HOJA DE PROPUESTA DE CRÉDITO</button>
-                      <script>
-                        function pdf_propuesta_credito(){
-                          let tipo = $("input[name='evaluacion']:checked").attr('id');
-                          modal({ route:"{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=solicitudpropuesta_credito')}}&tipo="+tipo, size: 'modal-fullscreen' })
-                        }
-                        function form_propuesta_credito(){
-                          let tipo = $("input[name='evaluacion']:checked").attr('id');
-                          modal({ route:"{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=propuesta_credito')}}&tipo="+tipo, size: 'modal-fullscreen' })
-                        }  
-                      </script>
-                      <button type="button" class="btn btn-warning"  style="height: 50px;"
-                              onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=aprobar_propuesta')}}', size: 'modal-small' })">
-                        <i class="fa fa-check"></i> PASAR A APROBACIÓN</button>
+    <div class="col-sm-12 mt-2">
+      <button type="button" class="btn btn-primary me-1" onclick="modal_credito_garantia('garantia_cliente')">GARANTIAS</button>
+      <button type="button"
+        class="btn btn-primary me-1" 
+        onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=cronograma')}}', size: 'modal-fullscreen' })">
+        CRONOGRAMA
+      </button>
+    </div>
+    <hr style="margin-top: 8px;margin-bottom: 8px;">
+    @if($credito->conevaluacion == 'SI')
+      @if($users_prestamo->idfuenteingreso == 1)
+        <div class="col-sm-12 mt-2">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="evaluacion" id="evaluacion_completa" onclick="guardar_tipoevaluacion(2)" 
+                            <?php echo $credito->idevaluacion==2?'checked':''?>>
+                      <label class="form-check-label" for="evaluacion_completa">
+                        Evaluación Completa
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="evaluacion" id="evaluacion_resumida" onclick="guardar_tipoevaluacion(1)"
+                            <?php echo $credito->idevaluacion==1?'checked':($credito->idevaluacion==0?'checked':'')?>>
+                      <label class="form-check-label" for="evaluacion_resumida">
+                        Evaluación Resumida
+                      </label>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <button type="button" class="btn btn-secondary" style="color: #000;background-color: #00bf3e;border-color: #00bf3e;height: 50px;"
+                            onclick="form_propuesta_credito()">
+                      HOJA DE PROPUESTA DE CRÉDITO</button>
+                    <script>
+                      function pdf_propuesta_credito(){
+                        let tipo = $("input[name='evaluacion']:checked").attr('id');
+                        modal({ route:"{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=solicitudpropuesta_credito')}}&tipo="+tipo, size: 'modal-fullscreen' })
+                      }
+                      function form_propuesta_credito(){
+                        let tipo = $("input[name='evaluacion']:checked").attr('id');
+                        modal({ route:"{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=propuesta_credito')}}&tipo="+tipo, size: 'modal-fullscreen' })
+                      }  
+                    </script>
+                    <button type="button" class="btn btn-warning"  style="height: 50px;"
+                            onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=aprobar_propuesta')}}', size: 'modal-small' })">
+                      <i class="fa fa-check"></i> PASAR A APROBACIÓN</button>
 
-                  </div>
-              </div>
-          </div>
-          <div class="col-sm-12">
-              <div class="btn-group mb-1 evaluacion-completa" id="cont_cualitativa">
-                <button type="button" class="btn btn-primary evaluacion"
-                        onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=evaluacion_cualitativa')}}', size: 'modal-fullscreen' })">
-                  1.- EVALUACION CUALITATIVA</button>
-              </div>
-              <div class="btn-group mb-1 evaluacion-completa" id="cont_cuantitativa">
-                <button type="button" class="btn btn-primary evaluacion"
-                        onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=evaluacion_cuantitativa')}}', size: 'modal-fullscreen' })">
-                  2.- EVALUACION CUANTITATIVA</button>
-              </div>
-              <div class="btn-group mb-1 evaluacion-completa" id="cont_margen_ventas">
-                <button type="button" class="btn btn-primary evaluacion"
-                        onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=margen_ventas')}}', size: 'modal-fullscreen' })">
-                  3.- MARGEN DE VENTAS</button>
-              </div>
-              <div class="btn-group mb-1 evaluacion-completa" id="cont_inventario_activos">
-                <button type="button" class="btn btn-primary evaluacion"
-                        onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=inventario_activos')}}', size: 'modal-fullscreen' })">
-                  4.- INVENTARIO Y ACTIVOS</button>
-              </div>
-              <div class="btn-group mb-1 evaluacion-completa" id="cont_deudas">
-                <button type="button" class="btn btn-primary evaluacion"
-                        onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=deudas')}}', size: 'modal-fullscreen' })">
-                  5.- DEUDAS</button>
-              </div>
-              <div class="btn-group mb-1 evaluacion-completa" id="cont_ingresoadicional">
-                <button type="button" class="btn btn-primary evaluacion"
-                        onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=ingresos_adicionales')}}', size: 'modal-fullscreen' })">
-                  6.- INGRESO ADICIONAL - MES Y FIJOS</button>
-              </div>
-              <div class="btn-group mb-1 evaluacion-completa" id="cont_control_limites">
-                <button type="button" class="btn btn-primary evaluacion"
-                        onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=control_limites')}}', size: 'modal-fullscreen' })">
-                  7.- GARANTIAS Y LIMITES</button>
-              </div>
-              <div class="btn-group mb-1 evaluacion-completa" id="cont_flujocaja">
-                <button type="button" class="btn btn-primary evaluacion"
-                        onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=flujo_caja')}}', size: 'modal-fullscreen' })">
-                  8.- FLUJO DE CAJA</button>
-              </div>
-              <div class="btn-group mb-1 evaluacion-resumida" id="cont_evaluacion_resumida">
-                <button type="button" class="btn btn-primary evaluacion"
-                        onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=evaluacion_resumida')}}', size: 'modal-fullscreen' })">
-                  1.- EVALUACION RESUMIDA</button>
-              </div>
-              <div class="btn-group mb-1 evaluacion-resumida">
-                <button type="button" class="btn btn-primary evaluacion"
-                        onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=control_limites')}}', size: 'modal-fullscreen' })">
-                  2.- GARANTIAS Y LIMITES</button>
-              </div>
-              <button type="button" class="btn btn-warning1 mb-1"
-                      onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=solicitud_checklist')}}', size: 'modal-fullscreen' })">
-                CHECK LIST</button>
-          </div>
-        @elseif($users_prestamo->idfuenteingreso == 2)
-          <div class="col-md-9 mb-1">
-              <button type="button" class="btn btn-secondary" style="color: #000;background-color: #00bf3e;border-color: #00bf3e;height: 50px;"
-                      onclick="form_propuesta_credito()">
-                HOJA DE PROPUESTA DE CRÉDITO</button>
-              <script>
-                function pdf_propuesta_credito(){
-                  let tipo = $("input[name='evaluacion']:checked").attr('id');
-                  modal({ route:"{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=solicitudpropuesta_credito')}}&tipo="+tipo, size: 'modal-fullscreen' })
-                }
-                function form_propuesta_credito(){
-                  let tipo = $("input[name='evaluacion']:checked").attr('id');
-                  modal({ route:"{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=propuesta_credito')}}&tipo="+tipo, size: 'modal-fullscreen' })
-                }  
-              </script>
-              <button type="button" class="btn btn-warning"  style="height: 50px;"
-                      onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=aprobar_propuesta')}}', size: 'modal-small' })">
-                <i class="fa fa-check"></i> PASAR A APROBACIÓN</button>
-          </div>
-          <div class="col-sm-12">
-            <div class="btn-group mb-1" id="formato_evaluacion">
-              <button type="button" class="btn btn-primary evaluacion"
-                      onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=formato_evaluacion')}}', size: 'modal-fullscreen' })">
-                1.- FORMATO DE EVALUACIÓN</button>
+                </div>
             </div>
-              <div class="btn-group mb-1 evaluacion-resumida">
-                <button type="button" class="btn btn-primary evaluacion"
-                        onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=control_limites')}}', size: 'modal-fullscreen' })">
-                  2.- GARANTIAS Y LIMITES</button>
-              </div>
-
-              <!--div class="btn-group mb-1">
-              <button type="button" class="btn btn-warning" 
-                      onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=aprobar_propuesta')}}', size: 'modal-small' })">
-                <i class="fa fa-check"></i> PASAR A APROBACIÓN</button>
-
-              </div-->
-
+        </div>
+        <div class="col-sm-12">
+            <div class="btn-group mb-1 evaluacion-completa" id="cont_cualitativa">
+              <button type="button" class="btn btn-primary evaluacion"
+                      onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=evaluacion_cualitativa')}}', size: 'modal-fullscreen' })">
+                1.- EVALUACION CUALITATIVA</button>
+            </div>
+            <div class="btn-group mb-1 evaluacion-completa" id="cont_cuantitativa">
+              <button type="button" class="btn btn-primary evaluacion"
+                      onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=evaluacion_cuantitativa')}}', size: 'modal-fullscreen' })">
+                2.- EVALUACION CUANTITATIVA</button>
+            </div>
+            <div class="btn-group mb-1 evaluacion-completa" id="cont_margen_ventas">
+              <button type="button" class="btn btn-primary evaluacion"
+                      onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=margen_ventas')}}', size: 'modal-fullscreen' })">
+                3.- MARGEN DE VENTAS</button>
+            </div>
+            <div class="btn-group mb-1 evaluacion-completa" id="cont_inventario_activos">
+              <button type="button" class="btn btn-primary evaluacion"
+                      onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=inventario_activos')}}', size: 'modal-fullscreen' })">
+                4.- INVENTARIO Y ACTIVOS</button>
+            </div>
+            <div class="btn-group mb-1 evaluacion-completa" id="cont_deudas">
+              <button type="button" class="btn btn-primary evaluacion"
+                      onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=deudas')}}', size: 'modal-fullscreen' })">
+                5.- DEUDAS</button>
+            </div>
+            <div class="btn-group mb-1 evaluacion-completa" id="cont_ingresoadicional">
+              <button type="button" class="btn btn-primary evaluacion"
+                      onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=ingresos_adicionales')}}', size: 'modal-fullscreen' })">
+                6.- INGRESO ADICIONAL - MES Y FIJOS</button>
+            </div>
+            <div class="btn-group mb-1 evaluacion-completa" id="cont_control_limites">
+              <button type="button" class="btn btn-primary evaluacion"
+                      onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=control_limites')}}', size: 'modal-fullscreen' })">
+                7.- GARANTIAS Y LIMITES</button>
+            </div>
+            <div class="btn-group mb-1 evaluacion-completa" id="cont_flujocaja">
+              <button type="button" class="btn btn-primary evaluacion"
+                      onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=flujo_caja')}}', size: 'modal-fullscreen' })">
+                8.- FLUJO DE CAJA</button>
+            </div>
+            <div class="btn-group mb-1 evaluacion-resumida" id="cont_evaluacion_resumida">
+              <button type="button" class="btn btn-primary evaluacion"
+                      onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=evaluacion_resumida')}}', size: 'modal-fullscreen' })">
+                1.- EVALUACION RESUMIDA</button>
+            </div>
+            <div class="btn-group mb-1 evaluacion-resumida">
+              <button type="button" class="btn btn-primary evaluacion"
+                      onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=control_limites')}}', size: 'modal-fullscreen' })">
+                2.- GARANTIAS Y LIMITES</button>
+            </div>
             <button type="button" class="btn btn-warning1 mb-1"
                     onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=solicitud_checklist')}}', size: 'modal-fullscreen' })">
               CHECK LIST</button>
+        </div>
+      @elseif($users_prestamo->idfuenteingreso == 2)
+        <div class="col-md-9 mb-1">
+            <button type="button" class="btn btn-secondary" style="color: #000;background-color: #00bf3e;border-color: #00bf3e;height: 50px;"
+                    onclick="form_propuesta_credito()">
+              HOJA DE PROPUESTA DE CRÉDITO</button>
+            <script>
+              function pdf_propuesta_credito(){
+                let tipo = $("input[name='evaluacion']:checked").attr('id');
+                modal({ route:"{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=solicitudpropuesta_credito')}}&tipo="+tipo, size: 'modal-fullscreen' })
+              }
+              function form_propuesta_credito(){
+                let tipo = $("input[name='evaluacion']:checked").attr('id');
+                modal({ route:"{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=propuesta_credito')}}&tipo="+tipo, size: 'modal-fullscreen' })
+              }  
+            </script>
+            <button type="button" class="btn btn-warning"  style="height: 50px;"
+                    onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=aprobar_propuesta')}}', size: 'modal-small' })">
+              <i class="fa fa-check"></i> PASAR A APROBACIÓN</button>
+        </div>
+        <div class="col-sm-12">
+          <div class="btn-group mb-1" id="formato_evaluacion">
+            <button type="button" class="btn btn-primary evaluacion"
+                    onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=formato_evaluacion')}}', size: 'modal-fullscreen' })">
+              1.- FORMATO DE EVALUACIÓN</button>
           </div>
-        @endif
-      @else
-        <div class="btn-group mb-1">
-          <button type="button"
-            class="btn btn-warning" 
-            onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=aprobar_propuesta')}}', size: 'modal-small' })">
-            <i class="fa fa-check"></i>
-            PASAR A APROBACIÓN
-          </button>
+            <div class="btn-group mb-1 evaluacion-resumida">
+              <button type="button" class="btn btn-primary evaluacion"
+                      onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=control_limites')}}', size: 'modal-fullscreen' })">
+                2.- GARANTIAS Y LIMITES</button>
+            </div>
+
+            <!--div class="btn-group mb-1">
+            <button type="button" class="btn btn-warning" 
+                    onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=aprobar_propuesta')}}', size: 'modal-small' })">
+              <i class="fa fa-check"></i> PASAR A APROBACIÓN</button>
+
+            </div-->
+
+          <button type="button" class="btn btn-warning1 mb-1"
+                  onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=solicitud_checklist')}}', size: 'modal-fullscreen' })">
+            CHECK LIST</button>
         </div>
       @endif
+    @else
+      <div class="btn-group mb-1">
+        <button type="button"
+          class="btn btn-warning" 
+          onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=aprobar_propuesta')}}', size: 'modal-small' })">
+          <i class="fa fa-check"></i>
+          PASAR A APROBACIÓN
+        </button>
+      </div>
     @endif
+  @endif
 
-    @if($credito->idforma_credito==2 && $credito->conevaluacion == 'NO' && $credito->idmodalidad_credito == 2) {{-- no prendario && sin evaluación && ampliado --}}
+  {{-- Ampliación de crédito --}}
+  @if($credito->idforma_credito==2 && $credito->conevaluacion == 'NO' && $credito->idmodalidad_credito == 2) {{-- no prendario && sin evaluación && ampliado --}}
+    <form action="javascript:;" 
+      onsubmit="callback({
+        route: '{{ url('backoffice/'.$tienda->id.'/credito/'.$credito->id) }}',
+        method: 'PUT',
+        data:{
+          view: 'propuesta_credito_ampliado',
+          monto_compra_deuda_det: monto_compra_deuda_det()
+        }
+      },
+      function(res){
+        removecarga({input:'#mx-carga'})
+        $('#success-message').removeClass('d-none');
+        $('#success-message').text(res.mensaje);
+        setTimeout(function() {
+          $('#success-message').addClass('d-none');
+        }, 5000);
+        lista_credito();
+        load_nuevo_credito();
+      $('#boton_imprimir').attr('disabled',false);
+      },this)">
       @php
         $view_detalle = '';
         $credito_propuesta = DB::table('credito_propuesta')->where('credito_propuesta.idcredito',$credito->id)->first();
@@ -230,43 +249,6 @@
               @endphp
               @if($credito->idmodalidad_credito==2 && count($saldo_prestamo_vigente_propio)>0)
                 <tr>
-                {{-- @if($view_detalle=='false')
-                      <?php
-                        $monto_compra_deuda_det = json_decode($credito_propuesta->monto_compra_deuda_det,true);
-                      ?>
-                      <td rowspan="{{count($monto_compra_deuda_det)}}"></td>
-                      <td rowspan="{{count($monto_compra_deuda_det)}}">Ampliación de deuda</td>
-                      @if($monto_compra_deuda_det!='')
-                          @foreach($monto_compra_deuda_det as $value_det)
-                              <?php
-                                  $credito_det = DB::table('credito')
-                                      ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
-                                      ->where('credito.id',$value_det['idcredito'])
-                                      ->select(
-                                          'credito.*',
-                                          'credito_prendatario.nombre as nombreproductocredito',
-                                          'credito_prendatario.modalidad as modalidadproductocredito',
-                                      )
-                                      ->first();
-                              ?>
-                                <td style="width:250px" class="border-td">
-                                <input type="text" 
-                                        class="form-control" 
-                                        value="C{{ str_pad($credito_det->cuenta, 8, "0", STR_PAD_LEFT) }} - {{$credito_det->nombreproductocredito}}" 
-                                        disabled>
-                                </td>
-                                <td style="width:100px" class="border-td">
-                                <input valida_input_vacio type="text" 
-                                        class="form-control campo_moneda" 
-                                        value="{{ $credito_propuesta ? $credito_propuesta->monto_compra_deuda : '0.00' }}" 
-                                        disabled></td>  
-                          @endforeach
-                      @endif
-                      <td rowspan="{{count($monto_compra_deuda_det)}}">Detalle:</td>
-                      <td rowspan="{{count($monto_compra_deuda_det)}}" class="border-td">
-                            <input type="text" class="form-control" 
-                                    value="{{ $credito_propuesta ? $credito_propuesta->detalle_monto_compra_deuda : '' }}" disabled></td>
-                @else --}}
                   <td rowspan="{{count($saldo_prestamo_vigente_propio)==0?1:count($saldo_prestamo_vigente_propio)}}"></td>
                   <td rowspan="{{count($saldo_prestamo_vigente_propio)==0?1:count($saldo_prestamo_vigente_propio)}}" style="width:300px">Ampliación de deuda</td>
                   @foreach($saldo_prestamo_vigente_propio as $value)
@@ -315,7 +297,8 @@
                       ?>
                       <td style="width:250px">
                         <input type="text" class="form-control" 
-                                value="C{{ str_pad($value->cuenta, 8, "0", STR_PAD_LEFT) }} - {{$value->nombreproductocredito}}" disabled>
+                          value="C{{ str_pad($value->cuenta, 8, "0", STR_PAD_LEFT) }} - {{$value->nombreproductocredito}}"
+                          disabled>
                       </td>
                       <td style="width:100px">
                           <?php
@@ -359,12 +342,6 @@
                     <td style="width:100px">
                     </td>
                   @endif
-                  {{-- <td rowspan="{{count($saldo_prestamo_vigente_propio)==0?1:count($saldo_prestamo_vigente_propio)}}">Detalle:</td>
-                  <td rowspan="{{count($saldo_prestamo_vigente_propio)==0?1:count($saldo_prestamo_vigente_propio)}}">
-                    <input type="text" {{ $view_detalle=='false' ? 'disabled' : '' }}
-                      class="form-control color_cajatexto" id="detalle_monto_compra_deuda" 
-                      value="{{ $credito_propuesta ? $credito_propuesta->detalle_monto_compra_deuda : '' }}">
-                  </td> --}}
                 </tr>
                 <?php $ii=0 ?>
                 @if(count($saldo_prestamo_vigente_propio)>1)
@@ -455,7 +432,6 @@
                   <?php $ii++ ?>
                   @endforeach 
                 @endif
-                {{-- @endif --}}
               @endif 
               <tr>
                 <td></td>
@@ -467,7 +443,6 @@
                     id="neto_destino_credito" 
                     value="{{ $credito_propuesta ? (number_format($credito->monto_solicitado - $credito_propuesta->monto_compra_deuda, 2, '.', '')) : $credito->monto_solicitado }}">
                 </td>
-                {{-- <td colspan="2" rowspan="{{count($saldo_prestamo_vigente_propio)}}"></td> --}}
               </tr>
             </tbody>
           </table>
@@ -484,9 +459,9 @@
           </button>
         </div>
       </div>
-    @endif
-  </div>
-</form>   
+    </form>
+  @endif
+</div>
 <style>
   #success-message{
     background: #00a759;
@@ -546,5 +521,16 @@
 
         }
       })
+  }
+  function monto_compra_deuda_det(){
+    let data = [];
+    $("input#monto_compra_deuda_check:checked").each(function (e) {
+      let num = $(this).attr("num");
+      data.push({ 
+        idcredito: num,
+        monto_compra_deuda: parseFloat($('#monto_compra_deuda'+num).val()),
+      });
+    });
+    return JSON.stringify(data);
   }
 </script>

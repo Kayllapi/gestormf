@@ -667,7 +667,9 @@
         <span class="badge d-block" style="background-color: #aaa;color: #000;">7.2. CALCULO DE MARGEN Y NIVEL VENTAS</span>
       </div>
       <div class="mb-1 mt-2">
-        <span class="badge d-block" style="background-color: #aaa;color: #000;">7.2.1 VENTAS DENTRO DE LA SEMANA (VENTAS CON FRECUENCIA DIARIA Y SEMANAL)</span>
+        <span class="badge d-block" style="background-color: #aaa;color: #000;">
+          7.2.1 VENTAS DENTRO DE LA SEMANA (VENTAS CON <span style="background-color: #E8E585 !important;">FRECUENCIA DIARIA Y SEMANAL</span>)
+        </span>
       </div>
       <div class="row">
         <div class="col-sm-9">
@@ -993,7 +995,9 @@
       </div>
       
       <div class="mb-1 mt-2">
-        <span class="badge d-block" style="background-color: #aaa;color: #000;">7.2.2 VENTAS EN MAS DE UNA SEMANA (VENTAS CON FRECUENCIA MENSUAL)</span>
+        <span class="badge d-block" style="background-color: #aaa;color: #000;">
+          7.2.2 VENTAS EN MAS DE UNA SEMANA (VENTAS CON <span style="background-color: #E8E585 !important;">FRECUENCIA MENSUAL</span>)
+        </span>
       </div>
      
       <div class="row">

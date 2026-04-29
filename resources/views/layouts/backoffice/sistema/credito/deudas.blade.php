@@ -724,7 +724,13 @@
             <tbody>
               <tr>
                 <td style="border: 1px solid #a6a9ab;" width="600px">RIESGOS TOTAL PROYECTADO EN: {{ $tienda->nombre }} (S/.)</td>
-                <td style="border: 1px solid #a6a9ab;" width="100px"><input type="text" class="form-control campo_moneda" disabled value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->riesgo_proyectado_empresa : '0.00' }}" id="riesgo_proyectado_empresa"></td>
+                <td style="border: 1px solid #a6a9ab;" width="100px">
+                  <input type="text"
+                    class="form-control campo_moneda"
+                    disabled
+                    value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->riesgo_proyectado_empresa : '0.00' }}"
+                    id="riesgo_proyectado_empresa">
+                </td>
                 <td style="background-color: #efefef;"></td>
               </tr>
               <tr>
@@ -1143,6 +1149,7 @@
   calcular_riesgo_empresa();
   function calcular_riesgo_empresa(){
     let total_empresa = 0;
+    let total_empresa_regulada = 0;
     let total_deducciones = 0;
     let propuesta_monto = parseFloat($('#propuesta_monto').val());
     let total_saldo_capital = parseFloat($('#total_saldo_capital').val());
@@ -1150,6 +1157,14 @@
     
     let total_saldo_capital_deducciones = parseFloat($('#total_saldo_capital_deducciones').val());
     let total_noregulada_saldo_capital_deducciones = parseFloat($('#total_noregulada_saldo_capital_deducciones').val());
+
+    $(`#table-credito-entidad-regulada > tbody > tr`).each(function() {
+      let check_empresa = $(this).find('td[entidad] input[tipo_entidad]').prop("checked");
+      if(check_empresa){
+         total_empresa_regulada += parseFloat($(this).find('td[saldo_capital] input').val())
+         total_deducciones += parseFloat($(this).find('td[saldo_capital_deducciones] input').val())
+      }
+    });
     
     $(`#table-credito-entidad-noregulada > tbody > tr`).each(function() {
       let check_empresa = $(this).find('td[entidad] input[tipo_entidad]').prop("checked");
@@ -1159,7 +1174,7 @@
       }
     });
     
-    let total_riesgo = (total_empresa + propuesta_monto) - total_deducciones;
+    let total_riesgo = (total_empresa_regulada + total_empresa + propuesta_monto) - total_deducciones;
     $('#riesgo_proyectado_empresa').val(total_riesgo.toFixed(2));
     
     let riesgo_proyectado_todos = ( total_saldo_capital + total_noregulada_saldo_capital + propuesta_monto ) - total_saldo_capital_deducciones - total_noregulada_saldo_capital_deducciones;

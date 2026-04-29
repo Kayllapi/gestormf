@@ -262,12 +262,15 @@
           <div class="row mt-2">
             <label class="col-sm-4 col-form-label" style="text-align: right;">MARGEN DE VENTAS TOTAL CALCULADO:</label>
             <div class="col-sm-1">
-              <input type="text"
-                step="any"
-                class="form-control fw-bold"
-                value="{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->margen_venta_calculado : '0.00' }}"
-                id="margen_venta_calculado"
-                disabled>
+              <div class="input-group">
+                <input type="text"
+                  step="any"
+                  class="form-control fw-bold"
+                  value="{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->margen_venta_calculado : '0.00' }}"
+                  id="margen_venta_calculado"
+                  disabled>
+                <span class="input-group-text">%</span>
+              </div>
             </div>
             <div class="col-sm-1" style="display:none;">
               <input type="text" step="any" class="form-control" value="{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->margen_giro_economico : '0.00'}}" id="margen_venta_giro_economico" disabled>

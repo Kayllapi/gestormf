@@ -256,19 +256,11 @@
           </tbody>
         </table>
       </div>
-      {{-- <div class="col">
-        <table>
-          <tr>
-            <td>MARGEN DE VENTAS TOTAL CALCULADO:</td>
-            <td>{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->margen_venta_calculado : '0.00' }}</td>
-          </tr>
-        </table>
-      </div> --}}
     </div>
     <table>
       <tr>
         <td>MARGEN DE VENTAS TOTAL CALCULADO:</td>
-        <td>{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->margen_venta_calculado : '0.00' }}</td>
+        <td>{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->margen_venta_calculado : '0.00' }}%</td>
       </tr>
     </table>
     @endif  

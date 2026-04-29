@@ -118,7 +118,7 @@
           <table style="width:100%;">
             <tr>
                 <td style="width:65px;">
-                    <b>Días Venci.</b>
+                    <b>Días Vencid.</b>
                 </td>
                 <td style="width:1px;">
                     <b>:</b>

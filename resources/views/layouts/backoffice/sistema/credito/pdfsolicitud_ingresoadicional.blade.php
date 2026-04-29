@@ -312,7 +312,7 @@
             </tr>
             <tr>
               <td style="background-color: #e5e5e5 !important;
-              color: #000 !important;" colspan=2><b>TOTAL ACTIVO</b></td>
+              color: #000 !important; font-weight: bold;" colspan=2><b>TOTAL ACTIVO</b></td>
               <td style="background-color: #e5e5e5 !important;
               color: #000 !important;" class="campo_moneda">{{ encontrar_valor('balance_total_activo', $resumen) }}</td>
             </tr>
@@ -352,7 +352,7 @@
             </tr>
             <tr>
               <td colspan=2><b>PASIVO NO CORRIENTE</b></td>
-              <td class="campo_moneda">{{ encontrar_valor('balance_pasivo_nocorriente', $resumen) }}</td>
+              <td class="campo_moneda" style="font-weight: bold;">{{ encontrar_valor('balance_pasivo_nocorriente', $resumen) }}</td>
             </tr>
             <tr>
               <td style="background-color: #e5e5e5 !important;
@@ -370,7 +370,7 @@
             </tr>
             <tr>
               <td style="background-color: #e5e5e5 !important;
-              color: #000 !important;" colspan=2><b>TOTAL PATRIMONIO</b></td>
+              color: #000 !important; font-weight: bold;" colspan=2><b>TOTAL PATRIMONIO</b></td>
               <td style="background-color: #e5e5e5 !important;
               color: #000 !important;" class="campo_moneda">{{ encontrar_valor('balance_total_patrimonio', $resumen) }}</td>
             </tr>
@@ -378,7 +378,7 @@
               <td style="background-color: #e5e5e5 !important;
               color: #000 !important;" colspan=2><b>TOTAL PASIVO + PATRIMONIO</b></td>
               <td style="background-color: #e5e5e5 !important;
-              color: #000 !important;" class="campo_moneda">{{ encontrar_valor('balance_pasivo_patrimonio', $resumen) }}</td>
+              color: #000 !important; font-weight: bold;" class="campo_moneda">{{ encontrar_valor('balance_pasivo_patrimonio', $resumen) }}</td>
             </tr>
 
 
@@ -408,7 +408,7 @@
               <td style="background-color: #e5e5e5 !important;
               color: #000 !important;"><b>UTILIDAD BRUTA</b></td>
               <td style="background-color: #e5e5e5 !important;
-              color: #000 !important;" class="campo_moneda">{{ encontrar_valor('ganancias_utilidad_bruta', $ganancia_perdida) }}</td>
+              color: #000 !important; font-weight: bold;" class="campo_moneda">{{ encontrar_valor('ganancias_utilidad_bruta', $ganancia_perdida) }}</td>
             </tr>
             <tr>
               <td>Gastos de personal administrativo</td>
@@ -474,13 +474,13 @@
               <td style="background-color: #e5e5e5 !important;
               color: #000 !important;"><b>TOTAL DE GASTOS OPERATIVOS</b></td>
               <td style="background-color: #e5e5e5 !important;
-              color: #000 !important;" class="campo_moneda">{{ encontrar_valor('ganancias_gastos_operativos', $ganancia_perdida) }}</td>
+              color: #000 !important; font-weight: bold;" class="campo_moneda">{{ encontrar_valor('ganancias_gastos_operativos', $ganancia_perdida) }}</td>
             </tr>
             <tr>
               <td style="background-color: #e5e5e5 !important;
               color: #000 !important;"><b>UTILIDAD NETA</b></td>
               <td style="background-color: #e5e5e5 !important;
-              color: #000 !important;" class="campo_moneda">{{ encontrar_valor('ganancias_utilidad_neta', $ganancia_perdida) }}</td>
+              color: #000 !important; font-weight: bold;" class="campo_moneda">{{ encontrar_valor('ganancias_utilidad_neta', $ganancia_perdida) }}</td>
             </tr>
             <tr>
               <td>Cuota de Préstamos de Consumo e Hipotecarios para Vivienda (Reg. y no Reg.)</td>
@@ -490,7 +490,7 @@
               <td style="background-color: #e5e5e5 !important;
               color: #000 !important;"><b>EXCEDENTE MENSUAL</b></td>
               <td style="background-color: #e5e5e5 !important;
-              color: #000 !important;" class="campo_moneda">{{ encontrar_valor('ganancias_excedente_mensual', $ganancia_perdida) }}</td>
+              color: #000 !important; font-weight: bold;" class="campo_moneda">{{ encontrar_valor('ganancias_excedente_mensual', $ganancia_perdida) }}</td>
             </tr>
           </tbody>
         </table>
@@ -907,8 +907,8 @@
           </tbody>
           <tfoot>
             <tr>
-              <td class="color_totales campo_moneda" colspan=4>Inventario total de productos  (S/.) </td>
-              <td class="color_totales campo_moneda">{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->total_inventario : '0.00' }}</td>
+              <td class="color_totales campo_moneda" style="font-weight: bold;" colspan=4>Inventario total de productos  (S/.) </td>
+              <td class="color_totales campo_moneda" style="font-weight: bold;">{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->total_inventario : '0.00' }}</td>
             </tr>
           </tfoot>
         </table>
@@ -937,8 +937,8 @@
           </tbody>
           <tfoot>
             <tr>
-              <td class="color_totales campo_moneda" colspan=4>Total de activos inmuebles  (S/.) </td>
-              <td class="color_totales campo_moneda">{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->total_inmuebles : '0.00' }}</td>
+              <td class="color_totales campo_moneda" style="font-weight: bold;" colspan=4>Total de activos inmuebles  (S/.) </td>
+              <td class="color_totales campo_moneda" style="font-weight: bold;">{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->total_inmuebles : '0.00' }}</td>
             </tr>
           </tfoot>
         </table>
@@ -966,8 +966,8 @@
           </tbody>
           <tfoot>
             <tr>
-              <td class="color_totales campo_moneda" colspan=4>Total de activos muebles (S/.) </td>
-              <td class="color_totales campo_moneda">{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->total_muebles : '0.00' }}</td>
+              <td class="color_totales campo_moneda" style="font-weight: bold;" colspan=4>Total de activos muebles (S/.) </td>
+              <td class="color_totales campo_moneda" style="font-weight: bold;">{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->total_muebles : '0.00' }}</td>
             </tr>
           </tfoot>
         </table>
@@ -995,8 +995,8 @@
           </tbody>
           <tfoot>
             <tr>
-              <td class="color_totales campo_moneda" colspan="2"><b>TOTAL</b> (S/.) </td>
-              <td class="color_totales campo_moneda">{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->total_ingreso_adicional : '0.00' }}</td>
+              <td class="color_totales campo_moneda" style="font-weight: bold;" colspan="2"><b>TOTAL</b> (S/.) </td>
+              <td class="color_totales campo_moneda" style="font-weight: bold;">{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->total_ingreso_adicional : '0.00' }}</td>
             </tr>
           </tfoot>
         </table>

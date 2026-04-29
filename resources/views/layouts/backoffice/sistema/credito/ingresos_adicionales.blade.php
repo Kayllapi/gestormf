@@ -262,7 +262,12 @@
           <div class="row mt-2">
             <label class="col-sm-4 col-form-label" style="text-align: right;">MARGEN DE VENTAS TOTAL CALCULADO:</label>
             <div class="col-sm-1">
-              <input type="text" step="any" class="form-control" value="{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->margen_venta_calculado : '0.00' }}" id="margen_venta_calculado" disabled>
+              <input type="text"
+                step="any"
+                class="form-control fw-bold"
+                value="{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->margen_venta_calculado : '0.00' }}"
+                id="margen_venta_calculado"
+                disabled>
             </div>
             <div class="col-sm-1" style="display:none;">
               <input type="text" step="any" class="form-control" value="{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->margen_giro_economico : '0.00'}}" id="margen_venta_giro_economico" disabled>
@@ -327,7 +332,13 @@
                 <td style="background-color: #c8c8c8 !important;
                 color: #000 !important;" colspan=2><b>TOTAL ACTIVO</b></td>
                 <td style="background-color: #c8c8c8 !important;
-                color: #000 !important;"><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('balance_total_activo', $resumen) }}" disabled id="balance_total_activo"></td>
+                  color: #000 !important;">
+                  <input type="text"
+                    class="form-control campo_moneda fw-bold"
+                    value="{{ encontrar_valor('balance_total_activo', $resumen) }}"
+                    disabled
+                    id="balance_total_activo">
+                </td>
               </tr>
               <tr>
                 <td colspan=2>Cuentas por pagar a proveedores</td>
@@ -371,7 +382,13 @@
                 <td style="background-color: #c8c8c8 !important;
                 color: #000 !important;" colspan=2><b>TOTAL PASIVO</b></td>
                 <td style="background-color: #c8c8c8 !important;
-                color: #000 !important;"><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('balance_total_pasivo', $resumen) }}" disabled id="balance_total_pasivo"></td>
+                  color: #000 !important;">
+                  <input type="text"
+                    class="form-control campo_moneda fw-bold"
+                    value="{{ encontrar_valor('balance_total_pasivo', $resumen) }}"
+                    disabled
+                    id="balance_total_pasivo">
+                </td>
               </tr>
               <tr>
                 <td colspan=2>Capital social</td>
@@ -385,18 +402,26 @@
                 <td style="background-color: #c8c8c8 !important;
                 color: #000 !important;" colspan=2><b>TOTAL PATRIMONIO</b></td>
                 <td style="background-color: #c8c8c8 !important;
-                color: #000 !important;"><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('balance_total_patrimonio', $resumen) }}" disabled id="balance_total_patrimonio"></td>
+                  color: #000 !important;">
+                  <input type="text"
+                    class="form-control campo_moneda fw-bold"
+                    value="{{ encontrar_valor('balance_total_patrimonio', $resumen) }}"
+                    disabled
+                    id="balance_total_patrimonio">
+                </td>
               </tr>
               <tr>
                 <td style="background-color: #c8c8c8 !important;
                 color: #000 !important;" colspan=2><b>TOTAL PASIVO + PATRIMONIO</b></td>
                 <td style="background-color: #c8c8c8 !important;
-                color: #000 !important;"><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('balance_pasivo_patrimonio', $resumen) }}" disabled id="balance_pasivo_patrimonio"></td>
+                  color: #000 !important;">
+                  <input type="text"
+                    class="form-control campo_moneda fw-bold"
+                    value="{{ encontrar_valor('balance_pasivo_patrimonio', $resumen) }}"
+                    disabled
+                    id="balance_pasivo_patrimonio">
+                </td>
               </tr>
-              
-              
-              
-              
             </tbody>
           </table>
         </div>
@@ -421,7 +446,7 @@
                 <td style="background-color: #c8c8c8 !important;
                 color: #000 !important;"><b>UTILIDAD BRUTA</b></td>
                 <td style="background-color: #c8c8c8 !important;
-                color: #000 !important;"><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('ganancias_utilidad_bruta', $ganancia_perdida) }}" disabled id="ganancias_utilidad_bruta"></td>
+                color: #000 !important;"><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('ganancias_utilidad_bruta', $ganancia_perdida) }}" disabled id="ganancias_utilidad_bruta"></td>
               </tr>
               <tr>
                 <td>Gastos de personal administrativo</td>
@@ -487,13 +512,13 @@
                 <td style="background-color: #c8c8c8 !important;
                 color: #000 !important;"><b>TOTAL DE GASTOS OPERATIVOS</b></td>
                 <td style="background-color: #c8c8c8 !important;
-                color: #000 !important;"><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('ganancias_gastos_operativos', $ganancia_perdida) }}" disabled id="ganancias_gastos_operativos"></td>
+                color: #000 !important;"><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('ganancias_gastos_operativos', $ganancia_perdida) }}" disabled id="ganancias_gastos_operativos"></td>
               </tr>
               <tr>
                 <td style="background-color: #c8c8c8 !important;
                 color: #000 !important;"><b>UTILIDAD NETA</b></td>
                 <td style="background-color: #c8c8c8 !important;
-                color: #000 !important;"><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('ganancias_utilidad_neta', $ganancia_perdida) }}" disabled id="ganancias_utilidad_neta"></td>
+                color: #000 !important;"><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('ganancias_utilidad_neta', $ganancia_perdida) }}" disabled id="ganancias_utilidad_neta"></td>
               </tr>
               <tr>
                 <td>Cuota de Préstamos de Consumo e Hipotecarios para Vivienda (Reg. y no Reg.)</td>
@@ -503,7 +528,7 @@
                 <td style="background-color: #c8c8c8 !important;
                 color: #000 !important;"><b>EXCEDENTE MENSUAL</b></td>
                 <td style="background-color: #c8c8c8 !important;
-                color: #000 !important;"><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('ganancias_excedente_mensual', $ganancia_perdida) }}" disabled id="ganancias_excedente_mensual"></td>
+                color: #000 !important;"><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('ganancias_excedente_mensual', $ganancia_perdida) }}" disabled id="ganancias_excedente_mensual"></td>
               </tr>
             </tbody>
           </table>
@@ -740,7 +765,7 @@
                   <th style="background-color: #c8c8c8 !important;color: #000 !important;" class="campo_moneda" colspan=5 align="right">Mg. de Venta</th>
                   <th style="background-color: #c8c8c8 !important;color: #000 !important;">
                     <div class="input-group">
-                        <input type="text" step="any" disabled id="porcentaje_margen" class="form-control campo_moneda" value="{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->porcentaje_margen : '0.00' }}">
+                        <input type="text" step="any" disabled id="porcentaje_margen" class="form-control campo_moneda fw-bold" value="{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->porcentaje_margen : '0.00' }}">
                         <span class="input-group-text">%</span>
                       </div>
                   </th>
@@ -824,7 +849,14 @@
                 @endif
                 <tr total>
                   <th colspan="2" style="background-color: #c8c8c8 !important;color: #000 !important;">Venta Semanal (S/.)</th>
-                  <td style="background-color: #c8c8c8 !important;color: #000 !important;"><input type="text" id="venta_total_dias" step="any" class="form-control campo_moneda" value="{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->venta_total_dias : '0.00' }}" disabled></td>
+                  <td style="background-color: #c8c8c8 !important;color: #000 !important;">
+                    <input type="text"
+                      id="venta_total_dias"
+                      step="any"
+                      class="form-control campo_moneda fw-bold"
+                      value="{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->venta_total_dias : '0.00' }}"
+                      disabled>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -834,7 +866,7 @@
             <thead>
               <tr>
                 <th style="background-color: #c8c8c8 !important;color: #000 !important;" width="150px">N° de Días</th>
-                <th style="background-color: #c8c8c8 !important;color: #000 !important;" ><input type="text" disabled id="numero_dias" class="form-control campo_moneda" value="{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->numero_dias : '0' }}"></th>
+                <th style="background-color: #c8c8c8 !important;color: #000 !important;" ><input type="text" disabled id="numero_dias" class="form-control campo_moneda fw-bold" value="{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->numero_dias : '0' }}"></th>
               </tr>
             </thead>
           </table>
@@ -843,7 +875,7 @@
               <tr>
                 <th style="background-color: #c8c8c8 !important;color: #000 !important;" width="150px">Venta mensual (S/.)</th>
                 <th style="background-color: #c8c8c8 !important;color: #000 !important;" >
-                  <input type="text" disabled id="venta_mensual" value="{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->venta_mensual : '0' }}" class="form-control campo_moneda"></th>
+                  <input type="text" disabled id="venta_mensual" value="{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->venta_mensual : '0' }}" class="form-control campo_moneda fw-bold"></th>
               </tr>
             </thead>
           </table>
@@ -894,7 +926,7 @@
                 <th style="background-color: #c8c8c8 !important;color: #000 !important;" width="150px">Mg. De venta al mes (1) (S/.)</th>
                 <th style="background-color: #c8c8c8 !important;color: #000 !important;" >
                   <input type="text" disabled id="margen_ventas" value="{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->margen_ventas : '0.00' }}" 
-                         class="form-control campo_moneda"></th>
+                         class="form-control campo_moneda fw-bold"></th>
               </tr>
             </thead>
           </table>
@@ -1071,7 +1103,7 @@
                   <th style="background-color: #c8c8c8 !important;color: #000 !important;" class="campo_moneda" colspan=5 align="right">Mg. de Venta</th>
                   <th style="background-color: #c8c8c8 !important;color: #000 !important;">
                     <div class="input-group">
-                        <input type="text" step="any" disabled id="porcentaje_margen_mensual" class="form-control campo_moneda" value="{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->porcentaje_margen_mensual : '0.00' }}">
+                        <input type="text" step="any" disabled id="porcentaje_margen_mensual" class="form-control campo_moneda fw-bold" value="{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->porcentaje_margen_mensual : '0.00' }}">
                         <span class="input-group-text">%</span>
                       </div>
                   </th>
@@ -1135,7 +1167,7 @@
               
               <tr total>
                 <th style="background-color: #c8c8c8 !important;color: #000 !important;">Venta Mensual (S/.)</th>
-                <td style="background-color: #c8c8c8 !important;color: #000 !important;"><input type="text" id="venta_total_mensual" step="any" class="form-control campo_moneda" value="{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->venta_total_mensual : '0.00' }}" disabled></td>
+                <td style="background-color: #c8c8c8 !important;color: #000 !important;"><input type="text" id="venta_total_mensual" step="any" class="form-control campo_moneda fw-bold" value="{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->venta_total_mensual : '0.00' }}" disabled></td>
               </tr>
             </tbody>
           </table>
@@ -1157,7 +1189,7 @@
                 <th style="background-color: #c8c8c8 !important;color: #000 !important;" width="150px">Mg. De venta al mes (2) (S/.)</th>
                 <th style="background-color: #c8c8c8 !important;color: #000 !important;" >
                   <input type="text" disabled id="margen_ventas_mensual" value="{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->margen_ventas_mensual : '0.00' }}"
-                         class="form-control campo_moneda"></th>
+                         class="form-control campo_moneda fw-bold"></th>
               </tr>
             </thead>
           </table>
@@ -1295,8 +1327,8 @@
             </tbody>
             <tfoot>
               <tr>
-                <td class="color_totales campo_moneda" colspan=4><b>Inventario total de productos  (S/.)</b></td>
-                <td class="color_totales"><input type="text" id="total-inventario-producto" class="form-control campo_moneda" disabled 
+                <td class="color_totales campo_moneda" colspan=4><b>Inventario total de productos (S/.)</b></td>
+                <td class="color_totales"><input type="text" id="total-inventario-producto" class="form-control campo_moneda fw-bold" disabled 
                                                  value="{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->total_inventario : '0.00' }}"></td>
                   @if($view_detalle!='false')
                     <td class="color_totales"></td>
@@ -1343,7 +1375,7 @@
               <tr>
                 <td class="color_totales campo_moneda" colspan=4><b>Total de activos inmuebles (S/.)</b></td>
                 <td class="color_totales">
-                  <input type="text" id="total-activos-inmuebles" class="form-control campo_moneda" disabled 
+                  <input type="text" id="total-activos-inmuebles" class="form-control campo_moneda fw-bold" disabled 
                                                  value="{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->total_inmuebles : '0.00' }}">
                 </td>
                 @if($view_detalle!='false')
@@ -1388,7 +1420,7 @@
             <tfoot>
               <tr>
                 <td class="color_totales campo_moneda" colspan=4><b>Total de activos muebles (S/.)</b></td>
-                <td class="color_totales"><input type="text" id="total-activos-muebles" class="form-control campo_moneda" disabled 
+                <td class="color_totales"><input type="text" id="total-activos-muebles" class="form-control campo_moneda fw-bold" disabled 
                                                  value="{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->total_muebles : '0.00' }}"></td>
 
                 @if($view_detalle!='false')
@@ -1431,7 +1463,7 @@
             <tfoot>
               <tr>
                 <td class="color_totales campo_moneda" colspan="2" class="text-right"><b>TOTAL</b> (S/.)</td>
-                <td class="color_totales"><input type="text" class="form-control campo_moneda" id="total_ingreso_adicional" 
+                <td class="color_totales"><input type="text" class="form-control campo_moneda fw-bold" id="total_ingreso_adicional" 
                            value="{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->total_ingreso_adicional : '0.00' }}" disabled></td>
                 @if($view_detalle!='false')
                     <td class="color_totales"></td>

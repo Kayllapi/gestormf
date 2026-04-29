@@ -211,7 +211,7 @@
       <div class="mb-1 mt-2">
         <span class="badge d-block">DESTINO, AMPLIACIÓN Y ENTREGA DE CRÉDITO: </span>
       </div>
-      <div class="row">
+      <div class="row modal-body-cualitativa">
         <div class="col-sm-12 col-md-12">
           <table class="table">
             <tbody>
@@ -523,9 +523,7 @@
       })
   }
 
-  @if($credito->idmodalidad_credito==2 && count($saldo_prestamo_vigente_propio)>0 && $view_detalle!='false')
-    calcula_neto_destino_credito();
-  @endif
+  calcula_neto_destino_credito();
   function calcula_neto_destino_credito(){
     let monto_destino_credito = parseFloat($('#monto_destino_credito').val());
  
@@ -552,11 +550,6 @@
     let modalidad_credito = parseFloat("{{ $credito->idmodalidad_credito }}");
     if( ( modalidad_credito == 2 || modalidad_credito == 3 ) && (monto_compra_deuda == 0 || monto_compra_deuda == '') ){
       $('#error_monto_compra').removeClass('d-none');
-      
-      @if($credito->idmodalidad_credito==2 && count($saldo_prestamo_vigente_propio)>0)
-        $('#boton_guardar').attr('disabled',true);
-        $('#boton_imprimir').attr('disabled',true);
-      @endif
     }else{
       $('#error_monto_compra').addClass('d-none');
       $('#boton_guardar').attr('disabled',false);

@@ -522,6 +522,49 @@
         }
       })
   }
+
+  @if($credito->idmodalidad_credito==2 && count($saldo_prestamo_vigente_propio)>0 && $view_detalle!='false')
+    calcula_neto_destino_credito();
+  @endif
+  function calcula_neto_destino_credito(){
+    let monto_destino_credito = parseFloat($('#monto_destino_credito').val());
+ 
+    let monto_compra_deuda = 0;
+    $("input#monto_compra_deuda_check:checked").each(function (e) {
+            let num = $(this).attr("num");
+            monto_compra_deuda = monto_compra_deuda+parseFloat($('#monto_compra_deuda'+num).val());
+    });
+    
+    $('#result_ampliaciondeuda').removeAttr('style').html('');
+    if(monto_compra_deuda==0){
+        $('#result_ampliaciondeuda').attr('style',`background-color: #ffc9ca;
+            border: 1px solid #ff6666 !important;
+            color: #93222c !important;
+            text-align: center;
+            font-weight: bold;
+            padding: 5px;
+            border-radius: 5px;`).html('Es Obligatorio seleccionar una Amplación de deuda!!');
+    }
+    
+    $('#monto_compra_deuda').val(monto_compra_deuda.toFixed(2))
+    
+    // let modalidad_credito = 2; PARA PRUEBAS
+    let modalidad_credito = parseFloat("{{ $credito->idmodalidad_credito }}");
+    if( ( modalidad_credito == 2 || modalidad_credito == 3 ) && (monto_compra_deuda == 0 || monto_compra_deuda == '') ){
+      $('#error_monto_compra').removeClass('d-none');
+      
+      @if($credito->idmodalidad_credito==2 && count($saldo_prestamo_vigente_propio)>0)
+        $('#boton_guardar').attr('disabled',true);
+        $('#boton_imprimir').attr('disabled',true);
+      @endif
+    }else{
+      $('#error_monto_compra').addClass('d-none');
+      $('#boton_guardar').attr('disabled',false);
+      $('#boton_imprimir').attr('disabled',false);
+    }
+    let neto_destino_credito = monto_destino_credito - monto_compra_deuda;
+    $('#neto_destino_credito').val(neto_destino_credito.toFixed(2))
+  }
   function monto_compra_deuda_det(){
     let data = [];
     $("input#monto_compra_deuda_check:checked").each(function (e) {

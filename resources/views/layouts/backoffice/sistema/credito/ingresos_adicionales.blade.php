@@ -93,6 +93,7 @@
             <label class="col-sm-4 col-form-label" style="text-align: right;">TIPO GIRO ECONÓMICO ADICIONAL:</label>
             <div class="col-sm-8">
               <select {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto" id="idtipo_giro_economico_adiccional">
+                <option value=""></option>
                 @foreach($tipo_giro_economico as $value)
                   <option value="{{ $value->id }}">{{ $value->nombre }}</option>
                 @endforeach

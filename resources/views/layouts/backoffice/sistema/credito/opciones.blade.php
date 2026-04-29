@@ -184,238 +184,140 @@
       @endif
     @endif
 
-    @php
-      $view_detalle = '';
-      $credito_propuesta = DB::table('credito_propuesta')->where('credito_propuesta.idcredito',$credito->id)->first();
-    @endphp
-    <div class="mb-1 mt-2">
-      <span class="badge d-block">DESTINO, AMPLIACIÓN Y ENTREGA DE CRÉDITO: </span>
-    </div>
-    <div class="row">
-      <div class="col-sm-12 col-md-12">
-        <table class="table">
-          <tbody>
-            <tr>
-              <td style="width:80px">Destino:</td>
-              <td colspan="2">
-                <input type="text"
-                  class="form-control"
-                  disabled
-                  id="tipo_destino_credito_nombre" 
-                  value="{{ $credito->tipo_destino_credito_nombre}}">
-              </td>
-              <td style="width:100px">
-                <input type="text"
-                  class="form-control campo_moneda"
-                  disabled
-                  id="monto_destino_credito" 
-                  value="{{ $credito->monto_solicitado }}">
-              </td>
-            </tr>
-            @php
-              $saldo_prestamo_vigente_propio = DB::table('credito')
-                ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
-                ->where('credito.idcliente',$credito->idcliente)
-                ->where('credito.estado','DESEMBOLSADO')
-                ->where('credito.idestadocredito',1)
-                ->select(
-                  'credito.*',
-                  'credito_prendatario.nombre as nombreproductocredito',
-                  'credito_prendatario.modalidad as modalidadproductocredito',
-                )
-                ->distinct()
-                ->get();
-              $i=0;
-            @endphp
-            @if($credito->idmodalidad_credito==2 && count($saldo_prestamo_vigente_propio)>0)
+    @if($credito->idforma_credito==2 && $credito->conevaluacion == 'NO' && $credito->idmodalidad_credito == 2) {{-- no prendario && sin evaluación && ampliado --}}
+      @php
+        $view_detalle = '';
+        $credito_propuesta = DB::table('credito_propuesta')->where('credito_propuesta.idcredito',$credito->id)->first();
+      @endphp
+      <div class="mb-1 mt-2">
+        <span class="badge d-block">DESTINO, AMPLIACIÓN Y ENTREGA DE CRÉDITO: </span>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 col-md-12">
+          <table class="table">
+            <tbody>
               <tr>
-              {{-- @if($view_detalle=='false')
-                    <?php
-                      $monto_compra_deuda_det = json_decode($credito_propuesta->monto_compra_deuda_det,true);
-                    ?>
-                    <td rowspan="{{count($monto_compra_deuda_det)}}"></td>
-                    <td rowspan="{{count($monto_compra_deuda_det)}}">Ampliación de deuda</td>
-                    @if($monto_compra_deuda_det!='')
-                        @foreach($monto_compra_deuda_det as $value_det)
-                            <?php
-                                $credito_det = DB::table('credito')
-                                    ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
-                                    ->where('credito.id',$value_det['idcredito'])
-                                    ->select(
-                                        'credito.*',
-                                        'credito_prendatario.nombre as nombreproductocredito',
-                                        'credito_prendatario.modalidad as modalidadproductocredito',
-                                    )
-                                    ->first();
-                            ?>
-                              <td style="width:250px" class="border-td">
-                              <input type="text" 
-                                      class="form-control" 
-                                      value="C{{ str_pad($credito_det->cuenta, 8, "0", STR_PAD_LEFT) }} - {{$credito_det->nombreproductocredito}}" 
-                                      disabled>
-                              </td>
-                              <td style="width:100px" class="border-td">
-                              <input valida_input_vacio type="text" 
-                                      class="form-control campo_moneda" 
-                                      value="{{ $credito_propuesta ? $credito_propuesta->monto_compra_deuda : '0.00' }}" 
-                                      disabled></td>  
-                        @endforeach
-                    @endif
-                    <td rowspan="{{count($monto_compra_deuda_det)}}">Detalle:</td>
-                    <td rowspan="{{count($monto_compra_deuda_det)}}" class="border-td">
-                          <input type="text" class="form-control" 
-                                  value="{{ $credito_propuesta ? $credito_propuesta->detalle_monto_compra_deuda : '' }}" disabled></td>
-              @else --}}
-                <td rowspan="{{count($saldo_prestamo_vigente_propio)==0?1:count($saldo_prestamo_vigente_propio)}}"></td>
-                <td rowspan="{{count($saldo_prestamo_vigente_propio)==0?1:count($saldo_prestamo_vigente_propio)}}" style="width:300px">Ampliación de deuda</td>
-                @foreach($saldo_prestamo_vigente_propio as $value)
-                  @if($i==0)
-                    <?php
-                      // descuento cuota
-                      $credito_descuentocuotas = DB::table('credito_descuentocuota')
-                        ->where('credito_descuentocuota.idcredito',$value->id)
-                        ->where('credito_descuentocuota.idestadocredito_descuentocuota',1)
-                        ->first();
-                      $total_descuento_capital = 0; 
-                      $total_descuento_interes = 0; 
-                      $total_descuento_comision = 0; 
-                      $total_descuento_cargo = 0;  
-                      $total_descuento_penalidad = 0; 
-                      $total_descuento_tenencia = 0; 
-                      $total_descuento_compensatorio = 0; 
-                      $total_descuento_total = 0; 
-                      if($credito_descuentocuotas){
-                        if(1000>=$credito_descuentocuotas->numerocuota_fin){
-                          $total_descuento_capital = $credito_descuentocuotas->capital;
-                          $total_descuento_interes = $credito_descuentocuotas->interes;
-                          $total_descuento_comision = $credito_descuentocuotas->comision;
-                          $total_descuento_cargo = $credito_descuentocuotas->cargo;
-                          $total_descuento_penalidad = $credito_descuentocuotas->penalidad;
-                          $total_descuento_tenencia = $credito_descuentocuotas->tenencia;
-                          $total_descuento_compensatorio = $credito_descuentocuotas->compensatorio;
-                          $total_descuento_total = $credito_descuentocuotas->total;
-                        }
-                      }
-
-                      $cronograma = select_cronograma(
-                        $tienda->id,
-                        $value->id,
-                        $value->idforma_credito,
-                        $value->modalidadproductocredito,
-                        1000,
-                        $total_descuento_capital,
-                        $total_descuento_interes,
-                        $total_descuento_comision,
-                        $total_descuento_cargo,
-                        $total_descuento_penalidad,
-                        $total_descuento_tenencia,
-                        $total_descuento_compensatorio
-                      );
-                    ?>
-                    <td style="width:250px">
-                      <input type="text" class="form-control" 
-                              value="C{{ str_pad($value->cuenta, 8, "0", STR_PAD_LEFT) }} - {{$value->nombreproductocredito}}" disabled>
-                    </td>
-                    <td style="width:100px">
-                        <?php
-                        $monto_compra_deuda_det_monto = '';
-                        $monto_compra_deuda_det_check = '';
-                        if($credito_propuesta){
-                            $monto_compra_deuda_det = json_decode($credito_propuesta->monto_compra_deuda_det,true);
-                            if($monto_compra_deuda_det!=''){
-                                foreach($monto_compra_deuda_det as $value_det){
-                                    if($value_det['idcredito'] == $value->id){
-                                        $monto_compra_deuda_det_monto = $value_det['monto_compra_deuda'];
-                                        $monto_compra_deuda_det_check = 'checked';
-                                    }
-                                }
-                            }
-                        }
-                        ?>
-                        <div class="input-group">
-                          <input valida_input_vacio type="text" 
-                                  class="form-control campo_moneda" 
-                                  value="{{ $view_detalle=='false' ? $monto_compra_deuda_det_monto :$cronograma['cuota_pendiente'] }}" 
-                                  id="monto_compra_deuda{{ $value->id }}" 
-                                  disabled>
-                          <div class="input-group-text">
-                            <input class="form-check-input mt-0" 
-                                    type="checkbox" 
-                                    id="monto_compra_deuda_check"  
-                                    value="{{ $view_detalle=='false' ? $monto_compra_deuda_det_monto :$cronograma['cuota_pendiente'] }}" 
-                                    num="{{ $value->id }}" 
-                                    onclick="calcula_neto_destino_credito()"
-                                    <?php echo $monto_compra_deuda_det_check ?>>
-                          </div>
-                        </div>
-                    </td>    
-                  @endif
-                  <?php $i++ ?>
-                @endforeach
-                @if(count($saldo_prestamo_vigente_propio)==0)
-                  <td style="width:250px">
-                  </td>
-                  <td style="width:100px">
-                  </td>
-                @endif
-                {{-- <td rowspan="{{count($saldo_prestamo_vigente_propio)==0?1:count($saldo_prestamo_vigente_propio)}}">Detalle:</td>
-                <td rowspan="{{count($saldo_prestamo_vigente_propio)==0?1:count($saldo_prestamo_vigente_propio)}}">
-                  <input type="text" {{ $view_detalle=='false' ? 'disabled' : '' }}
-                    class="form-control color_cajatexto" id="detalle_monto_compra_deuda" 
-                    value="{{ $credito_propuesta ? $credito_propuesta->detalle_monto_compra_deuda : '' }}">
-                </td> --}}
+                <td style="width:80px">Destino:</td>
+                <td colspan="2">
+                  <input type="text"
+                    class="form-control"
+                    disabled
+                    id="tipo_destino_credito_nombre" 
+                    value="{{ $credito->tipo_destino_credito_nombre}}">
+                </td>
+                <td style="width:100px">
+                  <input type="text"
+                    class="form-control campo_moneda"
+                    disabled
+                    id="monto_destino_credito" 
+                    value="{{ $credito->monto_solicitado }}">
+                </td>
               </tr>
-              <?php $ii=0 ?>
-              @if(count($saldo_prestamo_vigente_propio)>1)
-                @foreach($saldo_prestamo_vigente_propio as $value)
-                  @if($ii>0)
-                    <?php
-                      // descuento cuota
-                      $credito_descuentocuotas = DB::table('credito_descuentocuota')
-                        ->where('credito_descuentocuota.idcredito',$value->id)
-                        ->where('credito_descuentocuota.idestadocredito_descuentocuota',1)
-                        ->first();
-                      $total_descuento_capital = 0; 
-                      $total_descuento_interes = 0; 
-                      $total_descuento_comision = 0; 
-                      $total_descuento_cargo = 0;  
-                      $total_descuento_penalidad = 0; 
-                      $total_descuento_tenencia = 0; 
-                      $total_descuento_compensatorio = 0; 
-                      $total_descuento_total = 0; 
-                      if($credito_descuentocuotas){
-                        if(1000>=$credito_descuentocuotas->numerocuota_fin){
-                          $total_descuento_capital = $credito_descuentocuotas->capital;
-                          $total_descuento_interes = $credito_descuentocuotas->interes;
-                          $total_descuento_comision = $credito_descuentocuotas->comision;
-                          $total_descuento_cargo = $credito_descuentocuotas->cargo;
-                          $total_descuento_penalidad = $credito_descuentocuotas->penalidad;
-                          $total_descuento_tenencia = $credito_descuentocuotas->tenencia;
-                          $total_descuento_compensatorio = $credito_descuentocuotas->compensatorio;
-                          $total_descuento_total = $credito_descuentocuotas->total;
+              @php
+                $saldo_prestamo_vigente_propio = DB::table('credito')
+                  ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
+                  ->where('credito.idcliente',$credito->idcliente)
+                  ->where('credito.estado','DESEMBOLSADO')
+                  ->where('credito.idestadocredito',1)
+                  ->select(
+                    'credito.*',
+                    'credito_prendatario.nombre as nombreproductocredito',
+                    'credito_prendatario.modalidad as modalidadproductocredito',
+                  )
+                  ->distinct()
+                  ->get();
+                $i=0;
+              @endphp
+              @if($credito->idmodalidad_credito==2 && count($saldo_prestamo_vigente_propio)>0)
+                <tr>
+                {{-- @if($view_detalle=='false')
+                      <?php
+                        $monto_compra_deuda_det = json_decode($credito_propuesta->monto_compra_deuda_det,true);
+                      ?>
+                      <td rowspan="{{count($monto_compra_deuda_det)}}"></td>
+                      <td rowspan="{{count($monto_compra_deuda_det)}}">Ampliación de deuda</td>
+                      @if($monto_compra_deuda_det!='')
+                          @foreach($monto_compra_deuda_det as $value_det)
+                              <?php
+                                  $credito_det = DB::table('credito')
+                                      ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
+                                      ->where('credito.id',$value_det['idcredito'])
+                                      ->select(
+                                          'credito.*',
+                                          'credito_prendatario.nombre as nombreproductocredito',
+                                          'credito_prendatario.modalidad as modalidadproductocredito',
+                                      )
+                                      ->first();
+                              ?>
+                                <td style="width:250px" class="border-td">
+                                <input type="text" 
+                                        class="form-control" 
+                                        value="C{{ str_pad($credito_det->cuenta, 8, "0", STR_PAD_LEFT) }} - {{$credito_det->nombreproductocredito}}" 
+                                        disabled>
+                                </td>
+                                <td style="width:100px" class="border-td">
+                                <input valida_input_vacio type="text" 
+                                        class="form-control campo_moneda" 
+                                        value="{{ $credito_propuesta ? $credito_propuesta->monto_compra_deuda : '0.00' }}" 
+                                        disabled></td>  
+                          @endforeach
+                      @endif
+                      <td rowspan="{{count($monto_compra_deuda_det)}}">Detalle:</td>
+                      <td rowspan="{{count($monto_compra_deuda_det)}}" class="border-td">
+                            <input type="text" class="form-control" 
+                                    value="{{ $credito_propuesta ? $credito_propuesta->detalle_monto_compra_deuda : '' }}" disabled></td>
+                @else --}}
+                  <td rowspan="{{count($saldo_prestamo_vigente_propio)==0?1:count($saldo_prestamo_vigente_propio)}}"></td>
+                  <td rowspan="{{count($saldo_prestamo_vigente_propio)==0?1:count($saldo_prestamo_vigente_propio)}}" style="width:300px">Ampliación de deuda</td>
+                  @foreach($saldo_prestamo_vigente_propio as $value)
+                    @if($i==0)
+                      <?php
+                        // descuento cuota
+                        $credito_descuentocuotas = DB::table('credito_descuentocuota')
+                          ->where('credito_descuentocuota.idcredito',$value->id)
+                          ->where('credito_descuentocuota.idestadocredito_descuentocuota',1)
+                          ->first();
+                        $total_descuento_capital = 0; 
+                        $total_descuento_interes = 0; 
+                        $total_descuento_comision = 0; 
+                        $total_descuento_cargo = 0;  
+                        $total_descuento_penalidad = 0; 
+                        $total_descuento_tenencia = 0; 
+                        $total_descuento_compensatorio = 0; 
+                        $total_descuento_total = 0; 
+                        if($credito_descuentocuotas){
+                          if(1000>=$credito_descuentocuotas->numerocuota_fin){
+                            $total_descuento_capital = $credito_descuentocuotas->capital;
+                            $total_descuento_interes = $credito_descuentocuotas->interes;
+                            $total_descuento_comision = $credito_descuentocuotas->comision;
+                            $total_descuento_cargo = $credito_descuentocuotas->cargo;
+                            $total_descuento_penalidad = $credito_descuentocuotas->penalidad;
+                            $total_descuento_tenencia = $credito_descuentocuotas->tenencia;
+                            $total_descuento_compensatorio = $credito_descuentocuotas->compensatorio;
+                            $total_descuento_total = $credito_descuentocuotas->total;
+                          }
                         }
-                      }
 
-                      $cronograma = select_cronograma(
-                        $tienda->id,
-                        $value->id,
-                        $value->idforma_credito,
-                        $value->modalidadproductocredito,
-                        1000,
-                        $total_descuento_capital,
-                        $total_descuento_interes,
-                        $total_descuento_comision,
-                        $total_descuento_cargo,
-                        $total_descuento_penalidad,
-                        $total_descuento_tenencia,
-                        $total_descuento_compensatorio
-                      );
-                    ?>
-                    <tr>
-                      <td>
-                        <input type="text" class="form-control" value="C{{ str_pad($value->cuenta, 8, "0", STR_PAD_LEFT) }} - {{$value->nombreproductocredito}}" disabled>
+                        $cronograma = select_cronograma(
+                          $tienda->id,
+                          $value->id,
+                          $value->idforma_credito,
+                          $value->modalidadproductocredito,
+                          1000,
+                          $total_descuento_capital,
+                          $total_descuento_interes,
+                          $total_descuento_comision,
+                          $total_descuento_cargo,
+                          $total_descuento_penalidad,
+                          $total_descuento_tenencia,
+                          $total_descuento_compensatorio
+                        );
+                      ?>
+                      <td style="width:250px">
+                        <input type="text" class="form-control" 
+                                value="C{{ str_pad($value->cuenta, 8, "0", STR_PAD_LEFT) }} - {{$value->nombreproductocredito}}" disabled>
                       </td>
-                      <td>
+                      <td style="width:100px">
                           <?php
                           $monto_compra_deuda_det_monto = '';
                           $monto_compra_deuda_det_check = '';
@@ -431,58 +333,158 @@
                               }
                           }
                           ?>
-                        <div class="input-group">
-                          <input valida_input_vacio 
-                            type="text" 
-                            class="form-control campo_moneda" 
-                            value="{{ $view_detalle=='false' ? $monto_compra_deuda_det_monto :$cronograma['cuota_pendiente'] }}" 
-                            id="monto_compra_deuda{{ $value->id }}" 
-                            disabled>
-                          <div class="input-group-text">
-                            <input class="form-check-input mt-0" 
-                              type="checkbox" 
-                              id="monto_compra_deuda_check" 
-                              value="{{ $view_detalle=='false' ? $monto_compra_deuda_det_monto :$cronograma['cuota_pendiente'] }}" 
-                              num="{{ $value->id }}" 
-                              onclick="calcula_neto_destino_credito()"
-                              <?php echo $monto_compra_deuda_det_check ?>>
+                          <div class="input-group">
+                            <input valida_input_vacio type="text" 
+                                    class="form-control campo_moneda" 
+                                    value="{{ $view_detalle=='false' ? $monto_compra_deuda_det_monto :$cronograma['cuota_pendiente'] }}" 
+                                    id="monto_compra_deuda{{ $value->id }}" 
+                                    disabled>
+                            <div class="input-group-text">
+                              <input class="form-check-input mt-0" 
+                                      type="checkbox" 
+                                      id="monto_compra_deuda_check"  
+                                      value="{{ $view_detalle=='false' ? $monto_compra_deuda_det_monto :$cronograma['cuota_pendiente'] }}" 
+                                      num="{{ $value->id }}" 
+                                      onclick="calcula_neto_destino_credito()"
+                                      <?php echo $monto_compra_deuda_det_check ?>>
+                            </div>
                           </div>
-                        </div>
-                      </td>
-                    </tr>
+                      </td>    
+                    @endif
+                    <?php $i++ ?>
+                  @endforeach
+                  @if(count($saldo_prestamo_vigente_propio)==0)
+                    <td style="width:250px">
+                    </td>
+                    <td style="width:100px">
+                    </td>
                   @endif
-                <?php $ii++ ?>
-                @endforeach 
-              @endif
-              {{-- @endif --}}
-            @endif 
-            <tr>
-              <td></td>
-              <td colspan="2">Neto a Entregar (S/)</td>
-              <td>
-                <input type="text"
-                  class="form-control campo_moneda"
-                  disabled
-                  id="neto_destino_credito" 
-                  value="{{ $credito_propuesta ? (number_format($credito->monto_solicitado - $credito_propuesta->monto_compra_deuda, 2, '.', '')) : $credito->monto_solicitado }}">
-              </td>
-              {{-- <td colspan="2" rowspan="{{count($saldo_prestamo_vigente_propio)}}"></td> --}}
-            </tr>
-          </tbody>
-        </table>
-        @if($credito->idmodalidad_credito==2 && count($saldo_prestamo_vigente_propio)>0 && $view_detalle!='false')
-          <div id="result_ampliaciondeuda"></div>
-        @endif
-        <input type="hidden" class="form-control" value="0.00" id="monto_compra_deuda">
+                  {{-- <td rowspan="{{count($saldo_prestamo_vigente_propio)==0?1:count($saldo_prestamo_vigente_propio)}}">Detalle:</td>
+                  <td rowspan="{{count($saldo_prestamo_vigente_propio)==0?1:count($saldo_prestamo_vigente_propio)}}">
+                    <input type="text" {{ $view_detalle=='false' ? 'disabled' : '' }}
+                      class="form-control color_cajatexto" id="detalle_monto_compra_deuda" 
+                      value="{{ $credito_propuesta ? $credito_propuesta->detalle_monto_compra_deuda : '' }}">
+                  </td> --}}
+                </tr>
+                <?php $ii=0 ?>
+                @if(count($saldo_prestamo_vigente_propio)>1)
+                  @foreach($saldo_prestamo_vigente_propio as $value)
+                    @if($ii>0)
+                      <?php
+                        // descuento cuota
+                        $credito_descuentocuotas = DB::table('credito_descuentocuota')
+                          ->where('credito_descuentocuota.idcredito',$value->id)
+                          ->where('credito_descuentocuota.idestadocredito_descuentocuota',1)
+                          ->first();
+                        $total_descuento_capital = 0; 
+                        $total_descuento_interes = 0; 
+                        $total_descuento_comision = 0; 
+                        $total_descuento_cargo = 0;  
+                        $total_descuento_penalidad = 0; 
+                        $total_descuento_tenencia = 0; 
+                        $total_descuento_compensatorio = 0; 
+                        $total_descuento_total = 0; 
+                        if($credito_descuentocuotas){
+                          if(1000>=$credito_descuentocuotas->numerocuota_fin){
+                            $total_descuento_capital = $credito_descuentocuotas->capital;
+                            $total_descuento_interes = $credito_descuentocuotas->interes;
+                            $total_descuento_comision = $credito_descuentocuotas->comision;
+                            $total_descuento_cargo = $credito_descuentocuotas->cargo;
+                            $total_descuento_penalidad = $credito_descuentocuotas->penalidad;
+                            $total_descuento_tenencia = $credito_descuentocuotas->tenencia;
+                            $total_descuento_compensatorio = $credito_descuentocuotas->compensatorio;
+                            $total_descuento_total = $credito_descuentocuotas->total;
+                          }
+                        }
+
+                        $cronograma = select_cronograma(
+                          $tienda->id,
+                          $value->id,
+                          $value->idforma_credito,
+                          $value->modalidadproductocredito,
+                          1000,
+                          $total_descuento_capital,
+                          $total_descuento_interes,
+                          $total_descuento_comision,
+                          $total_descuento_cargo,
+                          $total_descuento_penalidad,
+                          $total_descuento_tenencia,
+                          $total_descuento_compensatorio
+                        );
+                      ?>
+                      <tr>
+                        <td>
+                          <input type="text" class="form-control" value="C{{ str_pad($value->cuenta, 8, "0", STR_PAD_LEFT) }} - {{$value->nombreproductocredito}}" disabled>
+                        </td>
+                        <td>
+                            <?php
+                            $monto_compra_deuda_det_monto = '';
+                            $monto_compra_deuda_det_check = '';
+                            if($credito_propuesta){
+                                $monto_compra_deuda_det = json_decode($credito_propuesta->monto_compra_deuda_det,true);
+                                if($monto_compra_deuda_det!=''){
+                                    foreach($monto_compra_deuda_det as $value_det){
+                                        if($value_det['idcredito'] == $value->id){
+                                            $monto_compra_deuda_det_monto = $value_det['monto_compra_deuda'];
+                                            $monto_compra_deuda_det_check = 'checked';
+                                        }
+                                    }
+                                }
+                            }
+                            ?>
+                          <div class="input-group">
+                            <input valida_input_vacio 
+                              type="text" 
+                              class="form-control campo_moneda" 
+                              value="{{ $view_detalle=='false' ? $monto_compra_deuda_det_monto :$cronograma['cuota_pendiente'] }}" 
+                              id="monto_compra_deuda{{ $value->id }}" 
+                              disabled>
+                            <div class="input-group-text">
+                              <input class="form-check-input mt-0" 
+                                type="checkbox" 
+                                id="monto_compra_deuda_check" 
+                                value="{{ $view_detalle=='false' ? $monto_compra_deuda_det_monto :$cronograma['cuota_pendiente'] }}" 
+                                num="{{ $value->id }}" 
+                                onclick="calcula_neto_destino_credito()"
+                                <?php echo $monto_compra_deuda_det_check ?>>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    @endif
+                  <?php $ii++ ?>
+                  @endforeach 
+                @endif
+                {{-- @endif --}}
+              @endif 
+              <tr>
+                <td></td>
+                <td colspan="2">Neto a Entregar (S/)</td>
+                <td>
+                  <input type="text"
+                    class="form-control campo_moneda"
+                    disabled
+                    id="neto_destino_credito" 
+                    value="{{ $credito_propuesta ? (number_format($credito->monto_solicitado - $credito_propuesta->monto_compra_deuda, 2, '.', '')) : $credito->monto_solicitado }}">
+                </td>
+                {{-- <td colspan="2" rowspan="{{count($saldo_prestamo_vigente_propio)}}"></td> --}}
+              </tr>
+            </tbody>
+          </table>
+          @if($credito->idmodalidad_credito==2 && count($saldo_prestamo_vigente_propio)>0 && $view_detalle!='false')
+            <div id="result_ampliaciondeuda"></div>
+          @endif
+          <input type="hidden" class="form-control" value="0.00" id="monto_compra_deuda">
+        </div>
       </div>
-    </div>
-    <div class="row mt-1">
-      <div class="col" style="flex: 0 0 0%;">
-        <button type="submit" class="btn btn-success" id="boton_guardar">
-          <i class="fa-solid fa-floppy-disk"></i> GUARDAR CAMBIOS
-        </button>
+      <div class="row mt-1">
+        <div class="col" style="flex: 0 0 0%;">
+          <button type="submit" class="btn btn-success" id="boton_guardar">
+            <i class="fa-solid fa-floppy-disk"></i> GUARDAR CAMBIOS
+          </button>
+        </div>
       </div>
-    </div>
+    @endif
   </div>
 </form>   
 <style>

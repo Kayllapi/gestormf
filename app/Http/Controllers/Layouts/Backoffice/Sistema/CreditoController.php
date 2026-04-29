@@ -4242,8 +4242,7 @@ class CreditoController extends Controller
         }
         else if( $request->input('view') == 'deudas'){
           $credito_cuantitativa_deudas = DB::table('credito_cuantitativa_deudas')->where('credito_cuantitativa_deudas.idcredito',$id)->first();
-          
-          
+
           if($credito_cuantitativa_deudas){
             DB::table('credito_cuantitativa_deudas')->whereId($credito_cuantitativa_deudas->id)->update([
               'fecha' => Carbon::now(),
@@ -4335,8 +4334,6 @@ class CreditoController extends Controller
               'excedente_propuesta_sin_deduccion' => $request->input('excedente_propuesta_sin_deduccion'),
               'excedente_propuesta_con_deduccion' => $request->input('excedente_propuesta_con_deduccion'),*/
               'estado_credito' => $request->input('estado_credito'),
-              
-              
             ]);
           }
           DB::table('credito')->whereId($id)->update([

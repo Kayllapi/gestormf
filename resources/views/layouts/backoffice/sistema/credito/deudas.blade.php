@@ -1,34 +1,33 @@
 <form action="javascript:;" 
-      onsubmit="callback({
-          route: '{{ url('backoffice/'.$tienda->id.'/credito/'.$credito->id) }}',
-          method: 'PUT',
-          data:{
-              view: 'deudas',
-              entidad_regulada: json_entidad('table-credito-entidad-regulada'),
-              entidad_noregulada: json_entidad('table-credito-entidad-noregulada'),
-              linea_credito: json_linea_credito(),
-              resumen: json_resumen(),
-          }
-      },
-      function(res){
-        removecarga({input:'#mx-carga'})
-        $('#success-message').removeClass('d-none');
-        $('#success-message').text(res.mensaje);
-        setTimeout(function() {
-          $('#success-message').addClass('d-none');
-        }, 5000);
-        lista_credito();
-        load_nuevo_credito();
-                
-        $('#boton_imprimir').attr('disabled',false);
-      },this)"> 
+  onsubmit="callback({
+    route: '{{ url('backoffice/'.$tienda->id.'/credito/'.$credito->id) }}',
+    method: 'PUT',
+    data:{
+      view: 'deudas',
+      entidad_regulada: json_entidad('table-credito-entidad-regulada'),
+      entidad_noregulada: json_entidad('table-credito-entidad-noregulada'),
+      linea_credito: json_linea_credito(),
+      resumen: json_resumen(),
+    }
+  },
+  function(res){
+    removecarga({input:'#mx-carga'})
+    $('#success-message').removeClass('d-none');
+    $('#success-message').text(res.mensaje);
+    setTimeout(function() {
+      $('#success-message').addClass('d-none');
+    }, 5000);
+    lista_credito();
+    load_nuevo_credito();
 
+    $('#boton_imprimir').attr('disabled',false);
+  },this)"> 
     @php
       $entidad_regulada = $credito_cuantitativa_deudas ? ( $credito_cuantitativa_deudas->entidad_regulada == "" ? [] : json_decode($credito_cuantitativa_deudas->entidad_regulada) ) : [];
       $linea_credito = $credito_cuantitativa_deudas ? ( $credito_cuantitativa_deudas->linea_credito == "" ? [] : json_decode($credito_cuantitativa_deudas->linea_credito) ) : [];
       $entidad_noregulada = $credito_cuantitativa_deudas ? ( $credito_cuantitativa_deudas->entidad_noregulada == "" ? [] : json_decode($credito_cuantitativa_deudas->entidad_noregulada) ) : [];
       $resumen = $credito_cuantitativa_deudas ? ( $credito_cuantitativa_deudas->resumen == "" ? [] : json_decode($credito_cuantitativa_deudas->resumen) ) : [];
-  
+
       $ganancia_perdida = $credito_evaluacion_cuantitativa ? ( $credito_evaluacion_cuantitativa->ganancia_perdida == "" ? [] : json_decode($credito_evaluacion_cuantitativa->ganancia_perdida) ) : [];
     @endphp
     <div class="modal-header" style="border-bottom: 0;">
@@ -978,7 +977,6 @@
     }
   }
   function agrega_credito_entidad_regulada(){
-
     let btn_eliminar = `<button type="button" onclick="eliminar_producto(this)" class="btn btn-danger "><i class="fa-solid fa-trash"></i></button>` ;
     let option_select = ``;
     @foreach($tipo_credito_evaluacion as $value)
@@ -1031,8 +1029,6 @@
 
       $("#table-credito-entidad-regulada > tbody").append(tabla);
       valida_input_vacio();
-
-
   }
   function eliminar_producto(e){
     let path = $(e).closest('tr');
@@ -1118,7 +1114,6 @@
         estado_noregulada = true;
         //$("#error_entidad_noregulada").addClass('d-none')
       }
-      
     }
     calcular_resumen();
     if(estado_regulada == false && estado_noregulada == false){
@@ -1141,11 +1136,10 @@
       estado_btn_save = false;
       estado_regulada_noregulada = 'CORRECTO';
     }
-    
+
     $('#estado_regulada_noregulada').val(estado_regulada_noregulada)
-    
   }
-  
+
   calcular_riesgo_empresa();
   function calcular_riesgo_empresa(){
     let total_empresa = 0;
@@ -1171,7 +1165,7 @@
     let riesgo_proyectado_todos = ( total_saldo_capital + total_noregulada_saldo_capital + propuesta_monto ) - total_saldo_capital_deducciones - total_noregulada_saldo_capital_deducciones;
     $('#riesgo_proyectado_todos').val(riesgo_proyectado_todos.toFixed(2));
     
-    calcular_excedente();
+    // calcular_excedente();
   }
   
   /*function evaluarCredito() {
@@ -1285,8 +1279,6 @@
     $('#total_resumen_linea_credito').val(linea_credito.toFixed(2))
     $('#total_resumen_cuotas_linea_credito').val(cuota.toFixed(2))
     $('#total_resumen_cuotas_linea_credito2').val(cuota.toFixed(2))
-    
-    
   }
   
   function agrega_credito_entidad_noregulada(){
@@ -1349,7 +1341,7 @@
     let comercial_er_cplazo = 0;
     let comercial_er_lplazo = 0;
     let comercial_er_couta = 0;
-    
+
     let comercial_enr_cplazo = 0;
     let comercial_enr_lplazo = 0;
     let comercial_enr_couta = 0;
@@ -1357,7 +1349,7 @@
     let mes_er_cplazo = 0;
     let mes_er_lplazo = 0;
     let mes_er_couta = 0;
-    
+
     let mes_enr_cplazo = 0;
     let mes_enr_lplazo = 0;
     let mes_enr_couta = 0;
@@ -1365,7 +1357,7 @@
     let consumo_er_cplazo = 0;
     let consumo_er_lplazo = 0;
     let consumo_er_couta = 0;
-    
+
     let consumo_enr_cplazo = 0;
     let consumo_enr_lplazo = 0;
     let consumo_enr_couta = 0;
@@ -1373,11 +1365,11 @@
     let vivienda_er_cplazo = 0;
     let vivienda_er_lplazo = 0;
     let vivienda_er_couta = 0;
-    
+
     let vivienda_enr_cplazo = 0;
     let vivienda_enr_lplazo = 0;
     let vivienda_enr_couta = 0;
-    
+
     $(`#table-credito-entidad-regulada > tbody > tr`).each(function() {
       let tipo_credito = $(this).find('td[tipo_credito] select').val();
       if(tipo_credito == 1){
@@ -1400,7 +1392,6 @@
         vivienda_er_lplazo += parseFloat($(this).find('td[largo_plazo] input').val());
         vivienda_er_couta += parseFloat($(this).find('td[cuota] input').val());  
       }
-      
     });
     $(`#table-credito-entidad-noregulada > tbody > tr`).each(function() {
       let tipo_credito = $(this).find('td[tipo_credito] select').val();
@@ -1426,11 +1417,11 @@
       }
       
     });
-    
+
     $('#comercial_er_cplazo').val(comercial_er_cplazo.toFixed(2));
     $('#comercial_er_lplazo').val(comercial_er_lplazo.toFixed(2));
     $('#comercial_er_couta').val(comercial_er_couta.toFixed(2));
-    
+
     $('#comercial_enr_cplazo').val(comercial_enr_cplazo.toFixed(2));
     $('#comercial_enr_lplazo').val(comercial_enr_lplazo.toFixed(2));
     $('#comercial_enr_couta').val(comercial_enr_couta.toFixed(2));
@@ -1438,7 +1429,7 @@
     $('#mes_er_cplazo').val(mes_er_cplazo.toFixed(2));
     $('#mes_er_lplazo').val(mes_er_lplazo.toFixed(2));
     $('#mes_er_couta').val(mes_er_couta.toFixed(2));
-    
+
     $('#mes_enr_cplazo').val(mes_enr_cplazo.toFixed(2));
     $('#mes_enr_lplazo').val(mes_enr_lplazo.toFixed(2));
     $('#mes_enr_couta').val(mes_enr_couta.toFixed(2));
@@ -1446,7 +1437,7 @@
     $('#consumo_er_cplazo').val(consumo_er_cplazo.toFixed(2));
     $('#consumo_er_lplazo').val(consumo_er_lplazo.toFixed(2));
     $('#consumo_er_couta').val(consumo_er_couta.toFixed(2));
-    
+
     $('#consumo_enr_cplazo').val(consumo_enr_cplazo.toFixed(2));
     $('#consumo_enr_lplazo').val(consumo_enr_lplazo.toFixed(2));
     $('#consumo_enr_couta').val(consumo_enr_couta.toFixed(2));
@@ -1454,31 +1445,31 @@
     $('#vivienda_er_cplazo').val(vivienda_er_cplazo.toFixed(2));
     $('#vivienda_er_lplazo').val(vivienda_er_lplazo.toFixed(2));
     $('#vivienda_er_couta').val(vivienda_er_couta.toFixed(2));
-    
+
     $('#vivienda_enr_cplazo').val(vivienda_enr_cplazo.toFixed(2));
     $('#vivienda_enr_lplazo').val(vivienda_enr_lplazo.toFixed(2));
     $('#vivienda_enr_couta').val(vivienda_enr_couta.toFixed(2));
-    
+
     let comercial_total_cplazo = comercial_er_cplazo + comercial_enr_cplazo;
     let comercial_total_lplazo = comercial_er_lplazo + comercial_enr_lplazo;
     let comercial_total = comercial_total_cplazo + comercial_total_lplazo;
     let comercial_total_couta = comercial_er_couta + comercial_enr_couta;
-    
+
     let mes_total_cplazo = mes_er_cplazo + mes_enr_cplazo;
     let mes_total_lplazo = mes_er_lplazo + mes_enr_lplazo;
     let mes_total = mes_total_cplazo + mes_total_lplazo;
     let mes_total_couta = mes_er_couta + mes_enr_couta;
-    
+
     let consumo_total_cplazo = consumo_er_cplazo + consumo_enr_cplazo;
     let consumo_total_lplazo = consumo_er_lplazo + consumo_enr_lplazo;
     let consumo_total = consumo_total_cplazo + consumo_total_lplazo;
     let consumo_total_couta = consumo_er_couta + consumo_enr_couta;
-    
+
     let vivienda_total_cplazo = vivienda_er_cplazo + vivienda_enr_cplazo;
     let vivienda_total_lplazo = vivienda_er_lplazo + vivienda_enr_lplazo;
     let vivienda_total = vivienda_total_cplazo + vivienda_total_lplazo;
     let vivienda_total_couta = vivienda_er_couta + vivienda_enr_couta;
-    
+
     $('#comercial_total_cplazo').val(comercial_total_cplazo.toFixed(2));
     $('#comercial_total_lplazo').val(comercial_total_lplazo.toFixed(2));
     $('#comercial_total').val(comercial_total.toFixed(2));
@@ -1497,7 +1488,7 @@
     $('#vivienda_total_couta').val(vivienda_total_couta.toFixed(2));
     calcula_total_resumen();
   }
-  
+
   function calcula_total_resumen(){
     let totales = Array(11).fill(0);
     $("#table-resumen tbody tr").each(function() {
@@ -1577,31 +1568,18 @@
     });
     return JSON.stringify(data);
   }
-  
+
   function json_resumen(){
     let jsonData = [];
     $("#table-resumen input").each(function () {
-        let input = $(this);
-        let id = input.attr("id");
-        let valor = input.val();
-        jsonData.push({ 
-          id: id,
-          valor: valor,
-        });
+      let input = $(this);
+      let id = input.attr("id");
+      let valor = input.val();
+      jsonData.push({ 
+        id: id,
+        valor: valor,
+      });
     });
     return JSON.stringify(jsonData);
   }
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
 </script>

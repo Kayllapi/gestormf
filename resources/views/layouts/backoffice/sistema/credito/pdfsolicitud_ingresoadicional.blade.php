@@ -256,15 +256,21 @@
           </tbody>
         </table>
       </div>
-      <div class="col">
+      {{-- <div class="col">
         <table>
           <tr>
             <td>MARGEN DE VENTAS TOTAL CALCULADO:</td>
             <td>{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->margen_venta_calculado : '0.00' }}</td>
           </tr>
         </table>
-      </div>
+      </div> --}}
     </div>
+    <table>
+      <tr>
+        <td>MARGEN DE VENTAS TOTAL CALCULADO:</td>
+        <td>{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->margen_venta_calculado : '0.00' }}</td>
+      </tr>
+    </table>
     @endif  
     <span class="badge subtitle">7.1.2 ESTADOS FINANCIEROS</span>
     <div class="row">

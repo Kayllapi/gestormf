@@ -243,8 +243,8 @@
                 <td class="color_totales"><input type="number" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_cuota : '0.00' }}" class="form-control campo_moneda fw-bold" id="total_cuota" disabled></td>
                 <td class="color_totales"><input type="number" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_corto_plazo : '0.00' }}" class="form-control campo_moneda fw-bold" id="total_corto_plazo" disabled></td>
                 <td class="color_totales"><input type="number" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_largo_plazo : '0.00' }}" class="form-control campo_moneda fw-bold" id="total_largo_plazo" disabled></td>
-                <td class="color_totales"><input type="number" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_saldo_capital_deducciones : '0.00' }}" class="form-control campo_moneda fw-bold" id="total_saldo_capital_deducciones" disabled></td>
-                <td class="color_totales"><input type="number" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_cuota_deducciones : '0.00' }}" class="form-control campo_moneda fw-bold" id="total_cuota_deducciones" disabled></td>
+                <td class="color_totales"><input type="text" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_saldo_capital_deducciones : '0.00' }}" class="form-control campo_moneda fw-bold" id="total_saldo_capital_deducciones" disabled></td>
+                <td class="color_totales"><input type="text" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_cuota_deducciones : '0.00' }}" class="form-control campo_moneda fw-bold" id="total_cuota_deducciones" disabled></td>
               
                 @if($view_detalle!='false')
                 <td class="color_totales"></td>
@@ -438,14 +438,14 @@
                   <td largo_plazo><input type="number" value="{{ $value->largo_plazo }}" class="form-control campo_moneda" disabled></td>
 
                   <td saldo_capital_deducciones>
-                    <input type="number"
+                    <input type="text"
                       valida_input_vacio
                       value="{{ $value->saldo_capital_deducciones }}" {{ $view_detalle=='false' ? 'disabled' : '' }}
                       class="form-control campo_moneda color_cajatexto"
                       onkeyup="calcular_soles_entidad_regulada(this)">
                   </td>
                   <td cuota_deducciones>
-                    <input type="number"
+                    <input type="text"
                       valida_input_vacio
                       value="{{ $value->cuota_deducciones }}" {{ $view_detalle=='false' ? 'disabled' : '' }}
                       class="form-control campo_moneda color_cajatexto"
@@ -464,8 +464,8 @@
                 <td class="color_totales"><input type="number" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_noregulada_cuota : '0.00' }}" class="form-control campo_moneda fw-bold" id="total_noregulada_cuota" disabled></td>
                 <td class="color_totales"><input type="number" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_noregulada_corto_plazo : '0.00' }}" class="form-control campo_moneda fw-bold" id="total_noregulada_corto_plazo" disabled></td>
                 <td class="color_totales"><input type="number" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_noregulada_largo_plazo : '0.00' }}" class="form-control campo_moneda fw-bold" id="total_noregulada_largo_plazo" disabled></td>
-                <td class="color_totales"><input type="number" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_noregulada_saldo_capital_deducciones : '0.00' }}" class="form-control campo_moneda fw-bold" id="total_noregulada_saldo_capital_deducciones" disabled></td>
-                <td class="color_totales"><input type="number" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_noregulada_cuota_deducciones : '0.00' }}" class="form-control campo_moneda fw-bold" id="total_noregulada_cuota_deducciones" disabled></td>
+                <td class="color_totales"><input type="text" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_noregulada_saldo_capital_deducciones : '0.00' }}" class="form-control campo_moneda fw-bold" id="total_noregulada_saldo_capital_deducciones" disabled></td>
+                <td class="color_totales"><input type="text" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_noregulada_cuota_deducciones : '0.00' }}" class="form-control campo_moneda fw-bold" id="total_noregulada_cuota_deducciones" disabled></td>
                
                 @if($view_detalle!='false')
                 <td class="color_totales"></td>

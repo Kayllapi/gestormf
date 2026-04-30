@@ -80,14 +80,14 @@
             </div>
           </div>
           <div class="row">
-            <label class="col-sm-3 col-form-label" style="text-align: right;">DNI/RUC:</label>
+            <label class="col-sm-3 col-form-label" style="text-align: right;">RUC/DNI/CE:</label>
             <div class="col-sm-7">
               <input type="text" step="any" class="form-control" value="{{ $credito->docuementocliente }}" disabled>
             </div>
           </div>
           @if($users_prestamo->dni_pareja!='' or $users_prestamo->nombrecompleto_pareja!='')
           <div class="row">
-            <label class="col-sm-3 col-form-label" style="text-align: right;">DNI:</label>
+            <label class="col-sm-3 col-form-label" style="text-align: right;">DNI/CE:</label>
             <div class="col-sm-7">
               <input type="text" step="any" class="form-control" value="{{ $users_prestamo->dni_pareja }}" disabled>
             </div>
@@ -102,6 +102,12 @@
               @else
                 <input type="text" step="any" class="form-control" id="ejercicio_giro_economico" value="{{ $users_prestamo->db_idforma_ac_economica }}" disabled>
               @endif
+            </div>
+          </div>
+          <div class="row">
+            <label class="col-sm-3 col-form-label" style="text-align: right;">ASESOR(A):</label>
+            <div class="col-sm-7">
+              <input type="text" step="any" class="form-control" value="{{ Auth::user()->nombre }}" disabled>
             </div>
           </div>
         </div>
@@ -215,19 +221,19 @@
                 <td><input type="text" class="form-control campo_moneda" onkeyup="calcula_monto_meses(this)" value="0.00" disabled></td>
               </tr>
               <tr>
-                <td>% Ventas</td>
-                <td><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto" onkeyup="calcula_monto_meses(this)" value="100" disabled></td>
-                <td><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto campo_moneda" onkeyup="calcula_monto_meses(this)" value="0.00"></td>
-                <td><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto campo_moneda" onkeyup="calcula_monto_meses(this)" value="0.00"></td>
-                <td><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto campo_moneda" onkeyup="calcula_monto_meses(this)" value="0.00"></td>
-                <td><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto campo_moneda" onkeyup="calcula_monto_meses(this)" value="0.00"></td>
-                <td><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto campo_moneda" onkeyup="calcula_monto_meses(this)" value="0.00"></td>
-                <td><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto campo_moneda" onkeyup="calcula_monto_meses(this)" value="0.00"></td>
-                <td><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto campo_moneda" onkeyup="calcula_monto_meses(this)" value="0.00"></td>
-                <td><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto campo_moneda" onkeyup="calcula_monto_meses(this)" value="0.00"></td>
-                <td><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto campo_moneda" onkeyup="calcula_monto_meses(this)" value="0.00"></td>
-                <td><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto campo_moneda" onkeyup="calcula_monto_meses(this)" value="0.00"></td>
-                <td><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto campo_moneda" onkeyup="calcula_monto_meses(this)" value="0.00"></td>
+                <td style="font-weight: bold">% Ventas</td>
+                <td><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto fw-bold" onkeyup="calcula_monto_meses(this)" value="100" disabled></td>
+                <td><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto fw-bold campo_moneda" onkeyup="calcula_monto_meses(this)" value="0.00"></td>
+                <td><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto fw-bold campo_moneda" onkeyup="calcula_monto_meses(this)" value="0.00"></td>
+                <td><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto fw-bold campo_moneda" onkeyup="calcula_monto_meses(this)" value="0.00"></td>
+                <td><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto fw-bold campo_moneda" onkeyup="calcula_monto_meses(this)" value="0.00"></td>
+                <td><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto fw-bold campo_moneda" onkeyup="calcula_monto_meses(this)" value="0.00"></td>
+                <td><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto fw-bold campo_moneda" onkeyup="calcula_monto_meses(this)" value="0.00"></td>
+                <td><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto fw-bold campo_moneda" onkeyup="calcula_monto_meses(this)" value="0.00"></td>
+                <td><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto fw-bold campo_moneda" onkeyup="calcula_monto_meses(this)" value="0.00"></td>
+                <td><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto fw-bold campo_moneda" onkeyup="calcula_monto_meses(this)" value="0.00"></td>
+                <td><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto fw-bold campo_moneda" onkeyup="calcula_monto_meses(this)" value="0.00"></td>
+                <td><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto fw-bold campo_moneda" onkeyup="calcula_monto_meses(this)" value="0.00"></td>
               </tr>
             @endif
             </tbody>
@@ -306,10 +312,10 @@
               </tr>
               <tr>
                 <td colspan=2><b><u>ACTIVO CORRIENTE</u></b></td>
-                <td evaluacion_anterior><u><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('evaluacion_actual_activo_corriente', $balance_general_anterior) }}" id="evaluacion_actual_activo_corriente_anterior" disabled><u></td>
-                <td evaluacion_actual><u><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('evaluacion_actual_activo_corriente', $balance_general) }}" id="evaluacion_actual_activo_corriente" disabled><u></td>
-                <td analisis_vertical><u><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('analisis_vertical_activo_corriente', $balance_general) }}" id="analisis_vertical_activo_corriente" disabled><u></td>
-                <td analisis_horizontal><u><input type="text" class="form-control campo_moneda" value="0.00" id="analisis_horizontal_activo_corriente" disabled><u></td>
+                <td evaluacion_anterior><u><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('evaluacion_actual_activo_corriente', $balance_general_anterior) }}" id="evaluacion_actual_activo_corriente_anterior" disabled><u></td>
+                <td evaluacion_actual><u><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('evaluacion_actual_activo_corriente', $balance_general) }}" id="evaluacion_actual_activo_corriente" disabled><u></td>
+                <td analisis_vertical><u><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('analisis_vertical_activo_corriente', $balance_general) }}" id="analisis_vertical_activo_corriente" disabled><u></td>
+                <td analisis_horizontal><u><input type="text" class="form-control campo_moneda fw-bold" value="0.00" id="analisis_horizontal_activo_corriente" disabled><u></td>
               </tr>
               <tr>
                 <td colspan=2>Activo inmueble</td>
@@ -327,18 +333,18 @@
               </tr>
               <tr>
                 <td colspan=2><b><u>ACTIVO NO CORRIENTE</u></b></td>
-                <td evaluacion_anterior><u><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('evaluacion_actual_activo_nocorriente', $balance_general_anterior) }}" id="evaluacion_actual_activo_nocorriente_anterior" disabled></u></td>
-                <td evaluacion_actual><u><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('evaluacion_actual_activo_nocorriente', $balance_general) }}" id="evaluacion_actual_activo_nocorriente" disabled></u></td>
-                <td analisis_vertical><u><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('analisis_vertical_activo_nocorriente', $balance_general) }}" id="analisis_vertical_activo_nocorriente" disabled></u></td>
-                <td analisis_horizontal><u><input type="text" class="form-control campo_moneda" value="0.00" id="analisis_horizontal_activo_nocorriente" disabled></u></td>
+                <td evaluacion_anterior><u><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('evaluacion_actual_activo_nocorriente', $balance_general_anterior) }}" id="evaluacion_actual_activo_nocorriente_anterior" disabled></u></td>
+                <td evaluacion_actual><u><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('evaluacion_actual_activo_nocorriente', $balance_general) }}" id="evaluacion_actual_activo_nocorriente" disabled></u></td>
+                <td analisis_vertical><u><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('analisis_vertical_activo_nocorriente', $balance_general) }}" id="analisis_vertical_activo_nocorriente" disabled></u></td>
+                <td analisis_horizontal><u><input type="text" class="form-control campo_moneda fw-bold" value="0.00" id="analisis_horizontal_activo_nocorriente" disabled></u></td>
               </tr>
               <tr>
                 <td colspan=2 style="background-color: #c8c8c8 !important;
                 color: #000 !important;"><b class="doble-subrayado">TOTAL ACTIVO</b></td>
-                <td style="background-color: #c8c8c8 !important;color: #000 !important;" evaluacion_anterior><b class="doble-subrayado"><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('evaluacion_actual_total_activo', $balance_general_anterior) }}" id="evaluacion_actual_total_activo_anterior" disabled></b></td>
-                <td style="background-color: #c8c8c8 !important;color: #000 !important;" evaluacion_actual><b class="doble-subrayado"><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('evaluacion_actual_total_activo', $balance_general) }}" id="evaluacion_actual_total_activo" disabled></b></td>
-                <td style="background-color: #c8c8c8 !important;color: #000 !important;" analisis_vertical><b class="doble-subrayado"><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('analisis_vertical_total_activo', $balance_general) }}" id="analisis_vertical_total_activo" disabled></b></td>
-                <td style="background-color: #c8c8c8 !important;color: #000 !important;" analisis_horizontal><b class="doble-subrayado"><input type="text" class="form-control campo_moneda" value="0.00" id="analisis_horizontal_total_activo" disabled></b></td>
+                <td style="background-color: #c8c8c8 !important;color: #000 !important;" evaluacion_anterior><b class="doble-subrayado"><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('evaluacion_actual_total_activo', $balance_general_anterior) }}" id="evaluacion_actual_total_activo_anterior" disabled></b></td>
+                <td style="background-color: #c8c8c8 !important;color: #000 !important;" evaluacion_actual><b class="doble-subrayado"><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('evaluacion_actual_total_activo', $balance_general) }}" id="evaluacion_actual_total_activo" disabled></b></td>
+                <td style="background-color: #c8c8c8 !important;color: #000 !important;" analisis_vertical><b class="doble-subrayado"><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('analisis_vertical_total_activo', $balance_general) }}" id="analisis_vertical_total_activo" disabled></b></td>
+                <td style="background-color: #c8c8c8 !important;color: #000 !important;" analisis_horizontal><b class="doble-subrayado"><input type="text" class="form-control campo_moneda fw-bold" value="0.00" id="analisis_horizontal_total_activo" disabled></b></td>
               </tr>
               <tr>
                 <td colspan=2>Cuentas por pagar a proveedores</td>
@@ -381,7 +387,7 @@
                 <td evaluacion_anterior><u><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('evaluacion_actual_pasivo_corriente', $balance_general_anterior) }}" id="evaluacion_actual_pasivo_corriente_anterior" disabled></u></td>
                 <td evaluacion_actual><u><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('evaluacion_actual_pasivo_corriente', $balance_general) }}" id="evaluacion_actual_pasivo_corriente" disabled></u></td>
                 <td analisis_vertical><u><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('analisis_vertical_pasivo_corriente', $balance_general) }}" id="analisis_vertical_pasivo_corriente" disabled></u></td>
-                <td analisis_horizontal><u><input type="text" class="form-control campo_moneda" value="0.00" id="analisis_horizontal_pasivo_corriente" disabled></u></td>
+                <td analisis_horizontal><u><input type="text" class="form-control campo_moneda fw-bold" value="0.00" id="analisis_horizontal_pasivo_corriente" disabled></u></td>
               </tr>
               <tr>
                 <td rowspan=2>Pasivo Fin. a Largo.Plazo</td>
@@ -400,17 +406,17 @@
               </tr>
               <tr>
                 <td colspan=2><b><u>PASIVO NO CORRIENTE</u></b></td>
-                <td evaluacion_anterior><u><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('evaluacion_actual_pasivo_nocorriente', $balance_general_anterior) }}" id="evaluacion_actual_pasivo_nocorriente_anterior" disabled></u></td>
-                <td evaluacion_actual><u><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('evaluacion_actual_pasivo_nocorriente', $balance_general) }}" id="evaluacion_actual_pasivo_nocorriente" disabled></u></td>
-                <td analisis_vertical><u><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('analisis_vertical_pasivo_nocorriente', $balance_general) }}" id="analisis_vertical_pasivo_nocorriente" disabled></u></td>
-                <td analisis_horizontal><u><input type="text" class="form-control campo_moneda" value="0.00" id="analisis_horizontal_pasivo_nocorriente" disabled></u></td>
+                <td evaluacion_anterior><u><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('evaluacion_actual_pasivo_nocorriente', $balance_general_anterior) }}" id="evaluacion_actual_pasivo_nocorriente_anterior" disabled></u></td>
+                <td evaluacion_actual><u><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('evaluacion_actual_pasivo_nocorriente', $balance_general) }}" id="evaluacion_actual_pasivo_nocorriente" disabled></u></td>
+                <td analisis_vertical><u><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('analisis_vertical_pasivo_nocorriente', $balance_general) }}" id="analisis_vertical_pasivo_nocorriente" disabled></u></td>
+                <td analisis_horizontal><u><input type="text" class="form-control campo_moneda fw-bold" value="0.00" id="analisis_horizontal_pasivo_nocorriente" disabled></u></td>
               </tr>
               <tr>
                 <td style="background-color: #c8c8c8 !important;color: #000 !important;" colspan=2><b class="doble-subrayado">TOTAL PASIVO</b></td>
-                <td style="background-color: #c8c8c8 !important;color: #000 !important;" evaluacion_anterior><b class="doble-subrayado"><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('evaluacion_actual_total_pasivo', $balance_general_anterior) }}" id="evaluacion_actual_total_pasivo_anterior" disabled></b></td>
-                <td style="background-color: #c8c8c8 !important;color: #000 !important;" evaluacion_actual><b class="doble-subrayado"><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('evaluacion_actual_total_pasivo', $balance_general) }}" id="evaluacion_actual_total_pasivo" disabled></b></td>
-                <td style="background-color: #c8c8c8 !important;color: #000 !important;" analisis_vertical><b class="doble-subrayado"><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('analisis_vertical_total_pasivo', $balance_general) }}" id="analisis_vertical_total_pasivo" disabled></b></td>
-                <td style="background-color: #c8c8c8 !important;color: #000 !important;" analisis_horizontal><b class="doble-subrayado"><input type="text" class="form-control campo_moneda" value="0.00" id="analisis_horizontal_total_pasivo" disabled></b></td>
+                <td style="background-color: #c8c8c8 !important;color: #000 !important;" evaluacion_anterior><b class="doble-subrayado"><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('evaluacion_actual_total_pasivo', $balance_general_anterior) }}" id="evaluacion_actual_total_pasivo_anterior" disabled></b></td>
+                <td style="background-color: #c8c8c8 !important;color: #000 !important;" evaluacion_actual><b class="doble-subrayado"><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('evaluacion_actual_total_pasivo', $balance_general) }}" id="evaluacion_actual_total_pasivo" disabled></b></td>
+                <td style="background-color: #c8c8c8 !important;color: #000 !important;" analisis_vertical><b class="doble-subrayado"><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('analisis_vertical_total_pasivo', $balance_general) }}" id="analisis_vertical_total_pasivo" disabled></b></td>
+                <td style="background-color: #c8c8c8 !important;color: #000 !important;" analisis_horizontal><b class="doble-subrayado"><input type="text" class="form-control campo_moneda fw-bold" value="0.00" id="analisis_horizontal_total_pasivo" disabled></b></td>
               </tr>
               <tr>
                 <td colspan=2>Capital social</td>
@@ -428,17 +434,17 @@
               </tr>
               <tr>
                 <td style="background-color: #c8c8c8 !important;color: #000 !important;" colspan=2><b class="doble-subrayado">TOTAL PATRIMONIO</b></td>
-                <td style="background-color: #c8c8c8 !important;color: #000 !important;" evaluacion_anterior><b class="doble-subrayado"><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('evaluacion_actual_patrimonio', $balance_general_anterior) }}" id="evaluacion_actual_patrimonio_anterior" disabled></b></td>
-                <td style="background-color: #c8c8c8 !important;color: #000 !important;" evaluacion_actual><b class="doble-subrayado"><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('evaluacion_actual_patrimonio', $balance_general) }}" id="evaluacion_actual_patrimonio" disabled></b></td>
-                <td style="background-color: #c8c8c8 !important;color: #000 !important;" analisis_vertical><b class="doble-subrayado"><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('analisis_vertical_patrimonio', $balance_general) }}" id="analisis_vertical_patrimonio" disabled></b></td>
-                <td style="background-color: #c8c8c8 !important;color: #000 !important;" analisis_horizontal><b class="doble-subrayado"><input type="text" class="form-control campo_moneda" value="0.00" id="analisis_horizontal_patrimonio"  disabled></b></td>
+                <td style="background-color: #c8c8c8 !important;color: #000 !important;" evaluacion_anterior><b class="doble-subrayado"><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('evaluacion_actual_patrimonio', $balance_general_anterior) }}" id="evaluacion_actual_patrimonio_anterior" disabled></b></td>
+                <td style="background-color: #c8c8c8 !important;color: #000 !important;" evaluacion_actual><b class="doble-subrayado"><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('evaluacion_actual_patrimonio', $balance_general) }}" id="evaluacion_actual_patrimonio" disabled></b></td>
+                <td style="background-color: #c8c8c8 !important;color: #000 !important;" analisis_vertical><b class="doble-subrayado"><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('analisis_vertical_patrimonio', $balance_general) }}" id="analisis_vertical_patrimonio" disabled></b></td>
+                <td style="background-color: #c8c8c8 !important;color: #000 !important;" analisis_horizontal><b class="doble-subrayado"><input type="text" class="form-control campo_moneda fw-bold" value="0.00" id="analisis_horizontal_patrimonio"  disabled></b></td>
               </tr>
               <tr>
                 <td style="background-color: #c8c8c8 !important;color: #000 !important;" colspan=2><b class="doble-subrayado">TOTAL PASIVO + PATRIMONIO</b></td>
-                <td style="background-color: #c8c8c8 !important;color: #000 !important;" evaluacion_anterior><b class="doble-subrayado"><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('evaluacion_actual_pasivo_patrimonio', $balance_general_anterior) }}" id="evaluacion_actual_pasivo_patrimonio_anterior" disabled></b></td>
-                <td style="background-color: #c8c8c8 !important;color: #000 !important;" evaluacion_actual><b class="doble-subrayado"><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('evaluacion_actual_pasivo_patrimonio', $balance_general) }}" id="evaluacion_actual_pasivo_patrimonio" disabled></b></td>
-                <td style="background-color: #c8c8c8 !important;color: #000 !important;" analisis_vertical><b class="doble-subrayado"><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('analisis_vertical_pasivo_patrimonio', $balance_general) }}" id="analisis_vertical_pasivo_patrimonio" disabled></b></td>
-                <td style="background-color: #c8c8c8 !important;color: #000 !important;" analisis_horizontal><b class="doble-subrayado"><input type="text" class="form-control campo_moneda" value="0.00" id="analisis_horizontal_pasivo_patrimonio" disabled></b></td>
+                <td style="background-color: #c8c8c8 !important;color: #000 !important;" evaluacion_anterior><b class="doble-subrayado"><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('evaluacion_actual_pasivo_patrimonio', $balance_general_anterior) }}" id="evaluacion_actual_pasivo_patrimonio_anterior" disabled></b></td>
+                <td style="background-color: #c8c8c8 !important;color: #000 !important;" evaluacion_actual><b class="doble-subrayado"><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('evaluacion_actual_pasivo_patrimonio', $balance_general) }}" id="evaluacion_actual_pasivo_patrimonio" disabled></b></td>
+                <td style="background-color: #c8c8c8 !important;color: #000 !important;" analisis_vertical><b class="doble-subrayado"><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('analisis_vertical_pasivo_patrimonio', $balance_general) }}" id="analisis_vertical_pasivo_patrimonio" disabled></b></td>
+                <td style="background-color: #c8c8c8 !important;color: #000 !important;" analisis_horizontal><b class="doble-subrayado"><input type="text" class="form-control campo_moneda fw-bold" value="0.00" id="analisis_horizontal_pasivo_patrimonio" disabled></b></td>
               </tr>
             </tbody>
           </table>
@@ -464,10 +470,10 @@
             <tbody>
               <tr>
                 <td style="background-color: #c8c8c8 !important;color: #000 !important;" descripcion><b><u>VENTAS MENSUALES</u></b></td>
-                <td style="background-color: #c8c8c8 !important;color: #000 !important;" evaluacion_anterior><u><input type="text" class="form-control campo_moneda" value="{{ number_format(($credito_cuantitativa_margen_venta_anterior ? $credito_cuantitativa_margen_venta_anterior->venta_mensual : 0) + ($credito_cuantitativa_margen_venta_anterior ? $credito_cuantitativa_margen_venta_anterior->venta_total_mensual : 0), 2, '.', '') }}" id="evaluacion_actual_ganancia_ventamensual_anterior" disabled></u></td>
-                <td style="background-color: #c8c8c8 !important;color: #000 !important;" evaluacion_actual><u><input type="text" class="form-control campo_moneda" value="{{ number_format(($credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->venta_mensual : 0) + ($credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->venta_total_mensual : 0), 2, '.', '') }}" id="evaluacion_actual_ganancia_ventamensual" disabled></u></td>
-                <td style="background-color: #c8c8c8 !important;color: #000 !important;" analisis_vertical><u><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('analisis_vertical_ventamensual', $ganancia_perdida) }}" id="analisis_vertical_ventamensual" disabled></u></td>
-                <td style="background-color: #c8c8c8 !important;color: #000 !important;" analisis_horizontal><u><input type="text" class="form-control campo_moneda" value="0.00" id="analisis_horizontal_ventamensual" disabled></u></td>
+                <td style="background-color: #c8c8c8 !important;color: #000 !important;" evaluacion_anterior><u><input type="text" class="form-control campo_moneda fw-bold" value="{{ number_format(($credito_cuantitativa_margen_venta_anterior ? $credito_cuantitativa_margen_venta_anterior->venta_mensual : 0) + ($credito_cuantitativa_margen_venta_anterior ? $credito_cuantitativa_margen_venta_anterior->venta_total_mensual : 0), 2, '.', '') }}" id="evaluacion_actual_ganancia_ventamensual_anterior" disabled></u></td>
+                <td style="background-color: #c8c8c8 !important;color: #000 !important;" evaluacion_actual><u><input type="text" class="form-control campo_moneda fw-bold" value="{{ number_format(($credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->venta_mensual : 0) + ($credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->venta_total_mensual : 0), 2, '.', '') }}" id="evaluacion_actual_ganancia_ventamensual" disabled></u></td>
+                <td style="background-color: #c8c8c8 !important;color: #000 !important;" analisis_vertical><u><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('analisis_vertical_ventamensual', $ganancia_perdida) }}" id="analisis_vertical_ventamensual" disabled></u></td>
+                <td style="background-color: #c8c8c8 !important;color: #000 !important;" analisis_horizontal><u><input type="text" class="form-control campo_moneda fw-bold" value="0.00" id="analisis_horizontal_ventamensual" disabled></u></td>
               </tr>
               <tr>
                 <td descripcion>Costo de venta (C. de producción)</td>
@@ -478,10 +484,10 @@
               </tr>
               <tr>
                 <td style="background-color: #c8c8c8 !important;color: #000 !important;" descripcion><b class="doble-subrayado">UTILIDAD BRUTA</b></td>
-                <td style="background-color: #c8c8c8 !important;color: #000 !important;" evaluacion_anterior><b class="doble-subrayado"><input type="text" class="form-control campo_moneda" id="evaluacion_actual_ganancia_utilidad_bruta_anterior" value="{{ number_format(( $credito_cuantitativa_margen_venta_anterior ? $credito_cuantitativa_margen_venta_anterior->margen_ventas : 0 ) + ( $credito_cuantitativa_margen_venta_anterior ? $credito_cuantitativa_margen_venta_anterior->margen_ventas_mensual : 0 ), 2, '.', '') }}" disabled></b></td>
-                <td style="background-color: #c8c8c8 !important;color: #000 !important;" evaluacion_actual><b class="doble-subrayado"><input type="text" class="form-control campo_moneda"  id="evaluacion_actual_ganancia_utilidad_bruta" value="{{ number_format(( $credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->margen_ventas : 0 ) + ( $credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->margen_ventas_mensual : 0 ), 2, '.', '') }}" disabled></b></td>
-                <td style="background-color: #c8c8c8 !important;color: #000 !important;" analisis_vertical><b class="doble-subrayado"><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('analisis_vertical_utilidad_bruta', $ganancia_perdida) }}" id="analisis_vertical_utilidad_bruta" disabled></b></td>
-                <td style="background-color: #c8c8c8 !important;color: #000 !important;" analisis_horizontal><b class="doble-subrayado"><input type="text" class="form-control campo_moneda" value="0.00" id="analisis_horizontal_utilidad_bruta" disabled></b></td>
+                <td style="background-color: #c8c8c8 !important;color: #000 !important;" evaluacion_anterior><b class="doble-subrayado"><input type="text" class="form-control campo_moneda fw-bold" id="evaluacion_actual_ganancia_utilidad_bruta_anterior" value="{{ number_format(( $credito_cuantitativa_margen_venta_anterior ? $credito_cuantitativa_margen_venta_anterior->margen_ventas : 0 ) + ( $credito_cuantitativa_margen_venta_anterior ? $credito_cuantitativa_margen_venta_anterior->margen_ventas_mensual : 0 ), 2, '.', '') }}" disabled></b></td>
+                <td style="background-color: #c8c8c8 !important;color: #000 !important;" evaluacion_actual><b class="doble-subrayado"><input type="text" class="form-control campo_moneda fw-bold"  id="evaluacion_actual_ganancia_utilidad_bruta" value="{{ number_format(( $credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->margen_ventas : 0 ) + ( $credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->margen_ventas_mensual : 0 ), 2, '.', '') }}" disabled></b></td>
+                <td style="background-color: #c8c8c8 !important;color: #000 !important;" analisis_vertical><b class="doble-subrayado"><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('analisis_vertical_utilidad_bruta', $ganancia_perdida) }}" id="analisis_vertical_utilidad_bruta" disabled></b></td>
+                <td style="background-color: #c8c8c8 !important;color: #000 !important;" analisis_horizontal><b class="doble-subrayado"><input type="text" class="form-control campo_moneda fw-bold" value="0.00" id="analisis_horizontal_utilidad_bruta" disabled></b></td>
               </tr>
               <tr>
                 <td descripcion>Gastos de personal administrativo</td>
@@ -590,22 +596,22 @@
               </tr>
               <tr>
                 <td style="background-color: #c8c8c8 !important;color: #000 !important;" descripcion><b class="doble-subrayado">TOTAL DE GASTOS OPERATIVOS</b></td>
-                <td style="background-color: #c8c8c8 !important;color: #000 !important;" evaluacion_anterior><b class="doble-subrayado"><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('evaluacion_actual_ganancia_gastos_op', $ganancia_perdida_anterior) }}" id="evaluacion_actual_ganancia_gastos_op_anterior" disabled></b></td>
-                <td style="background-color: #c8c8c8 !important;color: #000 !important;" evaluacion_actual><b class="doble-subrayado"><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('evaluacion_actual_ganancia_gastos_op', $ganancia_perdida) }}" id="evaluacion_actual_ganancia_gastos_op" disabled></b></td>
-                <td style="background-color: #c8c8c8 !important;color: #000 !important;" analisis_vertical><b class="doble-subrayado"><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('analisis_vertical_gastos_op', $ganancia_perdida) }}" id="analisis_vertical_gastos_op" disabled></b></td>
-                <td style="background-color: #c8c8c8 !important;color: #000 !important;" analisis_horizontal><b class="doble-subrayado"><input type="text" class="form-control campo_moneda" value="0.00" id="analisis_horizontal_gastos_op" disabled></b></td>
+                <td style="background-color: #c8c8c8 !important;color: #000 !important;" evaluacion_anterior><b class="doble-subrayado"><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('evaluacion_actual_ganancia_gastos_op', $ganancia_perdida_anterior) }}" id="evaluacion_actual_ganancia_gastos_op_anterior" disabled></b></td>
+                <td style="background-color: #c8c8c8 !important;color: #000 !important;" evaluacion_actual><b class="doble-subrayado"><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('evaluacion_actual_ganancia_gastos_op', $ganancia_perdida) }}" id="evaluacion_actual_ganancia_gastos_op" disabled></b></td>
+                <td style="background-color: #c8c8c8 !important;color: #000 !important;" analisis_vertical><b class="doble-subrayado"><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('analisis_vertical_gastos_op', $ganancia_perdida) }}" id="analisis_vertical_gastos_op" disabled></b></td>
+                <td style="background-color: #c8c8c8 !important;color: #000 !important;" analisis_horizontal><b class="doble-subrayado"><input type="text" class="form-control campo_moneda fw-bold" value="0.00" id="analisis_horizontal_gastos_op" disabled></b></td>
               </tr>
               <tr>
                 <td style="background-color: #c8c8c8 !important;
                 color: #000 !important;" descripcion><b class="doble-subrayado">UTILIDAD NETA</b></td>
                 <td style="background-color: #c8c8c8 !important;
-                           color: #000 !important;" evaluacion_anterior><b class="doble-subrayado"><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('evaluacion_actual_ganancia_utilidad_neta', $ganancia_perdida_anterior) }}" id="evaluacion_actual_ganancia_utilidad_neta_anterior" disabled></b></td>
+                           color: #000 !important;" evaluacion_anterior><b class="doble-subrayado"><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('evaluacion_actual_ganancia_utilidad_neta', $ganancia_perdida_anterior) }}" id="evaluacion_actual_ganancia_utilidad_neta_anterior" disabled></b></td>
                 <td style="background-color: #c8c8c8 !important;
-                           color: #000 !important;" evaluacion_actual><b class="doble-subrayado"><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('evaluacion_actual_ganancia_utilidad_neta', $ganancia_perdida) }}" id="evaluacion_actual_ganancia_utilidad_neta" disabled></b></td>
+                           color: #000 !important;" evaluacion_actual><b class="doble-subrayado"><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('evaluacion_actual_ganancia_utilidad_neta', $ganancia_perdida) }}" id="evaluacion_actual_ganancia_utilidad_neta" disabled></b></td>
                 <td style="background-color: #c8c8c8 !important;
-                           color: #000 !important;" analisis_vertical><b class="doble-subrayado"><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('analisis_vertical_utilidad_neta', $ganancia_perdida) }}" id="analisis_vertical_utilidad_neta" disabled></b></td>
+                           color: #000 !important;" analisis_vertical><b class="doble-subrayado"><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('analisis_vertical_utilidad_neta', $ganancia_perdida) }}" id="analisis_vertical_utilidad_neta" disabled></b></td>
                 <td style="background-color: #c8c8c8 !important;
-                           color: #000 !important;" analisis_horizontal><b class="doble-subrayado"><input type="text" class="form-control campo_moneda" value="0.00" id="analisis_horizontal_utilidad_neta" disabled></b></td>
+                           color: #000 !important;" analisis_horizontal><b class="doble-subrayado"><input type="text" class="form-control campo_moneda fw-bold" value="0.00" id="analisis_horizontal_utilidad_neta" disabled></b></td>
               </tr>
               <tr>
                 <td descripcion>NEGOCIO ADICIONAL</td>
@@ -651,13 +657,13 @@
                 <td style="background-color: #c8c8c8 !important;
                 color: #000 !important;" descripcion><b class="doble-subrayado">EXCEDENTE MENSUAL</b></td>
                 <td style="background-color: #c8c8c8 !important;
-                           color: #000 !important;" evaluacion_anterior><b class="doble-subrayado"><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('evaluacion_actual_ganancia_excedente_mensual', $ganancia_perdida_anterior) }}" id="evaluacion_actual_ganancia_excedente_mensual_anterior" disabled></b></td>
+                           color: #000 !important;" evaluacion_anterior><b class="doble-subrayado"><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('evaluacion_actual_ganancia_excedente_mensual', $ganancia_perdida_anterior) }}" id="evaluacion_actual_ganancia_excedente_mensual_anterior" disabled></b></td>
                 <td style="background-color: #c8c8c8 !important;
-                           color: #000 !important;" evaluacion_actual><b class="doble-subrayado"><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('evaluacion_actual_ganancia_excedente_mensual', $ganancia_perdida) }}" id="evaluacion_actual_ganancia_excedente_mensual" disabled></b></td>
+                           color: #000 !important;" evaluacion_actual><b class="doble-subrayado"><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('evaluacion_actual_ganancia_excedente_mensual', $ganancia_perdida) }}" id="evaluacion_actual_ganancia_excedente_mensual" disabled></b></td>
                 <td style="background-color: #c8c8c8 !important;
-                           color: #000 !important;" analisis_vertical><b class="doble-subrayado"><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('analisis_vertical_excedente_mensual', $ganancia_perdida) }}" id="analisis_vertical_excedente_mensual" disabled></b></td>
+                           color: #000 !important;" analisis_vertical><b class="doble-subrayado"><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('analisis_vertical_excedente_mensual', $ganancia_perdida) }}" id="analisis_vertical_excedente_mensual" disabled></b></td>
                 <td style="background-color: #c8c8c8 !important;
-                           color: #000 !important;" analisis_horizontal><b class="doble-subrayado"><input type="text" class="form-control campo_moneda" value="0.00" id="analisis_horizontal_excedente_mensual" disabled></b></td>
+                           color: #000 !important;" analisis_horizontal><b class="doble-subrayado"><input type="text" class="form-control campo_moneda fw-bold" value="0.00" id="analisis_horizontal_excedente_mensual" disabled></b></td>
               </tr>
             </tbody>
           </table>

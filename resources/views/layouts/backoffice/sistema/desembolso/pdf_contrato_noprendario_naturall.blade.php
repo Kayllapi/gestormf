@@ -316,58 +316,57 @@ EL/LOS PRESTATARIO(S) y/o SU(S) AVAL(ES) SOLIDARIO(S), declaramos haber recibido
           <td style="padding:5px;border: 1px solid #000;width:15%;">
           </td>
         </tr>
-        @if($credito->participarconyugue_titular=='on')
-        <tr>
-          <td style="padding:5px;border: 1px solid #000;width:50%;">
-            <span><b>{{ $users_prestamo->nombrecompleto_pareja }}</b></span>
-            <br>
-            <span><b>DNI: </b>{{ $users_prestamo->dni_pareja }}</span>
-            <br>
-            <span><b>Domicilio: </b>{{ $usuario->direccion }}, {{ $distrito }} - {{ $provincia }} - {{ $departamento }}</span>
-            <br>
-            <span><b>EL/LOS PRESTATARIO(S)</b></span>
-          </td>
-          <td style="padding:5px;border: 1px solid #000;">
-          </td>
-          <td style="padding:5px;border: 1px solid #000;">
-          </td>
-        </tr>
-        @endif
         @if($aval!='')
-        <tr>
-          <td style="padding:5px;border: 1px solid #000;width:50%;">
-            <span><b>{{ $aval!=''?$aval->nombrecompleto:'' }}</b></span>
-            <br>
-            <span><b>DNI: </b>{{ $aval!=''?$aval->identificacion:'' }}</span>
-            <br>
-            <span><b>Domicilio: </b> {{ $aval!=''?$aval->direccion:'' }}, {{ $distritoaval }} - {{ $provinciaaval }} - {{ $departamentoaval }}</span>
-            <br>
-            <span><b>SU(S) AVAL(ES) SOLIDARIO(S)</b></span>
-          </td>
-          <td style="padding:5px;border: 1px solid #000;">
-          </td>
-          <td style="padding:5px;border: 1px solid #000;">
-          </td>
-        </tr>
+            <tr>
+            <td style="padding:5px;border: 1px solid #000;width:50%;">
+                <span><b>{{ $aval!=''?$aval->nombrecompleto:'' }}</b></span>
+                <br>
+                <span><b>DNI: </b>{{ $aval!=''?$aval->identificacion:'' }}</span>
+                <br>
+                <span><b>Domicilio: </b> {{ $aval!=''?$aval->direccion:'' }}, {{ $distritoaval }} - {{ $provinciaaval }} - {{ $departamentoaval }}</span>
+                <br>
+                <span><b>SU(S) AVAL(ES) SOLIDARIO(S)</b></span>
+            </td>
+            <td style="padding:5px;border: 1px solid #000;">
+            </td>
+            <td style="padding:5px;border: 1px solid #000;">
+            </td>
+            </tr>
+        @elseif($credito->participarconyugue_titular=='on')
+            <tr>
+            <td style="padding:5px;border: 1px solid #000;width:50%;">
+                <span><b>{{ $users_prestamo->nombrecompleto_pareja }}</b></span>
+                <br>
+                <span><b>DNI: </b>{{ $users_prestamo->dni_pareja }}</span>
+                <br>
+                <span><b>Domicilio: </b>{{ $usuario->direccion }}, {{ $distrito }} - {{ $provincia }} - {{ $departamento }}</span>
+                <br>
+                <span><b>EL/LOS PRESTATARIO(S)</b></span>
+            </td>
+            <td style="padding:5px;border: 1px solid #000;">
+            </td>
+            <td style="padding:5px;border: 1px solid #000;">
+            </td>
+            </tr>
         @endif
         @if($users_prestamo_aval!='' && $credito->participarconyugue_aval=='on')
-        @if($users_prestamo_aval->dni_pareja!='' or $users_prestamo_aval->nombrecompleto_pareja!='')
-        <tr>
-          <td style="padding:5px;border: 1px solid #000;width:50%;">
-            <span><b>{{ $users_prestamo_aval->nombrecompleto_pareja }}</b></span>
-            <br>
-            <span><b>DNI: </b>{{ $users_prestamo_aval->dni_pareja }}</span>
-            <br>
-            <span><b>Domicilio: </b> {{ $aval!=''?$aval->direccion:'' }}, {{ $distritoaval }} - {{ $provinciaaval }} - {{ $departamentoaval }}</span>
-            <br>
-            <span><b>SU(S) AVAL(ES) SOLIDARIO(S)</b></span>
-          </td>
-          <td style="padding:5px;border: 1px solid #000;">
-          </td>
-          <td style="padding:5px;border: 1px solid #000;">
-          </td>
-        </tr>
-        @endif
+            @if($users_prestamo_aval->dni_pareja!='' or $users_prestamo_aval->nombrecompleto_pareja!='')
+                <tr>
+                    <td style="padding:5px;border: 1px solid #000;width:50%;">
+                        <span><b>{{ $users_prestamo_aval->nombrecompleto_pareja }}</b></span>
+                        <br>
+                        <span><b>DNI: </b>{{ $users_prestamo_aval->dni_pareja }}</span>
+                        <br>
+                        <span><b>Domicilio: </b> {{ $aval!=''?$aval->direccion:'' }}, {{ $distritoaval }} - {{ $provinciaaval }} - {{ $departamentoaval }}</span>
+                        <br>
+                        <span><b>SU(S) AVAL(ES) SOLIDARIO(S)</b></span>
+                    </td>
+                    <td style="padding:5px;border: 1px solid #000;">
+                    </td>
+                    <td style="padding:5px;border: 1px solid #000;">
+                    </td>
+                </tr>
+            @endif
         @endif
         
       </table>

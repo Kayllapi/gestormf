@@ -297,62 +297,60 @@ EL/LOS PRESTATARIO(S) y/o SU(S) AVAL(ES) SOLIDARIO(S), declaramos haber recibido
             <div style="font-size:7px;text-align:center;margin-top:65px;">(Huella D.)</div>
           </td>
         </tr>
-        @if($credito->participarconyugue_titular=='on')
-        <tr>
-          <td style="padding:5px;border: 1px solid #000;width:60%;height:70px;">
-            <span><b>PRESTATARIO:</b> {{ $users_prestamo->nombrecompleto_pareja }}</span>
-            <br>
-            <span><b>RUC/DNI/CE: </b>{{ $users_prestamo->dni_pareja }}</span>
-            <br>
-            <span><b>DOMICILIO: </b>{{ $usuario->direccion }}, {{ $distrito }} - {{ $provincia }} - {{ $departamento }}</span>
-          </td>
-          <td style="padding:5px;padding-bottom:0;border: 1px solid #000;">
-            <div style="font-size:7px;text-align:center;margin-top:65px;">(Firma)</div>
-          </td>
-          <td style="padding:5px;padding-bottom:0;border: 1px solid #000;">
-            <div style="font-size:7px;text-align:center;margin-top:65px;">(Huella D.)</div>
-          </td>
-        </tr>
-        @endif
         @if($aval!='')
-        <tr>
-          <td style="padding:5px;border: 1px solid #000;width:60%;height:70px;">
-            <span><b>AVAL/FIADOR SOLIDARIO:</b> {{ $aval!=''?$aval->nombrecompleto:'' }}</span>
-            <br>
-            <span><b>RUC/DNI/CE: </b>{{ $aval!=''?$aval->identificacion:'' }}</span>
-            <br>
-            <span><b>DOMICILIO: </b> {{ $aval!=''?$aval->direccion:'' }}, {{ $distritoaval }} - {{ $provinciaaval }} - {{ $departamentoaval }}</span>
-            <br>
-            <span><b>REP. LEGAL:</b></span>
-          </td>
-          <td style="padding:5px;padding-bottom:0;border: 1px solid #000;">
-            <div style="font-size:7px;text-align:center;margin-top:65px;">(Sello, Firma)</div>
-          </td>
-          <td style="padding:5px;padding-bottom:0;border: 1px solid #000;">
-            <div style="font-size:7px;text-align:center;margin-top:65px;">(Huella D.)</div>
-          </td>
-        </tr>
+          <tr>
+            <td style="padding:5px;border: 1px solid #000;width:60%;height:70px;">
+              <span><b>AVAL/FIADOR SOLIDARIO:</b> {{ $aval!=''?$aval->nombrecompleto:'' }}</span>
+              <br>
+              <span><b>RUC/DNI/CE: </b>{{ $aval!=''?$aval->identificacion:'' }}</span>
+              <br>
+              <span><b>DOMICILIO: </b> {{ $aval!=''?$aval->direccion:'' }}, {{ $distritoaval }} - {{ $provinciaaval }} - {{ $departamentoaval }}</span>
+              <br>
+              <span><b>REP. LEGAL:</b></span>
+            </td>
+            <td style="padding:5px;padding-bottom:0;border: 1px solid #000;">
+              <div style="font-size:7px;text-align:center;margin-top:65px;">(Sello, Firma)</div>
+            </td>
+            <td style="padding:5px;padding-bottom:0;border: 1px solid #000;">
+              <div style="font-size:7px;text-align:center;margin-top:65px;">(Huella D.)</div>
+            </td>
+          </tr>
+        @elseif($credito->participarconyugue_titular=='on')
+          <tr>
+            <td style="padding:5px;border: 1px solid #000;width:60%;height:70px;">
+              <span><b>PRESTATARIO:</b> {{ $users_prestamo->nombrecompleto_pareja }}</span>
+              <br>
+              <span><b>RUC/DNI/CE: </b>{{ $users_prestamo->dni_pareja }}</span>
+              <br>
+              <span><b>DOMICILIO: </b>{{ $usuario->direccion }}, {{ $distrito }} - {{ $provincia }} - {{ $departamento }}</span>
+            </td>
+            <td style="padding:5px;padding-bottom:0;border: 1px solid #000;">
+              <div style="font-size:7px;text-align:center;margin-top:65px;">(Firma)</div>
+            </td>
+            <td style="padding:5px;padding-bottom:0;border: 1px solid #000;">
+              <div style="font-size:7px;text-align:center;margin-top:65px;">(Huella D.)</div>
+            </td>
+          </tr>
         @endif
         @if($users_prestamo_aval!='' && $credito->participarconyugue_aval=='on')
-        @if($users_prestamo_aval->dni_pareja!='' or $users_prestamo_aval->nombrecompleto_pareja!='')
-        <tr>
-          <td style="padding:5px;border: 1px solid #000;width:60%;height:70px;">
-            <span><b>AVAL/FIADOR SOLIDARIO:</b> {{ $users_prestamo_aval->nombrecompleto_pareja }}</span>
-            <br>
-            <span><b>RUC/DNI/CE: </b>{{ $users_prestamo_aval->dni_pareja }}</span>
-            <br>
-            <span><b>DOMICILIO: </b> {{ $aval!=''?$aval->direccion:'' }}, {{ $distritoaval }} - {{ $provinciaaval }} - {{ $departamentoaval }}</span> 
-          </td>
-          <td style="padding:5px;padding-bottom:0;border: 1px solid #000;">
-            <div style="font-size:7px;text-align:center;margin-top:65px;">(Firma)</div>
-          </td>
-          <td style="padding:5px;padding-bottom:0;border: 1px solid #000;">
-            <div style="font-size:7px;text-align:center;margin-top:65px;">(Huella D.)</div>
-          </td>
-        </tr>
+          @if($users_prestamo_aval->dni_pareja!='' or $users_prestamo_aval->nombrecompleto_pareja!='')
+            <tr>
+              <td style="padding:5px;border: 1px solid #000;width:60%;height:70px;">
+                <span><b>AVAL/FIADOR SOLIDARIO:</b> {{ $users_prestamo_aval->nombrecompleto_pareja }}</span>
+                <br>
+                <span><b>RUC/DNI/CE: </b>{{ $users_prestamo_aval->dni_pareja }}</span>
+                <br>
+                <span><b>DOMICILIO: </b> {{ $aval!=''?$aval->direccion:'' }}, {{ $distritoaval }} - {{ $provinciaaval }} - {{ $departamentoaval }}</span> 
+              </td>
+              <td style="padding:5px;padding-bottom:0;border: 1px solid #000;">
+                <div style="font-size:7px;text-align:center;margin-top:65px;">(Firma)</div>
+              </td>
+              <td style="padding:5px;padding-bottom:0;border: 1px solid #000;">
+                <div style="font-size:7px;text-align:center;margin-top:65px;">(Huella D.)</div>
+              </td>
+            </tr>
+          @endif
         @endif
-        @endif
-        
       </table>
     </div>
   </main>

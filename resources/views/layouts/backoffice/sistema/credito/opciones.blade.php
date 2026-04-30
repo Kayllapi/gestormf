@@ -74,14 +74,20 @@
         </div>
         <div class="col-sm-12">
             <div class="btn-group mb-1 evaluacion-completa" id="cont_cualitativa">
-              <button type="button" class="btn btn-primary evaluacion"
-                      onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=evaluacion_cualitativa')}}', size: 'modal-fullscreen' })">
-                1.- EVALUACION CUALITATIVA</button>
+              <button type="button"
+                class="btn btn-primary evaluacion"
+                style="background-color: #9b9b9b !important;"
+                onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=evaluacion_cualitativa')}}', size: 'modal-fullscreen' })">
+                1.- EVALUACION CUALITATIVA
+              </button>
             </div>
             <div class="btn-group mb-1 evaluacion-completa" id="cont_cuantitativa">
-              <button type="button" class="btn btn-primary evaluacion"
-                      onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=evaluacion_cuantitativa')}}', size: 'modal-fullscreen' })">
-                2.- EVALUACION CUANTITATIVA</button>
+              <button type="button"
+                class="btn btn-primary evaluacion"
+                style="background-color: #9b9b9b !important;"
+                onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=evaluacion_cuantitativa')}}', size: 'modal-fullscreen' })">
+                2.- EVALUACION CUANTITATIVA
+              </button>
             </div>
             <div class="btn-group mb-1 evaluacion-completa" id="cont_margen_ventas">
               <button type="button" class="btn btn-primary evaluacion"

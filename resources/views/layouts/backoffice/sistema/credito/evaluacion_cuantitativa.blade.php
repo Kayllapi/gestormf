@@ -384,9 +384,9 @@
               </tr>
               <tr>
                 <td colspan=2><b><u>PASIVO CORRIENTE</u></b></td>
-                <td evaluacion_anterior><u><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('evaluacion_actual_pasivo_corriente', $balance_general_anterior) }}" id="evaluacion_actual_pasivo_corriente_anterior" disabled></u></td>
-                <td evaluacion_actual><u><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('evaluacion_actual_pasivo_corriente', $balance_general) }}" id="evaluacion_actual_pasivo_corriente" disabled></u></td>
-                <td analisis_vertical><u><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('analisis_vertical_pasivo_corriente', $balance_general) }}" id="analisis_vertical_pasivo_corriente" disabled></u></td>
+                <td evaluacion_anterior><u><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('evaluacion_actual_pasivo_corriente', $balance_general_anterior) }}" id="evaluacion_actual_pasivo_corriente_anterior" disabled></u></td>
+                <td evaluacion_actual><u><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('evaluacion_actual_pasivo_corriente', $balance_general) }}" id="evaluacion_actual_pasivo_corriente" disabled></u></td>
+                <td analisis_vertical><u><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('analisis_vertical_pasivo_corriente', $balance_general) }}" id="analisis_vertical_pasivo_corriente" disabled></u></td>
                 <td analisis_horizontal><u><input type="text" class="form-control campo_moneda fw-bold" value="0.00" id="analisis_horizontal_pasivo_corriente" disabled></u></td>
               </tr>
               <tr>
@@ -505,10 +505,10 @@
               </tr>
               <tr>
                 <td descripcion><b>Servicios:</b></td>
-                <td evaluacion_anterior><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('evaluacion_actual_ganancia_servicios', $ganancia_perdida_anterior) }}" id="evaluacion_actual_ganancia_servicios_anterior" disabled></td>
-                <td evaluacion_actual><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('evaluacion_actual_ganancia_servicios', $ganancia_perdida) }}" id="evaluacion_actual_ganancia_servicios" disabled></td>
-                <td analisis_vertical><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('analisis_vertical_servicios', $ganancia_perdida) }}" id="analisis_vertical_servicios" disabled></td>
-                <td analisis_horizontal><input type="text" class="form-control campo_moneda" value="0.00" id="analisis_horizontal_servicios" disabled></td>
+                <td evaluacion_anterior><u><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('evaluacion_actual_ganancia_servicios', $ganancia_perdida_anterior) }}" id="evaluacion_actual_ganancia_servicios_anterior" disabled></u></td>
+                <td evaluacion_actual><u><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('evaluacion_actual_ganancia_servicios', $ganancia_perdida) }}" id="evaluacion_actual_ganancia_servicios" disabled></u></td>
+                <td analisis_vertical><u><input type="text" class="form-control campo_moneda fw-bold" value="{{ encontrar_valor('analisis_vertical_servicios', $ganancia_perdida) }}" id="analisis_vertical_servicios" disabled></u></td>
+                <td analisis_horizontal><u><input type="text" class="form-control campo_moneda fw-bold" value="0.00" id="analisis_horizontal_servicios" disabled></u></td>
               </tr>
               <tr>
                 <td descripcion>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Luz</td>
@@ -1198,153 +1198,153 @@
     //Análisis Vertical (%)
     
     let analisis_vertical_caja = ( evaluacion_actual_caja / evaluacion_actual_total_activo ) * 100;
-    if(isNaN(analisis_vertical_caja)){ analisis_vertical_caja = 0; }
+    if(isNaN(analisis_vertical_caja) || analisis_vertical_caja == Infinity || analisis_vertical_caja){ analisis_vertical_caja = 0; }
     $('#analisis_vertical_caja').val(analisis_vertical_caja.toFixed(2))
     let analisis_vertical_bancos = ( evaluacion_actual_bancos / evaluacion_actual_total_activo ) * 100;
-    if(isNaN(analisis_vertical_bancos)){ analisis_vertical_bancos = 0; }
+    if(isNaN(analisis_vertical_bancos) || analisis_vertical_bancos == Infinity || analisis_vertical_bancos){ analisis_vertical_bancos = 0; }
     $('#analisis_vertical_bancos').val(analisis_vertical_bancos.toFixed(2))
     let analisis_vertical_cuentas_cobrar = ( evaluacion_actual_cuentas_cobrar / evaluacion_actual_total_activo ) * 100;
-    if(isNaN(analisis_vertical_cuentas_cobrar)){ analisis_vertical_cuentas_cobrar = 0; }
+    if(isNaN(analisis_vertical_cuentas_cobrar) || analisis_vertical_cuentas_cobrar == Infinity || analisis_vertical_cuentas_cobrar){ analisis_vertical_cuentas_cobrar = 0; }
     $('#analisis_vertical_cuentas_cobrar').val(analisis_vertical_cuentas_cobrar.toFixed(2))
     let analisis_vertical_adelanto_prove = ( evaluacion_actual_adelanto_prove / evaluacion_actual_total_activo ) * 100;
-    if(isNaN(analisis_vertical_adelanto_prove)){ analisis_vertical_adelanto_prove = 0; }
+    if(isNaN(analisis_vertical_adelanto_prove) || analisis_vertical_adelanto_prove == Infinity || analisis_vertical_adelanto_prove){ analisis_vertical_adelanto_prove = 0; }
     $('#analisis_vertical_adelanto_prove').val(analisis_vertical_adelanto_prove.toFixed(2))
     let analisis_vertical_inventario = ( evaluacion_actual_inventario / evaluacion_actual_total_activo ) * 100;
-    if(isNaN(analisis_vertical_inventario)){ analisis_vertical_inventario = 0; }
+    if(isNaN(analisis_vertical_inventario) || analisis_vertical_inventario == Infinity || analisis_vertical_inventario){ analisis_vertical_inventario = 0; }
     $('#analisis_vertical_inventario').val(analisis_vertical_inventario.toFixed(2))
     let analisis_vertical_activo_corriente = ( evaluacion_actual_activo_corriente / evaluacion_actual_total_activo ) * 100;
-    if(isNaN(analisis_vertical_activo_corriente)){ analisis_vertical_activo_corriente = 0; }
+    if(isNaN(analisis_vertical_activo_corriente) || analisis_vertical_activo_corriente == Infinity || analisis_vertical_activo_corriente){ analisis_vertical_activo_corriente = 0; }
     $('#analisis_vertical_activo_corriente').val(analisis_vertical_activo_corriente.toFixed(2))
     let analisis_vertical_activo_inmueble = ( evaluacion_actual_activo_inmueble / evaluacion_actual_total_activo ) * 100;
-    if(isNaN(analisis_vertical_activo_inmueble)){ analisis_vertical_activo_inmueble = 0; }
+    if(isNaN(analisis_vertical_activo_inmueble) || analisis_vertical_activo_inmueble == Infinity || analisis_vertical_activo_inmueble){ analisis_vertical_activo_inmueble = 0; }
     $('#analisis_vertical_activo_inmueble').val(analisis_vertical_activo_inmueble.toFixed(2))
     let analisis_vertical_activo_mueble = ( evaluacion_actual_activo_mueble / evaluacion_actual_total_activo ) * 100;
-    if(isNaN(analisis_vertical_activo_mueble)){ analisis_vertical_activo_mueble = 0; }
+    if(isNaN(analisis_vertical_activo_mueble) || analisis_vertical_activo_mueble == Infinity || analisis_vertical_activo_mueble){ analisis_vertical_activo_mueble = 0; }
     $('#analisis_vertical_activo_mueble').val(analisis_vertical_activo_mueble.toFixed(2))
     let analisis_vertical_activo_nocorriente = ( evaluacion_actual_activo_nocorriente / evaluacion_actual_total_activo ) * 100;
-    if(isNaN(analisis_vertical_activo_nocorriente)){ analisis_vertical_activo_nocorriente = 0; }
+    if(isNaN(analisis_vertical_activo_nocorriente) || analisis_vertical_activo_nocorriente == Infinity || analisis_vertical_activo_nocorriente){ analisis_vertical_activo_nocorriente = 0; }
     $('#analisis_vertical_activo_nocorriente').val(analisis_vertical_activo_nocorriente.toFixed(2))
     let analisis_vertical_total_activo = ( evaluacion_actual_total_activo / evaluacion_actual_total_activo ) * 100;
-    if(isNaN(analisis_vertical_total_activo)){ analisis_vertical_total_activo = 0; }
+    if(isNaN(analisis_vertical_total_activo) || analisis_vertical_total_activo == Infinity || analisis_vertical_total_activo){ analisis_vertical_total_activo = 0; }
     $('#analisis_vertical_total_activo').val(analisis_vertical_total_activo.toFixed(2))
 
     let analisis_vertical_pagos_proveedor = ( evaluacion_actual_pagos_proveedor / evaluacion_actual_pasivo_patrimonio ) * 100;
-    if(isNaN(analisis_vertical_pagos_proveedor)){ analisis_vertical_pagos_proveedor = 0; }
+    if(isNaN(analisis_vertical_pagos_proveedor) || analisis_vertical_pagos_proveedor == Infinity || analisis_vertical_pagos_proveedor){ analisis_vertical_pagos_proveedor = 0; }
     $('#analisis_vertical_pagos_proveedor').val(analisis_vertical_pagos_proveedor.toFixed(2))
     let analisis_vertical_pasivo_corto_regulada = ( evaluacion_actual_pasivo_corto_regulada / evaluacion_actual_pasivo_patrimonio ) * 100;
-    if(isNaN(analisis_vertical_pasivo_corto_regulada)){ analisis_vertical_pasivo_corto_regulada = 0; }
+    if(isNaN(analisis_vertical_pasivo_corto_regulada) || analisis_vertical_pasivo_corto_regulada == Infinity || analisis_vertical_pasivo_corto_regulada){ analisis_vertical_pasivo_corto_regulada = 0; }
     $('#analisis_vertical_pasivo_corto_regulada').val(analisis_vertical_pasivo_corto_regulada.toFixed(2))
     let analisis_vertical_pasivo_corto_noregulada = ( evaluacion_actual_pasivo_corto_noregulada / evaluacion_actual_pasivo_patrimonio ) * 100;
-    if(isNaN(analisis_vertical_pasivo_corto_noregulada)){ analisis_vertical_pasivo_corto_noregulada = 0; }
+    if(isNaN(analisis_vertical_pasivo_corto_noregulada) || analisis_vertical_pasivo_corto_noregulada == Infinity || analisis_vertical_pasivo_corto_noregulada){ analisis_vertical_pasivo_corto_noregulada = 0; }
     $('#analisis_vertical_pasivo_corto_noregulada').val(analisis_vertical_pasivo_corto_noregulada.toFixed(2))
     let analisis_vertical_impuestos = ( evaluacion_actual_impuestos / evaluacion_actual_pasivo_patrimonio ) * 100;
-    if(isNaN(analisis_vertical_impuestos)){ analisis_vertical_impuestos = 0; }
+    if(isNaN(analisis_vertical_impuestos) || analisis_vertical_impuestos == Infinity || analisis_vertical_impuestos){ analisis_vertical_impuestos = 0; }
     $('#analisis_vertical_impuestos').val(analisis_vertical_impuestos.toFixed(2))
     let analisis_vertical_otras_cuentas = ( evaluacion_actual_otras_cuentas / evaluacion_actual_pasivo_patrimonio ) * 100;
-    if(isNaN(analisis_vertical_otras_cuentas)){ analisis_vertical_otras_cuentas = 0; }
+    if(isNaN(analisis_vertical_otras_cuentas) || analisis_vertical_otras_cuentas == Infinity || analisis_vertical_otras_cuentas){ analisis_vertical_otras_cuentas = 0; }
     $('#analisis_vertical_otras_cuentas').val(analisis_vertical_otras_cuentas.toFixed(2))
     let analisis_vertical_pasivo_corriente = ( evaluacion_actual_pasivo_corriente / evaluacion_actual_pasivo_patrimonio ) * 100;
-    if(isNaN(analisis_vertical_pasivo_corriente)){ analisis_vertical_pasivo_corriente = 0; }
+    if(isNaN(analisis_vertical_pasivo_corriente) || analisis_vertical_pasivo_corriente == Infinity || analisis_vertical_pasivo_corriente){ analisis_vertical_pasivo_corriente = 0; }
     $('#analisis_vertical_pasivo_corriente').val(analisis_vertical_pasivo_corriente.toFixed(2))
     let analisis_vertical_pasivo_largo_regulada = ( evaluacion_actual_pasivo_largo_regulada / evaluacion_actual_pasivo_patrimonio ) * 100;
-    if(isNaN(analisis_vertical_pasivo_largo_regulada)){ analisis_vertical_pasivo_largo_regulada = 0; }
+    if(isNaN(analisis_vertical_pasivo_largo_regulada) || analisis_vertical_pasivo_largo_regulada == Infinity || analisis_vertical_pasivo_largo_regulada){ analisis_vertical_pasivo_largo_regulada = 0; }
     $('#analisis_vertical_pasivo_largo_regulada').val(analisis_vertical_pasivo_largo_regulada.toFixed(2))
     let analisis_vertical_pasivo_largo_noregulada = ( evaluacion_actual_pasivo_largo_noregulada / evaluacion_actual_pasivo_patrimonio ) * 100;
-    if(isNaN(analisis_vertical_pasivo_largo_noregulada)){ analisis_vertical_pasivo_largo_noregulada = 0; }
+    if(isNaN(analisis_vertical_pasivo_largo_noregulada) || analisis_vertical_pasivo_largo_noregulada == Infinity || analisis_vertical_pasivo_largo_noregulada){ analisis_vertical_pasivo_largo_noregulada = 0; }
     $('#analisis_vertical_pasivo_largo_noregulada').val(analisis_vertical_pasivo_largo_noregulada.toFixed(2))
     let analisis_vertical_pasivo_nocorriente = ( evaluacion_actual_pasivo_nocorriente / evaluacion_actual_pasivo_patrimonio ) * 100;
-    if(isNaN(analisis_vertical_pasivo_nocorriente)){ analisis_vertical_pasivo_nocorriente = 0; }
+    if(isNaN(analisis_vertical_pasivo_nocorriente) || analisis_vertical_pasivo_nocorriente == Infinity || analisis_vertical_pasivo_nocorriente){ analisis_vertical_pasivo_nocorriente = 0; }
     $('#analisis_vertical_pasivo_nocorriente').val(analisis_vertical_pasivo_nocorriente.toFixed(2))
     let analisis_vertical_total_pasivo = ( evaluacion_actual_total_pasivo / evaluacion_actual_pasivo_patrimonio ) * 100;
-    if(isNaN(analisis_vertical_total_pasivo)){ analisis_vertical_total_pasivo = 0; }
+    if(isNaN(analisis_vertical_total_pasivo) || analisis_vertical_total_pasivo == Infinity || analisis_vertical_total_pasivo){ analisis_vertical_total_pasivo = 0; }
     $('#analisis_vertical_total_pasivo').val(analisis_vertical_total_pasivo.toFixed(2))
     let analisis_vertical_capital_social = ( evaluacion_actual_capital_social / evaluacion_actual_pasivo_patrimonio ) * 100;
-    if(isNaN(analisis_vertical_capital_social)){ analisis_vertical_capital_social = 0; }
+    if(isNaN(analisis_vertical_capital_social) || analisis_vertical_capital_social == Infinity || analisis_vertical_capital_social){ analisis_vertical_capital_social = 0; }
     $('#analisis_vertical_capital_social').val(analisis_vertical_capital_social.toFixed(2))
     let analisis_vertical_utilidad_acumulada = ( evaluacion_actual_utilidad_acumulada / evaluacion_actual_pasivo_patrimonio ) * 100;
-    if(isNaN(analisis_vertical_utilidad_acumulada)){ analisis_vertical_utilidad_acumulada = 0; }
+    if(isNaN(analisis_vertical_utilidad_acumulada) || analisis_vertical_utilidad_acumulada == Infinity || analisis_vertical_utilidad_acumulada){ analisis_vertical_utilidad_acumulada = 0; }
     $('#analisis_vertical_utilidad_acumulada').val(analisis_vertical_utilidad_acumulada.toFixed(2))
     let analisis_vertical_patrimonio = ( evaluacion_actual_patrimonio / evaluacion_actual_pasivo_patrimonio ) * 100;
-    if(isNaN(analisis_vertical_patrimonio)){ analisis_vertical_patrimonio = 0; }
+    if(isNaN(analisis_vertical_patrimonio) || analisis_vertical_patrimonio == Infinity || analisis_vertical_patrimonio){ analisis_vertical_patrimonio = 0; }
     $('#analisis_vertical_patrimonio').val(analisis_vertical_patrimonio.toFixed(2))
     let analisis_vertical_pasivo_patrimonio = ( evaluacion_actual_pasivo_patrimonio / evaluacion_actual_pasivo_patrimonio ) * 100;
-    if(isNaN(analisis_vertical_pasivo_patrimonio)){ analisis_vertical_pasivo_patrimonio = 0; }
+    if(isNaN(analisis_vertical_pasivo_patrimonio) || analisis_vertical_pasivo_patrimonio == Infinity || analisis_vertical_pasivo_patrimonio){ analisis_vertical_pasivo_patrimonio = 0; }
     $('#analisis_vertical_pasivo_patrimonio').val(analisis_vertical_pasivo_patrimonio.toFixed(2))
     
     //Análisis Horizontal (%)
     
     let analisis_horizontal_caja = ( evaluacion_actual_caja - evaluacion_actual_caja_anterior ) / evaluacion_actual_caja_anterior * 100;
-    if(isNaN(analisis_horizontal_caja)){ analisis_horizontal_caja = 0; }
+    if(isNaN(analisis_horizontal_caja) || analisis_horizontal_caja == Infinity || analisis_horizontal_caja){ analisis_horizontal_caja = 0; }
     $('#analisis_horizontal_caja').val(analisis_horizontal_caja.toFixed(2))
     let analisis_horizontal_bancos = ( evaluacion_actual_bancos - evaluacion_actual_bancos_anterior ) / evaluacion_actual_bancos_anterior * 100;
-    if(isNaN(analisis_horizontal_bancos)){ analisis_horizontal_bancos = 0; }
+    if(isNaN(analisis_horizontal_bancos) || analisis_horizontal_bancos == Infinity || analisis_horizontal_bancos){ analisis_horizontal_bancos = 0; }
     $('#analisis_horizontal_bancos').val(analisis_horizontal_bancos.toFixed(2))
     let analisis_horizontal_cuentas_cobrar = ( evaluacion_actual_cuentas_cobrar - evaluacion_actual_cuentas_cobrar_anterior ) / evaluacion_actual_cuentas_cobrar_anterior * 100;
-    if(isNaN(analisis_horizontal_cuentas_cobrar)){ analisis_horizontal_cuentas_cobrar = 0; }
+    if(isNaN(analisis_horizontal_cuentas_cobrar) || analisis_horizontal_cuentas_cobrar == Infinity || analisis_horizontal_cuentas_cobrar){ analisis_horizontal_cuentas_cobrar = 0; }
     $('#analisis_horizontal_cuentas_cobrar').val(analisis_horizontal_cuentas_cobrar.toFixed(2))
     let analisis_horizontal_adelanto_prove = ( evaluacion_actual_adelanto_prove - evaluacion_actual_adelanto_prove_anterior ) / evaluacion_actual_adelanto_prove_anterior * 100;
-    if(isNaN(analisis_horizontal_adelanto_prove)){ analisis_horizontal_adelanto_prove = 0; }
+    if(isNaN(analisis_horizontal_adelanto_prove) || analisis_horizontal_adelanto_prove == Infinity || analisis_horizontal_adelanto_prove){ analisis_horizontal_adelanto_prove = 0; }
     $('#analisis_horizontal_adelanto_prove').val(analisis_horizontal_adelanto_prove.toFixed(2))
     let analisis_horizontal_inventario = ( evaluacion_actual_inventario - evaluacion_actual_inventario_anterior ) / evaluacion_actual_inventario_anterior * 100;
-    if(isNaN(analisis_horizontal_inventario)){ analisis_horizontal_inventario = 0; }
+    if(isNaN(analisis_horizontal_inventario) || analisis_horizontal_inventario == Infinity || analisis_horizontal_inventario){ analisis_horizontal_inventario = 0; }
     $('#analisis_horizontal_inventario').val(analisis_horizontal_inventario.toFixed(2))
     let analisis_horizontal_activo_corriente = ( evaluacion_actual_activo_corriente - evaluacion_actual_activo_corriente_anterior ) / evaluacion_actual_activo_corriente_anterior * 100;
-    if(isNaN(analisis_horizontal_activo_corriente)){ analisis_horizontal_activo_corriente = 0; }
+    if(isNaN(analisis_horizontal_activo_corriente) || analisis_horizontal_activo_corriente == Infinity || analisis_horizontal_activo_corriente){ analisis_horizontal_activo_corriente = 0; }
     $('#analisis_horizontal_activo_corriente').val(analisis_horizontal_activo_corriente.toFixed(2))
     let analisis_horizontal_activo_inmueble = ( evaluacion_actual_activo_inmueble - evaluacion_actual_activo_inmueble_anterior ) / evaluacion_actual_activo_inmueble_anterior * 100;
-    if(isNaN(analisis_horizontal_activo_inmueble)){ analisis_horizontal_activo_inmueble = 0; }
+    if(isNaN(analisis_horizontal_activo_inmueble) || analisis_horizontal_activo_inmueble == Infinity || analisis_horizontal_activo_inmueble){ analisis_horizontal_activo_inmueble = 0; }
     $('#analisis_horizontal_activo_inmueble').val(analisis_horizontal_activo_inmueble.toFixed(2))
     let analisis_horizontal_activo_mueble = ( evaluacion_actual_activo_mueble - evaluacion_actual_activo_mueble_anterior ) / evaluacion_actual_activo_mueble_anterior * 100;
-    if(isNaN(analisis_horizontal_activo_mueble)){ analisis_horizontal_activo_mueble = 0; }
+    if(isNaN(analisis_horizontal_activo_mueble) || analisis_horizontal_activo_mueble == Infinity || analisis_horizontal_activo_mueble){ analisis_horizontal_activo_mueble = 0; }
     $('#analisis_horizontal_activo_mueble').val(analisis_horizontal_activo_mueble.toFixed(2))
     let analisis_horizontal_activo_nocorriente = ( evaluacion_actual_activo_nocorriente - evaluacion_actual_activo_nocorriente_anterior ) / evaluacion_actual_activo_nocorriente_anterior * 100;
-    if(isNaN(analisis_horizontal_activo_nocorriente)){ analisis_horizontal_activo_nocorriente = 0; }
+    if(isNaN(analisis_horizontal_activo_nocorriente) || analisis_horizontal_activo_nocorriente == Infinity || analisis_horizontal_activo_nocorriente){ analisis_horizontal_activo_nocorriente = 0; }
     $('#analisis_horizontal_activo_nocorriente').val(analisis_horizontal_activo_nocorriente.toFixed(2))
     let analisis_horizontal_total_activo = ( evaluacion_actual_total_activo - evaluacion_actual_total_activo_anterior ) / evaluacion_actual_total_activo_anterior * 100;
-    if(isNaN(analisis_horizontal_total_activo)){ analisis_horizontal_total_activo = 0; }
+    if(isNaN(analisis_horizontal_total_activo) || analisis_horizontal_total_activo == Infinity || analisis_horizontal_total_activo){ analisis_horizontal_total_activo = 0; }
     $('#analisis_horizontal_total_activo').val(analisis_horizontal_total_activo.toFixed(2))
 
     let analisis_horizontal_pagos_proveedor = ( evaluacion_actual_pagos_proveedor - evaluacion_actual_pagos_proveedor_anterior ) / evaluacion_actual_pagos_proveedor_anterior * 100;
-    if(isNaN(analisis_horizontal_pagos_proveedor)){ analisis_horizontal_pagos_proveedor = 0; }
+    if(isNaN(analisis_horizontal_pagos_proveedor) || analisis_horizontal_pagos_proveedor == Infinity || analisis_horizontal_pagos_proveedor){ analisis_horizontal_pagos_proveedor = 0; }
     $('#analisis_horizontal_pagos_proveedor').val(analisis_horizontal_pagos_proveedor.toFixed(2))
     let analisis_horizontal_pasivo_corto_regulada = ( evaluacion_actual_pasivo_corto_regulada - evaluacion_actual_pasivo_corto_regulada_anterior ) / evaluacion_actual_pasivo_corto_regulada_anterior * 100;
-    if(isNaN(analisis_horizontal_pasivo_corto_regulada)){ analisis_horizontal_pasivo_corto_regulada = 0; }
+    if(isNaN(analisis_horizontal_pasivo_corto_regulada) || analisis_horizontal_pasivo_corto_regulada == Infinity || analisis_horizontal_pasivo_corto_regulada){ analisis_horizontal_pasivo_corto_regulada = 0; }
     $('#analisis_horizontal_pasivo_corto_regulada').val(analisis_horizontal_pasivo_corto_regulada.toFixed(2))
     let analisis_horizontal_pasivo_corto_noregulada = ( evaluacion_actual_pasivo_corto_noregulada - evaluacion_actual_pasivo_corto_noregulada_anterior ) / evaluacion_actual_pasivo_corto_noregulada_anterior * 100;
-    if(isNaN(analisis_horizontal_pasivo_corto_noregulada)){ analisis_horizontal_pasivo_corto_noregulada = 0; }
+    if(isNaN(analisis_horizontal_pasivo_corto_noregulada) || analisis_horizontal_pasivo_corto_noregulada == Infinity || analisis_horizontal_pasivo_corto_noregulada){ analisis_horizontal_pasivo_corto_noregulada = 0; }
     $('#analisis_horizontal_pasivo_corto_noregulada').val(analisis_horizontal_pasivo_corto_noregulada.toFixed(2))
     let analisis_horizontal_impuestos = ( evaluacion_actual_impuestos - evaluacion_actual_impuestos_anterior ) / evaluacion_actual_impuestos_anterior * 100;
-    if(isNaN(analisis_horizontal_impuestos)){ analisis_horizontal_impuestos = 0; }
+    if(isNaN(analisis_horizontal_impuestos) || analisis_horizontal_impuestos == Infinity || analisis_horizontal_impuestos){ analisis_horizontal_impuestos = 0; }
     $('#analisis_horizontal_impuestos').val(analisis_horizontal_impuestos.toFixed(2))
     let analisis_horizontal_otras_cuentas = ( evaluacion_actual_otras_cuentas - evaluacion_actual_otras_cuentas_anterior ) / evaluacion_actual_otras_cuentas_anterior * 100;
-    if(isNaN(analisis_horizontal_otras_cuentas)){ analisis_horizontal_otras_cuentas = 0; }
+    if(isNaN(analisis_horizontal_otras_cuentas) || analisis_horizontal_otras_cuentas == Infinity || analisis_horizontal_otras_cuentas){ analisis_horizontal_otras_cuentas = 0; }
     $('#analisis_horizontal_otras_cuentas').val(analisis_horizontal_otras_cuentas.toFixed(2))
     let analisis_horizontal_pasivo_corriente = ( evaluacion_actual_pasivo_corriente - evaluacion_actual_pasivo_corriente_anterior ) / evaluacion_actual_pasivo_corriente_anterior * 100;
-    if(isNaN(analisis_horizontal_pasivo_corriente)){ analisis_horizontal_pasivo_corriente = 0; }
+    if(isNaN(analisis_horizontal_pasivo_corriente) || analisis_horizontal_pasivo_corriente == Infinity || analisis_horizontal_pasivo_corriente){ analisis_horizontal_pasivo_corriente = 0; }
     $('#analisis_horizontal_pasivo_corriente').val(analisis_horizontal_pasivo_corriente.toFixed(2))
     let analisis_horizontal_pasivo_largo_regulada = ( evaluacion_actual_pasivo_largo_regulada - evaluacion_actual_pasivo_largo_regulada_anterior ) / evaluacion_actual_pasivo_largo_regulada_anterior * 100;
-    if(isNaN(analisis_horizontal_pasivo_largo_regulada)){ analisis_horizontal_pasivo_largo_regulada = 0; }
+    if(isNaN(analisis_horizontal_pasivo_largo_regulada) || analisis_horizontal_pasivo_largo_regulada == Infinity || analisis_horizontal_pasivo_largo_regulada){ analisis_horizontal_pasivo_largo_regulada = 0; }
     $('#analisis_horizontal_pasivo_largo_regulada').val(analisis_horizontal_pasivo_largo_regulada.toFixed(2))
     let analisis_horizontal_pasivo_largo_noregulada = ( evaluacion_actual_pasivo_largo_noregulada - evaluacion_actual_pasivo_largo_noregulada_anterior ) / evaluacion_actual_pasivo_largo_noregulada_anterior * 100;
-    if(isNaN(analisis_horizontal_pasivo_largo_noregulada)){ analisis_horizontal_pasivo_largo_noregulada = 0; }
+    if(isNaN(analisis_horizontal_pasivo_largo_noregulada) || analisis_horizontal_pasivo_largo_noregulada == Infinity || analisis_horizontal_pasivo_largo_noregulada){ analisis_horizontal_pasivo_largo_noregulada = 0; }
     $('#analisis_horizontal_pasivo_largo_noregulada').val(analisis_horizontal_pasivo_largo_noregulada.toFixed(2))
     let analisis_horizontal_pasivo_nocorriente = ( evaluacion_actual_pasivo_nocorriente - evaluacion_actual_pasivo_nocorriente_anterior ) / evaluacion_actual_pasivo_nocorriente_anterior * 100;
-    if(isNaN(analisis_horizontal_pasivo_nocorriente)){ analisis_horizontal_pasivo_nocorriente = 0; }
+    if(isNaN(analisis_horizontal_pasivo_nocorriente) || analisis_horizontal_pasivo_nocorriente == Infinity || analisis_horizontal_pasivo_nocorriente){ analisis_horizontal_pasivo_nocorriente = 0; }
     $('#analisis_horizontal_pasivo_nocorriente').val(analisis_horizontal_pasivo_nocorriente.toFixed(2))
     let analisis_horizontal_total_pasivo = ( evaluacion_actual_total_pasivo - evaluacion_actual_total_pasivo_anterior ) / evaluacion_actual_total_pasivo_anterior * 100;
-    if(isNaN(analisis_horizontal_total_pasivo)){ analisis_horizontal_total_pasivo = 0; }
+    if(isNaN(analisis_horizontal_total_pasivo) || analisis_horizontal_total_pasivo == Infinity || analisis_horizontal_total_pasivo){ analisis_horizontal_total_pasivo = 0; }
     $('#analisis_horizontal_total_pasivo').val(analisis_horizontal_total_pasivo.toFixed(2))
     let analisis_horizontal_capital_social = ( evaluacion_actual_capital_social - evaluacion_actual_capital_social_anterior ) / evaluacion_actual_capital_social_anterior * 100;
-    if(isNaN(analisis_horizontal_capital_social)){ analisis_horizontal_capital_social = 0; }
+    if(isNaN(analisis_horizontal_capital_social) || analisis_horizontal_capital_social == Infinity || analisis_horizontal_capital_social){ analisis_horizontal_capital_social = 0; }
     $('#analisis_horizontal_capital_social').val(analisis_horizontal_capital_social.toFixed(2))
     let analisis_horizontal_utilidad_acumulada = ( evaluacion_actual_utilidad_acumulada - evaluacion_actual_utilidad_acumulada_anterior ) / evaluacion_actual_utilidad_acumulada_anterior * 100;
-    if(isNaN(analisis_horizontal_utilidad_acumulada)){ analisis_horizontal_utilidad_acumulada = 0; }
+    if(isNaN(analisis_horizontal_utilidad_acumulada) || analisis_horizontal_utilidad_acumulada == Infinity || analisis_horizontal_utilidad_acumulada){ analisis_horizontal_utilidad_acumulada = 0; }
     $('#analisis_horizontal_utilidad_acumulada').val(analisis_horizontal_utilidad_acumulada.toFixed(2))
     let analisis_horizontal_patrimonio = ( evaluacion_actual_patrimonio - evaluacion_actual_patrimonio_anterior ) / evaluacion_actual_patrimonio_anterior * 100;
-    if(isNaN(analisis_horizontal_patrimonio)){ analisis_horizontal_patrimonio = 0; }
+    if(isNaN(analisis_horizontal_patrimonio) || analisis_horizontal_patrimonio == Infinity || analisis_horizontal_patrimonio){ analisis_horizontal_patrimonio = 0; }
     $('#analisis_horizontal_patrimonio').val(analisis_horizontal_patrimonio.toFixed(2))
     let analisis_horizontal_pasivo_patrimonio = ( evaluacion_actual_pasivo_patrimonio - evaluacion_actual_pasivo_patrimonio_anterior ) / evaluacion_actual_pasivo_patrimonio_anterior * 100;
-    if(isNaN(analisis_horizontal_pasivo_patrimonio)){ analisis_horizontal_pasivo_patrimonio = 0; }
+    if(isNaN(analisis_horizontal_pasivo_patrimonio) || analisis_horizontal_pasivo_patrimonio == Infinity || analisis_horizontal_pasivo_patrimonio){ analisis_horizontal_pasivo_patrimonio = 0; }
     $('#analisis_horizontal_pasivo_patrimonio').val(analisis_horizontal_pasivo_patrimonio.toFixed(2))
     
     cal_ratios_finacieros()
@@ -1394,7 +1394,7 @@
 
     
     let margen_venta_calculado = (evaluacion_actual_ganancia_utilidad_bruta/evaluacion_actual_ganancia_ventamensual)*100;
-    if(isNaN(margen_venta_calculado)){
+    if(isNaN(margen_venta_calculado) || margen_venta_calculado == Infinity || margen_venta_calculado == -Infinity){
       margen_venta_calculado = 0;
     }
     $('#margen_venta_calculado').val(margen_venta_calculado.toFixed(2));

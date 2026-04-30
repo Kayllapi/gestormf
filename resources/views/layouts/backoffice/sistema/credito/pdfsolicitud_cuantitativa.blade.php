@@ -189,12 +189,12 @@
             <td class="border-td" width="100px">{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->fecha : date_format(date_create($credito->fecha),'Y-m-d') }}</td>
           </tr>
           <tr>
-            <td>DNI/RUC</td>
+            <td>RUC/DNI/CE</td>
             <td class="border-td">{{ $credito->docuementocliente }}</td>
           </tr>
           @if($users_prestamo->dni_pareja!='' or $users_prestamo->nombrecompleto_pareja!='')
           <tr>
-            <td>DNI:</td>
+            <td>DNI/CE:</td>
             <td class="border-td">{{ $users_prestamo->dni_pareja }}</td>
           </tr>
           @endif
@@ -202,7 +202,10 @@
             <td>EJERCICIO:</td>
             <td class="border-td">{{ $users_prestamo->db_idforma_ac_economica }}</td>
           </tr>
-          
+          <tr>
+            <td>ASESOR(A):</td>
+            <td class="border-td">{{ Auth::user()->nombre }}</td>
+          </tr>
         </table>
       </div>
       <div class="col">

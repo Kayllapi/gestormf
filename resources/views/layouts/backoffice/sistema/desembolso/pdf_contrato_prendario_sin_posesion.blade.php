@@ -381,16 +381,29 @@ EL/LOS PRESTATARIO(S) reconoce(n) que, como parte de la evaluación para el otor
       </div>
       <div style="width:100px;margin-top: 10px;height:100px;float:left;margin-right:10px;border: 1px solid #000;">
       </div>
-      <div style="width:175px;margin-top: 30px;float:left;margin-right:5px;">
-            <div class="linea"></div>
-            <span style="padding-top:10px;"><b><?php echo $aval!=''?$aval->nombrecompleto:'' ?></b></span>
-            <br>
-            <span><b>RUC/DNI/CE: </b><?php echo $aval!=''?$aval->identificacion:'' ?></span>
-            <br>
-            <span><b>Domicilio: </b> {{ $aval!=''?$aval->direccion:'' }}, {{ $distritoaval }} - {{ $provinciaaval }} - {{ $departamentoaval }}</span>
-            <br>
-            <span><b>EL/LOS PRESTATARIO(S)</b></span>
-      </div>
+      @if($aval!='')
+        <div style="width:175px;margin-top: 30px;float:left;margin-right:5px;">
+          <div class="linea"></div>
+          <span style="padding-top:10px;"><b><?php echo $aval!=''?$aval->nombrecompleto:'' ?></b></span>
+          <br>
+          <span><b>RUC/DNI/CE: </b><?php echo $aval!=''?$aval->identificacion:'' ?></span>
+          <br>
+          <span><b>Domicilio: </b> {{ $aval!=''?$aval->direccion:'' }}, {{ $distritoaval }} - {{ $provinciaaval }} - {{ $departamentoaval }}</span>
+          <br>
+          <span><b>EL/LOS PRESTATARIO(S)</b></span>
+        </div>
+      @elseif($credito->participarconyugue_titular=='on')
+        <div style="width:175px;margin-top: 15px;float:left;margin-right:5px;">
+          <div class="linea"></div>
+          <span style="padding-top:10px;"><b><?php echo $users_prestamo->nombrecompleto_pareja ?></b></span>
+          <br>
+          <span><b>RUC/DNI/CE: </b><?php echo $users_prestamo->dni_pareja ?></span>
+          <br>
+          <span><b>Domicilio: </b>{{ $usuario->direccion }}, {{ $distrito }} - {{ $provincia }} - {{ $departamento }}</span>
+          <br>
+          <span><b>EL/LOS PRESTATARIO(S)</b></span>
+        </div>
+      @endif
       <div style="width:100px;margin-top: 10px;height:100px;float:left;margin-right:10px;border: 1px solid #000;">
       </div>
       <div style="width:157px;margin-top: -35px;float:left;">

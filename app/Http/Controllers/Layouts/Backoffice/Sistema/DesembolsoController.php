@@ -261,7 +261,7 @@ class DesembolsoController extends Controller
             $nomcredito = 'noprendario';
         }
         $pdf = PDF::loadView(sistema_view().'/desembolso/pdf_contrato_'.$nomcredito,[
-            'users_prestamo'    => $users_prestamo,
+            'users_prestamo' => $users_prestamo,
             'tienda' => $tienda,
             'credito' => $credito,
             'usuario' => $usuario,

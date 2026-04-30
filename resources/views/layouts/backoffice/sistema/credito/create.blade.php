@@ -27,7 +27,7 @@
               <label class="chk">
                   <input type="checkbox" name="conyugue_titular" id="participarconyugue_titular">
                   <span class="checkmark"></span>
-                  Participar con Conyugue <span style="color: #c40000;">Para Créditos Prendarios y No Prendarios (CP y CNP)</span>
+                  Participar con Conyugue <label style="color: #c40000;">(Para Créd. Prendarios y No Prendarios - CP y CNP)</label>
               </label>
             </div>
           </div>
@@ -45,7 +45,7 @@
               <label class="chk">
                   <input type="checkbox" name="conyugue_aval" id="participarconyugue_aval">
                   <span class="checkmark"></span>
-                  Participar con Conyugue <span style="color: #c40000;">Solo para Créditos No Prendarios (CNP)</span>
+                  Participar con Conyugue <label style="color: #c40000;">(Solo para Créditos No Prendarios - CNP)</label>
               </label>
             </div>
           </div>

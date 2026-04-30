@@ -243,8 +243,8 @@
                 <td class="color_totales"><input type="number" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_cuota : '0.00' }}" class="form-control campo_moneda fw-bold" id="total_cuota" disabled></td>
                 <td class="color_totales"><input type="number" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_corto_plazo : '0.00' }}" class="form-control campo_moneda fw-bold" id="total_corto_plazo" disabled></td>
                 <td class="color_totales"><input type="number" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_largo_plazo : '0.00' }}" class="form-control campo_moneda fw-bold" id="total_largo_plazo" disabled></td>
-                <td class="color_totales"><input type="text" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_saldo_capital_deducciones : '0.00' }}" class="form-control campo_moneda fw-bold" id="total_saldo_capital_deducciones" disabled></td>
-                <td class="color_totales"><input type="text" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_cuota_deducciones : '0.00' }}" class="form-control campo_moneda fw-bold" id="total_cuota_deducciones" disabled></td>
+                <td class="color_totales"><input type="number" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_saldo_capital_deducciones : '0.00' }}" class="form-control campo_moneda fw-bold" id="total_saldo_capital_deducciones" disabled></td>
+                <td class="color_totales"><input type="number" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_cuota_deducciones : '0.00' }}" class="form-control campo_moneda fw-bold" id="total_cuota_deducciones" disabled></td>
               
                 @if($view_detalle!='false')
                 <td class="color_totales"></td>
@@ -387,9 +387,16 @@
                   </td>
                   <td entidad>
                     <div class="input-group">
-                      <input nombre_entidad type="text" {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto" {{ $value->tipo_entidad ? 'disabled' : '' }}  value="{{ $nombre_entidad_noregulada }}">
+                      <input nombre_entidad
+                        type="text" {{ $view_detalle=='false' ? 'disabled' : '' }}
+                        class="form-control color_cajatexto" {{ $value->tipo_entidad ? 'disabled' : '' }}
+                        value="{{ $nombre_entidad_noregulada }}">
                       <div class="input-group-text">
-                        <input tipo_entidad onclick="mostrar_endidad(this)" class="form-check-input mt-0" type="checkbox" {{ $view_detalle=='false' ? 'disabled' : '' }} {{ $value->tipo_entidad ? 'checked' : '' }}>
+                        <input tipo_entidad
+                          onclick="mostrar_endidad(this)"
+                          class="form-check-input mt-0"
+                          type="checkbox" {{ $view_detalle=='false' ? 'disabled' : '' }}
+                          {{ $value->tipo_entidad ? 'checked' : '' }}>
                       </div>
                     </div>
                   </td>
@@ -406,18 +413,44 @@
                       <option value="2" {{ $value->moneda_origen == "2" ? "selected" : "" }}>Dolares</option>
                     </select>
                   </td>
-                  <td saldo_capital_origen><input type="text" valida_input_vacio value="{{ $value->saldo_capital_origen }}" {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control campo_moneda color_cajatexto" onkeyup="calcular_soles_entidad_regulada(this)"></td>
-                  <td plazo_pendiente_origen><input type="text" valida_input_vacio value="{{ $value->plazo_pendiente_origen }}" {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control campo_moneda color_cajatexto" onkeyup="calcular_soles_entidad_regulada(this)"></td>
-                  <td cuota_origen><input type="text" valida_input_vacio value="{{ $value->cuota_origen }}" {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control campo_moneda color_cajatexto" onkeyup="calcular_soles_entidad_regulada(this)"></td>
+                  <td saldo_capital_origen>
+                    <input type="text"
+                      valida_input_vacio value="{{ $value->saldo_capital_origen }}" {{ $view_detalle=='false' ? 'disabled' : '' }}
+                      class="form-control campo_moneda color_cajatexto"
+                      onkeyup="calcular_soles_entidad_regulada(this)">
+                  </td>
+                  <td plazo_pendiente_origen>
+                    <input type="text"
+                      valida_input_vacio value="{{ $value->plazo_pendiente_origen }}" {{ $view_detalle=='false' ? 'disabled' : '' }}
+                      class="form-control campo_moneda color_cajatexto"
+                      onkeyup="calcular_soles_entidad_regulada(this)">
+                  </td>
+                  <td cuota_origen>
+                    <input type="text"
+                      valida_input_vacio value="{{ $value->cuota_origen }}" {{ $view_detalle=='false' ? 'disabled' : '' }}
+                      class="form-control campo_moneda color_cajatexto"
+                      onkeyup="calcular_soles_entidad_regulada(this)">
+                  </td>
 
                   <td saldo_capital><input type="number" value="{{ $value->saldo_capital }}" class="form-control campo_moneda" disabled></td>
                   <td cuota><input type="number" value="{{ $value->cuota }}" class="form-control campo_moneda" disabled></td>
                   <td corto_plazo><input type="number" value="{{ $value->corto_plazo }}" class="form-control campo_moneda" disabled></td>
                   <td largo_plazo><input type="number" value="{{ $value->largo_plazo }}" class="form-control campo_moneda" disabled></td>
 
-                  <td saldo_capital_deducciones><input type="text" valida_input_vacio value="{{ $value->saldo_capital_deducciones }}" {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control campo_moneda color_cajatexto" onkeyup="calcular_soles_entidad_regulada(this)"></td>
-                  <td cuota_deducciones><input type="text" valida_input_vacio value="{{ $value->cuota_deducciones }}" {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control campo_moneda color_cajatexto" onkeyup="calcular_soles_entidad_regulada(this)"></td>
-
+                  <td saldo_capital_deducciones>
+                    <input type="number"
+                      valida_input_vacio
+                      value="{{ $value->saldo_capital_deducciones }}" {{ $view_detalle=='false' ? 'disabled' : '' }}
+                      class="form-control campo_moneda color_cajatexto"
+                      onkeyup="calcular_soles_entidad_regulada(this)">
+                  </td>
+                  <td cuota_deducciones>
+                    <input type="number"
+                      valida_input_vacio
+                      value="{{ $value->cuota_deducciones }}" {{ $view_detalle=='false' ? 'disabled' : '' }}
+                      class="form-control campo_moneda color_cajatexto"
+                      onkeyup="calcular_soles_entidad_regulada(this)">
+                  </td>
                 @if($view_detalle!='false')
                 <td><button type="button" onclick="eliminar_producto(this)" class="btn btn-danger "><i class="fa-solid fa-trash"></i></button></td>
                 @endif 
@@ -431,8 +464,8 @@
                 <td class="color_totales"><input type="number" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_noregulada_cuota : '0.00' }}" class="form-control campo_moneda fw-bold" id="total_noregulada_cuota" disabled></td>
                 <td class="color_totales"><input type="number" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_noregulada_corto_plazo : '0.00' }}" class="form-control campo_moneda fw-bold" id="total_noregulada_corto_plazo" disabled></td>
                 <td class="color_totales"><input type="number" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_noregulada_largo_plazo : '0.00' }}" class="form-control campo_moneda fw-bold" id="total_noregulada_largo_plazo" disabled></td>
-                <td class="color_totales"><input type="text" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_noregulada_saldo_capital_deducciones : '0.00' }}" class="form-control campo_moneda fw-bold" id="total_noregulada_saldo_capital_deducciones" disabled></td>
-                <td class="color_totales"><input type="text" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_noregulada_cuota_deducciones : '0.00' }}" class="form-control campo_moneda fw-bold" id="total_noregulada_cuota_deducciones" disabled></td>
+                <td class="color_totales"><input type="number" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_noregulada_saldo_capital_deducciones : '0.00' }}" class="form-control campo_moneda fw-bold" id="total_noregulada_saldo_capital_deducciones" disabled></td>
+                <td class="color_totales"><input type="number" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_noregulada_cuota_deducciones : '0.00' }}" class="form-control campo_moneda fw-bold" id="total_noregulada_cuota_deducciones" disabled></td>
                
                 @if($view_detalle!='false')
                 <td class="color_totales"></td>
@@ -735,7 +768,13 @@
               </tr>
               <tr>
                 <td style="border: 1px solid #a6a9ab;">RIESGO TOTAL PROYECTADO EN: TODO SISTEMA FINANCIERO (S/.)</td>
-                <td style="border: 1px solid #a6a9ab;"><input type="text" class="form-control campo_moneda" disabled value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->riesgo_proyectado_todos : '0.00' }}" id="riesgo_proyectado_todos"></td>
+                <td style="border: 1px solid #a6a9ab;">
+                  <input type="text"
+                    class="form-control campo_moneda"
+                    disabled
+                    value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->riesgo_proyectado_todos : '0.00' }}"
+                    id="riesgo_proyectado_todos">
+                </td>
                 <td style="background-color: #efefef;"></td>
               </tr>
             </tbody>
@@ -1103,7 +1142,6 @@
       }else{
         estado_regulada = true;
       }
-      calcular_riesgo_empresa()
     }
     else if(table == "#table-credito-entidad-noregulada"){
       $('#total_noregulada_saldo_capital').val(saldo_capital.toFixed(2))
@@ -1112,7 +1150,7 @@
       $('#total_noregulada_largo_plazo').val(largo_plazo.toFixed(2))
       $('#total_noregulada_saldo_capital_deducciones').val(saldo_capital_deducciones.toFixed(2))
       $('#total_noregulada_cuota_deducciones').val(cuota_deducciones.toFixed(2))
-      
+
       if( ( modalidad_credito == 2 || modalidad_credito == 3 ) && (saldo_capital_deducciones == 0 || cuota_deducciones == 0)){
         //$("#error_entidad_noregulada").removeClass('d-none')
         estado_noregulada = false;
@@ -1121,6 +1159,7 @@
         //$("#error_entidad_noregulada").addClass('d-none')
       }
     }
+    calcular_riesgo_empresa()
     calcular_resumen();
     if(estado_regulada == false && estado_noregulada == false){
       $("#error_entidad_regulada").removeClass('d-none')
@@ -1177,7 +1216,7 @@
     let total_riesgo = (total_empresa_regulada + total_empresa + propuesta_monto) - total_deducciones;
     $('#riesgo_proyectado_empresa').val(total_riesgo.toFixed(2));
     
-    let riesgo_proyectado_todos = ( total_saldo_capital + total_noregulada_saldo_capital + propuesta_monto ) - total_saldo_capital_deducciones - total_noregulada_saldo_capital_deducciones;
+    let riesgo_proyectado_todos = (( total_saldo_capital + total_noregulada_saldo_capital + propuesta_monto ) - total_saldo_capital_deducciones) - total_noregulada_saldo_capital_deducciones;
     $('#riesgo_proyectado_todos').val(riesgo_proyectado_todos.toFixed(2));
     
     // calcular_excedente();

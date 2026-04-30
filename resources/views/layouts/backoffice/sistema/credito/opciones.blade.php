@@ -8,7 +8,7 @@
       <b>CLIENTE:</b> <span style="font-weight: normal;">{{ $usuario->nombrecompleto }}</span>
       @if ($credito->avalnombrecompleto != '')
         <br>
-        <b>AVAL:</b> <span style="font-weight: normal;">{{ $credito->avalnombrecompleto }}</span>
+        <b>AVAL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b> <span style="font-weight: normal;">{{ $credito->avalnombrecompleto }}</span>
       @endif
     </div>
     <div class="col-md-3"><b>F. INGRESO:</b> <span style="font-weight: normal;">{{ $users_prestamo->db_idfuenteingreso }}</span></div>

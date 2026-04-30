@@ -5,8 +5,11 @@
 <div class="modal-body">
   <div class="row" style="font-size: 14px;padding: 7px;">
     <div class="col-md-5">
-      <b>CLIENTE:</b> <span style="font-weight: normal;">{{ $usuario->nombrecompleto }}</span> <br>
-      <b>AVAL:</b> <span style="font-weight: normal;">{{ $credito->avalnombrecompleto }}</span>
+      <b>CLIENTE:</b> <span style="font-weight: normal;">{{ $usuario->nombrecompleto }}</span>
+      @if ($credito->avalnombrecompleto != '')
+        <br>
+        <b>AVAL:</b> <span style="font-weight: normal;">{{ $credito->avalnombrecompleto }}</span>
+      @endif
     </div>
     <div class="col-md-3"><b>F. INGRESO:</b> <span style="font-weight: normal;">{{ $users_prestamo->db_idfuenteingreso }}</span></div>
     <div class="col-md-4" style="text-align: right;"><b>PRODUCTO:</b> <span style="font-weight: normal;">{{ $credito->nombreproductocredito }}</span></div>

@@ -27,7 +27,7 @@
               <label class="chk">
                   <input type="checkbox" name="conyugue_titular" id="participarconyugue_titular" <?php echo $credito->participarconyugue_titular=='on'?'checked':''?>>
                   <span class="checkmark"></span>
-                  Participar con Conyugue <span style="color: #c40000;">(Para Créd. Prendarios y No Prendarios - CP y CNP)</span>
+                  Participar con Conyugue <span style="color: #c40000;">(Créd. Prendarios y No Prendarios - CP y CNP)</span>
               </label>
             </div>
           </div>

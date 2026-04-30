@@ -45,7 +45,7 @@
               <label class="chk">
                   <input type="checkbox" name="conyugue_aval" id="participarconyugue_aval">
                   <span class="checkmark"></span>
-                  Participar con Conyugue
+                  Participar con Conyugue (<span style="color: #c40000;">Solo para CNP</span>)
               </label>
             </div>
           </div>

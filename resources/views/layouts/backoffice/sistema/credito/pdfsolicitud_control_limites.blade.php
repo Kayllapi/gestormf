@@ -323,9 +323,9 @@
                       @foreach($credito_saldodeduda_cliente_propio as $value)
                         <tr>
                             <td>{{ $value['cuenta'] }}</td>
-                            <td class="campo_moneda">{{ $value['saldo_vigente'] }}</td>
+                            <td class="campo_moneda">{{ $value['cuota_pendiente'] }}</td>
                         </tr>
-                        <?php $total_saldo_vigente_propio = $total_saldo_vigente_propio+$value['saldo_vigente']; ?>
+                        <?php $total_saldo_vigente_propio = $total_saldo_vigente_propio+$value['cuota_pendiente']; ?>
                       @endforeach
                   @endif
               </tbody>
@@ -375,10 +375,10 @@
                     @foreach($credito_saldodeduda_cliente_aval as $value)
                       <tr>
                           <td>{{ $value['cuenta'] }}</td>
-                          <td class="campo_moneda">{{ $value['saldo_vigente'] }}</td>
+                          <td class="campo_moneda">{{ $value['cuota_pendiente'] }}</td>
                       </tr>
                       <?php $cuentas_aval[] = $value['cuenta']; ?>
-                      <?php $total_saldo_vigente_aval += $value['saldo_vigente']; ?>
+                      <?php $total_saldo_vigente_aval += $value['cuota_pendiente']; ?>
                     @endforeach
                 @endif
               </tbody>
@@ -563,11 +563,11 @@
                   @foreach($credito_saldodeduda_aval_propio as $value)
                     <tr>
                         <td>{{ $value['cuenta'] }}</td>
-                        <td class="campo_moneda">{{ $value['saldo_vigente'] }}</td>
+                        <td class="campo_moneda">{{ $value['cuota_pendiente'] }}</td>
                     </tr>
-                    <?php $total_saldo_vigente_propio += $value['saldo_vigente']; ?>
+                    <?php $total_saldo_vigente_propio += $value['cuota_pendiente']; ?>
                     @if(!in_array($value['cuenta'], $cuentas_aval))
-                        <?php $total_saldo_vigente_propio_input += $value['saldo_vigente']; ?>
+                        <?php $total_saldo_vigente_propio_input += $value['cuota_pendiente']; ?>
                     @endif
                   @endforeach
               @endif
@@ -615,9 +615,9 @@
                   @foreach($credito_saldodeduda_aval_aval as $value)
                     <tr>
                         <td>{{ $value['cuenta'] }}</td>
-                        <td class="campo_moneda">{{ $value['saldo_vigente'] }}</td>
+                        <td class="campo_moneda">{{ $value['cuota_pendiente'] }}</td>
                     </tr>
-                    <?php $total_saldo_vigente_aval = $total_saldo_vigente_aval+$value['saldo_vigente']; ?>
+                    <?php $total_saldo_vigente_aval = $total_saldo_vigente_aval+$value['cuota_pendiente']; ?>
                   @endforeach
               @endif
             </tbody>

@@ -1698,6 +1698,7 @@ class CreditoController extends Controller
                   'modalidad' => $valuec->modalidadproductocredito,
                   'cuenta' => 'C'.str_pad($valuec->credito_cuenta, 8, "0", STR_PAD_LEFT),
                   'saldo_vigente' => $cronograma['saldo_capital'],
+                  'cuota_pendiente' => $cronograma['cuota_pendiente'],
               ];
           }
           foreach($lista_credito_garantia_cliente_aval as $valuec){
@@ -1746,6 +1747,7 @@ class CreditoController extends Controller
                   'modalidad' => $valuec->modalidadproductocredito,
                   'cuenta' => 'C'.str_pad($valuec->credito_cuenta, 8, "0", STR_PAD_LEFT),
                   'saldo_vigente' => $cronograma['saldo_capital'],
+                  'cuota_pendiente' => $cronograma['cuota_pendiente'],
               ];
           }
           //-------- GARANTIAS DE AVAL
@@ -1850,6 +1852,7 @@ class CreditoController extends Controller
                   'modalidad' => $valuec->modalidadproductocredito,
                   'cuenta' => 'C'.str_pad($valuec->credito_cuenta, 8, "0", STR_PAD_LEFT),
                   'saldo_vigente' => $cronograma['saldo_capital'],
+                  'cuota_pendiente' => $cronograma['cuota_pendiente'],
               ];
           }
           foreach($lista_credito_garantia_aval_aval as $valuec){
@@ -1898,6 +1901,7 @@ class CreditoController extends Controller
                   'modalidad' => $valuec->modalidadproductocredito,
                   'cuenta' => 'C'.str_pad($valuec->credito_cuenta, 8, "0", STR_PAD_LEFT),
                   'saldo_vigente' => $cronograma['saldo_capital'],
+                  'cuota_pendiente' => $cronograma['cuota_pendiente'],
               ];
           }
 
@@ -2432,6 +2436,7 @@ class CreditoController extends Controller
                   'modalidad' => $valuec->modalidadproductocredito,
                   'cuenta' => 'C'.str_pad($valuec->credito_cuenta, 8, "0", STR_PAD_LEFT),
                   'saldo_vigente' => $cronograma['saldo_capital'],
+                  'cuota_pendiente' => $cronograma['cuota_pendiente'],
               ];
           }
           foreach($lista_credito_garantia_cliente_aval as $valuec){
@@ -2480,6 +2485,7 @@ class CreditoController extends Controller
                   'modalidad' => $valuec->modalidadproductocredito,
                   'cuenta' => 'C'.str_pad($valuec->credito_cuenta, 8, "0", STR_PAD_LEFT),
                   'saldo_vigente' => $cronograma['saldo_capital'],
+                  'cuota_pendiente' => $cronograma['cuota_pendiente'],
               ];
           }
           //-------- GARANTIAS DE AVAL
@@ -2584,6 +2590,7 @@ class CreditoController extends Controller
                   'modalidad' => $valuec->modalidadproductocredito,
                   'cuenta' => 'C'.str_pad($valuec->credito_cuenta, 8, "0", STR_PAD_LEFT),
                   'saldo_vigente' => $cronograma['saldo_capital'],
+                  'cuota_pendiente' => $cronograma['cuota_pendiente'],
               ];
           }
           foreach($lista_credito_garantia_aval_aval as $valuec){
@@ -2632,6 +2639,7 @@ class CreditoController extends Controller
                   'modalidad' => $valuec->modalidadproductocredito,
                   'cuenta' => 'C'.str_pad($valuec->credito_cuenta, 8, "0", STR_PAD_LEFT),
                   'saldo_vigente' => $cronograma['saldo_capital'],
+                  'cuota_pendiente' => $cronograma['cuota_pendiente'],
               ];
           }
 

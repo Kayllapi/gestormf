@@ -27,7 +27,7 @@
               <label class="chk">
                   <input type="checkbox" name="conyugue_titular" id="participarconyugue_titular" <?php echo $credito->participarconyugue_titular=='on'?'checked':''?>>
                   <span class="checkmark"></span>
-                  Participar con Conyugue <span style="color: #c40000;">(Créd. Prendarios y No Prendarios - CP y CNP)</span>
+                  Participar Pareja <span style="color: #c40000;">(Créd. Prendarios y No Prendarios - CP y CNP)</span>
               </label>
             </div>
           </div>
@@ -45,7 +45,7 @@
               <label class="chk">
                   <input type="checkbox" name="conyugue_aval" id="participarconyugue_aval" <?php echo $credito->participarconyugue_aval=='on'?'checked':''?>>
                   <span class="checkmark"></span>
-                  Participar con Conyugue <span style="color: #c40000;">(Solo para Créditos No Prendarios - CNP)</span>
+                  Participar Pareja <span style="color: #c40000;">(Solo para Créditos No Prendarios - CNP)</span>
               </label>
             </div>
           </div>

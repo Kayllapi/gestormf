@@ -185,11 +185,13 @@
           PASAR A APROBACIÓN
         </button>
       </div>
-      <button type="button"
-        class="btn btn-warning1 mb-1"
-        onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=solicitud_checklist')}}', size: 'modal-fullscreen' })">
-        CHECK LIST
-      </button>
+      @if ($credito->idforma_credito==2) {{-- no prendario --}}
+        <button type="button"
+          class="btn btn-warning1 mb-1"
+          onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=solicitud_checklist')}}', size: 'modal-fullscreen' })">
+          CHECK LIST
+        </button>
+      @endif
     @endif
   @endif
 

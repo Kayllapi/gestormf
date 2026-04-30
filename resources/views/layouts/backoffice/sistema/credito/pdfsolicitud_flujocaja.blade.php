@@ -173,7 +173,10 @@
             <td>MODALIDAD:</td>
             <td class="border-td" width="100px">{{ $credito->modalidad_credito_nombre }}</td>
           </tr>
-          
+          <tr>
+            <td>ASESOR(A):</td>
+            <td class="border-td">{{ Auth::user()->nombre }}</td>
+          </tr>
         </table>
       </div>
       <div class="col">

@@ -60,7 +60,7 @@
           </div>
           <div class="row">
             <label class="col-sm-4 col-form-label" style="text-align: right;">PRODUCTO:</label>
-            <div class="col-sm-7">
+            <div class="col-sm-8">
               <input type="text" step="any" class="form-control" value="{{ $credito->nombreproductocredito }}" disabled>
             </div>
           </div>
@@ -72,6 +72,12 @@
               <input type="text" step="any" class="form-control" value="{{ $credito->modalidad_credito_nombre }}" disabled>
             </div>
           </div>
+          <div class="row">
+            <label class="col-sm-4 col-form-label" style="text-align: right;">ASESOR(A):</label>
+            <div class="col-sm-7">
+              <input type="text" step="any" class="form-control" value="{{ Auth::user()->nombre }}" disabled>
+            </div>
+          </div>
         </div>
         <div class="col-sm-12 col-md-4">
           <div class="row">
@@ -81,7 +87,7 @@
             </div>
           </div>
           <div class="row">
-            <label class="col-sm-3 col-form-label" style="text-align: right;">FECHA:</label>
+            <label class="col-sm-4 col-form-label" style="text-align: right;">FECHA:</label>
             <div class="col-sm-7">
               <input type="date" step="any" class="form-control" value="{{ date_format(date_create($credito->fecha),'Y-m-d') }}" disabled>
             </div>

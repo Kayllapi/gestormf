@@ -799,16 +799,6 @@
           <input type="text" class="form-control bg-success text-center" value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->estado_credito : '' }}" disabled id="estado_credito">
           <br>
         </div>
-        <style>
-          .fa-solid {
-            font-size: 15px;
-            background: #000000;
-            border-radius: 50%;
-          }
-          .fa-circle-info {
-            color: white;
-          }
-        </style>
         <div class="col-sm-12 col-md-6">
           <table class="table">
             <tbody>

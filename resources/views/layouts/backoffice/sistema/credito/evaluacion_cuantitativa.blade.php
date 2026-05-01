@@ -222,18 +222,18 @@
               </tr>
               <tr>
                 <td style="font-weight: bold">% Ventas</td>
-                <td><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto fw-bold" onkeyup="calcula_monto_meses(this)" value="100" disabled></td>
-                <td><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto fw-bold campo_moneda" onkeyup="calcula_monto_meses(this)" value="0.00"></td>
-                <td><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto fw-bold campo_moneda" onkeyup="calcula_monto_meses(this)" value="0.00"></td>
-                <td><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto fw-bold campo_moneda" onkeyup="calcula_monto_meses(this)" value="0.00"></td>
-                <td><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto fw-bold campo_moneda" onkeyup="calcula_monto_meses(this)" value="0.00"></td>
-                <td><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto fw-bold campo_moneda" onkeyup="calcula_monto_meses(this)" value="0.00"></td>
-                <td><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto fw-bold campo_moneda" onkeyup="calcula_monto_meses(this)" value="0.00"></td>
-                <td><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto fw-bold campo_moneda" onkeyup="calcula_monto_meses(this)" value="0.00"></td>
-                <td><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto fw-bold campo_moneda" onkeyup="calcula_monto_meses(this)" value="0.00"></td>
-                <td><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto fw-bold campo_moneda" onkeyup="calcula_monto_meses(this)" value="0.00"></td>
-                <td><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto fw-bold campo_moneda" onkeyup="calcula_monto_meses(this)" value="0.00"></td>
-                <td><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto fw-bold campo_moneda" onkeyup="calcula_monto_meses(this)" value="0.00"></td>
+                <td><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto" onkeyup="calcula_monto_meses(this)" value="100" disabled></td>
+                <td><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto campo_moneda" onkeyup="calcula_monto_meses(this)" value="0.00"></td>
+                <td><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto campo_moneda" onkeyup="calcula_monto_meses(this)" value="0.00"></td>
+                <td><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto campo_moneda" onkeyup="calcula_monto_meses(this)" value="0.00"></td>
+                <td><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto campo_moneda" onkeyup="calcula_monto_meses(this)" value="0.00"></td>
+                <td><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto campo_moneda" onkeyup="calcula_monto_meses(this)" value="0.00"></td>
+                <td><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto campo_moneda" onkeyup="calcula_monto_meses(this)" value="0.00"></td>
+                <td><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto campo_moneda" onkeyup="calcula_monto_meses(this)" value="0.00"></td>
+                <td><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto campo_moneda" onkeyup="calcula_monto_meses(this)" value="0.00"></td>
+                <td><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto campo_moneda" onkeyup="calcula_monto_meses(this)" value="0.00"></td>
+                <td><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto campo_moneda" onkeyup="calcula_monto_meses(this)" value="0.00"></td>
+                <td><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto campo_moneda" onkeyup="calcula_monto_meses(this)" value="0.00"></td>
               </tr>
             @endif
             </tbody>
@@ -776,48 +776,167 @@
         <span class="badge d-block" style="background-color: #aaa;color: #000;">3.4 PRINCIPALES RATIOS FINANCIEROS</span>
       </div>
       <div class="row">
+        <div class="col-12">
+          <table class="table">
+            <tbody>
+              <tr style="background-color: #efefef;">
+                <td colspan=3 style="background-color: #efefef;"></td>
+              </tr>
+              <tr>
+                <td style="border: 1px solid #a6a9ab;">CUOTA TOTAL/EXCEDENTE TOTAL. Antes de Propuesta (%)</td>
+                <td style="border: 1px solid #a6a9ab;width:280px;"><input type="text" class="form-control campo_moneda" disabled value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->excedente_antes_propuesta : '0.00' }}" id="excedente_antes_propuesta"></td>
+              </tr>
+              <tr>
+                <td style="border: 1px solid #a6a9ab;">CUOTA TOTAL/EXCEDENTE TOTAL. En Propuesta sin Deducción en Ampliacion o Compra de deuda (%)</td>
+                <td style="border: 1px solid #a6a9ab;"><input type="text" class="form-control campo_moneda" disabled value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->excedente_propuesta_sin_deduccion : '0.00' }}" id="excedente_propuesta_sin_deduccion"></td>
+              </tr>
+              <tr>
+                <td style="border: 1px solid #a6a9ab;">CUOTA TOTAL/EXCEDENTE TOTAL. En Propuesta CON Deducción en Ampliacion o Compra de deuda (%)</td>
+                <td style="border: 1px solid #a6a9ab;"><input type="text" class="form-control campo_moneda" disabled value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->excedente_propuesta_con_deduccion : '0.00' }}" id="excedente_propuesta_con_deduccion"></td>
+              </tr>
+            </tbody>
+          </table>
+          <input type="text" class="form-control bg-success text-center" value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->estado_credito : '' }}" disabled id="estado_credito">
+          <br>
+        </div>
         <div class="col-sm-12 col-md-6">
           <table class="table">
             <tbody>
               <tr>
                 <td>Rentabilidad del negocio</td>
                 <td>%</td>
-                <td><input type="text" class="form-control campo_moneda" id="ratio_re_negocio" value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_negocio : '0.00' }}" disabled></td>
+                <td>
+                  <div class="input-group">
+                    <input type="text"
+                      class="form-control campo_moneda"
+                      value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_negocio : '0.00' }}"
+                      id="ratio_re_negocio"
+                      disabled>
+                    <span class="input-group-text"
+                      data-bs-toggle='popover' 
+                      data-bs-placement='right' 
+                      data-bs-content='formula'><i class="fa-solid fa-circle-info"></i></span>
+                  </div>
+                </td>
               </tr>
               <tr>
                 <td>Rentabilidad de la unidad familiar</td>
                 <td>Veces</td>
-                <td><input type="text" class="form-control campo_moneda" value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_unidadfamiliar : '0.00' }}" id="ratio_re_unidadfamiliar" disabled></td>
+                <td>
+                  <div class="input-group">
+                    <input type="text"
+                      class="form-control campo_moneda"
+                      value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_unidadfamiliar : '0.00' }}"
+                      id="ratio_re_unidadfamiliar"
+                      disabled>
+                    <span class="input-group-text"
+                      data-bs-toggle='popover' 
+                      data-bs-placement='right' 
+                      data-bs-content='formula'><i class="fa-solid fa-circle-info"></i></span>
+                  </div>
+                </td>
               </tr>
               <tr>
                 <td>Rentabilidad patrimonial (ROE)</td>
                 <td>%</td>
-                <td><input type="text" class="form-control campo_moneda" value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_patrimonial : '0.00' }}" id="ratio_re_patrimonial" disabled></td>
+                <td>
+                  <div class="input-group">
+                    <input type="text"
+                      class="form-control campo_moneda"
+                      value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_patrimonial : '0.00' }}"
+                      id="ratio_re_patrimonial"
+                      disabled>
+                    <span class="input-group-text"
+                      data-bs-toggle='popover' 
+                      data-bs-placement='right' 
+                      data-bs-content='formula'><i class="fa-solid fa-circle-info"></i></span>
+                  </div>
+                </td>
               </tr>
               <tr>
                 <td>Rentabilidad de los activos (ROA)</td>
                 <td>%</td>
-                <td><input type="text" class="form-control campo_moneda" value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_activos : '0.00' }}" id="ratio_re_activos" disabled></td>
+                <td>
+                  <div class="input-group">
+                    <input type="text"
+                      class="form-control campo_moneda"
+                      value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_activos : '0.00' }}"
+                      id="ratio_re_activos"
+                      disabled>
+                    <span class="input-group-text"
+                      data-bs-toggle='popover' 
+                      data-bs-placement='right' 
+                      data-bs-content='formula'><i class="fa-solid fa-circle-info"></i></span>
+                  </div>
+                </td>
               </tr>
               <tr>
                 <td>Rentabilidad de las ventas (ROS)</td>
                 <td>%</td>
-                <td><input type="text" class="form-control campo_moneda" value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_ventas : '0.00' }}" id="ratio_re_ventas" disabled></td>
+                <td>
+                  <div class="input-group">
+                    <input type="text"
+                      class="form-control campo_moneda"
+                      value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_ventas : '0.00' }}"
+                      id="ratio_re_ventas"
+                      disabled>
+                    <span class="input-group-text"
+                      data-bs-toggle='popover' 
+                      data-bs-placement='right' 
+                      data-bs-content='formula'><i class="fa-solid fa-circle-info"></i></span>
+                  </div>
+                </td>
               </tr>
               <tr>
                 <td>Préstamo / capital de trabajo Neto</td>
                 <td>%</td>
-                <td><input type="text" class="form-control campo_moneda" value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_prestamo : '0.00' }}" id="ratio_re_prestamo" disabled></td>
+                <td>
+                  <div class="input-group">
+                    <input type="text"
+                      class="form-control campo_moneda"
+                      value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_prestamo : '0.00' }}"
+                      id="ratio_re_prestamo"
+                      disabled>
+                    <span class="input-group-text"
+                      data-bs-toggle='popover' 
+                      data-bs-placement='right' 
+                      data-bs-content='formula'><i class="fa-solid fa-circle-info"></i></span>
+                  </div>
+                </td>
               </tr>
               <tr>
                 <td>Capital de trabajo</td>
                 <td>S/</td>
-                <td><input type="text" class="form-control campo_moneda" value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_capital : '0.00' }}" id="ratio_re_capital" disabled></td>
+                <td>
+                  <div class="input-group">
+                    <input type="text"
+                      class="form-control campo_moneda"
+                      value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_capital : '0.00' }}"
+                      id="ratio_re_capital"
+                      disabled>
+                    <span class="input-group-text"
+                      data-bs-toggle='popover' 
+                      data-bs-placement='right' 
+                      data-bs-content='formula'><i class="fa-solid fa-circle-info"></i></span>
+                  </div>
+                </td>
               </tr>
               <tr>
                 <td>Liquidez</td>
                 <td>Veces</td>
-                <td><input type="text" class="form-control campo_moneda" value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_liquidez : '0.00' }}" id="ratio_re_liquidez" disabled></td>
+                <td>
+                  <div class="input-group">
+                    <input type="text"
+                      class="form-control campo_moneda"
+                      value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_liquidez : '0.00' }}"
+                      id="ratio_re_liquidez"
+                      disabled>
+                    <span class="input-group-text"
+                      data-bs-toggle='popover' 
+                      data-bs-placement='right' 
+                      data-bs-content='formula'><i class="fa-solid fa-circle-info"></i></span>
+                  </div>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -948,59 +1067,111 @@
               <tr>
                 <td>Liquidez Ácida</td>
                 <td>Veces</td>
-                <td style="width:280px;"><input type="text" class="form-control campo_moneda" value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_liquidez_acida : '0.00' }}" id="ratio_re_liquidez_acida" disabled></td>
+                <td style="width:280px;">
+                  <div class="input-group">
+                    <input type="text"
+                      class="form-control campo_moneda"
+                      value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_liquidez_acida : '0.00' }}"
+                      id="ratio_re_liquidez_acida"
+                      disabled>
+                    <span class="input-group-text"
+                      data-bs-toggle='popover' 
+                      data-bs-placement='right' 
+                      data-bs-content='formula'><i class="fa-solid fa-circle-info"></i></span>
+                  </div>
+                </td>
               </tr>
               <tr>
                 <td>Endeudamiento patrimonial actual</td>
                 <td>Veces</td>
-                <td><input type="text" class="form-control campo_moneda" value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_endeudamiento_actual : '0.00' }}" id="ratio_re_endeudamiento_actual" disabled></td>
+                <td>
+                  <div class="input-group">
+                    <input type="text"
+                      class="form-control campo_moneda"
+                      value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_endeudamiento_actual : '0.00' }}"
+                      id="ratio_re_endeudamiento_actual"
+                      disabled>
+                    <span class="input-group-text"
+                      data-bs-toggle='popover' 
+                      data-bs-placement='right' 
+                      data-bs-content='formula'><i class="fa-solid fa-circle-info"></i></span>
+                  </div>
+                </td>
               </tr>
               <tr>
                 <td>Endeudamiento Patrim. con propuesta</td>
                 <td>Veces</td>
-                <td><input type="text" class="form-control campo_moneda" value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_endeudamiento_propuesta : '0.00' }}" id="ratio_re_endeudamiento_propuesta" disabled></td>
+                <td>
+                  <div class="input-group">
+                    <input type="text"
+                      class="form-control campo_moneda"
+                      value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_endeudamiento_propuesta : '0.00' }}"
+                      id="ratio_re_endeudamiento_propuesta"
+                      disabled>
+                    <span class="input-group-text"
+                      data-bs-toggle='popover' 
+                      data-bs-placement='right' 
+                      data-bs-content='formula'><i class="fa-solid fa-circle-info"></i></span>
+                  </div>
+                </td>
               </tr>
               
               <tr>
                 <td>Plazo prom.rotación de invent.</td>
                 <td>Días</td>
-                <td><input type="text" class="form-control campo_moneda" value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_rotacion_inventario : '0.00' }}" id="ratio_re_rotacion_inventario" disabled></td>
+                <td>
+                  <div class="input-group">
+                    <input type="text"
+                      class="form-control campo_moneda"
+                      value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_rotacion_inventario : '0.00' }}"
+                      id="ratio_re_rotacion_inventario"
+                      disabled>
+                    <span class="input-group-text"
+                      data-bs-toggle='popover' 
+                      data-bs-placement='right' 
+                      data-bs-content='formula'><i class="fa-solid fa-circle-info"></i></span>
+                  </div>
+                </td>
               </tr>
               <tr>
                 <td>Plazo promedio de cobranza</td>
                 <td>Días</td>
-                <td><input type="text" class="form-control campo_moneda" value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_promedio_cobranza : '0.00' }}" id="ratio_re_promedio_cobranza" disabled></td>
+                <td>
+                  <div class="input-group">
+                    <input type="text"
+                      class="form-control campo_moneda"
+                      value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_promedio_cobranza : '0.00' }}"
+                      id="ratio_re_promedio_cobranza"
+                      disabled>
+                    <span class="input-group-text"
+                      data-bs-toggle='popover' 
+                      data-bs-placement='right' 
+                      data-bs-content='formula'><i class="fa-solid fa-circle-info"></i></span>
+                  </div>
+                </td>
               </tr>
               <tr>
                 <td>Plazo promedio de pago</td>
                 <td>Días</td>
-                <td><input type="text" class="form-control campo_moneda" value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_primedio_pago : '0.00' }}" id="ratio_re_primedio_pago" disabled></td>
+                <td>
+                  <div class="input-group">
+                    <input type="text"
+                      class="form-control campo_moneda"
+                      value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_primedio_pago : '0.00' }}"
+                      id="ratio_re_primedio_pago"
+                      disabled>
+                    <span class="input-group-text"
+                      data-bs-toggle='popover' 
+                      data-bs-placement='right' 
+                      data-bs-content='formula'><i class="fa-solid fa-circle-info"></i></span>
+                  </div>
+                </td>
               </tr>
             </tbody>
           </table>
-          <table class="table">
-            <tbody>
-              <tr style="background-color: #efefef;">
-                <td colspan=3 style="background-color: #efefef;"></td>
-              </tr>
-              <tr>
-                <td style="border: 1px solid #a6a9ab;">CUOTA TOTAL/EXCEDENTE TOTAL. Antes de Propuesta (%)</td>
-                <td style="border: 1px solid #a6a9ab;width:280px;"><input type="text" class="form-control campo_moneda" disabled value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->excedente_antes_propuesta : '0.00' }}" id="excedente_antes_propuesta"></td>
-              </tr>
-              <tr>
-                <td style="border: 1px solid #a6a9ab;">CUOTA TOTAL/EXCEDENTE TOTAL. En Propuesta sin Deducción en Ampliacion o Compra de deuda (%)</td>
-                <td style="border: 1px solid #a6a9ab;"><input type="text" class="form-control campo_moneda" disabled value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->excedente_propuesta_sin_deduccion : '0.00' }}" id="excedente_propuesta_sin_deduccion"></td>
-              </tr>
-              <tr>
-                <td style="border: 1px solid #a6a9ab;">CUOTA TOTAL/EXCEDENTE TOTAL. En Propuesta CON Deducción en Ampliacion o Compra de deuda (%)</td>
-                <td style="border: 1px solid #a6a9ab;"><input type="text" class="form-control campo_moneda" disabled value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->excedente_propuesta_con_deduccion : '0.00' }}" id="excedente_propuesta_con_deduccion"></td>
-              </tr>
-            </tbody>
-          </table>
-                  <input type="hidden" class="form-control" disabled value="{{ configuracion($tienda->id,'rango_menor')['valor'] }}" id="rango_menor">
-                  <input type="hidden" class="form-control" disabled value="{{ configuracion($tienda->id,'rango_diferencia')['valor'] }}" id="rango_diferencia">
-                  <input type="hidden" class="form-control" disabled value="{{ configuracion($tienda->id,'rango_tope')['valor'] }}" id="rango_tope">
-                  <input type="text" class="form-control bg-success text-center" value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->estado_credito : '' }}" disabled id="estado_credito">
+          <input type="hidden" class="form-control" disabled value="{{ configuracion($tienda->id,'rango_menor')['valor'] }}" id="rango_menor">
+          <input type="hidden" class="form-control" disabled value="{{ configuracion($tienda->id,'rango_diferencia')['valor'] }}" id="rango_diferencia">
+          <input type="hidden" class="form-control" disabled value="{{ configuracion($tienda->id,'rango_tope')['valor'] }}" id="rango_tope">
         </div>   
       </div>
       <div class="mb-1 mt-2">
@@ -1767,4 +1938,5 @@
     }
     $('#estado_credito').val(estado_credito);
   }
+  plugins_popover();
 </script>    

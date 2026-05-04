@@ -605,7 +605,7 @@
               <th colspan=2>CÁLCULO DE VENTAS</th>
             </tr>
             <tr>
-              <th>FRECUENCIA</th>
+              <th width="140px">FRECUENCIA</th>
               <th >{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->frecuencia_ventas : 'DIARIO' }}</th>
             </tr>
           </thead>
@@ -614,7 +614,7 @@
           <thead>
             <tr>
               <th>N°</th>
-              <th>Dias</th>
+              <th width="110px">Dias</th>
               <th>Ventas</th>
             </tr>
           </thead>
@@ -637,7 +637,7 @@
         <table class="table" width="220px">
           <thead>
             <tr>
-              <th>N° de Días</th>
+              <th width="140px">N° de Días</th>
               <th >{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->numero_dias : '0' }}</th>
             </tr>
           </thead>
@@ -645,7 +645,7 @@
         <table class="table" width="220px">
           <thead>
             <tr>
-              <th>Venta mensual (S/.)</th>
+              <th width="140px">Venta mensual (S/.)</th>
               <th class="campo_moneda">{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->venta_mensual : '0' }}</th>
             </tr>
           </thead>
@@ -654,7 +654,7 @@
           <thead>
             <tr>
               <th>N°</th>
-              <th>Día/Recabo Datos</th>
+              <th width="110px">Día/Recabo Datos</th>
               <th >Ventas</th>
             </tr>
           </thead>
@@ -679,7 +679,7 @@
         <table class="table" width="220px">
           <thead>
             <tr>
-              <th>Mg. De venta al mes (1) (S/.)</th>
+              <th width="140px">Mg. De venta al mes (1) (S/.)</th>
               <th class="campo_moneda">{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->margen_ventas : '0.00' }}</th>
             </tr>
           </thead>
@@ -789,7 +789,7 @@
                 <th colspan=2>CÁLCULO DE VENTAS</th>
               </tr>
               <tr>
-                <th>FRECUENCIA</th>
+                <th width="140px">FRECUENCIA</th>
                 <th >MENSUAL</th>
               </tr>
             </thead>
@@ -797,7 +797,7 @@
         <table class="table" width="220px">
           <thead>
             <tr>
-              <th>Semanas</th>
+              <th width="140px">Semanas</th>
               <th>Ventas</th>
             </tr>
           </thead>
@@ -830,7 +830,7 @@
         <table class="table"  width="220px">
           <thead>
             <tr>
-              <th>Mg. De venta al mes (2) (S/.)</th>
+              <th width="140px">Mg. De venta al mes (2) (S/.)</th>
               <th class="campo_moneda">{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->margen_ventas_mensual : '0.00' }}</th>
             </tr>
           </thead>

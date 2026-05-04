@@ -218,10 +218,10 @@
           <thead>
             <tr>
               <th width="200px">Inventario de Productos</th>
-              <th>Unid. Med.</th>
-              <th>Cantidad</th>
-              <th>Precio de compra</th>
-              <th>Total</th>
+              <th width="50px">Unid. Med.</th>
+              <th width="50px">Cantidad</th>
+              <th width="80px">Precio de compra</th>
+              <th width="50px">Total</th>
             </tr>
           </thead>
           <tbody>
@@ -248,10 +248,10 @@
           <thead>
             <tr>
               <th width="200px">Activos Inmuebles</th>
-              <th>Unid. Med.</th>
-              <th>Cantidad</th>
-              <th>Valor estimado</th>
-              <th>Total</th>
+              <th width="50px">Unid. Med.</th>
+              <th width="50px">Cantidad</th>
+              <th width="80px">Valor estimado</th>
+              <th width="50px">Total</th>
             </tr>
           </thead>
           <tbody>
@@ -277,10 +277,10 @@
           <thead>
             <tr>
               <th width="200px">Activos Muebles</th>
-              <th>Unid. Med.</th>
-              <th>Cantidad</th>
-              <th>Valor estimado (como usado)</th>
-              <th>Total</th>
+              <th width="50px">Unid. Med.</th>
+              <th width="50px">Cantidad</th>
+              <th width="80px">Valor estimado</th>
+              <th width="50px">Total</th>
             </tr>
           </thead>
           <tbody>

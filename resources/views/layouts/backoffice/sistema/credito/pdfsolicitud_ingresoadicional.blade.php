@@ -950,7 +950,7 @@
               <th>Activos Muebles</th>
               <th>Unid. Med.</th>
               <th>Cantidad</th>
-              <th>Valor estimado (como usado)</th>
+              <th>Valor estimado</th>
               <th>Total</th>
             </tr>
           </thead>

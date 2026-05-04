@@ -248,7 +248,7 @@
                 <th>Activos Muebles</th>
                 <th width="80px">Unid. Med.</th>
                 <th width="60px">Cantidad</th>
-                <th width="100px">Valor estimado (como usado)</th>
+                <th width="100px">Valor estimado</th>
                 <th width="100px">Total</th>
                 @if($view_detalle!='false')
                 <th width="10px"><button type="button" class="btn btn-success" onclick="agregar_producto(this)"><i class="fa fa-plus"></i></button></th>

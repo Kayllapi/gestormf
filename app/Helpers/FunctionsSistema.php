@@ -964,13 +964,17 @@ function encontrar_valor($idBuscado, $datos) {
     return '0.00';
 }
 function generarTabla($fechaInicio) {
+    $meses = ['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'];
+
     echo '<thead>';
     echo '<tr>';
     echo '<th rowspan="2" width="100px" style="color: #000 !important;">MESES</th>';
 
-    $meses_abreviados = array('OCT', 'NOV', 'DIC', 'ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN', 'JUL', 'AGO', 'SEPT');
-    foreach ($meses_abreviados as $mes) {
-        echo '<th class="text-center" style="color: #000 !important;">' . $mes . '</th>';
+    $fechaActual = new DateTime($fechaInicio);
+    for ($i = 0; $i < 12; $i++) {
+        $mesIndex = (int)$fechaActual->format('n') - 1;
+        echo '<th class="text-center" style="color: #000 !important;">' . $meses[$mesIndex] . '</th>';
+        $fechaActual->modify('+1 month');
     }
 
     echo '</tr>';

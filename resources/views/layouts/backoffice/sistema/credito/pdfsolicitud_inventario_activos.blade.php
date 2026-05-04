@@ -214,10 +214,10 @@
     <span class="badge">V. INVENTARIO Y  ACTIVOS FIJOS - NEGOCIO PRINCIPAL</span>
     <div class="row">
       <div class="col" style="width:100%;">
-        <table class="table" style="width:100%;">
+        <table class="table" style="width:70%;">
           <thead>
             <tr>
-              <th width="160px">Inventario de Productos</th>
+              <th width="200px">Inventario de Productos</th>
               <th>Unid. Med.</th>
               <th>Cantidad</th>
               <th>Precio de compra</th>
@@ -244,10 +244,10 @@
         </table>
       </div>
       <div class="col" style="width:100%;">
-        <table class="table" style="width:100%;">
+        <table class="table" style="width:70%;">
           <thead>
             <tr>
-              <th>Activos Inmuebles</th>
+              <th width="200px">Activos Inmuebles</th>
               <th>Unid. Med.</th>
               <th>Cantidad</th>
               <th>Valor estimado</th>
@@ -273,10 +273,10 @@
           </tfoot>
         </table>
         <br>
-        <table class="table" style="width:100%;">
+        <table class="table" style="width:70%;">
           <thead>
             <tr>
-              <th>Activos Muebles</th>
+              <th width="200px">Activos Muebles</th>
               <th>Unid. Med.</th>
               <th>Cantidad</th>
               <th>Valor estimado (como usado)</th>

@@ -297,7 +297,7 @@
             </tr>
             <tr>
               <td colspan=2><b>ACTIVO CORRIENTE</b></td>
-              <td class="campo_moneda">{{ encontrar_valor('balance_activo_corriente', $resumen) }}</td>
+              <td class="campo_moneda" style="font-weight: bold;">{{ encontrar_valor('balance_activo_corriente', $resumen) }}</td>
             </tr>
             <tr>
               <td colspan=2>Activo inmueble</td>
@@ -309,13 +309,13 @@
             </tr>
             <tr>
               <td colspan=2><b>ACTIVO NO CORRIENTE</b></td>
-              <td class="campo_moneda">{{ encontrar_valor('balance_activo_nocorriente', $resumen) }}</td>
+              <td class="campo_moneda" style="font-weight: bold;">{{ encontrar_valor('balance_activo_nocorriente', $resumen) }}</td>
             </tr>
             <tr>
               <td style="background-color: #e5e5e5 !important;
               color: #000 !important; font-weight: bold;" colspan=2><b>TOTAL ACTIVO</b></td>
               <td style="background-color: #e5e5e5 !important;
-              color: #000 !important;" class="campo_moneda">{{ encontrar_valor('balance_total_activo', $resumen) }}</td>
+              color: #000 !important;" class="campo_moneda" style="font-weight: bold;">{{ encontrar_valor('balance_total_activo', $resumen) }}</td>
             </tr>
             <tr>
               <td colspan=2>Cuentas por pagar a proveedores</td>
@@ -340,7 +340,7 @@
             </tr>
              <tr>
               <td colspan=2><b>PASIVO CORRIENTE</b></td>
-              <td class="campo_moneda">{{ encontrar_valor('balance_pasivo_corriente', $resumen) }}</td>
+              <td class="campo_moneda" style="font-weight: bold;">{{ encontrar_valor('balance_pasivo_corriente', $resumen) }}</td>
             </tr>
             <tr>
               <td rowspan=2>Pasivo Fin. a Largo.Plazo </td>
@@ -359,7 +359,8 @@
               <td style="background-color: #e5e5e5 !important;
               color: #000 !important;" colspan=2><b>TOTAL PASIVO</b></td>
               <td style="background-color: #e5e5e5 !important;
-              color: #000 !important;" class="campo_moneda">{{ encontrar_valor('balance_total_pasivo', $resumen) }}</td>
+              color: #000 !important;
+              font-weight: bold;" class="campo_moneda">{{ encontrar_valor('balance_total_pasivo', $resumen) }}</td>
             </tr>
             <tr>
               <td colspan=2>Capital social</td>
@@ -373,7 +374,7 @@
               <td style="background-color: #e5e5e5 !important;
               color: #000 !important; font-weight: bold;" colspan=2><b>TOTAL PATRIMONIO</b></td>
               <td style="background-color: #e5e5e5 !important;
-              color: #000 !important;" class="campo_moneda">{{ encontrar_valor('balance_total_patrimonio', $resumen) }}</td>
+              color: #000 !important;" class="campo_moneda" style="font-weight: bold;">{{ encontrar_valor('balance_total_patrimonio', $resumen) }}</td>
             </tr>
             <tr>
               <td style="background-color: #e5e5e5 !important;
@@ -399,7 +400,7 @@
           <tbody>
             <tr>
               <td><b>VENTAS MENSUALES</b></td>
-              <td class="campo_moneda">{{ encontrar_valor('ganancias_venta_mensual', $ganancia_perdida) }}</td>
+              <td class="campo_moneda" style="font-weight: bold;">{{ encontrar_valor('ganancias_venta_mensual', $ganancia_perdida) }}</td>
             </tr>
             <tr>
               <td>Costo de venta (C. de producción)</td>
@@ -421,7 +422,7 @@
             </tr>
             <tr>
               <td><b>Servicios:</b></td>
-              <td class="campo_moneda">{{ encontrar_valor('ganancias_total_servicios', $ganancia_perdida) }}</td>
+              <td class="campo_moneda" style="font-weight: bold;">{{ encontrar_valor('ganancias_total_servicios', $ganancia_perdida) }}</td>
             </tr>
             <tr>
               <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Luz</td>
@@ -583,9 +584,9 @@
           </tbody>
           <tfoot>
             <tr>
-              <td colspan=5 align="right">TOTAL (S/.)</td>
-              <td class="campo_moneda">{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->total_venta : '0.00' }}</td>
-              <td class="campo_moneda">{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->total_compra : '0.00' }}</td>
+              <td colspan=5 align="right" style="font-weight: bold;">TOTAL (S/.)</td>
+              <td class="campo_moneda" style="font-weight: bold;">{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->total_venta : '0.00' }}</td>
+              <td class="campo_moneda" style="font-weight: bold;">{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->total_compra : '0.00' }}</td>
               <td></td>
             </tr>
             <tr>
@@ -630,7 +631,7 @@
             @endif
             <tr total>
               <th colspan="2">Venta Semanal (S/.)</th>
-              <td class="campo_moneda">{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->venta_total_dias : '0.00' }}</td>
+              <td class="campo_moneda" style="font-weight: bold;">{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->venta_total_dias : '0.00' }}</td>
             </tr>
           </tbody>
         </table>
@@ -767,9 +768,9 @@
           </tbody>
           <tfoot>
             <tr>
-              <td colspan=5 align="right">TOTAL (S/.)</td>
-              <td class="campo_moneda">{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->total_venta_mensual : '0.00' }}</td>
-              <td class="campo_moneda">{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->total_compra_mensual : '0.00' }}</td>
+              <td colspan=5 align="right" style="font-weight: bold;">TOTAL (S/.)</td>
+              <td class="campo_moneda" style="font-weight: bold;">{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->total_venta_mensual : '0.00' }}</td>
+              <td class="campo_moneda" style="font-weight: bold;">{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->total_compra_mensual : '0.00' }}</td>
               <td></td>
             </tr>
             <tr>

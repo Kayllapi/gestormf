@@ -426,7 +426,7 @@
         @php
           $referencia_cliente = $credito_evaluacion_cualitativa ? ( is_null($credito_evaluacion_cualitativa->referencia) ? [] : json_decode($credito_evaluacion_cualitativa->referencia) ) : [];
         @endphp
-        <table class="table">
+        <table class="table" style="width:75%;">
           <thead>
             <tr>
               <th>N°</th>

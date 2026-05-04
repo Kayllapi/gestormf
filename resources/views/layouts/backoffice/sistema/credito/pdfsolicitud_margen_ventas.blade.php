@@ -276,7 +276,7 @@
               <th colspan=2>CÁLCULO DE VENTAS</th>
             </tr>
             <tr>
-              <th width="100px">FRECUENCIA</th>
+              <th width="140px">FRECUENCIA</th>
               <th>{{ $credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->frecuencia_ventas : 'DIARIO' }}</th>
             </tr>
           </thead>
@@ -308,7 +308,7 @@
         <table class="table" width="220px">
           <thead>
             <tr>
-              <th>N° de Días</th>
+              <th width="140px">N° de Días</th>
               <th >{{ $credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->numero_dias : '0' }}</th>
             </tr>
           </thead>
@@ -317,7 +317,7 @@
         <table class="table" width="220px">
           <thead>
             <tr>
-              <th>Venta mensual (S/.)</th>
+              <th width="140px">Venta mensual (S/.)</th>
               <th class="campo_moneda" style="font-weight: bold;">{{ $credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->venta_mensual : '0' }}</th>
             </tr>
           </thead>
@@ -353,7 +353,7 @@
         <table class="table" width="220px">
           <thead>
             <tr>
-              <th style="font-weight: bold;">Mg. De venta al mes (1) (S/.)</th>
+              <th style="font-weight: bold;" width="140px">Mg. De venta al mes (1) (S/.)</th>
               <th class="campo_moneda" style="font-weight: bold;">{{ $credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->margen_ventas : '0.00' }}</th>
             </tr>
           </thead>
@@ -464,7 +464,7 @@
                 <th colspan=2>CÁLCULO DE VENTAS</th>
               </tr>
               <tr>
-                <th width="100px">FRECUENCIA</th>
+                <th width="150px">FRECUENCIA</th>
                 <th >MENSUAL</th>
               </tr>
             </thead>
@@ -473,7 +473,7 @@
         <table class="table table-bordered" width="220px">
           <thead>
             <tr>
-              <th width="140px">Semanas</th>
+              <th width="150px">Semanas</th>
               <th>Ventas</th>
             </tr>
           </thead>

@@ -257,7 +257,7 @@
                 <th style="background-color: #c8c8c8 !important;color: #000 !important;" colspan=2>CÁLCULO DE VENTAS</th>
               </tr>
               <tr>
-                <th style="background-color: #c8c8c8 !important;color: #000 !important;" width="100px">FRECUENCIA</th>
+                <th style="background-color: #c8c8c8 !important;color: #000 !important;" width="160px">FRECUENCIA</th>
                 <th style="background-color: #c8c8c8 !important;color: #000 !important;" >
                   <input type="text" disabled id="frecuencia_ventas" class="form-control" 
                          value="{{ $credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->frecuencia_ventas : 'DIARIO' }}">
@@ -330,7 +330,7 @@
           <table class="table table-bordered mb-2 mt-2">
             <thead>
               <tr>
-                <th style="background-color: #c8c8c8 !important;color: #000 !important; font-weight: bold;" width="150px">N° de Días</th>
+                <th style="background-color: #c8c8c8 !important;color: #000 !important; font-weight: bold;" width="160px">N° de Días</th>
                 <th style="background-color: #c8c8c8 !important;color: #000 !important;" ><input type="text" disabled id="numero_dias" class="form-control campo_moneda fw-bold" value="{{ $credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->numero_dias : '0' }}"></th>
               </tr>
             </thead>
@@ -338,7 +338,7 @@
           <table class="table table-bordered mb-2 mt-2">
             <thead>
               <tr>
-                <th style="background-color: #c8c8c8 !important;color: #000 !important; font-weight: bold;" width="150px">Venta mensual (S/.)</th>
+                <th style="background-color: #c8c8c8 !important;color: #000 !important; font-weight: bold;" width="160px">Venta mensual (S/.)</th>
                 <th style="background-color: #c8c8c8 !important;color: #000 !important;" ><input type="text" disabled id="venta_mensual" value="{{ $credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->venta_mensual : '0' }}" class="form-control campo_moneda fw-bold"></th>
               </tr>
             </thead>
@@ -383,7 +383,7 @@
           <table class="table table-bordered mb-2 mt-2">
             <thead>
               <tr>
-                <th style="background-color: #c8c8c8 !important;color: #000 !important; font-weight: bold;" width="150px">Mg. De venta al mes(1) (S/.)</th>
+                <th style="background-color: #c8c8c8 !important;color: #000 !important; font-weight: bold;" width="160px">Mg. De venta al mes(1) (S/.)</th>
                 <th style="background-color: #c8c8c8 !important;color: #000 !important;" >
                   <input type="text" disabled id="margen_ventas" value="{{ $credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->margen_ventas : '0.00' }}" class="form-control campo_moneda fw-bold"></th>
               </tr>
@@ -570,7 +570,7 @@
                   <th style="background-color: #c8c8c8 !important;color: #000 !important;" colspan=2>CÁLCULO DE VENTAS</th>
                 </tr>
                 <tr>
-                  <th style="background-color: #c8c8c8 !important;color: #000 !important;" width="100px">FRECUENCIA</th>
+                  <th style="background-color: #c8c8c8 !important;color: #000 !important;" width="180px">FRECUENCIA</th>
                   <th style="background-color: #c8c8c8 !important;color: #000 !important;" >
                     <input type="text" disabled class="form-control" value="MENSUAL">
                   </th>
@@ -580,7 +580,7 @@
           <table class="table table-bordered" id="tabla-semanas">
             <thead>
               <tr>
-                <th style="background-color: #c8c8c8 !important;color: #000 !important;" width="140px">Semanas</th>
+                <th style="background-color: #c8c8c8 !important;color: #000 !important;" width="180px">Semanas</th>
                 <th style="background-color: #c8c8c8 !important;color: #000 !important;">Ventas</th>
               </tr>
             </thead>
@@ -632,7 +632,7 @@
           <table class="table table-bordered mb-2 mt-2">
             <thead>
               <tr>
-                <th style="background-color: #c8c8c8 !important;color: #000 !important; font-weight: bold;" width="150px">Mg. De venta al mes(2) (S/.)</th>
+                <th style="background-color: #c8c8c8 !important;color: #000 !important; font-weight: bold;" width="180px">Mg. De venta al mes(2) (S/.)</th>
                 <th style="background-color: #c8c8c8 !important;color: #000 !important;" >
                   <input type="text" disabled id="margen_ventas_mensual" value="{{ $credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->margen_ventas_mensual : '0.00' }}" class="form-control campo_moneda fw-bold"></th>
               </tr>

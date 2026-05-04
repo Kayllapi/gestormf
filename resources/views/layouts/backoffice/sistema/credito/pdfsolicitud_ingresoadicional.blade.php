@@ -605,7 +605,7 @@
               <th colspan=2>CÁLCULO DE VENTAS</th>
             </tr>
             <tr>
-              <th width="140px">FRECUENCIA</th>
+              <th width="135px">FRECUENCIA</th>
               <th >{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->frecuencia_ventas : 'DIARIO' }}</th>
             </tr>
           </thead>
@@ -884,15 +884,15 @@
     </div>
     <span class="badge subtitle">7.3 INVENTARIO Y ACTIVOS FIJOS - NEGOCIO ADICIONAL</span>
     <div class="row">
-      <div class="col">
-        <table class="table">
+      <div class="col" style="width:100%;">
+        <table class="table" style="width:60%;">
           <thead>
             <tr>
-              <th width="160px">Inventario de Productos</th>
-              <th>Unid. Med.</th>
-              <th>Cantidad</th>
-              <th>Precio de compra</th>
-              <th>Total</th>
+              <th width="200px">Inventario de Productos</th>
+              <th width="80px">Unid. Med.</th>
+              <th width="60px">Cantidad</th>
+              <th width="100px">Precio de compra</th>
+              <th width="100px">Total</th>
             </tr>
           </thead>
           <tbody>
@@ -914,15 +914,15 @@
           </tfoot>
         </table>
       </div>
-      <div class="col">
-        <table class="table" width="350px">
+      <div class="col" style="width:100%;">
+        <table class="table" style="width:60%;">
           <thead>
             <tr>
-              <th>Activos Inmuebles</th>
-              <th>Unid. Med.</th>
-              <th>Cantidad</th>
-              <th>Valor estimado</th>
-              <th>Total</th>
+              <th width="200px">Activos Inmuebles</th>
+              <th width="80px">Unid. Med.</th>
+              <th width="60px">Cantidad</th>
+              <th width="100px">Valor estimado</th>
+              <th width="100px">Total</th>
             </tr>
           </thead>
           <tbody>
@@ -944,14 +944,14 @@
           </tfoot>
         </table>
         <br>
-        <table class="table" width="350px">
+        <table class="table" style="width:60%;">
           <thead>
             <tr>
-              <th>Activos Muebles</th>
-              <th>Unid. Med.</th>
-              <th>Cantidad</th>
-              <th>Valor estimado</th>
-              <th>Total</th>
+              <th width="200px">Activos Muebles</th>
+              <th width="80px">Unid. Med.</th>
+              <th width="60px">Cantidad</th>
+              <th width="100px">Valor estimado</th>
+              <th width="100px">Total</th>
             </tr>
           </thead>
           <tbody>

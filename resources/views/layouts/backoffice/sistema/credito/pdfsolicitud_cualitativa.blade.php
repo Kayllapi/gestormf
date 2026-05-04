@@ -422,15 +422,15 @@
     </div>
     <span class="badge subtitle">2.3 REFERENCIAS</span>
     <div class="row">
-      <div class="col">
+      <div class="col" style="width:100%;">
         @php
           $referencia_cliente = $credito_evaluacion_cualitativa ? ( is_null($credito_evaluacion_cualitativa->referencia) ? [] : json_decode($credito_evaluacion_cualitativa->referencia) ) : [];
         @endphp
-        <table class="table">
+        <table class="table" style="width:100%;">
           <thead>
             <tr>
               <th>N°</th>
-              <th>Fuente</th>
+              <th width="200px">Fuente</th>
               <th>Apellidos y Nombres</th>
               <th>Vinculo: Familiar/Personas/Otros</th>
               <th>Telf./Celular</th>

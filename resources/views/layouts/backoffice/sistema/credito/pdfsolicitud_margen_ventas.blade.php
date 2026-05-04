@@ -114,7 +114,7 @@
         
         
       .campo_moneda {
-          text-align: right;
+          text-align: right !important;
       }
 
      </style>

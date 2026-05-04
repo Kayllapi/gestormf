@@ -114,7 +114,7 @@
         
         
       .campo_moneda {
-          text-align: right;
+          text-align: right !important;
       }
         
   
@@ -605,7 +605,7 @@
               <th colspan=2>CÁLCULO DE VENTAS</th>
             </tr>
             <tr>
-              <th width="135px">FRECUENCIA</th>
+              <th width="138px">FRECUENCIA</th>
               <th >{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->frecuencia_ventas : 'DIARIO' }}</th>
             </tr>
           </thead>
@@ -646,7 +646,7 @@
           <thead>
             <tr>
               <th width="140px">Venta mensual (S/.)</th>
-              <th class="campo_moneda">{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->venta_mensual : '0' }}</th>
+              <td class="campo_moneda" style="font-weight: bold">{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->venta_mensual : '0' }}</td>
             </tr>
           </thead>
         </table>
@@ -680,7 +680,7 @@
           <thead>
             <tr>
               <th width="140px">Mg. De venta al mes (1) (S/.)</th>
-              <th class="campo_moneda">{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->margen_ventas : '0.00' }}</th>
+              <td class="campo_moneda" style="font-weight: bold">{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->margen_ventas : '0.00' }}</td>
             </tr>
           </thead>
         </table>
@@ -831,7 +831,7 @@
           <thead>
             <tr>
               <th width="140px">Mg. De venta al mes (2) (S/.)</th>
-              <th class="campo_moneda">{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->margen_ventas_mensual : '0.00' }}</th>
+              <td class="campo_moneda" style="font-weight: bold">{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->margen_ventas_mensual : '0.00' }}</td>
             </tr>
           </thead>
         </table>

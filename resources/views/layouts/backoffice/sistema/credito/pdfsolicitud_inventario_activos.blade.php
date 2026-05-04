@@ -213,9 +213,8 @@
     
     <span class="badge">V. INVENTARIO Y  ACTIVOS FIJOS - NEGOCIO PRINCIPAL</span>
     <div class="row">
-      
-      <div class="col">
-        <table class="table" >
+      <div class="col" style="width:100%;">
+        <table class="table" style="width:100%;">
           <thead>
             <tr>
               <th width="160px">Inventario de Productos</th>
@@ -244,8 +243,8 @@
           </tfoot>
         </table>
       </div>
-      <div class="col">
-        <table class="table" width="350px">
+      <div class="col" style="width:100%;">
+        <table class="table" style="width:100%;">
           <thead>
             <tr>
               <th>Activos Inmuebles</th>
@@ -274,7 +273,7 @@
           </tfoot>
         </table>
         <br>
-        <table class="table" width="350px">
+        <table class="table" style="width:100%;">
           <thead>
             <tr>
               <th>Activos Muebles</th>

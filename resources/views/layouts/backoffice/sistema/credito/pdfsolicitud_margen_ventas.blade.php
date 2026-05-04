@@ -327,7 +327,7 @@
           <thead>
             <tr>
               <th>N°</th>
-              <th>Día/Recabo Datos</th>
+              <th width="110px">Día/Recabo Datos</th>
               <th >Ventas</th>
             </tr>
           </thead>

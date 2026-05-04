@@ -276,7 +276,7 @@
               <th colspan=2>CÁLCULO DE VENTAS</th>
             </tr>
             <tr>
-              <th width="140px">FRECUENCIA</th>
+              <th width="135px">FRECUENCIA</th>
               <th>{{ $credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->frecuencia_ventas : 'DIARIO' }}</th>
             </tr>
           </thead>

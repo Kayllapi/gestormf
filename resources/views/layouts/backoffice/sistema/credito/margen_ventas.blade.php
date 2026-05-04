@@ -346,8 +346,8 @@
           <table class="table table-bordered mb-2 mt-2">
             <thead>
               <tr>
-                <th style="background-color: #c8c8c8 !important;color: #000 !important; font-weight: bold;" width="40px">N°</th>
-                <th style="background-color: #c8c8c8 !important;color: #000 !important; font-weight: bold;" width="130px">Día/Recabo Datos</th>
+                <th style="background-color: #c8c8c8 !important;color: #000 !important; font-weight: bold;" width="30px">N°</th>
+                <th style="background-color: #c8c8c8 !important;color: #000 !important; font-weight: bold;" width="140px">Día/Recabo Datos</th>
                 <th style="background-color: #c8c8c8 !important;color: #000 !important; font-weight: bold;" >Ventas</th>
               </tr>
             </thead>

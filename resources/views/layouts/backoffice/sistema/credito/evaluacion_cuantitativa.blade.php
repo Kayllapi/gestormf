@@ -614,28 +614,28 @@
                            color: #000 !important;" analisis_horizontal><b class="doble-subrayado"><input type="text" class="form-control campo_moneda fw-bold" value="0.00" id="analisis_horizontal_utilidad_neta" disabled></b></td>
               </tr>
               <tr>
-                <td descripcion>NEGOCIO ADICIONAL</td>
+                <td descripcion>+ NEGOCIO ADICIONAL</td>
                 <td evaluacion_anterior><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('ganancias_excedente_mensual', $ganancia_adicional_anterior) }}" id="evaluacion_actual_ganancia_negocio_adicional_anterior" disabled></td>
                 <td evaluacion_actual><input type="text" valida_input_vacio class="form-control campo_moneda" value="{{ encontrar_valor('ganancias_excedente_mensual', $ganancia_adicional) }}" id="evaluacion_actual_ganancia_negocio_adicional" disabled></td>
                 <td analisis_vertical><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('analisis_vertical_negocio_adicional', $ganancia_perdida) }}" id="analisis_vertical_negocio_adicional" disabled></td>
                 <td analisis_horizontal><input type="text" class="form-control campo_moneda" value="0.00" id="analisis_horizontal_negocio_adicional" disabled></td>
               </tr>
               <tr>
-                <td descripcion>INGRESOS FIJOS</td>
+                <td descripcion>+ INGRESOS FIJOS</td>
                 <td evaluacion_anterior><input type="text" class="form-control campo_moneda" id="evaluacion_actual_ganancia_ingreso_fijo_anterior" value="{{ number_format($credito_cuantitativa_ingreso_adicional_anterior ? $credito_cuantitativa_ingreso_adicional_anterior->total_ingreso_adicional : 0, 2, '.', '') }}" disabled></td>
                 <td evaluacion_actual><input type="text" class="form-control campo_moneda" id="evaluacion_actual_ganancia_ingreso_fijo" value="{{ number_format($credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->total_ingreso_adicional : 0, 2, '.', '') }}" disabled></td>
                 <td analisis_vertical><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('analisis_vertical_ingreso_fijo', $ganancia_perdida) }}" id="analisis_vertical_ingreso_fijo" disabled></td>
                 <td analisis_horizontal><input type="text" class="form-control campo_moneda" value="0.00" id="analisis_horizontal_ingreso_fijo" disabled></td>
               </tr>
               <tr>
-                <td descripcion>GASTOS FAMILIARES</td>
+                <td descripcion>- GASTOS FAMILIARES</td>
                 <td evaluacion_anterior><input type="text" class="form-control campo_moneda" id="evaluacion_actual_ganancia_gasto_familiar_anterior" value="{{ number_format($credito_evaluacion_cualitativa_anterior ? $credito_evaluacion_cualitativa_anterior->gasto_total : 0, 2, '.', '') }}" disabled></td>
                 <td evaluacion_actual><input type="text" class="form-control campo_moneda" id="evaluacion_actual_ganancia_gasto_familiar" value="{{ number_format($credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->gasto_total : 0, 2, '.', '') }}" disabled></td>
                 <td analisis_vertical><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('analisis_vertical_gasto_familiar', $ganancia_perdida) }}" id="analisis_vertical_gasto_familiar" disabled></td>
                 <td analisis_horizontal><input type="text" class="form-control campo_moneda" value="0.00" id="analisis_horizontal_gasto_familiar" disabled></td>
               </tr>
               <tr>
-                <td descripcion>Cuota de Préstamos de Consumo e Hipotecarios para Vivienda (Reg. y no Reg.)</td>
+                <td descripcion>- Cuota de Préstamos de Consumo e Hipotecarios para Vivienda (Reg. y no Reg.)</td>
                 <?php
                   $consumo_total_couta_anterior = encontrar_valor('consumo_total_couta', $resumen_deuda_anterior);
                   $vivienda_total_couta_anterior = encontrar_valor('vivienda_total_couta', $resumen_deuda_anterior);

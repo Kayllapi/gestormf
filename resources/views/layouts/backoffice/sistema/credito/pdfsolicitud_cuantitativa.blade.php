@@ -707,28 +707,28 @@
                 color: #000 !important;"><b>{{ encontrar_valor('analisis_horizontal_utilidad_neta', $ganancia_perdida) }}</b></td>
               </tr>
               <tr>
-                <td>NEGOCIO ADICIONAL</td>
+                <td>+ NEGOCIO ADICIONAL</td>
                 <td class="campo_moneda">{{ encontrar_valor('ganancias_excedente_mensual', $ganancia_adicional_anterior) }}</td>
                 <td class="campo_moneda">{{ encontrar_valor('ganancias_excedente_mensual', $ganancia_adicional) }}</td>
                 <td class="campo_moneda">{{ encontrar_valor('analisis_vertical_negocio_adicional', $ganancia_perdida) }}</td>
                 <td class="campo_moneda">{{ encontrar_valor('analisis_horizontal_negocio_adicional', $ganancia_perdida) }}</td>
               </tr>
               <tr>
-                <td>INGRESOS FIJOS</td>
+                <td>+ INGRESOS FIJOS</td>
                 <td class="campo_moneda">{{ $credito_cuantitativa_ingreso_adicional_anterior ? $credito_cuantitativa_ingreso_adicional_anterior->total_ingreso_adicional : 0 }}</td>
                 <td class="campo_moneda">{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->total_ingreso_adicional : 0 }}</td>
                 <td class="campo_moneda">{{ encontrar_valor('analisis_vertical_ingreso_fijo', $ganancia_perdida) }}</td>
                 <td class="campo_moneda">{{ encontrar_valor('analisis_horizontal_ingreso_fijo', $ganancia_perdida) }}</td>
               </tr>
               <tr>
-                <td>GASTOS FAMILIARES</td>
+                <td>- GASTOS FAMILIARES</td>
                 <td class="campo_moneda">{{ $credito_evaluacion_cualitativa_anterior ? $credito_evaluacion_cualitativa_anterior->gasto_total : 0 }}</td>
                 <td class="campo_moneda">{{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->gasto_total : 0 }}</td>
                 <td class="campo_moneda">{{ encontrar_valor('analisis_vertical_gasto_familiar', $ganancia_perdida) }}</td>
                 <td class="campo_moneda">{{ encontrar_valor('analisis_horizontal_gasto_familiar', $ganancia_perdida) }}</td>
               </tr>
               <tr>
-                <td>Cuota de Préstamos de Consumo e Hipotecarios para Vivienda (Reg. y no Reg.)</td>
+                <td>- Cuota de Préstamos de Consumo e Hipotecarios para Vivienda (Reg. y no Reg.)</td>
                 <?php
                   $consumo_total_couta_anterior = encontrar_valor('consumo_total_couta', $resumen_deuda_anterior);
                   $vivienda_total_couta_anterior = encontrar_valor('vivienda_total_couta', $resumen_deuda_anterior);

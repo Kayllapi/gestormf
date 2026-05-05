@@ -767,12 +767,9 @@
       <div class="cols">
         <table style="border-collapse: collapse;">
           <tr>
-            <td style="background-color: #e5e5e5 !important;
-              color: #000 !important; width:450px;
+            <td style="width:450px;
               border: 1px solid #000000;"><b>CUOTA TOTAL/EXCEDENTE TOTAL. En Propuesta CON Deducción en Ampliacion o Compra de deuda</b></td>
-            <td style="background-color: #e5e5e5 !important;
-              color: #000 !important;
-              border: 1px solid #000000;">
+            <td style="border: 1px solid #000000;">
               <b>%</b>
             </td>
             <td style="background-color: #e5e5e5 !important;
@@ -780,7 +777,7 @@
               border: 1px solid #000000;" class="campo_moneda">
                 <b>{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->excedente_propuesta_con_deduccion : '0.00' }}</b>
             </td>
-            <td width="30px">
+            <td width="5px">
             </td>
             <td style="background-color: #e5e5e5 !important;
               color: #000 !important;
@@ -891,7 +888,7 @@
           <textarea style="border:solid 1px #000000;"  id="fortalezas_negocio" class="form-control">{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->comentario : '' }}</textarea>
         </div>
       </div>
-      <div class="col" style="margin-left:250px;margin-top:40px;">
+      <div class="col" style="margin-left:250px;margin-top:20px;">
         <div style="width:200px;height:1px;border-bottom:1px solid #000;"></div>
         <p align="center">Asesor(a) de Créditos: {{ Auth::user()->codigo }} <br>Firma y Sello</p>		
       </div>

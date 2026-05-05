@@ -824,13 +824,15 @@
             <tbody>
               <tr>
                 <td>Rentabilidad del negocio</td>
-                <td>
+                <td style="width:50px;">
                   <span class=""
                     data-bs-toggle='popover' 
                     data-bs-placement='right' 
                     data-bs-content='formula'>
-                    <i class="fa-solid fa-circle" style="font-size: 6px; color: #595959; position: relative; float: inline-start;"></i>
+                    <i class="fa-solid fa-circle" style="font-size: 6px; color: #93222c; position: relative; float: inline-start;"></i>
                   </span>
+                </td>
+                <td>
                   %
                 </td>
                 <td>
@@ -848,8 +850,10 @@
                     data-bs-toggle='popover' 
                     data-bs-placement='right' 
                     data-bs-content='formula'>
-                    <i class="fa-solid fa-circle" style="font-size: 6px; color: #595959; position: relative; float: inline-start;"></i>
+                    <i class="fa-solid fa-circle" style="font-size: 6px; color: #93222c; position: relative; float: inline-start;"></i>
                   </span>
+                </td>
+                <td>
                   Veces
                 </td>
                 <td>
@@ -867,8 +871,10 @@
                     data-bs-toggle='popover' 
                     data-bs-placement='right' 
                     data-bs-content='formula'>
-                    <i class="fa-solid fa-circle" style="font-size: 6px; color: #595959; position: relative; float: inline-start;"></i>
+                    <i class="fa-solid fa-circle" style="font-size: 6px; color: #93222c; position: relative; float: inline-start;"></i>
                   </span>
+                </td>
+                <td>
                   %
                 </td>
                 <td>
@@ -886,8 +892,10 @@
                     data-bs-toggle='popover' 
                     data-bs-placement='right' 
                     data-bs-content='formula'>
-                    <i class="fa-solid fa-circle" style="font-size: 6px; color: #595959; position: relative; float: inline-start;"></i>
+                    <i class="fa-solid fa-circle" style="font-size: 6px; color: #93222c; position: relative; float: inline-start;"></i>
                   </span>
+                </td>
+                <td>
                   %
                 </td>
                 <td>
@@ -905,8 +913,10 @@
                     data-bs-toggle='popover' 
                     data-bs-placement='right' 
                     data-bs-content='formula'>
-                    <i class="fa-solid fa-circle" style="font-size: 6px; color: #595959; position: relative; float: inline-start;"></i>
+                    <i class="fa-solid fa-circle" style="font-size: 6px; color: #93222c; position: relative; float: inline-start;"></i>
                   </span>
+                </td>
+                <td>
                   %
                 </td>
                 <td>
@@ -924,8 +934,10 @@
                     data-bs-toggle='popover' 
                     data-bs-placement='right' 
                     data-bs-content='formula'>
-                    <i class="fa-solid fa-circle" style="font-size: 6px; color: #595959; position: relative; float: inline-start;"></i>
+                    <i class="fa-solid fa-circle" style="font-size: 6px; color: #93222c; position: relative; float: inline-start;"></i>
                   </span>
+                </td>
+                <td>
                   %
                 </td>
                 <td>
@@ -943,8 +955,10 @@
                     data-bs-toggle='popover' 
                     data-bs-placement='right' 
                     data-bs-content='formula'>
-                    <i class="fa-solid fa-circle" style="font-size: 6px; color: #595959; position: relative; float: inline-start;"></i>
+                    <i class="fa-solid fa-circle" style="font-size: 6px; color: #93222c; position: relative; float: inline-start;"></i>
                   </span>
+                </td>
+                <td>
                   S/
                 </td>
                 <td>
@@ -962,8 +976,10 @@
                     data-bs-toggle='popover' 
                     data-bs-placement='right' 
                     data-bs-content='formula'>
-                    <i class="fa-solid fa-circle" style="font-size: 6px; color: #595959; position: relative; float: inline-start;"></i>
+                    <i class="fa-solid fa-circle" style="font-size: 6px; color: #93222c; position: relative; float: inline-start;"></i>
                   </span>
+                </td>
+                <td>
                   Veces
                 </td>
                 <td>
@@ -1102,13 +1118,15 @@
             <tbody>
               <tr>
                 <td>Liquidez Ácida</td>
-                <td>
+                <td style="width:50px;">
                   <span class=""
                     data-bs-toggle='popover' 
                     data-bs-placement='right' 
                     data-bs-content='formula'>
-                    <i class="fa-solid fa-circle" style="font-size: 6px; color: #595959; position: relative; float: inline-start;"></i>
+                    <i class="fa-solid fa-circle" style="font-size: 6px; color: #93222c; position: relative; float: inline-start;"></i>
                   </span>
+                </td>
+                <td>
                   Veces
                 </td>
                 <td style="width:280px;">
@@ -1126,8 +1144,10 @@
                     data-bs-toggle='popover' 
                     data-bs-placement='right' 
                     data-bs-content='formula'>
-                    <i class="fa-solid fa-circle" style="font-size: 6px; color: #595959; position: relative; float: inline-start;"></i>
+                    <i class="fa-solid fa-circle" style="font-size: 6px; color: #93222c; position: relative; float: inline-start;"></i>
                   </span>
+                </td>
+                <td>
                   Veces
                 </td>
                 <td>
@@ -1145,8 +1165,10 @@
                     data-bs-toggle='popover' 
                     data-bs-placement='right' 
                     data-bs-content='formula'>
-                    <i class="fa-solid fa-circle" style="font-size: 6px; color: #595959; position: relative; float: inline-start;"></i>
+                    <i class="fa-solid fa-circle" style="font-size: 6px; color: #93222c; position: relative; float: inline-start;"></i>
                   </span>
+                </td>
+                <td>
                   Veces
                 </td>
                 <td>
@@ -1165,8 +1187,10 @@
                     data-bs-toggle='popover' 
                     data-bs-placement='right' 
                     data-bs-content='formula'>
-                    <i class="fa-solid fa-circle" style="font-size: 6px; color: #595959; position: relative; float: inline-start;"></i>
+                    <i class="fa-solid fa-circle" style="font-size: 6px; color: #93222c; position: relative; float: inline-start;"></i>
                   </span>
+                </td>
+                <td>
                   Días
                 </td>
                 <td>
@@ -1184,8 +1208,10 @@
                     data-bs-toggle='popover' 
                     data-bs-placement='right' 
                     data-bs-content='formula'>
-                    <i class="fa-solid fa-circle" style="font-size: 6px; color: #595959; position: relative; float: inline-start;"></i>
+                    <i class="fa-solid fa-circle" style="font-size: 6px; color: #93222c; position: relative; float: inline-start;"></i>
                   </span>
+                </td>
+                <td>
                   Días
                 </td>
                 <td>
@@ -1203,8 +1229,10 @@
                     data-bs-toggle='popover' 
                     data-bs-placement='right' 
                     data-bs-content='formula'>
-                    <i class="fa-solid fa-circle" style="font-size: 6px; color: #595959; position: relative; float: inline-start;"></i>
+                    <i class="fa-solid fa-circle" style="font-size: 6px; color: #93222c; position: relative; float: inline-start;"></i>
                   </span>
+                </td>
+                <td>
                   Días
                 </td>
                 <td>

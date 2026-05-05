@@ -868,19 +868,10 @@
               <td>Días</td>
               <td class="campo_moneda">{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_primedio_pago : '0.00' }}</td>
             </tr>
-            {{-- <tr>
-              <td style="background-color: #e5e5e5 !important;
-                color: #000 !important;"><b>Cuota total/excedente total</td>
-              <td style="background-color: #e5e5e5 !important;
-                color: #000 !important;"><b>%</b></td>
-              <td style="background-color: #e5e5e5 !important;
-                color: #000 !important;" class="campo_moneda"><b>{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->excedente_propuesta_con_deduccion : '0.00' }}</b></td>
-            </tr> --}}
           </tbody>
         </table>
       </div>
     </div>
-      
     <div class="row" >
       <div class="col" style="width:100%;">
         <span class="badge subtitle">3.5 COMENTARIOS DE ASPECTOS RESALTANTES Y ANÁLISIS</span>

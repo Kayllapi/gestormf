@@ -798,10 +798,20 @@
               </tr>
               <tr>
                 <td style="border: 1px solid #a6a9ab;">CUOTA TOTAL/EXCEDENTE TOTAL. En Propuesta CON Deducción en Ampliacion o Compra de deuda (%)</td>
-                <td style="border: 1px solid #a6a9ab;"><input type="text" class="form-control campo_moneda" disabled value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->excedente_propuesta_con_deduccion : '0.00' }}" id="excedente_propuesta_con_deduccion"></td>
+                <td style="border: 1px solid #a6a9ab;">
+                  <input type="text"
+                    class="form-control campo_moneda"
+                    disabled
+                    value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->excedente_propuesta_con_deduccion : '0.00' }}"
+                    id="excedente_propuesta_con_deduccion">
+                </td>
                 <td></td>
                 <td>
-                  <input type="text" class="form-control bg-success text-center" value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->estado_credito : '' }}" disabled id="estado_credito">
+                  <input type="text"
+                    class="form-control bg-success text-center"
+                    value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->estado_credito : '' }}"
+                    disabled
+                    id="estado_credito">
                 </td>
                 <td></td>
               </tr>
@@ -1928,12 +1938,11 @@
     let total_noregulada_cuota_deducciones = parseFloat({{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_noregulada_cuota_deducciones : '0.00' }});
     let suma_deducciones = total_cuota_deducciones + total_noregulada_cuota_deducciones;
 
-    let excedente_propuesta_con_deduccion = ( ( (total_propuesta + suma_cuotas ) - suma_deducciones ) / ( evaluacion_actual_ganancia_excedente_mensual + suma_cuotas - suma_deducciones ) ) * 100;
+    let excedente_propuesta_con_deduccion = ( ( (total_propuesta + suma_cuotas ) - suma_deducciones ) / ( evaluacion_actual_ganancia_excedente_mensual + suma_deducciones + suma_cuotas - suma_deducciones ) ) * 100;
     if(isNaN(excedente_propuesta_con_deduccion) ||  excedente_propuesta_con_deduccion == Infinity ||  excedente_propuesta_con_deduccion == -Infinity){
         excedente_propuesta_con_deduccion = 0;
     }
     $('#excedente_propuesta_con_deduccion').val(excedente_propuesta_con_deduccion.toFixed(2));
-
 
     evaluarCredito();
   }

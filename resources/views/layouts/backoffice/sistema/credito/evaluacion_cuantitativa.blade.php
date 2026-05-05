@@ -1341,8 +1341,9 @@
     let evaluacion_actual_activo_nocorriente = evaluacion_actual_activo_inmueble + evaluacion_actual_activo_mueble;
     $('#evaluacion_actual_activo_nocorriente').val(evaluacion_actual_activo_nocorriente.toFixed(2))
 
-    let patrimonio_ingresos_adicionales = parseFloat({{ encontrar_valor('balance_total_patrimonio', $resumen_adicionales) }})
-    let evaluacion_actual_total_activo = evaluacion_actual_activo_corriente + evaluacion_actual_activo_nocorriente + patrimonio_ingresos_adicionales;
+    // let patrimonio_ingresos_adicionales = parseFloat({{ encontrar_valor('balance_total_patrimonio', $resumen_adicionales) }})
+    let activo_ingresos_adicionales = parseFloat({{ encontrar_valor('balance_total_activo', $resumen_adicionales) }})
+    let evaluacion_actual_total_activo = evaluacion_actual_activo_corriente + evaluacion_actual_activo_nocorriente + activo_ingresos_adicionales;
     $('#evaluacion_actual_total_activo').val(evaluacion_actual_total_activo.toFixed(2))
 
 
@@ -1376,7 +1377,8 @@
     let evaluacion_actual_pasivo_nocorriente = evaluacion_actual_pasivo_largo_regulada + evaluacion_actual_pasivo_largo_noregulada;
     $('#evaluacion_actual_pasivo_nocorriente').val(evaluacion_actual_pasivo_nocorriente.toFixed(2))
 
-    let evaluacion_actual_total_pasivo = evaluacion_actual_pasivo_corriente + evaluacion_actual_pasivo_nocorriente;
+    let pasivo_ingresos_adicionales = parseFloat({{ encontrar_valor('balance_total_pasivo', $resumen_adicionales) }})
+    let evaluacion_actual_total_pasivo = evaluacion_actual_pasivo_corriente + evaluacion_actual_pasivo_nocorriente + pasivo_ingresos_adicionales;
     $('#evaluacion_actual_total_pasivo').val(evaluacion_actual_total_pasivo.toFixed(2))
 
 

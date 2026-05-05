@@ -764,6 +764,30 @@
     </div>
     <span class="badge subtitle" style="margin-top:-20px;">3.4 PRINCIPALES RATIOS FINANCIEROS</span>
     <div class="row">
+      <div class="cols">
+        <table>
+          <tr>
+            <td style="background-color: #e5e5e5 !important;
+              color: #000 !important; width:450px;"><b>CUOTA TOTAL/EXCEDENTE TOTAL. En Propuesta CON Deducción en Ampliacion o Compra de deuda</b></td>
+            <td style="background-color: #e5e5e5 !important;
+              color: #000 !important;">
+              <b>%</b>
+            </td>
+            <td style="background-color: #e5e5e5 !important;
+              color: #000 !important; width:50px;" class="campo_moneda">
+                <b>{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->excedente_propuesta_con_deduccion : '0.00' }}</b>
+            </td>
+            <td width="30px">
+            </td>
+            <td style="background-color: #e5e5e5 !important;
+              color: #000 !important;" width="100px">
+              <div style="margin-top:5px;background-color:#e5e5e5;color: #000;text-align:center;"><b>{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->estado_credito : '' }}</b></div>
+            </td>
+            <td>
+            </td>
+          </tr>
+        </table>
+      </div>
       <div class="col">
         <table class="table">
           <tbody>
@@ -817,48 +841,39 @@
               <td width="200px">Liquidez Ácida</td>
               <td width="50px">Veces</td>
               <td width="50px" class="campo_moneda">{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_liquidez_acida : '0.00' }}</td>
-              <td style="border: none"></td>
             </tr>
             <tr>
               <td>Endeudamiento patrimonial actual</td>
               <td>Veces</td>
               <td class="campo_moneda">{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_endeudamiento_actual : '0.00' }}</td>
-              <td style="border: none"></td>
             </tr>
             <tr>
               <td>Endeudamiento Patrim. con propuesta</td>
               <td>Veces</td>
               <td class="campo_moneda">{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_endeudamiento_propuesta : '0.00' }}</td>
-              <td style="border: none"></td>
             </tr>
             <tr>
               <td>Plazo prom.rotación de invent.</td>
               <td>Días</td>
               <td class="campo_moneda">{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_rotacion_inventario : '0.00' }}</td>
-              <td style="border: none"></td>
             </tr>
             <tr>
               <td>Plazo promedio de cobranza</td>
               <td>Días</td>
               <td class="campo_moneda">{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_promedio_cobranza : '0.00' }}</td>
-              <td style="border: none"></td>
             </tr>
             <tr>
               <td>Plazo promedio de pago</td>
               <td>Días</td>
               <td class="campo_moneda">{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_primedio_pago : '0.00' }}</td>
-              <td style="border: none"></td>
             </tr>
             <tr>
               <td style="background-color: #e5e5e5 !important;
-                color: #000 !important;"><b>Cuota total/excedente total. <br> En Propuesta CON Deducción en Ampliacion o Compra de deuda</b></td>
+                color: #000 !important;"><b>Cuota total/excedente total</td>
               <td style="background-color: #e5e5e5 !important;
                 color: #000 !important;"><b>%</b></td>
               <td style="background-color: #e5e5e5 !important;
                 color: #000 !important;" class="campo_moneda"><b>{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->excedente_propuesta_con_deduccion : '0.00' }}</b></td>
-              <td style="border: none">
-                <div style="margin-top:5px;background-color:#e5e5e5;color: #000;text-align:center; display:inline-block; width:100px;"><b>{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->estado_credito : '' }}</b></div>
-              </td>
             </tr>
           </tbody>
         </table>

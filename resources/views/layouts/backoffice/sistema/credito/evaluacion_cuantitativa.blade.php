@@ -1213,11 +1213,10 @@
         </div>   
       </div>
       <div class="mb-1 mt-2">
-        <span class="badge d-block" style="background-color: #aaa;color: #000;">3.5 COMENTARIOS DE ASPECTOS RESALTANTES </span>
+        <span class="badge d-block" style="background-color: #aaa;color: #000;">3.5 COMENTARIOS DE ASPECTOS RESALTANTES Y ANÁLISIS </span>
       </div>
       <div class="row">
         <div class="col-sm-12">
-          <label>A. Analisis Vertical y Horizontal</label>
           <textarea {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto" cols="30" rows="3" id="comentario">{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->comentario : '' }}</textarea>
         </div>
       </div>

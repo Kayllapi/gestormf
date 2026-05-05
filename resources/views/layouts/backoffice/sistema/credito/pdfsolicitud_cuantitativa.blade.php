@@ -765,22 +765,26 @@
     <span class="badge subtitle" style="margin-top:-20px;">3.4 PRINCIPALES RATIOS FINANCIEROS</span>
     <div class="row">
       <div class="cols">
-        <table>
+        <table style="border-collapse: collapse;">
           <tr>
             <td style="background-color: #e5e5e5 !important;
-              color: #000 !important; width:450px;"><b>CUOTA TOTAL/EXCEDENTE TOTAL. En Propuesta CON Deducción en Ampliacion o Compra de deuda</b></td>
+              color: #000 !important; width:450px;
+              border: 1px solid #000000;"><b>CUOTA TOTAL/EXCEDENTE TOTAL. En Propuesta CON Deducción en Ampliacion o Compra de deuda</b></td>
             <td style="background-color: #e5e5e5 !important;
-              color: #000 !important;">
+              color: #000 !important;
+              border: 1px solid #000000;">
               <b>%</b>
             </td>
             <td style="background-color: #e5e5e5 !important;
-              color: #000 !important; width:50px;" class="campo_moneda">
+              color: #000 !important; width:50px;
+              border: 1px solid #000000;" class="campo_moneda">
                 <b>{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->excedente_propuesta_con_deduccion : '0.00' }}</b>
             </td>
             <td width="30px">
             </td>
             <td style="background-color: #e5e5e5 !important;
-              color: #000 !important;" width="100px">
+              color: #000 !important;
+              border: 1px solid #000000;" width="100px">
               <div style="margin-top:5px;background-color:#e5e5e5;color: #000;text-align:center;"><b>{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->estado_credito : '' }}</b></div>
             </td>
             <td>
@@ -867,14 +871,14 @@
               <td>Días</td>
               <td class="campo_moneda">{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_primedio_pago : '0.00' }}</td>
             </tr>
-            <tr>
+            {{-- <tr>
               <td style="background-color: #e5e5e5 !important;
                 color: #000 !important;"><b>Cuota total/excedente total</td>
               <td style="background-color: #e5e5e5 !important;
                 color: #000 !important;"><b>%</b></td>
               <td style="background-color: #e5e5e5 !important;
                 color: #000 !important;" class="campo_moneda"><b>{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->excedente_propuesta_con_deduccion : '0.00' }}</b></td>
-            </tr>
+            </tr> --}}
           </tbody>
         </table>
       </div>

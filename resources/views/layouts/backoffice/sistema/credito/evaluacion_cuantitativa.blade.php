@@ -824,154 +824,154 @@
             <tbody>
               <tr>
                 <td>Rentabilidad del negocio</td>
-                <td>%</td>
                 <td>
-                  <div class="input-group">
-                    <input type="text"
-                      class="form-control campo_moneda"
-                      value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_negocio : '0.00' }}"
-                      id="ratio_re_negocio"
-                      disabled>
-                    <span class="input-group-text"
-                      data-bs-toggle='popover' 
-                      data-bs-placement='right' 
-                      data-bs-content='formula'>
-                      <i class="fa-solid fa-circle-info"></i>
-                    </span>
-                  </div>
+                  <span class=""
+                    data-bs-toggle='popover' 
+                    data-bs-placement='right' 
+                    data-bs-content='formula'>
+                    <i class="fa-solid fa-circle" style="font-size: 6px; color: #595959; position: relative; float: inline-start;"></i>
+                  </span>
+                  %
+                </td>
+                <td>
+                  <input type="text"
+                    class="form-control campo_moneda"
+                    value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_negocio : '0.00' }}"
+                    id="ratio_re_negocio"
+                    disabled>
                 </td>
               </tr>
               <tr>
                 <td>Rentabilidad de la unidad familiar</td>
-                <td>Veces</td>
                 <td>
-                  <div class="input-group">
-                    <input type="text"
-                      class="form-control campo_moneda"
-                      value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_unidadfamiliar : '0.00' }}"
-                      id="ratio_re_unidadfamiliar"
-                      disabled>
-                    <span class="input-group-text"
-                      data-bs-toggle='popover' 
-                      data-bs-placement='right' 
-                      data-bs-content='formula'>
-                      <i class="fa-solid fa-circle-info"></i>
-                    </span>
-                  </div>
+                  <span class=""
+                    data-bs-toggle='popover' 
+                    data-bs-placement='right' 
+                    data-bs-content='formula'>
+                    <i class="fa-solid fa-circle" style="font-size: 6px; color: #595959; position: relative; float: inline-start;"></i>
+                  </span>
+                  Veces
+                </td>
+                <td>
+                  <input type="text"
+                    class="form-control campo_moneda"
+                    value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_unidadfamiliar : '0.00' }}"
+                    id="ratio_re_unidadfamiliar"
+                    disabled>
                 </td>
               </tr>
               <tr>
                 <td>Rentabilidad patrimonial (ROE)</td>
-                <td>%</td>
                 <td>
-                  <div class="input-group">
-                    <input type="text"
-                      class="form-control campo_moneda"
-                      value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_patrimonial : '0.00' }}"
-                      id="ratio_re_patrimonial"
-                      disabled>
-                    <span class="input-group-text"
-                      data-bs-toggle='popover' 
-                      data-bs-placement='right' 
-                      data-bs-content='formula'>
-                      <i class="fa-solid fa-circle-info"></i>
-                    </span>
-                  </div>
+                  <span class=""
+                    data-bs-toggle='popover' 
+                    data-bs-placement='right' 
+                    data-bs-content='formula'>
+                    <i class="fa-solid fa-circle" style="font-size: 6px; color: #595959; position: relative; float: inline-start;"></i>
+                  </span>
+                  %
+                </td>
+                <td>
+                  <input type="text"
+                    class="form-control campo_moneda"
+                    value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_patrimonial : '0.00' }}"
+                    id="ratio_re_patrimonial"
+                    disabled>
                 </td>
               </tr>
               <tr>
                 <td>Rentabilidad de los activos (ROA)</td>
-                <td>%</td>
                 <td>
-                  <div class="input-group">
-                    <input type="text"
-                      class="form-control campo_moneda"
-                      value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_activos : '0.00' }}"
-                      id="ratio_re_activos"
-                      disabled>
-                    <span class="input-group-text"
-                      data-bs-toggle='popover' 
-                      data-bs-placement='right' 
-                      data-bs-content='formula'>
-                      <i class="fa-solid fa-circle-info"></i>
-                    </span>
-                  </div>
+                  <span class=""
+                    data-bs-toggle='popover' 
+                    data-bs-placement='right' 
+                    data-bs-content='formula'>
+                    <i class="fa-solid fa-circle" style="font-size: 6px; color: #595959; position: relative; float: inline-start;"></i>
+                  </span>
+                  %
+                </td>
+                <td>
+                  <input type="text"
+                    class="form-control campo_moneda"
+                    value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_activos : '0.00' }}"
+                    id="ratio_re_activos"
+                    disabled>
                 </td>
               </tr>
               <tr>
                 <td>Rentabilidad de las ventas (ROS)</td>
-                <td>%</td>
                 <td>
-                  <div class="input-group">
-                    <input type="text"
-                      class="form-control campo_moneda"
-                      value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_ventas : '0.00' }}"
-                      id="ratio_re_ventas"
-                      disabled>
-                    <span class="input-group-text"
-                      data-bs-toggle='popover' 
-                      data-bs-placement='right' 
-                      data-bs-content='formula'>
-                      <i class="fa-solid fa-circle-info"></i>
-                    </span>
-                  </div>
+                  <span class=""
+                    data-bs-toggle='popover' 
+                    data-bs-placement='right' 
+                    data-bs-content='formula'>
+                    <i class="fa-solid fa-circle" style="font-size: 6px; color: #595959; position: relative; float: inline-start;"></i>
+                  </span>
+                  %
+                </td>
+                <td>
+                  <input type="text"
+                    class="form-control campo_moneda"
+                    value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_ventas : '0.00' }}"
+                    id="ratio_re_ventas"
+                    disabled>
                 </td>
               </tr>
               <tr>
                 <td>Préstamo / capital de trabajo Neto</td>
-                <td>%</td>
                 <td>
-                  <div class="input-group">
-                    <input type="text"
-                      class="form-control campo_moneda"
-                      value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_prestamo : '0.00' }}"
-                      id="ratio_re_prestamo"
-                      disabled>
-                    <span class="input-group-text"
-                      data-bs-toggle='popover' 
-                      data-bs-placement='right' 
-                      data-bs-content='formula'>
-                      <i class="fa-solid fa-circle-info"></i>
-                    </span>
-                  </div>
+                  <span class=""
+                    data-bs-toggle='popover' 
+                    data-bs-placement='right' 
+                    data-bs-content='formula'>
+                    <i class="fa-solid fa-circle" style="font-size: 6px; color: #595959; position: relative; float: inline-start;"></i>
+                  </span>
+                  %
+                </td>
+                <td>
+                  <input type="text"
+                    class="form-control campo_moneda"
+                    value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_prestamo : '0.00' }}"
+                    id="ratio_re_prestamo"
+                    disabled>
                 </td>
               </tr>
               <tr>
                 <td>Capital de trabajo</td>
-                <td>S/</td>
                 <td>
-                  <div class="input-group">
-                    <input type="text"
-                      class="form-control campo_moneda"
-                      value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_capital : '0.00' }}"
-                      id="ratio_re_capital"
-                      disabled>
-                    <span class="input-group-text"
-                      data-bs-toggle='popover' 
-                      data-bs-placement='right' 
-                      data-bs-content='formula'>
-                      <i class="fa-solid fa-circle-info"></i>
-                    </span>
-                  </div>
+                  <span class=""
+                    data-bs-toggle='popover' 
+                    data-bs-placement='right' 
+                    data-bs-content='formula'>
+                    <i class="fa-solid fa-circle" style="font-size: 6px; color: #595959; position: relative; float: inline-start;"></i>
+                  </span>
+                  S/
+                </td>
+                <td>
+                  <input type="text"
+                    class="form-control campo_moneda"
+                    value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_capital : '0.00' }}"
+                    id="ratio_re_capital"
+                    disabled>
                 </td>
               </tr>
               <tr>
                 <td>Liquidez</td>
-                <td>Veces</td>
                 <td>
-                  <div class="input-group">
-                    <input type="text"
-                      class="form-control campo_moneda"
-                      value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_liquidez : '0.00' }}"
-                      id="ratio_re_liquidez"
-                      disabled>
-                    <span class="input-group-text"
-                      data-bs-toggle='popover' 
-                      data-bs-placement='right' 
-                      data-bs-content='formula'>
-                      <i class="fa-solid fa-circle-info"></i>
-                    </span>
-                  </div>
+                  <span class=""
+                    data-bs-toggle='popover' 
+                    data-bs-placement='right' 
+                    data-bs-content='formula'>
+                    <i class="fa-solid fa-circle" style="font-size: 6px; color: #595959; position: relative; float: inline-start;"></i>
+                  </span>
+                  Veces
+                </td>
+                <td>
+                  <input type="text"
+                    class="form-control campo_moneda"
+                    value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_liquidez : '0.00' }}"
+                    id="ratio_re_liquidez"
+                    disabled>
                 </td>
               </tr>
             </tbody>
@@ -1102,117 +1102,117 @@
             <tbody>
               <tr>
                 <td>Liquidez Ácida</td>
-                <td>Veces</td>
+                <td>
+                  <span class=""
+                    data-bs-toggle='popover' 
+                    data-bs-placement='right' 
+                    data-bs-content='formula'>
+                    <i class="fa-solid fa-circle" style="font-size: 6px; color: #595959; position: relative; float: inline-start;"></i>
+                  </span>
+                  Veces
+                </td>
                 <td style="width:280px;">
-                  <div class="input-group">
-                    <input type="text"
-                      class="form-control campo_moneda"
-                      value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_liquidez_acida : '0.00' }}"
-                      id="ratio_re_liquidez_acida"
-                      disabled>
-                    <span class="input-group-text"
-                      data-bs-toggle='popover' 
-                      data-bs-placement='right' 
-                      data-bs-content='formula'>
-                      <i class="fa-solid fa-circle-info"></i>
-                    </span>
-                  </div>
+                  <input type="text"
+                    class="form-control campo_moneda"
+                    value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_liquidez_acida : '0.00' }}"
+                    id="ratio_re_liquidez_acida"
+                    disabled>
                 </td>
               </tr>
               <tr>
                 <td>Endeudamiento patrimonial actual</td>
-                <td>Veces</td>
                 <td>
-                  <div class="input-group">
-                    <input type="text"
-                      class="form-control campo_moneda"
-                      value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_endeudamiento_actual : '0.00' }}"
-                      id="ratio_re_endeudamiento_actual"
-                      disabled>
-                    <span class="input-group-text"
-                      data-bs-toggle='popover' 
-                      data-bs-placement='right' 
-                      data-bs-content='formula'>
-                      <i class="fa-solid fa-circle-info"></i>
-                    </span>
-                  </div>
+                  <span class=""
+                    data-bs-toggle='popover' 
+                    data-bs-placement='right' 
+                    data-bs-content='formula'>
+                    <i class="fa-solid fa-circle" style="font-size: 6px; color: #595959; position: relative; float: inline-start;"></i>
+                  </span>
+                  Veces
+                </td>
+                <td>
+                  <input type="text"
+                    class="form-control campo_moneda"
+                    value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_endeudamiento_actual : '0.00' }}"
+                    id="ratio_re_endeudamiento_actual"
+                    disabled>
                 </td>
               </tr>
               <tr>
                 <td>Endeudamiento Patrim. con propuesta</td>
-                <td>Veces</td>
                 <td>
-                  <div class="input-group">
-                    <input type="text"
-                      class="form-control campo_moneda"
-                      value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_endeudamiento_propuesta : '0.00' }}"
-                      id="ratio_re_endeudamiento_propuesta"
-                      disabled>
-                    <span class="input-group-text"
-                      data-bs-toggle='popover' 
-                      data-bs-placement='right' 
-                      data-bs-content='formula'>
-                      <i class="fa-solid fa-circle-info"></i>
-                    </span>
-                  </div>
+                  <span class=""
+                    data-bs-toggle='popover' 
+                    data-bs-placement='right' 
+                    data-bs-content='formula'>
+                    <i class="fa-solid fa-circle" style="font-size: 6px; color: #595959; position: relative; float: inline-start;"></i>
+                  </span>
+                  Veces
+                </td>
+                <td>
+                  <input type="text"
+                    class="form-control campo_moneda"
+                    value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_endeudamiento_propuesta : '0.00' }}"
+                    id="ratio_re_endeudamiento_propuesta"
+                    disabled>
                 </td>
               </tr>
               
               <tr>
                 <td>Plazo prom.rotación de invent.</td>
-                <td>Días</td>
                 <td>
-                  <div class="input-group">
-                    <input type="text"
-                      class="form-control campo_moneda"
-                      value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_rotacion_inventario : '0.00' }}"
-                      id="ratio_re_rotacion_inventario"
-                      disabled>
-                    <span class="input-group-text"
-                      data-bs-toggle='popover' 
-                      data-bs-placement='right' 
-                      data-bs-content='formula'>
-                      <i class="fa-solid fa-circle-info"></i>
-                    </span>
-                  </div>
+                  <span class=""
+                    data-bs-toggle='popover' 
+                    data-bs-placement='right' 
+                    data-bs-content='formula'>
+                    <i class="fa-solid fa-circle" style="font-size: 6px; color: #595959; position: relative; float: inline-start;"></i>
+                  </span>
+                  Días
+                </td>
+                <td>
+                  <input type="text"
+                    class="form-control campo_moneda"
+                    value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_rotacion_inventario : '0.00' }}"
+                    id="ratio_re_rotacion_inventario"
+                    disabled>
                 </td>
               </tr>
               <tr>
                 <td>Plazo promedio de cobranza</td>
-                <td>Días</td>
                 <td>
-                  <div class="input-group">
-                    <input type="text"
-                      class="form-control campo_moneda"
-                      value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_promedio_cobranza : '0.00' }}"
-                      id="ratio_re_promedio_cobranza"
-                      disabled>
-                    <span class="input-group-text"
-                      data-bs-toggle='popover' 
-                      data-bs-placement='right' 
-                      data-bs-content='formula'>
-                      <i class="fa-solid fa-circle-info"></i>
-                    </span>
-                  </div>
+                  <span class=""
+                    data-bs-toggle='popover' 
+                    data-bs-placement='right' 
+                    data-bs-content='formula'>
+                    <i class="fa-solid fa-circle" style="font-size: 6px; color: #595959; position: relative; float: inline-start;"></i>
+                  </span>
+                  Días
+                </td>
+                <td>
+                  <input type="text"
+                    class="form-control campo_moneda"
+                    value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_promedio_cobranza : '0.00' }}"
+                    id="ratio_re_promedio_cobranza"
+                    disabled>
                 </td>
               </tr>
               <tr>
                 <td>Plazo promedio de pago</td>
-                <td>Días</td>
                 <td>
-                  <div class="input-group">
-                    <input type="text"
-                      class="form-control campo_moneda"
-                      value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_primedio_pago : '0.00' }}"
-                      id="ratio_re_primedio_pago"
-                      disabled>
-                    <span class="input-group-text"
-                      data-bs-toggle='popover' 
-                      data-bs-placement='right' 
-                      data-bs-content='formula'>
-                      <i class="fa-solid fa-circle-info"></i>
-                    </span>
-                  </div>
+                  <span class=""
+                    data-bs-toggle='popover' 
+                    data-bs-placement='right' 
+                    data-bs-content='formula'>
+                    <i class="fa-solid fa-circle" style="font-size: 6px; color: #595959; position: relative; float: inline-start;"></i>
+                  </span>
+                  Días
+                </td>
+                <td>
+                  <input type="text"
+                    class="form-control campo_moneda"
+                    value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_primedio_pago : '0.00' }}"
+                    id="ratio_re_primedio_pago"
+                    disabled>
                 </td>
               </tr>
             </tbody>

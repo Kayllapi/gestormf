@@ -593,10 +593,10 @@
               </tr>
               <tr>
                 <td><b>Servicios:</b></td>
-                <td class="campo_moneda">{{ encontrar_valor('evaluacion_actual_ganancia_servicios', $ganancia_perdida_anterior) }}</td>
-                <td class="campo_moneda">{{ encontrar_valor('evaluacion_actual_ganancia_servicios', $ganancia_perdida) }}</td>
-                <td class="campo_moneda">{{ encontrar_valor('analisis_vertical_servicios', $ganancia_perdida) }}</td>
-                <td class="campo_moneda">{{ encontrar_valor('analisis_horizontal_servicios', $ganancia_perdida) }}</td>
+                <td class="campo_moneda"><b>{{ encontrar_valor('evaluacion_actual_ganancia_servicios', $ganancia_perdida_anterior) }}</b></td>
+                <td class="campo_moneda"><b>{{ encontrar_valor('evaluacion_actual_ganancia_servicios', $ganancia_perdida) }}</b></td>
+                <td class="campo_moneda"><b>{{ encontrar_valor('analisis_vertical_servicios', $ganancia_perdida) }}</b></td>
+                <td class="campo_moneda"><b>{{ encontrar_valor('analisis_horizontal_servicios', $ganancia_perdida) }}</b></td>
               </tr>
               <tr>
                 <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Luz</td>

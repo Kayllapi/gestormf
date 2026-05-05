@@ -829,7 +829,7 @@
                     data-bs-toggle='popover' 
                     data-bs-placement='right' 
                     data-bs-content='formula'>
-                    <i class="" style="font-size: 14px; color: #d43c49; position: relative; float: inline-start; font-style: normal !important;">i</i>
+                    <i class="" style="font-size: 16px; font-weight: bold; color: #d43c49; position: relative; float: inline-start; font-style: normal !important;">i</i>
                   </span>
                 </td>
                 <td>
@@ -850,7 +850,7 @@
                     data-bs-toggle='popover' 
                     data-bs-placement='right' 
                     data-bs-content='formula'>
-                    <i class="" style="font-size: 14px; color: #d43c49; position: relative; float: inline-start; font-style: normal !important;">i</i>
+                    <i class="" style="font-size: 16px; font-weight: bold; color: #d43c49; position: relative; float: inline-start; font-style: normal !important;">i</i>
                   </span>
                 </td>
                 <td>
@@ -871,7 +871,7 @@
                     data-bs-toggle='popover' 
                     data-bs-placement='right' 
                     data-bs-content='formula'>
-                    <i class="" style="font-size: 14px; color: #d43c49; position: relative; float: inline-start; font-style: normal !important;">i</i>
+                    <i class="" style="font-size: 16px; font-weight: bold; color: #d43c49; position: relative; float: inline-start; font-style: normal !important;">i</i>
                   </span>
                 </td>
                 <td>
@@ -892,7 +892,7 @@
                     data-bs-toggle='popover' 
                     data-bs-placement='right' 
                     data-bs-content='formula'>
-                    <i class="" style="font-size: 14px; color: #d43c49; position: relative; float: inline-start; font-style: normal !important;">i</i>
+                    <i class="" style="font-size: 16px; font-weight: bold; color: #d43c49; position: relative; float: inline-start; font-style: normal !important;">i</i>
                   </span>
                 </td>
                 <td>
@@ -913,7 +913,7 @@
                     data-bs-toggle='popover' 
                     data-bs-placement='right' 
                     data-bs-content='formula'>
-                    <i class="" style="font-size: 14px; color: #d43c49; position: relative; float: inline-start; font-style: normal !important;">i</i>
+                    <i class="" style="font-size: 16px; font-weight: bold; color: #d43c49; position: relative; float: inline-start; font-style: normal !important;">i</i>
                   </span>
                 </td>
                 <td>
@@ -934,7 +934,7 @@
                     data-bs-toggle='popover' 
                     data-bs-placement='right' 
                     data-bs-content='formula'>
-                    <i class="" style="font-size: 14px; color: #d43c49; position: relative; float: inline-start; font-style: normal !important;">i</i>
+                    <i class="" style="font-size: 16px; font-weight: bold; color: #d43c49; position: relative; float: inline-start; font-style: normal !important;">i</i>
                   </span>
                 </td>
                 <td>
@@ -955,7 +955,7 @@
                     data-bs-toggle='popover' 
                     data-bs-placement='right' 
                     data-bs-content='formula'>
-                    <i class="" style="font-size: 14px; color: #d43c49; position: relative; float: inline-start; font-style: normal !important;">i</i>
+                    <i class="" style="font-size: 16px; font-weight: bold; color: #d43c49; position: relative; float: inline-start; font-style: normal !important;">i</i>
                   </span>
                 </td>
                 <td>
@@ -976,7 +976,7 @@
                     data-bs-toggle='popover' 
                     data-bs-placement='right' 
                     data-bs-content='formula'>
-                    <i class="" style="font-size: 14px; color: #d43c49; position: relative; float: inline-start; font-style: normal !important;">i</i>
+                    <i class="" style="font-size: 16px; font-weight: bold; color: #d43c49; position: relative; float: inline-start; font-style: normal !important;">i</i>
                   </span>
                 </td>
                 <td>
@@ -1123,7 +1123,7 @@
                     data-bs-toggle='popover' 
                     data-bs-placement='right' 
                     data-bs-content='formula'>
-                    <i class="" style="font-size: 14px; color: #d43c49; position: relative; float: inline-start; font-style: normal !important;">i</i>
+                    <i class="" style="font-size: 16px; font-weight: bold; color: #d43c49; position: relative; float: inline-start; font-style: normal !important;">i</i>
                   </span>
                 </td>
                 <td>
@@ -1144,7 +1144,7 @@
                     data-bs-toggle='popover' 
                     data-bs-placement='right' 
                     data-bs-content='formula'>
-                    <i class="" style="font-size: 14px; color: #d43c49; position: relative; float: inline-start; font-style: normal !important;">i</i>
+                    <i class="" style="font-size: 16px; font-weight: bold; color: #d43c49; position: relative; float: inline-start; font-style: normal !important;">i</i>
                   </span>
                 </td>
                 <td>
@@ -1165,7 +1165,7 @@
                     data-bs-toggle='popover' 
                     data-bs-placement='right' 
                     data-bs-content='formula'>
-                    <i class="" style="font-size: 14px; color: #d43c49; position: relative; float: inline-start; font-style: normal !important;">i</i>
+                    <i class="" style="font-size: 16px; font-weight: bold; color: #d43c49; position: relative; float: inline-start; font-style: normal !important;">i</i>
                   </span>
                 </td>
                 <td>
@@ -1187,7 +1187,7 @@
                     data-bs-toggle='popover' 
                     data-bs-placement='right' 
                     data-bs-content='formula'>
-                    <i class="" style="font-size: 14px; color: #d43c49; position: relative; float: inline-start; font-style: normal !important;">i</i>
+                    <i class="" style="font-size: 16px; font-weight: bold; color: #d43c49; position: relative; float: inline-start; font-style: normal !important;">i</i>
                   </span>
                 </td>
                 <td>
@@ -1208,7 +1208,7 @@
                     data-bs-toggle='popover' 
                     data-bs-placement='right' 
                     data-bs-content='formula'>
-                    <i class="" style="font-size: 14px; color: #d43c49; position: relative; float: inline-start; font-style: normal !important;">i</i>
+                    <i class="" style="font-size: 16px; font-weight: bold; color: #d43c49; position: relative; float: inline-start; font-style: normal !important;">i</i>
                   </span>
                 </td>
                 <td>
@@ -1229,7 +1229,7 @@
                     data-bs-toggle='popover' 
                     data-bs-placement='right' 
                     data-bs-content='formula'>
-                    <i class="" style="font-size: 14px; color: #d43c49; position: relative; float: inline-start; font-style: normal !important;">i</i>
+                    <i class="" style="font-size: 16px; font-weight: bold; color: #d43c49; position: relative; float: inline-start; font-style: normal !important;">i</i>
                   </span>
                 </td>
                 <td>

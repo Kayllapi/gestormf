@@ -829,7 +829,7 @@
                     data-bs-toggle='popover' 
                     data-bs-placement='right' 
                     data-bs-content='formula'>
-                    <i class="fa-solid fa-flag-circle" style="font-size: 6px; color: #ffc9ca; position: relative; float: inline-start;"></i>
+                    <i class="fa-solid fa-circle" style="font-size: 6px; color: #ffc9ca; position: relative; float: inline-start;"></i>
                   </span>
                 </td>
                 <td>

@@ -786,8 +786,8 @@
                 <td style="border: 1px solid #a6a9ab;width:640px">CUOTA TOTAL/EXCEDENTE TOTAL. Antes de Propuesta (%)</td>
                 <td style="border: 1px solid #a6a9ab;width:100px;"><input type="text" class="form-control campo_moneda" disabled value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->excedente_antes_propuesta : '0.00' }}" id="excedente_antes_propuesta"></td>
                 <td style="width:50px;"></td>
+                <td style="width:200px;"></td>
                 <td></td>
-                <td style="width:300px;"></td>
               </tr>
               <tr>
                 <td style="border: 1px solid #a6a9ab;">CUOTA TOTAL/EXCEDENTE TOTAL. En Propuesta sin Deducción en Ampliacion o Compra de deuda (%)</td>

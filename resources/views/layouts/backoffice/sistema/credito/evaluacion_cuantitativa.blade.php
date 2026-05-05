@@ -785,17 +785,16 @@
               <tr>
                 <td style="border: 1px solid #a6a9ab;">CUOTA TOTAL/EXCEDENTE TOTAL. Antes de Propuesta (%)</td>
                 <td style="border: 1px solid #a6a9ab;width:280px;"><input type="text" class="form-control campo_moneda" disabled value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->excedente_antes_propuesta : '0.00' }}" id="excedente_antes_propuesta"></td>
+                <td></td>
               </tr>
               <tr>
                 <td style="border: 1px solid #a6a9ab;">CUOTA TOTAL/EXCEDENTE TOTAL. En Propuesta sin Deducción en Ampliacion o Compra de deuda (%)</td>
                 <td style="border: 1px solid #a6a9ab;"><input type="text" class="form-control campo_moneda" disabled value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->excedente_propuesta_sin_deduccion : '0.00' }}" id="excedente_propuesta_sin_deduccion"></td>
+                <td></td>
               </tr>
               <tr>
                 <td style="border: 1px solid #a6a9ab;">CUOTA TOTAL/EXCEDENTE TOTAL. En Propuesta CON Deducción en Ampliacion o Compra de deuda (%)</td>
                 <td style="border: 1px solid #a6a9ab;"><input type="text" class="form-control campo_moneda" disabled value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->excedente_propuesta_con_deduccion : '0.00' }}" id="excedente_propuesta_con_deduccion"></td>
-              </tr>
-              <tr>
-                <td></td>
                 <td>
                   <input type="text" class="form-control bg-success text-center" value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->estado_credito : '' }}" disabled id="estado_credito">
                 </td>

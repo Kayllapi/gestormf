@@ -794,9 +794,14 @@
                 <td style="border: 1px solid #a6a9ab;">CUOTA TOTAL/EXCEDENTE TOTAL. En Propuesta CON Deducción en Ampliacion o Compra de deuda (%)</td>
                 <td style="border: 1px solid #a6a9ab;"><input type="text" class="form-control campo_moneda" disabled value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->excedente_propuesta_con_deduccion : '0.00' }}" id="excedente_propuesta_con_deduccion"></td>
               </tr>
+              <tr>
+                <td></td>
+                <td>
+                  <input type="text" class="form-control bg-success text-center" value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->estado_credito : '' }}" disabled id="estado_credito">
+                </td>
+              </tr>
             </tbody>
           </table>
-          <input type="text" class="form-control bg-success text-center" value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->estado_credito : '' }}" disabled id="estado_credito">
           <br>
         </div>
         <div class="col-sm-12 col-md-6">
@@ -1426,7 +1431,6 @@
     if(isNaN(analisis_vertical_activo_nocorriente) || analisis_vertical_activo_nocorriente == Infinity || analisis_vertical_activo_nocorriente == -Infinity){ analisis_vertical_activo_nocorriente = 0; }
     $('#analisis_vertical_activo_nocorriente').val(analisis_vertical_activo_nocorriente.toFixed(2))
     let analisis_vertical_total_activo = ( evaluacion_actual_total_activo / evaluacion_actual_total_activo ) * 100;
-    console.log(evaluacion_actual_total_activo,evaluacion_actual_total_activo, analisis_vertical_total_activo);
     if(isNaN(analisis_vertical_total_activo) || analisis_vertical_total_activo == Infinity || analisis_vertical_total_activo == -Infinity){ analisis_vertical_total_activo = 0; }
     $('#analisis_vertical_total_activo').val(analisis_vertical_total_activo.toFixed(2))
 

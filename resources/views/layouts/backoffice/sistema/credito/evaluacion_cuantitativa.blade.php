@@ -783,25 +783,25 @@
                 <td colspan=3 style="background-color: #efefef;"></td>
               </tr>
               <tr>
-                <td style="border: 1px solid #a6a9ab;width:650px">CUOTA TOTAL/EXCEDENTE TOTAL. Antes de Propuesta (%)</td>
+                <td style="border: 1px solid #a6a9ab;" colspan="2">CUOTA TOTAL/EXCEDENTE TOTAL. Antes de Propuesta (%)</td>
                 <td style="border: 1px solid #a6a9ab;width:100px;"><input type="text" class="form-control campo_moneda" disabled value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->excedente_antes_propuesta : '0.00' }}" id="excedente_antes_propuesta"></td>
                 <td style="width:50px;"></td>
                 <td style="width:200px;"></td>
                 <td></td>
               </tr>
               <tr>
-                <td style="border: 1px solid #a6a9ab;">CUOTA TOTAL/EXCEDENTE TOTAL. En Propuesta sin Deducción en Ampliacion o Compra de deuda (%)</td>
+                <td style="border: 1px solid #a6a9ab;" colspan="2">CUOTA TOTAL/EXCEDENTE TOTAL. En Propuesta sin Deducción en Ampliacion o Compra de deuda (%)</td>
                 <td style="border: 1px solid #a6a9ab;"><input type="text" class="form-control campo_moneda" disabled value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->excedente_propuesta_sin_deduccion : '0.00' }}" id="excedente_propuesta_sin_deduccion"></td>
                 <td></td>
                 <td></td>
                 <td></td>
               </tr>
               <tr>
-                <td style="border: 1px solid #a6a9ab;">
-                  CUOTA TOTAL/EXCEDENTE TOTAL. En Propuesta CON Deducción en Ampliacion o Compra de deuda (%) 
+                <td style="border: 1px solid #a6a9ab;width:640px">
+                  CUOTA TOTAL/EXCEDENTE TOTAL. En Propuesta CON Deducción en Ampliacion o Compra de deuda (%)
+                </td>
+                <td style="border: 1px solid #a6a9ab;width:50px;">
                   <span class="popover-hover"
-                    data-bs-toggle='popover' 
-                    data-bs-placement='top' 
                     data-bs-content='(Gastos Financieros Total+Cuota Propuesta) - (cuota de ampliación/compra de deuda)
                     ________________________________________
                     (Excedente Mensual+(cuota de ampliación/compra de deuda)+Gasto Financiero Total -(cuota de ampliación/compra de deuda) )'>
@@ -809,7 +809,7 @@
                       font-weight: bold;
                       color: #d43c49;
                       position: relative;
-                      float: right;
+                      float: inline-start;
                       font-style: normal !important;
                       transform: rotate(180deg);">i</i>
                   </span>
@@ -842,8 +842,6 @@
                 <td>Rentabilidad del negocio</td>
                 <td style="width:50px;">
                   <span class="popover-hover"
-                    data-bs-toggle='popover' 
-                    data-bs-placement='right' 
                     data-bs-content='U. Neta
                     ____________________________________________
                     (Act Cnte - Psvo Cnte)'>
@@ -871,8 +869,6 @@
                 <td>Rentabilidad de la unidad familiar</td>
                 <td>
                   <span class="popover-hover"
-                    data-bs-toggle='popover' 
-                    data-bs-placement='right' 
                     data-bs-content='(Uneta+Ingreso Adic. fijo y Ot. Negoc.)
                     ________________________________________
                     Gasto Familiar'>
@@ -900,8 +896,6 @@
                 <td>Rentabilidad patrimonial (ROE)</td>
                 <td>
                   <span class="popover-hover"
-                    data-bs-toggle='popover' 
-                    data-bs-placement='right' 
                     data-bs-content='Uneta
                     ________________________________________
                     Patrimonio'>
@@ -929,8 +923,6 @@
                 <td>Rentabilidad de los activos (ROA)</td>
                 <td>
                   <span class="popover-hover"
-                    data-bs-toggle='popover' 
-                    data-bs-placement='right' 
                     data-bs-content='Uneta
                     ________________________________________
                     Activo Total'>
@@ -958,8 +950,6 @@
                 <td>Rentabilidad de las ventas (ROS)</td>
                 <td>
                   <span class="popover-hover"
-                    data-bs-toggle='popover' 
-                    data-bs-placement='right' 
                     data-bs-content='Uneta
                     ________________________________________
                     Ventas'>
@@ -987,8 +977,6 @@
                 <td>Préstamo / capital de trabajo Neto</td>
                 <td>
                   <span class="popover-hover"
-                    data-bs-toggle='popover' 
-                    data-bs-placement='right' 
                     data-bs-content='Propuesta de préstamo
                     ________________________________________
                     Cap. De trabajo'>
@@ -1016,8 +1004,6 @@
                 <td>Capital de trabajo</td>
                 <td>
                   <span class="popover-hover"
-                    data-bs-toggle='popover' 
-                    data-bs-placement='right' 
                     data-bs-content='Activo Cnte-Pasivo Cnte'>
                     <i class="" style="font-size: 16px;
                       font-weight: bold;
@@ -1043,8 +1029,6 @@
                 <td>Liquidez</td>
                 <td>
                   <span class="popover-hover"
-                    data-bs-toggle='popover' 
-                    data-bs-placement='right' 
                     data-bs-content='Activo Cnte
                     ________________________________________
                     Pasico Cnte'>
@@ -1198,8 +1182,6 @@
                 <td>Liquidez Ácida</td>
                 <td style="width:50px;">
                   <span class="popover-hover"
-                    data-bs-toggle='popover' 
-                    data-bs-placement='right' 
                     data-bs-content='(Activo Cnte - Inventario)
                     ________________________________________
                     Pasivo Cnte'>
@@ -1227,8 +1209,6 @@
                 <td>Endeudamiento patrimonial actual</td>
                 <td>
                   <span class="popover-hover"
-                    data-bs-toggle='popover' 
-                    data-bs-placement='right' 
                     data-bs-content='Psvo Total
                     ________________________________________
                     Patrimonio'>
@@ -1256,8 +1236,6 @@
                 <td>Endeudamiento Patrim. con propuesta</td>
                 <td>
                   <span class="popover-hover"
-                    data-bs-toggle='popover' 
-                    data-bs-placement='right' 
                     data-bs-content='  (Total Pasivo + Deuda Propuesta) -( Saldo Ampliación/compra de deuda)
                     ________________________________________
                     Patrimonio'>
@@ -1286,8 +1264,6 @@
                 <td>Plazo prom.rotación de invent.</td>
                 <td>
                   <span class="popover-hover"
-                    data-bs-toggle='popover' 
-                    data-bs-placement='right' 
                     data-bs-content='Inventario
                     ________________________________________
                     Costo de Venta o producción X 30'>
@@ -1315,8 +1291,6 @@
                 <td>Plazo promedio de cobranza</td>
                 <td>
                   <span class="popover-hover"
-                    data-bs-toggle='popover' 
-                    data-bs-placement='right' 
                     data-bs-content='Cuentas por Cobrar a Clientes
                     ________________________________________
                     Ventas a crédito del mes X 30'>
@@ -1344,8 +1318,6 @@
                 <td>Plazo promedio de pago</td>
                 <td>
                   <span class="popover-hover"
-                    data-bs-toggle='popover' 
-                    data-bs-placement='right' 
                     data-bs-content='cuentas por pagar a proveedores
                     ________________________________________
                     Compras al credito del mes)X30'>
@@ -1419,16 +1391,21 @@
   }
 </style>
 <script>
-  // const el = document.getElementById('infoPopover')
-  // const popover = new bootstrap.Popover(el, { trigger: 'manual' })
+  // document.querySelectorAll('.popover-hover').forEach(el => {
+  //   const popover = new bootstrap.Popover(el, {
+  //       trigger: 'manual',
+  //       // placement: 'right'
+  //   });
 
-  // el.addEventListener('mouseenter', () => popover.show())
-  // el.addEventListener('mouseleave', () => popover.hide())
-
+  //   el.addEventListener('mouseenter', () => popover.show());
+  //   el.addEventListener('mouseleave', () => popover.hide());
+  // });
   document.querySelectorAll('.popover-hover').forEach(el => {
     const popover = new bootstrap.Popover(el, {
-        trigger: 'manual',
-        // placement: 'right'
+      trigger: 'manual', // 🔥 clave para eliminar click
+      placement: 'right',
+      html: true,
+      content: el.getAttribute('data-bs-content').replace(/\n/g, '<br>')
     });
 
     el.addEventListener('mouseenter', () => popover.show());

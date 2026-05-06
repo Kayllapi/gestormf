@@ -968,11 +968,13 @@
           $res_ratios_venta_cuota_semanal_res_coment = "NO VIABLE con ÚLTIMA opción, para cumplir cuotas de pago a muy corto plazo";
       }
       // Fila 05
+      $res_ratios_venta_cuota_quincenal_style = '';
       $res_ratios_venta_cuota_quincenal = $credito_evaluacion_resumida ? $credito_evaluacion_resumida->relacion_cuota_venta_quincenal : 0;
       if ($res_ratios_venta_cuota_quincenal <= $relacion_cuota_venta) {
           $res_ratios_venta_cuota_quincenal_res = "Dentro del rango establecido";
       } elseif ($res_ratios_venta_cuota_quincenal > $relacion_cuota_venta) {
           $res_ratios_venta_cuota_quincenal_res = "Fuera del rango establecido";
+          $res_ratios_venta_cuota_quincenal_style = 'color:red;';
       } else {
           $res_ratios_venta_cuota_quincenal_res = 0;
       }
@@ -1214,7 +1216,10 @@
                   <td class="doble-subrayado">%</td>
                   <td class="doble-subrayado campo_moneda">{{ $res_solvencia_relacion_cuota_resumida }}</td>
                   <td><span class="doble-subrayado">{{ $res_solvencia_relacion_cuota_res }}</span></td>
-                  <td class="doble-subrayado" colspan=2>{{ $credito_propuesta ? $credito_propuesta->res_solvencia_relacion_cuota_coment : '' }}</td>
+                  <td class="doble-subrayado" colspan=2>
+                    {{-- {{ $credito_propuesta ? $credito_propuesta->res_solvencia_relacion_cuota_coment : '' }} --}}
+                    {{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->estado_credito_general : '' }}
+                  </td>
                   <td><div class="cuadro-input doble-subrayado">Se exije < 100% conforme política</div></td>
                 </tr>
                 <tr>

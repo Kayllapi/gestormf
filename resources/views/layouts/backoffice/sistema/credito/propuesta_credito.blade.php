@@ -1231,6 +1231,15 @@
           $color = 'bg-danger';
           $estado_credito = $credito_evaluacion_cuantitativa->estado_credito;
         }
+
+        // Estado, en RESUMIDA
+        if ($credito_evaluacion_resumida && $credito_evaluacion_resumida->estado_credito_general == 'CRÉDITO VIABLE') {
+          $color = 'bg-success';
+          $estado_credito = $credito_evaluacion_resumida->estado_credito_general;
+        }elseif ($credito_evaluacion_resumida && $credito_evaluacion_resumida->estado_credito_general == 'CRÉDITO NO VIABLE') {
+          $color = 'bg-danger';
+          $estado_credito = $credito_evaluacion_resumida->estado_credito_general;
+        }
       @endphp
       @if ($users_prestamo->idfuenteingreso == 1) {{-- Independiente --}}
         {{-- RESULTADOS DE EVALUACIÓN --}}
@@ -1476,7 +1485,18 @@
                     <td class="doble-subrayado">%</td>
                     <td class="doble-subrayado campo_moneda">{{ $res_solvencia_relacion_cuota_resumida }}</td>
                     <td><span class="doble-subrayado" style="{{$res_solvencia_relacion_cuota_style}}">{{ $res_solvencia_relacion_cuota_res }}</span></td>
-                    <td colspan=2><input type="text" class="form-control color_cajatexto doble-subrayado" {{ $view_detalle=='false' ? 'disabled' : '' }}  id="res_solvencia_relacion_cuota_coment" value="{{ $credito_propuesta ? $credito_propuesta->res_solvencia_relacion_cuota_coment : '' }}"></td>
+                    <td colspan=2>
+                      {{-- <input type="text"
+                      class="form-control color_cajatexto doble-subrayado"
+                      {{ $view_detalle=='false' ? 'disabled' : '' }}
+                      id="res_solvencia_relacion_cuota_coment"
+                      value="{{ $credito_propuesta ? $credito_propuesta->res_solvencia_relacion_cuota_coment : '' }}"> --}}
+                      <input type="text"
+                        class="form-control text-center {{ $color }}"
+                        value="{{ $estado_credito }}"
+                        disabled
+                        id="estado_credito">
+                    </td>
                     <td><div class="cuadro-input doble-subrayado">Se exije < 100% conforme política</div></td>
                   </tr>
                   <tr>

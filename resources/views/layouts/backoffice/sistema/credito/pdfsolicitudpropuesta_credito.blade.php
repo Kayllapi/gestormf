@@ -222,21 +222,6 @@
             <td>TIPO DE INGRESO PRINCIPAL:</td>
             <td class="border-td">{{ $users_prestamo->idfuenteingreso == 1 ? 'INDEPENDIENTE' : 'DEPENDIENTE' }}</td>
           </tr>
-          @if($users_prestamo->idfuenteingreso == 1)
-          <tr>
-            <td>GIRO ECONÓMICO ADICONAL:</td>
-            <td class="border-td">
-              
-              @if($credito->idevaluacion == 1)
-              {{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->nombregiro_economico_evaluacion : '' }}
-              @else
-              {{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->nombregiro_economico_evaluacion : '' }}
-              @endif
-              
-           </td>
-            
-          </tr>
-          @endif
         </table>
       </div>
       <div class="col" style="width:361px;">
@@ -273,6 +258,23 @@
                 <td style="text-align: right">S/. {{ $credito_cuantitativa_control_limites->total_financiado_deudor }}</td>
               </tr>
             </tbody>
+          </table>
+          <table style="width:100%;">
+            @if($users_prestamo->idfuenteingreso == 1)
+              <tr>
+                <td>GIRO ECONÓMICO ADICONAL:</td>
+                <td class="border-td">
+                  
+                  @if($credito->idevaluacion == 1)
+                  {{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->nombregiro_economico_evaluacion : '' }}
+                  @else
+                  {{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->nombregiro_economico_evaluacion : '' }}
+                  @endif
+                  
+              </td>
+                
+              </tr>
+              @endif
           </table>
       </div>
     </div>

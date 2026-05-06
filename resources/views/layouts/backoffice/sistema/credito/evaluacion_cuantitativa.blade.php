@@ -591,14 +591,38 @@
                 <td analisis_horizontal><input type="text" class="form-control campo_moneda" value="0.00" id="analisis_horizontal_transporte" disabled></td>
               </tr>
               <tr>
-                <td descripcion>Cuota de préstamo E. Reguladas</td>
+                <td descripcion>
+                  Cuota de préstamo E. Reguladas
+                  <span class="popover-hover"
+                    data-bs-content='Crédito Mes y Comercial'>
+                    <i class="" style="font-size: 16px;
+                      font-weight: bold;
+                      color: #d43c49;
+                      position: relative;
+                      float: none;
+                      font-style: normal !important;
+                      transform: rotate(180deg);">i</i>
+                  </span>
+                </td>
                 <td evaluacion_anterior><input type="text" class="form-control campo_moneda" value="{{ number_format(encontrar_valor('comercial_er_couta', $resumen_deuda_anterior) + encontrar_valor('mes_er_couta', $resumen_deuda_anterior), 2, '.', '') }}" id="evaluacion_actual_ganancia_cuota_regulada_anterior" disabled></td>
                 <td evaluacion_actual><input type="text" class="form-control campo_moneda" id="evaluacion_actual_ganancia_cuota_regulada" value="{{ number_format(encontrar_valor('comercial_er_couta', $resumen_deuda) + encontrar_valor('mes_er_couta', $resumen_deuda), 2, '.', '') }}" disabled></td>
                 <td analisis_vertical><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('analisis_vertical_cuota_regulada', $ganancia_perdida) }}" id="analisis_vertical_cuota_regulada" disabled></td>
                 <td analisis_horizontal><input type="text" class="form-control campo_moneda" value="0.00" id="analisis_horizontal_cuota_regulada" disabled></td>
               </tr>
               <tr>
-                <td descripcion>Cuota de préstamo E. No Reguladas</td>
+                <td descripcion>
+                  Cuota de préstamo E. No Reguladas
+                  <span class="popover-hover"
+                    data-bs-content='Crédito Mes y Comercial'>
+                    <i class="" style="font-size: 16px;
+                      font-weight: bold;
+                      color: #d43c49;
+                      position: relative;
+                      float: none;
+                      font-style: normal !important;
+                      transform: rotate(180deg);">i</i>
+                  </span>
+                </td>
                 <td evaluacion_anterior><input type="text" class="form-control campo_moneda" id="evaluacion_actual_ganancia_cuota_noregulada_anterior" value="{{ number_format(encontrar_valor('comercial_enr_couta', $resumen_deuda_anterior) + encontrar_valor('mes_enr_couta', $resumen_deuda_anterior), 2, '.', '') }}" disabled></td>
                 <td evaluacion_actual><input type="text" class="form-control campo_moneda" id="evaluacion_actual_ganancia_cuota_noregulada" value="{{ number_format(encontrar_valor('comercial_enr_couta', $resumen_deuda) + encontrar_valor('mes_enr_couta', $resumen_deuda), 2, '.', '') }}" disabled></td>
                 <td analisis_vertical><input type="text" class="form-control campo_moneda" value="{{ encontrar_valor('analisis_vertical_cuota_noregulada', $ganancia_perdida) }}" id="analisis_vertical_cuota_noregulada" disabled></td>

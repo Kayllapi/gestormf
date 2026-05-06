@@ -845,7 +845,7 @@
                     data-bs-toggle='popover' 
                     data-bs-placement='right' 
                     data-bs-content='U. Neta
-                    ________________________________________
+                    ____________________________________________
                     (Act Cnte - Psvo Cnte)'>
                     <i class="" style="font-size: 16px;
                       font-weight: bold;

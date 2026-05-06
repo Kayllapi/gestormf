@@ -1265,8 +1265,8 @@
                 <td>
                   <span class="popover-hover"
                     data-bs-content='Inventario
-                    ________________________________________
-                    Costo de Venta o producción X 30'>
+                    ________________________________________X 30
+                    Costo de Venta o producción'>
                     <i class="" style="font-size: 16px;
                       font-weight: bold;
                       color: #d43c49;
@@ -1292,8 +1292,8 @@
                 <td>
                   <span class="popover-hover"
                     data-bs-content='Cuentas por Cobrar a Clientes
-                    ________________________________________
-                    Ventas a crédito del mes X 30'>
+                    ________________________________________X 30
+                    Ventas a crédito del mes'>
                     <i class="" style="font-size: 16px;
                       font-weight: bold;
                       color: #d43c49;
@@ -1319,8 +1319,8 @@
                 <td>
                   <span class="popover-hover"
                     data-bs-content='cuentas por pagar a proveedores
-                    ________________________________________
-                    Compras al credito del mes)X30'>
+                    ________________________________________X 30
+                    Compras al credito del mes'>
                     <i class="" style="font-size: 16px;
                       font-weight: bold;
                       color: #d43c49;

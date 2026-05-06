@@ -798,6 +798,11 @@
               <td width="50px" class="campo_moneda">{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_negocio : '0.00' }}</td>
             </tr>
             <tr>
+              <td>Rentabilidad de las ventas (ROS)</td>
+              <td>%</td>
+              <td class="campo_moneda">{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_ventas : '0.00' }}</td>
+            </tr>
+            <tr>
               <td>Rentabilidad de la unidad familiar</td>
               <td>Veces</td>
               <td class="campo_moneda">{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_unidadfamiliar : '0.00' }}</td>
@@ -813,9 +818,9 @@
               <td class="campo_moneda">{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_activos : '0.00' }}</td>
             </tr>
             <tr>
-              <td>Rentabilidad de las ventas (ROS)</td>
-              <td>%</td>
-              <td class="campo_moneda">{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_ventas : '0.00' }}</td>
+              <td>Liquidez</td>
+              <td>Veces</td>
+              <td class="campo_moneda">{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_liquidez : '0.00' }}</td>
             </tr>
             <tr>
               <td>Préstamo / capital de trabajo Neto</td>
@@ -826,11 +831,6 @@
               <td>Capital de trabajo</td>
               <td>S/</td>
               <td class="campo_moneda">{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_capital : '0.00' }}</td>
-            </tr>
-            <tr>
-              <td>Liquidez</td>
-              <td>Veces</td>
-              <td class="campo_moneda">{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_liquidez : '0.00' }}</td>
             </tr>
           </tbody>
         </table>

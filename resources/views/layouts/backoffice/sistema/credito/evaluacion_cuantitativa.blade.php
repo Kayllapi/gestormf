@@ -914,6 +914,33 @@
                 </td>
               </tr>
               <tr>
+                <td>Rentabilidad de las ventas (ROS)</td>
+                <td>
+                  <span class="popover-hover"
+                    data-bs-content='Uneta
+                    ________________________________________
+                    Ventas'>
+                    <i class="" style="font-size: 16px;
+                      font-weight: bold;
+                      color: #d43c49;
+                      position: relative;
+                      float: inline-start;
+                      font-style: normal !important;
+                      transform: rotate(180deg);">i</i>
+                  </span>
+                </td>
+                <td>
+                  %
+                </td>
+                <td>
+                  <input type="text"
+                    class="form-control campo_moneda"
+                    value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_ventas : '0.00' }}"
+                    id="ratio_re_ventas"
+                    disabled>
+                </td>
+              </tr>
+              <tr>
                 <td>Rentabilidad de la unidad familiar</td>
                 <td>
                   <span class="popover-hover"
@@ -995,12 +1022,12 @@
                 </td>
               </tr>
               <tr>
-                <td>Rentabilidad de las ventas (ROS)</td>
+                <td>Liquidez</td>
                 <td>
                   <span class="popover-hover"
-                    data-bs-content='Uneta
+                    data-bs-content='Activo Cnte
                     ________________________________________
-                    Ventas'>
+                    Pasico Cnte'>
                     <i class="" style="font-size: 16px;
                       font-weight: bold;
                       color: #d43c49;
@@ -1011,13 +1038,13 @@
                   </span>
                 </td>
                 <td>
-                  %
+                  Veces
                 </td>
                 <td>
                   <input type="text"
                     class="form-control campo_moneda"
-                    value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_ventas : '0.00' }}"
-                    id="ratio_re_ventas"
+                    value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_liquidez : '0.00' }}"
+                    id="ratio_re_liquidez"
                     disabled>
                 </td>
               </tr>
@@ -1070,33 +1097,6 @@
                     class="form-control campo_moneda"
                     value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_capital : '0.00' }}"
                     id="ratio_re_capital"
-                    disabled>
-                </td>
-              </tr>
-              <tr>
-                <td>Liquidez</td>
-                <td>
-                  <span class="popover-hover"
-                    data-bs-content='Activo Cnte
-                    ________________________________________
-                    Pasico Cnte'>
-                    <i class="" style="font-size: 16px;
-                      font-weight: bold;
-                      color: #d43c49;
-                      position: relative;
-                      float: inline-start;
-                      font-style: normal !important;
-                      transform: rotate(180deg);">i</i>
-                  </span>
-                </td>
-                <td>
-                  Veces
-                </td>
-                <td>
-                  <input type="text"
-                    class="form-control campo_moneda"
-                    value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_liquidez : '0.00' }}"
-                    id="ratio_re_liquidez"
                     disabled>
                 </td>
               </tr>

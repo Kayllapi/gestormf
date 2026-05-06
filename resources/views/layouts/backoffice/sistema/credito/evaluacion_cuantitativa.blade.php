@@ -683,7 +683,7 @@
                 <td analisis_horizontal><input type="text" class="form-control campo_moneda" value="0.00" id="analisis_horizontal_gasto_familiar" disabled></td>
               </tr>
               <tr>
-                <td descripcion>- Cuota de Préstamos de Consumo e Hipotecarios para Vivienda (Reg. y no Reg.)</td>
+                <td descripcion>- Cuota de Préstamos de Consumo, Hipotecarios para Vivienda (Reg. y no Reg.) y T. No Utiliz.</td>
                 <?php
                   $consumo_total_couta_anterior = encontrar_valor('consumo_total_couta', $resumen_deuda_anterior);
                   $vivienda_total_couta_anterior = encontrar_valor('vivienda_total_couta', $resumen_deuda_anterior);

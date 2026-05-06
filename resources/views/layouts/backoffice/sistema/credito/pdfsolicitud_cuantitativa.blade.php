@@ -728,7 +728,7 @@
                 <td class="campo_moneda">{{ encontrar_valor('analisis_horizontal_gasto_familiar', $ganancia_perdida) }}</td>
               </tr>
               <tr>
-                <td>- Cuota de Préstamos de Consumo e Hipotecarios para Vivienda (Reg. y no Reg.)</td>
+                <td>- Cuota de Préstamos de Consumo, Hipotecarios para Vivienda (Reg. y no Reg.) y L. de Cred. no Utiliz.</td>
                 <?php
                   $consumo_total_couta_anterior = encontrar_valor('consumo_total_couta', $resumen_deuda_anterior);
                   $vivienda_total_couta_anterior = encontrar_valor('vivienda_total_couta', $resumen_deuda_anterior);

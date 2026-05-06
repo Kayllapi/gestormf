@@ -1214,6 +1214,17 @@
                 </tr>
               </thead>
               <tbody>
+                <tr>
+                  <th colspan=7 style="text-align: left"><b>CAPACIDAD DE PAGO</b></th>
+                </tr>
+                <tr>
+                  <td class="doble-subrayado">Cuota total/excedente total</td>
+                  <td class="doble-subrayado">%</td>
+                  <td class="doble-subrayado campo_numero">{{ $solvencia_cuota_total }}</td>
+                  <td class="doble-subrayado">{{ $solvencia_cuota_total_res }}</td>
+                  <td class="doble-subrayado" colspan=2>{{ $credito_propuesta ? $credito_propuesta->solvencia_cuota_total_res_coment : '' }}</td>
+                  <td class="doble-subrayado">Se exije &lt; 100% conforme política</td>
+                </tr>
                 @if($users_prestamo->idfuenteingreso == 1)
                 <tr>
                   <th colspan=7 style="text-align: left"><b>RENTABILIDAD</b></th>
@@ -1288,14 +1299,6 @@
                   <td><div class="cuadro-input">Usualmente &lt;1 (maximo considerado 0.85). Particularidad; en los giros de alta rotación ó servicios puede ser >1</div></td>
                 </tr>
                 @endif
-                <tr>
-                  <td class="doble-subrayado">Cuota total/excedente total</td>
-                  <td class="doble-subrayado">%</td>
-                  <td class="doble-subrayado campo_numero">{{ $solvencia_cuota_total }}</td>
-                  <td class="doble-subrayado">{{ $solvencia_cuota_total_res }}</td>
-                  <td class="doble-subrayado" colspan=2>{{ $credito_propuesta ? $credito_propuesta->solvencia_cuota_total_res_coment : '' }}</td>
-                  <td class="doble-subrayado">Se exije &lt; 100% conforme política</td>
-                </tr>
                 @if($users_prestamo->idfuenteingreso == 1)
                 <tr>
                   <td>Préstamo / capital de trabajo Neto</td>

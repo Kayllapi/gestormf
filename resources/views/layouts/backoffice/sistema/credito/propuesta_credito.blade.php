@@ -1242,7 +1242,7 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <th colspan=7><b>CAPACIDAD DE PAGO</b></th>
+                    <th colspan=7 style="border-top: 1px solid white;"><b>CAPACIDAD DE PAGO</b></th>
                   </tr>
                   <tr>
                     <td class="doble-subrayado">Cuota total/excedente total</td>

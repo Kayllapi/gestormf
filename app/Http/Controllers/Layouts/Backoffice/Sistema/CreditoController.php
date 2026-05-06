@@ -3188,10 +3188,12 @@ class CreditoController extends Controller
 
         $credito_cuantitativa_ingreso_adicional = DB::table('credito_cuantitativa_ingreso_adicional')
                                                     ->leftJoin('giro_economico_evaluacion','giro_economico_evaluacion.id','credito_cuantitativa_ingreso_adicional.idgiro_economico_evaluacion_adicional')
+                                                    ->join('tipo_giro_economico','tipo_giro_economico.id','giro_economico_evaluacion.idtipo_giro_economico')
                                                     ->where('credito_cuantitativa_ingreso_adicional.idcredito',$id)
                                                     ->select(
                                                       'credito_cuantitativa_ingreso_adicional.*',
-                                                      'giro_economico_evaluacion.nombre as nombreingresoadicional'
+                                                      'giro_economico_evaluacion.nombre as nombreingresoadicional',
+                                                        'tipo_giro_economico.nombre as tipogiroeconomico_nombre',
                                                     )
                                                     ->first();
 
@@ -3351,10 +3353,12 @@ class CreditoController extends Controller
 
         $credito_cuantitativa_ingreso_adicional = DB::table('credito_cuantitativa_ingreso_adicional')
                                                     ->leftJoin('giro_economico_evaluacion','giro_economico_evaluacion.id','credito_cuantitativa_ingreso_adicional.idgiro_economico_evaluacion_adicional')
+                                                    ->join('tipo_giro_economico','tipo_giro_economico.id','giro_economico_evaluacion.idtipo_giro_economico')
                                                     ->where('credito_cuantitativa_ingreso_adicional.idcredito',$id)
                                                     ->select(
                                                       'credito_cuantitativa_ingreso_adicional.*',
-                                                      'giro_economico_evaluacion.nombre as nombreingresoadicional'
+                                                      'giro_economico_evaluacion.nombre as nombreingresoadicional',
+                                                      'tipo_giro_economico.nombre as tipogiroeconomico_nombre',
                                                     )
                                                     ->first();
         

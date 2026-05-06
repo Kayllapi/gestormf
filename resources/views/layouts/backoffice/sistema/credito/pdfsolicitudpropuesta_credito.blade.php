@@ -224,17 +224,24 @@
           </tr>
           @if($users_prestamo->idfuenteingreso == 1)
             <tr>
+              <td></td>
+              <td class="border-td">
+                @if($credito->idevaluacion == 1)
+                {{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->nombretipo_giro_economico : '' }}
+                @else
+                {{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->nombretipo_giro_economico : '' }}
+                @endif
+              </td>
+            </tr>
+            <tr>
               <td>GIRO ECONÓMICO:</td>
               <td class="border-td">
-                
                 @if($credito->idevaluacion == 1)
                 {{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->nombregiro_economico_evaluacion : '' }}
                 @else
                 {{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->nombregiro_economico_evaluacion : '' }}
                 @endif
-                
-            </td>
-              
+              </td>
             </tr>
           @endif
         </table>
@@ -276,6 +283,12 @@
           </table>
           @if($credito->idevaluacion == 2) {{-- Completo --}}
             <table style="width:100%; margin-top: 80px;">
+              <tr>
+                <td>&nbsp;</td>
+                <td class="border-td">
+                  {{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->tipogiroeconomico_nombre : '' }}
+                </td>
+              </tr>
               <tr>
                 <td>GIRO ECONÓMICO ADICONAL:</td>
                 <td class="border-td">

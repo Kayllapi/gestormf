@@ -783,7 +783,7 @@
                 <td colspan=3 style="background-color: #efefef;"></td>
               </tr>
               <tr>
-                <td style="border: 1px solid #a6a9ab;width:640px">CUOTA TOTAL/EXCEDENTE TOTAL. Antes de Propuesta (%)</td>
+                <td style="border: 1px solid #a6a9ab;width:650px">CUOTA TOTAL/EXCEDENTE TOTAL. Antes de Propuesta (%)</td>
                 <td style="border: 1px solid #a6a9ab;width:100px;"><input type="text" class="form-control campo_moneda" disabled value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->excedente_antes_propuesta : '0.00' }}" id="excedente_antes_propuesta"></td>
                 <td style="width:50px;"></td>
                 <td style="width:200px;"></td>
@@ -797,7 +797,23 @@
                 <td></td>
               </tr>
               <tr>
-                <td style="border: 1px solid #a6a9ab;">CUOTA TOTAL/EXCEDENTE TOTAL. En Propuesta CON Deducción en Ampliacion o Compra de deuda (%)</td>
+                <td style="border: 1px solid #a6a9ab;">
+                  CUOTA TOTAL/EXCEDENTE TOTAL. En Propuesta CON Deducción en Ampliacion o Compra de deuda (%) 
+                  <span class="popover-hover"
+                    data-bs-toggle='popover' 
+                    data-bs-placement='top' 
+                    data-bs-content='(Gastos Financieros Total+Cuota Propuesta) - (cuota de ampliación/compra de deuda)
+                    ________________________________________
+                    (Excedente Mensual+(cuota de ampliación/compra de deuda)+Gasto Financiero Total -(cuota de ampliación/compra de deuda) )'>
+                    <i class="" style="font-size: 16px;
+                      font-weight: bold;
+                      color: #d43c49;
+                      position: relative;
+                      float: right;
+                      font-style: normal !important;
+                      transform: rotate(180deg);">i</i>
+                  </span>
+                </td>
                 <td style="border: 1px solid #a6a9ab;">
                   <input type="text"
                     class="form-control campo_moneda"
@@ -825,10 +841,12 @@
               <tr>
                 <td>Rentabilidad del negocio</td>
                 <td style="width:50px;">
-                  <span class=""
+                  <span class="popover-hover"
                     data-bs-toggle='popover' 
                     data-bs-placement='right' 
-                    data-bs-content='formula'>
+                    data-bs-content='U. Neta
+                    ________________________________________
+                    (Act Cnte - Psvo Cnte)'>
                     <i class="" style="font-size: 16px;
                       font-weight: bold;
                       color: #d43c49;
@@ -852,10 +870,12 @@
               <tr>
                 <td>Rentabilidad de la unidad familiar</td>
                 <td>
-                  <span class=""
+                  <span class="popover-hover"
                     data-bs-toggle='popover' 
                     data-bs-placement='right' 
-                    data-bs-content='formula'>
+                    data-bs-content='(Uneta+Ingreso Adic. fijo y Ot. Negoc.)
+                    ________________________________________
+                    Gasto Familiar'>
                     <i class="" style="font-size: 16px;
                       font-weight: bold;
                       color: #d43c49;
@@ -879,10 +899,12 @@
               <tr>
                 <td>Rentabilidad patrimonial (ROE)</td>
                 <td>
-                  <span class=""
+                  <span class="popover-hover"
                     data-bs-toggle='popover' 
                     data-bs-placement='right' 
-                    data-bs-content='formula'>
+                    data-bs-content='Uneta
+                    ________________________________________
+                    Patrimonio'>
                     <i class="" style="font-size: 16px;
                       font-weight: bold;
                       color: #d43c49;
@@ -906,10 +928,12 @@
               <tr>
                 <td>Rentabilidad de los activos (ROA)</td>
                 <td>
-                  <span class=""
+                  <span class="popover-hover"
                     data-bs-toggle='popover' 
                     data-bs-placement='right' 
-                    data-bs-content='formula'>
+                    data-bs-content='Uneta
+                    ________________________________________
+                    Activo Total'>
                     <i class="" style="font-size: 16px;
                       font-weight: bold;
                       color: #d43c49;
@@ -933,10 +957,12 @@
               <tr>
                 <td>Rentabilidad de las ventas (ROS)</td>
                 <td>
-                  <span class=""
+                  <span class="popover-hover"
                     data-bs-toggle='popover' 
                     data-bs-placement='right' 
-                    data-bs-content='formula'>
+                    data-bs-content='Uneta
+                    ________________________________________
+                    Ventas'>
                     <i class="" style="font-size: 16px;
                       font-weight: bold;
                       color: #d43c49;
@@ -960,10 +986,12 @@
               <tr>
                 <td>Préstamo / capital de trabajo Neto</td>
                 <td>
-                  <span class=""
+                  <span class="popover-hover"
                     data-bs-toggle='popover' 
                     data-bs-placement='right' 
-                    data-bs-content='formula'>
+                    data-bs-content='Propuesta de préstamo
+                    ________________________________________
+                    Cap. De trabajo'>
                     <i class="" style="font-size: 16px;
                       font-weight: bold;
                       color: #d43c49;
@@ -987,10 +1015,10 @@
               <tr>
                 <td>Capital de trabajo</td>
                 <td>
-                  <span class=""
+                  <span class="popover-hover"
                     data-bs-toggle='popover' 
                     data-bs-placement='right' 
-                    data-bs-content='formula'>
+                    data-bs-content='Activo Cnte-Pasivo Cnte'>
                     <i class="" style="font-size: 16px;
                       font-weight: bold;
                       color: #d43c49;
@@ -1014,10 +1042,12 @@
               <tr>
                 <td>Liquidez</td>
                 <td>
-                  <span class=""
+                  <span class="popover-hover"
                     data-bs-toggle='popover' 
                     data-bs-placement='right' 
-                    data-bs-content='formula'>
+                    data-bs-content='Activo Cnte
+                    ________________________________________
+                    Pasico Cnte'>
                     <i class="" style="font-size: 16px;
                       font-weight: bold;
                       color: #d43c49;
@@ -1167,10 +1197,12 @@
               <tr>
                 <td>Liquidez Ácida</td>
                 <td style="width:50px;">
-                  <span class=""
+                  <span class="popover-hover"
                     data-bs-toggle='popover' 
                     data-bs-placement='right' 
-                    data-bs-content='formula'>
+                    data-bs-content='(Activo Cnte - Inventario)
+                    ________________________________________
+                    Pasivo Cnte'>
                     <i class="" style="font-size: 16px;
                       font-weight: bold;
                       color: #d43c49;
@@ -1194,10 +1226,12 @@
               <tr>
                 <td>Endeudamiento patrimonial actual</td>
                 <td>
-                  <span class=""
+                  <span class="popover-hover"
                     data-bs-toggle='popover' 
                     data-bs-placement='right' 
-                    data-bs-content='formula'>
+                    data-bs-content='Psvo Total
+                    ________________________________________
+                    Patrimonio'>
                     <i class="" style="font-size: 16px;
                       font-weight: bold;
                       color: #d43c49;
@@ -1221,10 +1255,12 @@
               <tr>
                 <td>Endeudamiento Patrim. con propuesta</td>
                 <td>
-                  <span class=""
+                  <span class="popover-hover"
                     data-bs-toggle='popover' 
                     data-bs-placement='right' 
-                    data-bs-content='formula'>
+                    data-bs-content='  (Total Pasivo + Deuda Propuesta) -( Saldo Ampliación/compra de deuda)
+                    ________________________________________
+                    Patrimonio'>
                     <i class="" style="font-size: 16px;
                       font-weight: bold;
                       color: #d43c49;
@@ -1249,10 +1285,12 @@
               <tr>
                 <td>Plazo prom.rotación de invent.</td>
                 <td>
-                  <span class=""
+                  <span class="popover-hover"
                     data-bs-toggle='popover' 
                     data-bs-placement='right' 
-                    data-bs-content='formula'>
+                    data-bs-content='Inventario
+                    ________________________________________
+                    Costo de Venta o producción X 30'>
                     <i class="" style="font-size: 16px;
                       font-weight: bold;
                       color: #d43c49;
@@ -1276,10 +1314,12 @@
               <tr>
                 <td>Plazo promedio de cobranza</td>
                 <td>
-                  <span class=""
+                  <span class="popover-hover"
                     data-bs-toggle='popover' 
                     data-bs-placement='right' 
-                    data-bs-content='formula'>
+                    data-bs-content='Cuentas por Cobrar a Clientes
+                    ________________________________________
+                    Ventas a crédito del mes X 30'>
                     <i class="" style="font-size: 16px;
                       font-weight: bold;
                       color: #d43c49;
@@ -1303,10 +1343,12 @@
               <tr>
                 <td>Plazo promedio de pago</td>
                 <td>
-                  <span class=""
+                  <span class="popover-hover"
                     data-bs-toggle='popover' 
                     data-bs-placement='right' 
-                    data-bs-content='formula'>
+                    data-bs-content='cuentas por pagar a proveedores
+                    ________________________________________
+                    Compras al credito del mes)X30'>
                     <i class="" style="font-size: 16px;
                       font-weight: bold;
                       color: #d43c49;
@@ -1376,6 +1418,23 @@
       border-color: #585858 !important;
   }
 </style>
+<script>
+  // const el = document.getElementById('infoPopover')
+  // const popover = new bootstrap.Popover(el, { trigger: 'manual' })
+
+  // el.addEventListener('mouseenter', () => popover.show())
+  // el.addEventListener('mouseleave', () => popover.hide())
+
+  document.querySelectorAll('.popover-hover').forEach(el => {
+    const popover = new bootstrap.Popover(el, {
+        trigger: 'manual',
+        // placement: 'right'
+    });
+
+    el.addEventListener('mouseenter', () => popover.show());
+    el.addEventListener('mouseleave', () => popover.hide());
+  });
+</script>
 <script>
   valida_input_vacio();
   $('input[valida_input_vacio]').on('blur', function() {

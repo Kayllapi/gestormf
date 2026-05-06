@@ -142,7 +142,7 @@
             </div>
           </div>
           <div class="row">
-            <label class="col-sm-4 col-form-label" style="text-align: right;">CONDICIÓN DE VIVIENDA/LOCAL:</label>
+            <label class="col-sm-4 col-form-label" style="text-align: right;">CONDIC. DE VIVIENDA/LOCAL:</label>
             <div class="col-sm-8">
               <input type="text" step="any" class="form-control" value="{{ strtoupper($users_prestamo->db_idcondicionviviendalocal) }}" disabled>
             </div>
@@ -221,7 +221,7 @@
             </div>
           @endif
           @if($credito->idevaluacion==2) {{-- Completo --}}
-            <div class="row">
+            <div class="row mt-1">
               <label class="col-sm-4 col-form-label" style="text-align: right;">GIRO ECONÓMICO ADICIONAL:</label>
               <div class="col-sm-8" style="display: flex; gap: 5px;">
                 <input type="text" step="any" class="form-control" style="width: 100px;" value="{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->tipogiroeconomico_nombre : '' }}" disabled>

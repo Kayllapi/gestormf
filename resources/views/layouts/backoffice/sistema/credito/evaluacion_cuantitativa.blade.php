@@ -402,7 +402,19 @@
                 <td analisis_horizontal><u><input type="text" class="form-control campo_moneda fw-bold" value="0.00" id="analisis_horizontal_pasivo_corriente" disabled></u></td>
               </tr>
               <tr>
-                <td rowspan=2>Pasivo Fin. a Largo.Plazo</td>
+                <td rowspan=2>
+                  Pasivo Fin. a Largo.Plazo
+                  <span class="popover-hover"
+                    data-bs-content=' No se considera  Créditos de Consumo ni Hip. Para Vivienda'>
+                    <i class="" style="font-size: 16px;
+                      font-weight: bold;
+                      color: #d43c49;
+                      position: relative;
+                      float: none;
+                      font-style: normal !important;
+                      transform: rotate(180deg);">i</i>
+                  </span>
+                </td>
                 <td>E. Reguladas</td>
                 <td evaluacion_anterior><input type="text" class="form-control campo_moneda" value="{{ number_format(encontrar_valor('comercial_er_lplazo', $resumen_deuda_anterior) + encontrar_valor('mes_er_lplazo', $resumen_deuda_anterior), 2, '.', '') }}" id="evaluacion_actual_pasivo_largo_regulada_anterior" disabled></td>
                 <td evaluacion_actual><input type="text" class="form-control campo_moneda" value="{{ number_format(encontrar_valor('comercial_er_lplazo', $resumen_deuda) + encontrar_valor('mes_er_lplazo', $resumen_deuda), 2, '.', '') }}" id="evaluacion_actual_pasivo_largo_regulada" disabled></td>

@@ -221,7 +221,7 @@
             </tbody>
           </table>
           @if($credito->idevaluacion==2) {{-- Completo --}}
-            <div class="row mt-1">
+            <div class="row mt-1" style="margin-top: 35px !important;">
               <label class="col-sm-4 col-form-label" style="text-align: right;">GIRO ECONÓMICO ADICIONAL:</label>
               <div class="col-sm-8" style="display: flex; gap: 5px;">
                 <input type="text" step="any" class="form-control" style="width: 100px;" value="{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->tipogiroeconomico_nombre : '' }}" disabled>

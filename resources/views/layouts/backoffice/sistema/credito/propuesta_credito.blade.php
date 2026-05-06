@@ -207,9 +207,9 @@
             </tbody>
           </table>
           @if($users_prestamo->idfuenteingreso == 1)
-            <div class="row">
+            <div class="row mt-1">
               <label class="col-sm-4 col-form-label" style="text-align: right;">GIRO ECONÓMICO:</label>
-              <div class="col-sm-8" style="display: flex;">
+              <div class="col-sm-8" style="display: flex; gap: 5px;">
                 @if($credito->idevaluacion == 1)
                   <input type="text" step="any" class="form-control" style="width: 100px;" value="{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->nombretipo_giro_economico : '' }}" disabled>
                   <input type="text" step="any" class="form-control" value="{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->nombregiro_economico_evaluacion : '' }}" disabled>
@@ -223,7 +223,7 @@
           @if($credito->idevaluacion==2) {{-- Completo --}}
             <div class="row">
               <label class="col-sm-4 col-form-label" style="text-align: right;">GIRO ECONÓMICO ADICIONAL:</label>
-              <div class="col-sm-8" style="display: flex;">
+              <div class="col-sm-8" style="display: flex; gap: 5px;">
                 <input type="text" step="any" class="form-control" style="width: 100px;" value="{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->tipogiroeconomico_nombre : '' }}" disabled>
                 <input type="text" step="any" class="form-control" value="{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->nombreingresoadicional : '' }}" disabled>
               </div>

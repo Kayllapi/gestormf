@@ -1049,12 +1049,12 @@
                 </td>
               </tr>
               <tr>
-                <td>Préstamo / capital de trabajo Neto</td>
-                <td>
+                <td>Liquidez Ácida</td>
+                <td style="width:50px;">
                   <span class="popover-hover"
-                    data-bs-content='Propuesta de préstamo
+                    data-bs-content='(Activo Cnte - Inventario)
                     ________________________________________
-                    Cap. De trabajo'>
+                    Pasivo Cnte'>
                     <i class="" style="font-size: 16px;
                       font-weight: bold;
                       color: #d43c49;
@@ -1065,21 +1065,23 @@
                   </span>
                 </td>
                 <td>
-                  %
+                  Veces
                 </td>
-                <td>
+                <td style="width:280px;">
                   <input type="text"
                     class="form-control campo_moneda"
-                    value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_prestamo : '0.00' }}"
-                    id="ratio_re_prestamo"
+                    value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_liquidez_acida : '0.00' }}"
+                    id="ratio_re_liquidez_acida"
                     disabled>
                 </td>
               </tr>
               <tr>
-                <td>Capital de trabajo</td>
+                <td>Endeudamiento Patrim. con propuesta</td>
                 <td>
                   <span class="popover-hover"
-                    data-bs-content='Activo Cnte-Pasivo Cnte'>
+                    data-bs-content='  (Total Pasivo + Deuda Propuesta) -( Saldo Ampliación/compra de deuda)
+                    ________________________________________
+                    Patrimonio'>
                     <i class="" style="font-size: 16px;
                       font-weight: bold;
                       color: #d43c49;
@@ -1090,13 +1092,13 @@
                   </span>
                 </td>
                 <td>
-                  S/
+                  Veces
                 </td>
                 <td>
                   <input type="text"
                     class="form-control campo_moneda"
-                    value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_capital : '0.00' }}"
-                    id="ratio_re_capital"
+                    value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_endeudamiento_propuesta : '0.00' }}"
+                    id="ratio_re_endeudamiento_propuesta"
                     disabled>
                 </td>
               </tr>
@@ -1227,12 +1229,12 @@
           <table class="table">
             <tbody>
               <tr>
-                <td>Liquidez Ácida</td>
-                <td style="width:50px;">
+                <td>Préstamo / capital de trabajo Neto</td>
+                <td>
                   <span class="popover-hover"
-                    data-bs-content='(Activo Cnte - Inventario)
+                    data-bs-content='Propuesta de préstamo
                     ________________________________________
-                    Pasivo Cnte'>
+                    Cap. De trabajo'>
                     <i class="" style="font-size: 16px;
                       font-weight: bold;
                       color: #d43c49;
@@ -1243,13 +1245,38 @@
                   </span>
                 </td>
                 <td>
-                  Veces
+                  %
                 </td>
-                <td style="width:280px;">
+                <td>
                   <input type="text"
                     class="form-control campo_moneda"
-                    value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_liquidez_acida : '0.00' }}"
-                    id="ratio_re_liquidez_acida"
+                    value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_prestamo : '0.00' }}"
+                    id="ratio_re_prestamo"
+                    disabled>
+                </td>
+              </tr>
+              <tr>
+                <td>Capital de trabajo</td>
+                <td>
+                  <span class="popover-hover"
+                    data-bs-content='Activo Cnte-Pasivo Cnte'>
+                    <i class="" style="font-size: 16px;
+                      font-weight: bold;
+                      color: #d43c49;
+                      position: relative;
+                      float: inline-start;
+                      font-style: normal !important;
+                      transform: rotate(180deg);">i</i>
+                  </span>
+                </td>
+                <td>
+                  S/
+                </td>
+                <td>
+                  <input type="text"
+                    class="form-control campo_moneda"
+                    value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_capital : '0.00' }}"
+                    id="ratio_re_capital"
                     disabled>
                 </td>
               </tr>
@@ -1280,34 +1307,6 @@
                     disabled>
                 </td>
               </tr>
-              <tr>
-                <td>Endeudamiento Patrim. con propuesta</td>
-                <td>
-                  <span class="popover-hover"
-                    data-bs-content='  (Total Pasivo + Deuda Propuesta) -( Saldo Ampliación/compra de deuda)
-                    ________________________________________
-                    Patrimonio'>
-                    <i class="" style="font-size: 16px;
-                      font-weight: bold;
-                      color: #d43c49;
-                      position: relative;
-                      float: inline-start;
-                      font-style: normal !important;
-                      transform: rotate(180deg);">i</i>
-                  </span>
-                </td>
-                <td>
-                  Veces
-                </td>
-                <td>
-                  <input type="text"
-                    class="form-control campo_moneda"
-                    value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_endeudamiento_propuesta : '0.00' }}"
-                    id="ratio_re_endeudamiento_propuesta"
-                    disabled>
-                </td>
-              </tr>
-              
               <tr>
                 <td>Plazo prom.rotación de invent.</td>
                 <td>

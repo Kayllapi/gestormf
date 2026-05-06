@@ -222,6 +222,21 @@
             <td>TIPO DE INGRESO PRINCIPAL:</td>
             <td class="border-td">{{ $users_prestamo->idfuenteingreso == 1 ? 'INDEPENDIENTE' : 'DEPENDIENTE' }}</td>
           </tr>
+          @if($users_prestamo->idfuenteingreso == 1)
+            <tr>
+              <td>GIRO ECONÓMICO:</td>
+              <td class="border-td">
+                
+                @if($credito->idevaluacion == 1)
+                {{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->nombregiro_economico_evaluacion : '' }}
+                @else
+                {{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->nombregiro_economico_evaluacion : '' }}
+                @endif
+                
+            </td>
+              
+            </tr>
+          @endif
         </table>
       </div>
       <div class="col" style="width:361px;">
@@ -259,23 +274,16 @@
               </tr>
             </tbody>
           </table>
-          <table style="width:100%;">
-            @if($users_prestamo->idfuenteingreso == 1)
+          @if($credito->idevaluacion == 2) {{-- Completo --}}
+            <table style="width:100%; margin-top: 80px;">
               <tr>
                 <td>GIRO ECONÓMICO ADICONAL:</td>
                 <td class="border-td">
-                  
-                  @if($credito->idevaluacion == 1)
-                  {{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->nombregiro_economico_evaluacion : '' }}
-                  @else
-                  {{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->nombregiro_economico_evaluacion : '' }}
-                  @endif
-                  
-              </td>
-                
+                  {{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->nombreingresoadicional : '' }}
+                </td>
               </tr>
-              @endif
-          </table>
+            </table>
+          @endif
       </div>
     </div>
     <span class="badge">PROPUESTA DE CRÉDITO:</span>

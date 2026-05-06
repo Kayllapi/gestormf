@@ -153,6 +153,18 @@
               <input type="text" step="any" class="form-control" value="{{ $users_prestamo->idfuenteingreso == 1 ? 'INDEPENDIENTE' : 'DEPENDIENTE' }}" disabled>
             </div>
           </div>
+          @if($users_prestamo->idfuenteingreso == 1)
+          <div class="row">
+            <label class="col-sm-4 col-form-label" style="text-align: right;">GIRO ECONÓMICO:</label>
+            <div class="col-sm-8">
+              @if($credito->idevaluacion == 1)
+              <input type="text" step="any" class="form-control" value="{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->nombregiro_economico_evaluacion : '' }}" disabled>
+              @else
+              <input type="text" step="any" class="form-control" value="{{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->nombregiro_economico_evaluacion : '' }}" disabled>
+              @endif
+            </div>
+          </div>
+          @endif
         </div>
         <div class="col-sm-12 col-md-6">
           <?php
@@ -206,17 +218,13 @@
               </tr>
             </tbody>
           </table>
-          @if($users_prestamo->idfuenteingreso == 1)
-          <div class="row" style="margin-top: 20px !important;">
-            <label class="col-sm-4 col-form-label" style="text-align: right;">GIRO ECONÓMICO ADICIONAL:</label>
-            <div class="col-sm-8">
-              @if($credito->idevaluacion == 1)
-              <input type="text" step="any" class="form-control" value="{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->nombregiro_economico_evaluacion : '' }}" disabled>
-              @else
-              <input type="text" step="any" class="form-control" value="{{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->nombregiro_economico_evaluacion : '' }}" disabled>
-              @endif
+          @if($credito->idevaluacion==2) {{-- Completo --}}
+            <div class="row" style="margin-top: 54px !important;">
+              <label class="col-sm-4 col-form-label" style="text-align: right;">GIRO ECONÓMICO ADICIONAL:</label>
+              <div class="col-sm-8">
+                <input type="text" step="any" class="form-control" value="{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->nombreingresoadicional : '' }}" disabled>
+              </div>
             </div>
-          </div>
           @endif
         </div>
       </div>

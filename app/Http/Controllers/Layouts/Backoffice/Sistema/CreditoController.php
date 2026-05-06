@@ -3186,6 +3186,15 @@ class CreditoController extends Controller
         
         $credito_formato_evaluacion = DB::table('credito_formato_evaluacion')->where('credito_formato_evaluacion.idcredito',$id)->first();
 
+        $credito_cuantitativa_ingreso_adicional = DB::table('credito_cuantitativa_ingreso_adicional')
+                                                    ->leftJoin('giro_economico_evaluacion','giro_economico_evaluacion.id','credito_cuantitativa_ingreso_adicional.idgiro_economico_evaluacion_adicional')
+                                                    ->where('credito_cuantitativa_ingreso_adicional.idcredito',$id)
+                                                    ->select(
+                                                      'credito_cuantitativa_ingreso_adicional.*',
+                                                      'giro_economico_evaluacion.nombre as nombreingresoadicional'
+                                                    )
+                                                    ->first();
+
         return view(sistema_view().'/credito/propuesta_credito',[
           'credito_propuesta' => $credito_propuesta,
           'credito_evaluacion_cualitativa' => $credito_evaluacion_cualitativa,
@@ -3209,6 +3218,7 @@ class CreditoController extends Controller
           'fenomenos' => $this->fenomenos,
           'calificacion_cliente' => $this->calificacion_cliente,
           'view_detalle' => $request->detalle,
+          'credito_cuantitativa_ingreso_adicional' => $credito_cuantitativa_ingreso_adicional,
         ]);
       }
       else if( $request->input('view') == 'aprobar_propuesta' ){
@@ -3338,6 +3348,15 @@ class CreditoController extends Controller
         $diasdegracia = DB::table('diasdegracia')->where('diasdegracia.nombre',$tipocredito)->first();
         
         $credito_formato_evaluacion = DB::table('credito_formato_evaluacion')->where('credito_formato_evaluacion.idcredito',$id)->first();
+
+        $credito_cuantitativa_ingreso_adicional = DB::table('credito_cuantitativa_ingreso_adicional')
+                                                    ->leftJoin('giro_economico_evaluacion','giro_economico_evaluacion.id','credito_cuantitativa_ingreso_adicional.idgiro_economico_evaluacion_adicional')
+                                                    ->where('credito_cuantitativa_ingreso_adicional.idcredito',$id)
+                                                    ->select(
+                                                      'credito_cuantitativa_ingreso_adicional.*',
+                                                      'giro_economico_evaluacion.nombre as nombreingresoadicional'
+                                                    )
+                                                    ->first();
         
         $pdf = PDF::loadView(sistema_view().'/credito/pdfsolicitudpropuesta_credito',[
           'credito_propuesta' => $credito_propuesta,
@@ -3362,6 +3381,7 @@ class CreditoController extends Controller
           'fenomenos' => $this->fenomenos,
           'calificacion_cliente' => $this->calificacion_cliente,
           'tipo' => $request->tipo,
+          'credito_cuantitativa_ingreso_adicional' => $credito_cuantitativa_ingreso_adicional,
         ]); 
         
         $pdf->setPaper('A4');

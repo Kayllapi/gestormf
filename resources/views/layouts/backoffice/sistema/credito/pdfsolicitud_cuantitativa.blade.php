@@ -873,8 +873,8 @@
       </div>
     </div>
     <div class="row" >
-      <div class="col" style="width:100%;">
-        <span class="badge subtitle">3.5 COMENTARIOS DE ASPECTOS RESALTANTES Y ANÁLISIS</span>
+      <div class="col" style="width:100%; margin-top:-8px;">
+        <span class="badge subtitle m-0">3.5 COMENTARIOS DE ASPECTOS RESALTANTES Y ANÁLISIS</span>
         <div class="row">
           <textarea style="border:solid 1px #000000;"  id="fortalezas_negocio" class="form-control">{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->comentario : '' }}</textarea>
         </div>

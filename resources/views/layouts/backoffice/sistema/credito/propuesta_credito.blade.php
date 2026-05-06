@@ -1379,7 +1379,7 @@
                     
                   @endif
                   <tr>
-                    <th colspan=7><b>LIMITES</b></th>
+                    <th colspan=7><b>LÍMITES</b></th>
                   </tr>
                   <tr>
                     <td>Financiamiento por VRU</td>

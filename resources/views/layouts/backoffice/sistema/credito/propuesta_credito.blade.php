@@ -155,7 +155,7 @@
           </div>
           @if($users_prestamo->idfuenteingreso == 1)
           <div class="row">
-            <label class="col-sm-4 col-form-label" style="text-align: right;">GIRO ECONÓMICO:</label>
+            <label class="col-sm-4 col-form-label" style="text-align: right;">GIRO ECONÓMICO ADICIONAL:</label>
             <div class="col-sm-8">
               @if($credito->idevaluacion == 1)
               <input type="text" step="any" class="form-control" value="{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->nombregiro_economico_evaluacion : '' }}" disabled>

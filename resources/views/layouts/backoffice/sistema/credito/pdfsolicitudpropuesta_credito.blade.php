@@ -224,7 +224,7 @@
           </tr>
           @if($users_prestamo->idfuenteingreso == 1)
           <tr>
-            <td>GIRO ECONÓMICO:</td>
+            <td>GIRO ECONÓMICO ADICONAL:</td>
             <td class="border-td">
               
               @if($credito->idevaluacion == 1)

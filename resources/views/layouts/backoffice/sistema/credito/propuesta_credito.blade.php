@@ -1220,6 +1220,17 @@
             $res_ratios_venta_cuota_mensual_res_coment = "NO VIABLE con ÚLTIMA opción, para cumplir cuotas de pago a muy corto plazo";
         }
         // Fila 07
+
+        $color = '';
+        $estado_credito = '';
+        // Estado, en COMPLETO
+        if ($credito_evaluacion_cuantitativa && $credito_evaluacion_cuantitativa->estado_credito == 'CREDITO VIABLE') {
+          $color = 'bg-success';
+          $estado_credito = $credito_evaluacion_cuantitativa->estado_credito;
+        }elseif ($credito_evaluacion_cuantitativa && $credito_evaluacion_cuantitativa->estado_credito == 'CREDITO NO VIABLE') {
+          $color = 'bg-danger';
+          $estado_credito = $credito_evaluacion_cuantitativa->estado_credito;
+        }
       @endphp
       @if ($users_prestamo->idfuenteingreso == 1) {{-- Independiente --}}
         {{-- RESULTADOS DE EVALUACIÓN --}}
@@ -1250,9 +1261,17 @@
                     <td><input type="text" class="form-control doble-subrayado campo_moneda" style="{{$stylebackground_solvencia_cuota_total}}" disabled id="solvencia_cuota_total" value="{{ $solvencia_cuota_total }}"></td>
                     <td><div class="cuadro-input doble-subrayado" style="{{$stylebackground_solvencia_cuota_total}}">{{ $solvencia_cuota_total_res }}</div></td>
                     <td colspan=2>
-                      <input type="text" style="{{$stylebackground_solvencia_cuota_total}}" {{ $view_detalle=='false' ? 'disabled' : '' }}
-                        class="form-control color_cajatexto doble-subrayado" id="solvencia_cuota_total_res_coment" 
-                        value="{{ $credito_propuesta ? $credito_propuesta->solvencia_cuota_total_res_coment : '' }}">
+                      {{-- <input type="text"
+                        style="{{$stylebackground_solvencia_cuota_total}}"
+                        {{ $view_detalle=='false' ? 'disabled' : '' }}
+                        class="form-control color_cajatexto doble-subrayado"
+                        id="solvencia_cuota_total_res_coment" 
+                        value="{{ $credito_propuesta ? $credito_propuesta->solvencia_cuota_total_res_coment : '' }}"> --}}
+                      <input type="text"
+                        class="form-control text-center {{ $color }}"
+                        value="{{ $estado_credito }}"
+                        disabled
+                        id="estado_credito">
                     </td>
                     <td><div class="cuadro-input doble-subrayado" > Se exije < 100% conforme política</div></td>
                   </tr>

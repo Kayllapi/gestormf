@@ -1075,33 +1075,6 @@
                     disabled>
                 </td>
               </tr>
-              <tr>
-                <td>Endeudamiento Patrim. con propuesta</td>
-                <td>
-                  <span class="popover-hover"
-                    data-bs-content='  (Total Pasivo + Deuda Propuesta) -( Saldo Ampliación/compra de deuda)
-                    ________________________________________
-                    Patrimonio'>
-                    <i class="" style="font-size: 16px;
-                      font-weight: bold;
-                      color: #d43c49;
-                      position: relative;
-                      float: inline-start;
-                      font-style: normal !important;
-                      transform: rotate(180deg);">i</i>
-                  </span>
-                </td>
-                <td>
-                  Veces
-                </td>
-                <td>
-                  <input type="text"
-                    class="form-control campo_moneda"
-                    value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_endeudamiento_propuesta : '0.00' }}"
-                    id="ratio_re_endeudamiento_propuesta"
-                    disabled>
-                </td>
-              </tr>
             </tbody>
           </table>
           <script>
@@ -1229,6 +1202,60 @@
           <table class="table">
             <tbody>
               <tr>
+                <td>Endeudamiento patrimonial actual</td>
+                <td>
+                  <span class="popover-hover"
+                    data-bs-content='Psvo Total
+                    ________________________________________
+                    Patrimonio'>
+                    <i class="" style="font-size: 16px;
+                      font-weight: bold;
+                      color: #d43c49;
+                      position: relative;
+                      float: inline-start;
+                      font-style: normal !important;
+                      transform: rotate(180deg);">i</i>
+                  </span>
+                </td>
+                <td>
+                  Veces
+                </td>
+                <td>
+                  <input type="text"
+                    class="form-control campo_moneda"
+                    value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_endeudamiento_actual : '0.00' }}"
+                    id="ratio_re_endeudamiento_actual"
+                    disabled>
+                </td>
+              </tr>
+              <tr>
+                <td>Endeudamiento Patrim. con propuesta</td>
+                <td>
+                  <span class="popover-hover"
+                    data-bs-content='  (Total Pasivo + Deuda Propuesta) -( Saldo Ampliación/compra de deuda)
+                    ________________________________________
+                    Patrimonio'>
+                    <i class="" style="font-size: 16px;
+                      font-weight: bold;
+                      color: #d43c49;
+                      position: relative;
+                      float: inline-start;
+                      font-style: normal !important;
+                      transform: rotate(180deg);">i</i>
+                  </span>
+                </td>
+                <td>
+                  Veces
+                </td>
+                <td>
+                  <input type="text"
+                    class="form-control campo_moneda"
+                    value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_endeudamiento_propuesta : '0.00' }}"
+                    id="ratio_re_endeudamiento_propuesta"
+                    disabled>
+                </td>
+              </tr>
+              <tr>
                 <td>Préstamo / capital de trabajo Neto</td>
                 <td>
                   <span class="popover-hover"
@@ -1277,33 +1304,6 @@
                     class="form-control campo_moneda"
                     value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_capital : '0.00' }}"
                     id="ratio_re_capital"
-                    disabled>
-                </td>
-              </tr>
-              <tr>
-                <td>Endeudamiento patrimonial actual</td>
-                <td>
-                  <span class="popover-hover"
-                    data-bs-content='Psvo Total
-                    ________________________________________
-                    Patrimonio'>
-                    <i class="" style="font-size: 16px;
-                      font-weight: bold;
-                      color: #d43c49;
-                      position: relative;
-                      float: inline-start;
-                      font-style: normal !important;
-                      transform: rotate(180deg);">i</i>
-                  </span>
-                </td>
-                <td>
-                  Veces
-                </td>
-                <td>
-                  <input type="text"
-                    class="form-control campo_moneda"
-                    value="{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_endeudamiento_actual : '0.00' }}"
-                    id="ratio_re_endeudamiento_actual"
                     disabled>
                 </td>
               </tr>

@@ -827,17 +827,22 @@
               <td width="50px">Veces</td>
               <td width="50px" class="campo_moneda">{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_liquidez_acida : '0.00' }}</td>
             </tr>
-            <tr>
-              <td>Endeudamiento Patrim. con propuesta</td>
-              <td>Veces</td>
-              <td class="campo_moneda">{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_endeudamiento_propuesta : '0.00' }}</td>
-            </tr>
           </tbody>
         </table>
       </div>  
       <div class="col">
         <table class="table">
           <tbody>
+            <tr>
+              <td>Endeudamiento patrimonial actual</td>
+              <td>Veces</td>
+              <td class="campo_moneda">{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_endeudamiento_actual : '0.00' }}</td>
+            </tr>
+            <tr>
+              <td>Endeudamiento Patrim. con propuesta</td>
+              <td>Veces</td>
+              <td class="campo_moneda">{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_endeudamiento_propuesta : '0.00' }}</td>
+            </tr>
             <tr>
               <td>Préstamo / capital de trabajo Neto</td>
               <td>%</td>
@@ -847,11 +852,6 @@
               <td>Capital de trabajo</td>
               <td>S/</td>
               <td class="campo_moneda">{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_capital : '0.00' }}</td>
-            </tr>
-            <tr>
-              <td>Endeudamiento patrimonial actual</td>
-              <td>Veces</td>
-              <td class="campo_moneda">{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_endeudamiento_actual : '0.00' }}</td>
             </tr>
             <tr>
               <td>Plazo prom.rotación de invent.</td>

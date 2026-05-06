@@ -1236,9 +1236,10 @@
         if ($credito_evaluacion_resumida && $credito_evaluacion_resumida->estado_credito_general == 'CRÉDITO VIABLE') {
           $color = 'bg-success';
           $estado_credito = $credito_evaluacion_resumida->estado_credito_general;
-        }elseif ($credito_evaluacion_resumida && $credito_evaluacion_resumida->estado_credito_general == 'CRÉDITO NO VIABLE') {
+        } elseif ($credito_evaluacion_resumida && $credito_evaluacion_resumida->estado_credito_general == 'CRÉDITO NO VIABLE') {
           $color = 'bg-danger';
           $estado_credito = $credito_evaluacion_resumida->estado_credito_general;
+          $validadar_resultado = 3;
         }
       @endphp
       @if ($users_prestamo->idfuenteingreso == 1) {{-- Independiente --}}
@@ -1670,7 +1671,10 @@
       @endif
 
       <?php
-        $excedente_propuesta_con_deduccion = $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->excedente_propuesta_con_deduccion : 0;
+        $excedente_propuesta_con_deduccion = 0;
+        if ($credito->idevaluacion == 2) { // Completa
+          $excedente_propuesta_con_deduccion = $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->excedente_propuesta_con_deduccion : 0;
+        }
         $rango_tope = configuracion($tienda->id,'rango_tope')['valor'];
         $estado_imprimir = 0;
         if ($excedente_propuesta_con_deduccion < 0) {

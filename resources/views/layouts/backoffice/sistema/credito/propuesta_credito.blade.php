@@ -1025,18 +1025,26 @@
         }
         // Fila 09
         
-        if($users_prestamo->idfuenteingreso == 2){
+        if($users_prestamo->idfuenteingreso == 2){ // Dependiente
             $solvencia_cuota_total = $credito_formato_evaluacion ? $credito_formato_evaluacion->resultado_cuota_excedente : 0;
+            $stylebackground_solvencia_cuota_total = '';
+            if ($solvencia_cuota_total <= $rango_tope_dependiente && $solvencia_cuota_total>=0) {
+              $solvencia_cuota_total_res = "No evidencia Sobreendeudamiento - Existe Cobertura";
+              $stylebackground_solvencia_cuota_total = '';
+            } else {
+                $solvencia_cuota_total_res = "Evidencia Sobreendeudamiento - No Existe Cobertura";
+                $stylebackground_solvencia_cuota_total = 'color:#e80505;';
+            }
         }else{
             $solvencia_cuota_total = $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->excedente_propuesta_con_deduccion : 0 ;
-        }
-        $stylebackground_solvencia_cuota_total = '';
-        if ($solvencia_cuota_total <= $rango_tope_dependiente && $solvencia_cuota_total>=0) { // antes estaba el $rango_menor
-          $solvencia_cuota_total_res = "No evidencia Sobreendeudamiento - Existe Cobertura";
-          $stylebackground_solvencia_cuota_total = '';
-        } else {
-            $solvencia_cuota_total_res = "Evidencia Sobreendeudamiento - No Existe Cobertura";
-            $stylebackground_solvencia_cuota_total = 'color:#e80505;';
+            $stylebackground_solvencia_cuota_total = '';
+            if ($solvencia_cuota_total <= $rango_tope && $solvencia_cuota_total>=0) {
+              $solvencia_cuota_total_res = "No evidencia Sobreendeudamiento - Existe Cobertura";
+              $stylebackground_solvencia_cuota_total = '';
+            } else {
+                $solvencia_cuota_total_res = "Evidencia Sobreendeudamiento - No Existe Cobertura";
+                $stylebackground_solvencia_cuota_total = 'color:#e80505;';
+            }
         }
         // Fila 10
         $solvencia_capital_trabajo_neto = $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_prestamo : 0;

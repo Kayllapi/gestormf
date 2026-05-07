@@ -1229,7 +1229,7 @@
             $color_completo = 'bg-success';
             $estado_credito_completo = $credito_evaluacion_cuantitativa->estado_credito;
           }elseif ($credito_evaluacion_cuantitativa && $credito_evaluacion_cuantitativa->estado_credito == 'CREDITO NO VIABLE') {
-            $color = 'bg-danger';
+            $color_completo = 'bg-danger';
             $estado_credito_completo = $credito_evaluacion_cuantitativa->estado_credito;
           }
         }

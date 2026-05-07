@@ -1223,25 +1223,29 @@
 
         $color_completo = '';
         $estado_credito_completo = '';
-        // Estado, en COMPLETO
-        if ($credito_evaluacion_cuantitativa && $credito_evaluacion_cuantitativa->estado_credito == 'CREDITO VIABLE') {
-          $color_completo = 'bg-success';
-          $estado_credito_completo = $credito_evaluacion_cuantitativa->estado_credito;
-        }elseif ($credito_evaluacion_cuantitativa && $credito_evaluacion_cuantitativa->estado_credito == 'CREDITO NO VIABLE') {
-          $color = 'bg-danger';
-          $estado_credito_completo = $credito_evaluacion_cuantitativa->estado_credito;
+        if ($credito->idevaluacion == 2) {
+          // Estado, en COMPLETO
+          if ($credito_evaluacion_cuantitativa && $credito_evaluacion_cuantitativa->estado_credito == 'CREDITO VIABLE') {
+            $color_completo = 'bg-success';
+            $estado_credito_completo = $credito_evaluacion_cuantitativa->estado_credito;
+          }elseif ($credito_evaluacion_cuantitativa && $credito_evaluacion_cuantitativa->estado_credito == 'CREDITO NO VIABLE') {
+            $color = 'bg-danger';
+            $estado_credito_completo = $credito_evaluacion_cuantitativa->estado_credito;
+          }
         }
 
         $color_resumida = '';
         $estado_credito_resumida = '';
-        // Estado, en RESUMIDA
-        if ($credito_evaluacion_resumida && $credito_evaluacion_resumida->estado_credito_general == 'CRÉDITO VIABLE') {
-          $color_resumida = 'bg-success';
-          $estado_credito_resumida = $credito_evaluacion_resumida->estado_credito_general;
-        } elseif ($credito_evaluacion_resumida && $credito_evaluacion_resumida->estado_credito_general == 'CRÉDITO NO VIABLE') {
-          $color_resumida = 'bg-danger';
-          $estado_credito_resumida = $credito_evaluacion_resumida->estado_credito_general;
-          $validadar_resultado = 3;
+        if ($credito->idevaluacion == 1) {
+          // Estado, en RESUMIDA
+          if ($credito_evaluacion_resumida && $credito_evaluacion_resumida->estado_credito_general == 'CRÉDITO VIABLE') {
+            $color_resumida = 'bg-success';
+            $estado_credito_resumida = $credito_evaluacion_resumida->estado_credito_general;
+          } elseif ($credito_evaluacion_resumida && $credito_evaluacion_resumida->estado_credito_general == 'CRÉDITO NO VIABLE') {
+            $color_resumida = 'bg-danger';
+            $estado_credito_resumida = $credito_evaluacion_resumida->estado_credito_general;
+            $validadar_resultado = 3;
+          }
         }
       @endphp
       @if ($users_prestamo->idfuenteingreso == 1) {{-- Independiente --}}

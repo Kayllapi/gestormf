@@ -1035,7 +1035,7 @@
                 $solvencia_cuota_total_res = "Evidencia Sobreendeudamiento - No Existe Cobertura";
                 $stylebackground_solvencia_cuota_total = 'color:#e80505;';
             }
-        }else{
+        }else{ // Independiente
             $solvencia_cuota_total = $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->excedente_propuesta_con_deduccion : 0 ;
             $stylebackground_solvencia_cuota_total = '';
             if ($solvencia_cuota_total <= $rango_tope && $solvencia_cuota_total>=0) {
@@ -1231,8 +1231,7 @@
 
         $color_completo = '';
         $estado_credito_completo = '';
-        if ($credito->idevaluacion == 2) {
-          // Estado, en COMPLETO
+        if ($credito->idevaluacion == 2) { // COMPLETO
           if ($credito_evaluacion_cuantitativa && $credito_evaluacion_cuantitativa->estado_credito == 'CREDITO VIABLE') {
             $color_completo = 'bg-success';
             $estado_credito_completo = $credito_evaluacion_cuantitativa->estado_credito;
@@ -1244,8 +1243,7 @@
 
         $color_resumida = '';
         $estado_credito_resumida = '';
-        if ($credito->idevaluacion == 1) {
-          // Estado, en RESUMIDA
+        if ($credito->idevaluacion == 1) { // RESUMIDA
           if ($credito_evaluacion_resumida && $credito_evaluacion_resumida->estado_credito_general == 'CRÉDITO VIABLE') {
             $color_resumida = 'bg-success';
             $estado_credito_resumida = $credito_evaluacion_resumida->estado_credito_general;
@@ -1429,8 +1427,13 @@
                     <td>%</td>
                     <td><input type="text" class="form-control campo_moneda" disabled id="limites_financiamiento_vru" value="{{ $limites_financiamiento_vru }}"></td>
                     <td><div class="cuadro-input">{{ $limites_financiamiento_vru_res }}</div></td>
-                    <td colspan=2><input type="text" {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto" id="limites_financiamiento_vru_res_coment" 
-                                        value="{{ $credito_propuesta ? $credito_propuesta->limites_financiamiento_vru_res_coment : '' }}"></td>
+                    <td colspan=2>
+                      <input type="text"
+                        {{ $view_detalle=='false' ? 'disabled' : '' }}
+                        class="form-control color_cajatexto"
+                        id="limites_financiamiento_vru_res_coment"
+                        value="{{ $credito_propuesta ? $credito_propuesta->limites_financiamiento_vru_res_coment : '' }}">
+                    </td>
                     <td></td>
                   </tr>
                   @if($credito->idevaluacion == 2 or $users_prestamo->idfuenteingreso == 2)

@@ -1221,24 +1221,26 @@
         }
         // Fila 07
 
-        $color = '';
-        $estado_credito = '';
+        $color_completo = '';
+        $estado_credito_completo = '';
         // Estado, en COMPLETO
         if ($credito_evaluacion_cuantitativa && $credito_evaluacion_cuantitativa->estado_credito == 'CREDITO VIABLE') {
-          $color = 'bg-success';
-          $estado_credito = $credito_evaluacion_cuantitativa->estado_credito;
+          $color_completo = 'bg-success';
+          $estado_credito_completo = $credito_evaluacion_cuantitativa->estado_credito;
         }elseif ($credito_evaluacion_cuantitativa && $credito_evaluacion_cuantitativa->estado_credito == 'CREDITO NO VIABLE') {
           $color = 'bg-danger';
-          $estado_credito = $credito_evaluacion_cuantitativa->estado_credito;
+          $estado_credito_completo = $credito_evaluacion_cuantitativa->estado_credito;
         }
 
+        $color_resumida = '';
+        $estado_credito_resumida = '';
         // Estado, en RESUMIDA
         if ($credito_evaluacion_resumida && $credito_evaluacion_resumida->estado_credito_general == 'CRÉDITO VIABLE') {
-          $color = 'bg-success';
-          $estado_credito = $credito_evaluacion_resumida->estado_credito_general;
+          $color_resumida = 'bg-success';
+          $estado_credito_resumida = $credito_evaluacion_resumida->estado_credito_general;
         } elseif ($credito_evaluacion_resumida && $credito_evaluacion_resumida->estado_credito_general == 'CRÉDITO NO VIABLE') {
-          $color = 'bg-danger';
-          $estado_credito = $credito_evaluacion_resumida->estado_credito_general;
+          $color_resumida = 'bg-danger';
+          $estado_credito_resumida = $credito_evaluacion_resumida->estado_credito_general;
           $validadar_resultado = 3;
         }
       @endphp
@@ -1278,8 +1280,8 @@
                         id="solvencia_cuota_total_res_coment" 
                         value="{{ $credito_propuesta ? $credito_propuesta->solvencia_cuota_total_res_coment : '' }}"> --}}
                       <input type="text"
-                        class="form-control text-center {{ $color }}"
-                        value="{{ $estado_credito }}"
+                        class="form-control text-center {{ $color_completo }}"
+                        value="{{ $estado_credito_completo }}"
                         disabled
                         id="estado_credito">
                     </td>
@@ -1493,8 +1495,8 @@
                       id="res_solvencia_relacion_cuota_coment"
                       value="{{ $credito_propuesta ? $credito_propuesta->res_solvencia_relacion_cuota_coment : '' }}"> --}}
                       <input type="text"
-                        class="form-control text-center {{ $color }}"
-                        value="{{ $estado_credito }}"
+                        class="form-control text-center {{ $color_resumida }}"
+                        value="{{ $estado_credito_resumida }}"
                         disabled
                         id="estado_credito">
                     </td>

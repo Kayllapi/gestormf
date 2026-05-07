@@ -1464,9 +1464,12 @@
                             $limites_numero_entidades_res = "Proceder con propuesta";
                           }
                       ?>
-                      <td><input type="text" class="form-control doble-subrayado campo_moneda" 
-                                value="{{ $limites_numero_entidades }}" 
-                                id="limites_numero_entidades" style="{{$stylebackground_limites_numero_entidades_res}}" disabled></td>
+                      <td>
+                        <input type="text" class="form-control doble-subrayado campo_moneda" 
+                          value="{{ $limites_numero_entidades }}" 
+                          id="limites_numero_entidades" style="{{$stylebackground_limites_numero_entidades_res}}"
+                          disabled>
+                      </td>
                       <td><div class="cuadro-input doble-subrayado" style="{{$stylebackground_limites_numero_entidades_res}}">{{ $limites_numero_entidades_res }}</div></td>
                       <td colspan=2><input type="text" style="{{$stylebackground_limites_numero_entidades_res}}" {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto doble-subrayado" id="limites_numero_entidades_res_coment" 
                                   value="{{ $credito_propuesta ? $credito_propuesta->limites_numero_entidades_res_coment : '' }}"></td>

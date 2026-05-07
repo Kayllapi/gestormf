@@ -1170,14 +1170,14 @@
                   <td class="doble-subrayado">N°</td>
                   <?php
                       $limites_numero_entidades = 0;
-                      if($_GET['tipo'] == 'evaluacion_completa'){
-                          $limites_numero_entidades = $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->total_deuda : 0;
+                      if($credito->idevaluacion == 2){
+                        $limites_numero_entidades = $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->total_deuda : 0;
                       }else{
-                            if($users_prestamo->idfuenteingreso == 2){
-                                $limites_numero_entidades = $credito_formato_evaluacion ? $credito_formato_evaluacion->entidad_financiera_total : 0;
-                            }else{
-                                $limites_numero_entidades = $credito_evaluacion_resumida ? $credito_evaluacion_resumida->total_deuda : 0;
-                            }
+                        if($users_prestamo->idfuenteingreso == 2){
+                          $limites_numero_entidades = $credito_formato_evaluacion ? $credito_formato_evaluacion->entidad_financiera_total : 0;
+                        }else{
+                          $limites_numero_entidades = $credito_evaluacion_resumida ? $credito_evaluacion_resumida->total_deuda : 0;
+                        }
                       }
                       $entidad_maxima = configuracion($tienda->id,'entidades_maxima')['valor'];
                       $limites_numero_entidades_res = '';

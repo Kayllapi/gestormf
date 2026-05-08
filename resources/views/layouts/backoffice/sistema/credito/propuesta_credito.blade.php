@@ -948,19 +948,24 @@
         
         $rentabilidad_negocio = $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_negocio : 0;  
         $rentabilidad_negocio_res = "Ver ROS";
+        $rentabilidad_negocio_style = "color:#ffb300;";
         if( $rentabilidad_negocio > 0 && $rentabilidad_negocio > $tem_propuesta){
           $rentabilidad_negocio_res = "Rentabilidad de Capital de Trabajo Adecuada";
+          $rentabilidad_negocio_style = "";
         }
         $rentabilidad_negocio_res_coment = "--";
         if( $rentabilidad_negocio > 0){
           $rentabilidad_negocio_res_coment = $rentabilidad_negocio;
+          $rentabilidad_negocio_style = "";
         }
         // Fila 02
         $rentabilidad_ventas = $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_ventas : 0;
+        $rentabilidad_ventas_style = "";
         if ($rentabilidad_ventas > $tem_propuesta) {
             $rentabilidad_ventas_res = "Rendimiento de Ventas Eficientes";
         }elseif($rentabilidad_ventas < $tem_propuesta) {
             $rentabilidad_ventas_res = "Rendimiento de Ventas Moderados";
+            $rentabilidad_ventas_style = "color:#ffb300;";
         }else{
             $rentabilidad_ventas_res = 0;
         }
@@ -972,29 +977,36 @@
         // Fila 03
         $rentabilidad_unidad_familiar = $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_unidadfamiliar : 0;
         $rentabilidad_unidad_familiar_res = '';
+        $rentabilidad_unidad_familiar_style = '';
         if($rentabilidad_unidad_familiar > 1) {
           $rentabilidad_unidad_familiar_res = "Riesgo Normal - Continuar Propuesta";
         }elseif($rentabilidad_unidad_familiar <= 1) {
           $rentabilidad_unidad_familiar_res = "Alto Riesgo - Suspender Propuesta";
+          $rentabilidad_unidad_familiar_style = 'color:#ffb300;';
         }
         if($rentabilidad_unidad_familiar > 1) {
           $rentabilidad_unidad_familiar_res_coment = "Sus ingresos totales del cliente PUEDE cubrir sus gastos familiares en más de 1 vez";
         }else{
           $rentabilidad_unidad_familiar_res_coment = "Los ingresos totales del cliente NO son capaces de cubrir sus gastos familiares";
+          $rentabilidad_unidad_familiar_style = 'color:#ffb300;';
         }
         // Fila 04
         $rentabilidad_patrimonial = $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_patrimonial : 0;
         $rentabilidad_activos = $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_activos : 0;
+        $rentabilidad_patrimonial_style = '';
+        $rentabilidad_activos_style = '';
         if($rentabilidad_patrimonial > $rentabilidad_activos && $rentabilidad_patrimonial > $credito->tasa_tem) {
           $rentabilidad_patrimonial_res = "Adecuada Rentabilidad de los fondos propios invertidos en el negociopor INTERESA ENDEUDARSE";
         }else{
           $rentabilidad_patrimonial_res = "Débil Rentabilidad de los fondos propios invertidos en el negocio NO INTERESA ENDEUDARSE";
+          $rentabilidad_patrimonial_style = 'color:#ffb300;';
         }
         // Fila 05
         if ($rentabilidad_activos < $rentabilidad_patrimonial && $rentabilidad_activos > $credito->tasa_tem) {
           $rentabilidad_activos_res = "Rentabilidad Adeuado de las inversiones en el negocio, INTERESA ENDEUDARSE";
         } else {
           $rentabilidad_activos_res = "Rentabilidad Débil de las inversiones en el negocio, NO INTERESA ENDEUDARSE";
+          $rentabilidad_activos_style = 'color:#ffb300;';
         }
         // SOLVENCIA
         // Fila 06
@@ -1305,7 +1317,7 @@
                       <td>Rentabilidad del negocio</td>
                       <td>%</td>
                       <td><input type="text" class="form-control campo_moneda" disabled id="rentabilidad_negocio" value="{{ $rentabilidad_negocio }}"></td>
-                      <td><div class="cuadro-input">{{ $rentabilidad_negocio_res }}</div></td>
+                      <td><div class="cuadro-input" style="{{$rentabilidad_negocio_style}}">{{ $rentabilidad_negocio_res }}</div></td>
                       <td  colspan="2"><div class="cuadro-input">Por cada sol invertido gana {{ $rentabilidad_negocio_res_coment }}%</div></td>
                       <td><div class="cuadro-input">Giros de alta rotación o servicios puede ser (-), usar ROS</div></td>
                     </tr>
@@ -1313,7 +1325,7 @@
                       <td>Rentabilidad de las ventas (ROS)</td>
                       <td>%</td>
                       <td><input type="text" class="form-control campo_moneda" disabled id="rentabilidad_ventas" value="{{ $rentabilidad_ventas }}"></td>
-                      <td><div class="cuadro-input">{{ $rentabilidad_ventas_res }}</div></td>
+                      <td><div class="cuadro-input" style="{{$rentabilidad_ventas_style}}">{{ $rentabilidad_ventas_res }}</div></td>
                       <td colspan="2"><div class="cuadro-input">Su ganancia mensual por su venta es {{ $rentabilidad_ventas_res_coment }}%</div></td>
                       <td><div class="cuadro-input">Se sugiere ROS>TEM</div></td>
                     </tr>
@@ -1321,7 +1333,7 @@
                       <td>Rentabilidad de la unidad familiar</td>
                       <td>Veces</td>
                       <td><input type="text" class="form-control campo_moneda" disabled id="rentabilidad_unidad_familiar" value="{{ $rentabilidad_unidad_familiar }}"></td>
-                      <td><div class="cuadro-input">{{ $rentabilidad_unidad_familiar_res }}</div></td>
+                      <td><div class="cuadro-input" style="{{$rentabilidad_unidad_familiar_style}}">{{ $rentabilidad_unidad_familiar_res }}</div></td>
                       <td colspan=2><div class="cuadro-input">{{ $rentabilidad_unidad_familiar_res_coment }}</div></td>
                       <td><div class="cuadro-input">Se espera >1</div></td>
                     </tr>
@@ -1329,7 +1341,7 @@
                       <td>Rentabilidad patrimonial (ROE)</td>
                       <td>%</td>
                       <td><input type="text" class="form-control campo_moneda" disabled id="rentabilidad_patrimonial" value="{{ $rentabilidad_patrimonial }}"></td>
-                      <td><div class="cuadro-input">{{ $rentabilidad_patrimonial_res }}</div></td>
+                      <td><div class="cuadro-input" style="{{$rentabilidad_patrimonial_style}}">{{ $rentabilidad_patrimonial_res }}</div></td>
                       <td colspan=2><input type="text" {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto" id="rentabilidad_patrimonial_res_coment" 
                                           value="{{ $credito_propuesta ? $credito_propuesta->rentabilidad_patrimonial_res_coment : '' }}"></td>
                       <td><div class="cuadro-input">SI:  ROA>TEM → ROE>ROA. Endeudamiento tiene efecto apalancamiento (+) o amplificador</div></td>
@@ -1338,7 +1350,7 @@
                       <td>Rentabilidad de los activos (ROA)</td>
                       <td>%</td>
                       <td><input type="text" class="form-control campo_moneda" disabled id="rentabilidad_activos" value="{{ $rentabilidad_activos }}"></td>
-                      <td><div class="cuadro-input">{{ $rentabilidad_activos_res }}</div></td>
+                      <td><div class="cuadro-input" style="{{$rentabilidad_activos_style}}">{{ $rentabilidad_activos_res }}</div></td>
                       <td colspan=2><input type="text" {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto" id="rentabilidad_activos_res_coment" 
                                           value="{{ $credito_propuesta ? $credito_propuesta->rentabilidad_activos_res_coment : '' }}"></td>
                       <td><div class="cuadro-input">Si: ROA&lt;TEM → ROE&lt;ROA. Endeudamiento tiene efecto apalancamiento (–) o reductor</div></td>

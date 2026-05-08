@@ -607,11 +607,13 @@ function addPermisoTable(e,container,tipo){
   
 }
 function removePermiso(e){
-    var opcion = confirm("¿Esta seguro de eliminar?");
-    if (opcion == true) {
-          $(e).closest('button[type="button"]').remove();
-    }
-  
+  var mensaje = '¿Esta seguro de eliminar?';
+  modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=confirm')}}&mensaje="+mensaje, size: 'modal-sm' });
+  $(document).off('click', '#btn-save-confirm');
+  $(document).on('click', '#btn-save-confirm', function () {
+    $(e).closest('button[type="button"]').remove();
+    $('.modal').modal('hide');
+  });
 }
   
 function getJsonPermiso(table){
@@ -935,17 +937,25 @@ function select_creditosnoprendarios(){
 }  
   
 function eliminar_creditoprendario(num){
-    var opcion = confirm("¿Esta seguro de eliminar?");
-    if (opcion == true) {
-          $("#table-creditosprendarios tbody tr#"+num).remove();
-    }
-    
+  var mensaje = '¿Esta seguro de eliminar?';
+  modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=confirm')}}&mensaje="+mensaje, size: 'modal-sm' });
+  $(document).off('click', '#btn-save-confirm');
+  $(document).on('click', '#btn-save-confirm', function () {
+      $("#table-creditosprendarios tbody tr#" + num).remove();
+      $('.modal').modal('hide');
+  });
+  // var opcion = confirm("¿Esta seguro de eliminar?");
+  // if (opcion == true) {
+  //   $("#table-creditosprendarios tbody tr#"+num).remove();
+  // }
 }
 function eliminar_creditonoprendario(num){
-    var opcion = confirm("¿Esta seguro de eliminar?");
-    if (opcion == true) {
-          $("#table-creditosnoprendarios tbody tr#"+num).remove();
-    }
-    
+  var mensaje = '¿Esta seguro de eliminar?';
+  modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=confirm')}}&mensaje="+mensaje, size: 'modal-sm' });
+  $(document).off('click', '#btn-save-confirm');
+  $(document).on('click', '#btn-save-confirm', function () {
+      $("#table-creditosnoprendarios tbody tr#"+num).remove();
+      $('.modal').modal('hide');
+  });
 }
 </script>

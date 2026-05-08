@@ -75,6 +75,13 @@ class MasterController extends Controller
             ]);
 
         }
+        elseif($request->input('view') == 'confirm'){
+
+            return view('app/nuevosistema/confirm',[
+                'mensaje' => $request->mensaje,
+            ]);
+
+        }
     }
     
     public function store(Request $request)

@@ -161,21 +161,21 @@
             <td>CLIENTE/RAZON SOCIAL:</td>
             <td class="border-td">{{ $credito->nombreclientecredito }}</td>
           </tr>
-          {{-- <tr>
-            <td>PRODUCTO:</td>
-            <td class="border-td">{{ $credito->nombreproductocredito }}</td>
-          </tr> --}}
         </table>
       </div>
       <div class="col">
         <table>
           <tr>
             <td>MODALIDAD:</td>
-            <td class="border-td" width="100px">{{ $credito->modalidad_credito_nombre }}</td>
+            <td class="border-td" width="80px">{{ $credito->modalidad_credito_nombre }}</td>
           </tr>
+        </table>
+      </div>
+      <div class="col">
+        <table>
           <tr>
             <td>ASESOR(A):</td>
-            <td class="border-td">{{ Auth::user()->nombre }}</td>
+            <td class="border-td" width="80px">{{ Auth::user()->nombre }}</td>
           </tr>
         </table>
       </div>
@@ -183,12 +183,8 @@
         <table>
           <tr>
             <td>NRO SOLICITUD:</td>
-            <td class="border-td" width="100px">S{{ str_pad($credito->id, 8, '0', STR_PAD_LEFT)  }}</td>
+            <td class="border-td" width="55px">S{{ str_pad($credito->id, 8, '0', STR_PAD_LEFT)  }}</td>
           </tr>
-          {{-- <tr>  
-            <td>FECHA:</td>
-            <td class="border-td">{{ date_format(date_create($credito->fecha),'Y-m-d') }}</td>
-          </tr> --}}
         </table>
       </div>
       <div class="col">
@@ -203,7 +199,7 @@
         <table>
           <tr>  
             <td>FECHA:</td>
-            <td class="border-td" width="100px">{{ date_format(date_create($credito->fecha),'Y-m-d') }}</td>
+            <td class="border-td" width="55px">{{ date_format(date_create($credito->fecha),'Y-m-d') }}</td>
           </tr>
         </table>
       </div>
@@ -217,13 +213,11 @@
               @foreach($encabezado as $value)
                 <tr>
                   @foreach($value->encabezado as $thval)
-                    <td style="text-align: center;">{{ $thval->th }}</td>
+                    <td style="text-align: center;"><b>{{ $thval->th }}</b></td>
                   @endforeach
-                  
                 </tr>
               @endforeach
             @endif
-            
           </thead>
           <tbody>
             @if(count($evaluacion_meses) > 0)

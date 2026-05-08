@@ -671,85 +671,136 @@
                   
                   if(mes_cero_saldo_caja<=0){
                       $('#mes_cero_saldo_caja').attr('style', 'background-color: #f68792 !important;border-color: #f68792 !important;');
+                  }else{
+                      $('#mes_cero_saldo_caja').attr('style', 'background-color: #bcd983 !important;border-color: #bcd983 !important;');
                   }
                   if(mes_uno_saldo_caja<=0){
-                      $('#mes_uno_saldo_caja').attr('style', 'background-color: #dc3545 !important;border-color: #dc3545 !important;');
+                      $('#mes_uno_saldo_caja').attr('style', 'background-color: #f68792 !important;border-color: #f68792 !important;');
+                  }else{
+                      $('#mes_uno_saldo_caja').attr('style', 'background-color: #bcd983 !important;border-color: #bcd983 !important;');
                   }
                   if(mes_dos_saldo_caja<=0){
-                      $('#mes_dos_saldo_caja').attr('style', 'background-color: #dc3545 !important;border-color: #dc3545 !important;');
+                      $('#mes_dos_saldo_caja').attr('style', 'background-color: #f68792 !important;border-color: #f68792 !important;');
+                  }else{
+                      $('#mes_dos_saldo_caja').attr('style', 'background-color: #bcd983 !important;border-color: #bcd983 !important;');
                   }
                   if(mes_tres_saldo_caja<=0){
-                      $('#mes_tres_saldo_caja').attr('style', 'background-color: #dc3545 !important;border-color: #dc3545 !important;');
+                      $('#mes_tres_saldo_caja').attr('style', 'background-color: #f68792 !important;border-color: #f68792 !important;');
+                  }else{
+                      $('#mes_tres_saldo_caja').attr('style', 'background-color: #bcd983 !important;border-color: #bcd983 !important;');
                   }
                   if(mes_cuatro_saldo_caja<=0){
-                      $('#mes_cuatro_saldo_caja').attr('style', 'background-color: #dc3545 !important;border-color: #dc3545 !important;');
+                      $('#mes_cuatro_saldo_caja').attr('style', 'background-color: #f68792 !important;border-color: #f68792 !important;');
+                  }else{
+                      $('#mes_cuatro_saldo_caja').attr('style', 'background-color: #bcd983 !important;border-color: #bcd983 !important;');
                   }
                   if(mes_cinco_saldo_caja<=0){
-                      $('#mes_cinco_saldo_caja').attr('style', 'background-color: #dc3545 !important;border-color: #dc3545 !important;');
+                      $('#mes_cinco_saldo_caja').attr('style', 'background-color: #f68792 !important;border-color: #f68792 !important;');
+                  }else{
+                      $('#mes_cinco_saldo_caja').attr('style', 'background-color: #bcd983 !important;border-color: #bcd983 !important;');
                   }
                   if(mes_seis_saldo_caja<=0){
-                      $('#mes_seis_saldo_caja').attr('style', 'background-color: #dc3545 !important;border-color: #dc3545 !important;');
+                      $('#mes_seis_saldo_caja').attr('style', 'background-color: #f68792 !important;border-color: #f68792 !important;');
+                  }else{
+                      $('#mes_seis_saldo_caja').attr('style', 'background-color: #bcd983 !important;border-color: #bcd983 !important;');
                   }
                   if(mes_siete_saldo_caja<=0){
-                      $('#mes_siete_saldo_caja').attr('style', 'background-color: #dc3545 !important;border-color: #dc3545 !important;');
+                      $('#mes_siete_saldo_caja').attr('style', 'background-color: #f68792 !important;border-color: #f68792 !important;');
+                  }else{
+                      $('#mes_siete_saldo_caja').attr('style', 'background-color: #bcd983 !important;border-color: #bcd983 !important;');
                   }
                   if(mes_ocho_saldo_caja<=0){
-                      $('#mes_ocho_saldo_caja').attr('style', 'background-color: #dc3545 !important;border-color: #dc3545 !important;');
+                      $('#mes_ocho_saldo_caja').attr('style', 'background-color: #f68792 !important;border-color: #f68792 !important;');
+                  }else{
+                      $('#mes_ocho_saldo_caja').attr('style', 'background-color: #bcd983 !important;border-color: #bcd983 !important;');
                   }
                   if(mes_nueve_saldo_caja<=0){
-                      $('#mes_nueve_saldo_caja').attr('style', 'background-color: #dc3545 !important;border-color: #dc3545 !important;');
+                      $('#mes_nueve_saldo_caja').attr('style', 'background-color: #f68792 !important;border-color: #f68792 !important;');
+                  }else{
+                      $('#mes_nueve_saldo_caja').attr('style', 'background-color: #bcd983 !important;border-color: #bcd983 !important;');
                   }
                   if(mes_diez_saldo_caja<=0){
-                      $('#mes_diez_saldo_caja').attr('style', 'background-color: #dc3545 !important;border-color: #dc3545 !important;');
+                      $('#mes_diez_saldo_caja').attr('style', 'background-color: #f68792 !important;border-color: #f68792 !important;');
+                  }else{
+                      $('#mes_diez_saldo_caja').attr('style', 'background-color: #bcd983 !important;border-color: #bcd983 !important;');
                   }
                   if(mes_once_saldo_caja<=0){
-                      $('#mes_once_saldo_caja').attr('style', 'background-color: #dc3545 !important;border-color: #dc3545 !important;');
+                      $('#mes_once_saldo_caja').attr('style', 'background-color: #f68792 !important;border-color: #f68792 !important;');
+                  }else{
+                      $('#mes_once_saldo_caja').attr('style', 'background-color: #bcd983 !important;border-color: #bcd983 !important;');
                   }
                   if(mes_doce_saldo_caja<=0){
-                      $('#mes_doce_saldo_caja').attr('style', 'background-color: #dc3545 !important;border-color: #dc3545 !important;');
+                      $('#mes_doce_saldo_caja').attr('style', 'background-color: #f68792 !important;border-color: #f68792 !important;');
+                  }else{
+                      $('#mes_doce_saldo_caja').attr('style', 'background-color: #bcd983 !important;border-color: #bcd983 !important;');
                   }
                   
                   if(mes_cero_saldo_acumulado<=0){
                       $('#mes_cero_saldo_acumulado').attr('style', 'background-color: #f68792 !important;border-color: #f68792 !important;');
+                  }else{
+                      $('#mes_cero_saldo_acumulado').attr('style', 'background-color: #bcd983 !important;border-color: #bcd983 !important;');
                   }
                   if(mes_uno_saldo_acumulado<=0){
-                      $('#mes_uno_saldo_acumulado').attr('style', 'background-color: #dc3545 !important;border-color: #dc3545 !important;');
+                      $('#mes_uno_saldo_acumulado').attr('style', 'background-color: #f68792 !important;border-color: #f68792 !important;');
+                  }else{
+                      $('#mes_uno_saldo_acumulado').attr('style', 'background-color: #bcd983 !important;border-color: #bcd983 !important;');
                   }
                   if(mes_dos_saldo_acumulado<=0){
-                      $('#mes_dos_saldo_acumulado').attr('style', 'background-color: #dc3545 !important;border-color: #dc3545 !important;');
+                      $('#mes_dos_saldo_acumulado').attr('style', 'background-color: #f68792 !important;border-color: #f68792 !important;');
+                  }else{
+                      $('#mes_dos_saldo_acumulado').attr('style', 'background-color: #bcd983 !important;border-color: #bcd983 !important;');
                   }
                   if(mes_tres_saldo_acumulado<=0){
-                      $('#mes_tres_saldo_acumulado').attr('style', 'background-color: #dc3545 !important;border-color: #dc3545 !important;');
+                      $('#mes_tres_saldo_acumulado').attr('style', 'background-color: #f68792 !important;border-color: #f68792 !important;');
+                  }else{
+                      $('#mes_tres_saldo_acumulado').attr('style', 'background-color: #bcd983 !important;border-color: #bcd983 !important;');
                   }
                   if(mes_cuatro_saldo_acumulado<=0){
-                      $('#mes_cuatro_saldo_acumulado').attr('style', 'background-color: #dc3545 !important;border-color: #dc3545 !important;');
+                      $('#mes_cuatro_saldo_acumulado').attr('style', 'background-color: #f68792 !important;border-color: #f68792 !important;');
+                  }else{
+                      $('#mes_cuatro_saldo_acumulado').attr('style', 'background-color: #bcd983 !important;border-color: #bcd983 !important;');
                   }
                   if(mes_cinco_saldo_acumulado<=0){
-                      $('#mes_cinco_saldo_acumulado').attr('style', 'background-color: #dc3545 !important;border-color: #dc3545 !important;');
+                      $('#mes_cinco_saldo_acumulado').attr('style', 'background-color: #f68792 !important;border-color: #f68792 !important;');
+                  }else{
+                      $('#mes_cinco_saldo_acumulado').attr('style', 'background-color: #bcd983 !important;border-color: #bcd983 !important;');
                   }
                   if(mes_seis_saldo_acumulado<=0){
-                      $('#mes_seis_saldo_acumulado').attr('style', 'background-color: #dc3545 !important;border-color: #dc3545 !important;');
+                      $('#mes_seis_saldo_acumulado').attr('style', 'background-color: #f68792 !important;border-color: #f68792 !important;');
+                  }else{
+                      $('#mes_seis_saldo_acumulado').attr('style', 'background-color: #bcd983 !important;border-color: #bcd983 !important;');
                   }
                   if(mes_siete_saldo_acumulado<=0){
-                      $('#mes_siete_saldo_acumulado').attr('style', 'background-color: #dc3545 !important;border-color: #dc3545 !important;');
+                      $('#mes_siete_saldo_acumulado').attr('style', 'background-color: #f68792 !important;border-color: #f68792 !important;');
+                  }else{
+                      $('#mes_siete_saldo_acumulado').attr('style', 'background-color: #bcd983 !important;border-color: #bcd983 !important;');
                   }
                   if(mes_ocho_saldo_acumulado<=0){
-                      $('#mes_ocho_saldo_acumulado').attr('style', 'background-color: #dc3545 !important;border-color: #dc3545 !important;');
+                      $('#mes_ocho_saldo_acumulado').attr('style', 'background-color: #f68792 !important;border-color: #f68792 !important;');
+                  }else{
+                      $('#mes_ocho_saldo_acumulado').attr('style', 'background-color: #bcd983 !important;border-color: #bcd983 !important;');
                   }
                   if(mes_nueve_saldo_acumulado<=0){
-                      $('#mes_nueve_saldo_acumulado').attr('style', 'background-color: #dc3545 !important;border-color: #dc3545 !important;');
+                      $('#mes_nueve_saldo_acumulado').attr('style', 'background-color: #f68792 !important;border-color: #f68792 !important;');
+                  }else{
+                      $('#mes_nueve_saldo_acumulado').attr('style', 'background-color: #bcd983 !important;border-color: #bcd983 !important;');
                   }
                   if(mes_diez_saldo_acumulado<=0){
-                      $('#mes_diez_saldo_acumulado').attr('style', 'background-color: #dc3545 !important;border-color: #dc3545 !important;');
+                      $('#mes_diez_saldo_acumulado').attr('style', 'background-color: #f68792 !important;border-color: #f68792 !important;');
+                  }else{
+                      $('#mes_diez_saldo_acumulado').attr('style', 'background-color: #bcd983 !important;border-color: #bcd983 !important;');
                   }
                   if(mes_once_saldo_acumulado<=0){
-                      $('#mes_once_saldo_acumulado').attr('style', 'background-color: #dc3545 !important;border-color: #dc3545 !important;');
+                      $('#mes_once_saldo_acumulado').attr('style', 'background-color: #f68792 !important;border-color: #f68792 !important;');
+                  }else{
+                      $('#mes_once_saldo_acumulado').attr('style', 'background-color: #bcd983 !important;border-color: #bcd983 !important;');
                   }
                   if(mes_doce_saldo_acumulado<=0){
-                      $('#mes_doce_saldo_acumulado').attr('style', 'background-color: #dc3545 !important;border-color: #dc3545 !important;');
+                      $('#mes_doce_saldo_acumulado').attr('style', 'background-color: #f68792 !important;border-color: #f68792 !important;');
+                  }else{
+                      $('#mes_doce_saldo_acumulado').attr('style', 'background-color: #bcd983 !important;border-color: #bcd983 !important;');
                   }
                 }
-                
               </script>
               <tr>
                 <td colspan=14>EGRESOS (S/.)</td>

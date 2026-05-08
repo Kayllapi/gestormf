@@ -1324,7 +1324,7 @@
                     <tr>
                       <td>Rentabilidad de las ventas (ROS)</td>
                       <td>%</td>
-                      <td><input type="text" class="form-control campo_moneda" disabled id="rentabilidad_ventas" style="{{$rentabilidad_negocio_style}}" value="{{ $rentabilidad_ventas }}"></td>
+                      <td><input type="text" class="form-control campo_moneda" disabled id="rentabilidad_ventas" style="{{$rentabilidad_ventas_style}}" value="{{ $rentabilidad_ventas }}"></td>
                       <td><div class="cuadro-input" style="{{$rentabilidad_ventas_style}}">{{ $rentabilidad_ventas_res }}</div></td>
                       <td colspan="2"><div class="cuadro-input">Su ganancia mensual por su venta es {{ $rentabilidad_ventas_res_coment }}%</div></td>
                       <td><div class="cuadro-input">Se sugiere ROS>TEM</div></td>
@@ -1332,7 +1332,7 @@
                     <tr>
                       <td>Rentabilidad de la unidad familiar</td>
                       <td>Veces</td>
-                      <td><input type="text" class="form-control campo_moneda" disabled id="rentabilidad_unidad_familiar" style="{{$rentabilidad_negocio_style}}" value="{{ $rentabilidad_unidad_familiar }}"></td>
+                      <td><input type="text" class="form-control campo_moneda" disabled id="rentabilidad_unidad_familiar" style="{{$rentabilidad_unidad_familiar_style}}" value="{{ $rentabilidad_unidad_familiar }}"></td>
                       <td><div class="cuadro-input" style="{{$rentabilidad_unidad_familiar_style}}">{{ $rentabilidad_unidad_familiar_res }}</div></td>
                       <td colspan=2><div class="cuadro-input">{{ $rentabilidad_unidad_familiar_res_coment }}</div></td>
                       <td><div class="cuadro-input">Se espera >1</div></td>
@@ -1340,7 +1340,7 @@
                     <tr>
                       <td>Rentabilidad patrimonial (ROE)</td>
                       <td>%</td>
-                      <td><input type="text" class="form-control campo_moneda" disabled id="rentabilidad_patrimonial" style="{{$rentabilidad_negocio_style}}" value="{{ $rentabilidad_patrimonial }}"></td>
+                      <td><input type="text" class="form-control campo_moneda" disabled id="rentabilidad_patrimonial" style="{{$rentabilidad_patrimonial_style}}" value="{{ $rentabilidad_patrimonial }}"></td>
                       <td><div class="cuadro-input" style="{{$rentabilidad_patrimonial_style}}">{{ $rentabilidad_patrimonial_res }}</div></td>
                       <td colspan=2><input type="text" {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto" id="rentabilidad_patrimonial_res_coment" 
                                           value="{{ $credito_propuesta ? $credito_propuesta->rentabilidad_patrimonial_res_coment : '' }}"></td>
@@ -1349,7 +1349,7 @@
                     <tr>
                       <td>Rentabilidad de los activos (ROA)</td>
                       <td>%</td>
-                      <td><input type="text" class="form-control campo_moneda" disabled id="rentabilidad_activos" style="{{$rentabilidad_negocio_style}}" value="{{ $rentabilidad_activos }}"></td>
+                      <td><input type="text" class="form-control campo_moneda" disabled id="rentabilidad_activos" style="{{$rentabilidad_activos_style}}" value="{{ $rentabilidad_activos }}"></td>
                       <td><div class="cuadro-input" style="{{$rentabilidad_activos_style}}">{{ $rentabilidad_activos_res }}</div></td>
                       <td colspan=2><input type="text" {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto" id="rentabilidad_activos_res_coment" 
                                           value="{{ $credito_propuesta ? $credito_propuesta->rentabilidad_activos_res_coment : '' }}"></td>

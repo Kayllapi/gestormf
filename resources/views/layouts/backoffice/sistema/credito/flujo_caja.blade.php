@@ -137,7 +137,7 @@
                 <td><input type="text" valida_input_vacio class="form-control" id="saldo_inicial" value="{{ $saldo_inicial }}" disabled></td>
               </tr>
               <tr>
-                <td colspan=14>INGRESOS (S/.)</td>
+                <th colspan=14>INGRESOS (S/.)</th>
               </tr>
               <tr fila="ingresos">
                 <td>Ventas</td>
@@ -803,7 +803,7 @@
                 }
               </script>
               <tr>
-                <td colspan=14>EGRESOS (S/.)</td>
+                <th colspan=14>EGRESOS (S/.)</th>
               </tr>
               <tr fila="egreso">
                 <td>Compras/ Costos</td>

@@ -119,7 +119,7 @@
 
         
       .campo_moneda {
-          text-align: right;
+          text-align: right !important;
       } 
   
      </style>
@@ -243,10 +243,10 @@
                             $primer_mes = $value;
                           }
                         @endphp
-                        <td>{{ $value }}</td>
+                        <td class="campo_moneda">{{ $value }}</td>
                       @endif
                   @endforeach
-                  <td>{{$primer_mes}}</td>
+                  <td class="campo_moneda">{{$primer_mes}}</td>
                 </tr>
                 @endif
               @endforeach
@@ -789,34 +789,20 @@
               <td colspan=14>&nbsp;</td>
             </tr>
             <tr>
-              <td style="background-color: #e5e5e5 !important;
-                color: #000 !important;"><u>SALDO CAJA MENSUAL (A-B) (S/.)</u></td>
-              <td style="background-color: #e5e5e5 !important;
-                color: #000 !important;" class="campo_moneda">{{ encontrar_valor('mes_cero_saldo_caja', $flujo_caja) }}</td>
-              <td style="background-color: #e5e5e5 !important;
-                color: #000 !important;" class="campo_moneda">{{ encontrar_valor('mes_uno_saldo_caja', $flujo_caja) }}</td>
-              <td style="background-color: #e5e5e5 !important;
-                color: #000 !important;" class="campo_moneda">{{ encontrar_valor('mes_dos_saldo_caja', $flujo_caja) }}</td>
-              <td style="background-color: #e5e5e5 !important;
-                color: #000 !important;" class="campo_moneda">{{ encontrar_valor('mes_tres_saldo_caja', $flujo_caja) }}</td>
-              <td style="background-color: #e5e5e5 !important;
-                color: #000 !important;" class="campo_moneda">{{ encontrar_valor('mes_cuatro_saldo_caja', $flujo_caja) }}</td>
-              <td style="background-color: #e5e5e5 !important;
-                color: #000 !important;" class="campo_moneda">{{ encontrar_valor('mes_cinco_saldo_caja', $flujo_caja) }}</td>
-              <td style="background-color: #e5e5e5 !important;
-                color: #000 !important;" class="campo_moneda">{{ encontrar_valor('mes_seis_saldo_caja', $flujo_caja) }}</td>
-              <td style="background-color: #e5e5e5 !important;
-                color: #000 !important;" class="campo_moneda">{{ encontrar_valor('mes_siete_saldo_caja', $flujo_caja) }}</td>
-              <td style="background-color: #e5e5e5 !important;
-                color: #000 !important;" class="campo_moneda">{{ encontrar_valor('mes_ocho_saldo_caja', $flujo_caja) }}</td>
-              <td style="background-color: #e5e5e5 !important;
-                color: #000 !important;" class="campo_moneda">{{ encontrar_valor('mes_nueve_saldo_caja', $flujo_caja) }}</td>
-              <td style="background-color: #e5e5e5 !important;
-                color: #000 !important;" class="campo_moneda">{{ encontrar_valor('mes_diez_saldo_caja', $flujo_caja) }}</td>
-              <td style="background-color: #e5e5e5 !important;
-                color: #000 !important;" class="campo_moneda">{{ encontrar_valor('mes_once_saldo_caja', $flujo_caja) }}</td>
-              <td style="background-color: #e5e5e5 !important;
-                color: #000 !important;" class="campo_moneda">{{ encontrar_valor('mes_doce_saldo_caja', $flujo_caja) }}</td>
+              <td><b><u>SALDO CAJA MENSUAL (A-B) (S/.)</u></b></td>
+              <td class="campo_moneda"><b>{{ encontrar_valor('mes_cero_saldo_caja', $flujo_caja) }}</b></td>
+              <td class="campo_moneda"><b>{{ encontrar_valor('mes_uno_saldo_caja', $flujo_caja) }}</b></td>
+              <td class="campo_moneda"><b>{{ encontrar_valor('mes_dos_saldo_caja', $flujo_caja) }}</b></td>
+              <td class="campo_moneda"><b>{{ encontrar_valor('mes_tres_saldo_caja', $flujo_caja) }}</b></td>
+              <td class="campo_moneda"><b>{{ encontrar_valor('mes_cuatro_saldo_caja', $flujo_caja) }}</b></td>
+              <td class="campo_moneda"><b>{{ encontrar_valor('mes_cinco_saldo_caja', $flujo_caja) }}</b></td>
+              <td class="campo_moneda"><b>{{ encontrar_valor('mes_seis_saldo_caja', $flujo_caja) }}</b></td>
+              <td class="campo_moneda"><b>{{ encontrar_valor('mes_siete_saldo_caja', $flujo_caja) }}</b></td>
+              <td class="campo_moneda"><b>{{ encontrar_valor('mes_ocho_saldo_caja', $flujo_caja) }}</b></td>
+              <td class="campo_moneda"><b>{{ encontrar_valor('mes_nueve_saldo_caja', $flujo_caja) }}</b></td>
+              <td class="campo_moneda"><b>{{ encontrar_valor('mes_diez_saldo_caja', $flujo_caja) }}</b></td>
+              <td class="campo_moneda"><b>{{ encontrar_valor('mes_once_saldo_caja', $flujo_caja) }}</b></td>
+              <td class="campo_moneda"><b>{{ encontrar_valor('mes_doce_saldo_caja', $flujo_caja) }}</b></td>
             </tr>
             <tr>
               <td><u>SALDO ACUMULADO MENSUAL (S/.)</u></td>

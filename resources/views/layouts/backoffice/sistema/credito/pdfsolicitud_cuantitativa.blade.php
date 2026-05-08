@@ -369,16 +369,16 @@
             </tr>
             <tr>
               <td rowspan=2 width="100px">Pasivos financieros a corto plazo</td>
-              <td >E. Reguladas</td>
-              <td class="campo_moneda">{{ encontrar_valor('comercial_er_cplazo', $resumen_deuda_anterior) + encontrar_valor('mes_er_cplazo', $resumen_deuda_anterior) }}</td>
-              <td class="campo_moneda">{{ encontrar_valor('comercial_er_cplazo', $resumen_deuda) + encontrar_valor('mes_er_cplazo', $resumen_deuda) }}</td>
+              <td>E. Reguladas</td>
+              <td class="campo_moneda">{{ number_format(encontrar_valor('comercial_er_cplazo', $resumen_deuda_anterior) + encontrar_valor('mes_er_cplazo', $resumen_deuda_anterior), 2) }}</td>
+              <td class="campo_moneda">{{ number_format(encontrar_valor('comercial_er_cplazo', $resumen_deuda) + encontrar_valor('mes_er_cplazo', $resumen_deuda), 2) }}</td>
               <td class="campo_moneda">{{ encontrar_valor('analisis_vertical_pasivo_corto_regulada', $balance_general) }}</td>
               <td class="campo_moneda">{{ encontrar_valor('analisis_horizontal_pasivo_corto_regulada', $balance_general) }}</td>
             </tr>
             <tr>
               <td class="campo_moneda">E. No Reguladas</td>
-              <td class="campo_moneda">{{ encontrar_valor('comercial_enr_cplazo', $resumen_deuda_anterior) + encontrar_valor('mes_enr_cplazo', $resumen_deuda_anterior) }}</td>
-              <td class="campo_moneda">{{ encontrar_valor('comercial_enr_cplazo', $resumen_deuda) + encontrar_valor('mes_enr_cplazo', $resumen_deuda) }}</td>
+              <td class="campo_moneda">{{ number_format(encontrar_valor('comercial_enr_cplazo', $resumen_deuda_anterior) + encontrar_valor('mes_enr_cplazo', $resumen_deuda_anterior), 2) }}</td>
+              <td class="campo_moneda">{{ number_format(encontrar_valor('comercial_enr_cplazo', $resumen_deuda) + encontrar_valor('mes_enr_cplazo', $resumen_deuda), 2) }}</td>
               <td class="campo_moneda">{{ encontrar_valor('analisis_vertical_pasivo_corto_noregulada', $balance_general) }}</td>
               <td class="campo_moneda">{{ encontrar_valor('analisis_horizontal_pasivo_corto_noregulada', $balance_general) }}</td>
             </tr>
@@ -405,16 +405,16 @@
             </tr>
             <tr>
               <td rowspan=2>Pasivo Fin. a Largo.Plazo</td>
-              <td class="campo_moneda">E. Reguladas</td>
-              <td class="campo_moneda">{{ encontrar_valor('comercial_er_couta', $resumen_deuda_anterior) + encontrar_valor('mes_er_lplazo', $resumen_deuda_anterior) }}</td>
-              <td class="campo_moneda">{{ encontrar_valor('comercial_er_couta', $resumen_deuda) + encontrar_valor('mes_er_lplazo', $resumen_deuda) }}</td>
+              <td>E. Reguladas</td>
+              <td class="campo_moneda">{{ number_format(encontrar_valor('comercial_er_couta', $resumen_deuda_anterior) + encontrar_valor('mes_er_lplazo', $resumen_deuda_anterior), 2) }}</td>
+              <td class="campo_moneda">{{ number_format(encontrar_valor('comercial_er_couta', $resumen_deuda) + encontrar_valor('mes_er_lplazo', $resumen_deuda), 2) }}</td>
               <td class="campo_moneda">{{ encontrar_valor('analisis_vertical_pasivo_largo_regulada', $balance_general) }}</td>
               <td class="campo_moneda">{{ encontrar_valor('analisis_horizontal_pasivo_largo_regulada', $balance_general) }}</td>
             </tr>
             <tr>
               <td class="campo_moneda">E. No Reguladas</td>
-              <td class="campo_moneda">{{ encontrar_valor('comercial_enr_lplazo', $resumen_deuda_anterior) + encontrar_valor('mes_enr_lplazo', $resumen_deuda_anterior) }}</td>
-              <td class="campo_moneda">{{ encontrar_valor('comercial_enr_lplazo', $resumen_deuda) + encontrar_valor('mes_enr_lplazo', $resumen_deuda) }}</td>
+              <td class="campo_moneda">{{ number_format(encontrar_valor('comercial_enr_lplazo', $resumen_deuda_anterior) + encontrar_valor('mes_enr_lplazo', $resumen_deuda_anterior), 2) }}</td>
+              <td class="campo_moneda">{{ number_format(encontrar_valor('comercial_enr_lplazo', $resumen_deuda) + encontrar_valor('mes_enr_lplazo', $resumen_deuda), 2) }}</td>
               <td class="campo_moneda">{{ encontrar_valor('analisis_vertical_pasivo_largo_noregulada', $balance_general) }}</td>
               <td class="campo_moneda">{{ encontrar_valor('analisis_horizontal_pasivo_largo_noregulada', $balance_general) }}</td>
             </tr>
@@ -465,7 +465,7 @@
             </tr>
             <tr>
               <td style="background-color: #e5e5e5 !important;
-              color: #000 !important;" class="campo_moneda"  colspan=2><b>TOTAL PASIVO + PATRIMONIO</b></td>
+              color: #000 !important;" colspan=2><b>TOTAL PASIVO + PATRIMONIO</b></td>
               <td style="background-color: #e5e5e5 !important;
               color: #000 !important;" class="campo_moneda"><b>{{ encontrar_valor('evaluacion_actual_pasivo_patrimonio', $balance_general_anterior) }}</b></td>
               <td style="background-color: #e5e5e5 !important;
@@ -490,7 +490,7 @@
             </thead>
             <tbody>
               <tr>
-                <td width="90px">Al crédito para cobro a {{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->dias_ventas_mensual : '0' }} días total al mes</td>
+                <td width="90px">Al crédito para cobro a {{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->dias_ventas_mensual : '0.00' }} días total al mes</td>
                 <td class="campo_moneda" width="43px">{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->credito_cobrando_venta_mensual : '0.00' }}</td>
                 <td class="campo_moneda" width="43px">{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->credito_porcentaje_venta_mensual : '0.00' }} %</td>
               </tr>
@@ -511,7 +511,7 @@
             </thead>
             <tbody>
               <tr>
-                <td width="90px">Al crédito para pago a {{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->dias_compras_mensual : '0' }} días total al mes</td>
+                <td width="90px">Al crédito para pago a {{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->dias_compras_mensual : '0.00' }} días total al mes</td>
                 <td class="campo_moneda" width="43px">{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->credito_cobrando_compra_mensual : '0.00' }}</td>
                 <td class="campo_moneda" width="43px">{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->credito_porcentaje_compra_mensual : '0.00' }} %</td>
               </tr>
@@ -549,10 +549,10 @@
               color: #000 !important;"><b>VENTAS MENSUALES</b></td>
                 <td style="background-color: #e5e5e5 !important;
               color: #000 !important;" class="campo_moneda"><b>
-                  {{ ($credito_cuantitativa_margen_venta_anterior ? $credito_cuantitativa_margen_venta_anterior->venta_mensual : 0) + ($credito_cuantitativa_margen_venta_anterior ? $credito_cuantitativa_margen_venta_anterior->venta_total_mensual : 0) }}</b></td>
+                  {{ number_format(($credito_cuantitativa_margen_venta_anterior ? $credito_cuantitativa_margen_venta_anterior->venta_mensual : 0) + ($credito_cuantitativa_margen_venta_anterior ? $credito_cuantitativa_margen_venta_anterior->venta_total_mensual : 0), 2) }}</b></td>
                 <td style="background-color: #e5e5e5 !important;
               color: #000 !important;" class="campo_moneda"><b>
-                  {{ ($credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->venta_mensual : 0) + ($credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->venta_total_mensual : 0) }}</b></td>
+                  {{ number_format(($credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->venta_mensual : 0) + ($credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->venta_total_mensual : 0), 2) }}</b></td>
                 <td style="background-color: #e5e5e5 !important;
               color: #000 !important;" class="campo_moneda"><b>{{ encontrar_valor('analisis_vertical_ventamensual', $ganancia_perdida) }}</b></td>
                 <td style="background-color: #e5e5e5 !important;
@@ -569,9 +569,9 @@
                 <td style="background-color: #e5e5e5 !important;
                 color: #000 !important;"><b>UTILIDAD BRUTA</b></td>
                 <td style="background-color: #e5e5e5 !important;
-                color: #000 !important;" class="campo_moneda"><b>{{ ( $credito_cuantitativa_margen_venta_anterior ? $credito_cuantitativa_margen_venta_anterior->margen_ventas : 0 ) + ( $credito_cuantitativa_margen_venta_anterior ? $credito_cuantitativa_margen_venta_anterior->margen_ventas_mensual : 0 ) }}</b></td>
+                color: #000 !important;" class="campo_moneda"><b>{{ number_format(($credito_cuantitativa_margen_venta_anterior ? $credito_cuantitativa_margen_venta_anterior->margen_ventas : 0) + ( $credito_cuantitativa_margen_venta_anterior ? $credito_cuantitativa_margen_venta_anterior->margen_ventas_mensual : 0), 2) }}</b></td>
                 <td style="background-color: #e5e5e5 !important;
-                color: #000 !important;" class="campo_moneda"><b>{{ ( $credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->margen_ventas : 0 ) + ( $credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->margen_ventas_mensual : 0 ) }}</b></td>
+                color: #000 !important;" class="campo_moneda"><b>{{ number_format(($credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->margen_ventas : 0) + ( $credito_cuantitativa_margen_venta ? $credito_cuantitativa_margen_venta->margen_ventas_mensual : 0), 2) }}</b></td>
                 <td style="background-color: #e5e5e5 !important;
                 color: #000 !important;" class="campo_moneda"><b>{{ encontrar_valor('analisis_vertical_utilidad_bruta', $ganancia_perdida) }}</b></td>
                 <td style="background-color: #e5e5e5 !important;
@@ -656,15 +656,15 @@
               </tr>
               <tr>
                 <td>Cuota de préstamo E. Reguladas</td>
-                <td class="campo_moneda">{{ encontrar_valor('comercial_er_couta', $resumen_deuda_anterior) + encontrar_valor('mes_er_couta', $resumen_deuda_anterior) }}</td>
-                <td class="campo_moneda">{{ encontrar_valor('comercial_er_couta', $resumen_deuda) + encontrar_valor('mes_er_couta', $resumen_deuda) }}</td>
+                <td class="campo_moneda">{{ number_format(encontrar_valor('comercial_er_couta', $resumen_deuda_anterior) + encontrar_valor('mes_er_couta', $resumen_deuda_anterior), 2) }}</td>
+                <td class="campo_moneda">{{ number_format(encontrar_valor('comercial_er_couta', $resumen_deuda) + encontrar_valor('mes_er_couta', $resumen_deuda), 2) }}</td>
                 <td class="campo_moneda">{{ encontrar_valor('analisis_vertical_cuota_regulada', $ganancia_perdida) }}</td>
                 <td class="campo_moneda">{{ encontrar_valor('analisis_horizontal_cuota_regulada', $ganancia_perdida) }}</td>
               </tr>
               <tr>
                 <td>Cuota de préstamo E. No Reguladas</td>
-                <td class="campo_moneda">{{ encontrar_valor('comercial_enr_couta', $resumen_deuda_anterior) + encontrar_valor('mes_enr_couta', $resumen_deuda_anterior) }}</td>
-                <td class="campo_moneda">{{ encontrar_valor('comercial_enr_couta', $resumen_deuda) + encontrar_valor('mes_enr_couta', $resumen_deuda) }}</td>
+                <td class="campo_moneda">{{ number_format(encontrar_valor('comercial_enr_couta', $resumen_deuda_anterior) + encontrar_valor('mes_enr_couta', $resumen_deuda_anterior), 2) }}</td>
+                <td class="campo_moneda">{{ number_format(encontrar_valor('comercial_enr_couta', $resumen_deuda) + encontrar_valor('mes_enr_couta', $resumen_deuda), 2) }}</td>
                 <td class="campo_moneda">{{ encontrar_valor('analisis_vertical_cuota_noregulada', $ganancia_perdida) }}</td>
                 <td class="campo_moneda">{{ encontrar_valor('analisis_horizontal_cuota_noregulada', $ganancia_perdida) }}</td>
               </tr>
@@ -715,15 +715,15 @@
               </tr>
               <tr>
                 <td>+ INGRESOS FIJOS</td>
-                <td class="campo_moneda">{{ $credito_cuantitativa_ingreso_adicional_anterior ? $credito_cuantitativa_ingreso_adicional_anterior->total_ingreso_adicional : 0 }}</td>
-                <td class="campo_moneda">{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->total_ingreso_adicional : 0 }}</td>
+                <td class="campo_moneda">{{ $credito_cuantitativa_ingreso_adicional_anterior ? $credito_cuantitativa_ingreso_adicional_anterior->total_ingreso_adicional : '0.00' }}</td>
+                <td class="campo_moneda">{{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->total_ingreso_adicional : '0.00' }}</td>
                 <td class="campo_moneda">{{ encontrar_valor('analisis_vertical_ingreso_fijo', $ganancia_perdida) }}</td>
                 <td class="campo_moneda">{{ encontrar_valor('analisis_horizontal_ingreso_fijo', $ganancia_perdida) }}</td>
               </tr>
               <tr>
                 <td>- GASTOS FAMILIARES</td>
-                <td class="campo_moneda">{{ $credito_evaluacion_cualitativa_anterior ? $credito_evaluacion_cualitativa_anterior->gasto_total : 0 }}</td>
-                <td class="campo_moneda">{{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->gasto_total : 0 }}</td>
+                <td class="campo_moneda">{{ $credito_evaluacion_cualitativa_anterior ? $credito_evaluacion_cualitativa_anterior->gasto_total : '0.00' }}</td>
+                <td class="campo_moneda">{{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->gasto_total : '0.00' }}</td>
                 <td class="campo_moneda">{{ encontrar_valor('analisis_vertical_gasto_familiar', $ganancia_perdida) }}</td>
                 <td class="campo_moneda">{{ encontrar_valor('analisis_horizontal_gasto_familiar', $ganancia_perdida) }}</td>
               </tr>
@@ -732,14 +732,14 @@
                 <?php
                   $consumo_total_couta_anterior = encontrar_valor('consumo_total_couta', $resumen_deuda_anterior);
                   $vivienda_total_couta_anterior = encontrar_valor('vivienda_total_couta', $resumen_deuda_anterior);
-                  $total_resumen_cuotas_linea_credito2_anterior = $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_resumen_cuotas_linea_credito2 : 0;
+                  $total_resumen_cuotas_linea_credito2_anterior = $credito_cuantitativa_deudas_anterior ? $credito_cuantitativa_deudas_anterior->total_resumen_cuotas_linea_credito2 : 0;
                   $evaluacion_actual_ganancia_cuota_vivienda_anterior = $consumo_total_couta_anterior + $vivienda_total_couta_anterior + $total_resumen_cuotas_linea_credito2_anterior;
                 ?>
-                <td class="campo_moneda">{{ $evaluacion_actual_ganancia_cuota_vivienda_anterior }}</td>
+                <td class="campo_moneda">{{ number_format($evaluacion_actual_ganancia_cuota_vivienda_anterior, 2) }}</td>
                 <?php
                   $consumo_total_couta = encontrar_valor('consumo_total_couta', $resumen_deuda);
                   $vivienda_total_couta = encontrar_valor('vivienda_total_couta', $resumen_deuda);
-                  $total_resumen_cuotas_linea_credito2 = $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_resumen_cuotas_linea_credito2 : 0;
+                  $total_resumen_cuotas_linea_credito2 = $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->total_resumen_cuotas_linea_credito2 : '0.00';
                   $evaluacion_actual_ganancia_cuota_vivienda = $consumo_total_couta + $vivienda_total_couta + $total_resumen_cuotas_linea_credito2;
                 ?>
                 <td class="campo_moneda">{{ $evaluacion_actual_ganancia_cuota_vivienda }}</td>

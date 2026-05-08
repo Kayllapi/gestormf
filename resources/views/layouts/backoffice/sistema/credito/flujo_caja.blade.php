@@ -363,37 +363,35 @@
                    $('#mes_doce_ventas').val(mes_doce_ventas.toFixed(2))
                     
                    let porcentaje_costo_venta = parseFloat($('#porcentaje_costo_venta').val());
+                   let mes_cero_compras = parseFloat($('#mes_cero_compras').val())
 
-                   let mes_uno_compras = mes_uno_ventas * (porcentaje_costo_venta/100);
+                   let mes_uno_compras = mes_cero_compras * (porcentaje_mes_uno_ventas/100);
                    $('#mes_uno_compras').val(mes_uno_compras.toFixed(2));
-                  
-                   let mes_dos_compras = mes_dos_ventas * (porcentaje_costo_venta/100);
+                   let mes_dos_compras = mes_cero_compras * (porcentaje_mes_dos_ventas/100);
                    $('#mes_dos_compras').val(mes_dos_compras.toFixed(2));
-                   let mes_tres_compras = mes_tres_ventas * (porcentaje_costo_venta/100);
+                   let mes_tres_compras = mes_cero_compras * (porcentaje_mes_tres_ventas/100);
                    $('#mes_tres_compras').val(mes_tres_compras.toFixed(2));
-                   let mes_cuatro_compras = mes_cuatro_ventas * (porcentaje_costo_venta/100);
+                   let mes_cuatro_compras = mes_cero_compras * (porcentaje_mes_cuatro_ventas/100);
                    $('#mes_cuatro_compras').val(mes_cuatro_compras.toFixed(2));
-                   let mes_cinco_compras = mes_cinco_ventas * (porcentaje_costo_venta/100);
+                   let mes_cinco_compras = mes_cero_compras * (porcentaje_mes_cinco_ventas/100);
                    $('#mes_cinco_compras').val(mes_cinco_compras.toFixed(2));
-                   let mes_seis_compras = mes_seis_ventas * (porcentaje_costo_venta/100);
+                   let mes_seis_compras = mes_cero_compras * (porcentaje_mes_seis_ventas/100);
                    $('#mes_seis_compras').val(mes_seis_compras.toFixed(2));
-                   let mes_siete_compras = mes_siete_ventas * (porcentaje_costo_venta/100);
+                   let mes_siete_compras = mes_cero_compras * (porcentaje_mes_siete_ventas/100);
                    $('#mes_siete_compras').val(mes_siete_compras.toFixed(2));
-                   let mes_ocho_compras = mes_ocho_ventas * (porcentaje_costo_venta/100);
+                   let mes_ocho_compras = mes_cero_compras * (porcentaje_mes_ocho_ventas/100);
                    $('#mes_ocho_compras').val(mes_ocho_compras.toFixed(2));
-                   let mes_nueve_compras = mes_nueve_ventas * (porcentaje_costo_venta/100);
+                   let mes_nueve_compras = mes_cero_compras * (porcentaje_mes_nueve_ventas/100);
                    $('#mes_nueve_compras').val(mes_nueve_compras.toFixed(2));
-                   let mes_diez_compras = mes_diez_ventas * (porcentaje_costo_venta/100);
+                   let mes_diez_compras = mes_cero_compras * (porcentaje_mes_diez_ventas/100);
                    $('#mes_diez_compras').val(mes_diez_compras.toFixed(2));
-                   let mes_once_compras = mes_once_ventas * (porcentaje_costo_venta/100);
+                   let mes_once_compras = mes_cero_compras * (porcentaje_mes_once_ventas/100);
                    $('#mes_once_compras').val(mes_once_compras.toFixed(2));
-                   let mes_doce_compras = mes_doce_ventas * (porcentaje_costo_venta/100);
+                   let mes_doce_compras = mes_cero_compras * (porcentaje_mes_cero_ventas/100);
                    $('#mes_doce_compras').val(mes_doce_compras.toFixed(2));
 
-                 
                    calcula_total_ingresos();
                    calcula_total_egresos();
-                   
                 }
                 
                 $('tr[fila="ingresos"][tipo] input').on('input', function() {

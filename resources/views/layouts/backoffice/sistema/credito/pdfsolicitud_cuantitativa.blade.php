@@ -781,8 +781,9 @@
             </td>
             <td style="background-color: #e5e5e5 !important;
               color: #000 !important;
-              border: 1px solid #000000;" width="100px">
-              <div style="margin-top:5px;background-color:#e5e5e5;color: #000;text-align:center;"><b>{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->estado_credito : '' }}</b></div>
+              border: 1px solid #000000;
+              text-align:center;" width="100px">
+              <b>{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->estado_credito : '' }}</b>
             </td>
             <td>
             </td>

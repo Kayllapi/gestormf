@@ -948,7 +948,7 @@
         
         $rentabilidad_negocio = $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_negocio : 0;  
         $rentabilidad_negocio_res = "Ver ROS";
-        $rentabilidad_negocio_style = "color:#bf8700;";
+        $rentabilidad_negocio_style = "color:#b37700;";
         if( $rentabilidad_negocio > 0 && $rentabilidad_negocio > $tem_propuesta){
           $rentabilidad_negocio_res = "Rentabilidad de Capital de Trabajo Adecuada";
           $rentabilidad_negocio_style = "";

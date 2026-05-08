@@ -1150,7 +1150,7 @@
             $res_ratios_cuota_ingreso_mensual_res = "Dentro del rango establecido";
         } elseif ($res_ratios_cuota_ingreso_mensual > $relacion_couta_ingreso) {
             $res_ratios_cuota_ingreso_mensual_res = "Fuera del rango establecido";
-            $res_ratios_cuota_ingreso_mensual_style = 'color:red;';
+            $res_ratios_cuota_ingreso_mensual_style = 'color:#e80505;';
             $validadar_resultado++;
         }
         if ($res_ratios_cuota_ingreso_mensual <= $relacion_couta_ingreso) {
@@ -1167,7 +1167,7 @@
             $res_ratios_venta_cuota_diaria_res = "Dentro del rango establecido";
         } elseif ($res_ratios_venta_cuota_diaria > $relacion_cuota_venta) {
             $res_ratios_venta_cuota_diaria_res = "Fuera del rango establecido";
-            $res_ratios_venta_cuota_diaria_style = 'color:red;';
+            $res_ratios_venta_cuota_diaria_style = 'color:#e80505;';
             $validadar_resultado++;
         } else {
             $res_ratios_venta_cuota_diaria_res = 0;
@@ -1185,7 +1185,7 @@
             $res_ratios_venta_cuota_semanal_res = "Dentro del rango establecido";
         } elseif ($res_ratios_venta_cuota_semanal > $relacion_cuota_venta) {
             $res_ratios_venta_cuota_semanal_res = "Fuera del rango establecido";
-            $res_ratios_venta_cuota_semanal_style = 'color:red;';
+            $res_ratios_venta_cuota_semanal_style = 'color:#e80505;';
         } else {
             $res_ratios_venta_cuota_semanal_res = 0;
         }
@@ -1202,7 +1202,7 @@
             $res_ratios_venta_cuota_quincenal_res = "Dentro del rango establecido";
         } elseif ($res_ratios_venta_cuota_quincenal > $relacion_cuota_venta) {
             $res_ratios_venta_cuota_quincenal_res = "Fuera del rango establecido";
-            $res_ratios_venta_cuota_quincenal_style = 'color:red;';
+            $res_ratios_venta_cuota_quincenal_style = 'color:#e80505;';
         } else {
             $res_ratios_venta_cuota_quincenal_res = 0;
         }
@@ -1218,7 +1218,7 @@
             $res_ratios_venta_cuota_mensual_res = "Dentro del rango establecido";
         } elseif ($res_ratios_venta_cuota_mensual > $relacion_cuota_venta) {
             $res_ratios_venta_cuota_mensual_res = "Fuera del rango establecido";
-            $res_ratios_venta_cuota_mensual_style = 'color:red;';
+            $res_ratios_venta_cuota_mensual_style = 'color:#e80505;';
         } else {
             $res_ratios_venta_cuota_mensual_res = 0;
         }
@@ -1457,9 +1457,9 @@
                           $limites_numero_entidades_style = '';
                           if ($limites_numero_entidades > $entidad_maxima) {
                             $limites_numero_entidades_res = "Se sugiere no proceder o coverturar la propuesta";
-                            $limites_numero_entidades_style = 'color:red;';
+                            $limites_numero_entidades_style = 'color:#e80505;';
                             
-                            $stylebackground_limites_numero_entidades_res = 'color:red;';
+                            $stylebackground_limites_numero_entidades_res = 'color:#e80505;';
                           } else if ($limites_numero_entidades <= $entidad_maxima) {
                             $limites_numero_entidades_res = "Proceder con propuesta";
                           }
@@ -1596,7 +1596,7 @@
                         $limites_numero_entidades_style = '';
                         if ($limites_numero_entidades > $entidad_maxima) {
                           $limites_numero_entidades_res = "Se sugiere no proceder o coverturar la propuesta";
-                          $limites_numero_entidades_style = 'color:red;';
+                          $limites_numero_entidades_style = 'color:#e80505;';
                         } else if ($limites_numero_entidades <= $entidad_maxima) {
                           $limites_numero_entidades_res = "Proceder con propuesta";
                         }

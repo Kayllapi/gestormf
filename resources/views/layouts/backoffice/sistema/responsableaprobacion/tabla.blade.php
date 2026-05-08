@@ -34,7 +34,7 @@
                 <tr>
                   <th style="width:200px;">NIVELES DE APROBACIÓN *</th>
                   <th colspan="2" style="width:200px;">RIESGO CREDITICIO (S/.) *</th>
-                  <th>COMITÉ DE APROBACIÓN <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
+                  <th>COMITÉ DE APROBACIÓN <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
                   <th>AUTONOMÍA DE ADMINITRACIÓN</th>
                   <th>AUTONOMÍA DE GERENCIA GENERAL</th>
                   <th><a href="javascript:;" class="btn btn-success" onclick="agregar_nivelaprobacion_prendario()">
@@ -215,7 +215,7 @@
                 <tr>
                   <th style="width:200px;">NIVELES DE APROBACIÓN *</th>
                   <th colspan="2" style="width:200px;">RIESGO CREDITICIO (S/.) *</th>
-                  <th>COMITÉ DE APROBACIÓN <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
+                  <th>COMITÉ DE APROBACIÓN <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
                   <th>AUTONOMÍA DE ADMINITRACIÓN</th>
                   <th>AUTONOMÍA DE GERENCIA GENERAL</th>
                   <th><a href="javascript:;" class="btn btn-success" onclick="agregar_nivelaprobacion_noprendario()">

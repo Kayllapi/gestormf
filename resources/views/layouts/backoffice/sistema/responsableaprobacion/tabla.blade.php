@@ -34,7 +34,7 @@
                 <tr>
                   <th style="width:200px;">NIVELES DE APROBACIÓN *</th>
                   <th colspan="2" style="width:200px;">RIESGO CREDITICIO (S/.) *</th>
-                  <th>COMITÉ DE APROBACIÓN</th>
+                  <th>COMITÉ DE APROBACIÓN <span style="color:#c40000 !important;">(Generar de mayor a menor rango)</span></th>
                   <th>AUTONOMÍA DE ADMINITRACIÓN</th>
                   <th>AUTONOMÍA DE GERENCIA GENERAL</th>
                   <th><a href="javascript:;" class="btn btn-success" onclick="agregar_nivelaprobacion_prendario()">
@@ -215,7 +215,7 @@
                 <tr>
                   <th style="width:200px;">NIVELES DE APROBACIÓN *</th>
                   <th colspan="2" style="width:200px;">RIESGO CREDITICIO (S/.) *</th>
-                  <th>COMITÉ DE APROBACIÓN</th>
+                  <th>COMITÉ DE APROBACIÓN <span style="color:#c40000 !important;">(Generar de mayor a menor rango)</span></th>
                   <th>AUTONOMÍA DE ADMINITRACIÓN</th>
                   <th>AUTONOMÍA DE GERENCIA GENERAL</th>
                   <th><a href="javascript:;" class="btn btn-success" onclick="agregar_nivelaprobacion_noprendario()">
@@ -924,7 +924,7 @@ function select_creditosprendarios(){
 function select_creditosnoprendarios(){
     var data = '';
     $("#table-creditosnoprendarios > tbody > tr").each(function() {
-        var num = $(this).attr('id');        
+        var num = $(this).attr('id');
         var nivelaprobacionnombre = $("#nivelaprobacionnombre_noprendario"+num).val();
         var riesgocredito1 = $("#riesgocredito1_noprendario"+num).val();
         var riesgocredito2 = $("#riesgocredito2_noprendario"+num).val();

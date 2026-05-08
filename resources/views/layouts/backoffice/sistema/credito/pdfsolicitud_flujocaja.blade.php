@@ -268,7 +268,7 @@
               <td></td>
             </tr>
             <tr>
-              <td colspan=14>INGRESOS (S/.)</td>
+              <td colspan=14><b>INGRESOS (S/.)</b></td>
             </tr>
             <tr>
               <td>Ventas</td>
@@ -448,7 +448,7 @@
               <td class="campo_moneda">{{ encontrar_valor('mes_doce_total_ingreso', $flujo_caja) }}</td>
             </tr>
             <tr>
-              <td colspan=14>EGRESOS (S/.)</td>
+              <td colspan=14><b>EGRESOS (S/.)</b></td>
             </tr>
             <tr>
               <td>Compras/ Costos</td>

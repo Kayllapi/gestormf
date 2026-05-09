@@ -141,7 +141,7 @@
         </div>
       @elseif($users_prestamo->idfuenteingreso == 2) {{-- dependiente --}}
         <div class="col-md-9 mb-1">
-            <button type="button" class="btn btn-secondary" style="color: #000;background-color: #00bf3e;border-color: #00bf3e;height: 50px;"
+            <button type="button" class="btn btn-secondary" style="color: #000;background-color: #9AD872;border-color: #9AD872;height: 50px;"
                     onclick="form_propuesta_credito()">
               HOJA DE PROPUESTA DE CRÉDITO</button>
             <script>

@@ -1029,9 +1029,13 @@
                   <td class="doble-subrayado">%</td>
                   <td class="doble-subrayado campo_numero">{{ $solvencia_cuota_total }}</td>
                   <td class="doble-subrayado">{{ $solvencia_cuota_total_res }}</td>
-                  <td class="doble-subrayado" colspan=2>
-                    {{-- {{ $credito_propuesta ? $credito_propuesta->solvencia_cuota_total_res_coment : '' }} --}}
-                    {{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->estado_credito : '' }}
+                  <td class="doble-subrayado"
+                    style="background-color: #e5e5e5 !important;
+                      color: #000 !important;
+                      border: 1px solid #000000;
+                      text-align:center;"
+                    colspan=2>
+                    <b>{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->estado_credito : '' }}</b>
                   </td>
                   <td class="doble-subrayado">Se exije &lt; 100% conforme política</td>
                 </tr>
@@ -1220,9 +1224,13 @@
                   <td class="doble-subrayado">%</td>
                   <td class="doble-subrayado campo_moneda">{{ $res_solvencia_relacion_cuota_resumida }}</td>
                   <td><span class="doble-subrayado">{{ $res_solvencia_relacion_cuota_res }}</span></td>
-                  <td class="doble-subrayado" colspan=2>
-                    {{-- {{ $credito_propuesta ? $credito_propuesta->res_solvencia_relacion_cuota_coment : '' }} --}}
-                    {{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->estado_credito_general : '' }}
+                  <td class="doble-subrayado"
+                    style="background-color: #e5e5e5 !important;
+                      color: #000 !important;
+                      border: 1px solid #000000;
+                      text-align:center;"
+                    colspan=2>
+                    <b>{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->estado_credito_general : '' }}</b>
                   </td>
                   <td><div class="cuadro-input doble-subrayado">Se exije < 100% conforme política</div></td>
                 </tr>

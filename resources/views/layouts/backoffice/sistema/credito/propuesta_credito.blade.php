@@ -1011,24 +1011,30 @@
         // SOLVENCIA
         // Fila 06
         $solvencia_liquidez = $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_liquidez : 0;
+        $solvencia_liquidez_style = '';
         if($solvencia_liquidez > 0 && $solvencia_liquidez >= 1) {
           $solvencia_liquidez_res = "Solvente (Capacidad) puede asumir sus deudas a corto plazo - Continuar Propuesta";
         }else{
           $solvencia_liquidez_res = "Insolvencia Técnica - Observar Propuesta";
+          $solvencia_liquidez_style = 'color:#b37700;';
         }
         // Fila 07
         $solvencia_liquidez_acida = $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_liquidez_acida : 0;
+        $solvencia_liquidez_acida_style = '';
         if ($solvencia_liquidez_acida >= 1) {
             $solvencia_liquidez_acida_res = "CUENTA con Efectivo Inmediato para pagar deudas";
         } else {
             $solvencia_liquidez_acida_res = "NO cuenta con Efectivo inmediato para Pagar deudas";
+            $solvencia_liquidez_acida_style = 'color:#b37700;';
         }
         // Fila 08
         $solvencia_endeudamiento_propuesta = $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_endeudamiento_propuesta : 0;
+        $solvencia_endeudamiento_propuesta_style = '';
         if ($solvencia_endeudamiento_propuesta <= 0.85) {
             $solvencia_endeudamiento_propuesta_res = "TIENE autonomía financiera - Proceder Propuesta";
         } else {
             $solvencia_endeudamiento_propuesta_res = "NO tiene autonomía financiera - Observar Propuesta";
+            $solvencia_endeudamiento_propuesta_style = 'color:#b37700;';
         }
         if ($solvencia_endeudamiento_propuesta <= 0.85) {
             $solvencia_endeudamiento_propuesta_res_coment = "TIENE respaldo patrimonial para asumir la deuda propuesta";
@@ -1060,10 +1066,12 @@
         }
         // Fila 10
         $solvencia_capital_trabajo_neto = $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_prestamo : 0;
+        $solvencia_capital_trabajo_neto_style = '';
         if ($solvencia_capital_trabajo_neto <= 85) {
             $solvencia_capital_trabajo_neto_res = "Financiamiento dentro de lo Permisible";
         } else {
             $solvencia_capital_trabajo_neto_res = "Financiamiento fuera de límite permisible";
+            $solvencia_capital_trabajo_neto_style = 'color:#b37700;';
         }
         if ($solvencia_capital_trabajo_neto <= 85) {
             $solvencia_capital_trabajo_neto_res_coment = "Evidencia que se está financiando menos del capital de trabajo neto que tiene";
@@ -1363,24 +1371,24 @@
                     <tr>
                       <td>Liquidez</td>
                       <td>Veces</td>
-                      <td><input type="text" class="form-control campo_moneda" disabled id="solvencia_liquidez" value="{{ $solvencia_liquidez }}"></td>
-                      <td><div class="cuadro-input">{{ $solvencia_liquidez_res }}</div></td>
+                      <td><input type="text" class="form-control campo_moneda" disabled id="solvencia_liquidez" style="{{$solvencia_liquidez_style}}" value="{{ $solvencia_liquidez }}"></td>
+                      <td><div class="cuadro-input" style="{{$solvencia_liquidez_style}}">{{ $solvencia_liquidez_res }}</div></td>
                       <td colspan="2"><div class="cuadro-input">Por cada sol de obligaciones cuenta con S/ {{ $solvencia_liquidez }} para pagar en el corto plazo </div></td>
                       <td><div class="cuadro-input">Se exije >1</div></td>
                     </tr>
                     <tr>
                       <td>Liquidez Ácida</td>
                       <td>Veces</td>
-                      <td><input type="text" class="form-control campo_moneda" disabled id="solvencia_liquidez_acida" value="{{ $solvencia_liquidez_acida }}"></td>
-                      <td><div class="cuadro-input">{{ $solvencia_liquidez_acida_res }}</div></td>
+                      <td><input type="text" class="form-control campo_moneda" disabled id="solvencia_liquidez_acida" style="{{$solvencia_liquidez_acida_style}}" value="{{ $solvencia_liquidez_acida }}"></td>
+                      <td><div class="cuadro-input" style="{{$solvencia_liquidez_acida_style}}">{{ $solvencia_liquidez_acida_res }}</div></td>
                       <td colspan="2"><div class="cuadro-input">Por cada sol de obligaciones cuenta de inmediato S/ {{ $solvencia_liquidez_acida }} para pagar en muy corto plazo</div></td>
                       <td><div class="cuadro-input">Óptimo >1</div></td>
                     </tr>
                     <tr>
                       <td>Endeudamiento Patrim. con propuesta</td>
                       <td>Veces</td>
-                      <td><input type="text" class="form-control campo_moneda" disabled id="solvencia_endeudamiento_propuesta" value="{{ $solvencia_endeudamiento_propuesta }}"></td>
-                      <td><div class="cuadro-input">{{ $solvencia_endeudamiento_propuesta_res }}</div></td>
+                      <td><input type="text" class="form-control campo_moneda" disabled id="solvencia_endeudamiento_propuesta" style="{{$solvencia_endeudamiento_propuesta_style}}" value="{{ $solvencia_endeudamiento_propuesta }}"></td>
+                      <td><div class="cuadro-input" style="{{$solvencia_endeudamiento_propuesta_style}}">{{ $solvencia_endeudamiento_propuesta_res }}</div></td>
                       <td colspan=2><div class="cuadro-input">{{ $solvencia_endeudamiento_propuesta_res_coment }}</div></td>
                       <td><div class="cuadro-input">Usualmente <1 (maximo considerado 0.85). Particularidad; en los giros de alta rotación ó servicios puede ser >1</div></td>
                     </tr>
@@ -1389,8 +1397,8 @@
                     <tr>
                       <td>Préstamo / capital de trabajo Neto</td>
                       <td>%</td>
-                      <td><input type="text" class="form-control campo_moneda" disabled id="solvencia_capital_trabajo_neto" value="{{ $solvencia_capital_trabajo_neto }}"></td>
-                      <td><div class="cuadro-input">{{ $solvencia_capital_trabajo_neto_res }}</div></td>
+                      <td><input type="text" class="form-control campo_moneda" disabled id="solvencia_capital_trabajo_neto" style="{{$solvencia_capital_trabajo_neto_style}}" value="{{ $solvencia_capital_trabajo_neto }}"></td>
+                      <td><div class="cuadro-input" style="{{$solvencia_capital_trabajo_neto_style}}">{{ $solvencia_capital_trabajo_neto_res }}</div></td>
                       <td colspan=2><div class="cuadro-input">{{ $solvencia_capital_trabajo_neto_res_coment }}</div></td>
                       <td><div class="cuadro-input">Usualmente:<100% (maximo considerado 85%). Particularidad: en giros de alta rotación ó servicios puede ser >100% o (-)</div></td>
                     </tr>

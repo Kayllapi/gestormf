@@ -982,13 +982,13 @@
           $rentabilidad_unidad_familiar_res = "Riesgo Normal - Continuar Propuesta";
         }elseif($rentabilidad_unidad_familiar <= 1) {
           $rentabilidad_unidad_familiar_res = "Alto Riesgo - Suspender Propuesta";
-          $rentabilidad_unidad_familiar_style = 'color:#9e6a04;';
+          $rentabilidad_unidad_familiar_style = 'color:#b37700;';
         }
         if($rentabilidad_unidad_familiar > 1) {
           $rentabilidad_unidad_familiar_res_coment = "Sus ingresos totales del cliente PUEDE cubrir sus gastos familiares en más de 1 vez";
         }else{
           $rentabilidad_unidad_familiar_res_coment = "Los ingresos totales del cliente NO son capaces de cubrir sus gastos familiares";
-          $rentabilidad_unidad_familiar_style = 'color:#9e6a04;';
+          $rentabilidad_unidad_familiar_style = 'color:#b37700;';
         }
         // Fila 04
         $rentabilidad_patrimonial = $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_patrimonial : 0;
@@ -999,14 +999,14 @@
           $rentabilidad_patrimonial_res = "Adecuada Rentabilidad de los fondos propios invertidos en el negociopor INTERESA ENDEUDARSE";
         }else{
           $rentabilidad_patrimonial_res = "Débil Rentabilidad de los fondos propios invertidos en el negocio NO INTERESA ENDEUDARSE";
-          $rentabilidad_patrimonial_style = 'color:#9e6a04;';
+          $rentabilidad_patrimonial_style = 'color:#b37700;';
         }
         // Fila 05
         if ($rentabilidad_activos < $rentabilidad_patrimonial && $rentabilidad_activos > $credito->tasa_tem) {
           $rentabilidad_activos_res = "Rentabilidad Adeuado de las inversiones en el negocio, INTERESA ENDEUDARSE";
         } else {
           $rentabilidad_activos_res = "Rentabilidad Débil de las inversiones en el negocio, NO INTERESA ENDEUDARSE";
-          $rentabilidad_activos_style = 'color:#9e6a04;';
+          $rentabilidad_activos_style = 'color:#b37700;';
         }
         // SOLVENCIA
         // Fila 06

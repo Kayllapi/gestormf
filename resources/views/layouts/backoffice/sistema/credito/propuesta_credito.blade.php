@@ -1426,7 +1426,7 @@
                       <td></td>
                     </tr>
                     <tr>
-                      <td>Plazo promedio de cobranza cliente</td>
+                      <td>Plazo promedio de cobranza clientes</td>
                       <td>Días</td>
                       <td><input type="text" class="form-control campo_moneda" disabled id="gestion_promedio_cobranza" style="{{$gestion_promedio_cobranza_style}}" value="{{ $gestion_promedio_cobranza }}"></td>
                       <td><div class="cuadro-input" style="{{$gestion_promedio_cobranza_style}}">{{ $gestion_promedio_cobranza_res }}</div></td>

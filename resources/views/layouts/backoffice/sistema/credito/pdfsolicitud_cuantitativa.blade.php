@@ -860,12 +860,12 @@
               <td class="campo_moneda">{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_rotacion_inventario : '0.00' }}</td>
             </tr>
             <tr>
-              <td>Plazo promedio de cobranza</td>
+              <td>Plazo promedio de cobranza clientes</td>
               <td>Días</td>
               <td class="campo_moneda">{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_promedio_cobranza : '0.00' }}</td>
             </tr>
             <tr>
-              <td>Plazo promedio de pago</td>
+              <td>Plazo promedio de pago proveedores</td>
               <td>Días</td>
               <td class="campo_moneda">{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_primedio_pago : '0.00' }}</td>
             </tr>

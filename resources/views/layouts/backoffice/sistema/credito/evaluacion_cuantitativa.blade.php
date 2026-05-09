@@ -1335,7 +1335,7 @@
                 </td>
               </tr>
               <tr>
-                <td>Plazo promedio de cobranza</td>
+                <td>Plazo promedio de cobranza clientes</td>
                 <td>
                   <span class="popover-hover"
                     data-bs-content='Cuentas por Cobrar a Clientes
@@ -1362,7 +1362,7 @@
                 </td>
               </tr>
               <tr>
-                <td>Plazo promedio de pago</td>
+                <td>Plazo promedio de pago proveedores</td>
                 <td>
                   <span class="popover-hover"
                     data-bs-content='cuentas por pagar a proveedores

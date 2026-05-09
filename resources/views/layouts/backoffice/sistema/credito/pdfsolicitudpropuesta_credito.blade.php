@@ -1027,7 +1027,13 @@
                 <tr>
                   <td class="doble-subrayado">Cuota total/excedente total</td>
                   <td class="doble-subrayado">%</td>
-                  <td class="doble-subrayado campo_numero">{{ $solvencia_cuota_total }}</td>
+                  <td class="doble-subrayado campo_numero"
+                    style="background-color: #e5e5e5 !important;
+                      color: #000 !important;
+                      border: 1px solid #000000;
+                      text-align:center;">
+                      <b>{{ $solvencia_cuota_total }}</b>
+                  </td>
                   <td class="doble-subrayado">{{ $solvencia_cuota_total_res }}</td>
                   <td class="doble-subrayado"
                     style="background-color: #e5e5e5 !important;
@@ -1222,7 +1228,13 @@
                 <tr>
                   <td class="doble-subrayado">Relación cuota/excedente</td>
                   <td class="doble-subrayado">%</td>
-                  <td class="doble-subrayado campo_moneda">{{ $res_solvencia_relacion_cuota_resumida }}</td>
+                  <td class="doble-subrayado campo_moneda"
+                    style="background-color: #e5e5e5 !important;
+                      color: #000 !important;
+                      border: 1px solid #000000;
+                      text-align:center;">
+                      <b>{{ $res_solvencia_relacion_cuota_resumida }}</b>
+                  </td>
                   <td><span class="doble-subrayado">{{ $res_solvencia_relacion_cuota_res }}</span></td>
                   <td class="doble-subrayado"
                     style="background-color: #e5e5e5 !important;

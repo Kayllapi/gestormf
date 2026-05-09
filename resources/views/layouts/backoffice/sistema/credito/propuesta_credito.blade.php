@@ -1099,10 +1099,12 @@
         }
         // Fila 13
         $gestion_promedio_cobranza = $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_promedio_cobranza : 0;
+        $gestion_promedio_cobranza_style = '';
         if ($gestion_promedio_cobranza <= 45) {
             $gestion_promedio_cobranza_res = "Gestión ADECUADA de sus ventas a crédito";
         } else {
             $gestion_promedio_cobranza_res = "Gestión INADECUADA de sus ventas a crédito";
+            $gestion_promedio_cobranza_style = 'color:#b37700;';
         }
         if ($gestion_promedio_cobranza > 0) {
             $gestion_promedio_cobranza_res_coment = "El cliente realiza el cobro de sus ventas a crédito cada "; // Puedes reemplazar el punto con un espacio si es necesario
@@ -1111,12 +1113,14 @@
         }
         // Fila 14
         $gestion_promedio_pago = $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_primedio_pago : 0;
+        $gestion_promedio_pago_style = '';
         if ($gestion_promedio_pago > $gestion_promedio_cobranza) {
             $gestion_promedio_pago_res = "EXISTE calce a sus obligaciones con su proveedor";
             $gestion_promedio_pago_res_coment = "Pago a proveedores usualmente puntual";
         } else {
             $gestion_promedio_pago_res = "NO existe calce a sus obligaciones con su proveedor";
           $gestion_promedio_pago_res_coment = "Pago a proveedores con retrasos";
+            $gestion_promedio_pago_style = 'color:#b37700;';
         }
         // LIMITES
         // Fila 15
@@ -1424,16 +1428,16 @@
                     <tr>
                       <td>Plazo promedio de cobranza</td>
                       <td>Días</td>
-                      <td><input type="text" class="form-control campo_moneda" disabled id="gestion_promedio_cobranza" value="{{ $gestion_promedio_cobranza }}"></td>
-                      <td><div class="cuadro-input">{{ $gestion_promedio_cobranza_res }}</div></td>
+                      <td><input type="text" class="form-control campo_moneda" disabled id="gestion_promedio_cobranza" style="{{$gestion_promedio_cobranza_style}}" value="{{ $gestion_promedio_cobranza }}"></td>
+                      <td><div class="cuadro-input" style="{{$gestion_promedio_cobranza_style}}">{{ $gestion_promedio_cobranza_res }}</div></td>
                       <td colspan="2"><div class="cuadro-input">{{ $gestion_promedio_cobranza_res_coment }} {{ $gestion_promedio_cobranza }} días</div></td>
                       <td><div class="cuadro-input">Plazo máximo adecuado de 30 a 45 días</td>
                     </tr>
                     <tr>
                       <td>Plazo promedio de pago</td>
                       <td>Días</td>
-                      <td><input type="text" class="form-control campo_moneda" disabled id="gestion_promedio_pago" value="{{ $gestion_promedio_pago }}"></td>
-                      <td><div class="cuadro-input">{{ $gestion_promedio_pago_res }}</div></td>
+                      <td><input type="text" class="form-control campo_moneda" disabled id="gestion_promedio_pago" style="{{$gestion_promedio_pago_style}}" value="{{ $gestion_promedio_pago }}"></td>
+                      <td><div class="cuadro-input" style="{{$gestion_promedio_pago_style}}">{{ $gestion_promedio_pago_res }}</div></td>
                       <td colspan=2><div class="cuadro-input">{{ $gestion_promedio_pago_res_coment }}</div></td>
                       <td><div class="cuadro-input">CALCE: Plazo Prom.Cobranza < Plazo Prom. Pago</div></td>
                     </tr>
@@ -1445,8 +1449,8 @@
                   <tr>
                     <td>Financiamiento por VRU</td>
                     <td>%</td>
-                    <td><input type="text" class="form-control campo_moneda" disabled id="limites_financiamiento_vru" value="{{ $limites_financiamiento_vru }}"></td>
-                    <td><div class="cuadro-input">{{ $limites_financiamiento_vru_res }}</div></td>
+                    <td><input type="text" class="form-control campo_moneda" disabled id="limites_financiamiento_vru" style="{{$limites_financiamiento_vru_style}}" value="{{ $limites_financiamiento_vru }}"></td>
+                    <td><div class="cuadro-input" style="{{$limites_financiamiento_vru_style}}">{{ $limites_financiamiento_vru_res }}</div></td>
                     <td colspan=2>
                       <input type="text"
                         {{ $view_detalle=='false' ? 'disabled' : '' }}
@@ -1476,7 +1480,7 @@
                           $stylebackground_limites_numero_entidades_res ='';
                           $limites_numero_entidades_style = '';
                           if ($limites_numero_entidades > $entidad_maxima) {
-                            $limites_numero_entidades_res = "Se sugiere no proceder o coverturar la propuesta";
+                            $limites_numero_entidades_res = "Se sugiere no proceder o coberturar la propuesta";
                             $limites_numero_entidades_style = 'color:#e80505;';
                             
                             $stylebackground_limites_numero_entidades_res = 'color:#e80505;';
@@ -1597,7 +1601,7 @@
                   <tr>
                     <td>Financiamiento por VRU</td>
                     <td>%</td>
-                    <td class="campo_moneda">{{ $limites_financiamiento_vru }}</td>
+                    <td class="campo_moneda" style="{{$limites_financiamiento_vru_style}}">{{ $limites_financiamiento_vru }}</td>
                     <td><span style="{{$limites_financiamiento_vru_style}}">{{ $limites_financiamiento_vru_res }}</span></td>
                     <td colspan=2>{{ $credito_propuesta ? $credito_propuesta->limites_financiamiento_vru_res_coment : '' }}</td>
                     <td><div class="cuadro-input">Máximo exigido {{ configuracion($tienda->id,'capital_asignado')['valor'] }} %</div></td>
@@ -1691,7 +1695,7 @@
                       $limites_numero_entidades_res = '';
                       $limites_numero_entidades_style = '';
                       if ($limites_numero_entidades > $entidad_maxima) {
-                        $limites_numero_entidades_res = "Se sugiere no proceder o coverturar la propuesta";
+                        $limites_numero_entidades_res = "Se sugiere no proceder o coberturar la propuesta";
                         $limites_numero_entidades_style = "color:#e80505;";
                       } else if ($limites_numero_entidades <= $entidad_maxima) {
                         $limites_numero_entidades_res = "Proceder con propuesta";

@@ -1426,7 +1426,7 @@
                       <td></td>
                     </tr>
                     <tr>
-                      <td>Plazo promedio de cobranza</td>
+                      <td>Plazo promedio de cobranza cliente</td>
                       <td>Días</td>
                       <td><input type="text" class="form-control campo_moneda" disabled id="gestion_promedio_cobranza" style="{{$gestion_promedio_cobranza_style}}" value="{{ $gestion_promedio_cobranza }}"></td>
                       <td><div class="cuadro-input" style="{{$gestion_promedio_cobranza_style}}">{{ $gestion_promedio_cobranza_res }}</div></td>
@@ -1434,7 +1434,7 @@
                       <td><div class="cuadro-input">Plazo máximo adecuado de 30 a 45 días</td>
                     </tr>
                     <tr>
-                      <td>Plazo promedio de pago</td>
+                      <td>Plazo promedio de pago proveedor</td>
                       <td>Días</td>
                       <td><input type="text" class="form-control campo_moneda" disabled id="gestion_promedio_pago" style="{{$gestion_promedio_pago_style}}" value="{{ $gestion_promedio_pago }}"></td>
                       <td><div class="cuadro-input" style="{{$gestion_promedio_pago_style}}">{{ $gestion_promedio_pago_res }}</div></td>

@@ -1030,8 +1030,7 @@
                   <td class="doble-subrayado campo_numero"
                     style="background-color: #e5e5e5 !important;
                       color: #000 !important;
-                      border: 1px solid #000000;
-                      text-align:center;">
+                      border: 1px solid #000000;">
                       <b>{{ $solvencia_cuota_total }}</b>
                   </td>
                   <td class="doble-subrayado">{{ $solvencia_cuota_total_res }}</td>
@@ -1231,8 +1230,7 @@
                   <td class="doble-subrayado campo_moneda"
                     style="background-color: #e5e5e5 !important;
                       color: #000 !important;
-                      border: 1px solid #000000;
-                      text-align:center;">
+                      border: 1px solid #000000;">
                       <b>{{ $res_solvencia_relacion_cuota_resumida }}</b>
                   </td>
                   <td><span class="doble-subrayado">{{ $res_solvencia_relacion_cuota_res }}</span></td>

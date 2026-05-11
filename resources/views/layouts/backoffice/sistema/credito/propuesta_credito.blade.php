@@ -1082,14 +1082,18 @@
         // GESTON 
         // Fila 12
         $gestion_rotacion_inventario = $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_rotacion_inventario : 0;
+        $gestion_rotacion_inventario_style = '';
         if ($gestion_rotacion_inventario <= 7) {
             $gestion_rotacion_inventario_res = "Negocio de Rotación MUY ALTA de ventas";
+            $gestion_rotacion_inventario_style = 'color:#b37700;';
         } elseif ($gestion_rotacion_inventario <= 45) {
             $gestion_rotacion_inventario_res = "Negocio de Rotación ALTA de ventas";
+            $gestion_rotacion_inventario_style = 'color:#b37700;';
         } elseif ($gestion_rotacion_inventario <= 90) {
             $gestion_rotacion_inventario_res = "Negocio de Rotación USUAL de ventas";
         } else {
             $gestion_rotacion_inventario_res = "Negocio de Rotación LENTA de ventas";
+            $gestion_rotacion_inventario_style = 'color:#b37700;';
         }
         if ($gestion_rotacion_inventario > 0) {
             $gestion_rotacion_inventario_res_coment = "El inventario del cliente se renueva cada "; // Puedes reemplazar el punto con un espacio si es necesario
@@ -1419,8 +1423,8 @@
                     <tr>
                       <td>Plazo prom.rotación de invent.</td>
                       <td>Días</td>
-                      <td><input type="text" class="form-control campo_moneda" disabled id="gestion_rotacion_inventario" value="{{ $gestion_rotacion_inventario }}"></td>
-                      <td><div class="cuadro-input">{{ $gestion_rotacion_inventario_res }}</div></td>
+                      <td><input type="text" class="form-control campo_moneda" disabled id="gestion_rotacion_inventario" style="{{$gestion_rotacion_inventario_style}}" value="{{ $gestion_rotacion_inventario }}"></td>
+                      <td><div class="cuadro-input" style="{{$gestion_rotacion_inventario_style}}">{{ $gestion_rotacion_inventario_res }}</div></td>
                       <td colspan="2"><div class="cuadro-input">{{ $gestion_rotacion_inventario_res_coment }} {{ $gestion_rotacion_inventario }} días</div></td>
                       <td></td>
                     </tr>

@@ -35,6 +35,7 @@
         onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=cronograma')}}', size: 'modal-fullscreen' })">
         CRONOGRAMA
       </button>
+      <span style="float: right; color: #e80505;">Al modificar datos registrados, volver a guardar en las hojas</span>
     </div>
     <hr style="margin-top: 8px;margin-bottom: 8px;">
     @if($credito->conevaluacion == 'SI')

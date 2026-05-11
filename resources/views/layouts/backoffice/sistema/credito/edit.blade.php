@@ -105,9 +105,9 @@
             <div class="col-sm-8">
               <select class="form-control" id="idmodalidad_credito">
                 <option></option>
-                @foreach($modalidad_credito as $value)
+                {{-- @foreach($modalidad_credito as $value)
                 <option value="{{ $value->id }}">{{ $value->nombre }}</option>
-                @endforeach
+                @endforeach --}}
               </select>
             </div>
           </div>
@@ -135,24 +135,28 @@
   @include('app.nuevosistema.select2',['input'=>'#idforma_pago_credito', 'val' => $credito->idforma_pago_credito ])
   @include('app.nuevosistema.select2',['input'=>'#idtipo_destino_credito', 'val' => $credito->idtipo_destino_credito ])
   @include('app.nuevosistema.select2',['input'=>'#idtipo_operacion_credito', 'val' => $credito->idtipo_operacion_credito ])
-  @include('app.nuevosistema.select2',['input'=>'#idmodalidad_credito', 'val' => $credito->idmodalidad_credito ])
-  
-  $("#idforma_credito").on("change", function(e) {
-    let idforma_credito = $("#idforma_credito").find('option:selected').val();
-    show_producto_credito();
+  @include('app.nuevosistema.select2',['input'=>'#idmodalidad_credito' ])
+  $(document).ready(function () {
+    $("#idforma_credito").on("change", function(e) {
+      let idforma_credito = $("#idforma_credito").find('option:selected').val();
+      show_producto_credito();
 
-    var html_idmodalidad_credito = '<option></option>';
+      var html_idmodalidad_credito = '<option></option>';
 
-    if(idforma_credito==1){
-          html_idmodalidad_credito += '<option value="1">Regular</option>';
-    }else{
-        @foreach($modalidad_credito as $value)
-          html_idmodalidad_credito += '<option value="{{ $value->id }}">{{ $value->nombre }}</option>';
-        @endforeach
-    }
+      if(idforma_credito==1){
+            html_idmodalidad_credito += '<option value="1">Regular</option>';
+      }else{
+          @foreach($modalidad_credito as $value)
+            html_idmodalidad_credito += '<option value="{{ $value->id }}">{{ $value->nombre }}</option>';
+          @endforeach
+      }
+
+      $('#idmodalidad_credito').html(html_idmodalidad_credito);
+    });
+    // ejecutar al cargar
+    $("#idforma_credito").trigger('change');
     sistema_select2({ input:'#idmodalidad_credito', val: '{{ $credito->idmodalidad_credito }}'});
 
-    $('#idmodalidad_credito').html(html_idmodalidad_credito);
   });
   show_producto_credito();
   function show_producto_credito(){

@@ -956,7 +956,6 @@
         $rentabilidad_negocio_res_coment = "--";
         if( $rentabilidad_negocio > 0){
           $rentabilidad_negocio_res_coment = $rentabilidad_negocio;
-          $rentabilidad_negocio_style = "";
         }
         // Fila 02
         $rentabilidad_ventas = $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->ratio_re_ventas : 0;
@@ -1331,7 +1330,7 @@
                       <td><input type="text" class="form-control campo_moneda" disabled id="rentabilidad_negocio" style="{{$rentabilidad_negocio_style}}" value="{{ $rentabilidad_negocio }}"></td>
                       <td><div class="cuadro-input" style="{{$rentabilidad_negocio_style}}">{{ $rentabilidad_negocio_res }}</div></td>
                       <td  colspan="2"><div class="cuadro-input">Por cada sol invertido gana {{ $rentabilidad_negocio_res_coment }}%</div></td>
-                      <td><div class="cuadro-input">Giros de alta rotación o servicios puede ser (-), usar ROS</div></td>
+                      <td><div class="cuadro-input">Se exige > TEM, giros de alta rotación o servicios puede ser (-), usar ROS</div></td>
                     </tr>
                     <tr>
                       <td>Rentabilidad de las ventas (ROS)</td>

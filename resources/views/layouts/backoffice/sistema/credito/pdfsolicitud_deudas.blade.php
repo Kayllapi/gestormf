@@ -641,11 +641,11 @@
           <tbody>
             <tr>
               <td width="330px">RIESGOS TOTAL PROYECTADO EN: {{ $tienda->nombre }} S/.</td>
-              <td width="70px" class="campo_moneda">{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->riesgo_proyectado_empresa : '0.00' }}</td>
+              <td width="70px" class="campo_moneda"><b>{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->riesgo_proyectado_empresa : '0.00' }}</b></td>
             </tr>
             <tr>
               <td width="330px">RIESGO TOTAL PROYECTADO EN: TODO SISTEMA FINANCIERO S/.</td>
-              <td width="70px" class="campo_moneda">{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->riesgo_proyectado_todos : '0.00' }}</td>
+              <td width="70px" class="campo_moneda"><b>{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->riesgo_proyectado_todos : '0.00' }}</b></td>
             </tr>
           </tbody>
         </table>

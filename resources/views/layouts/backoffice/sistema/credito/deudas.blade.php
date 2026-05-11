@@ -761,6 +761,7 @@
                   <input type="text"
                     class="form-control campo_moneda"
                     disabled
+                    style="font-weight: bold;"
                     value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->riesgo_proyectado_empresa : '0.00' }}"
                     id="riesgo_proyectado_empresa">
                 </td>
@@ -772,6 +773,7 @@
                   <input type="text"
                     class="form-control campo_moneda"
                     disabled
+                    style="font-weight: bold;"
                     value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->riesgo_proyectado_todos : '0.00' }}"
                     id="riesgo_proyectado_todos">
                 </td>

@@ -487,10 +487,9 @@
                     $('#table-datosprestamos_cronograma').scrollTop((respuesta.select_ultimacuotacancelada*32)-32);
                 }, 500);
               
-                // $('td#cont-popover-cuota').popover({
-                //   trigger: 'focus'
-                // });
-                plugins_popover();
+                $('td#cont-popover-cuota').popover({
+                  trigger: 'focus'
+                });
                 /*$('[data-bs-toggle="popover"]').popover({
                   trigger: 'focus'
                 })*/
@@ -527,5 +526,6 @@
       let url = "{{ url('backoffice/'.$tienda->id) }}/cobranzacuota/"+$('#idcredito').val()+"/edit?view=congelarcredito";
       modal({ route: url, size: 'modal-sm' })
    }
+  plugins_popover();
 </script>  
 

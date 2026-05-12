@@ -1123,9 +1123,8 @@ class CobranzacuotaController extends Controller
                                   <span class="checkmark"></span>
                                 </label>
                             </td>
-                            <td style="'.$value['style'].'width:10px;text-align:center;" '.$fechacobranza_fecharegistro.' id="cont-popover-cuota">'.$value['numerocuota'].
-                            //'///'.$totaladelanto.'=='.$value['totalcuota'].'//'.$value['id'].
-                            '</td>
+                            <td style="'.$value['style'].'width:10px;text-align:center;"  id="cont-popover-cuota"><span '.$fechacobranza_fecharegistro.'>'.$value['numerocuota'].
+                            '</span></td>
                             <td style="'.$value['style'].'text-align:center;">'.$value['fecha'].'</td>
                             <td style="'.$value['style'].'text-align:right;" pagar="'.$value['pagar_amortizacion'].'" descontar="'.$value['descontar_amortizacion'].'">'.$value['amortizacion'].'</td>
                             <td style="'.$value['style'].'text-align:right;" pagar="'.$value['pagar_interes'].'" descontar="'.$value['descontar_interes'].'">'.$value['interes'].'</td>

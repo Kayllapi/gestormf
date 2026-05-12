@@ -473,10 +473,7 @@
               setTimeout(function () { 
                   $('#table-datosprestamos_cronograma').scrollTop((respuesta.select_ultimacuotacancelada*32)-32);
               }, 500);
-            
-              // $('td#cont-popover-cuota').popover({
-              //   trigger: 'focus'
-              // });
+
               plugins_popover();
    
               document.querySelectorAll('.popover-hover').forEach(el => {

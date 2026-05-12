@@ -475,15 +475,19 @@
                     $('#table-datosprestamos_cronograma').scrollTop((respuesta.select_ultimacuotacancelada*32)-32);
                 }, 500);
               
-                $('td#cont-popover-cuota').popover({
-                  trigger: 'focus'
+                plugins_popover();
+   
+                document.querySelectorAll('.popover-hover').forEach(el => {
+                  const popover = new bootstrap.Popover(el, {
+                    trigger: 'manual', // 🔥 clave para eliminar click
+                    placement: 'right',
+                    html: true,
+                    content: el.getAttribute('data-bs-content').replace(/\n/g, '<br>')
+                  });
+
+                  el.addEventListener('mouseenter', () => popover.show());
+                  el.addEventListener('mouseleave', () => popover.hide());
                 });
-                /*$('[data-bs-toggle="popover"]').popover({
-                  trigger: 'focus'
-                })*/
-                //const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
-                //const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
-                
             }
         })
     }

@@ -1107,7 +1107,7 @@ class CobranzacuotaController extends Controller
               
               $fechacobranza_fecharegistro = '';
               if($totaladelanto>=$value['totalcuota']){
-                  $fechacobranza_fecharegistro = 'tabindex="0"  data-bs-container="body" class="popover-hover" data-bs-content="Fecha Cancelada: '.$ultimafechaadelanto.'"';
+                  $fechacobranza_fecharegistro = 'tabindex="0" class="popover-hover" data-bs-content="Fecha Cancelada: '.$ultimafechaadelanto.'"';
               }
             
               

@@ -198,19 +198,6 @@
   </div>
 </div>
 <script>
-
-  document.querySelectorAll('.popover-hover').forEach(el => {
-    const popover = new bootstrap.Popover(el, {
-      trigger: 'manual', // 🔥 clave para eliminar click
-      placement: 'right',
-      html: true,
-      content: el.getAttribute('data-bs-content').replace(/\n/g, '<br>')
-    });
-
-    el.addEventListener('mouseenter', () => popover.show());
-    el.addEventListener('mouseleave', () => popover.hide());
-  });
-
     valida_input_vacio();
     sistema_select2({ input:'#idcliente' });
     sistema_select2({ input:'#numero_cuotas' });
@@ -434,74 +421,80 @@
     });
   
     function cronograma(idcredito,numero_cuotas=0,tipo,acuenta=0){
-        $.ajax({
-            url:"{{url('backoffice/'.$tienda->id.'/cobranzacuota/show_cobranzacuota_cronograma')}}",
-            type:'GET',
-            data: {
-                idcredito : idcredito,
-                numerocuota : numero_cuotas,
-                tipo : tipo,
-                acuenta : acuenta,
-            },
-            success: function (respuesta){
+      $.ajax({
+          url:"{{url('backoffice/'.$tienda->id.'/cobranzacuota/show_cobranzacuota_cronograma')}}",
+          type:'GET',
+          data: {
+              idcredito : idcredito,
+              numerocuota : numero_cuotas,
+              tipo : tipo,
+              acuenta : acuenta,
+          },
+          success: function (respuesta){
+            
+              $('#table-datosprestamos_cronograma').html(respuesta.tabla_cronorgrama);
+              $('#opciones_datosprestamos').html(respuesta.opciones_datosprestamos);
               
-                $('#table-datosprestamos_cronograma').html(respuesta.tabla_cronorgrama);
-                $('#opciones_datosprestamos').html(respuesta.opciones_datosprestamos);
-                
-                $('#estadocuotas').html(respuesta.estadocuotas);
-                $('#numerodecuenta').html(respuesta.numerodecuenta);
-                $('#clasificacion').html('<span style="background-color: #ffc107;padding-left: 5px;padding-right: 5px;">'+respuesta.clasificacion+'</span>');
-                $('#asesor').html(respuesta.asesor);
-                $('#numero_cuota_cancelada').html(respuesta.numero_cuota_cancelada);
-                $('#numero_cuota_pendiente').html(respuesta.numero_cuota_pendiente);
-                $('#numero_cuota_vencida').html(respuesta.numero_cuota_vencida);
-                $('#cuota_pagada').html(respuesta.cuota_pagada);
-                $('#cuota_pendiente').html(respuesta.cuota_pendiente);
-                $('#saldo_vencido').html(respuesta.saldo_vencido);
-                $('#saldo_capital').html(respuesta.saldo_capital);
-                $('#numero_credito').html(respuesta.numero_credito);
-                $('#detalle_cantidad_cuotas').val(respuesta.cantidad_cuota);
-                $('#detalle_monto_apagar').val(respuesta.monto_apagar);
-                $('#pagoacuenta_acuenta').val(respuesta.pagoacuenta_acuenta);
-                $('#pagoacuenta_capital').val(respuesta.pagoacuenta_capital);
-                $('#pagoacuenta_interes').val(respuesta.pagoacuenta_interes);
-                $('#pagoacuenta_interescuotamora').val(respuesta.pagoacuenta_interescuotamora);
+              $('#estadocuotas').html(respuesta.estadocuotas);
+              $('#numerodecuenta').html(respuesta.numerodecuenta);
+              $('#clasificacion').html('<span style="background-color: #ffc107;padding-left: 5px;padding-right: 5px;">'+respuesta.clasificacion+'</span>');
+              $('#asesor').html(respuesta.asesor);
+              $('#numero_cuota_cancelada').html(respuesta.numero_cuota_cancelada);
+              $('#numero_cuota_pendiente').html(respuesta.numero_cuota_pendiente);
+              $('#numero_cuota_vencida').html(respuesta.numero_cuota_vencida);
+              $('#cuota_pagada').html(respuesta.cuota_pagada);
+              $('#cuota_pendiente').html(respuesta.cuota_pendiente);
+              $('#saldo_vencido').html(respuesta.saldo_vencido);
+              $('#saldo_capital').html(respuesta.saldo_capital);
+              $('#numero_credito').html(respuesta.numero_credito);
+              $('#detalle_cantidad_cuotas').val(respuesta.cantidad_cuota);
+              $('#detalle_monto_apagar').val(respuesta.monto_apagar);
+              $('#pagoacuenta_acuenta').val(respuesta.pagoacuenta_acuenta);
+              $('#pagoacuenta_capital').val(respuesta.pagoacuenta_capital);
+              $('#pagoacuenta_interes').val(respuesta.pagoacuenta_interes);
+              $('#pagoacuenta_interescuotamora').val(respuesta.pagoacuenta_interescuotamora);
+            
+              $('#detalle_capital').val(respuesta.descuento_capital);
+              $('#detalle_interes').val(respuesta.descuento_interes);
+              $('#detalle_comision').val(respuesta.descuento_comision);
+              $('#detalle_cargo').val(respuesta.descuento_cargo);
+              $('#detalle_tenencia').val(respuesta.descuento_tenencia);
+              $('#detalle_penalidad').val(respuesta.descuento_penalidad);
+              $('#detalle_moratoria').val(respuesta.descuento_moratoria);
+              $('#detalle_total').val(respuesta.descuento_total);
               
-                $('#detalle_capital').val(respuesta.descuento_capital);
-                $('#detalle_interes').val(respuesta.descuento_interes);
-                $('#detalle_comision').val(respuesta.descuento_comision);
-                $('#detalle_cargo').val(respuesta.descuento_cargo);
-                $('#detalle_tenencia').val(respuesta.descuento_tenencia);
-                $('#detalle_penalidad').val(respuesta.descuento_penalidad);
-                $('#detalle_moratoria').val(respuesta.descuento_moratoria);
-                $('#detalle_total').val(respuesta.descuento_total);
-                
-                $('#detalle_total_pagar').val(respuesta.penalidad_pagar);
-                $('#tenencia_penalidad_mora').val(respuesta.tenencia_penalidad_mora);
-                
-                $('#detalle_porcobrar').val(respuesta.descuento_porcobrar);
+              $('#detalle_total_pagar').val(respuesta.penalidad_pagar);
+              $('#tenencia_penalidad_mora').val(respuesta.tenencia_penalidad_mora);
               
-                $('#totalapagar').val(respuesta.totalapagar);
-                
-                setTimeout(function () { 
-                    $('#table-datosprestamos_cronograma').scrollTop((respuesta.select_ultimacuotacancelada*32)-32);
-                }, 500);
+              $('#detalle_porcobrar').val(respuesta.descuento_porcobrar);
+            
+              $('#totalapagar').val(respuesta.totalapagar);
               
-                // $('td#cont-popover-cuota').popover({
-                //   trigger: 'focus'
-                // });
-                plugins_popover();
-                /*$('[data-bs-toggle="popover"]').popover({
-                  trigger: 'focus'
-                })*/
-                //const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
-                //const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
-                
-            }
-        })
+              setTimeout(function () { 
+                  $('#table-datosprestamos_cronograma').scrollTop((respuesta.select_ultimacuotacancelada*32)-32);
+              }, 500);
+            
+              // $('td#cont-popover-cuota').popover({
+              //   trigger: 'focus'
+              // });
+              plugins_popover();
+   
+              document.querySelectorAll('.popover-hover').forEach(el => {
+                const popover = new bootstrap.Popover(el, {
+                  trigger: 'manual', // 🔥 clave para eliminar click
+                  placement: 'right',
+                  html: true,
+                  content: el.getAttribute('data-bs-content').replace(/\n/g, '<br>')
+                });
+
+                el.addEventListener('mouseenter', () => popover.show());
+                el.addEventListener('mouseleave', () => popover.hide());
+              });
+          }
+      })
     }
     
-    function ver_descuentos(){
+    function ver_descuentos() {
         modal({ route:'{{url('backoffice/'.$tienda->id.'/cobranzacuota')}}/'+$('#idcredito').val()+'/edit?view=ver_descuentos' })
     }
     function ver_pagoacuenta(){
@@ -517,13 +510,11 @@
     }
     
    function vistapreliminar(){
-
       let url = "{{ url('backoffice/'.$tienda->id) }}/cobranzacuota/"+$('#idcredito').val()+"/edit?view=vistapreliminar";
       modal({ route: url, size: 'modal-fullscreen' })
    }
   
    function congelarcredito(){
-
       let url = "{{ url('backoffice/'.$tienda->id) }}/cobranzacuota/"+$('#idcredito').val()+"/edit?view=congelarcredito";
       modal({ route: url, size: 'modal-sm' })
    }

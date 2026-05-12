@@ -10,54 +10,46 @@
           <div class="card-body p-2">
              <div id="cont-filtro"></div>
             <div class="modal-body">
-              
-                <div class="row">
-                    <div class="col-sm-12 col-md-9">
-                        <div class="row mb-1">
-                           <div class="col-sm-12 col-md-6">
-                              <div class="row">
-                                <label for="fecha_inicio" class="col-sm-3 col-form-label">AGENCIA</label>
-                                <div class="col-sm-9">
-                                    <select class="form-control" id="idagencia" disabled>
-                                      <option></option>
-                                          <option value="0" selected>TODA LAS AGENCIAS</option>
-                                      @foreach($agencias as $value)
-                                          <option value="{{$value->id}}">{{$value->nombreagencia}}</option>
-                                      @endforeach
-                                    </select>
-                                </div>
-                              </div>
-                            </div>
-                          <div class="col-sm-12 col-md-6" style="text-align: right;">
-                              <button type="button" class="btn btn-success" onclick="actualizar_tabla_origen(),actualizar_tabla_destino()"><i class="fa-solid fa-search"></i> FILTRAR</button>
-                          </div>
+                <div class="row mb-1">
+                    <div class="col-sm-12 col-md-4">
+                        <div class="row">
+                        <label for="fecha_inicio" class="col-sm-4 col-form-label">AGENCIA</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" id="idagencia">
+                                <option></option>
+                                    <option value="0" selected>TODA LAS AGENCIAS</option>
+                                @foreach($agencias as $value)
+                                    <option value="{{$value->id}}">{{$value->nombreagencia}}</option>
+                                @endforeach
+                            </select>
                         </div>
-                        <div class="row mb-1">
-                           <div class="col-sm-12 col-md-6">
-                              <div class="row">
-                                <label for="fecha_fin" class="col-sm-3 col-form-label">F. CRÉDITO</label>
-                                <div class="col-sm-9">
-                                    <select class="form-control" id="idformacredito" disabled>
-                                      <option></option>
-                                      <option value="0" selected>TODO</option>
-                                      <option value="CP">CP</option>
-                                      <option value="CNP">CNP</option>
-                                    </select>
-                                </div>
-                              </div>
-                           </div>
-                           <div class="col-sm-12 col-md-6">
-                              <div class="row">
-                                <label for="fecha_fin" class="col-sm-3 col-form-label">EJECUTIVO</label>
-                                <div class="col-sm-9">
-                                    <select class="form-control" id="idasesor">
-                                      <option></option>
-                                    </select>
-                                </div>
-                              </div>
-                            </div>
                         </div>
-                                
+                    </div>
+                    <div class="col-sm-12 col-md-2" style="margin-left: 50px;">
+                        <div class="row">
+                        <label for="fecha_fin" class="col-sm-5 col-form-label">F. CRÉDITO</label>
+                        <div class="col-sm-7">
+                            <select class="form-control" id="idformacredito" disabled>
+                                <option></option>
+                                <option value="0" selected>TODO</option>
+                                <option value="CP">CP</option>
+                                <option value="CNP">CNP</option>
+                            </select>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-5" style="margin-left: -50px;">
+                        <div class="row">
+                        <label for="fecha_fin" class="col-sm-4 col-form-label" style="text-align: right;">EJECUTIVO</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" id="idasesor">
+                                <option></option>
+                            </select>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-1" style="text-align: left;">
+                        <button type="button" class="btn btn-success" onclick="actualizar_tabla_origen(),actualizar_tabla_destino()"><i class="fa-solid fa-search"></i> FILTRAR</button>
                     </div>
                 </div>
                 <div class="row">

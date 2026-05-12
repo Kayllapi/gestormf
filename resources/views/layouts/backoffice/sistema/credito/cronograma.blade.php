@@ -112,11 +112,12 @@
                       </div>
                     </div>
                     <div class="row">
-                      <label class="col-sm-12 text-end" style="color: #b32121;">Gasto x custodia de garantía para cargo: (
-                        <span tabindex="0"  data-bs-container="body" data-bs-toggle="popover" data-trigger="focus" data-bs-placement="right"
-                          data-bs-content="{{ configuracion($tienda->id,'comision_gestion_garantia_cargo')['valor'] }} % Mensual, de Cobertura">
-                          Acreedor
-                        </span>)</label>
+                      <label class="col-sm-12 text-end" style="color: #b32121;">Gasto x custodia de garantía para cargo: 
+                        <span class="popover-hover"
+                          data-bs-content='{{ configuracion($tienda->id,'comision_gestion_garantia_cargo')['valor'] }} % Mensual, de Cobertura'>
+                          (Acreedor)
+                        </span>
+                      </label>
                     </div>
                 @else
                     @if ($usuario->custodiagarantia_id==2)
@@ -127,11 +128,12 @@
                         </div>
                       </div>
                         <div class="row">
-                          <label class="col-sm-12 text-end" style="color: #b32121;">Gasto x custodia de garantía para cargo: (
-                        <span tabindex="0"  data-bs-container="body" data-bs-toggle="popover" data-trigger="focus" data-bs-placement="right"
-                          data-bs-content="{{ configuracion($tienda->id,'comision_gestion_garantia_convenio')['valor'] }} % Mensual, de Cobertura">
-                          Convenio con Acreedor
-                        </span>)</label>
+                          <label class="col-sm-12 text-end" style="color: #b32121;">Gasto x custodia de garantía para cargo: 
+                            <span class="popover-hover"
+                              data-bs-content='{{ configuracion($tienda->id,'comision_gestion_garantia_convenio')['valor'] }} % Mensual, de Cobertura'>
+                              (Convenio con Acreedor)
+                            </span>
+                          </label>
                         </div>
                     @else
                       <div class="row">
@@ -377,7 +379,17 @@
     </div>
 </form>  
 <script>
-  
+  document.querySelectorAll('.popover-hover').forEach(el => {
+    const popover = new bootstrap.Popover(el, {
+      trigger: 'manual', // 🔥 clave para eliminar click
+      placement: 'right',
+      html: true,
+      content: el.getAttribute('data-bs-content').replace(/\n/g, '<br>')
+    });
+
+    el.addEventListener('mouseenter', () => popover.show());
+    el.addEventListener('mouseleave', () => popover.hide());
+  });
   
     setTimeout(function() {
       @if($credito->monto_solicitado>0 && $credito->cuotas>0)
@@ -521,8 +533,9 @@
     })
   }
 
-  $('#cont-popover-cuota').popover({
-    trigger: 'focus'
-  });
+  // $('#cont-popover-cuota').popover({
+  //   trigger: 'focus'
+  // });
+  plugins_popover();
 </script>    
 

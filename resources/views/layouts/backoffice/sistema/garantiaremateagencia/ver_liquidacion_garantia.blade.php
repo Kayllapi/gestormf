@@ -10,7 +10,7 @@
                 <div class="col-sm-3">
                     <input type="text" class="form-control" id="cliente" value="C{{ $credito->cuenta }}" disabled>
                 </div>
-                <label for="saldo" class="col-sm-5 col-form-label">Saldo de Deuda Programada (C+I+C.Ss/Otros+Cargo): S/.</label>
+                <label for="saldo" class="col-sm-5 col-form-label">Saldo de Deuda Programada (C+I+Ss.Recaudo+Cargo x Custodia): S/.</label>
                 <div class="col-sm-2">
                     <input type="number" class="form-control" id="saldo_deudaprogramada" value="{{ $cronograma['select_cuota'] }}" disabled>
                 </div>
@@ -20,7 +20,7 @@
                 <div class="col-sm-3">
                     <input type="text" class="form-control" id="cliente" value="{{ $credito->clientenombrecompleto }}" disabled>
                 </div>
-                <label for="saldo" class="col-sm-5 col-form-label">Saldo de Deuda Total (C+I+C.Ss/Otros+Cargo+IC+IM+Custodia): S/.</label>
+                <label for="saldo" class="col-sm-5 col-form-label">Saldo de Deuda Total (C+I+Ss.Recaudo+Cargo x Custodia+IC+IM+Custodia): S/.</label>
                 <div class="col-sm-2">
                     <input type="number" class="form-control" id="saldo" value="{{ $cronograma['cuota_pendiente'] }}" disabled>
                 </div>

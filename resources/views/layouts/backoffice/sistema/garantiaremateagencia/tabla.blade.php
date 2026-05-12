@@ -115,6 +115,29 @@
                             ['data' => 'nombreaval','type'=>'text'],
                             ['data' => 'codigoasesor','type'=>'text'],
                         ],
+                        'tfoot' => [
+                            ['type' => ''],
+                            ['type' => ''],
+                            ['type' => ''],
+                            ['type' => ''],
+                            ['type' => 'text'],
+                            ['type' => ''],
+                            ['type' => ''],
+                            ['type' => ''],
+                            ['type' => ''],
+                            ['type' => ''],
+                            ['type' => ''],
+                            ['type' => ''],
+                            ['type' => ''],
+                            ['type' => ''],
+                            ['type' => ''],
+                            ['type' => ''],
+                            ['type' => ''],
+                            ['type' => ''],
+                            ['type' => ''],
+                            ['type' => ''],
+                            ['type' => ''],
+                        ]
                     ])
                 <input type="hidden" id="check_origen">
                   <button type="button" class="btn btn-primary mt-1" id="btn-autorizar-garantia" onclick="ver_garantia()">
@@ -163,6 +186,19 @@
                             ['data' => 'color','type'=>'text'],
                             ['data' => 'codigo_garantia','type'=>'text'],
                         ],
+                        'tfoot' => [
+                            ['type' => ''],
+                            ['type' => 'text'],
+                            ['type' => ''],
+                            ['type' => ''],
+                            ['type' => ''],
+                            ['type' => ''],
+                            ['type' => ''],
+                            ['type' => ''],
+                            ['type' => ''],
+                            ['type' => ''],
+                            ['type' => ''],
+                        ]
                     ])
                 <input type="hidden" id="check_destino">
                   <button type="button" class="btn btn-warning1 mt-1" onclick="liquidacion_garantia()">

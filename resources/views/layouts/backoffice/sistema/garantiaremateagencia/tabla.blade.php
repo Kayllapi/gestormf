@@ -14,7 +14,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="row mb-1">
-                            <div class="col-sm-12 col-md-3">
+                            <div class="col-sm-12 col-md-4">
                               <div class="row">
                                 <label for="fecha_inicio" class="col-sm-4 col-form-label">AGENCIA</label>
                                 <div class="col-sm-8">
@@ -41,9 +41,9 @@
                                 </div>
                               </div>
                             </div>
-                            <div class="col-sm-12 col-md-6">
+                            <div class="col-sm-12 col-md-5">
                               <div class="row">
-                                <label for="fecha_fin" class="col-sm-4 col-form-label">EJECUTIVO</label>
+                                <label for="fecha_fin" class="col-sm-4 col-form-label" style="text-align: right;">EJECUTIVO</label>
                                 <div class="col-sm-8">
                                     <select class="form-control" id="idasesor">
                                       <option></option>

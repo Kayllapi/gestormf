@@ -28,7 +28,7 @@
                                 </div>
                               </div>
                             </div>
-                            <div class="col-sm-12 col-md-2">
+                            <div class="col-sm-12 col-md-2" style="margin-left: 50px;">
                               <div class="row">
                                 <label for="fecha_fin" class="col-sm-5 col-form-label">F. CRÉDITO</label>
                                 <div class="col-sm-7">
@@ -41,7 +41,7 @@
                                 </div>
                               </div>
                             </div>
-                            <div class="col-sm-12 col-md-5">
+                            <div class="col-sm-12 col-md-5" style="margin-left: -50px;">
                               <div class="row">
                                 <label for="fecha_fin" class="col-sm-4 col-form-label" style="text-align: right;">EJECUTIVO</label>
                                 <div class="col-sm-8">

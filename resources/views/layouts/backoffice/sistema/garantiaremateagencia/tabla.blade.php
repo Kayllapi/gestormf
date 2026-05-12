@@ -28,7 +28,7 @@
                                 </div>
                               </div>
                             </div>
-                            <div class="col-sm-12 col-md-3">
+                            <div class="col-sm-12 col-md-2">
                               <div class="row">
                                 <label for="fecha_fin" class="col-sm-5 col-form-label">F. CRÉDITO</label>
                                 <div class="col-sm-7">
@@ -41,7 +41,7 @@
                                 </div>
                               </div>
                             </div>
-                            <div class="col-sm-12 col-md-4">
+                            <div class="col-sm-12 col-md-6">
                               <div class="row">
                                 <label for="fecha_fin" class="col-sm-4 col-form-label">EJECUTIVO</label>
                                 <div class="col-sm-8">
@@ -51,7 +51,7 @@
                                 </div>
                               </div>
                             </div>
-                            <div class="col-sm-12 col-md-2" style="text-align: right;">
+                            <div class="col-sm-12 col-md-1" style="text-align: left;">
                                 <button type="button" class="btn btn-success" onclick="actualizar_tabla_origen(),actualizar_tabla_destino()"><i class="fa-solid fa-search"></i> FILTRAR</button>
                             </div>
                         </div>

@@ -533,9 +533,6 @@
     })
   }
 
-  // $('#cont-popover-cuota').popover({
-  //   trigger: 'focus'
-  // });
   plugins_popover();
 </script>    
 

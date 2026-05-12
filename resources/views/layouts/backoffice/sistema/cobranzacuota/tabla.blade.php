@@ -198,6 +198,19 @@
   </div>
 </div>
 <script>
+
+  document.querySelectorAll('.popover-hover').forEach(el => {
+    const popover = new bootstrap.Popover(el, {
+      trigger: 'manual', // 🔥 clave para eliminar click
+      placement: 'right',
+      html: true,
+      content: el.getAttribute('data-bs-content').replace(/\n/g, '<br>')
+    });
+
+    el.addEventListener('mouseenter', () => popover.show());
+    el.addEventListener('mouseleave', () => popover.hide());
+  });
+
     valida_input_vacio();
     sistema_select2({ input:'#idcliente' });
     sistema_select2({ input:'#numero_cuotas' });
@@ -474,9 +487,10 @@
                     $('#table-datosprestamos_cronograma').scrollTop((respuesta.select_ultimacuotacancelada*32)-32);
                 }, 500);
               
-                $('td#cont-popover-cuota').popover({
-                  trigger: 'focus'
-                });
+                // $('td#cont-popover-cuota').popover({
+                //   trigger: 'focus'
+                // });
+                plugins_popover();
                 /*$('[data-bs-toggle="popover"]').popover({
                   trigger: 'focus'
                 })*/

@@ -122,7 +122,7 @@
            <?php
             $liquidaciongarantiaresponsable = DB::table('users')->whereId($valuecredito->idliquidaciongarantiaresponsable)->first();
             ?>
-           <b>Cuenta: C{{$valuecredito->cuenta}}</b> - <b>Responsable: {{$liquidaciongarantiaresponsable->nombrecompleto}}</b> 
+           <b>Cuenta: C{{$valuecredito->cuenta}}</b> - <b>Responsable: {{$liquidaciongarantiaresponsable->nombrecompleto}}</b> - <b>Fecha: {{ $valuecredito->fechaliquidaciongarantia }}</b>
             
             <table style="width:100%;" style="border-bottom:2px solid #000">
               <thead class="table-dark">

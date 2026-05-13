@@ -121,7 +121,7 @@
                             </table> --}}
                             @include('app.nuevosistema.tabla',[
                                 'tabla' => '#table-lista-compra',
-                                'route' => url('backoffice/'.$tienda->id.'/compraventa/show_compra'),
+                                'route' => url('backoffice/'.$tienda->id.'/compraventa/show_compra?check_compra=0'),
                                 'scrollY' => 'calc(-368px  + 100vh)',
                                 'dom' => 'rt',
                                 'thead' => [
@@ -366,7 +366,7 @@
     // $('#table-lista-compra-filtro').DataTable().ajax.url(root).load();
 
     // Compra
-    search_compra();
+    // search_compra();
     function search_compra() {
         var root = '{{url('backoffice/0/compraventa/show_compra')}}?id_agencia_compra='+$('#id_agencia_compra').val()+'&fecha_inicio_compra=&fecha_fin_compra=&check_compra=0';
         $('#table-lista-compra').DataTable().ajax.url(root).load();

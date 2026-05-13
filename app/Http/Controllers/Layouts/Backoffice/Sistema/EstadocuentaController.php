@@ -769,7 +769,7 @@ class EstadocuentaController extends Controller
                 <th style="border-bottom:1px solid #000;">Fecha</th>
                 <th style="border-bottom:1px solid #000;">Amortiz.</th>
                 <th style="border-bottom:1px solid #000;">Cuota</th>
-                <th style="border-bottom:1px solid #000;">Cust.</th>
+                <th style="border-bottom:1px solid #000;">P. Cust.</th>
                 <th style="border-bottom:1px solid #000;width:10px;">I. Comp.</th>
                 <th style="border-bottom:1px solid #000;width:10px;">I. Mor.</th>
                 <th style="border-bottom:1px solid #000;">Total</th>

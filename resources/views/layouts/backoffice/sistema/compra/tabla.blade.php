@@ -121,7 +121,7 @@
                             </table> --}}
                             @include('app.nuevosistema.tabla',[
                                 'tabla' => '#table-lista-compra',
-                                'route' => url('backoffice/'.$tienda->id.'/compraventa/show_compra?idagencia='.$tienda->id.'&idformacredito=CP&idasesor='.Auth::user()->id),
+                                'route' => url('backoffice/'.$tienda->id.'/compraventa/show_compra'),
                                 'scrollY' => 'calc(-368px  + 100vh)',
                                 'dom' => 'rt',
                                 'thead' => [
@@ -368,8 +368,11 @@
     // Compra
     search_compra();
     function search_compra() {
-        $.ajax({
-            url:"{{url('backoffice/0/compraventa/show_table_compra')}}",
+        var root = '{{url('backoffice/0/compraventa/show_compra')}}?id_agencia_compra='+$('#id_agencia_compra').val()+'&fecha_inicio_compra=&fecha_fin_compra=&check_compra=0';
+        $('#table-lista-compra').DataTable().ajax.url(root).load();
+
+        /*$.ajax({
+            url:"{{url('backoffice/0/compraventa/show_compra')}}",
             type:'GET',
             data:{
                 id_agencia_compra: $('#id_agencia_compra').val(),
@@ -378,16 +381,19 @@
                 check_compra: 0,
             },
             success: function (res){
-                // $('#table-lista-compra > tbody').html(res.html);
+                $('#table-lista-compra > tbody').html(res.html);
                 $('#total_compra').html(res.total);
                 $('#fecha_inicio_compra').val('');
-                // $('#table-lista-compra-filtro').DataTable().ajax.url(root).load();
             }
-        })
+        })*/
     }
     function search_compraFiltro() {
-        $.ajax({
-            url:"{{url('backoffice/0/compraventa/show_table_compra')}}",
+        let checkcompra = $('#check_compra').is(':checked') ? 1 : 0;
+        var root = '{{url('backoffice/0/compraventa/show_compra')}}?id_agencia_compra='+$('#id_agencia_compra').val()+'&fecha_inicio_compra='+$('#fecha_inicio_compra').val()+'&fecha_fin_compra='+$('#fecha_fin_compra').val()+'&check_compra='+checkcompra;
+        $('#table-lista-compra').DataTable().ajax.url(root).load();
+
+        /*$.ajax({
+            url:"{{url('backoffice/0/compraventa/show_compra')}}",
             type:'GET',
             data:{
                 id_agencia_compra: $('#id_agencia_compra').val(),
@@ -396,10 +402,10 @@
                 check_compra: $('#check_compra').is(':checked') ? 1 : 0,
             },
             success: function (res){
-                // $('#table-lista-compra > tbody').html(res.html);
+                $('#table-lista-compra > tbody').html(res.html);
                 $('#total_compra').html(res.total);
             }
-        })
+        })*/
     }
     function show_data_compra(e) {
         const $row = $(e);

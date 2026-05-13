@@ -523,13 +523,9 @@
     sistema_select2({ input:'#id_agencia_compra', val:'{{$tienda->id}}' });
     sistema_select2({ input:'#id_agencia_venta', val:'{{$tienda->id}}' });
 
-    // Compra
-    // search_compra();
-    function search_compra() {
-        var root = '{{url('backoffice/0/compraventa/show_compra')}}?id_agencia_compra='+$('#id_agencia_compra').val()+'&fecha_inicio_compra=&fecha_fin_compra=&check_compra=0';
-        $('#table-lista-compra').DataTable().ajax.url(root).load();
-
-        /*$.ajax({
+    updateTotal();
+    function updateTotal() {
+        $.ajax({
             url:"{{url('backoffice/0/compraventa/show_table_compra')}}",
             type:'GET',
             data:{
@@ -539,18 +535,56 @@
                 check_compra: 0,
             },
             success: function (res){
-                $('#table-lista-compra > tbody').html(res.html);
+                // $('#table-lista-compra > tbody').html(res.html);
                 $('#total_compra').html(res.total);
                 $('#fecha_inicio_compra').val('');
             }
-        })*/
+        })
+
+        $.ajax({
+            url:"{{url('backoffice/0/compraventa/show_table_venta')}}",
+            type:'GET',
+            data:{
+                id_agencia_venta: $('#id_agencia_venta').val(),
+                fecha_inicio_venta: '',
+                fecha_fin_venta: '',
+            },
+            success: function (res){
+                // $('#table-lista-venta > tbody').html(res.html);
+                $('#total_venta').html(res.total);
+                $('#fecha_inicio_venta').val('{{ date('Y-m-d') }}');
+            }
+        })
+    }
+
+    // Compra
+    // search_compra();
+    function search_compra() {
+        var root = '{{url('backoffice/0/compraventa/show_compra')}}?id_agencia_compra='+$('#id_agencia_compra').val()+'&fecha_inicio_compra=&fecha_fin_compra=&check_compra=0';
+        $('#table-lista-compra').DataTable().ajax.url(root).load();
+
+        $.ajax({
+            url:"{{url('backoffice/0/compraventa/show_table_compra')}}",
+            type:'GET',
+            data:{
+                id_agencia_compra: $('#id_agencia_compra').val(),
+                fecha_inicio_compra: null,
+                fecha_fin_compra: null,
+                check_compra: 0,
+            },
+            success: function (res){
+                // $('#table-lista-compra > tbody').html(res.html);
+                $('#total_compra').html(res.total);
+                $('#fecha_inicio_compra').val('');
+            }
+        })
     }
     function search_compraFiltro() {
         let checkcompra = $('#check_compra').is(':checked') ? 1 : 0;
         var root = '{{url('backoffice/0/compraventa/show_compra')}}?id_agencia_compra='+$('#id_agencia_compra').val()+'&fecha_inicio_compra='+$('#fecha_inicio_compra').val()+'&fecha_fin_compra='+$('#fecha_fin_compra').val()+'&check_compra='+checkcompra;
         $('#table-lista-compra').DataTable().ajax.url(root).load();
 
-        /*$.ajax({
+        $.ajax({
             url:"{{url('backoffice/0/compraventa/show_table_compra')}}",
             type:'GET',
             data:{
@@ -560,10 +594,10 @@
                 check_compra: $('#check_compra').is(':checked') ? 1 : 0,
             },
             success: function (res){
-                $('#table-lista-compra > tbody').html(res.html);
+                // $('#table-lista-compra > tbody').html(res.html);
                 $('#total_compra').html(res.total);
             }
-        })*/
+        })
     }
     function show_data_compra(e) {
         const $row = $(e);
@@ -670,7 +704,7 @@
         var root = '{{url('backoffice/0/compraventa/show_venta')}}?id_agencia_venta='+$('#id_agencia_venta').val()+'&fecha_inicio_venta=&fecha_fin_venta=';
         $('#table-lista-venta').DataTable().ajax.url(root).load();
 
-        /*$.ajax({
+        $.ajax({
             url:"{{url('backoffice/0/compraventa/show_table_venta')}}",
             type:'GET',
             data:{
@@ -679,17 +713,17 @@
                 fecha_fin_venta: '',
             },
             success: function (res){
-                $('#table-lista-venta > tbody').html(res.html); 
+                // $('#table-lista-venta > tbody').html(res.html);
                 $('#total_venta').html(res.total);
                 $('#fecha_inicio_venta').val('{{ date('Y-m-d') }}');
             }
-        })*/
+        })
     }
     function search_ventaFiltro() {
         var root = '{{url('backoffice/0/compraventa/show_venta')}}?id_agencia_venta='+$('#id_agencia_venta').val()+'&fecha_inicio_venta='+$('#fecha_inicio_venta').val()+'&fecha_fin_venta='+$('#fecha_fin_venta').val();
         $('#table-lista-venta').DataTable().ajax.url(root).load();
 
-        /*$.ajax({
+        $.ajax({
             url:"{{url('backoffice/0/compraventa/show_table_venta')}}",
             type:'GET',
             data:{
@@ -698,10 +732,10 @@
                 fecha_fin_venta: $('#fecha_fin_venta').val(),
             },
             success: function (res){
-                $('#table-lista-venta > tbody').html(res.html);
+                // $('#table-lista-venta > tbody').html(res.html);
                 $('#total_venta').html(res.total);
             }
-        })*/
+        })
     }
     function show_data_venta(e) {
         const $row = $(e);

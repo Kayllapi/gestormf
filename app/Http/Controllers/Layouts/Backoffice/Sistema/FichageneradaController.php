@@ -64,9 +64,7 @@ class FichageneradaController extends Controller
 
     public function show(Request $request, $idtienda, $id)
     {
-
         if($id == 'showtable'){
-          
           $where = [];
           if($request->idagencia!=''){
               $where[] = ['credito.idtienda',$request->idagencia];
@@ -135,10 +133,7 @@ class FichageneradaController extends Controller
                 'fecha_fin' => $request->fecha_fin,
                 'idagencia' => $request->idagencia,
             ]);
-        }
-        else if( $request->input('view') == 'exportar_pdf' ){
-              
-            
+        } elseif( $request->input('view') == 'exportar_pdf' ){
           $where = [];
           if($request->idagencia!=''){
               $where[] = ['credito.idtienda',$request->idagencia];

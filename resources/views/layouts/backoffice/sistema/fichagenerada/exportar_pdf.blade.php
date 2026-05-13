@@ -116,102 +116,95 @@
   <main>
     <div class="container">
       <h4 align="center">HISTORIAL DE FICHA DE LIQUIDACIONES</h4>
-           <div align="center">Periodo: {{$fecha_inicio}} Al: {{$fecha_fin}}</div>
+      <div align="center">Periodo: {{$fecha_inicio}} Al: {{$fecha_fin}}</div>
         @foreach($creditos as $valuecredito)
           <br>
-           <?php
+          @php
             $liquidaciongarantiaresponsable = DB::table('users')->whereId($valuecredito->idliquidaciongarantiaresponsable)->first();
-            ?>
-           <b>Cuenta: C{{$valuecredito->cuenta}}</b> - <b>Responsable: {{$liquidaciongarantiaresponsable->nombrecompleto}}</b> - <b>Fecha: {{ $valuecredito->fechaliquidaciongarantia }}</b>
-            
-            <table style="width:100%;" style="border-bottom:2px solid #000">
-              <thead class="table-dark">
-                <tr>
-                  <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">CODIGO DE GARANTIA</th>
-                  <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">CLIENTE</th>
-                  <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">RUC/DNI/CE</th>
-                  <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">TIPO DE GARANTIA</th>
-                  <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">DESCRIPCIÓN</th>
-                  <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Serie/Motor/N°Partida</th>
-                  <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">MODELO</th>
-                  <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">VALOR COMERCIAL</th>
-                  <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">V.C. DESCT.</th>
-                  <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">COBERTURA</th>
-                  <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">P. LIQUID.</th>
-                  <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">ACCESORIOS</th>
-                  <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">COLOR</th>
-                  <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">AÑO DE FABRICACIÓN</th>
-                  <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">PLACA DEL VEHÍCULO</th>
-                </tr>
-              </thead>
-              <tbody>
-            
-              <?php  
-                
-           
-          
-          $credito_garantias = DB::table('credito_garantia')
-              ->join('credito','credito.id','credito_garantia.idcredito')
-              ->join('users as cliente','cliente.id','credito_garantia.idcliente')
-              ->where('credito.idliquidaciongarantia',1)
-              ->where('credito_garantia.idcredito',$valuecredito->id)
-              ->select(
-                'credito_garantia.*',
-                'cliente.nombrecompleto as clientenombrecompleto',
-                'cliente.identificacion as dni'
-              )
-              ->get();
-                
-          $porcentaje_descuento_liquidacion = configuracion($tienda->id,'porcentaje_descuento_liquidacion')['valor'];
-                  $total_valorcomercial = 0;
-                  $total_descuento = 0;
-                  $total_cobertura = 0;
-                  $total_precio = 0;
-          $html = '';
-          foreach($credito_garantias as $key => $value){
+          @endphp
+          <b>Cuenta: C{{$valuecredito->cuenta}}</b> - <b>Responsable: {{$liquidaciongarantiaresponsable->nombrecompleto}}</b> - <b>Fecha: {{ $valuecredito->fechaliquidaciongarantia }}</b>
+          <table style="width:100%;" style="border-bottom:2px solid #000">
+            <thead class="table-dark">
+              <tr>
+                <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">CODIGO DE GARANTIA</th>
+                <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">CLIENTE</th>
+                <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">RUC/DNI/CE</th>
+                <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">TIPO DE GARANTIA</th>
+                <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">DESCRIPCIÓN</th>
+                <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Serie/Motor/N°Partida</th>
+                <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">MODELO</th>
+                <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">VALOR COMERCIAL</th>
+                <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">V.C. DESCT.</th>
+                <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">COBERTURA</th>
+                <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">P. LIQUID.</th>
+                <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">ACCESORIOS</th>
+                <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">COLOR</th>
+                <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">AÑO DE FABRICACIÓN</th>
+                <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">PLACA DEL VEHÍCULO</th>
+              </tr>
+            </thead>
+            <tbody>
+              @php
+                $credito_garantias = DB::table('credito_garantia')
+                    ->join('credito','credito.id','credito_garantia.idcredito')
+                    ->join('users as cliente','cliente.id','credito_garantia.idcliente')
+                    ->whereIn('credito.idliquidaciongarantia',[1,2])
+                    ->where('credito_garantia.idcredito',$valuecredito->id)
+                    ->select(
+                      'credito_garantia.*',
+                      'cliente.nombrecompleto as clientenombrecompleto',
+                      'cliente.identificacion as dni'
+                    )
+                    ->get();
+                      
+                $porcentaje_descuento_liquidacion = configuracion($tienda->id,'porcentaje_descuento_liquidacion')['valor'];
+                        $total_valorcomercial = 0;
+                        $total_descuento = 0;
+                        $total_cobertura = 0;
+                        $total_precio = 0;
+                $html = '';
+                foreach($credito_garantias as $key => $value){
+                    $valor_comercial_descuento = number_format($value->valor_comercial - ($value->valor_comercial * $porcentaje_descuento_liquidacion / 100), 2, '.', '');
 
-              $valor_comercial_descuento = number_format($value->valor_comercial - ($value->valor_comercial * $porcentaje_descuento_liquidacion / 100), 2, '.', '');
-
-              $html .= "<tr id='show_data_select' idcredito='{$value->id}'>
-                                <td>".$value->garantias_codigo."</td>
-                                <td>".$value->clientenombrecompleto."</td>
-                                <td>".$value->dni."</td>
-                                <td>".$value->garantias_tipogarantia."</td>
-                                <td>".$value->descripcion."</td>
-                                <td>".$value->garantias_serie_motor_partida."</td>
-                                <td>".$value->garantias_modelo_tipo."</td>
-                                <td style='text-align:right;'>".$value->valor_comercial."</td>
-                                <td style='text-align:right;'>".number_format($valor_comercial_descuento, 2, '.', '')."</td>
-                                <td style='text-align:right;'>".$value->valor_realizacion."</td>
-                                <td style='text-align:right;'>".$value->precioliquidacion."</td>
-                                <td>".$value->garantias_accesorio_doc."</td>
-                                <td>".$value->garantias_color."</td>
-                                <td>".$value->garantias_fabricacion."</td>
-                                <td>".$value->garantias_placa."</td>
-                        </tr>";
-                      $total_valorcomercial += $value->valor_comercial;
-                      $total_descuento += $valor_comercial_descuento;
-                      $total_cobertura += $value->valor_realizacion;
-                      $total_precio += $value->precioliquidacion;
-          }
-          if(count($credito_garantias)==0){
-              $html.= '<tr><td colspan="15" style="border-bottom: 2px solid #000;text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
-          }else{
-              $html .= '
-                
-                    <tr>
-                        <th style="border-top: 2px solid #000;text-align:right;" colspan="7">TOTAL</th>
-                        <th style="border-top: 2px solid #000;text-align:right;">'.number_format($total_valorcomercial, 2, '.', '').'</th>
-                        <th style="border-top: 2px solid #000;text-align:right;">'.number_format($total_descuento, 2, '.', '').'</th>
-                        <th style="border-top: 2px solid #000;text-align:right;">'.number_format($total_cobertura, 2, '.', '').'</th>
-                        <th style="border-top: 2px solid #000;text-align:right;">'.number_format($total_precio, 2, '.', '').'</th>
-                        <th style="border-top: 2px solid #000;" colspan="4"></th>
-                    </tr>';
-          }
-            echo $html;
-              ?>      
-              </tbody>
-            </table>
+                    $html .= "<tr id='show_data_select' idcredito='{$value->id}'>
+                                      <td>".$value->garantias_codigo."</td>
+                                      <td>".$value->clientenombrecompleto."</td>
+                                      <td>".$value->dni."</td>
+                                      <td>".$value->garantias_tipogarantia."</td>
+                                      <td>".$value->descripcion."</td>
+                                      <td>".$value->garantias_serie_motor_partida."</td>
+                                      <td>".$value->garantias_modelo_tipo."</td>
+                                      <td style='text-align:right;'>".$value->valor_comercial."</td>
+                                      <td style='text-align:right;'>".number_format($valor_comercial_descuento, 2, '.', '')."</td>
+                                      <td style='text-align:right;'>".$value->valor_realizacion."</td>
+                                      <td style='text-align:right;'>".$value->precioliquidacion."</td>
+                                      <td>".$value->garantias_accesorio_doc."</td>
+                                      <td>".$value->garantias_color."</td>
+                                      <td>".$value->garantias_fabricacion."</td>
+                                      <td>".$value->garantias_placa."</td>
+                              </tr>";
+                            $total_valorcomercial += $value->valor_comercial;
+                            $total_descuento += $valor_comercial_descuento;
+                            $total_cobertura += $value->valor_realizacion;
+                            $total_precio += $value->precioliquidacion;
+                }
+                if(count($credito_garantias)==0){
+                    $html.= '<tr><td colspan="15" style="border-bottom: 2px solid #000;text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
+                }else{
+                    $html .= '
+                          <tr>
+                              <th style="border-top: 2px solid #000;text-align:right;" colspan="7">TOTAL</th>
+                              <th style="border-top: 2px solid #000;text-align:right;">'.number_format($total_valorcomercial, 2, '.', '').'</th>
+                              <th style="border-top: 2px solid #000;text-align:right;">'.number_format($total_descuento, 2, '.', '').'</th>
+                              <th style="border-top: 2px solid #000;text-align:right;">'.number_format($total_cobertura, 2, '.', '').'</th>
+                              <th style="border-top: 2px solid #000;text-align:right;">'.number_format($total_precio, 2, '.', '').'</th>
+                              <th style="border-top: 2px solid #000;" colspan="4"></th>
+                          </tr>';
+                }
+                echo $html;
+              @endphp
+            </tbody>
+          </table>
       @endforeach      
                 
     </div>

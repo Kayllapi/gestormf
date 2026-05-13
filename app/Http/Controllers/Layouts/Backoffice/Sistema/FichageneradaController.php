@@ -85,7 +85,7 @@ class FichageneradaController extends Controller
                 'cliente.nombrecompleto as clientenombrecompleto',
                 'cliente.identificacion as dni'
               )
-              ->orderBy('credito_garantia.fecharegistro_listaremate','asc')
+              ->orderBy('credito.id')
               ->get();
           $porcentaje_descuento_liquidacion = configuracion($idtienda,'porcentaje_descuento_liquidacion')['valor'];
           $html = '';

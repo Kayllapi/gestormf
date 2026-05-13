@@ -176,7 +176,7 @@
         $('#btn-create-cliente').removeClass('d-none');
         $('#cont_listanegra').html('');
         if(res.estado_listanegra==2){
-            $('#cont_listanegra').html('<span style="background-color: #d21212;padding-left: 5px;padding-right: 5px;border-radius: 5px;color: white;">Cliente en Lista Negra</div>');
+            $('#cont_listanegra').html('<span style="background-color: #ffc9ca;padding-left: 5px;padding-right: 5px;border-radius: 5px;color: #93222c;">Cliente en Lista Negra</div>');
         }
         
         $('#idultimocredito_resumida').val(res.idultimocredito_resumida);

@@ -85,14 +85,8 @@
                 </div>
                 <div class="col-sm-12">
                     <div class="card">
-                        <div class="card-body"
-                            style="
-                                overflow-y: scroll;
-                                height: calc(100vh - 266px);
-                                padding: 0;
-                                margin-top: 5px;
-                                overflow-x: scroll;">
-                            <table class="table table-striped table-hover"
+                        <div class="card-body">
+                            {{-- <table class="table table-striped table-hover"
                                 id="table-lista-compra"
                                 style="table-layout: fixed; width: 100%;">
                                 <thead class="table-dark" style="position: sticky;top: 0;">
@@ -124,7 +118,88 @@
                                 </thead>
                                 <tbody>
                                 </tbody>
-                            </table>
+                            </table> --}}
+                            @include('app.nuevosistema.tabla',[
+                                'tabla' => '#table-lista-compra',
+                                'route' => url('backoffice/'.$tienda->id.'/compraventa/show_compra?idagencia='.$tienda->id.'&idformacredito=CP&idasesor='.Auth::user()->id),
+                                'scrollY' => 'calc(-368px  + 100vh)',
+                                'dom' => 'rt',
+                                'thead' => [
+                                    ['data' => 'E'],
+                                    ['data' => 'Cod. Oper.'],
+                                    ['data' => 'Fecha Registro'],
+                                    ['data' => 'Descripción'],
+                                    ['data' => 'Serie/Motor/N°.P.'],
+                                    ['data' => 'Chasis'],
+                                    ['data' => 'Modelo/T.'],
+                                    ['data' => 'Otros'],
+                                    ['data' => 'Valor Comercial'],
+                                    ['data' => 'Estado'],
+                                    ['data' => 'Color'],
+                                    ['data' => 'Año de Fabricación'],
+                                    ['data' => 'Año de Compra'],
+                                    ['data' => 'Placa del Vehículo'],
+                                    ['data' => 'Origen'],
+                                    ['data' => 'N° Ficha/Comprobante'],
+                                    ['data' => 'Vendedor'],
+                                    ['data' => 'RUC/DNI/CE'],
+                                    ['data' => 'Lugar de Pago'],
+                                    ['data' => 'Validación'],
+                                    ['data' => 'Banco'],
+                                    ['data' => 'N° Operación'],
+                                    ['data' => 'Responsable'],
+                                ],
+                                'tbody' => [
+                                    ['data' => 'estado_compra', 'type'=>'text'],
+                                    ['data' => 'codigo', 'type'=>'text'],
+                                    ['data' => 'fecharegistro', 'type'=>'text'],
+                                    ['data' => 'descripcion', 'type'=>'text'],
+                                    ['data' => 'serie_motor_partida', 'type'=>'text'],
+                                    ['data' => 'chasis', 'type'=>'text'],
+                                    ['data' => 'modelo_tipo', 'type'=>'text'],
+                                    ['data' => 'otros', 'type'=>'text'],
+                                    ['data' => 'valorcomercial', 'type'=>'money'],
+                                    ['data' => 'estado', 'type'=>'text'],
+                                    ['data' => 'color', 'type'=>'text'],
+                                    ['data' => 'fabricacion', 'type'=>'text'],
+                                    ['data' => 'compra', 'type'=>'text'],
+                                    ['data' => 'placa', 'type'=>'text'],
+                                    ['data' => 'origen', 'type'=>'text'],
+                                    ['data' => 'numeroficha', 'type'=>'text'],
+                                    ['data' => 'vendedor', 'type'=>'text'],
+                                    ['data' => 'vendedor_dni', 'type'=>'text'],
+                                    ['data' => 'lugar_pago', 'type'=>'text'],
+                                    ['data' => 'validacion', 'type'=>'text'],
+                                    ['data' => 'compra_banco', 'type'=>'text'],
+                                    ['data' => 'compra_numerooperacion', 'type'=>'text'],
+                                    ['data' => 'responsablecodigo', 'type'=>'text'],
+                                ],
+                                'tfoot' => [
+                                    ['type' => ''],
+                                    ['type' => ''],
+                                    ['type' => ''],
+                                    ['type' => 'text'],
+                                    ['type' => ''],
+                                    ['type' => ''],
+                                    ['type' => ''],
+                                    ['type' => ''],
+                                    ['type' => ''],
+                                    ['type' => ''],
+                                    ['type' => ''],
+                                    ['type' => ''],
+                                    ['type' => ''],
+                                    ['type' => ''],
+                                    ['type' => ''],
+                                    ['type' => ''],
+                                    ['type' => ''],
+                                    ['type' => ''],
+                                    ['type' => ''],
+                                    ['type' => ''],
+                                    ['type' => ''],
+                                    ['type' => ''],
+                                    ['type' => ''],
+                                ]
+                            ])
                         </div>
                         <div class="modal-body">
                             <div class="row">
@@ -288,6 +363,8 @@
     sistema_select2({ input:'#id_agencia_compra', val:'{{$tienda->id}}' });
     sistema_select2({ input:'#id_agencia_venta', val:'{{$tienda->id}}' });
 
+    // $('#table-lista-compra-filtro').DataTable().ajax.url(root).load();
+
     // Compra
     search_compra();
     function search_compra() {
@@ -301,9 +378,10 @@
                 check_compra: 0,
             },
             success: function (res){
-                $('#table-lista-compra > tbody').html(res.html);
+                // $('#table-lista-compra > tbody').html(res.html);
                 $('#total_compra').html(res.total);
                 $('#fecha_inicio_compra').val('');
+                // $('#table-lista-compra-filtro').DataTable().ajax.url(root).load();
             }
         })
     }
@@ -318,7 +396,7 @@
                 check_compra: $('#check_compra').is(':checked') ? 1 : 0,
             },
             success: function (res){
-                $('#table-lista-compra > tbody').html(res.html);
+                // $('#table-lista-compra > tbody').html(res.html);
                 $('#total_compra').html(res.total);
             }
         })

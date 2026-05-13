@@ -357,6 +357,137 @@ class CompraventaController extends Controller
                 'html' => $html,
                 'total' => number_format($total, 2, '.', ''),
             );
+        } elseif ($id=='show_compra') {
+            $where = [];
+
+            if(request('id_agencia_compra') != ''){
+                $where[] = ['cvcompra.idtienda', '=', request('id_agencia_compra')];
+            }else {
+                $where[] = ['cvcompra.idtienda', '=', $idtienda];
+            }
+            if(request('fecha_inicio_compra') != ''){
+                $where[] = ['cvcompra.fecharegistro','>=',request('fecha_inicio_compra').' 00:00:00'];
+            }
+            if(request('fecha_fin_compra') != ''){
+                $where[] = ['cvcompra.fecharegistro','<=',request('fecha_fin_compra').' 23:59:59'];
+            }
+            if (request('check_compra') == '0') {
+                $where[] = ['cvcompra.idestadocvcompra', '1'];
+            }
+
+            $cvcompras = DB::table('cvcompra')
+                ->join('estado_garantia','estado_garantia.id','cvcompra.idestado_garantia')
+                ->join('users','users.id','cvcompra.idresponsable')
+                ->leftJoin('users as u2', 'u2.id', 'cvcompra.validar_responsable')
+                ->where($where)
+                ->where('cvcompra.idestadoeliminado',1)
+                ->select(
+                    'cvcompra.*',
+                    'estado_garantia.nombre as estado',
+                    'users.codigo as responsablecodigo',
+                    'u2.codigo as validar_responsablecodigo'
+                )
+                ->orderByDesc('cvcompra.fecharegistro')
+                ->get();
+
+            $total = 0;
+            $html = '';
+            $data = [];
+            foreach($cvcompras as $value){
+                $fecharegistro = date_format(date_create($value->fecharegistro),"d-m-Y h:i:s A");
+                $tienda = DB::table('tienda')->where('id',$value->idorigen)->first();
+                $origen = $value->idorigen == '0' ? 'OTROS' : ($tienda->nombre??'');
+                $lugar_pago = $value->compra_idformapago == '1' ? 'CAJA' : 'BANCO';
+                $validacion = '';
+                if ($value->compra_idformapago == '2') {
+                    if ($value->validar_estado == 1) {
+                        $validacion = '<i class="fa-solid fa-check"></i> ('.$value->validar_responsablecodigo.')';
+                    } else {
+                        $validacion = '<button type="button" class="btn btn-success" onclick="validar_compra('.$value->id.')">
+                                        <i class="fa-solid fa-check"></i> Validar
+                                    </button>';
+                    }
+                }
+
+                $estado = $value->idestadocvcompra == '1' ? 'P' : 'V';
+                $prefijo = $value->idestadocvcompra == '1' ? 'CB' : 'VB';
+
+                $descripcion = Str::limit($value->descripcion, 25);
+                $vendedor = Str::limit($value->vendedor_nombreapellidos, 25);
+
+                $html .= "<tr data-valor-columna='{$value->id}'
+                            data-valor-compra_idformapago='{$value->compra_idformapago}'
+                            data-valor-validar_estado='{$value->validar_estado}'
+                            onclick='show_data_compra(this)'>
+                            <td>{$estado}</td>
+                            <td>{$prefijo}{$value->codigo}</td>
+                            <td>{$fecharegistro}</td>
+                            <td>{$descripcion}</td>
+                            <td>{$value->serie_motor_partida}</td>
+                            <td>{$value->chasis}</td>
+                            <td>{$value->modelo_tipo}</td>
+                            <td>{$value->otros}</td>
+                            <td style='text-align: right;'>{$value->valorcomercial}</td>
+                            <td>{$value->estado}</td>
+                            <td>{$value->color}</td>
+                            <td>{$value->fabricacion}</td>
+                            <td>{$value->compra}</td>
+                            <td>{$value->placa}</td>
+                            <td>{$origen}</td>
+                            <td>{$value->numeroficha}</td>
+                            <td>{$vendedor}</td>
+                            <td>{$value->vendedor_dni}</td>
+                            <td>{$lugar_pago}</td>
+                            <td>{$validacion}</td>
+                            <td>{$value->compra_banco}</td>
+                            <td>{$value->compra_numerooperacion}</td>
+                            <td>{$value->responsablecodigo}</td>
+                        </tr>";
+                $total = $total+$value->valorcompra;
+
+                $data[] = [
+                    'id' => $value->id,
+                    'compra_idformapago' => $value->compra_idformapago,
+                    'validar_estado' => $value->validar_estado,
+                    'estado_compra' => $estado,
+                    'codigo' => $prefijo.$value->codigo,
+                    'fecharegistro' => $fecharegistro,
+                    'descripcion' => $descripcion,
+                    'serie_motor_partida' => $value->serie_motor_partida,
+                    'chasis' => $value->chasis,
+                    'modelo_tipo' => $value->modelo_tipo,
+                    'otros' => $value->otros,
+                    'valorcomercial' => $value->valorcomercial,
+                    'estado' => $value->estado,
+                    'color' => $value->color,
+                    'fabricacion' => $value->fabricacion,
+                    'compra' => $value->compra,
+                    'placa' => $value->placa,
+                    'origen' => $origen,
+                    'numeroficha' => $value->numeroficha,
+                    'vendedor' => $vendedor,
+                    'vendedor_dni' => $value->vendedor_dni,
+                    'lugar_pago' => $lugar_pago,
+                    'validacion' => $validacion,
+                    'compra_banco' => $value->compra_banco,
+                    'compra_numerooperacion' => $value->compra_numerooperacion,
+                    'responsablecodigo' => $value->responsablecodigo,
+                ];
+            }
+
+            if(count($cvcompras)==0){
+                $html.= '<tr><td colspan="23" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
+            }
+
+            return response()->json([
+                'data' => $data,
+            ]);
+
+            // return array(
+            //     'html' => $html,
+            //     'total' => number_format($total, 2, '.', ''),
+            // );
+            
         } elseif ($id=='show_table_venta') {
             $where = [];
 

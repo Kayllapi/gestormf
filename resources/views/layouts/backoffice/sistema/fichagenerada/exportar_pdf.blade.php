@@ -116,7 +116,7 @@
   <main>
     <div class="container">
       <h4 align="center">HISTORIAL DE FICHA DE LIQUIDACIONES</h4>
-      <div align="center">Periodo: {{$fecha_inicio}} Al: {{$fecha_fin}}</div>
+      <div align="center"><b>Periodo:</b> {{$fecha_inicio}} Al: {{$fecha_fin}}</div>
         @foreach($creditos as $valuecredito)
           <br>
           @php

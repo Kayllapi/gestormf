@@ -148,7 +148,7 @@ class FichageneradaController extends Controller
               ->select(
                 'credito.*',
               )
-              ->orderBy('credito.id','desc')
+              ->orderBy('credito.id')
               ->get();
           
             $agencia = DB::table('tienda')->whereId($request->idagencia)->first();

@@ -332,7 +332,7 @@
           <td style="border-bottom:1px solid #000;text-align:center;"><b>Saldo CxC (S/.)</b></td>
         </tr>
         <tr>
-          <td style="text-align:right;">0.00</td>
+          <td style="text-align:right;">{{$descuento_porcobrar}}</td>
         </tr>
       </table>
       </div>

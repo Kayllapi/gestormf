@@ -56,7 +56,7 @@
                 <div class="mb-1">
                     <div class="mt-2 bg-primary subtitulo">Seleccionar Nivel de Aprobación</div>
                     <select class="form-control" id="tipo_validacion" onchange="mostrar_permisos(this.value)" {{ $credito->aprobacion_tipo_validacion!='' && count($credito_aprobacion)>0?'disabled':'' }}>
-                      <option disabled selected> -- Seleccione una opcion -- </option>
+                      <option disabled selected></option>
                       <option value="nivelaprobacion" {{ $credito->aprobacion_tipo_validacion=='nivelaprobacion' && count($credito_aprobacion)>0?'selected':'' }}>1. COMITÉ DE APROBACIÓN</option>
                       <option value="autonomiaadministracion" {{ $credito->aprobacion_tipo_validacion=='autonomiaadministracion' && count($credito_aprobacion)>0?'selected':'' }}>2. AUTONOMÍA DE ADMINITRACIÓN</option>
                       <option value="autonomiagerencia" {{ $credito->aprobacion_tipo_validacion=='autonomiagerencia' && count($credito_aprobacion)>0?'selected':'' }}>3. AUTONOMÍA DE GERENCIA GENERAL</option>

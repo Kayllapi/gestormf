@@ -369,7 +369,7 @@
         <table style="width:100%;">
           <tr>
             <td>Asesor(a):</td>
-            <td class="border-td">{{ substr($asesor->nombre, 0, 1) }}{{ $asesor->apellidopaterno }}</td>
+            <td class="border-td" width="100px">{{ substr($asesor->nombre, 0, 1) }}{{ $asesor->apellidopaterno }}</td>
           </tr>
         </table>
       </div>

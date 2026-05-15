@@ -110,6 +110,7 @@
                         <div class="card-body">
                             @include('app.nuevosistema.tabla',[
                                 'tabla' => '#table-lista-compra',
+                                'onclick' => 'show_data_compra',
                                 'route' => url('backoffice/'.$tienda->id.'/compraventa/show_compra?check_compra=0'),
                                 'scrollY' => 'calc(-368px  + 100vh)',
                                 'dom' => 'rt',
@@ -321,6 +322,7 @@
                         <div class="card-body">
                             @include('app.nuevosistema.tabla',[
                                 'tabla' => '#table-lista-venta',
+                                'onclick' => 'show_data_venta',
                                 'route' => url('backoffice/'.$tienda->id.'/compraventa/show_venta'),
                                 'scrollY' => 'calc(-368px  + 100vh)',
                                 'dom' => 'rt',

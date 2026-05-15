@@ -350,6 +350,10 @@ $name_table = generateRandomString();
         var data = {{$name_table}}.row(this).data();
         $('{{$tabla}} tbody .selected').removeClass('selected');
         $(this).addClass('selected');
+
+        @if(isset($onclick))
+            {{$onclick}}(this, data);
+        @endif
     });
   
     

@@ -28,7 +28,7 @@
                                         @elseif($arqueocaja)
                                             onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Ya esta arqueado la caja!!')}}', size: 'modal-sm' })"
                                         @else
-                                            onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/compraventa/create?view=create_compra')}}'})"
+                                            onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/compraventa/create?view=create_compra&disabled_agencia=false')}}'})"
                                         @endif
                                         >
                                         Registrar <br> Compra

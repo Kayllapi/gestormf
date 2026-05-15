@@ -41,12 +41,15 @@ class CompraventaController extends Controller
             $estado_garantia = DB::table('estado_garantia')->get();
             $bancos = DB::table('banco')->get();
 
+            $disabled_agencia = $request->disabled_agencia ?? 'true';
+
             return view(sistema_view().'/compraventa/create_compra', compact(
                 'tienda',
                 'agencias',
                 'tipo_garantia',
                 'estado_garantia',
                 'bancos',
+                'disabled_agencia'
             ));
         } elseif (request('view') == 'create_venta') {
             $cvcompra = DB::table('cvcompra')->where('id',request('idcvcompra'))->first();

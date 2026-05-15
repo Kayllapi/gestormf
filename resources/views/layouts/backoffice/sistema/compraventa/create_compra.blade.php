@@ -20,7 +20,7 @@
         <div class="row">
             <label class="col-sm-4 col-form-label" style="text-align: right;">Agencia *</label>
             <div class="col-sm-4">
-                <select class="form-control" id="idtienda">
+                <select class="form-control" id="idtienda" @if($disabled_agencia=='true') disabled @endif>
                     <option></option>
                     @foreach($agencias as $value)
                         <option value="{{$value->id}}">{{$value->nombreagencia}}</option>

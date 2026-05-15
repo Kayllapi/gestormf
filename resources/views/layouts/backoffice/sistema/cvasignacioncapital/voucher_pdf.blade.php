@@ -61,7 +61,7 @@
               @if($asignacioncapital->idtipodestino==3)
             <tr>
                 <td>
-                    <b>Banco :</b> {{ $asignacioncapital->banco }} ***{{ substr($asignacioncapital->cuenta, -5) }}
+                    <b>Banco :</b> {{ $asignacioncapital->banco }} ***{{ substr($asignacioncapital->cuenta, -4) }}
                 </td>
             </tr>
             <tr>

@@ -133,6 +133,8 @@ class PagoprestamoController extends Controller
           $total_extorno = 0;
           $total_caja = 0;
           $total_banco = 0;
+
+          $t_cuotapagado = 0;
           
           foreach($credito_cobranzacuotas as $key => $value){
             

@@ -103,7 +103,7 @@
                     <td style="width:1px;">
                         <b>:</b>
                     </td>
-                    <td>{{ $cvventa->venta_banco }}</td>
+                    <td>{{ $cvventa->venta_banco }} - ***{{ substr($cvventa->venta_cuenta, -5) }}</td>
                 </tr>
                 <tr>
                     <td>

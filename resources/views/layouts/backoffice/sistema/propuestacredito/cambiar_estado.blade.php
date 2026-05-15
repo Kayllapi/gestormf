@@ -148,7 +148,7 @@
                                 </select>
                               @else
                                 <select class="form-control" id="per_usuario{{ $value->id }}" usuario {{$disabled}}>
-                                    <option disabled selected> -- Seleccionar Responsable -- </option>
+                                    <option disabled selected></option>
                                     @foreach($usuario_permiso as $valueusers)
                                     <option value="{{ $valueusers->idusers }}" idpermiso="{{ $valueusers->idpermiso }}">{{ $valueusers->nombre_personal }}</option>
                                     @endforeach

@@ -108,22 +108,18 @@
   <main>
     <div class="container">
       <h4 align="center" style="margin: 0">CRONOGRAMA DE PAGOS (*)</h4>
-    
           <table style="width:100%;">
             <tr>
+              <td><b>CUENTA:</b> C{{ str_pad($credito->cuenta, 8, "0", STR_PAD_LEFT) }}</td>
               <td><b>PRODUCTO:</b> {{ $credito->nombreproductocredito }}</td>
               <td><b>ASESOR/EJECUTIVO:</b> {{ strtoupper($asesor->codigo) }}</td>
             </tr>
             <tr>
               <td><b>NOMBRE:</b> {{ $usuario->nombrecompleto }}</td>
               <td><b>RUC/DNI/CE:</b> {{ $usuario->identificacion }}</td>
-            </tr>
-            <tr>
-              <td><b>CUENTA:</b> C{{ str_pad($credito->cuenta, 8, "0", STR_PAD_LEFT) }}</td>
               <td><b>COD.CLIENTE:</b> {{ $usuario->codigo }}</td>
             </tr>
           </table>
-     
           <hr>
           <table style="width:100%;">
             <tr>
@@ -194,11 +190,16 @@
           <p style="margin: 0;">- (*): Calculado con ajuste de céntimos en la última cuota para facilitar el pago en efectivo, manteniendo el costo total del crédito pactado</p>
           <p style="margin: 0;">- (**): Alternativo </p>
           <div style="width: 50%; margin-top: 4px; border-bottom: 1px solid #5f5f5f;"></div>
-          <p style="margin: 0;">- Estimado Cliente al pagar exija su comprobante respectivo.</p>
+          <p style="margin: 0;">
+            - Estimado Cliente al pagar exija su comprobante respectivo.
+            <span style="float: right;"><b>CEL.: <span style="font-size: 1.1rem;">{{ $tienda->numerotelefono }}</span> // {{ $tienda->paginaweb }}</b></span>
+          </p>
           <p style="margin: 0;">- Pague puntual y evite interes compensatorio adicional, mora, penalidades y gastos.</p>
         </div>
       </div>
-      <p align="center" style="margin: 0;"><b>CEL.: <span style="font-size: 1.1rem;">{{ $tienda->numerotelefono }}</span> // {{ $tienda->paginaweb }}</b></p>
+      {{-- <p align="center" style="margin: 0;">
+        <b>CEL.: <span style="font-size: 1.1rem;">{{ $tienda->numerotelefono }}</span> // {{ $tienda->paginaweb }}</b>
+      </p> --}}
     </div>
   </main>
 </body>

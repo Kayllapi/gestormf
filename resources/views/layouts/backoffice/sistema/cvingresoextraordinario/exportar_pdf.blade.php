@@ -152,7 +152,7 @@
             $html = '';
             foreach($ingresoextraordinario as $key => $value){
                 $fechapago = date_format(date_create($value->fechapago),"d-m-Y H:i:s A");
-                $cuenta = $value->banco!=''?$value->banco.' - ***'.substr($value->cuenta, -5).' ('.$value->numerooperacion.')':'';
+                $cuenta = $value->banco!=''?$value->banco.' - ***'.substr($value->cuenta, -4).' ('.$value->numerooperacion.')':'';
                 $html .= "<tr>
                               <td>".($key+1)."</td>
                               <td>{$value->codigoprefijo}{$value->codigo}</td>

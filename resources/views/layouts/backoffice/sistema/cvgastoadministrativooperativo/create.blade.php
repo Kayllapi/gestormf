@@ -62,7 +62,7 @@
                     <select id="idbanco" class="form-control" disabled>
                         <option></option>
                         @foreach($bancos as $value)
-                        <option value="{{ $value->id }}">{{ $value->nombre }}: ***{{ substr($value->cuenta, -5) }}</option>
+                        <option value="{{ $value->id }}">{{ $value->nombre }}: ***{{ substr($value->cuenta, -4) }}</option>
                         @endforeach
                     </select>
                   </div>

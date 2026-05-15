@@ -442,7 +442,7 @@
               <table class="table table-bordered" style="width:100%;">
               <thead>
                 <tr>
-                    <th style="width:150px;">Funcionario</th>
+                    <th style="width:150px;">Firma de Funcionario(a)</th>
                     <th>Comentario</th>
                     <th>Firma</th>
                 </tr>

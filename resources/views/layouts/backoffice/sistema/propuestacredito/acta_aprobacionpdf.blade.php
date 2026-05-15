@@ -418,7 +418,7 @@
               <table class="table table-bordered">
               <tbody>
                 <tr>
-                  <td>Funcionario&nbsp;</td>
+                  <td>Firma de Funcionario(a)&nbsp;</td>
                   <td>&nbsp;{{ substr($value->nombre, 0, 1) }}{{ $value->apellidopaterno }}</td>
                 </tr>
                 <tr>
@@ -442,7 +442,7 @@
               <table class="table table-bordered" style="width:100%;">
               <thead>
                 <tr>
-                    <th style="width:150px;">Firma de Funcionario(a)</th>
+                    <th style="width:150px;">Funcionario</th>
                     <th>Comentario</th>
                     <th>Firma</th>
                 </tr>

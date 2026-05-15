@@ -182,9 +182,9 @@
                     <table class="table" id="table-permisos-nivel-uno">
                       <thead>
                         <tr>
-                          <th width="220px">Permiso</th>
+                          <th width="220px">Cargos con Permiso</th>
                           <th width="300px">Usuario</th>
-                          <th width="150px">Clave</th>
+                          <th width="150px">Contraseña de Firma</th>
                           <th width="220px"></th>
                           <th></th>
                         </tr>
@@ -198,9 +198,9 @@
                     <table class="table" id="table-permisos-nivel-dos">
                       <thead>
                         <tr>
-                          <th>Permiso</th>
+                          <th>Cargos con Permiso</th>
                           <th>Usuario</th>
-                          <th width="150px">Clave</th>
+                          <th width="150px">Contraseña de Firma</th>
                           <th width="220px"></th>
                           <th></th>
                         </tr>

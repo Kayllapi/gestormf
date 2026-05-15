@@ -113,7 +113,7 @@
                         <tr>
                           <th width="220px">Cargos con Permiso</th>
                           <th width="300px">Usuario</th>
-                          <th width="150px">Contraseña de Firma</th>
+                          <th width="150px">Contraseña</th>
                           <th width="220px"></th>
                           <th></th>
                         </tr>
@@ -184,7 +184,7 @@
                         <tr>
                           <th width="220px">Cargos con Permiso</th>
                           <th width="300px">Usuario</th>
-                          <th width="150px">Contraseña de Firma</th>
+                          <th width="150px">Contraseña</th>
                           <th width="220px"></th>
                           <th></th>
                         </tr>
@@ -200,7 +200,7 @@
                         <tr>
                           <th>Cargos con Permiso</th>
                           <th>Usuario</th>
-                          <th width="150px">Contraseña de Firma</th>
+                          <th width="150px">Contraseña</th>
                           <th width="220px"></th>
                           <th></th>
                         </tr>

@@ -110,8 +110,13 @@
 
     $('input[name="venta_idformapago"]').on('change', function() {
         if($(this).val() == 1){
-            $('#venta_numerooperacion').prop('disabled', true);
-            $('#venta_idbanco').prop('disabled', true);
+            $('#venta_numerooperacion')
+                .prop('disabled', true)
+                .val('');
+            $('#venta_idbanco')
+                .prop('disabled', true)
+                .val(null)
+                .trigger('change');
         }else{
             $('#venta_numerooperacion').prop('disabled', false);
             $('#venta_idbanco').prop('disabled', false);

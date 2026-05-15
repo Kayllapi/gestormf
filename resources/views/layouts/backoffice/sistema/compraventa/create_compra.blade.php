@@ -172,8 +172,13 @@
 
     $('input[name="compra_idformapago"]').on('change', function() {
         if($(this).val() == 1){
-            $('#compra_numerooperacion').prop('disabled', true);
-            $('#compra_idbanco').prop('disabled', true);
+            $('#compra_numerooperacion')
+                .prop('disabled', true)
+                .val('');
+            $('#compra_idbanco')
+                .prop('disabled', true)
+                .val(null)
+                .trigger('change');
         }else{
             $('#compra_numerooperacion').prop('disabled', false);
             $('#compra_idbanco').prop('disabled', false);

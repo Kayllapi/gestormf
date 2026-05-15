@@ -179,12 +179,12 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right; font-weight: bold;" colspan="6">Total S/.:</td>
+                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right; font-weight: bold;" colspan="5">Total S/.:</td>
                         <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right; font-weight: bold;">{{ number_format($cvventas->sum('valorcompra'), 2, '.', ',') }}</td>
                         <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right; font-weight: bold;">{{ number_format($cvventas->sum('valorcomercial'), 2, '.', ',') }}</td>
                         <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right; font-weight: bold;">{{ number_format($cvventas->sum('venta_precio_venta_descuento'), 2, '.', ',') }}</td>
                         <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right; font-weight: bold;">{{ number_format($cvventas->sum('venta_montoventa'), 2, '.', ',') }}</td>
-                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" colspan="6"></td>
+                        <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center" colspan="7"></td>
                     </tr>
                 </tfoot>
             </table>

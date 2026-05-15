@@ -125,7 +125,7 @@
                 <td style="width:1px;">
                     <b>:</b>
                 </td>
-                <td>{{ $cvventa->venta_precio_venta_descuento }} SOLES</td>
+                <td>{{ $cvventa->venta_montoventa }} SOLES</td>
             </tr>
         </table>
         <div class="linea"></div>

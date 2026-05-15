@@ -440,7 +440,7 @@
     data.forEach((valor, index) => {
  
         let array_usuarios = valor.usuarios;
-        let option_usuario = `<option disabled selected> -- Seleccionar Responsable -- </option>`;
+        let option_usuario = `<option disabled selected></option>`;
         let valid_estado = '';
         let aprobacion_idestado = 0;
         array_usuarios.forEach((va_user) => {

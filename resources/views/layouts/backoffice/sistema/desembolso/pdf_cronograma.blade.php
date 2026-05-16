@@ -107,8 +107,8 @@
   </header>
   <main>
     <div class="container">
-      <h4 align="center" style="margin: 0">CRONOGRAMA DE PAGOS (*)</h4>
-          <table style="width:100%;">
+      <h4 align="center" style="margin: 0; margin-top: -10px;">CRONOGRAMA DE PAGOS (*)</h4>
+          <table style="width:100%; margin-top: 5px;">
             <tr>
               <td style="width: 278px;"><b>CUENTA:</b> C{{ str_pad($credito->cuenta, 8, "0", STR_PAD_LEFT) }}</td>
               <td><b>PRODUCTO:</b> {{ $credito->nombreproductocredito }}</td>

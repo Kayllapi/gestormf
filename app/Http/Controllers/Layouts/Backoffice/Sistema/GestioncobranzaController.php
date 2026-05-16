@@ -318,11 +318,11 @@ class GestioncobranzaController extends Controller
           }
               $html .= '
                 <tr style="position: sticky;bottom: 0;">
-                  <td colspan="7" style="background-color: #144081 !important;text-align:right;color:#fff !important;">TOTAL S/.</td>
-                  <td style="background-color: #144081 !important;text-align:right;color:#fff !important;">'.number_format($total_monto_solicitado, 2, '.', '').'</td>
-                  <td style="background-color: #144081 !important;"></td>
-                  <td style="background-color: #144081 !important;text-align:right;color:#fff !important;">'.number_format($total_saldo_pendientepago, 2, '.', '').'</td>
-                  <td colspan="14" style="background-color: #144081 !important;"></td>
+                  <td colspan="7" style="background-color: #b7b6b7 !important;text-align:right;color:#000 !important;font-weight: bold;">TOTAL S/.</td>
+                  <td style="background-color: #b7b6b7 !important;text-align:right;color:#000 !important;font-weight: bold;">'.number_format($total_monto_solicitado, 2, '.', '').'</td>
+                  <td style="background-color: #b7b6b7 !important;"></td>
+                  <td style="background-color: #b7b6b7 !important;text-align:right;color:#000 !important;font-weight: bold;">'.number_format($total_saldo_pendientepago, 2, '.', '').'</td>
+                  <td colspan="14" style="background-color: #b7b6b7 !important;"></td>
                 </tr>';
           return array(
             'html' => $html

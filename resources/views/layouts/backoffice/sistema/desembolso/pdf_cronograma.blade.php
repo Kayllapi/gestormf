@@ -110,7 +110,7 @@
       <h4 align="center" style="margin: 0">CRONOGRAMA DE PAGOS (*)</h4>
           <table style="width:100%;">
             <tr>
-              <td><b>CUENTA:</b> C{{ str_pad($credito->cuenta, 8, "0", STR_PAD_LEFT) }}</td>
+              <td style="width: 278px;"><b>CUENTA:</b> C{{ str_pad($credito->cuenta, 8, "0", STR_PAD_LEFT) }}</td>
               <td><b>PRODUCTO:</b> {{ $credito->nombreproductocredito }}</td>
               <td><b>ASESOR/EJECUTIVO:</b> {{ strtoupper($asesor->codigo) }}</td>
             </tr>
@@ -197,9 +197,6 @@
           <p style="margin: 0;">- Pague puntual y evite interes compensatorio adicional, mora, penalidades y gastos.</p>
         </div>
       </div>
-      {{-- <p align="center" style="margin: 0;">
-        <b>CEL.: <span style="font-size: 1.1rem;">{{ $tienda->numerotelefono }}</span> // {{ $tienda->paginaweb }}</b>
-      </p> --}}
     </div>
   </main>
 </body>

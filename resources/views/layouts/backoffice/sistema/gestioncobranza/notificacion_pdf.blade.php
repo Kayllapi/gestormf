@@ -26,16 +26,14 @@
       header {
           position: fixed;
           top: 0cm;
-          left: 1.6cm;
-          right: 1.3cm;
+          left: 0.7cm;
+          right: 0.7cm;
           height: 0.6cm;
-          /** Estilos extra personales **/
-          color: #000;
+          color: #0f0f0f;
           text-align: center;
           line-height: 0.6cm;
-          font-size:18px !important;
+          font-size:15px !important;
           font-weight: bold;
-          border-bottom: 2px solid #144081; 
           margin:5px;
           text-align:right;
           padding:5px;
@@ -117,8 +115,11 @@
      </style>
 </head>
 <body>
-  <header>
+  {{-- <header>
     <div style="float:left;font-size:18px;">{{ $tienda->nombre }}</div> C{{ str_pad($credito->cuenta, 8, "0", STR_PAD_LEFT) }} | {{ date('d-m-Y H:iA') }}
+  </header> --}}
+  <header>
+    <div style="float:left;font-size:15px;">{{ $tienda->nombre }}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
   </header>
   <footer>
     <div style="border-top: 1px solid #000"></div>

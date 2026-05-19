@@ -914,6 +914,24 @@ class CvmovimientointernodineroController extends Controller
                 ->where('users_permiso.idtienda',$idtienda)
                 ->select('users.*','permiso.nombre as nombrepermiso')
                 ->get();
+            
+            // validar arqueo caja
+            $arqueocaja = cvarqueocaja($idtienda);
+            $validacionDiaria = validacionDiaria($idtienda);
+
+            if ($arqueocaja) {
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'No se puede eliminar porque ya esta arqueado caja!!'
+                ]);
+            }
+            if($validacionDiaria['arqueocaja']){
+                    return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'No se puede eliminar porque ya esta arqueado caja '.$validacionDiaria['fechacorte'].'!!'
+                ]);
+            }
+
             return view(sistema_view().'/cvmovimientointernodinero/delete_retiro3',[
                 'tienda' => $tienda,
                 'movimientointernodinero' => $movimientointernodinero,
@@ -1731,23 +1749,6 @@ class CvmovimientointernodineroController extends Controller
                 'responsableclave_retiro3.required' => 'La "Contraseña" es Obligatorio.',
             ];
             $this->validate($request,$rules,$messages);
-
-            // validar arqueo caja
-            $arqueocaja = cvarqueocaja($idtienda);
-            $validacionDiaria = validacionDiaria($idtienda);
-
-            if ($arqueocaja) {
-                return response()->json([
-                    'resultado' => 'ERROR',
-                    'mensaje'   => 'No se puede eliminar porque ya esta arqueado caja!!'
-                ]);
-            }
-            if($validacionDiaria['arqueocaja']){
-                    return response()->json([
-                    'resultado' => 'ERROR',
-                    'mensaje'   => 'No se puede eliminar porque ya esta arqueado caja '.$validacionDiaria['fechacorte'].'!!'
-                ]);
-            }
 
             $usuario = DB::table('users')
                 ->where('users.id',$request->idresponsable_retiro3)

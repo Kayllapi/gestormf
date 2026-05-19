@@ -346,7 +346,7 @@
                   <th class="text-end">Capital</th>
                   <th class="text-end">Amortización</th>
                   <th class="text-end">Interés</th>
-                  <th class="text-end">Cargo x Cust./Otros Garant.</th>
+                  <th class="text-end">Cargo x Cust. Garant./Otros</th>
                   <th class="text-end">Cuota de Préstamo <br> (Cap. + Int. + Cust.)</th>
                   <th class="text-end">Ss. Recaudo</th>
                   <th class="text-end">Total a Pagar</th>

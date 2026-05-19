@@ -80,34 +80,34 @@
               </div>
               <div class="col-md-6">
                 <div class="row">
-                  <label class="col-sm-5 col-form-label" style="text-align: right;">Dia de Gracia:</label>
-                  <div class="col-sm-7">
+                  <label class="col-sm-8 col-form-label" style="text-align: right;">Dia de Gracia:</label>
+                  <div class="col-sm-4">
                     <input type="number" step="any" class="form-control" {{ $view_detalle=='false' ? 'disabled' : '' }} id="dia_gracia" value="{{ $credito->dia_gracia }}">
                   </div>
                 </div>
                 <div class="row">
-                  <label class="col-sm-5 col-form-label" style="text-align: right;">Fecha de Cálculo:</label>
-                  <div class="col-sm-7">
+                  <label class="col-sm-8 col-form-label" style="text-align: right;">Fecha de Cálculo:</label>
+                  <div class="col-sm-4">
                     <input type="date" class="form-control" {{ $view_detalle=='false' ? 'disabled' : '' }} id="fecha_desembolso" 
                            value="{{ Carbon\Carbon::now()->format('Y-m-d') }}" disabled>
                   </div>
                 </div>
                 <div class="row">
-                  <label class="col-sm-5 col-form-label" style="text-align: right;">Ss. Recaudo S/.:</label>
-                  <div class="col-sm-7">
+                  <label class="col-sm-8 col-form-label" style="text-align: right;">Ss. Recaudo S/.:</label>
+                  <div class="col-sm-4">
                     <input type="number" step="any" class="form-control" id="comision" value="0.00" disabled>
                   </div>
                 </div>
                 <div class="row d-none">
-                  <label class="col-sm-5 col-form-label" style="text-align: right;">Cargo Mes S/.:</label>
-                  <div class="col-sm-7">
+                  <label class="col-sm-8 col-form-label" style="text-align: right;">Cargo Mes S/.:</label>
+                  <div class="col-sm-4">
                     <input type="number" step="any" class="form-control" id="cargomes" value="0.00">
                   </div>
                 </div>
                 @if($credito->idforma_credito==1 && $usuario->custodiagarantia_id==1)
                     <div class="row">
-                      <label class="col-sm-5 col-form-label" style="text-align: right;">Cargo x Custodia/Otros (Periodo) S/.:</label>
-                      <div class="col-sm-7">
+                      <label class="col-sm-8 col-form-label" style="text-align: right;">Cargo x Custodia/Otros (Periodo) S/.:</label>
+                      <div class="col-sm-4">
                         <input type="number" step="any" class="form-control" {{ $view_detalle=='false' ? 'disabled' : '' }} id="cargo" value="{{ $credito->cargo }}" disabled>
                       </div>
                     </div>
@@ -122,8 +122,8 @@
                 @else
                     @if ($usuario->custodiagarantia_id==2)
                       <div class="row">
-                        <label class="col-sm-5 col-form-label" style="text-align: right;">Cargo x Custodia/Otros (Periodo) S/.:</label>
-                        <div class="col-sm-7">
+                        <label class="col-sm-8 col-form-label" style="text-align: right;">Cargo x Custodia/Otros (Periodo) S/.:</label>
+                        <div class="col-sm-4">
                           <input type="number" step="any" class="form-control" {{ $view_detalle=='false' ? 'disabled' : '' }} id="cargo" value="{{ $credito->cargo }}" disabled>
                         </div>
                       </div>
@@ -137,8 +137,8 @@
                         </div>
                     @else
                       <div class="row">
-                        <label class="col-sm-5 col-form-label" style="text-align: right;">Cargo x Custodia/Otros (Periodo) S/.:</label>
-                        <div class="col-sm-7">
+                        <label class="col-sm-8 col-form-label" style="text-align: right;">Cargo x Custodia/Otros (Periodo) S/.:</label>
+                        <div class="col-sm-4">
                           <input type="number" step="any" class="form-control" {{ $view_detalle=='false' ? 'disabled' : '' }} id="cargo" value="{{ $credito->cargo }}">
                         </div>
                       </div>

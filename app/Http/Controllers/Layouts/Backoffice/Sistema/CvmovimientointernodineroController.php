@@ -325,6 +325,25 @@ class CvmovimientointernodineroController extends Controller
             ];
             $this->validate($request,$rules,$messages);
 
+            // validar arqueo caja
+            if($request->idfuenteretiro_retiro3==8){
+                $arqueocaja = cvarqueocaja($idtienda);
+                $validacionDiaria = validacionDiaria($idtienda);
+
+                if (!$arqueocaja) {
+                    return response()->json([
+                        'resultado' => 'ERROR',
+                        'mensaje'   => 'Falta arquear caja!!'
+                    ]);
+                }
+                if(!$validacionDiaria['arqueocaja']){
+                     return response()->json([
+                        'resultado' => 'ERROR',
+                        'mensaje'   => 'Falta arquear caja '.$validacionDiaria['fechacorte'].'!!'
+                    ]);
+                }
+            }
+
             // validar si hay una apertura de caja o cierre de caja en el mismo día
             $fecharegularizacion = now();
             if ($request->fecharegularizacion!='') {

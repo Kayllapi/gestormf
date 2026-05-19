@@ -106,7 +106,7 @@
                 </div>
                 @if($credito->idforma_credito==1 && $usuario->custodiagarantia_id==1)
                     <div class="row">
-                      <label class="col-sm-5 col-form-label" style="text-align: right;">Cargo x Custodia S/.:</label>
+                      <label class="col-sm-5 col-form-label" style="text-align: right;">Cargo x Custodia/Otros (Periodo) S/.:</label>
                       <div class="col-sm-7">
                         <input type="number" step="any" class="form-control" {{ $view_detalle=='false' ? 'disabled' : '' }} id="cargo" value="{{ $credito->cargo }}" disabled>
                       </div>
@@ -122,7 +122,7 @@
                 @else
                     @if ($usuario->custodiagarantia_id==2)
                       <div class="row">
-                        <label class="col-sm-5 col-form-label" style="text-align: right;">Cargo x Custodia S/.:</label>
+                        <label class="col-sm-5 col-form-label" style="text-align: right;">Cargo x Custodia/Otros (Periodo) S/.:</label>
                         <div class="col-sm-7">
                           <input type="number" step="any" class="form-control" {{ $view_detalle=='false' ? 'disabled' : '' }} id="cargo" value="{{ $credito->cargo }}" disabled>
                         </div>
@@ -137,7 +137,7 @@
                         </div>
                     @else
                       <div class="row">
-                        <label class="col-sm-5 col-form-label" style="text-align: right;">Cargo x Custodia S/.:</label>
+                        <label class="col-sm-5 col-form-label" style="text-align: right;">Cargo x Custodia/Otros (Periodo) S/.:</label>
                         <div class="col-sm-7">
                           <input type="number" step="any" class="form-control" {{ $view_detalle=='false' ? 'disabled' : '' }} id="cargo" value="{{ $credito->cargo }}">
                         </div>

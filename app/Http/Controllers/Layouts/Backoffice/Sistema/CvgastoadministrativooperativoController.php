@@ -258,6 +258,11 @@ class CvgastoadministrativooperativoController extends Controller
             $bancos = DB::table('banco')->where('estado','ACTIVO')->get();
             $s_sustento_comprobante = DB::table('s_sustento_comprobante')->where('idtipo',2)->get();
             $credito_tipoformapago = DB::table('credito_tipoformapago')->get();
+
+            
+            $apertura_caja = cvapertura($idtienda);
+            $arqueocaja = cvarqueocaja($idtienda);
+            $validacionDiaria = validacionDiaria($idtienda);
         
         return view(sistema_view().'/cvgastoadministrativooperativo/edit',[
           'tienda' => $tienda,
@@ -266,6 +271,9 @@ class CvgastoadministrativooperativoController extends Controller
                 'bancos' => $bancos,
                 's_sustento_comprobante' => $s_sustento_comprobante,
                 'credito_tipoformapago' => $credito_tipoformapago,
+                'apertura_caja' => $apertura_caja,
+                'arqueocaja' => $arqueocaja,
+                'validacionDiaria' => $validacionDiaria,
         ]);
       } 
       elseif($request->input('view') == 'eliminar'){

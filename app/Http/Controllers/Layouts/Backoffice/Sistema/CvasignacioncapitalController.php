@@ -429,6 +429,9 @@ class CvasignacioncapitalController extends Controller
               $tipooperacions= DB::table('credito_tipooperacion')->get();
               $tipodestinos = DB::table('credito_tipodestino')->get();
 
+              $arqueocaja = cvarqueocaja($idtienda);
+              $validacionDiaria = validacionDiaria($idtienda);
+
               return view(sistema_view().'/cvasignacioncapital/edit',[
                   'tienda' => $tienda,
                   'agencias' => $agencias,
@@ -436,6 +439,8 @@ class CvasignacioncapitalController extends Controller
                   'tipooperacions' => $tipooperacions,
                   'tipodestinos' => $tipodestinos,
                   'asignacioncapital' => $asignacioncapital,
+                  'arqueocaja' => $arqueocaja,
+                  'validacionDiaria' => $validacionDiaria,
               ]);
         } 
         elseif($request->input('view') == 'eliminar'){

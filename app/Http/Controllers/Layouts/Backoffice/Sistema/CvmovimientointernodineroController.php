@@ -816,11 +816,18 @@ class CvmovimientointernodineroController extends Controller
               ->where('idtipo',2)
               ->whereIn('id',[6,7,8,9])
               ->get();
+
+            $apertura_caja = cvapertura($idtienda);
+            $arqueocaja = cvarqueocaja($idtienda);
+            $validacionDiaria = validacionDiaria($idtienda);
             return view(sistema_view().'/cvmovimientointernodinero/edit_retiro1',[
                 'tienda' => $tienda,
                 'bancos' => $bancos,
                 'fuenteretiros' => $fuenteretiros,
                 'movimientointernodinero' => $movimientointernodinero,
+                'apertura_caja' => $apertura_caja,
+                'arqueocaja' => $arqueocaja,
+                'validacionDiaria' => $validacionDiaria,
             ]);
         } 
         elseif($request->input('view') == 'eliminar_retiro1'){

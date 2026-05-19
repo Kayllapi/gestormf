@@ -188,10 +188,8 @@
 
       setTimeout(() => {
           @if(!$validacionDiaria['arqueocaja'] || !$validacionDiaria['cierre_caja'] || $arqueocaja)
-              $('#btn_eliminar').hide();
               $('#alert_arqueocaja').css('height', '160px');
           @else
-              $('#btn_eliminar').show();
               $('#alert_arqueocaja').css('height', '110px');
           @endif
       }, 500);

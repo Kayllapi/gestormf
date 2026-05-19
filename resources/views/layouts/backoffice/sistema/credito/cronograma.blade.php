@@ -218,14 +218,14 @@
               </span>
             </div>
             <div class="col-sm-3">
-              <label class="col-form-label" style="text-align: right;"><b>Ss. Recaudo (S/):</b></label>
-              <span class="col-form-label" id="total_comision" style="font-weight: normal;">
+              <label class="col-form-label" style="text-align: right;"><b>Cargo x Custodia (S/):</b></label>
+              <span class="col-form-label" id="total_cargo" style="font-weight: normal;">
                 0.00
               </span>
             </div>
             <div class="col-sm-3">
-              <label class="col-form-label" style="text-align: right;"><b>Cargo x Custodia (S/):</b></label>
-              <span class="col-form-label" id="total_cargo" style="font-weight: normal;">
+              <label class="col-form-label" style="text-align: right;"><b>Ss. Recaudo (S/):</b></label>
+              <span class="col-form-label" id="total_comision" style="font-weight: normal;">
                 0.00
               </span>
             </div>

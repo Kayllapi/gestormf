@@ -1726,13 +1726,28 @@ class CvmovimientointernodineroController extends Controller
                 'idresponsable_retiro3' => 'required',          
                 'responsableclave_retiro3' => 'required',              
             ];
-
             $messages = [
                 'idresponsable_retiro3.required' => 'El "Responsable" es Obligatorio.',
                 'responsableclave_retiro3.required' => 'La "Contraseña" es Obligatorio.',
             ];
-
             $this->validate($request,$rules,$messages);
+
+            // validar arqueo caja
+            $arqueocaja = cvarqueocaja($idtienda);
+            $validacionDiaria = validacionDiaria($idtienda);
+
+            if ($arqueocaja) {
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'No se puede eliminar porque ya esta arqueado caja!!'
+                ]);
+            }
+            if($validacionDiaria['arqueocaja']){
+                    return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'No se puede eliminar porque ya esta arqueado caja '.$validacionDiaria['fechacorte'].'!!'
+                ]);
+            }
 
             $usuario = DB::table('users')
                 ->where('users.id',$request->idresponsable_retiro3)

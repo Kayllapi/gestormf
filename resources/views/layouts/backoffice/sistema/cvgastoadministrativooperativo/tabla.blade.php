@@ -151,7 +151,7 @@
             @else
                 $('#btn_eliminar').show();
             @endif
-        }, 500);
+        }, 1000);
     }
 
     function validar(idgastoadministrativooperativo){

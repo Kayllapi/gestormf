@@ -14,7 +14,7 @@
   <div class="row">
         @if(!$validacionDiaria['arqueocaja'])
             <div class="modal-body" style="position: absolute; z-index: 100;">
-                <div class="alert bg-danger" style="height: 110px;">
+                <div class="alert bg-danger" id="alert_arqueocaja" style="height: 110px;">
                 <br>
                 <i class="fa fa-warning" style="font-size: 35px;"></i> <br>
                 <b>Falta arquear caja {{ $validacionDiaria['fechacorte'] }}!!</b>
@@ -22,7 +22,7 @@
             </div>
         @elseif(!$validacionDiaria['cierre_caja'])
             <div class="modal-body" style="position: absolute; z-index: 100;">
-                <div class="alert bg-danger" style="height: 110px;">
+                <div class="alert bg-danger" id="alert_arqueocaja" style="height: 110px;">
                 <br>
                 <i class="fa fa-warning" style="font-size: 35px;"></i> <br>
                 <b>Falta cerrar caja {{ $validacionDiaria['fechacorte'] }}!!</b>
@@ -30,7 +30,7 @@
             </div>
         @elseif($arqueocaja)
           <div class="modal-body" style="position: absolute; z-index: 100;">
-            <div class="alert bg-danger" style="height: 110px;">
+            <div class="alert bg-danger" id="alert_arqueocaja" style="height: 110px;">
             <i class="fa fa-warning" style="font-size: 35px;"></i> <br>
             <b>Ya esta arqueado la caja!!</b>
             </div>
@@ -189,10 +189,12 @@
       setTimeout(() => {
           @if(!$validacionDiaria['arqueocaja'] || !$validacionDiaria['cierre_caja'] || $arqueocaja)
               $('#btn_eliminar').hide();
+              $('#alert_arqueocaja').css('height', '160px');
           @else
               $('#btn_eliminar').show();
+              $('#alert_arqueocaja').css('height', '110px');
           @endif
-      }, 500);
+      }, 1000);
             
       let idresponsable_recfinal = $(e).attr('idresponsable_recfinal');
       //console.log(idresponsable_recfinal)

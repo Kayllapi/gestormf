@@ -1191,7 +1191,6 @@ class CreditoController extends Controller
           
           $html = '';
           foreach($cronograma['cronograma'] as $value){
-            
             $html .= '<tr>
                         <td class="text-center">'.$value['numero'].'</td>
                         <td>'.$value['fecha'].'</td>

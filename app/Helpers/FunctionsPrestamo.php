@@ -213,7 +213,7 @@ function genera_cronograma($montosolicitado,$numerocuota,$fechainicio,$frecuenci
                 'saldo' => number_format($saldo, 2, '.', ''),
                 'amortizacion' => number_format($cuota_amortizacion, 2, '.', ''),
                 'interes' => $cuota_interes,
-                'cuota' => number_format(($cuota+$cuota_cargo1), 2, '.', ''),
+                'cuota' => number_format(($cuota), 2, '.', ''),
                 'comision' => number_format($cuota_comision1, 2, '.', ''),
                 'cargo' => $cuota_cargo1,
                 'comisioncargo' => $cuota_comisioncargo,

@@ -194,7 +194,7 @@
               $('#btn_eliminar').show();
               $('#alert_arqueocaja').css('height', '110px');
           @endif
-      }, 1000);
+      }, 500);
             
       let idresponsable_recfinal = $(e).attr('idresponsable_recfinal');
       //console.log(idresponsable_recfinal)

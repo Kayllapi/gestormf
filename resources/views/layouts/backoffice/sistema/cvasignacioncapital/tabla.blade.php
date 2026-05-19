@@ -186,6 +186,13 @@
       $(e).addClass('selected');
       pagina({ route:"{{url('backoffice')}}/{{$tienda->id}}/cvasignacioncapital/"+id+"/edit?view=editar", result:'#form-result-giro'});
 
+      setTimeout(() => {
+          @if(!$validacionDiaria['arqueocaja'] || !$validacionDiaria['cierre_caja'] || $arqueocaja)
+              $('#btn_eliminar').hide();
+          @else
+              $('#btn_eliminar').show();
+          @endif
+      }, 500);
             
       let idresponsable_recfinal = $(e).attr('idresponsable_recfinal');
       //console.log(idresponsable_recfinal)

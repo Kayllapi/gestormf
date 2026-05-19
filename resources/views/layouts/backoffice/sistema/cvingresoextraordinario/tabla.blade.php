@@ -140,6 +140,13 @@
     $(e).addClass('selected');
     pagina({ route:"{{url('backoffice')}}/{{$tienda->id}}/cvingresoextraordinario/"+id+"/edit?view=editar", result:'#form-result-giro'});
     
+    setTimeout(() => {
+        @if(!$validacionDiaria['arqueocaja'] || !$validacionDiaria['cierre_caja'] || !$apertura_caja || $arqueocaja)
+            $('#btn_eliminar').hide();
+        @else
+            $('#btn_eliminar').show();
+        @endif
+    }, 500);
   }
 
     function validar(idingresoextraordinario){

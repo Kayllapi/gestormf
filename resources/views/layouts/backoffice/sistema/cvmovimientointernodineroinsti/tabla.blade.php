@@ -186,6 +186,14 @@
     $('tr.selected').removeClass('selected');
     $(e).addClass('selected');
     pagina({ route:"{{url('backoffice')}}/{{$tienda->id}}/cvmovimientointernodineroinsti/"+id+"/edit?view=editar_retiro2", result:'#form-result-giro_retiro2'});
+
+    setTimeout(() => {
+        @if(!$validacionDiaria['arqueocaja'] || !$validacionDiaria['cierre_caja'] || !$apertura_caja || $arqueocaja)
+            $('#btn_eliminar').hide();
+        @else
+            $('#btn_eliminar').show();
+        @endif
+    }, 500);
   }
   
   lista_movimientointernodinero_deposito2();

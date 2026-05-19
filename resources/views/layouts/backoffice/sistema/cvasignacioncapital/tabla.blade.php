@@ -185,14 +185,6 @@
       $('tr.selected').removeClass('selected');
       $(e).addClass('selected');
       pagina({ route:"{{url('backoffice')}}/{{$tienda->id}}/cvasignacioncapital/"+id+"/edit?view=editar", result:'#form-result-giro'});
-
-      setTimeout(() => {
-          @if(!$validacionDiaria['arqueocaja'] || !$validacionDiaria['cierre_caja'] || $arqueocaja)
-              $('#alert_arqueocaja').css('height', '160px');
-          @else
-              $('#alert_arqueocaja').css('height', '110px');
-          @endif
-      }, 500);
             
       let idresponsable_recfinal = $(e).attr('idresponsable_recfinal');
       //console.log(idresponsable_recfinal)

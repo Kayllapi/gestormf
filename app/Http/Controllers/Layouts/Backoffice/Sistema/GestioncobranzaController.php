@@ -196,9 +196,9 @@ class GestioncobranzaController extends Controller
 
                   if($credito_compromisopago!=''){
                       if($credito_compromisopago->fechacompromiso<=Carbon::now()->format('Y-m-d')){
-                            $color_estado = 'background-color:#ffb549;';
-                      }else{
                             $color_estado = 'background-color:#fb9494;';
+                      }else{
+                            $color_estado = 'background-color:#ffb549;';
                       } 
                   }
                 
@@ -572,9 +572,9 @@ class GestioncobranzaController extends Controller
 
                   if($credito_compromisopago!=''){
                       if($credito_compromisopago->fechacompromiso<=Carbon::now()->format('Y-m-d')){
-                            $color_estado = 'background-color:#ffb549;';
-                      }else{
                             $color_estado = 'background-color:#b6e084;';
+                      }else{
+                            $color_estado = 'background-color:#ffb549;';
                       } 
                   }
                 

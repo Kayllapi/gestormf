@@ -73,9 +73,9 @@
                           <div style="float: left;">> A {{configuracion($tienda->id,'dias_tolerancia_garantia')['valor']}} DÍAS</div>
                           <div style="float: left;background-color: #ffb2b2;height: 10px;width: 20px;margin: 5px;margin-right: 20px;"></div> 
                           <div style="float: left;">COMPRO.</div>
-                          <div style="float: left;background-color: #fb9494;height: 10px;width: 20px;margin: 5px;margin-right: 20px;"></div> 
+                          <div style="float: left;background-color: #ffb549;height: 10px;width: 20px;margin: 5px;margin-right: 20px;"></div> 
                           <div style="float: left;">COMP. VENC.</div>
-                          <div style="float: left;background-color: #ffb549;height: 10px;width: 20px;margin: 5px;"></div> 
+                          <div style="float: left;background-color: #fb9494;height: 10px;width: 20px;margin: 5px;"></div> 
                         </div>
                       </div>
                     </div>
@@ -153,12 +153,6 @@ table .dropdown {
   
   lista_credito();
   function lista_credito(){
-    //let estado_credito = $('input[name="estado_credito"]:checked').val();
-    
-    /*if($('#idcliente').val()==''){
-        return false;
-    }*/
-    
     $.ajax({
       url:"{{url('backoffice/0/gestioncobranza/showtable')}}",
       type:'GET',
@@ -201,8 +195,6 @@ table .dropdown {
       modal({ route: url, size: 'modal-fullscreen' })
    }
   
-  
-
    function exportar_pdf(){
       let url = "{{ url('backoffice/'.$tienda->id) }}/gestioncobranza/0/edit?view=exportar&dias_retencion_desde="+$('#dias_retencion_desde').val()+
           "&dias_retencion_hasta="+$('#dias_retencion_hasta').val()+
@@ -216,6 +208,5 @@ table .dropdown {
               '&dias_retencion_hasta='+$('#dias_retencion_hasta').val()+
               '&idagencia='+$('#idagencia').val();
     }
-  
 </script>  
 

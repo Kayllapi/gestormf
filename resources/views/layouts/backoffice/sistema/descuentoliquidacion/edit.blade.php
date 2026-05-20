@@ -21,7 +21,7 @@
             <td style="width: 90px;"><b>Prestamo S/.</b></td>
             <td style="width:2px;"><b>:</b></td>
             <td >{{ $credito->monto_solicitado }}</td>
-            <td style="width: 180px;"><b>Prest., Int., Serv. y Cargo S/.</b></td>
+            <td style="width: 180px;"><b>Prest., Int., Cargo y Serv. S/.</b></td>
             <td style="width:2px;"><b>:</b></td>
             <td >{{ $credito->total_pagar }}</td>
             <td style="width: 120px;"><b>Venc. Contrato</b></td>

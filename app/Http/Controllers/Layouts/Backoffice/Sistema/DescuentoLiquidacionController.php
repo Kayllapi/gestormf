@@ -355,8 +355,8 @@ class DescuentoLiquidacionController extends Controller
                 <th>Fecha</th>
                 <th>Amort.</th>
                 <th>Interes</th>
-                <th>C. Ss./<br>Desgr.</th>
-                <th>Cargo</th>
+                <th>Carg. x <br>Cust. G./Ot.</th>
+                <th>Ss. <br>Recau.</th>
                 <th>Cuota</th>
                 <th><span style="background-color: #ffb2b2 !important;font-weight: bold;">Días Vencido</span></th>
                 <th>Custodia</th>
@@ -403,8 +403,8 @@ class DescuentoLiquidacionController extends Controller
                             <td style="'.$value['style'].'text-align:center">'.$value['fecha'].'</td>
                             <td style="'.$value['style'].'text-align:right">'.$value['amortizacion'].'</td>
                             <td style="'.$value['style'].'text-align:right">'.$value['interes'].'</td>
-                            <td style="'.$value['style'].'text-align:right">'.$value['comision'].'</td>
                             <td style="'.$value['style'].'text-align:right">'.$value['cargo'].'</td>
+                            <td style="'.$value['style'].'text-align:right">'.$value['comision'].'</td>
                             <td style="'.$value['style'].'text-align:right">'.$value['cuota'].'</td>
                             <td style="'.$value['style'].'text-align:right; background-color: #CFECC5 !important;">
                                 <span style="'.($value['atraso_dias']>0?'color: #ff4343 !important;':'').'font-weight: bold;">
@@ -424,8 +424,8 @@ class DescuentoLiquidacionController extends Controller
                 <th></th>
                 <th style="text-align:right">'.$cronograma['total_amortizacion'].'</th>
                 <th style="text-align:right">'.$cronograma['total_interes'].'</th>
-                <th style="text-align:right">'.$cronograma['total_comision'].'</th>
                 <th style="text-align:right">'.$cronograma['total_cargo'].'</th>
+                <th style="text-align:right">'.$cronograma['total_comision'].'</th>
                 <th style="text-align:right">'.$cronograma['total_cuota'].'</th>
                 <th></th>
                 <th style="text-align:right">'.$cronograma['total_penalidad'].'</th>

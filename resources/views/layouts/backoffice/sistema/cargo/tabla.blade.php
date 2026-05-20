@@ -50,7 +50,7 @@
         <thead class="table-dark">
           <tr>
             <th>MONTO</th>
-            <th>F.C</th>
+            <th>F.C.</th>
             <th>N° CUENTA</th>
           </tr>
         </thead>

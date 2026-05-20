@@ -40,7 +40,7 @@
           <input type="hidden" value="" class="form-control" id="data-cliente-id">
         </div>
         <div class="col-sm-12">
-          <label>Documento de Identidad(DNI/CE): </label>
+          <label>Documento de Identidad(RUC/DNI/CE): </label>
           <input type="text" disabled value="" class="form-control" id="data-cliente-documento" style="background-color: white;">
         </div>
         
@@ -50,7 +50,7 @@
         <thead class="table-dark">
           <tr>
             <th>MONTO</th>
-            <th></th>
+            <th>F.C.</th>
             <th>N° CUENTA</th>
           </tr>
         </thead>

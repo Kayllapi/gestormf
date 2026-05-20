@@ -308,7 +308,7 @@
         $('#tabla-origendes').DataTable().ajax.url(root).load();
   }
   
-  function actualizar_tabla_destino(){
+  function {
         var root = '{{url('backoffice/'.$tienda->id.'/garantiaremateagencia/showcliente_destino')}}?idagencia='+$('#idagencia').val()+'&idasesor='+$('#idasesor').val();
         $('#tabla-destinodes').DataTable().ajax.url(root).load();
   }
@@ -326,5 +326,8 @@
   function reporte_remates() {
       modal({ route:"{{url('backoffice/'.$tienda->id.'/garantiaremateagencia/0/edit?view=ver_reporte_remates')}}",  size: 'modal-xl' }); 
   }
+
+  actualizar_tabla_origen();
+  actualizar_tabla_destino();
 </script>  
 

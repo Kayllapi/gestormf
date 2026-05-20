@@ -75,7 +75,7 @@
                           <div style="float: left;">COMPRO.</div>
                           <div style="float: left;background-color: #ffb549;height: 10px;width: 20px;margin: 5px;margin-right: 20px;"></div> 
                           <div style="float: left;">COMP. VENC.</div>
-                          <div style="float: left;background-color: #fb9494;height: 10px;width: 20px;margin: 5px;"></div> 
+                          <div style="float: left;background-color: #f88787;height: 10px;width: 20px;margin: 5px;"></div> 
                         </div>
                       </div>
                     </div>

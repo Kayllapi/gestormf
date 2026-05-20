@@ -198,7 +198,7 @@ class GestioncobranzaController extends Controller
                       if($credito_compromisopago->fechacompromiso<=Carbon::now()->format('Y-m-d')){
                             $color_estado = 'background-color:#fb9494;';
                       }else{
-                            $color_estado = 'background-color:#ffb549;';
+                            $color_estado = 'background-color:#f88787;';
                       } 
                   }
                 

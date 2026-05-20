@@ -934,7 +934,7 @@ class CobranzacuotaController extends Controller
                         <td style="background-color: #efefef !important;width: 90px;"><b>Préstamo S/.</b></td>
                         <td style="width:2px;"><b>:</b></td>
                         <td>'.$credito->monto_solicitado.'</td>
-                        <td style="background-color: #efefef !important;width: 180px;"><b>Prest., Int., Serv. y Cargo S/.</b></td>
+                        <td style="background-color: #efefef !important;width: 180px;"><b>Prest., Int., Cargo. y Serv. S/.</b></td>
                         <td style="width:2px;"><b>:</b></td>
                         <td>'.$credito->total_pagar.'</td>
                         <td style="background-color: #efefef !important;width: 120px;"><b>Venc. Contrato</b></td>
@@ -1066,7 +1066,7 @@ class CobranzacuotaController extends Controller
                 <th>Fecha</th>
                 <th>Amort.</th>
                 <th>Interes</th>
-                <th>Carg. x <br>Cust. G.</th>
+                <th>Carg. x <br>Cust./Ot. G.</th>
                 <th>Ss. <br>Recau.</th>
                 <th>Cuota</th>
                 <th><span style="background-color: #ffb2b2 !important;font-weight: bold;">Vencido</span></th>

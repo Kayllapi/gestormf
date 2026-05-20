@@ -71,35 +71,35 @@
                 </div>
                 <div class="col-md-6">
                   <div class="row">
-                    <label class="col-sm-4 col-form-label" style="text-align: right;">Dia de Gracia:</label>
-                    <div class="col-sm-8">
+                    <label class="col-sm-6 col-form-label" style="text-align: right;">Dia de Gracia:</label>
+                    <div class="col-sm-6">
                       <input type="number" step="any" class="form-control" id="dia_gracia" value="0">
                     </div>
                   </div>
                   <div class="row">
-                    <label class="col-sm-4 col-form-label" style="text-align: right;">Fecha Desembolso:</label>
-                    <div class="col-sm-8">
+                    <label class="col-sm-6 col-form-label" style="text-align: right;">Fecha Desembolso:</label>
+                    <div class="col-sm-6">
                       <input type="date" class="form-control" id="fecha_desembolso" value="{{ date('Y-m-d') }}" disabled>
                     </div>
                   </div>
                   <div class="row">
-                    <label class="col-sm-4 col-form-label" style="text-align: right;">Ss. Recaudo S/.:</label>
-                    <div class="col-sm-8">
+                    <label class="col-sm-6 col-form-label" style="text-align: right;">Ss. Recaudo S/.:</label>
+                    <div class="col-sm-6">
                       <input type="number" step="any" class="form-control" id="comision" value="" disabled>
                     </div>
-                    <div class="col-sm-4 d-none">
+                    <div class="col-sm-6 d-none">
                       <input type="number" step="any" class="form-control" id="monto_cargos_otros" value="0.00" disabled>
                     </div>
                   </div>
                   <div class="row">
-                    <label class="col-sm-4 col-form-label" style="text-align: right;">Cargo x Custodia S/.:</label>
-                    <div class="col-sm-8">
+                    <label class="col-sm-6 col-form-label" style="text-align: right;">Cargo x Custodia/Otros (Periodo) S/.:</label>
+                    <div class="col-sm-6">
                       <input type="number" step="any" class="form-control" id="cargo" value="0.00" disabled>
                     </div>
                   </div>
                   <div class="row d-none" id="cont_mensaje_custodia">
-                    <label class="col-sm-4"></label>
-                    <label class="col-sm-8">
+                    <label class="col-sm-6"></label>
+                    <label class="col-sm-6">
                         <label class="custom-radio" style="color: #b32121;">
                             <input type="radio" name="cargo_check" id="cargo_check" value="1" checked>
                             <span></span>
@@ -141,12 +141,12 @@
               <div class="col-sm-1 col-form-label" id="interes_total" style="font-weight: normal;">
                 0.00
               </div>
-              <label class="col-sm-2 col-form-label" style="text-align: right;"><b>Ss. Recaudo (S/):</b></label>
-              <div class="col-sm-1 col-form-label" id="total_comision" style="font-weight: normal;">
-                0.00
-              </div>
               <label class="col-sm-2 col-form-label" style="text-align: right;"><b>Cargo x Custodia (S/):</b></label>
               <div class="col-sm-1 col-form-label" id="total_cargo" style="font-weight: normal;">
+                0.00
+              </div>
+              <label class="col-sm-2 col-form-label" style="text-align: right;"><b>Ss. Recaudo (S/):</b></label>
+              <div class="col-sm-1 col-form-label" id="total_comision" style="font-weight: normal;">
                 0.00
               </div>
               <label class="col-sm-2 col-form-label" style="text-align: right;"><b>Total a Pagar (S/):</b></label>
@@ -166,7 +166,7 @@
                 <th class="text-end">Amortización</th>
                 <th class="text-end">Interés</th>
                 <th class="text-end">Cargo x Custodia Garant.</th>
-                <th class="text-end">Cuota de Préstamo <br> (Int. + Cap. + Cust.)</th>
+                <th class="text-end">Cuota de Préstamo <br> (Cap. + Int. + Cust.)</th>
                 <th class="text-end">Ss. Recaudo</th>
                 <th class="text-end">Total a Pagar</th>
               </thead>

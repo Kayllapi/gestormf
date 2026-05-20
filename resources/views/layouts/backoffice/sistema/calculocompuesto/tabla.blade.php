@@ -395,7 +395,9 @@
     }
     var cargo = cargocom*monto;
     var cargomes = cargocom_mes*monto;
-    $('#cargo').val(cargo.toFixed(2));
+    
+    var cargoRedondeado = (Math.ceil(cargo * 10) / 10).toFixed(2);
+    $('#cargo').val(cargoRedondeado);
     $('#cargomes').val(cargomes.toFixed(2));
 
     $.ajax({

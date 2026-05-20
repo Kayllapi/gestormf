@@ -49,7 +49,12 @@
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-1" style="text-align: left;">
-                        <button type="button" class="btn btn-success" onclick="actualizar_tabla_origen(),actualizar_tabla_destino()"><i class="fa-solid fa-search"></i> FILTRAR</button>
+                        <button type="button"
+                            class="btn btn-success"
+                            onclick="actualizar_tabla_origen(),actualizar_tabla_destino()"
+                            id="btn-filtrar">
+                            <i class="fa-solid fa-search"></i> FILTRAR
+                        </button>
                     </div>
                 </div>
                 <div class="row">
@@ -308,7 +313,7 @@
         $('#tabla-origendes').DataTable().ajax.url(root).load();
   }
   
-  function {
+  function actualizar_tabla_destino(){
         var root = '{{url('backoffice/'.$tienda->id.'/garantiaremateagencia/showcliente_destino')}}?idagencia='+$('#idagencia').val()+'&idasesor='+$('#idasesor').val();
         $('#tabla-destinodes').DataTable().ajax.url(root).load();
   }
@@ -326,8 +331,5 @@
   function reporte_remates() {
       modal({ route:"{{url('backoffice/'.$tienda->id.'/garantiaremateagencia/0/edit?view=ver_reporte_remates')}}",  size: 'modal-xl' }); 
   }
-
-  actualizar_tabla_origen();
-  actualizar_tabla_destino();
 </script>  
 

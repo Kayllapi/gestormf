@@ -8,91 +8,95 @@
       <div class="col-sm-12">
         <div class="card">
           <div class="card-body p-2" id="form-credito-result">
-             
             <div class="modal-body">
-              
-                <div class="row">
-                    <div class="col-sm-12 col-md-6">
+              <div class="row">
+                  <div class="col-sm-12 col-md-4">
+                    <div class="row">
+                      <label for="fecha_inicio" class="col-sm-3 col-form-label">AGENCIA</label>
+                      <div class="col-sm-9">
+                          <select class="form-control" id="idagencia" disabled>
+                            <option></option>
+                            @foreach($agencias as $value)
+                                <option value="{{$value->id}}">{{$value->nombreagencia}}</option>
+                            @endforeach
+                          </select>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <label for="fecha_fin" class="col-sm-3 col-form-label">EJECUTIVO</label>
+                      <div class="col-sm-9">
+                        <select class="form-control" id="idasesor">
+                          <option value="0">TODOS</option>
+                          <?php
+                            $usuarios = DB::table('users')
+                              ->join('users_permiso','users_permiso.idusers','users.id')
+                              ->join('permiso','permiso.id','users_permiso.idpermiso')
+                              ->whereIn('users_permiso.idpermiso',[3,4,7])
+                              ->where('users_permiso.idtienda',$tienda->id)
+                              ->select('users.*','permiso.nombre as nombrepermiso')
+                              ->get();
+                          ?>
+                          @foreach($usuarios as $value)
+                            <option value="{{$value->id}}">{{$value->nombrecompleto}} ({{$value->nombrepermiso}})</option>
+                          @endforeach
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-12 col-md-6">
+                    <div class="row">
+                      <div class="col-sm-12 col-md-5">
                         <div class="row">
-                           <div class="col-sm-12 col-md-10">
-                              <div class="row">
-                                <label for="fecha_inicio" class="col-sm-3 col-form-label">AGENCIA</label>
-                                <div class="col-sm-9">
-                                    <select class="form-control" id="idagencia" disabled>
-                                      <option></option>
-                                      @foreach($agencias as $value)
-                                          <option value="{{$value->id}}">{{$value->nombreagencia}}</option>
-                                      @endforeach
-                                    </select>
-                                </div>
-                              </div>
-                            </div>
-                          <div class="col-sm-12 col-md-2" style="text-align: right;">
-                              <button type="button" class="btn btn-success" onclick="lista_credito()"><i class="fa-solid fa-search"></i> FILTRAR</button>
+                          <label for="fecha_fin" class="col-sm-7 col-form-label">DÍAS VENCIDOS <span style="float:right;">DE</span></label>
+                          <div class="col-sm-5">
+                              <input type="number" class="form-control" value="" id="dias_retencion_desde">
                           </div>
                         </div>
-                        <div class="row">
-                          
-                           <div class="col-sm-12 col-md-10">
-                              <div class="row">
-                                <label for="fecha_fin" class="col-sm-3 col-form-label">EJECUTIVO</label>
-                                <div class="col-sm-9">
-                                    <select class="form-control" id="idasesor" disabled>
-                                      <option value="">TODO</option>
-                                      <?php
-                                      $usuarios = DB::table('users')
-                                          ->join('users_permiso','users_permiso.idusers','users.id')
-                                          ->join('permiso','permiso.id','users_permiso.idpermiso')
-                                          ->whereIn('users_permiso.idpermiso',[3,4,7])
-                                          ->where('users_permiso.idtienda',$tienda->id)
-                                          ->select('users.*','permiso.nombre as nombrepermiso')
-                                          ->get();
-                                      ?>
-                                      @foreach($usuarios as $value)
-                                      <option value="{{$value->id}}">{{$value->nombrecompleto}} ({{$value->nombrepermiso}})</option>
-                                      @endforeach
-                                    </select>
-                                </div>
-                              </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                           <div class="col-sm-12 col-md-5">
-                              <div class="row">
-                                <label for="fecha_fin" class="col-sm-7 col-form-label">DÍAS VENCIDOS <span style="float:right;">DE</span></label>
-                                <div class="col-sm-5">
-                                    <input type="number" class="form-control" value="" id="dias_retencion_desde">
-                                </div>
-                              </div>
-                           </div>
-                           <div class="col-sm-12 col-md-5">
-                              <div class="row">
-                                <label for="fecha_fin" class="col-sm-3 col-form-label"><span style="float:right;">HASTA</span></label>
-                                <div class="col-sm-5">
-                                    <input type="number" class="form-control" value="" id="dias_retencion_hasta">
-                                </div>
-                              </div>
-                           </div>
-                        </div>
-                                
-                    </div>
-                    <div class="col-sm-12 col-md-6" style="background-color: #bababa;border-radius: 5px;padding: 10px;">
-                      <div style="margin-bottom: 5px; display: inline-block;">LEYENDA:</div>
-                      <div style="display: inline-flex;">
-                        <div style="float: left;">0 DÍAS</div>
-                        <div style="float: left;background-color: #fff;height: 10px;width: 20px;margin: 5px;margin-right: 20px;"></div> 
-                        <div style="float: left;">1-{{configuracion($tienda->id,'dias_tolerancia_garantia')['valor']}} DÍAS</div>
-                        <div style="float: left;background-color: #b6e084;height: 10px;width: 20px;margin: 5px;margin-right: 20px;"></div> 
-                        <div style="float: left;">> A {{configuracion($tienda->id,'dias_tolerancia_garantia')['valor']}} DÍAS</div>
-                        <div style="float: left;background-color: #ffb2b2;height: 10px;width: 20px;margin: 5px;margin-right: 20px;"></div> 
-                        <div style="float: left;">COMPRO.</div>
-                        <div style="float: left;background-color: #fb9494;height: 10px;width: 20px;margin: 5px;margin-right: 20px;"></div> 
-                        <div style="float: left;">COMP. VENC.</div>
-                        <div style="float: left;background-color: #ffb549;height: 10px;width: 20px;margin: 5px;"></div> 
                       </div>
+                      <div class="col-sm-12 col-md-5">
+                        <div class="row">
+                          <label for="fecha_fin" class="col-sm-3 col-form-label"><span style="float:right;">HASTA</span></label>
+                          <div class="col-sm-5">
+                              <input type="number" class="form-control" value="" id="dias_retencion_hasta">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-12 col-md-12" style="background-color: #bababa;border-radius: 5px;padding: 5px 10px;">
+                        <div>
+                          <div style="float: left;">LEYENDA: &nbsp;</div>
+                          <div style="float: left;">0 DÍAS</div>
+                          <div style="float: left;background-color: #fff;height: 10px;width: 20px;margin: 5px;margin-right: 20px;"></div> 
+                          <div style="float: left;">1-{{configuracion($tienda->id,'dias_tolerancia_garantia')['valor']}} DÍAS</div>
+                          <div style="float: left;background-color: #b6e084;height: 10px;width: 20px;margin: 5px;margin-right: 20px;"></div> 
+                          <div style="float: left;">> A {{configuracion($tienda->id,'dias_tolerancia_garantia')['valor']}} DÍAS</div>
+                          <div style="float: left;background-color: #ffc9ca;height: 10px;width: 20px;margin: 5px;margin-right: 20px;"></div> 
+                          <div style="float: left;">COMPRO.</div>
+                          <div style="float: left;background-color: #ffb549;height: 10px;width: 20px;margin: 5px;margin-right: 20px;"></div> 
+                          <div style="float: left;">COMP. VENC.</div>
+                          <div style="float: left;background-color: #fb9494;height: 10px;width: 20px;margin: 5px;"></div> 
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-12 col-md-2">
+                    <div class="row">
+                      <div class="col-12">
+                        <button type="button" class="btn btn-success" style="float: left;" onclick="lista_credito()">
+                          <i class="fa-solid fa-search"></i> FILTRAR
+                        </button>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12">
+                        <button type="button" class="btn btn-info mt-1" onclick="exportar_pdf()" style="font-weight: bold; margin-top: 0.3rem !important;">
+                          <i class="fa-solid fa-file-pdf" style="color:#000 !important;font-weight: bold;"></i> REPORTE PDF
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              
             </div> 
           </div>
         </div>
@@ -101,7 +105,6 @@
       <div class="col-sm-12">
         <div class="card">
           <div class="card-body" style="overflow-y: scroll;height: calc(100vh - 300px);padding: 0;margin-top: 5px;overflow-x: scroll;">
-
             <table class="table table-striped table-hover" id="table-lista-credito">
               <thead class="table-dark" style="position: sticky;top: 0;">
                 <tr>

@@ -218,7 +218,7 @@
               </span>
             </div>
             <div class="col-sm-3">
-              <label class="col-form-label" style="text-align: right;"><b>Cargo x Custodia (S/):</b></label>
+              <label class="col-form-label" style="text-align: right;"><b>Cargo x Custodia/Otros (S/):</b></label>
               <span class="col-form-label" id="total_cargo" style="font-weight: normal;">
                 0.00
               </span>

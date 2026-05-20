@@ -359,7 +359,7 @@ class DescuentoLiquidacionController extends Controller
                 <th>Ss. <br>Recau.</th>
                 <th>Cuota</th>
                 <th><span style="background-color: #ffb2b2 !important;font-weight: bold;">Días Vencido</span></th>
-                <th>Custodia</th>
+                <th>P. Cust.</th>
                 <th>Int. Comp.</th>
                 <th style="width:10px;">Int. Morat.</th>
                 <th>Cuota Total</th>

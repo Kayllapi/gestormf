@@ -105,29 +105,29 @@
             <table class="table table-striped table-hover" id="table-lista-credito">
               <thead class="table-dark" style="position: sticky;top: 0;">
                 <tr>
-                  <td style="width:10px;"></td>
-                  <td>N°</td>
-                  <td>GP</td>
-                  <td>CUENTA</td>
-                  <td>DOI/RUC</td>
-                  <td>Apellidos y Nombres</td>
-                  <td>Fecha Desemb.</td>
-                  <td>Monto Crédito (S/.)</td>
-                  <td>F. Pago</td>
-                  <td><span style="text-decoration: underline; font-weight: bold;">Saldo Cuotas Venc. (S/.)</span></td>
-                  <td><span style="background-color: #ffb2b2 !important;text-decoration: underline;font-weight: bold;">Días Vencido</span></td>
-                  <td>Form. C.</td>
-                  <td>Nro. de Cuotas Cumplido y Venc.</td>
-                  <td>Tele./Celu.</td>
-                  <td>F. Compromiso</td>
-                  <td>Anotación</td>
-                  <td>Direc/Domicilio</td>
-                  <td>Calificación</td>
-                  <td>Producto</td>
-                  <td>Modalidad</td>
-                  <td>DOI/RUC (Aval)</td>
-                  <td>Ape. Nom. Aval</td>
-                  <td>Ejecutivo</td>
+                  <th style="width:10px;"></th>
+                  <th>N°</th>
+                  <th>GP</th>
+                  <th>CUENTA</th>
+                  <th>DOI/RUC</th>
+                  <th>Apellidos y Nombres</th>
+                  <th>Fecha Desemb.</th>
+                  <th>Monto Crédito (S/.)</th>
+                  <th>F. Pago</th>
+                  <th><span style="text-decoration: underline; font-weight: bold;">Saldo Cuotas Venc. (S/.)</span></th>
+                  <th><span style="background-color: #ffb2b2 !important;text-decoration: underline;font-weight: bold;">Días Vencido</span></th>
+                  <th>Form. C.</th>
+                  <th>Nro. de Cuotas Cumplido y Venc.</th>
+                  <th>Tele./Celu.</th>
+                  <th>F. Compromiso</th>
+                  <th>Anotación</th>
+                  <th>Direc/Domicilio</th>
+                  <th>Calificación</th>
+                  <th>Producto</th>
+                  <th>Modalidad</th>
+                  <th>DOI/RUC (Aval)</th>
+                  <th>Ape. Nom. Aval</th>
+                  <th>Ejecutivo</th>
                 </tr>
               </thead>
               <tbody>

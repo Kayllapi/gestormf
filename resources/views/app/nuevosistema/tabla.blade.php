@@ -170,7 +170,7 @@ $name_table = generateRandomString();
         @endif
         @endif
         ajax: {
-            url: '{{$route}}',
+            url: @json($route),
             @if(isset($type))
             type: '{{$type}}',
             @endif

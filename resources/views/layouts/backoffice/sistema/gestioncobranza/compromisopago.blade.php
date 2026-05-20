@@ -30,7 +30,7 @@
                   </div>
                 </div>
                 <div class="row">
-                  <label class="col-sm-5 col-form-label" style="text-align: right;">Comentario *</label>
+                  <label class="col-sm-5 col-form-label" style="text-align: right;">Comentario</label>
                   <div class="col-sm-7">
                     <textarea class="form-control" cols="5" rows="3" id="comentario"></textarea>
                   </div>

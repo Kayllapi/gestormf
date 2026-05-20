@@ -659,18 +659,16 @@ class GestioncobranzaController extends Controller
           
             $rules = [
                 'fecha_compromiso' => 'required',                
-                'comentario' => 'required',                         
             ];
           
             $messages = [
                 'fecha_compromiso.required' => 'El Campo es Obligatorio.',
-                'comentario.required' => 'El Campo es Obligatorio.',
             ];
             $this->validate($request,$rules,$messages);
           
             DB::table('credito_compromisopago')->insertGetId([
                 'fechacompromiso'         => $request->input('fecha_compromiso'),
-                'comentario'              => $request->input('comentario'),
+                'comentario'              => $request->input('comentario') ?? '',
                 'idcredito'               => $id,
                 'idestadocompromisopago'  => 1,
                 'idtienda'                => user_permiso()->idtienda,

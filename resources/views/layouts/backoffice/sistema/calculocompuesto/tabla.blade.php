@@ -109,12 +109,20 @@
                         <label class="custom-radio" style="color: #b32121;">
                             <input type="radio" name="cargo_check" id="cargo_check" value="1" checked>
                             <span></span>
-                            Gasto x custodia de garantía para cargo: (Acreedor)
+                            <b style="font-weight: 700;"
+                              class="popover-hover"
+                              data-bs-content='{{ configuracion($tienda->id,'comision_gestion_garantia_cargo')['valor'] }} % Mensual, de Cobertura'>
+                              Gasto x custodia de garantía para cargo: (Acreedor)
+                            </b>
                         </label>
                         <label class="custom-radio" style="color: #b32121;">
                             <input type="radio" name="cargo_check" id="cargo_check" value="2">
                             <span></span>
-                            Gasto x custodia de garantía para cargo: (Convenio con Acreedor)
+                            <b style="font-weight: 700;"
+                              class="popover-hover"
+                              data-bs-content='{{ configuracion($tienda->id,'comision_gestion_garantia_convenio')['valor'] }} % Mensual, de Cobertura'>
+                              Gasto x custodia de garantía para cargo: (Convenio con Acreedor)
+                            </b>
                         </label>
                         <label class="custom-radio" style="color: #b32121;">
                             <input type="radio" name="cargo_check" id="cargo_check" value="3">
@@ -438,5 +446,17 @@
     })
   }
 
+  document.querySelectorAll('.popover-hover').forEach(el => {
+    const popover = new bootstrap.Popover(el, {
+      trigger: 'manual', // 🔥 clave para eliminar click
+      placement: 'right',
+      html: true,
+      content: el.getAttribute('data-bs-content').replace(/\n/g, '<br>')
+    });
+
+    el.addEventListener('mouseenter', () => popover.show());
+    el.addEventListener('mouseleave', () => popover.hide());
+  });
+  plugins_popover();
 </script>   
 

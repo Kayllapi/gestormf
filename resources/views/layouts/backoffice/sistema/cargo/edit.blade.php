@@ -18,28 +18,28 @@
     <div class="modal-body">
         <table class="table table-bordered">
           <tr>
-            <td style="width: 40px;">Prestamo S/.:</td>
-            <td style="width: 90px;"><b>{{ $credito->monto_solicitado }}</b></td>
-            <td style="width: 60px;">Prest., Int., Cargo y Serv. S/.:</td>
-            <td style="width: 50px;"><b>{{ $credito->total_pagar }}</b></td>
-            <td style="width: 40px;">Venc. Contrato:</td>
-            <td style="width: 60px;"><b>{{ date_format(date_create($credito->fecha_ultimopago),'d-m-Y') }}</b></td>
+            <td style="width: 40px;"><b>Prestamo S/.:</b></td>
+            <td style="width: 90px;">{{ $credito->monto_solicitado }}</td>
+            <td style="width: 60px;"><b>Prest., Int., Cargo y Serv. S/.:</b></td>
+            <td style="width: 50px;">{{ $credito->total_pagar }}</td>
+            <td style="width: 40px;"><b>Venc. Contrato:</b></td>
+            <td style="width: 60px;">{{ date_format(date_create($credito->fecha_ultimopago),'d-m-Y') }}</td>
           </tr>
           <tr>
-            <td>TEM (%):</td>
-            <td><b>{{ $credito->tasa_tem }}</b></td>
-            <td>TIP (%):</td>
-            <td><b>{{ $credito->tasa_tip }}</b></td>
-            <td>F. PAGO:</td>
-            <td><b>{{ $credito->forma_pago_credito_nombre }}</b></td>
+            <td><b>TEM (%):</b></td>
+            <td>{{ $credito->tasa_tem }}</td>
+            <td><b>TIP (%):</b></td>
+            <td>{{ $credito->tasa_tip }}</td>
+            <td><b>F. PAGO:</b></td>
+            <td>{{ $credito->forma_pago_credito_nombre }}</td>
           </tr>
           <tr>
-            <td>Producto:</td>
-            <td><b>{{ $credito->nombreproductocredito }}</b></td>
-            <td>Operación:</td>
-            <td><b>{{ $credito->modalidad_credito_nombre }}</b></td>
-            <td>F. Desembolso:</td>
-            <td><b>{{ date_format(date_create($credito->fecha_desembolso),'d-m-Y') }}</b></td>
+            <td><b>Producto:</b></td>
+            <td>{{ $credito->nombreproductocredito }}</td>
+            <td><b>Operación:</b></td>
+            <td>{{ $credito->modalidad_credito_nombre }}</td>
+            <td><b>F. Desembolso:</b></td>
+            <td>{{ date_format(date_create($credito->fecha_desembolso),'d-m-Y') }}</td>
           </tr>
         </table>
     </div>

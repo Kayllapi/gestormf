@@ -37,11 +37,11 @@
         <table class="table table-bordered">
           <tr>
             <td style="width: 80px;">Producto</td>
-            <td><b>{{ $credito->nombreproductocredito }}</b></td>
-            <td style="width: 80px;">Operación</td>
-            <td><b>{{ $credito->modalidad_credito_nombre }}</b></td>
-            <td style="width: 90px;">F. Desembolso</td>
-            <td><b>{{ date_format(date_create($credito->fecha_desembolso),'d-m-Y') }}</b></td>
+            <td style="width: 60px;"><b>{{ $credito->nombreproductocredito }}</b></td>
+            <td style="width: 50px;">Operación</td>
+            <td style="width: 60px;"><b>{{ $credito->modalidad_credito_nombre }}</b></td>
+            <td style="width: 50px;">F. Desembolso</td>
+            <td style="width: 80px;"><b>{{ date_format(date_create($credito->fecha_desembolso),'d-m-Y') }}</b></td>
           </tr>
         </table>
     </div>

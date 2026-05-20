@@ -90,7 +90,7 @@
                     </div>
                     <div class="row">
                       <div class="col-12">
-                        <button type="button" class="btn btn-info mt-1" onclick="exportar_pdf()" style="font-weight: bold;">
+                        <button type="button" class="btn btn-info mt-1" onclick="exportar_pdf()" style="font-weight: bold; margin-top: 0.3rem !important;">
                           <i class="fa-solid fa-file-pdf" style="color:#000 !important;font-weight: bold;"></i> REPORTE PDF
                         </button>
                       </div>

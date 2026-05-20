@@ -18,12 +18,12 @@
     <div class="modal-body">
         <table class="table table-bordered">
           <tr>
-            <td style="width: 50px;">Prestamo S/.:</td>
+            <td style="width: 40px;">Prestamo S/.:</td>
             <td style="width: 90px;"><b>{{ $credito->monto_solicitado }}</b></td>
-            <td style="width: 50px;">Prest., Int., Cargo y Serv. S/.:</td>
-            <td style="width: 60px;"><b>{{ $credito->total_pagar }}</b></td>
-            <td style="width: 50px;">Venc. Contrato:</td>
-            <td style="width: 80px;"><b>{{ date_format(date_create($credito->fecha_ultimopago),'d-m-Y') }}</b></td>
+            <td style="width: 60px;">Prest., Int., Cargo y Serv. S/.:</td>
+            <td style="width: 50px;"><b>{{ $credito->total_pagar }}</b></td>
+            <td style="width: 40px;">Venc. Contrato:</td>
+            <td style="width: 60px;"><b>{{ date_format(date_create($credito->fecha_ultimopago),'d-m-Y') }}</b></td>
           </tr>
           <tr>
             <td>TEM (%):</td>

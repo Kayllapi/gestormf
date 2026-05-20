@@ -71,11 +71,11 @@
                           <div style="float: left;">1-{{configuracion($tienda->id,'dias_tolerancia_garantia')['valor']}} DÍAS</div>
                           <div style="float: left;background-color: #b6e084;height: 10px;width: 20px;margin: 5px;margin-right: 20px;"></div> 
                           <div style="float: left;">> A {{configuracion($tienda->id,'dias_tolerancia_garantia')['valor']}} DÍAS</div>
-                          <div style="float: left;background-color: #ffb2b2;height: 10px;width: 20px;margin: 5px;margin-right: 20px;"></div> 
+                          <div style="float: left;background-color: #ffc9ca;height: 10px;width: 20px;margin: 5px;margin-right: 20px;"></div> 
                           <div style="float: left;">COMPRO.</div>
                           <div style="float: left;background-color: #ffb549;height: 10px;width: 20px;margin: 5px;margin-right: 20px;"></div> 
                           <div style="float: left;">COMP. VENC.</div>
-                          <div style="float: left;background-color: #f88787;height: 10px;width: 20px;margin: 5px;"></div> 
+                          <div style="float: left;background-color: #fb9494;height: 10px;width: 20px;margin: 5px;"></div> 
                         </div>
                       </div>
                     </div>
@@ -118,7 +118,7 @@
                   <th>Monto Crédito (S/.)</th>
                   <th>F. Pago</th>
                   <th><span style="text-decoration: underline; font-weight: bold;">Saldo Cuotas Venc. (S/.)</span></th>
-                  <th><span style="background-color: #ffb2b2 !important;text-decoration: underline;font-weight: bold;">Días Vencido</span></th>
+                  <th><span style="background-color: #ffc9ca !important;text-decoration: underline;font-weight: bold;">Días Vencido</span></th>
                   <th>Form. C.</th>
                   <th>Nro. de Cuotas Cumplido y Venc.</th>
                   <th>Tele./Celu.</th>

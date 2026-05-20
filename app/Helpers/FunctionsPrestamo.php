@@ -185,23 +185,22 @@ function genera_cronograma($montosolicitado,$numerocuota,$fechainicio,$frecuenci
                     $cuota_cargo1 = number_format($total_cargo1-$suma_cargo1, 2, '.', '');
                     $cuota = $total_cuota - $suma_cuota;
                     $cuota_comision1 = $total_comision_tipotasa2 - $suma_comision1;
+                    $cuotaSumada = $cuota_amortizacion + $cuota_interes + $cuota_cargo1;
+                    $cuotafinal = $cuotaSumada + $cuota_comision1;
+                    $cuotafinal = number_format($cuotafinal, 2, '.', '');
                 }else{
                     $cuota_amortizacion = $cuota-$cuota_interes;
+                    $cuotaSumada = $cuota + $cuota_cargo1;
+
+                    // Cuota redondeada al menor y ajuste en la última cuota
+                    $cuota_real = $cuota + $cuota_cargo1 + $cuota_comision1;
+                    $cuota_redondeada = floor($cuota_real * 10) / 10;
+                    $diferencia = $cuota_real - $cuota_redondeada;
+                    $diferencia_acumulada += $diferencia;
+                    $cuotafinal = number_format($cuota_redondeada, 2, '.', '');
                 }
 
-                // Cuota redondeada al menor y ajuste en la última cuota
-                $cuota_real = $cuota + $cuota_cargo1 + $cuota_comision1;
-                $cuota_redondeada = floor($cuota_real * 10) / 10;
-                $diferencia = $cuota_real - $cuota_redondeada;
-
-                $diferencia_acumulada += $diferencia;
-
-                $cuotafinal = number_format($cuota_redondeada, 2, '.', '');
-                if($i == $numerocuota){
-                    $cuotafinal = $cuota_redondeada + $diferencia_acumulada;
-                    $cuotafinal = number_format($cuotafinal, 2, '.', '');
-                }
-                $cuotaSumada = $cuota + $cuota_cargo1;
+                // $cuotaSumada = $cuota + $cuota_cargo1;
                 $data_tir[] = (float)($cuotaSumada);
             }
             
@@ -262,7 +261,7 @@ function genera_cronograma($montosolicitado,$numerocuota,$fechainicio,$frecuenci
             'cuota_pago' => $cronograma_cuotapago,
             'total_amortizacion' => $suma_amortizacion,
             'total_interes' => $suma_interes,
-            'total_cuota' => number_format(($suma_cuota+$suma_cargo1), 2, '.', ''),
+            'total_cuota' => number_format(($suma_cuota), 2, '.', ''),
             'cuota_comision' => number_format($cuota_comision, 2, '.', ''),
             'cuota_cargo' => number_format($cuota_cargo, 2, '.', ''),
             'cuota_comisioncargo' => number_format($cuota_comision+$cuota_cargo, 2, '.', ''),

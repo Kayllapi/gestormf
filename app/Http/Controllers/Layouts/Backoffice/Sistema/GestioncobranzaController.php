@@ -179,7 +179,7 @@ class GestioncobranzaController extends Controller
                   $color_estado = '';
 
                   if($cronograma['ultimo_atraso']>0 && $cronograma['ultimo_atraso']<=$dias_tolerancia){
-                      $color_estado = 'background-color:#b6e084;';
+                      $color_estado = 'background-color:#c0ee87;';
                   }
                   elseif($cronograma['ultimo_atraso']>$dias_tolerancia){
                       $color_estado = 'background-color:#ffc9ca;';
@@ -198,7 +198,7 @@ class GestioncobranzaController extends Controller
                       if($credito_compromisopago->fechacompromiso<=Carbon::now()->format('Y-m-d')){
                             $color_estado = 'background-color:#fb9494;';
                       }else{
-                            $color_estado = 'background-color:#ffb549;';
+                            $color_estado = 'background-color:#fcbb59;';
                       } 
                   }
                 
@@ -572,9 +572,9 @@ class GestioncobranzaController extends Controller
 
                   if($credito_compromisopago!=''){
                       if($credito_compromisopago->fechacompromiso<=Carbon::now()->format('Y-m-d')){
-                            $color_estado = 'background-color:#b6e084;';
+                            $color_estado = 'background-color:#c0ee87;';
                       }else{
-                            $color_estado = 'background-color:#ffb549;';
+                            $color_estado = 'background-color:#fcbb59;';
                       } 
                   }
                 

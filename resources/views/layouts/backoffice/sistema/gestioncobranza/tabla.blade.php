@@ -69,11 +69,11 @@
                           <div style="float: left;">0 DÍAS</div>
                           <div style="float: left;background-color: #fff;height: 10px;width: 20px;margin: 5px;margin-right: 20px;"></div> 
                           <div style="float: left;">1-{{configuracion($tienda->id,'dias_tolerancia_garantia')['valor']}} DÍAS</div>
-                          <div style="float: left;background-color: #b6e084;height: 10px;width: 20px;margin: 5px;margin-right: 20px;"></div> 
+                          <div style="float: left;background-color: #c0ee87;height: 10px;width: 20px;margin: 5px;margin-right: 20px;"></div> 
                           <div style="float: left;">> A {{configuracion($tienda->id,'dias_tolerancia_garantia')['valor']}} DÍAS</div>
                           <div style="float: left;background-color: #ffc9ca;height: 10px;width: 20px;margin: 5px;margin-right: 20px;"></div> 
                           <div style="float: left;">COMPRO.</div>
-                          <div style="float: left;background-color: #ffb549;height: 10px;width: 20px;margin: 5px;margin-right: 20px;"></div> 
+                          <div style="float: left;background-color: #fcbb59;height: 10px;width: 20px;margin: 5px;margin-right: 20px;"></div> 
                           <div style="float: left;">COMP. VENC.</div>
                           <div style="float: left;background-color: #fb9494;height: 10px;width: 20px;margin: 5px;"></div> 
                         </div>

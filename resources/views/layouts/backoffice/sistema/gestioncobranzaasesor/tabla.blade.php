@@ -77,8 +77,8 @@
                                 
                     </div>
                     <div class="col-sm-12 col-md-6" style="background-color: #bababa;border-radius: 5px;padding: 10px;">
-                      <div style="margin-bottom: 5px;">LEYENDA DÍAS VENCIDOS</div>
-                      <div>
+                      <div style="margin-bottom: 5px; display: inline-block;">LEYENDA:</div>
+                      <div style="display: inline-flex;">
                         <div style="float: left;">0 DÍAS</div>
                         <div style="float: left;background-color: #fff;height: 10px;width: 20px;margin: 5px;margin-right: 20px;"></div> 
                         <div style="float: left;">1-{{configuracion($tienda->id,'dias_tolerancia_garantia')['valor']}} DÍAS</div>

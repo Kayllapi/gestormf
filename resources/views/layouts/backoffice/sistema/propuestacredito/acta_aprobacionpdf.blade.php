@@ -123,7 +123,7 @@
       <div class="col" style="width:500px;">
         <table style="width:100%;">
           <tr>
-            <td width="130px">AGENCIA/OFICINA:</td>
+            <td width="150px">AGENCIA/OFICINA:</td>
             <td class="border-td">{{ $tienda->nombreagencia }}</td>
           </tr>
           <tr>

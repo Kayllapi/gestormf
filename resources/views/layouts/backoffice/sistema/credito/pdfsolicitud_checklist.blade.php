@@ -280,12 +280,12 @@
             </tr>
             <tr>
               <td>1.11</td>
-              <td colspan=2>Verificación  del número minimo de 3 Firmas y sellos del Comité de créditos, conforme firmas electrónicas, o correo electrónico del responsable de créditos</td>
+              <td colspan=2>Verificación  del N° minimo de 3 Firmas y sellos del Comité de créditos, conforme acta de aprobación</td>
               <td></td>
             </tr>
             <tr>
               <td>1.12</td>
-              <td colspan=2>Verificar el Visado de cada documento por el ejecutivo(a) de créditos, las firmas y huellas digitales respectivas requeridas  en el expediente en general</td>
+              <td colspan=2>Verificar el Visado de cada documento por el ejecutivo(a) de créditos, las firmas y huellas digitales en expediente de crédito</td>
               <td></td>
             </tr>
             <tr>

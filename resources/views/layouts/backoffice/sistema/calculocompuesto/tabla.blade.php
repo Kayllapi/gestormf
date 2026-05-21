@@ -145,17 +145,13 @@
         <div class="row mt-3" style="background-color: #cfecc5 !important;
               border: 1px solid #326222 !important;
               color: #000;">
-          <div class="col-sm-12 col-md-2">
-            
-          </div>
-          
-          <div class="col-sm-12 col-md-10">
+          <div class="col-sm-12 col-md-12">
             <div class="row">
               <label class="col-sm-2 col-form-label" style="text-align: right;"><b>Interes Total (S/):</b></label>
               <div class="col-sm-1 col-form-label" id="interes_total" style="font-weight: normal;">
                 0.00
               </div>
-              <label class="col-sm-2 col-form-label" style="text-align: right;"><b>Cargo x Custodia/Otros (S/):</b></label>
+              <label class="col-sm-2 col-form-label" style="text-align: right;"><b>Cargo x Cust./Otros (S/):</b></label>
               <div class="col-sm-1 col-form-label" id="total_cargo" style="font-weight: normal;">
                 0.00
               </div>

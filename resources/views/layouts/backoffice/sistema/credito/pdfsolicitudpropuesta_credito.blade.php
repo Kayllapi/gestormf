@@ -141,7 +141,7 @@
   <main>
     <h4 align="center" style="font-size:13px;margin:0;padding:0;">PROPUESTA DE CRÉDITO</h4>
     <div class="row">
-      <div class="col" style="width:366px;">
+      <div class="col" style="width:365px;">
         <table style="width:100%;">
           <tr>
             <td>AGENCIA/OFICINA:</td>
@@ -224,7 +224,7 @@
           </tr>
         </table>
       </div>
-      <div class="col" style="width:361px;">
+      <div class="col" style="width:360px;">
         <?php
             $suma_saldo = array_sum(array_column(array_filter($entidad_noregulada, function($dato) {
                 return $dato->tipo_entidad === true;
@@ -382,7 +382,7 @@
           </tbody>
         </table>
       </div>
-      <div class="col" style="width:361px;">
+      <div class="col" style="width:360px;">
         <span class="badge" style="margin-bottom:5px;">AVAL:</span>
         <table class="table table-bordered" id="table-garantia-aval">
           <thead>

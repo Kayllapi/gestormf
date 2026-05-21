@@ -107,7 +107,9 @@
         
       } 
   
-
+      .d-block {
+        width: 725px !important;
+      }
      </style>
 </head>
 <body>
@@ -119,7 +121,7 @@
   </footer>
   <main>
     <div class="row">
-      <div style="font-size:14px;font-weight: bold;text-align: center;">ACTA DE APROBACIÓN</div>
+      <div style="font-size:14px;font-weight: bold;text-align: center; margin-top:-15px;">ACTA DE APROBACIÓN</div>
       <div class="col" style="width:500px;">
         <table style="width:100%;">
           <tr>
@@ -173,9 +175,9 @@
           //$propuesta_cuotas = $credito_cuantitativa_deudas->propuesta_cuotas;
 
           ?>
-      <div class="mb-1 mt-2">
-        <span class="badge d-block" style="font-weight: bold;">SOLICITUD: <span style="border-bottom: 1px solid #000; font-weight: bold; font-size: 12px;">{{ $credito->estado }}</span> - En comité de créditos con las condiciones siguientes</span>
-      </div>
+    <div class="mb-1 mt-2">
+      <span class="badge d-block" style="font-weight: bold;">SOLICITUD: <span style="border-bottom: 1px solid #000; font-weight: bold; font-size: 12px;">{{ $credito->estado }}</span> - En comité de créditos con las condiciones siguientes</span>
+    </div>
     <div class="row">
       <div class="col">
         <table style="width:100%;">
@@ -246,10 +248,9 @@
         </table>
       </div>
     </div>
-      <div class="mb-1 mt-2">
-        <span class="badge d-block" style="font-weight: bold;">GARANTÍAS:</span>
-      </div>
- 
+    <div class="mb-1 mt-2">
+      <span class="badge d-block" style="font-weight: bold;">GARANTÍAS:</span>
+    </div>
     <div class="row">
       <div class="col" style="width:363px;">
         <span class="badge" style="margin-bottom:5px; font-weight: bold;">CLIENTE:</span>
@@ -452,7 +453,7 @@
               <tbody>
         @foreach($credito_aprobacion as $key => $value)
                 <tr>
-                  <td style="height:70px;"> 
+                  <td style="height:50px;"> 
                     {{ substr($value->nombre, 0, 1) }}{{ $value->apellidopaterno }}
                     <br>
                     {{ $value->nombre_usuario }}

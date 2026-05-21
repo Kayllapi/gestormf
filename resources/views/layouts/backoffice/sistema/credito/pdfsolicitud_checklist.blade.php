@@ -137,8 +137,8 @@
       <div class="col">
         <table>
           <tr>
-            <td>NRO CRÉDITO:</td>
-            <td class="border-td" width="150px">S{{ str_pad($credito->id, 8, '0', STR_PAD_LEFT)  }}</td>
+            <td>AVAL:</td>
+            <td class="border-td" width="150px">{{ $credito->nombreavalcredito }}</td>
           </tr>
           <tr>
             <td>CLIENTE/RAZON SOCIAL:</td>
@@ -159,8 +159,8 @@
       <div class="col">
         <table>
           <tr>
-            <td>FECHA:</td>
-            <td class="border-td" width="55px">{{ date_format(date_create($credito->fecha),'Y-m-d') }}</td>
+            <td>RUC/DNI/CE</td>
+            <td class="border-td" width="55px">{{ $credito->documentoaval }}</td>
           </tr>
           <tr>
             <td>RUC/DNI/CE</td>
@@ -193,12 +193,12 @@
       <div class="col">
         <table>
           <tr>
-            <td>AVAL:</td>
-            <td class="border-td" width="74px">{{ $credito->nombreavalcredito }}</td>
+            <td>NRO CRÉDITO:</td>
+            <td class="border-td" width="55px">S{{ str_pad($credito->id, 8, '0', STR_PAD_LEFT)  }}</td>
           </tr>
           <tr>
-            <td>RUC/DNI/CE</td>
-            <td class="border-td">{{ $credito->documentoaval }}</td>
+            <td>FECHA:</td>
+            <td class="border-td">{{ date_format(date_create($credito->fecha),'Y-m-d') }}</td>
           </tr>
         </table>
       </div>

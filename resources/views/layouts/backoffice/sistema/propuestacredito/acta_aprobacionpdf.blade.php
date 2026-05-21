@@ -247,7 +247,7 @@
       </div>
     </div>
       <div class="mb-1 mt-2">
-        <span class="badge d-block" style="font-weight: bold;">GARANTIAS:</span>
+        <span class="badge d-block" style="font-weight: bold;">GARANTÍAS:</span>
       </div>
  
     <div class="row">
@@ -410,6 +410,10 @@
     {{$usuario_comentariovisita->nombrecompleto}}
     @endif</span>
     <pre style="border: 1px solid #515151;padding:3px;margin-top:0px;white-space: pre-wrap;">{{ $credito->comentariovisita }}</pre>
+
+    <div class="mb-1 mt-2">
+      <span class="badge d-block" style="font-weight: bold;">COMITÉ DE CRÉDITO:</span>
+    </div>
     <span class="badge subtitle">Funcionarios que aprueban en cómite de créditos la presente solicitud:</span>
      
     <div class="row"> 

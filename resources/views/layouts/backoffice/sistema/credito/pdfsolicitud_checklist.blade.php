@@ -410,7 +410,7 @@
             </tr>
             <tr>
               <td>4.1</td>
-              <td>Minuta de C/V(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;), Testimonio de C/V(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;), Titulo de Propiedad(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;), Copia L. SUNARP(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)Constan. de Posesión</td>
+              <td>Minuta de C/V(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;), Testimonio de C/V(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;), Titulo de Propiedad(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;), Copia L. SUNARP(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)Constan. de Posesión(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
               <td></td>
               <td></td>
             </tr>

@@ -132,7 +132,7 @@
   </footer>
   
   <main>
-    <h4 align="center" style="font-size:13px;margin:0;padding:0;">CHECK-LIST</h4>
+    <h4 align="center" style="font-size:13px;margin:0;padding:0;margin-top:-15px;">CHECK-LIST</h4>
     <div class="row">
       <div class="col">
         <table>
@@ -499,24 +499,16 @@
               <td class="border-bottom border-right">&nbsp;</td>
               <td class="border-bottom">&nbsp;</td>
             </tr>
-            <tr>
-              <td class="border-bottom border-right">&nbsp;</td>
-              <td class="border-bottom">&nbsp;</td>
-            </tr>
-            <tr>
-              <td class="border-bottom border-right">&nbsp;</td>
-              <td class="border-bottom">&nbsp;</td>
-            </tr>
           </tbody>
         </table>
       </div>
       <div class="col">
-        <br><br><br>
-        <div style="width:300px;height:1px;border-bottom:1px solid #000;"></div>
-        <p align="center">Asesor(a) de Créditos: {{ Auth::user()->codigo }} <br>Firma y Sello</p>
         <br><br>
         <div style="width:300px;height:1px;border-bottom:1px solid #000;"></div>
-        <p align="center">Ejecutivo(a) de Operaciones <br>Firma y Sello</p>
+        <p style="margin:0;" align="center">Asesor(a) de Créditos: {{ Auth::user()->codigo }} <br>Firma y Sello</p>
+        <br><br>
+        <div style="width:300px;height:1px;border-bottom:1px solid #000;"></div>
+        <p style="margin:0;" align="center">Ejecutivo(a) de Operaciones <br>Firma y Sello</p>
       </div>
     </div>
     <div class="row">

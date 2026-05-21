@@ -251,16 +251,16 @@
       </div>
  
     <div class="row">
-      <div class="col" style="width:363px;">
+      <div class="col" style="width:364px;">
         <span class="badge" style="margin-bottom:5px; font-weight: bold;">CLIENTE:</span>
         <table class="table table-bordered" id="table-garantia-cliente">
           <thead>
             <tr>
-              <th>Garantías</th>
-              <th>Descripción de garantía en Propuesta</th>
-              <th>Valor de mercado (S/.)</th>
-              <th>Valor comercial (Tasado) (S/.)</th>
-              <th>Valor de realización(tasado) (S/.)</th>
+              <th style="font-size:10px;">Garantías</th>
+              <th style="font-size:10px;">Descripción de garantía en Propuesta</th>
+              <th style="font-size:10px;">Valor de mercado (S/.)</th>
+              <th style="font-size:10px;">Valor comercial (Tasado) (S/.)</th>
+              <th style="font-size:10px;">Valor de realización (Tasado) (S/.)</th>
             </tr>
           </thead>
           <tbody>
@@ -321,12 +321,11 @@
         <table class="table table-bordered" id="table-garantia-aval">
           <thead>
             <tr>
-              <th>Garantías</th>
-
-              <th>Descripción de garantía en Propuesta</th>
-              <th>Valor de mercado (S/.)</th>
-              <th>Valor comercial (Tasado) (S/.)</th>
-              <th>Valor de realización (Tasado) (S/.)</th>
+              <th style="font-size:10px;">Garantías</th>
+              <th style="font-size:10px;">Descripción de garantía en Propuesta</th>
+              <th style="font-size:10px;">Valor de mercado (S/.)</th>
+              <th style="font-size:10px;">Valor comercial (Tasado) (S/.)</th>
+              <th style="font-size:10px;">Valor de realización (Tasado) (S/.)</th>
             </tr>
           </thead>
           <tbody>           

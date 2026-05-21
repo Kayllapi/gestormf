@@ -709,7 +709,7 @@
             </tr>
             <tr>
               <td colspan="2">Total financiado al Deudor y Deudores vinculados (Incluido propuesta) ( S/.)</td>
-              <td class="border-td" width="130px" >
+              <td class="border-td campo_moneda" width="130px" >
                 {{-- {{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->total_financiado_deudor : '0.00' }} --}}
                 {{ $total_financiado_deudor }}
                 <input type="hidden" id="total_financiado_deudor" value="{{ $total_financiado_deudor }}">

@@ -214,14 +214,14 @@
             <td>DIRECCIÓN:</td>
             <td class="border-td">{{ $usuario->direccion }}</td>
           </tr>
-          <tr>
+          {{-- <tr>
             <td>CONDICIÓN DE VIVIENDA/LOCAL:</td>
             <td class="border-td">{{ strtoupper($users_prestamo->db_idcondicionviviendalocal) }}</td>
           </tr>
           <tr>
             <td>TIPO DE INGRESO PRINCIPAL:</td>
             <td class="border-td">{{ $users_prestamo->idfuenteingreso == 1 ? 'INDEPENDIENTE' : 'DEPENDIENTE' }}</td>
-          </tr>
+          </tr> --}}
         </table>
       </div>
       <div class="col" style="width:360px;">
@@ -260,6 +260,14 @@
             </tbody>
           </table>
           <table style="width:100%;">
+            <tr>
+              <td>CONDICIÓN DE VIVIENDA/LOCAL:</td>
+              <td colspan="2" class="border-td">{{ strtoupper($users_prestamo->db_idcondicionviviendalocal) }}</td>
+            </tr>
+            <tr>
+              <td>TIPO DE INGRESO PRINCIPAL:</td>
+              <td colspan="2" class="border-td">{{ $users_prestamo->idfuenteingreso == 1 ? 'INDEPENDIENTE' : 'DEPENDIENTE' }}</td>
+            </tr>
             @if($users_prestamo->idfuenteingreso == 1)
               <tr>
                 <td>GIRO ECONÓMICO:</td>

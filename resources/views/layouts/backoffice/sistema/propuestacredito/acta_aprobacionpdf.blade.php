@@ -7,7 +7,7 @@
     <style>
       *{
         font-family:helvetica;
-        font-size:9px;
+        font-size:10px;
       }
       @page {
           margin: 0cm 0cm;
@@ -149,12 +149,12 @@
             <td class="border-td" width="100px">S{{ str_pad($credito->id, 8, '0', STR_PAD_LEFT)  }}</td>
           </tr>
           <tr>
-            <td>DNI/RUC</td>
+            <td>RUC/DNI/CE:</td>
             <td class="border-td">{{ $credito->docuementocliente }}</td>
           </tr>
           @if($users_prestamo->dni_pareja!='' or $users_prestamo->nombrecompleto_pareja!='')
           <tr>
-            <td>DNI:</td>
+            <td>DNI/CE:</td>
             <td class="border-td">{{ $users_prestamo->dni_pareja }}</td>
           </tr>
           @endif

@@ -38,7 +38,7 @@
       }
       footer {
           position: fixed; 
-          bottom: 0cm; 
+          bottom: 0.3cm; 
           left: 0.7cm; 
           right: 0.7cm;
           height: 1cm;
@@ -48,6 +48,13 @@
           font-size:12px;
       }
       footer > .page:after { content: counter(page, decimal-leading-zero); }
+
+      .page {
+          position: absolute;
+          left:50%;
+          margin-left: -5px;
+          bottom:-5px;
+      }
 
       .saltopagina{
         display:block;
@@ -148,21 +155,21 @@
         <table>
           <tr>
             <td width="100px">NRO SOLICITUD:</td>
-            <td class="border-td" width="100px">S{{ str_pad($credito->id, 8, '0', STR_PAD_LEFT)  }}</td>
+            <td class="border-td campo_moneda" width="111px">S{{ str_pad($credito->id, 8, '0', STR_PAD_LEFT)  }}</td>
           </tr>
           <tr>
             <td>RUC/DNI/CE:</td>
-            <td class="border-td">{{ $credito->docuementocliente }}</td>
+            <td class="border-td campo_moneda">{{ $credito->docuementocliente }}</td>
           </tr>
           @if($users_prestamo->dni_pareja!='' or $users_prestamo->nombrecompleto_pareja!='')
           <tr>
             <td>DNI/CE:</td>
-            <td class="border-td">{{ $users_prestamo->dni_pareja }}</td>
+            <td class="border-td campo_moneda">{{ $users_prestamo->dni_pareja }}</td>
           </tr>
           @endif
           <tr>
             <td>EJERCICIO:</td>
-            <td class="border-td">{{ $users_prestamo->db_idforma_ac_economica }}</td>
+            <td class="border-td campo_moneda">{{ $users_prestamo->db_idforma_ac_economica }}</td>
           </tr>
         </table>
       </div>
@@ -453,7 +460,7 @@
               <tbody>
         @foreach($credito_aprobacion as $key => $value)
                 <tr>
-                  <td style="height:50px;"> 
+                  <td style="height:70px;"> 
                     {{ substr($value->nombre, 0, 1) }}{{ $value->apellidopaterno }}
                     <br>
                     {{ $value->nombre_usuario }}
@@ -464,8 +471,6 @@
         @endforeach
               </tbody>
               </table>
-      
-        
   </main>
 </body>
 </html>

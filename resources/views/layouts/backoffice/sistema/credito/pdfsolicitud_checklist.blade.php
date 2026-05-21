@@ -212,9 +212,6 @@
           </thead>
           <tbody>
             <tr>
-              <td colspan=4>&nbsp;</td>
-            </tr>
-            <tr>
               <td><b>I.</b></td>
               <td colspan=3><b>INSTRUMENTOS DE EVALUACIÓN</b></td>
             </tr>
@@ -370,20 +367,18 @@
               <td>2.14</td>
               <td colspan=2>Verificar que los datos de los DNIs de los Intervenientes esten registrados correctamente en El SISTEMA</td>
               <td></td>
-            </tr>
             <tr>
               <td><b>III.</b></td>
               <td colspan=3><b>DOCUMENTOS DE INGRESO Y EGRESO</b></td>
             </tr>
             <tr>
               <td>3.1</td>
-              <td>Sustento de Remuneración del cliente (&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;) Sustento de Remuneración de Pereja (&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
+              <td>Sustento de Remuneración del cliente (&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;) Sustento de Remuneración de Pareja (&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
               <td></td>
               <td></td>
-            </tr>
             <tr>
               <td>3.2</td>
-              <td>Sustento de Ingresos por Negocios del cliente (&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;) Sustento de ingresos por negocios de Pereja (&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
+              <td>Sustento de Ingresos por Negocios del cliente (&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;) Sustento de ingresos por negocios de Pareja (&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
               <td></td>
               <td></td>
             </tr>

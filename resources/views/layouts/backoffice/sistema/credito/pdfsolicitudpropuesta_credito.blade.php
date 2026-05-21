@@ -191,37 +191,55 @@
       <div class="col" style="width:365px;">
         <table style="width:100%;">
           <tr>
-            <td>CLIENTE/RAZON SOCIAL:</td>
+            <td colspan="2">CLIENTE/RAZON SOCIAL:</td>
             <td class="border-td">{{ $credito->nombreclientecredito }}</td>
           </tr>
           <tr>
-            <td>RUC/DNI/CE:</td>
+            <td colspan="2">RUC/DNI/CE:</td>
             <td class="border-td">{{ $credito->docuementocliente }}</td>
           </tr>
           @if($users_prestamo->dni_pareja!='' or $users_prestamo->nombrecompleto_pareja!='')
           <tr>
-            <td>PAREJA:</td>
+            <td colspan="2">PAREJA:</td>
             <td class="border-td">{{ $users_prestamo->nombrecompleto_pareja  }}</td>
           </tr>
           @endif
           @if($users_prestamo->dni_pareja!='' or $users_prestamo->nombrecompleto_pareja!='')
           <tr>
-            <td>DNI/CE:</td>
+            <td colspan="2">DNI/CE:</td>
             <td class="border-td">{{ $users_prestamo->dni_pareja }}</td>
           </tr>
           @endif
-          <tr>
-            <td>DIRECCIÓN:</td>
-            <td class="border-td">{{ $usuario->direccion }}</td>
-          </tr>
-          {{-- <tr>
-            <td>CONDICIÓN DE VIVIENDA/LOCAL:</td>
-            <td class="border-td">{{ strtoupper($users_prestamo->db_idcondicionviviendalocal) }}</td>
-          </tr>
-          <tr>
-            <td>TIPO DE INGRESO PRINCIPAL:</td>
-            <td class="border-td">{{ $users_prestamo->idfuenteingreso == 1 ? 'INDEPENDIENTE' : 'DEPENDIENTE' }}</td>
-          </tr> --}}
+          @if($users_prestamo->idfuenteingreso == 1)
+            <tr>
+              <td>GIRO ECONÓMICO:</td>
+              <td class="border-td">
+                @if($credito->idevaluacion == 1)
+                  {{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->nombretipo_giro_economico : '' }}
+                @else
+                  {{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->nombretipo_giro_economico : '' }}
+                @endif
+              </td>
+              <td class="border-td">
+                @if($credito->idevaluacion == 1)
+                  {{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->nombregiro_economico_evaluacion : '' }}
+                @else
+                  {{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->nombregiro_economico_evaluacion : '' }}
+                @endif
+              </td>
+            </tr>
+          @endif
+          @if($credito->idevaluacion == 2) {{-- Completo --}}
+            <tr>
+              <td>GIRO ECONÓMICO ADICIONAL:</td>
+              <td class="border-td">
+                {{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->tipogiroeconomico_nombre : '' }}
+              </td>
+              <td class="border-td">
+                {{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->nombreingresoadicional : '' }}
+              </td>
+            </tr>
+          @endif
         </table>
       </div>
       <div class="col" style="width:360px;">
@@ -261,43 +279,18 @@
           </table>
           <table style="width:100%;">
             <tr>
-              <td>CONDICIÓN DE VIVIENDA/LOCAL:</td>
-              <td colspan="2" class="border-td">{{ strtoupper($users_prestamo->db_idcondicionviviendalocal) }}</td>
+              <td>DIRECCIÓN:</td>
+              <td class="border-td">{{ $usuario->direccion }}</td>
+            </tr>
+            <tr>
+              <td>CONDICIÓN DE VIV./LOCAL:</td>
+              <td class="border-td">{{ strtoupper($users_prestamo->db_idcondicionviviendalocal) }}</td>
             </tr>
             <tr>
               <td>TIPO DE INGRESO PRINCIPAL:</td>
-              <td colspan="2" class="border-td">{{ $users_prestamo->idfuenteingreso == 1 ? 'INDEPENDIENTE' : 'DEPENDIENTE' }}</td>
+              <td class="border-td">{{ $users_prestamo->idfuenteingreso == 1 ? 'INDEPENDIENTE' : 'DEPENDIENTE' }}</td>
             </tr>
-            @if($users_prestamo->idfuenteingreso == 1)
-              <tr>
-                <td>GIRO ECONÓMICO:</td>
-                <td class="border-td">
-                  @if($credito->idevaluacion == 1)
-                    {{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->nombretipo_giro_economico : '' }}
-                  @else
-                    {{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->nombretipo_giro_economico : '' }}
-                  @endif
-                </td>
-                <td class="border-td">
-                  @if($credito->idevaluacion == 1)
-                    {{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->nombregiro_economico_evaluacion : '' }}
-                  @else
-                    {{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->nombregiro_economico_evaluacion : '' }}
-                  @endif
-                </td>
-              </tr>
-            @endif
-            @if($credito->idevaluacion == 2) {{-- Completo --}}
-              <tr>
-                <td>GIRO ECONÓMICO ADICIONAL:</td>
-                <td class="border-td">
-                  {{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->tipogiroeconomico_nombre : '' }}
-                </td>
-                <td class="border-td">
-                  {{ $credito_cuantitativa_ingreso_adicional ? $credito_cuantitativa_ingreso_adicional->nombreingresoadicional : '' }}
-                </td>
-              </tr>
-            @endif
+            
           </table>
       </div>
     </div>

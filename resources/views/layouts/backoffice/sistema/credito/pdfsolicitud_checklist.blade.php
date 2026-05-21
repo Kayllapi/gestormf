@@ -138,7 +138,7 @@
         <table>
           <tr>
             <td>CLIENTE/RAZON SOCIAL:</td>
-            <td class="border-td" width="140px">{{ $credito->nombreclientecredito }}</td>
+            <td class="border-td" width="151px">{{ $credito->nombreclientecredito }}</td>
           </tr>
           @if($users_prestamo->dni_pareja!='' or $users_prestamo->nombrecompleto_pareja!='')
           <tr>
@@ -156,7 +156,7 @@
         <table>
           <tr>
             <td>RUC/DNI/CE</td>
-            <td class="border-td" width="60px">{{ $credito->docuementocliente }}</td>
+            <td class="border-td" width="75px">{{ $credito->docuementocliente }}</td>
           </tr>
           @if($users_prestamo->dni_pareja!='' or $users_prestamo->nombrecompleto_pareja!='')
           <tr>
@@ -173,8 +173,12 @@
       <div class="col">
         <table>
           <tr>
+            <td>NRO CRÉDITO:</td>
+            <td class="border-td" width="75px">S{{ str_pad($credito->id, 8, '0', STR_PAD_LEFT)  }}</td>
+          </tr>
+          <tr>
             <td>AGENCIA/OFICINA:</td>
-            <td class="border-td" width="60px">{{ $tienda->nombreagencia }}</td>
+            <td class="border-td">{{ $tienda->nombreagencia }}</td>
           </tr>
           <tr>
             <td>ASESOR (A):</td>
@@ -185,12 +189,8 @@
       <div class="col">
         <table>
           <tr>
-            <td>NRO CRÉDITO:</td>
-            <td class="border-td" width="55px">S{{ str_pad($credito->id, 8, '0', STR_PAD_LEFT)  }}</td>
-          </tr>
-          <tr>
             <td>FECHA:</td>
-            <td class="border-td">{{ date_format(date_create($credito->fecha),'Y-m-d') }}</td>
+            <td class="border-td" width="55px">{{ date_format(date_create($credito->fecha),'Y-m-d') }}</td>
           </tr>
         </table>
       </div>

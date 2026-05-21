@@ -7,7 +7,7 @@
     <style>
       *{
         font-family:helvetica;
-        font-size:11px;
+        font-size:10.5px;
       }
       @page {
           margin: 0cm 0cm;

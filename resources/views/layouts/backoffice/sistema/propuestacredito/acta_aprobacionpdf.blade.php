@@ -251,7 +251,7 @@
       </div>
  
     <div class="row">
-      <div class="col" style="width:365px;">
+      <div class="col" style="width:363px;">
         <span class="badge" style="margin-bottom:5px; font-weight: bold;">CLIENTE:</span>
         <table class="table table-bordered" id="table-garantia-cliente">
           <thead>
@@ -281,15 +281,14 @@
           </tbody>
         </table>
           <?php
-          
-        $garantias = DB::table('credito_garantia')
-          ->where('credito_garantia.tipo', 'CLIENTE')
-          ->where('credito_garantia.idcredito', $credito->id)
-          ->where('credito_garantia.idtipo_garantia_noprendaria', 0)
-          ->select(
-            'credito_garantia.*',
-          )
-          ->get();
+            $garantias = DB::table('credito_garantia')
+              ->where('credito_garantia.tipo', 'CLIENTE')
+              ->where('credito_garantia.idcredito', $credito->id)
+              ->where('credito_garantia.idtipo_garantia_noprendaria', 0)
+              ->select(
+                'credito_garantia.*',
+              )
+              ->get();
           ?>
         
             @if(count($garantias)>0)

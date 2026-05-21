@@ -139,7 +139,7 @@
     $lista_fenomenos = $credito_propuesta ? ( $credito_propuesta->fenomenos == "" ? [] : json_decode($credito_propuesta->fenomenos) ) : [];
   @endphp
   <main>
-    <h4 align="center" style="font-size:13px;margin:0;padding:0;">PROPUESTA DE CRÉDITO</h4>
+    <h4 align="center" style="font-size:13px;margin:0;padding:0;margin-top:-15px;">PROPUESTA DE CRÉDITO</h4>
     <div class="row">
       <div class="col" style="width:365px;">
         <table style="width:100%;">

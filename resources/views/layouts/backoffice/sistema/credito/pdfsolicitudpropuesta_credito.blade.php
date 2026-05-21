@@ -421,7 +421,6 @@
             @endforelse
           </tbody>
         </table>
-          <br>
           <table class="table table-bordered" style="width:100%;">
             <tbody>           
                 <tr>

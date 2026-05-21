@@ -137,12 +137,8 @@
       <div class="col">
         <table>
           <tr>
-            <td>AVAL:</td>
-            <td class="border-td" width="150px">{{ $credito->nombreavalcredito }}</td>
-          </tr>
-          <tr>
             <td>CLIENTE/RAZON SOCIAL:</td>
-            <td class="border-td">{{ $credito->nombreclientecredito }}</td>
+            <td class="border-td" width="140px">{{ $credito->nombreclientecredito }}</td>
           </tr>
           @if($users_prestamo->dni_pareja!='' or $users_prestamo->nombrecompleto_pareja!='')
           <tr>
@@ -150,21 +146,17 @@
             <td class="border-td">{{ $users_prestamo->nombrecompleto_pareja }}</td>
           </tr>
           @endif
-          {{-- <tr>
+          <tr>
             <td>AVAL:</td>
             <td class="border-td">{{ $credito->nombreavalcredito }}</td>
-          </tr> --}}
+          </tr>
         </table>
       </div>
       <div class="col">
         <table>
           <tr>
             <td>RUC/DNI/CE</td>
-            <td class="border-td" width="55px">{{ $credito->documentoaval }}</td>
-          </tr>
-          <tr>
-            <td>RUC/DNI/CE</td>
-            <td class="border-td">{{ $credito->docuementocliente }}</td>
+            <td class="border-td" width="60px">{{ $credito->docuementocliente }}</td>
           </tr>
           @if($users_prestamo->dni_pareja!='' or $users_prestamo->nombrecompleto_pareja!='')
           <tr>
@@ -172,17 +164,17 @@
             <td class="border-td">{{ $users_prestamo->dni_pareja }}</td>
           </tr>
           @endif
-          {{-- <tr>
+          <tr>
             <td>RUC/DNI/CE</td>
             <td class="border-td">{{ $credito->documentoaval }}</td>
-          </tr> --}}
+          </tr>
         </table>
       </div>
       <div class="col">
         <table>
           <tr>
             <td>AGENCIA/OFICINA:</td>
-            <td class="border-td" width="55px">{{ $tienda->nombreagencia }}</td>
+            <td class="border-td" width="60px">{{ $tienda->nombreagencia }}</td>
           </tr>
           <tr>
             <td>ASESOR (A):</td>

@@ -414,7 +414,7 @@
     <div class="mb-1 mt-2">
       <span class="badge d-block" style="font-weight: bold;">COMITÉ DE CRÉDITO:</span>
     </div>
-    <span class="badge subtitle">Funcionarios que aprueban en cómite de créditos la presente solicitud:</span>
+    <span class="badge subtitle">Funcionarios que aprueban en comité de créditos la presente solicitud:</span>
      
     <div class="row"> 
         @foreach($credito_aprobacion as $key => $value)

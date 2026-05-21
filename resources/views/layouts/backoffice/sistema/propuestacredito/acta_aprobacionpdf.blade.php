@@ -460,7 +460,7 @@
               <tbody>
         @foreach($credito_aprobacion as $key => $value)
                 <tr>
-                  <td style="height:70px;"> 
+                  <td style="height:50px;"> 
                     {{ substr($value->nombre, 0, 1) }}{{ $value->apellidopaterno }}
                     <br>
                     {{ $value->nombre_usuario }}

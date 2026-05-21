@@ -7,7 +7,7 @@
     <style>
       *{
         font-family:helvetica;
-        font-size:9px;
+        font-size:10px;
       }
       @page {
           margin: 0cm 0cm;
@@ -138,7 +138,7 @@
         <table>
           <tr>
             <td>NRO CRÉDITO:</td>
-            <td class="border-td" width="200px">S{{ str_pad($credito->id, 8, '0', STR_PAD_LEFT)  }}</td>
+            <td class="border-td" width="190px">S{{ str_pad($credito->id, 8, '0', STR_PAD_LEFT)  }}</td>
           </tr>
           
           <tr>
@@ -152,8 +152,8 @@
           </tr>
           @endif
           <tr>
-            <td>AGENCIA/OFICINA:</td>
-            <td class="border-td">{{ $tienda->nombreagencia }}</td>
+            <td>AVAL:</td>
+            <td class="border-td">{{ $credito->nombreavalcredito }}</td>
           </tr>
         </table>
       </div>
@@ -174,20 +174,20 @@
           </tr>
           @endif
           <tr>
-            <td>ASESOR (A):</td>
-            <td class="border-td">{{ Auth::user()->nombre }}</td>
+            <td>RUC/DNI/CE</td>
+            <td class="border-td">{{ $credito->documentoaval }}</td>
           </tr>
         </table>
       </div>
       <div class="col">
         <table>
           <tr>
-            <td>AVAL:</td>
-            <td class="border-td" width="130px">{{ $credito->nombreavalcredito }}</td>
+            <td>AGENCIA/OFICINA:</td>
+            <td class="border-td" width="90px">{{ $tienda->nombreagencia }}</td>
           </tr>
           <tr>
-            <td>RUC/DNI/CE</td>
-            <td class="border-td">{{ $credito->documentoaval }}</td>
+            <td>ASESOR (A):</td>
+            <td class="border-td">{{ Auth::user()->nombre }}</td>
           </tr>
         </table>
       </div>

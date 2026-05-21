@@ -251,7 +251,7 @@
       </div>
  
     <div class="row">
-      <div class="col" style="width:364px;">
+      <div class="col" style="width:363px;">
         <span class="badge" style="margin-bottom:5px; font-weight: bold;">CLIENTE:</span>
         <table class="table table-bordered" id="table-garantia-cliente">
           <thead>
@@ -266,15 +266,15 @@
           <tbody>
             @forelse($credito_garantias_cliente as $key => $value)
               <tr sumar_garantia>
-                <td>{{ $value->garantias_noprendarias_tipo_garantia_noprendaria }}</td>
-                <td>{{ $value->descripcion }}</td>
-                <td class="campo_numero campo_moneda">{{ $value->valor_mercado }}</td>
-                <td class="campo_numero campo_moneda">{{ $value->valor_comercial }}</td>
-                <td class="campo_numero campo_moneda">{{ $value->valor_realizacion }}</td>
+                <td style="font-size:10px;">{{ $value->garantias_noprendarias_tipo_garantia_noprendaria }}</td>
+                <td style="font-size:10px;">{{ $value->descripcion }}</td>
+                <td style="font-size:10px;" class="campo_numero campo_moneda">{{ $value->valor_mercado }}</td>
+                <td style="font-size:10px;" class="campo_numero campo_moneda">{{ $value->valor_comercial }}</td>
+                <td style="font-size:10px;" class="campo_numero campo_moneda">{{ $value->valor_realizacion }}</td>
               </tr>
             @empty
             <tr sumar_garantia>
-              <td colspan="5">Sin Garantia</td>
+              <td style="font-size:10px;" colspan="5">Sin Garantia</td>
             </tr>
             @endforelse
 
@@ -312,10 +312,10 @@
               </table>
             @endif
       </div>
-      <div class="col" style="width:361px;">
+      <div class="col" style="width:362px;">
         
         <span class="badge" style="margin-bottom:5px;font-weight: bold;">AVAL: <span style="font-size:10px;">{{ $credito->nombreavalcredito }}</span> 
-        <div style="font-size:10px;text-align: right;margin-top:-12px;font-weight: bold;"><span>DNI: <span style="font-size:10px;">{{ $credito->documentoaval }}</span> </span></div>
+        <div style="font-size:10px;text-align: right;margin-top:-13.5px;font-weight: bold;"><span>DNI: <span style="font-size:10px;">{{ $credito->documentoaval }}</span> </span></div>
         </span>
   
         <table class="table table-bordered" id="table-garantia-aval">
@@ -331,15 +331,15 @@
           <tbody>           
             @forelse($credito_garantias_aval as $key => $value)
               <tr >
-                <td>{{ $value->garantias_noprendarias_tipo_garantia_noprendaria }}</td>
-                <td>{{ $value->descripcion }}</td>
-                <td class="campo_numero campo_moneda">{{ $value->valor_mercado }}</td>
-                <td class="campo_numero campo_moneda">{{ $value->valor_comercial }}</td>
-                <td class="campo_numero campo_moneda">{{ $value->valor_realizacion }}</td>
+                <td style="font-size:10px;">{{ $value->garantias_noprendarias_tipo_garantia_noprendaria }}</td>
+                <td style="font-size:10px;">{{ $value->descripcion }}</td>
+                <td style="font-size:10px;" class="campo_numero campo_moneda">{{ $value->valor_mercado }}</td>
+                <td style="font-size:10px;" class="campo_numero campo_moneda">{{ $value->valor_comercial }}</td>
+                <td style="font-size:10px;" class="campo_numero campo_moneda">{{ $value->valor_realizacion }}</td>
               </tr>
             @empty
             <tr sumar_garantia>
-              <td colspan="5">Sin Garantia</td>
+              <td style="font-size:10px;" colspan="5">Sin Garantia</td>
             </tr>
             @endforelse
           </tbody>

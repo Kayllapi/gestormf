@@ -479,8 +479,8 @@
         </table>
         <br>
         
-    <span class="badge subtitle">3.3 MOVIMIENTO COMERCIAL</span>
-      <div class="row">
+    <span class="badge subtitle" style="margin-top: -12px;">3.3 MOVIMIENTO COMERCIAL</span>
+      <div class="row" style="margin-top: -12px;">
         <div class="col">
           <table class="table">
             <thead>
@@ -511,7 +511,7 @@
             </thead>
             <tbody>
               <tr>
-                <td width="90px">Al crédito para pago a {{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->dias_compras_mensual : '0.00' }} días total al mes</td>
+                <td width="95px">Al crédito para pago a {{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->dias_compras_mensual : '0.00' }} días total al mes</td>
                 <td class="campo_moneda" width="43px">{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->credito_cobrando_compra_mensual : '0.00' }}</td>
                 <td class="campo_moneda" width="43px">{{ $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->credito_porcentaje_compra_mensual : '0.00' }} %</td>
               </tr>

@@ -655,14 +655,14 @@
                 <td class="campo_moneda">{{ encontrar_valor('analisis_horizontal_transporte', $ganancia_perdida) }}</td>
               </tr>
               <tr>
-                <td>Cuota de préstamo E. Reguladas</td>
+                <td>Cuota de Prést. E. Regu.</td>
                 <td class="campo_moneda">{{ number_format(encontrar_valor('comercial_er_couta', $resumen_deuda_anterior) + encontrar_valor('mes_er_couta', $resumen_deuda_anterior), 2) }}</td>
                 <td class="campo_moneda">{{ number_format(encontrar_valor('comercial_er_couta', $resumen_deuda) + encontrar_valor('mes_er_couta', $resumen_deuda), 2) }}</td>
                 <td class="campo_moneda">{{ encontrar_valor('analisis_vertical_cuota_regulada', $ganancia_perdida) }}</td>
                 <td class="campo_moneda">{{ encontrar_valor('analisis_horizontal_cuota_regulada', $ganancia_perdida) }}</td>
               </tr>
               <tr>
-                <td>Cuota de préstamo E. No Reguladas</td>
+                <td>Cuota de Prést. E. No Regu.</td>
                 <td class="campo_moneda">{{ number_format(encontrar_valor('comercial_enr_couta', $resumen_deuda_anterior) + encontrar_valor('mes_enr_couta', $resumen_deuda_anterior), 2) }}</td>
                 <td class="campo_moneda">{{ number_format(encontrar_valor('comercial_enr_couta', $resumen_deuda) + encontrar_valor('mes_enr_couta', $resumen_deuda), 2) }}</td>
                 <td class="campo_moneda">{{ encontrar_valor('analisis_vertical_cuota_noregulada', $ganancia_perdida) }}</td>

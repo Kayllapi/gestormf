@@ -7,7 +7,7 @@
     <style>
       *{
         font-family:helvetica;
-        font-size:9px;
+        font-size:10px;
       }
       @page {
           margin: 0cm 0cm;
@@ -139,7 +139,7 @@
       <br>
     <span class="badge">I. INFORMACIÓN DEL CLIENTE</span>
     <div class="row">
-      <div class="col" style="width:360px;">
+      <div class="col" style="width:340px;">
         <table style="width:100%;">
           <tr>
             <td>AGENCIA/OFICINA:</td>
@@ -230,7 +230,7 @@
             <thead>
               <tr>
                 <th style="color: #000 !important;" width="100px">Deudores (Cliente)</th>
-                <th style="color: #000 !important;" width="100px">Como</th>
+                <th style="color: #000 !important;" width="90px">Como</th>
                 <th style="color: #000 !important;text-align: center;" width="50px">N°</th>
               </tr>
             </thead>
@@ -298,7 +298,7 @@
           <thead>
             <tr>
               <th style="color: #000 !important;" width="100px">Codeudores (Aval)</th>
-              <th style="color: #000 !important;" width="100px">Como</th>
+              <th style="color: #000 !important;" width="90px">Como</th>
               <th style="color: #000 !important;text-align: center;" width="50px">N°</th>
             </tr>
           </thead>
@@ -744,7 +744,7 @@
         <table>
           <thead>
             <tr>
-              <th colspan=2 style="background-color: #efefef !important;color: #000 !important;border:solid 1px #000000;">INDICADOR DE CAPACIDAD DE PAGO (1)</th>
+              <th colspan=2 style="background-color: #efefef !important;color: #000 !important;border:solid 1px #000000;">INDICADOR DE CAPACIDAD DE <br> PAGO (1)</th>
             </tr>
           </thead>
           <tbody>
@@ -753,7 +753,7 @@
               <td class="border-td campo_moneda" width="40px">{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->indicador_solvencia_excedente : '0.00' }}</td>
             </tr>
             <tr>
-              <td>Relación Cuota/ excedente (%)</td>
+              <td>Relación Cuota/ <br>excedente (%)</td>
               <td class="border-td campo_moneda" width="40px">{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->indicador_solvencia_cuotas : '0.00' }}</td>
             </tr>
             <tr>

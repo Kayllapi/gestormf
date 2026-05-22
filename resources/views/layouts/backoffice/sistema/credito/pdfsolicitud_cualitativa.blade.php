@@ -420,7 +420,7 @@
         </table>
       </div>
     </div>
-    <span class="badge subtitle">2.3 REFERENCIAS</span>
+    <span class="badge subtitle" style="margin-top:-10px;">2.3 REFERENCIAS</span>
     <div class="row">
       <div class="col" style="width:100%;">
         @php
@@ -545,7 +545,7 @@
       <textarea style="border:solid 1px #000000;"  id="fortalezas_negocio" class="form-control">{{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->fortalezas_negocio : '' }}</textarea>
     </div>
     <div class="row" >
-      <div class="col" style="margin-left:215px;margin-top:40px;">
+      <div class="col" style="margin-left:215px;margin-top:35px;">
         <div style="width:300px;height:1px;border-bottom:1px solid #000;"></div>
         <p align="center">Asesor(a) de Créditos: {{ Auth::user()->codigo }} <br>Firma y Sello</p>		
       </div>

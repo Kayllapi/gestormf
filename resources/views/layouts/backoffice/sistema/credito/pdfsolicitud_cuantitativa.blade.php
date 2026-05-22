@@ -7,7 +7,7 @@
     <style>
       *{
         font-family:helvetica;
-        font-size:9px;
+        font-size:10px;
       }
       @page {
           margin: 0cm 0cm;
@@ -150,7 +150,7 @@
       <h4 align="center" style="font-size:13px;margin:0;padding:0;">EVALUACIÓN DE CRÉDITO - INGRESO INDEPENDIENTE <br> CRÉDITO: MyPE y CONSUMO N. R.</h4>
       
     <div class="row">
-      <div class="col" style="width:360px;">
+      <div class="col" style="width:349px;">
         <table style="width:100%;">
           <tr>
             <td>AGENCIA/OFICINA:</td>
@@ -536,7 +536,7 @@
                 <th></th>
               </tr>
               <tr>
-                <th width="120px">ESTADO DE GANANCIAS Y PERDIDAS</th>
+                <th width="100px">ESTADO DE GANANCIAS Y PERDIDAS</th>
                 <th width="50px">Soles (S/. )</th>
                 <th width="50px">Soles (S/. )</th>
                 <th width="50px">Análisis Vertical(%)</th>

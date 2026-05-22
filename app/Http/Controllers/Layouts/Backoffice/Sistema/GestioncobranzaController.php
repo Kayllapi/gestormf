@@ -290,15 +290,15 @@ class GestioncobranzaController extends Controller
                   </td>
                   <td style='".$value['color_estado']."white-space: nowrap;'>".($key+1)."</td>
                   <td style='".$value['color_estado']."white-space: nowrap;'>{$value['gp']}</td>
-                  <td style='".$value['color_estado']."white-space: nowrap;'>C{$value['cuenta']}</td>
-                  <td style='".$value['color_estado']."white-space: nowrap;'>{$value['identificacioncliente']}</td>
+                  <td class='td-cuenta' style='".$value['color_estado']."white-space: nowrap;'>C{$value['cuenta']}</td>
+                  <td class='td-identificacion' style='".$value['color_estado']."white-space: nowrap;'>{$value['identificacioncliente']}</td>
                   <td class='td-nombre' style='".$value['color_estado']."white-space: nowrap;'>{$value['nombrecliente']}</td>
                   <td style='".$value['color_estado']."white-space: nowrap;'>{$value['fecha_desembolso']}</td>
                   <td style='".$value['color_estado']."white-space: nowrap;text-align: right;'>{$value['monto_solicitado']}</td>
                   <td style='".$value['color_estado']."white-space: nowrap;'>{$value['frecuencianombre']}</td>
                   <td style='".$value['color_estado']."white-space: nowrap;text-align: right;'>{$value['cuota_vencida']}</td>
                   <td style='".$value['color_estado']."white-space: nowrap;text-align: right;'>".$value['ultimo_atraso']."</td>
-                  <td style='".$value['color_estado']."white-space: nowrap;'>".$value['cp']."</td>
+                  <td class='td-formac' style='".$value['color_estado']."white-space: nowrap;'>".$value['cp']."</td>
                   <td style='".$value['color_estado']."white-space: nowrap;text-align: right;'>".$value['cuotas']."</td>
                   <td style='".$value['color_estado']."white-space: nowrap;'>{$value['telefonocliente']}</td>
                   <td style='".$value['color_estado']."white-space: nowrap;'>".$value['fechacompromiso']."</td>
@@ -320,23 +320,45 @@ class GestioncobranzaController extends Controller
                 <tr class="fila-total" style="position: sticky;bottom: 0;">
                     <td style="background-color: #b7b6b7 !important;text-align:right;color:#000 !important;font-weight: bold;"></td>
                     <td style="background-color: #b7b6b7 !important;text-align:right;color:#000 !important;font-weight: bold;"></td>
-                    <td style="background-color: #b7b6b7 !important;text-align:right;color:#000 !important;font-weight: bold;"></td>
-                    <td style="background-color: #b7b6b7 !important;text-align:right;color:#000 !important;font-weight: bold;"></td>
-                    <td style="background-color: #b7b6b7 !important;text-align:right;color:#000 !important;font-weight: bold;"></td>
                     <td style="background-color: #b7b6b7 !important;text-align:right;color:#000 !important;font-weight: bold;">
-                        <div class="mb-2">
-                            <input 
-                                type="text"
-                                id="buscar_cliente"
-                                class="form-control"
-                                placeholder="Buscar..."
-                            >
-                        </div>
+                    </td>
+                    <td style="background-color: #b7b6b7 !important;text-align:right;color:#000 !important;font-weight: bold;">
+                        <input 
+                            type="text"
+                            id="buscar_cuenta"
+                            class="form-control"
+                            placeholder="Buscar..."
+                        >
+                    </td>
+                    <td style="background-color: #b7b6b7 !important;text-align:right;color:#000 !important;font-weight: bold;">
+                        <input 
+                            type="text"
+                            id="buscar_identificacion"
+                            class="form-control"
+                            placeholder="Buscar..."
+                        >
+                    </td>
+                    <td style="background-color: #b7b6b7 !important;text-align:right;color:#000 !important;font-weight: bold;">
+                        <input 
+                            type="text"
+                            id="buscar_nombre"
+                            class="form-control"
+                            placeholder="Buscar..."
+                        >
                     </td>
                   <td style="background-color: #b7b6b7 !important;text-align:right;color:#000 !important;font-weight: bold;">TOTAL S/.</td>
                   <td style="background-color: #b7b6b7 !important;text-align:right;color:#000 !important;font-weight: bold;">'.number_format($total_monto_solicitado, 2, '.', '').'</td>
                   <td style="background-color: #b7b6b7 !important;"></td>
                   <td style="background-color: #b7b6b7 !important;text-align:right;color:#000 !important;font-weight: bold;">'.number_format($total_saldo_pendientepago, 2, '.', '').'</td>
+                    <td style="background-color: #b7b6b7 !important;text-align:right;color:#000 !important;font-weight: bold;"></td>
+                    <td style="background-color: #b7b6b7 !important;text-align:right;color:#000 !important;font-weight: bold;">
+                        <input 
+                            type="text"
+                            id="buscar_formac"
+                            class="form-control"
+                            placeholder="Buscar..."
+                        >
+                    </td>
                   <td colspan="14" style="background-color: #b7b6b7 !important;"></td>
                 </tr>';
           return array(

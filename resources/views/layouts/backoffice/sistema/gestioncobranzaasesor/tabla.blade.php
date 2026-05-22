@@ -140,10 +140,6 @@
           </div>
         </div>
       </div>
-                              <div style="text-align: right;">
-                                <button type="button" class="btn btn-info" onclick="exportar_pdf()" style="font-weight: bold;">
-                                  <i class="fa-solid fa-file-pdf" style="color:#000 !important;font-weight: bold;"></i> REPORTE PDF</button>
-                              </div>
 </div>
 <style>
 table .dropdown {
@@ -259,5 +255,83 @@ table .dropdown {
         });
 
     });
+
+    $(document).on(
+        'keyup',
+        '#buscar_cuenta, #buscar_identificacion, #buscar_nombre, #buscar_formac',
+        function () {
+
+            let cuenta = $('#buscar_cuenta').val().toLowerCase();
+            let identificacion = $('#buscar_identificacion').val().toLowerCase();
+            let nombre = $('#buscar_nombre').val().toLowerCase();
+            let formac = $('#buscar_formac').val().toLowerCase();
+
+            $('#table-lista-credito tbody tr').each(function () {
+
+                if ($(this).hasClass('fila-total')) {
+                    return;
+                }
+
+                let tdCuenta = $(this).find('.td-cuenta');
+                let tdIdentificacion = $(this).find('.td-identificacion');
+                let tdNombre = $(this).find('.td-nombre');
+                let tdFormac = $(this).find('.td-formac');
+
+                let textoCuenta = tdCuenta.text();
+                let textoIdentificacion = tdIdentificacion.text();
+                let textoNombre = tdNombre.text();
+                let textoFormac = tdFormac.text();
+
+                // limpiar highlights
+                tdCuenta.html(textoCuenta);
+                tdIdentificacion.html(textoIdentificacion);
+                tdNombre.html(textoNombre);
+                tdFormac.html(textoFormac);
+
+                let matchCuenta = textoCuenta.toLowerCase().includes(cuenta);
+                let matchIdentificacion = textoIdentificacion.toLowerCase().includes(identificacion);
+                let matchNombre = textoNombre.toLowerCase().includes(nombre);
+                let matchFormac = textoFormac.toLowerCase().includes(formac);
+
+                let mostrar =
+                    matchCuenta &&
+                    matchIdentificacion &&
+                    matchNombre &&
+                    matchFormac;
+
+                $(this).toggle(mostrar);
+
+                // highlight
+                if (mostrar) {
+
+                    highlight(tdCuenta, cuenta);
+                    highlight(tdIdentificacion, identificacion);
+                    highlight(tdNombre, nombre);
+                    highlight(tdFormac, formac);
+
+                }
+
+            });
+
+        }
+    );
+
+    function highlight(td, textoBuscar) {
+
+        if (textoBuscar == '') {
+            return;
+        }
+
+        let original = td.text();
+
+        let regex = new RegExp(`(${textoBuscar})`, 'gi');
+
+        let nuevo = original.replace(
+            regex,
+            '<mark>$1</mark>'
+        );
+
+        td.html(nuevo);
+    }
 </script>  
 

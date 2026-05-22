@@ -328,6 +328,325 @@ class GestioncobranzaController extends Controller
             'html' => $html
           );
           
+        } elseif($id == 'showtable_data'){
+          $where = [];
+          if($request->idagencia!=''){
+              $where[] = ['credito.idtienda',$request->idagencia];
+          }
+          if($request->idasesor!=0){
+              $where[] = ['credito.idasesor',$request->idasesor];
+          }
+          
+          $creditos = DB::table('credito')
+              ->join('forma_pago_credito','forma_pago_credito.id','credito.idforma_pago_credito')
+              ->join('users as cliente','cliente.id','credito.idcliente')
+              ->join('ubigeo','ubigeo.id','cliente.idubigeo')
+              ->leftjoin('users as cajero','cajero.id','credito.idcajero')
+              ->leftjoin('users as asesor','asesor.id','credito.idasesor')
+              ->leftjoin('users as administrador','administrador.id','credito.idadministrador')
+              ->leftjoin('users as aval','aval.id','credito.idaval')
+              ->join('modalidad_credito','modalidad_credito.id','credito.idmodalidad_credito')
+              ->join('tipo_operacion_credito','tipo_operacion_credito.id','credito.idtipo_operacion_credito')
+              ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
+              ->where('credito.estado','DESEMBOLSADO')
+              ->where('credito.idestadocredito',1)
+              ->where($where)
+              ->select(
+                  'credito.*',
+                  'cliente.identificacion as identificacioncliente',
+                  'cliente.nombrecompleto as nombrecliente',
+                  'cliente.numerotelefono as telefonocliente',
+                  'cliente.direccion as direccioncliente',
+                  'aval.identificacion as identificacionaval',
+                  'aval.nombrecompleto as nombreaval',
+                  'credito_prendatario.nombre as nombreproductocredito' ,
+                  'credito_prendatario.modalidad as modalidadproductocredito',
+                  'modalidad_credito.nombre as nombremodalidadcredito' ,
+                  'forma_pago_credito.nombre as frecuencianombre' ,
+                  'cajero.usuario as codigocajero',
+                  'asesor.codigo as codigoasesor',
+                  'administrador.nombrecompleto as nombreadministrador',
+                  'ubigeo.nombre as ubigeonombre',
+              )
+              ->orderBy('credito.fecha_desembolso','asc')
+              ->get();
+          
+          $dias_tolerancia = configuracion($request->idagencia,'dias_tolerancia_garantia')['valor'];
+          $html = '';
+          $data = [];
+          
+          foreach($creditos as $key => $value){
+            
+              // descuento cuota
+              $credito_descuentocuotas = DB::table('credito_descuentocuota')
+                    ->where('credito_descuentocuota.idcredito',$value->id)
+                    ->where('credito_descuentocuota.idestadocredito_descuentocuota',1)
+                    ->first();
+              $total_descuento_capital = 0; 
+              $total_descuento_interes = 0; 
+              $total_descuento_comision = 0; 
+              $total_descuento_cargo = 0;  
+              $total_descuento_penalidad = 0; 
+              $total_descuento_tenencia = 0; 
+              $total_descuento_compensatorio = 0; 
+              $total_descuento_total = 0; 
+              if($credito_descuentocuotas){
+                  if($request->numerocuota>=$credito_descuentocuotas->numerocuota_fin){
+                      $total_descuento_capital = $credito_descuentocuotas->capital;
+                      $total_descuento_interes = $credito_descuentocuotas->interes;
+                      $total_descuento_comision = $credito_descuentocuotas->comision;
+                      $total_descuento_cargo = $credito_descuentocuotas->cargo;
+                      $total_descuento_penalidad = $credito_descuentocuotas->penalidad;
+                      $total_descuento_tenencia = $credito_descuentocuotas->tenencia;
+                      $total_descuento_compensatorio = $credito_descuentocuotas->compensatorio;
+                      $total_descuento_total = $credito_descuentocuotas->total;
+                  }
+              }
+            
+              $cronograma = select_cronograma(
+                  $value->idtienda,
+                  $value->id,
+                  $value->idforma_credito,
+                  $value->modalidadproductocredito,
+                  $value->cuotas,
+                  $total_descuento_capital,
+                  $total_descuento_interes,
+                  $total_descuento_comision,
+                  $total_descuento_cargo,
+                  $total_descuento_penalidad,
+                  $total_descuento_tenencia,
+                  $total_descuento_compensatorio,
+                  0,
+                  1,
+                  'detalle_cobranza'
+              );
+            
+              if(($request->dias_retencion_desde<=$cronograma['ultimo_atraso'] or $request->dias_retencion_desde=='') && 
+                ($request->dias_retencion_hasta>=$cronograma['ultimo_atraso'] or $request->dias_retencion_hasta=='') &&
+                $cronograma['ultimo_atraso']>=0){
+                  
+                  $cp = '';
+                  if($value->idforma_credito==1){
+                      $cp = 'CP';
+                  }
+                  elseif($value->idforma_credito==2){
+                      $cp = 'CNP';
+                  }
+                  elseif($value->idforma_credito==3){
+                      $cp = 'CC';
+                  }
+                
+                  $clasificacion = '';
+
+                  if($cronograma['ultimo_atraso']<=8){
+                      $clasificacion = 'NORMAL';
+                  }
+                  elseif($cronograma['ultimo_atraso']>8 && $cronograma['ultimo_atraso']<=30){
+                      $clasificacion = 'CPP';
+                  }
+                  elseif($cronograma['ultimo_atraso']>30 && $cronograma['ultimo_atraso']<=60){
+                      $clasificacion = 'DIFICIENTE';
+                  }
+                  elseif($cronograma['ultimo_atraso']>60 && $cronograma['ultimo_atraso']<=120){
+                      $clasificacion = 'DUDOSO';
+                  }
+                  elseif($cronograma['ultimo_atraso']>120){
+                      $clasificacion = 'PÉRDIDA';
+                  }
+                
+                  $color_estado = '';
+
+                  if($cronograma['ultimo_atraso']>0 && $cronograma['ultimo_atraso']<=$dias_tolerancia){
+                      $color_estado = 'background-color:#c0ee87;';
+                  }
+                  elseif($cronograma['ultimo_atraso']>$dias_tolerancia){
+                      $color_estado = 'background-color:#ffc9ca;';
+                  }
+                  elseif($cronograma['ultimo_atraso']==0){
+                      $color_estado = 'background-color:#fff;';
+                  }
+
+                  $credito_compromisopago = DB::table('credito_compromisopago')
+                      ->where('idcredito',$value->id)
+                      ->orderBy('id','desc')
+                      ->limit(1)
+                      ->first();
+
+                  if($credito_compromisopago!=''){
+                      if($credito_compromisopago->fechacompromiso<=Carbon::now()->format('Y-m-d')){
+                            $color_estado = 'background-color:#fb9494;';
+                      }else{
+                            $color_estado = 'background-color:#fcbb59;';
+                      } 
+                  }
+                
+                  //  adelanto
+                  $credito_cobranzacuotas = DB::table('credito_cobranzacuota')
+                      ->where('credito_cobranzacuota.idcredito',$value->id)
+                      ->get();
+
+                  $totaladelanto = 0;
+                  $ultimafechaadelanto = 0;
+                  foreach($credito_cobranzacuotas as $valueade){
+                      $totaladelanto = $valueade->total_pagar;
+                      $ultimafechaadelanto = date_format(date_create($valueade->fecharegistro),'d-m-Y h:i:s A');
+                  }
+
+                  $fechacobranza_fecharegistro = '';
+                  if($totaladelanto>0){
+                      $fechacobranza_fecharegistro = $ultimafechaadelanto;
+                  }
+                  // fin adelanto
+                
+                  $credito_garantia = DB::table('credito_garantia')
+                      ->where('credito_garantia.idcredito',$value->id)
+                      ->where('credito_garantia.estado_listagarantia',1)
+                      ->count();
+
+                  $data[] = [
+                      'id' => $value->id,
+                      'estado' => $value->estado,
+                      'key' => ($key+1),
+                      'gp' => $credito_garantia>0?'R':'--',
+                      'cuenta' => $value->cuenta,
+                      'identificacioncliente' => $value->identificacioncliente,
+                      'nombrecliente' => $value->nombrecliente,
+                      'identificacionaval' => $value->identificacionaval,
+                      'nombreaval' => $value->nombreaval,
+                      'fecha_desembolso' => date_format(date_create($value->fecha_desembolso),'d-m-Y H:i:s A'),
+                      'monto_solicitado' => $value->monto_solicitado,
+                      'saldo_pendientepago' => $value->saldo_pendientepago,
+                      'cuota_vencida' => $cronograma['cuota_vencida'],
+                      'frecuencianombre' => $value->frecuencianombre,
+                      'cuotas' => $cronograma['numero_cuota_vencida'],
+                      'cp' => $cp,
+                      'ultimo_atraso' => $cronograma['ultimo_atraso'],
+                      'clasificacion' => $clasificacion,
+                      'nombreproductocredito' => $value->nombreproductocredito,
+                      'nombremodalidadcredito' => $value->nombremodalidadcredito,
+                      'telefonocliente' => $value->telefonocliente,
+                      'direccioncliente' => $value->direccioncliente.', '.$value->ubigeonombre,
+                    
+                      //'total_pendientepago' => $value->total_pendientepago,
+                      'fechacompromiso' => ($credito_compromisopago!=''?date_format(date_create($credito_compromisopago->fechacompromiso),'d-m-Y'):''),
+                      'comentario' => ($credito_compromisopago!=''?$credito_compromisopago->comentario:''),
+                      //'fechacobranza_fecharegistro' => $fechacobranza_fecharegistro,
+                      //'fecha_ultimopago' => date_format(date_create($value->fecha_ultimopago),'d-m-Y'),
+                      'codigoasesor' => $value->codigoasesor,
+                      'color_estado' => $color_estado,
+                  ];
+              }
+          }
+
+            $creditos_ordenado = sistema_order_array($data, 'ultimo_atraso',SORT_DESC);
+            $total_monto_solicitado = 0;
+            $total_saldo_pendientepago = 0;
+            $data_view = [];
+          
+            foreach($creditos_ordenado as $key => $value){
+                $html .= "<tr id='show_data_select' idcredito='{$value['id']}' estado='{$value['estado']}'>
+                        <td style='".$value['color_estado']."white-space: nowrap;'>
+                            <div class='dropdown' id='menu-opcion'>
+                            <button class='btn btn-primary dropdown-toggle'  type='button' data-bs-toggle='dropdown' aria-expanded='false'>Opción</button>
+                            <ul class='dropdown-menu dropdown-menu-end'>
+                                <li>
+                                <a class='dropdown-item' href='javascript:;' estadocuenta-valor-columna='{$value['id']}' onclick='show_estadocuenta(this)'>
+                                    <i class='fa fa-check'></i> Estado de Cuenta / Historial
+                                </a>
+                                <a class='dropdown-item' href='javascript:;' data-valor-columna='{$value['id']}' onclick='show_data(this)'>
+                                    <i class='fa fa-check'></i> Compromiso de Pago
+                                </a>
+                                <a class='dropdown-item' href='javascript:;' notificacion-valor-columna='{$value['id']}' onclick='show_notificacion(this)'>
+                                    <i class='fa fa-check'></i> Notificación
+                                </a>
+                                </li>
+                            </ul>
+                            </div>
+                        </td>
+                        <td style='".$value['color_estado']."white-space: nowrap;'>".($key+1)."</td>
+                        <td style='".$value['color_estado']."white-space: nowrap;'>{$value['gp']}</td>
+                        <td style='".$value['color_estado']."white-space: nowrap;'>C{$value['cuenta']}</td>
+                        <td style='".$value['color_estado']."white-space: nowrap;'>{$value['identificacioncliente']}</td>
+                        <td style='".$value['color_estado']."white-space: nowrap;'>{$value['nombrecliente']}</td>
+                        <td style='".$value['color_estado']."white-space: nowrap;'>{$value['fecha_desembolso']}</td>
+                        <td style='".$value['color_estado']."white-space: nowrap;text-align: right;'>{$value['monto_solicitado']}</td>
+                        <td style='".$value['color_estado']."white-space: nowrap;'>{$value['frecuencianombre']}</td>
+                        <td style='".$value['color_estado']."white-space: nowrap;text-align: right;'>{$value['cuota_vencida']}</td>
+                        <td style='".$value['color_estado']."white-space: nowrap;text-align: right;'>".$value['ultimo_atraso']."</td>
+                        <td style='".$value['color_estado']."white-space: nowrap;'>".$value['cp']."</td>
+                        <td style='".$value['color_estado']."white-space: nowrap;text-align: right;'>".$value['cuotas']."</td>
+                        <td style='".$value['color_estado']."white-space: nowrap;'>{$value['telefonocliente']}</td>
+                        <td style='".$value['color_estado']."white-space: nowrap;'>".$value['fechacompromiso']."</td>
+                        <td style='".$value['color_estado']."white-space: nowrap;'>".$value['comentario']."</td>
+                        <td style='".$value['color_estado']."white-space: nowrap;'>{$value['direccioncliente']}</td>
+                        <td style='".$value['color_estado']."white-space: nowrap;'>{$value['clasificacion']}</td>
+                        <td style='".$value['color_estado']."white-space: nowrap;'>{$value['nombreproductocredito']}</td>
+                        <td style='".$value['color_estado']."white-space: nowrap;'>{$value['nombremodalidadcredito']}</td>
+                        <td style='".$value['color_estado']."white-space: nowrap;'>{$value['identificacionaval']}</td>
+                        <td style='".$value['color_estado']."white-space: nowrap;'>{$value['nombreaval']}</td>
+                        <td style='".$value['color_estado']."white-space: nowrap;'>{$value['codigoasesor']}</td>
+                    </tr>"; 
+                
+                $total_monto_solicitado = $total_monto_solicitado+$value['monto_solicitado'];
+                $total_saldo_pendientepago = $total_saldo_pendientepago+$value['cuota_vencida'];
+
+                    $data_view[] = [
+                        'id' => $value['id'],
+                        'numero' => $key+1,
+                        'gp' => $value['gp'],
+                        'cuenta' => $value['cuenta'],
+                        'identificacioncliente' => $value['identificacioncliente'],
+                        'nombrecliente' => $value['nombrecliente'],
+                        'fecha_desembolso' => $value['fecha_desembolso'],
+                        'monto_solicitado' => $value['monto_solicitado'],
+                        'frecuencianombre' => $value['frecuencianombre'],
+                        'cuota_vencida' => $value['cuota_vencida'],
+                        'ultimo_atraso' => $value['ultimo_atraso'],
+                        'cp' => $value['cp'],
+                        'cuotas' => $value['cuotas'],
+                        'telefonocliente' => $value['telefonocliente'],
+                        'fechacompromiso' => $value['fechacompromiso'],
+                        'comentario' => $value['comentario'],
+                        'direccioncliente' => $value['direccioncliente'],
+                        'clasificacion' => $value['clasificacion'],
+                        'nombreproductocredito' => $value['nombreproductocredito'],
+                        'nombremodalidadcredito' => $value['nombremodalidadcredito'],
+                        'identificacionaval' => $value['identificacionaval'],
+                        'nombreaval' => $value['nombreaval'],
+                        'codigoasesor' => $value['codigoasesor'],
+                        'style' => $value['color_estado'],
+                        'opcion' => [
+                            [
+                                'nombre'  => 'Estado de Cuenta / Historial',
+                                'onclick' => '/'.$request->idagencia.'/gestioncobranza/'.$value['id'].'/edit?view=estadocuenta',
+                                'icono'   => 'check',
+                                'size'    => 'modal-fullscreen'
+                            ],
+                            [
+                                'nombre'  => 'Compromiso de Pago',
+                                'onclick' => '/'.$request->idagencia.'/gestioncobranza/'.$value['id'].'/edit?view=compromisopago',
+                                'icono'   => 'check',
+                            ],
+                            [
+                                'nombre'  => 'Notificación',
+                                'onclick' => '/'.$request->idagencia.'/gestioncobranza/'.$value['id'].'/edit?view=notificacion',
+                                'icono'   => 'check',
+                                'size'    => 'modal-fullscreen'
+                            ],
+                        ]
+                    ];
+            }
+            $html .= '
+                <tr style="position: sticky;bottom: 0;">
+                  <td colspan="7" style="background-color: #b7b6b7 !important;text-align:right;color:#000 !important;font-weight: bold;">TOTAL S/.</td>
+                  <td style="background-color: #b7b6b7 !important;text-align:right;color:#000 !important;font-weight: bold;">'.number_format($total_monto_solicitado, 2, '.', '').'</td>
+                  <td style="background-color: #b7b6b7 !important;"></td>
+                  <td style="background-color: #b7b6b7 !important;text-align:right;color:#000 !important;font-weight: bold;">'.number_format($total_saldo_pendientepago, 2, '.', '').'</td>
+                  <td colspan="14" style="background-color: #b7b6b7 !important;"></td>
+                </tr>';
+            return response()->json([
+                'data' => $data_view,
+            ]);
         }
     }
 

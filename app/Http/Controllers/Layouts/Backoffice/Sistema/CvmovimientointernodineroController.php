@@ -330,16 +330,15 @@ class CvmovimientointernodineroController extends Controller
                 $arqueocaja = cvarqueocaja($idtienda);
                 $validacionDiaria = validacionDiaria($idtienda);
 
-                if (!$arqueocaja) {
-                    return response()->json([
-                        'resultado' => 'ERROR',
-                        'mensaje'   => 'Falta arquear caja!!'
-                    ]);
-                }
                 if(!$validacionDiaria['arqueocaja']){
                      return response()->json([
                         'resultado' => 'ERROR',
                         'mensaje'   => 'Falta arquear caja '.$validacionDiaria['fechacorte'].'!!'
+                    ]);
+                }elseif ($arqueocaja) {
+                    return response()->json([
+                        'resultado' => 'ERROR',
+                        'mensaje'   => 'Falta arquear caja!!'
                     ]);
                 }
             }

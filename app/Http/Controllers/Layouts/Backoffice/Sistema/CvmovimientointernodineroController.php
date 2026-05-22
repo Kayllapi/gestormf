@@ -325,24 +325,6 @@ class CvmovimientointernodineroController extends Controller
             ];
             $this->validate($request,$rules,$messages);
 
-            // validar arqueo caja
-            if($request->idfuenteretiro_retiro3==8){
-                $arqueocaja = cvarqueocaja($idtienda);
-                $validacionDiaria = validacionDiaria($idtienda);
-
-                if(!$validacionDiaria['arqueocaja']){
-                     return response()->json([
-                        'resultado' => 'ERROR',
-                        'mensaje'   => 'Falta arquear caja '.$validacionDiaria['fechacorte'].'!!'
-                    ]);
-                }elseif ($arqueocaja) {
-                    return response()->json([
-                        'resultado' => 'ERROR',
-                        'mensaje'   => 'Falta arquear caja!!'
-                    ]);
-                }
-            }
-
             // validar si hay una apertura de caja o cierre de caja en el mismo día
             $fecharegularizacion = now();
             if ($request->fecharegularizacion!='') {
@@ -379,6 +361,26 @@ class CvmovimientointernodineroController extends Controller
                 }
             }
 
+            // validar arqueo caja en cierre con regularización de fecha
+            if($request->idfuenteretiro_retiro3==8 && $request->fecharegularizacion!=''){
+                $validacionDiaria = validacionDiaria($idtienda);
+                if(!$validacionDiaria['arqueocaja']){
+                     return response()->json([
+                        'resultado' => 'ERROR',
+                        'mensaje'   => 'Falta arquear caja '.$validacionDiaria['fechacorte'].'!!'
+                    ]);
+                }
+            }
+            // validar arqueo caja en cierre con el dia de hoy
+            if($request->idfuenteretiro_retiro3==8){
+                $arqueocaja = cvarqueocaja($idtienda);
+                if (!$arqueocaja) {
+                    return response()->json([
+                        'resultado' => 'ERROR',
+                        'mensaje'   => 'Falta arquear caja!!'
+                    ]);
+                }
+            }
 
             $dt = DB::table('cvmovimientointernodinero')
                 ->where('idtienda',user_permiso()->idtienda)
@@ -1736,7 +1738,7 @@ class CvmovimientointernodineroController extends Controller
             $validacionDiaria = validacionDiaria($idtienda);
 
             
-            if(!$validacionDiaria['arqueocaja']){
+            if($validacionDiaria['arqueocaja']){
                     return response()->json([
                     'resultado' => 'ERROR',
                     'mensaje'   => 'No se puede eliminar porque ya esta arqueado caja '.$validacionDiaria['fechacorte'].'!!'

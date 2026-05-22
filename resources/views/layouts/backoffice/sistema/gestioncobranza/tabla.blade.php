@@ -200,7 +200,7 @@
                   <th>N°</th>
                   <th>GP</th>
                   <th>CUENTA</th>
-                  <th>DOI/RUC</th>
+                  <th>RUC/DNI/CE</th>
                   <th>Apellidos y Nombres</th>
                   <th>Fecha Desemb.</th>
                   <th>Monto Crédito (S/.)</th>

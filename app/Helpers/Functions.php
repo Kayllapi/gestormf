@@ -1300,8 +1300,8 @@ function validacionDiaria($idagencia){
             $arqueocaja = DB::table('cvarqueocaja')
                 ->where('idagencia',$idagencia)
                 ->where('corte',$fechacorte)
+                ->where('idestadoeliminado', 1)
                 ->exists();
-            // dd($arqueocaja);
 
             if ($arqueocaja) {
                 $cierre_caja = DB::table('cvmovimientointernodinero')

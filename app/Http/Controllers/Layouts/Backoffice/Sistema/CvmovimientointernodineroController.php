@@ -1735,16 +1735,16 @@ class CvmovimientointernodineroController extends Controller
             $arqueocaja = cvarqueocaja($idtienda);
             $validacionDiaria = validacionDiaria($idtienda);
 
-            if ($arqueocaja) {
-                return response()->json([
-                    'resultado' => 'ERROR',
-                    'mensaje'   => 'No se puede eliminar porque ya esta arqueado caja!!'
-                ]);
-            }
-            if($validacionDiaria['arqueocaja']){
+            
+            if(!$validacionDiaria['arqueocaja']){
                     return response()->json([
                     'resultado' => 'ERROR',
                     'mensaje'   => 'No se puede eliminar porque ya esta arqueado caja '.$validacionDiaria['fechacorte'].'!!'
+                ]);
+            }elseif ($arqueocaja) {
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'No se puede eliminar porque ya esta arqueado caja!!'
                 ]);
             }
 

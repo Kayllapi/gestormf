@@ -559,7 +559,7 @@
               color: #000 !important;" class="campo_moneda"><b>{{ encontrar_valor('analisis_horizontal_ventamensual', $ganancia_perdida) }}</b></td>
               </tr>
               <tr>
-                <td>Costo de venta (C. de producción)</td>
+                <td>Costo Venta (C. de Prod.)</td>
                 <td class="campo_moneda">{{ encontrar_valor('evaluacion_actual_ganancia_costo_venta', $ganancia_perdida_anterior) }}</td>
                 <td class="campo_moneda">{{ encontrar_valor('evaluacion_actual_ganancia_costo_venta', $ganancia_perdida) }}</td>
                 <td class="campo_moneda">{{ encontrar_valor('analisis_vertical_costo_venta', $ganancia_perdida) }}</td>
@@ -585,7 +585,7 @@
                 <td class="campo_moneda">{{ encontrar_valor('analisis_horizontal_gasto_admin', $ganancia_perdida) }}</td>
               </tr>
               <tr>
-                <td>Gastos de personal de ventas</td>
+                <td>Gastos personal de Vent.</td>
                 <td class="campo_moneda">{{ encontrar_valor('evaluacion_actual_ganancia_gasto_personal', $ganancia_perdida_anterior) }}</td>
                 <td class="campo_moneda">{{ encontrar_valor('evaluacion_actual_ganancia_gasto_personal', $ganancia_perdida) }}</td>
                 <td class="campo_moneda">{{ encontrar_valor('analisis_vertical_gasto_personal', $ganancia_perdida) }}</td>

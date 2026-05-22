@@ -292,7 +292,7 @@ class GestioncobranzaController extends Controller
                   <td style='".$value['color_estado']."white-space: nowrap;'>{$value['gp']}</td>
                   <td style='".$value['color_estado']."white-space: nowrap;'>C{$value['cuenta']}</td>
                   <td style='".$value['color_estado']."white-space: nowrap;'>{$value['identificacioncliente']}</td>
-                  <td style='".$value['color_estado']."white-space: nowrap;'>{$value['nombrecliente']}</td>
+                  <td class='td-nombre' style='".$value['color_estado']."white-space: nowrap;'>{$value['nombrecliente']}</td>
                   <td style='".$value['color_estado']."white-space: nowrap;'>{$value['fecha_desembolso']}</td>
                   <td style='".$value['color_estado']."white-space: nowrap;text-align: right;'>{$value['monto_solicitado']}</td>
                   <td style='".$value['color_estado']."white-space: nowrap;'>{$value['frecuencianombre']}</td>
@@ -317,8 +317,23 @@ class GestioncobranzaController extends Controller
               $total_saldo_pendientepago = $total_saldo_pendientepago+$value['cuota_vencida'];
           }
               $html .= '
-                <tr style="position: sticky;bottom: 0;">
-                  <td colspan="7" style="background-color: #b7b6b7 !important;text-align:right;color:#000 !important;font-weight: bold;">TOTAL S/.</td>
+                <tr class="fila-total" style="position: sticky;bottom: 0;">
+                    <td style="background-color: #b7b6b7 !important;text-align:right;color:#000 !important;font-weight: bold;"></td>
+                    <td style="background-color: #b7b6b7 !important;text-align:right;color:#000 !important;font-weight: bold;"></td>
+                    <td style="background-color: #b7b6b7 !important;text-align:right;color:#000 !important;font-weight: bold;"></td>
+                    <td style="background-color: #b7b6b7 !important;text-align:right;color:#000 !important;font-weight: bold;"></td>
+                    <td style="background-color: #b7b6b7 !important;text-align:right;color:#000 !important;font-weight: bold;"></td>
+                    <td style="background-color: #b7b6b7 !important;text-align:right;color:#000 !important;font-weight: bold;">
+                        <div class="mb-2">
+                            <input 
+                                type="text"
+                                id="buscar_cliente"
+                                class="form-control"
+                                placeholder="Buscar..."
+                            >
+                        </div>
+                    </td>
+                  <td style="background-color: #b7b6b7 !important;text-align:right;color:#000 !important;font-weight: bold;">TOTAL S/.</td>
                   <td style="background-color: #b7b6b7 !important;text-align:right;color:#000 !important;font-weight: bold;">'.number_format($total_monto_solicitado, 2, '.', '').'</td>
                   <td style="background-color: #b7b6b7 !important;"></td>
                   <td style="background-color: #b7b6b7 !important;text-align:right;color:#000 !important;font-weight: bold;">'.number_format($total_saldo_pendientepago, 2, '.', '').'</td>

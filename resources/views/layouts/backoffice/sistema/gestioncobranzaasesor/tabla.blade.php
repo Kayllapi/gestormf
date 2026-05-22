@@ -221,6 +221,43 @@ table .dropdown {
               '&dias_retencion_hasta='+$('#dias_retencion_hasta').val()+
               '&idagencia='+$('#idagencia').val();
     }
-  
+
+    $(document).on('keyup', '#buscar_cliente', function () {
+        let texto = $(this).val().toLowerCase();
+
+        $('#table-lista-credito tbody tr').each(function () {
+            if ($(this).hasClass('fila-total')) {
+                return;
+            }
+
+            let td = $(this).find('.td-nombre');
+
+            // texto original
+            let original = td.text();
+
+            // limpiar resaltado previo
+            td.html(original);
+
+            let nombre = original.toLowerCase();
+
+            // mostrar/ocultar fila
+            $(this).toggle(nombre.includes(texto));
+
+            // resaltar coincidencia
+            if (texto !== '' && nombre.includes(texto)) {
+
+                let regex = new RegExp(`(${texto})`, 'gi');
+
+                let nuevoTexto = original.replace(
+                    regex,
+                    '<mark>$1</mark>'
+                );
+
+                td.html(nuevoTexto);
+            }
+
+        });
+
+    });
 </script>  
 

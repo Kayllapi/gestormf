@@ -131,7 +131,7 @@
   </footer>
   
   <main>
-      <h4 align="center" style="font-size:13px;margin:0;padding:0;">EVALUACIÓN DE CRÉDITO - INGRESO INDEPENDIENTE <br> CRÉDITO: MyPE y CONSUMO N. R.</h4>
+      <h4 align="center" style="font-size:13px;margin:0;padding:0;margin-top:-15px;">EVALUACIÓN DE CRÉDITO - INGRESO INDEPENDIENTE <br> CRÉDITO: MyPE y CONSUMO N. R.</h4>
       <br>
     <span class="badge">I. INFORMACIÓN DEL CLIENTE</span>
     <div class="row">
@@ -545,7 +545,7 @@
       <textarea style="border:solid 1px #000000;"  id="fortalezas_negocio" class="form-control">{{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->fortalezas_negocio : '' }}</textarea>
     </div>
     <div class="row" >
-      <div class="col" style="margin-left:215px;margin-top:60px;">
+      <div class="col" style="margin-left:215px;margin-top:40px;">
         <div style="width:300px;height:1px;border-bottom:1px solid #000;"></div>
         <p align="center">Asesor(a) de Créditos: {{ Auth::user()->codigo }} <br>Firma y Sello</p>		
       </div>

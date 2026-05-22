@@ -578,7 +578,7 @@
                 color: #000 !important;" class="campo_moneda"><b>{{ encontrar_valor('analisis_horizontal_utilidad_bruta', $ganancia_perdida) }}</b></td>
               </tr>
               <tr>
-                <td>Gastos de personal administrativo</td>
+                <td>Gastos personal Adminis.</td>
                 <td class="campo_moneda">{{ encontrar_valor('evaluacion_actual_ganancia_gasto_admin', $ganancia_perdida_anterior) }}</td>
                 <td class="campo_moneda">{{ encontrar_valor('evaluacion_actual_ganancia_gasto_admin', $ganancia_perdida) }}</td>
                 <td class="campo_moneda">{{ encontrar_valor('analisis_vertical_gasto_admin', $ganancia_perdida) }}</td>

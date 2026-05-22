@@ -634,15 +634,15 @@
               <td></td>
             </tr>
             <tr>
-              <td>Instalaciones:</td>
-              <td class="border-td">
-                  @if($users_prestamo->casanegocio=='SI')
-                  Casa/Negocio
-                  @else
-                  {{ $users_prestamo->db_idlocalnegocio_ac_economica }}
-                  @endif
+              <td>Experiencia como empresario:</td>
+              <td class="border-td campo_numero">
+                @if($credito->idevaluacion == 1)
+                {{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->experiencia_microempresa : '0' }}
+                @else
+                {{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->experiencia_microempresa : '0' }}
+                @endif
               </td>
-              <td></td>
+              <td>meses</td>
               <td>Número de trabajadores:</td>
               <td class="border-td campo_numero">
                 @if($credito->idevaluacion == 1)
@@ -651,16 +651,22 @@
                 {{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->nro_trabajador_completo + $credito_evaluacion_cualitativa->nro_trabajador_parcal : '0' }}
                 @endif
               </td>
-              <td></td>
-              <td></td>
+              <td>Instalaciones:</td>
+              <td class="border-td">
+                  @if($users_prestamo->casanegocio=='SI')
+                  Casa/Negocio
+                  @else
+                  {{ $users_prestamo->db_idlocalnegocio_ac_economica }}
+                  @endif
+              </td>
             </tr>
             <tr>
-              <td>Experiencia como empresario:</td>
+              <td>Tiempo en el mismo local:</td>
               <td class="border-td campo_numero">
                 @if($credito->idevaluacion == 1)
-                {{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->experiencia_microempresa : '0' }}
+                {{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->tiempo_mismo_local : '0' }}
                 @else
-                {{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->experiencia_microempresa : '0' }}
+                {{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->tiempo_mismo_local : '0' }}
                 @endif
               </td>
               <td>meses</td>
@@ -676,20 +682,6 @@
                 @else
               <td></td>
                 @endif
-              <td></td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>Tiempo en el mismo local:</td>
-              <td class="border-td campo_numero">
-                @if($credito->idevaluacion == 1)
-                {{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->tiempo_mismo_local : '0' }}
-                @else
-                {{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->tiempo_mismo_local : '0' }}
-                @endif
-              </td>
-              <td>meses</td>
-
               <td>
                 @if($credito->idevaluacion == 2)
                 Meses de venta bajas:
@@ -702,8 +694,6 @@
                 <td></td>
                 @endif
               </td>
-              <td></td>
-              <td></td>
             </tr>
             <tr>
               <td>Descripción de la actividad:</td>

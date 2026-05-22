@@ -104,7 +104,7 @@
   </div>
       <div class="col-sm-12">
         <div class="card">
-          <div class="card-body">
+          {{-- <div class="card-body">
             <style>
               .linea-1{text-decoration: underline; font-weight: bold;}
               .linea-2{background-color: #ffc9ca !important;text-decoration: underline;font-weight: bold;}
@@ -191,6 +191,39 @@
                   ['type' => ''],
               ]
             ])
+          </div> --}}
+          <div class="card-body" style="overflow-y: scroll;height: calc(100vh - 230px);padding: 0;margin-top: 5px;overflow-x: scroll;">
+            <table class="table table-striped table-hover" id="table-lista-credito">
+              <thead class="table-dark" style="position: sticky;top: 0;">
+                <tr>
+                  <th style="width:10px;"></th>
+                  <th>N°</th>
+                  <th>GP</th>
+                  <th>CUENTA</th>
+                  <th>DOI/RUC</th>
+                  <th>Apellidos y Nombres</th>
+                  <th>Fecha Desemb.</th>
+                  <th>Monto Crédito (S/.)</th>
+                  <th>F. Pago</th>
+                  <th><span style="text-decoration: underline; font-weight: bold;">Saldo Cuotas Venc. (S/.)</span></th>
+                  <th><span style="background-color: #ffc9ca !important;text-decoration: underline;font-weight: bold;">Días Vencido</span></th>
+                  <th>Form. C.</th>
+                  <th>Nro. de Cuotas Cumplido y Venc.</th>
+                  <th>Tele./Celu.</th>
+                  <th>F. Compromiso</th>
+                  <th>Anotación</th>
+                  <th>Direc/Domicilio</th>
+                  <th>Calificación</th>
+                  <th>Producto</th>
+                  <th>Modalidad</th>
+                  <th>DOI/RUC (Aval)</th>
+                  <th>Ape. Nom. Aval</th>
+                  <th>Ejecutivo</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -218,7 +251,7 @@ table .dropdown {
           dias_retencion_hasta : $('#dias_retencion_hasta').val(),
       },
       success: function (res){
-        // $('#table-lista-credito > tbody').html(res.html);
+        $('#table-lista-credito > tbody').html(res.html);
         $("tr#show_data_select").on("click", function() {
             $('tr.selected').removeClass('selected');
             $(this).addClass('selected');
@@ -262,6 +295,84 @@ table .dropdown {
         window.location.href = '{{url('backoffice/'.$tienda->id.'/gestioncobranza/0/edit')}}?view=exportar_excel&dias_retencion_desde='+$('#dias_retencion_desde').val()+
               '&dias_retencion_hasta='+$('#dias_retencion_hasta').val()+
               '&idagencia='+$('#idagencia').val();
+    }
+
+    $(document).on(
+        'keyup',
+        '#buscar_cuenta, #buscar_identificacion, #buscar_nombre, #buscar_formac',
+        function () {
+
+            let cuenta = $('#buscar_cuenta').val().toLowerCase();
+            let identificacion = $('#buscar_identificacion').val().toLowerCase();
+            let nombre = $('#buscar_nombre').val().toLowerCase();
+            let formac = $('#buscar_formac').val().toLowerCase();
+
+            $('#table-lista-credito tbody tr').each(function () {
+
+                if ($(this).hasClass('fila-total')) {
+                    return;
+                }
+
+                let tdCuenta = $(this).find('.td-cuenta');
+                let tdIdentificacion = $(this).find('.td-identificacion');
+                let tdNombre = $(this).find('.td-nombre');
+                let tdFormac = $(this).find('.td-formac');
+
+                let textoCuenta = tdCuenta.text();
+                let textoIdentificacion = tdIdentificacion.text();
+                let textoNombre = tdNombre.text();
+                let textoFormac = tdFormac.text();
+
+                // limpiar highlights
+                tdCuenta.html(textoCuenta);
+                tdIdentificacion.html(textoIdentificacion);
+                tdNombre.html(textoNombre);
+                tdFormac.html(textoFormac);
+
+                let matchCuenta = textoCuenta.toLowerCase().includes(cuenta);
+                let matchIdentificacion = textoIdentificacion.toLowerCase().includes(identificacion);
+                let matchNombre = textoNombre.toLowerCase().includes(nombre);
+                let matchFormac = textoFormac.toLowerCase().includes(formac);
+
+                let mostrar =
+                    matchCuenta &&
+                    matchIdentificacion &&
+                    matchNombre &&
+                    matchFormac;
+
+                $(this).toggle(mostrar);
+
+                // highlight
+                if (mostrar) {
+
+                    highlight(tdCuenta, cuenta);
+                    highlight(tdIdentificacion, identificacion);
+                    highlight(tdNombre, nombre);
+                    highlight(tdFormac, formac);
+
+                }
+
+            });
+
+        }
+    );
+
+    function highlight(td, textoBuscar) {
+
+        if (textoBuscar == '') {
+            return;
+        }
+
+        let original = td.text();
+
+        let regex = new RegExp(`(${textoBuscar})`, 'gi');
+
+        let nuevo = original.replace(
+            regex,
+            '<mark>$1</mark>'
+        );
+
+        td.html(nuevo);
     }
 </script>  
 

@@ -317,7 +317,7 @@ class GestioncobranzaController extends Controller
               $total_saldo_pendientepago = $total_saldo_pendientepago+$value['cuota_vencida'];
           }
               $html .= '
-                <tr class="fila-total" style="position: sticky;bottom: 0;">
+                <tr class="fila-total" style="position: sticky;bottom: -1px;">
                     <td style="background-color: #b7b6b7 !important;text-align:right;color:#000 !important;font-weight: bold;"></td>
                     <td style="background-color: #b7b6b7 !important;text-align:right;color:#000 !important;font-weight: bold;"></td>
                     <td style="background-color: #b7b6b7 !important;text-align:right;color:#000 !important;font-weight: bold;">

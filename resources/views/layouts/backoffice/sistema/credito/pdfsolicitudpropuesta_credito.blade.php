@@ -421,7 +421,7 @@
             @endforelse
           </tbody>
         </table>
-          <table class="table table-bordered" style="width:100%;">
+          <table class="table table-bordered" style="width:100%; margin-top:2px;">
             <tbody>           
                 <tr>
                   <th style="width:140px;">A. y N. de Aval(Garante)/Fiador:</th>

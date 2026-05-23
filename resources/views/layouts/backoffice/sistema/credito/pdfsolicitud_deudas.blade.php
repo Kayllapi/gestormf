@@ -7,7 +7,7 @@
     <style>
       *{
         font-family:helvetica;
-        font-size:9.5px;
+        font-size:9px;
       }
       @page {
           margin: 0cm 0cm;
@@ -135,7 +135,7 @@
   @endphp
   <main>
     <div class="row">
-      <div class="col" style="width:349px;">
+      <div class="col" style="width:360px;">
         <table style="width:100%;">
           <tr>
             <td>AGENCIA/OFICINA:</td>
@@ -215,7 +215,7 @@
     
     <span class="badge">VI. DETALLE DE DEUDAS FINANCIERAS</span>
     <span class="badge subtitle">6.1 Entidades Reguladas</span>
-    <div class="row" style="margin-top: -5px;">
+    <div class="row">
       <div class="col">
         <table class="table">
           <thead>
@@ -651,7 +651,7 @@
         </table>
       </div>
     <div class="row" >
-      <div class="col" style="margin-left:215px;margin-top:40px;">
+      <div class="col" style="margin-left:215px;margin-top:50px;">
         <div style="width:300px;height:1px;border-bottom:1px solid #000;"></div>
         <p align="center" style="margin: 0;">Asesor(a) de Créditos: {{ Auth::user()->codigo }} <br>Firma y Sello</p>		
       </div>

@@ -7,7 +7,7 @@
     <style>
       *{
         font-family:helvetica;
-        font-size:9px;
+        font-size:9.5px;
       }
       @page {
           margin: 0cm 0cm;
@@ -150,7 +150,7 @@
   @endphp
   <main>
     <div class="row">
-      <div class="col" style="width:360px;">
+      <div class="col" style="width:355px;">
         <table style="width:100%;">
           <tr>
             <td>AGENCIA/OFICINA:</td>
@@ -600,7 +600,7 @@
       </table>
       </div>
       <div class="col">
-        <table class="table" width="220px">
+        <table class="table" width="200px">
           <thead>
             <tr>
               <th colspan=2>CÁLCULO DE VENTAS</th>
@@ -611,7 +611,7 @@
             </tr>
           </thead>
         </table>
-        <table class="table" width="220px">
+        <table class="table" width="200px">
           <thead>
             <tr>
               <th>N°</th>
@@ -635,7 +635,7 @@
             </tr>
           </tbody>
         </table>
-        <table class="table" width="220px">
+        <table class="table" width="200px">
           <thead>
             <tr>
               <th width="140px">N° de Días</th>
@@ -643,7 +643,7 @@
             </tr>
           </thead>
         </table>
-        <table class="table" width="220px">
+        <table class="table" width="200px">
           <thead>
             <tr>
               <th width="140px">Venta mensual (S/.)</th>
@@ -651,7 +651,7 @@
             </tr>
           </thead>
         </table>
-        <table class="table" width="220px">
+        <table class="table" width="200px">
           <thead>
             <tr>
               <th>N°</th>
@@ -667,7 +667,7 @@
             </tr>
           </tbody>
         </table>
-        <table class="table" width="220px">
+        <table class="table" width="200px">
           <thead>
             <tr>
               <th colspan="2">Estado de muestra de DATOS</th>
@@ -677,7 +677,7 @@
             </tr>
           </thead>
         </table>
-        <table class="table" width="220px">
+        <table class="table" width="200px">
           <thead>
             <tr>
               <th width="140px">Mg. De venta al mes (1) (S/.)</th>
@@ -690,7 +690,7 @@
     <div class="row">
       @foreach($subproducto as $value)
         <div class="col">
-          <table class="table" width="220px">
+          <table class="table" width="200px">
             <thead>
               <tr>  
                 <th width="55px">Materia prima (en U., Doc. Etc) M. Obra y otros</th>

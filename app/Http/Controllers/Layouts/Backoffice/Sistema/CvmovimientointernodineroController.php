@@ -1733,23 +1733,6 @@ class CvmovimientointernodineroController extends Controller
             ];
             $this->validate($request,$rules,$messages);
 
-            // validar arqueo caja
-            $arqueocaja = cvarqueocaja($idtienda);
-            $validacionDiaria = validacionDiaria($idtienda);
-
-            
-            if($validacionDiaria['arqueocaja']){
-                    return response()->json([
-                    'resultado' => 'ERROR',
-                    'mensaje'   => 'No se puede eliminar porque ya esta arqueado caja '.$validacionDiaria['fechacorte'].'!!'
-                ]);
-            }elseif ($arqueocaja) {
-                return response()->json([
-                    'resultado' => 'ERROR',
-                    'mensaje'   => 'No se puede eliminar porque ya esta arqueado caja!!'
-                ]);
-            }
-
             $usuario = DB::table('users')
                 ->where('users.id',$request->idresponsable_retiro3)
                 ->where('users.clave',$request->responsableclave_retiro3)
@@ -1765,6 +1748,17 @@ class CvmovimientointernodineroController extends Controller
             }
 
             $dt =  DB::table('cvmovimientointernodinero')->whereId($id)->first();
+            $dt2_confirmado =  DB::table('cvmovimientointernodinero')
+                ->where('idcvmovimientointernodinero',$id)
+                ->where('idresponsable', '<>', 0)
+                ->exists();
+            if ($dt2_confirmado) {
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'No se puede eliminar porque ya ha sido confirmado.'
+                ]);
+            }
+
             if (!Carbon::parse($dt->fecharegistro)->isToday()) {
                 return response()->json([
                     'resultado' => 'ERROR',

@@ -215,7 +215,7 @@
     
     <span class="badge">VI. DETALLE DE DEUDAS FINANCIERAS</span>
     <span class="badge subtitle">6.1 Entidades Reguladas</span>
-    <div class="row">
+    <div class="row" style="margin-top: -5px;">
       <div class="col">
         <table class="table">
           <thead>
@@ -651,9 +651,9 @@
         </table>
       </div>
     <div class="row" >
-      <div class="col" style="margin-left:215px;margin-top:50px;">
+      <div class="col" style="margin-left:215px;margin-top:40px;">
         <div style="width:300px;height:1px;border-bottom:1px solid #000;"></div>
-        <p align="center">Asesor(a) de Créditos: {{ Auth::user()->codigo }} <br>Firma y Sello</p>		
+        <p align="center" style="margin: 0;">Asesor(a) de Créditos: {{ Auth::user()->codigo }} <br>Firma y Sello</p>		
       </div>
     </div>
 

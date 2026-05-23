@@ -407,7 +407,7 @@
       @endforeach
     </div>
     
-    <span class="badge subtitle">4.2 VENTAS EN MAS DE UNA SEMANA (VENTAS CON FRECUENCIA MENSUAL)</span>
+    <span class="badge subtitle" style="margin-top: -15px;">4.2 VENTAS EN MAS DE UNA SEMANA (VENTAS CON FRECUENCIA MENSUAL)</span>
     <div class="row">
       <div class="col">
         <table class="table">
@@ -560,8 +560,8 @@
         </div>
       @endforeach
     </div>
-    <div class="row" >
-      <div class="col" style="margin-left:215px;margin-top:60px;">
+    <div class="row">
+      <div class="col" style="margin-left:215px;margin-top:20px;">
         <div style="width:300px;height:1px;border-bottom:1px solid #000;"></div>
         <p align="center">Asesor(a) de Créditos: {{ Auth::user()->codigo }} <br>Firma y Sello</p>		
       </div>

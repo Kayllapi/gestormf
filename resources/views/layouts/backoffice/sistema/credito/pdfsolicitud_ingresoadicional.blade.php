@@ -749,7 +749,7 @@
             </tr>
             <tr>
               <th>VENTAS</th>
-              <th>Costo: Vent./Prod.</th>
+              <th width="50px">Costo: Vent./Prod.</th>
             </tr>
           </thead>
           <tbody num="0">
@@ -784,7 +784,7 @@
         </table>
       </div>
       <div class="col">
-        <table class="table" width="220px">
+        <table class="table" width="205px">
           <thead>
               <tr>
                 <th colspan=2>CÁLCULO DE VENTAS</th>
@@ -795,7 +795,7 @@
               </tr>
             </thead>
         </table>
-        <table class="table" width="220px">
+        <table class="table" width="205px">
           <thead>
             <tr>
               <th width="140px">Semanas</th>
@@ -818,7 +818,7 @@
             </tr>
           </tbody>
         </table>
-        <table class="table" width="220px">
+        <table class="table" width="205px">
           <thead>
             <tr>
               <th colspan="2">Estado de muestra de DATOS</th>
@@ -828,7 +828,7 @@
             </tr>
           </thead>
         </table>
-        <table class="table"  width="220px">
+        <table class="table"  width="205px">
           <thead>
             <tr>
               <th width="140px">Mg. De venta al mes (2) (S/.)</th>
@@ -841,7 +841,7 @@
     <div class="row">
       @foreach($subproductomensual as $value)
         <div class="col">
-          <table class="table" width="220px">
+          <table class="table" width="205px">
             <thead>
               <tr>  
                 <th width="55px">Materia prima (en U., Doc. Etc) M. Obra y otros</th>

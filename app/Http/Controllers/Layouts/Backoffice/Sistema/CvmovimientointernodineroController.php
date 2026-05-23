@@ -372,7 +372,7 @@ class CvmovimientointernodineroController extends Controller
                 }
             }
             // validar arqueo caja en cierre con el dia de hoy
-            if($request->idfuenteretiro_retiro3==8){
+            elseif($request->idfuenteretiro_retiro3==8){
                 $arqueocaja = cvarqueocaja($idtienda);
                 if (!$arqueocaja) {
                     return response()->json([

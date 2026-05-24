@@ -650,13 +650,11 @@
           </tbody>
         </table>
       </div>
-    <div class="row" >
-      <div class="col" style="margin-left:215px;margin-top:20px;">
+      <div class="col" style="margin-left:430px;margin-top:-5px;">
         <div style="width:300px;height:1px;border-bottom:1px solid #000;"></div>
         <p align="center" style="margin: 0;">Asesor(a) de Créditos: {{ Auth::user()->codigo }} <br>Firma y Sello</p>		
       </div>
     </div>
-
   </main>
 </body>
 </html>

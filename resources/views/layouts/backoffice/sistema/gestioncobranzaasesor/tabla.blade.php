@@ -25,7 +25,7 @@
                     <div class="row">
                       <label for="fecha_fin" class="col-sm-3 col-form-label">EJECUTIVO</label>
                       <div class="col-sm-9">
-                        <select class="form-control" id="idasesor">
+                        <select class="form-control" id="idasesor" disabled>
                           <option value="0">TODOS</option>
                           <?php
                             $usuarios = DB::table('users')

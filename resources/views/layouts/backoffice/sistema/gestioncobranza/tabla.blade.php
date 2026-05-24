@@ -14,7 +14,7 @@
                     <div class="row">
                       <label for="fecha_inicio" class="col-sm-3 col-form-label">AGENCIA</label>
                       <div class="col-sm-9">
-                          <select class="form-control" id="idagencia" disabled>
+                          <select class="form-control" id="idagencia">
                             <option></option>
                             @foreach($agencias as $value)
                                 <option value="{{$value->id}}">{{$value->nombreagencia}}</option>

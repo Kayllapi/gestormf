@@ -592,7 +592,7 @@
               <th colspan=2>Plazo</th>
               <th rowspan=2>FORMA DE PAGO</th>
               <th rowspan=2>Monto Préstamo (S/.)</th>
-              <th rowspan=2>TEM</th>
+              <th rowspan=2 width="50px">TEM</th>
 
               <th rowspan=2>Servicios de Recaudo (S/.)</th>
               <th rowspan=2>Cargos (S/.)</th>
@@ -617,7 +617,7 @@
                   @endif
                 @endforeach
               </td> 
-              <td>{{ $credito->cuotas }}</td>
+              <td class="campo_moneda">{{ $credito->cuotas }}</td>
               <td>Cuota Fija</td>
               <td class="campo_moneda">{{ $credito->monto_solicitado }}</td>
               <td class="campo_moneda">{{ $credito->tasa_tem }} %</td>
@@ -650,7 +650,7 @@
           </tbody>
         </table>
       </div>
-      <div class="col" style="margin-left:430px;margin-top:-5px;">
+      <div class="col" style="margin-left:430px;margin-top:5px;">
         <div style="width:300px;height:1px;border-bottom:1px solid #000;"></div>
         <p align="center" style="margin: 0;">Asesor(a) de Créditos: {{ Auth::user()->codigo }} <br>Firma y Sello</p>		
       </div>

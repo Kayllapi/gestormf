@@ -119,7 +119,6 @@
     <div style="float:left;font-size:15px;">{{ $tienda->nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
   </header>
   <footer>
-    <div style="border-top: 1px solid #000"></div>
     <div style="position:absolute;left:0px;bottom:0px;">Contacto: {{$tienda->numerotelefono}}</div>
     <div style="position:absolute;left:200px;top:3px;">{{$tienda->paginaweb}}</div>
     <div style="position:absolute;right:0px;top:3px;">{{$tienda->direccion}}, {{$ubigeo_tienda->distrito}}, {{$ubigeo_tienda->provincia}}, {{$ubigeo_tienda->departamento}}</div>
@@ -224,8 +223,6 @@ Atentamente,
             <span><b>Representante Legal</b></span>
       </div>
       <br>
-<br><br>
-<br><br>
 <br><br>
 <br><br>
       <div style="width:100%;height:20px;">

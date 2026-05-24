@@ -7,7 +7,7 @@
     <style>
       *{
         font-family:helvetica;
-        font-size:9px;
+        font-size:9.5px;
       }
       @page {
           margin: 0cm 0cm;
@@ -135,7 +135,7 @@
   @endphp
   <main>
     <div class="row">
-      <div class="col" style="width:360px;">
+      <div class="col" style="width:350px;">
         <table style="width:100%;">
           <tr>
             <td>AGENCIA/OFICINA:</td>

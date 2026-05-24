@@ -588,13 +588,13 @@
             </tr>
             <tr>
               <th rowspan=2>DESTINO DE CRÉDITO</th>
-              <th rowspan=2>Producto</th>
+              <th rowspan=2 width="100px">Producto</th>
               <th colspan=2>Plazo</th>
               <th rowspan=2>FORMA DE PAGO</th>
               <th rowspan=2>Monto Préstamo (S/.)</th>
               <th rowspan=2 width="50px">TEM</th>
 
-              <th rowspan=2>Servicios de Recaudo (S/.)</th>
+              <th rowspan=2 width="70px">Servicios de Recaudo (S/.)</th>
               <th rowspan=2>Cargos (S/.)</th>
               <th rowspan=2 >Cuota de Pago {{$nombre_forma_pago}} (S/.)</th>
             </tr>

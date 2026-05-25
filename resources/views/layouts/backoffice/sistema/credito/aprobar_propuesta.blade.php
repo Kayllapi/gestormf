@@ -117,14 +117,16 @@
               $validadar_resultado++;
           }
 
-          $excedente_propuesta_con_deduccion = $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->excedente_propuesta_con_deduccion : 0;
-          $rango_tope = configuracion($tienda->id,'rango_tope')['valor'];
-          if ($excedente_propuesta_con_deduccion < 0) {
-            $estado_imprimir = 1;
-          } else if ($excedente_propuesta_con_deduccion <= $rango_tope) {
-
-          } else if ($excedente_propuesta_con_deduccion > $rango_tope){
-            $estado_imprimir = 1;
+          if ($credito->idevaluacion==2) { // Completa
+            $excedente_propuesta_con_deduccion = $credito_evaluacion_cuantitativa ? $credito_evaluacion_cuantitativa->excedente_propuesta_con_deduccion : 0;
+            $rango_tope = configuracion($tienda->id,'rango_tope')['valor'];
+            if ($excedente_propuesta_con_deduccion < 0) {
+              $estado_imprimir = 1;
+            } else if ($excedente_propuesta_con_deduccion <= $rango_tope) {
+  
+            } else if ($excedente_propuesta_con_deduccion > $rango_tope) {
+              $estado_imprimir = 1;
+            }
           }
           if($validadar_resultado==3){
             $estado_imprimir = 1;

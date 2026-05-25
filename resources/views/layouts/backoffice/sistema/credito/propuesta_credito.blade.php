@@ -1546,7 +1546,7 @@
                   <tr>
                     <td class="doble-subrayado">Relación cuota/excedente</td>
                     <td class="doble-subrayado">%</td>
-                    <td class="doble-subrayado campo_moneda">{{ $res_solvencia_relacion_cuota_resumida }}</td>
+                    <td class="campo_moneda"><span class="doble-subrayado" style="{{$res_solvencia_relacion_cuota_style}}">{{ $res_solvencia_relacion_cuota_resumida }}</span></td>
                     <td><span class="doble-subrayado" style="{{$res_solvencia_relacion_cuota_style}}">{{ $res_solvencia_relacion_cuota_res }}</span></td>
                     <td colspan=2>
                       {{-- <input type="text"
@@ -1568,7 +1568,7 @@
                   <tr>
                     <td>R. Cuota Mensual/Ingreso Mensual</td>
                     <td>%</td>
-                    <td class="campo_moneda">{{ $res_ratios_cuota_ingreso_mensual }}</td>
+                    <td class="campo_moneda"><span style="{{$res_ratios_cuota_ingreso_mensual_style}}">{{ $res_ratios_cuota_ingreso_mensual }}</span></td>
                     <td><span class="" style="{{$res_ratios_cuota_ingreso_mensual_style}}">{{ $res_ratios_cuota_ingreso_mensual_res }}</span></td>
                     <td colspan=2><div class="cuadro-input">{{ $res_ratios_cuota_ingreso_mensual_res_coment }}</div></td>
                     <td><div class="cuadro-input">Debe ser <= que {{ configuracion($tienda->id,'relacion_couta_ingreso')['valor'] }}%. Considerar N° de entidades para determinar</div></td>
@@ -1577,7 +1577,7 @@
                     <tr>
                       <td>R. Cuota diaria/ Venta diaria</td>
                       <td>%</td>
-                      <td class="campo_moneda">{{ $res_ratios_venta_cuota_diaria }}</td>
+                      <td class="campo_moneda"><span style="{{$res_ratios_venta_cuota_diaria_style}}">{{ $res_ratios_venta_cuota_diaria }}</span></td>
                       <td><span class="" style="{{$res_ratios_venta_cuota_diaria_style}}">{{ $res_ratios_venta_cuota_diaria_res }}</span></td>
                       <td colspan=2><div class="cuadro-input">{{ $res_ratios_venta_cuota_diaria_res_coment }}</div></td>
                       <td><div class="cuadro-input">Debe ser <= que {{ configuracion($tienda->id,'relacion_cuota_venta')['valor'] }}%</div></td>
@@ -1587,7 +1587,7 @@
                     <tr>
                       <td>R. Cuota Semanal/ Venta semanal </td>
                       <td>%</td>
-                      <td class="campo_moneda">{{ $res_ratios_venta_cuota_semanal }}</td>
+                      <td class="campo_moneda"><span style="{{$res_ratios_venta_cuota_semanal_style}}">{{ $res_ratios_venta_cuota_semanal }}</span></td>
                       <td><span class="" style="{{$res_ratios_venta_cuota_semanal_style}}">{{ $res_ratios_venta_cuota_semanal_res }}</span></td>
                       <td colspan=2><div class="cuadro-input">{{ $res_ratios_venta_cuota_semanal_res_coment }}</div></td>
                       <td><div class="cuadro-input">Debe ser <= que {{ configuracion($tienda->id,'relacion_cuota_venta')['valor'] }}%</div></td>
@@ -1597,7 +1597,7 @@
                     <tr>
                       <td>R. Cuota Quincenal/ Vta. quincenal </td>
                       <td>%</td>
-                      <td class="campo_moneda">{{ $res_ratios_venta_cuota_quincenal }}</td>
+                      <td class="campo_moneda"><span style="{{$res_ratios_venta_cuota_quincenal_style}}">{{ $res_ratios_venta_cuota_quincenal }}</span></td>
                       <td><span class="" style="{{$res_ratios_venta_cuota_quincenal_style}}">{{ $res_ratios_venta_cuota_quincenal_res }}</span></td>
                       <td colspan=2><div class="cuadro-input">{{ $res_ratios_venta_cuota_quincenal_res_coment }}</div></td>
                       <td><div class="cuadro-input">Debe ser <= que {{ configuracion($tienda->id,'relacion_cuota_venta')['valor'] }}%</div></td>
@@ -1607,7 +1607,7 @@
                     <tr>
                       <td>R. Cuota Mensual/Venta Mensual ( Frec. Mensual)</td>
                       <td>%</td>
-                      <td class="campo_moneda">{{ $res_ratios_venta_cuota_mensual }}</td>
+                      <td class="campo_moneda"><span style="{{$res_ratios_venta_cuota_mensual_style}}">{{ $res_ratios_venta_cuota_mensual }}</span></td>
                       <td><span class="" style="{{$res_ratios_venta_cuota_mensual_style}}">{{ $res_ratios_venta_cuota_mensual_res }}</span></td>
                       <td colspan=2><div class="cuadro-input">{{ $res_ratios_venta_cuota_mensual_res_coment }}</div></td>
                       <td><div class="cuadro-input">Debe ser <= que {{ configuracion($tienda->id,'relacion_cuota_venta')['valor'] }}%. Considerar determinante el N° de entidades</div></td>
@@ -1619,7 +1619,7 @@
                   <tr>
                     <td>Financiamiento por VRU</td>
                     <td>%</td>
-                    <td class="campo_moneda" style="{{$limites_financiamiento_vru_style}}">{{ $limites_financiamiento_vru }}</td>
+                    <td class="campo_moneda"><span style="{{$limites_financiamiento_vru_style}}">{{ $limites_financiamiento_vru }}</span></td>
                     <td><span style="{{$limites_financiamiento_vru_style}}">{{ $limites_financiamiento_vru_res }}</span></td>
                     <td colspan=2>{{ $credito_propuesta ? $credito_propuesta->limites_financiamiento_vru_res_coment : '' }}</td>
                     <td><div class="cuadro-input">Máximo exigido {{ configuracion($tienda->id,'capital_asignado')['valor'] }} %</div></td>
@@ -1681,7 +1681,7 @@
                 <tr>
                   <td class="doble-subrayado">Cuota total/excedente total</td>
                   <td class="doble-subrayado">%</td>
-                  <td class="doble-subrayado">{{ $solvencia_cuota_total }}</td>
+                  <td class="doble-subrayado"><span style="{{$stylebackground_solvencia_cuota_total}}">{{ $solvencia_cuota_total }}</span></td>
                   <td><span class="doble-subrayado" style="{{$stylebackground_solvencia_cuota_total}}">{{ $solvencia_cuota_total_res }}</span></td>
                   <td colspan=2>
                     <input type="text"
@@ -1698,7 +1698,7 @@
                 <tr>
                   <td>Financiamiento por VRU</td>
                   <td>%</td>
-                  <td>{{ $limites_financiamiento_vru }}</td>
+                  <td><span style="{{$limites_financiamiento_vru_style}}">{{ $limites_financiamiento_vru }}</span></td>
                   <td><span style="{{$limites_financiamiento_vru_style}}">{{ $limites_financiamiento_vru_res }}</span></td>
                   <td colspan=2>{{ $credito_propuesta ? $credito_propuesta->limites_financiamiento_vru_res_coment : '' }}</td>
                   <td>Máximo exigido {{ configuracion($tienda->id,'capital_asignado')['valor'] }} %</td>
@@ -1727,7 +1727,7 @@
                   @endphp
                   <td class="doble-subrayado">N° de entidades (Cliente y Pareja)</td>
                   <td class="doble-subrayado">N°</td>
-                  <td class="doble-subrayado">{{ $limites_numero_entidades }}</td>
+                  <td class="doble-subrayado"><span style="{{$limites_numero_entidades_style}}">{{ $limites_numero_entidades }}</span></td>
                   <td><span class="doble-subrayado" style="{{$limites_numero_entidades_style}}">{{ $limites_numero_entidades_res }}</span></td>
                   <td class="doble-subrayado"colspan=2>{{ $credito_propuesta ? $credito_propuesta->limites_numero_entidades_res_coment : '' }}</td>
                   <td class="doble-subrayado">{{ configuracion($tienda->id,'entidades_maxima')['valor'] }} Entidades</td>

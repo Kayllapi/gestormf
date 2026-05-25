@@ -250,7 +250,7 @@
           },
           success: function (respuesta){
               $('#idasesor').html(respuesta);  
-              sistema_select2({ input:'#idasesor',val:'{{Auth::user()->id}}' });
+              sistema_select2({ input:'#idasesor' });
           }
       })
   }

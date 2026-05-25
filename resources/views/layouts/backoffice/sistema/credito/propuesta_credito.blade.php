@@ -1823,9 +1823,9 @@
       $('#boton_imprimir').attr('disabled',true);
   });
   
-          @if($credito->idmodalidad_credito==2 && count($saldo_prestamo_vigente_propio)>0 && $view_detalle!='false')
-          calcula_neto_destino_credito();
-          @endif
+  @if($credito->idmodalidad_credito==2 && count($saldo_prestamo_vigente_propio)>0 && $view_detalle!='false')
+    calcula_neto_destino_credito();
+  @endif
   function calcula_neto_destino_credito(){
     let monto_destino_credito = parseFloat($('#monto_destino_credito').val());
  
@@ -1845,7 +1845,7 @@
             padding: 5px;
             border-radius: 5px;`).html('Es Obligatorio seleccionar una Amplación de deuda!!');
     }
-    
+     
     $('#monto_compra_deuda').val(monto_compra_deuda.toFixed(2))
     
     // let modalidad_credito = 2; PARA PRUEBAS
@@ -1863,6 +1863,20 @@
       $('#boton_imprimir').attr('disabled',false);
     }
     let neto_destino_credito = monto_destino_credito - monto_compra_deuda;
+    if (neto_destino_credito<0) {
+      $('#result_ampliaciondeuda').attr('style',`background-color: #ffc9ca;
+          border: 1px solid #ff6666 !important;
+          color: #93222c !important;
+          text-align: center;
+          font-weight: bold;
+          padding: 5px;
+          border-radius: 5px;`).html('No debe ser Negativo!!');
+      $('#boton_guardar').attr('disabled',true);
+      $('#boton_imprimir').attr('disabled',true);
+    } else {
+      $('#boton_guardar').attr('disabled',false);
+      $('#boton_imprimir').attr('disabled',false);
+    }
     $('#neto_destino_credito').val(neto_destino_credito.toFixed(2))
   }
   

@@ -695,11 +695,19 @@
                 <td></td>
                 <td colspan="2">Neto a Entregar (S/)</td>
                 <td>
-                  <input type="text"
+                  @if ($credito->idmodalidad_credito == 1) {{-- Regular --}} 
+                    <input type="text"
                     class="form-control campo_moneda"
                     disabled
                     id="neto_destino_credito" 
-                    value="{{ $credito_propuesta ? (number_format($credito->monto_solicitado - $credito_propuesta->monto_compra_deuda, 2, '.', '')) : $credito->monto_solicitado }}">
+                    value="{{ $credito->monto_solicitado }}">
+                  @else
+                    <input type="text"
+                      class="form-control campo_moneda"
+                      disabled
+                      id="neto_destino_credito" 
+                      value="{{ $credito_propuesta ? (number_format($credito->monto_solicitado - $credito_propuesta->monto_compra_deuda, 2, '.', '')) : $credito->monto_solicitado }}">
+                  @endif
                 </td>
                 <td colspan="2" rowspan="{{count($saldo_prestamo_vigente_propio)}}"></td>
               </tr>

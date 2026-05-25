@@ -180,7 +180,6 @@
           //$nombre_forma_pago_credito = $credito_cuantitativa_deudas->nombre_forma_pago_credito;
           //$propuesta_total_pagar = $credito_cuantitativa_deudas->propuesta_total_pagar;
           //$propuesta_cuotas = $credito_cuantitativa_deudas->propuesta_cuotas;
-
           ?>
     <div class="mb-1 mt-2">
       <span class="badge d-block" style="font-weight: bold;">SOLICITUD: <span style="border-bottom: 1px solid #000; font-weight: bold; font-size: 12px;">{{ $credito->estado }}</span> - En comité de créditos con las condiciones siguientes</span>
@@ -189,8 +188,8 @@
       <div class="col">
         <table style="width:100%;">
           <tr>
-            <td>Segmento de fuente ingreso:</td>
-            <td class="border-td">{{ $users_prestamo->idfuenteingreso == 1 ? 'INDEPENDIENTE' : 'DEPENDIENTE' }}</td>
+            <td>Segmento de fuente Ing.:</td>
+            <td class="border-td"  width="190px">{{ $users_prestamo->idfuenteingreso == 1 ? 'INDEPENDIENTE' : 'DEPENDIENTE' }}</td>
           </tr>
           <tr>
             <td>Tipo de crédito:</td>
@@ -214,7 +213,7 @@
         <table>
           <tr>
             <td>Frecuencia de Pago:</td>
-            <td class="border-td" width="100px">{{ strtoupper($credito->forma_pago_credito_nombre) }}</td>
+            <td class="border-td" width="80px">{{ strtoupper($credito->forma_pago_credito_nombre) }}</td>
           </tr>
           <tr>
             <td>Modalidad:</td>
@@ -238,7 +237,7 @@
         <table>
           <tr>
             <td>Monto Aprobado S/.:</td>
-            <td class="border-td campo_moneda" style="background-color:#F9F3B5; width:100px;">{{ $credito->monto_solicitado }}</td>
+            <td class="border-td campo_moneda" style="background-color:#F9F3B5; width:60px;">{{ $credito->monto_solicitado }}</td>
           </tr>
           <tr>
             <td>Tasa efectiva mensual %:</td>
@@ -452,7 +451,7 @@
               <table class="table table-bordered" style="width:100%;">
               <thead>
                 <tr>
-                    <th style="width:150px;">Funcionario</th>
+                    <th style="width:180px;">Funcionario</th>
                     <th>Comentario</th>
                     <th>Firma</th>
                 </tr>

@@ -138,55 +138,85 @@
           }
         }
       @endphp
+      @php
+        // Dependiente
+        $limites_financiamiento_vru = $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->porcentaje_resultado : 0;
+        $tope_capital_asignado = configuracion($tienda->id,'capital_asignado')['valor'];
+        $estado_limites_financiamiento_vru = ($limites_financiamiento_vru <= $tope_capital_asignado) ? true : false;
+      @endphp
       <div class="row mt-1">
         <div class="col" style="flex: 0 0 0%;">
           @if($credito->idevaluacion==1) {{-- Resumida --}}
             @if($credito->idforma_credito==2) {{-- No prendario --}}
               @if($users_prestamo->idfuenteingreso == 1) {{-- Independiente --}}
-                @if ($credito_evaluacion_resumida)
-                  @if ($credito_evaluacion_resumida->estado_credito_general=='CRÉDITO VIABLE'
-                      && $validadar_ampliacion == 0
-                    )
-                    <button type="submit" class="btn btn-success">
-                      <i class="fa-solid fa-check"></i> SI, PASAR A PROCESO
-                    </button>
-                  @elseif($credito_evaluacion_resumida->estado_credito_general=='CRÉDITO VIABLE')
-                    @php $validad_eva_resumida = 0; @endphp
+                @if ($estado_limites_financiamiento_vru) {{-- VRU dentro de límite permisible --}}
+                  @if ($credito_evaluacion_resumida) {{-- Evaluación resumida --}}
+                    @if ($credito_evaluacion_resumida->estado_credito_general=='CRÉDITO VIABLE'
+                        && $validadar_ampliacion == 0
+                      )
+                      <button type="submit" class="btn btn-success">
+                        <i class="fa-solid fa-check"></i> SI, PASAR A PROCESO
+                      </button>
+                    @elseif($credito_evaluacion_resumida->estado_credito_general=='CRÉDITO VIABLE')
+                      @php $validad_eva_resumida = 0; @endphp
+                    @else
+                      @php $validad_eva_resumida = 1; @endphp
+                    @endif
                   @else
-                    @php $validad_eva_resumida = 1; @endphp
+                    @if ($validadar_ampliacion == 0)
+                      <button type="submit" class="btn btn-success">
+                        <i class="fa-solid fa-check"></i> SI, PASAR A PROCESO
+                      </button>
+                    @endif
                   @endif
                 @else
-                  @if ($validadar_ampliacion == 0)
-                    <button type="submit" class="btn btn-success">
-                      <i class="fa-solid fa-check"></i> SI, PASAR A PROCESO
-                    </button>
-                  @endif
+                  <div style="width: 300px;
+                    background-color: #ffc9ca;
+                    border: 1px solid #ff6666 !important;
+                    border-radius: 5px;
+                    padding: 5px;
+                    color: #93222c;
+                    text-align: center;
+                    font-weight: bold;">VRU fuera de límite permisible
+                  </div>
                 @endif
               @elseif($users_prestamo->idfuenteingreso == 2) {{-- Dependiente --}}
-                @if ($credito_formato_evaluacion)
-                  @php
-                    $res_solvencia_relacion_cuota = $credito_formato_evaluacion ? $credito_formato_evaluacion->resultado_cuota_excedente : 0;
-                  @endphp
-                  @if ($res_solvencia_relacion_cuota > 0
-                      && $res_solvencia_relacion_cuota <= $rango_tope_dependiente
-                      && $validadar_ampliacion == 0
-                    )
-                    <button type="submit" class="btn btn-success">
-                      <i class="fa-solid fa-check"></i> SI, PASAR A PROCESO
-                    </button>
-                  @elseif ($res_solvencia_relacion_cuota > $rango_tope_dependiente)
-                    @php $validad_eva_resumida = 1; @endphp
-                  @elseif ($res_solvencia_relacion_cuota <= 0)
-                    @php $validad_eva_resumida = 1; @endphp
+                @if ($estado_limites_financiamiento_vru) {{-- VRU dentro de límite permisible --}}
+                  @if ($credito_formato_evaluacion) {{-- Evaluación resumida --}}
+                    @php
+                      $res_solvencia_relacion_cuota = $credito_formato_evaluacion ? $credito_formato_evaluacion->resultado_cuota_excedente : 0;
+                    @endphp
+                    @if ($res_solvencia_relacion_cuota > 0
+                        && $res_solvencia_relacion_cuota <= $rango_tope_dependiente
+                        && $validadar_ampliacion == 0
+                      )
+                      <button type="submit" class="btn btn-success">
+                        <i class="fa-solid fa-check"></i> SI, PASAR A PROCESO
+                      </button>
+                    @elseif ($res_solvencia_relacion_cuota > $rango_tope_dependiente)
+                      @php $validad_eva_resumida = 1; @endphp
+                    @elseif ($res_solvencia_relacion_cuota <= 0)
+                      @php $validad_eva_resumida = 1; @endphp
+                    @else
+                      @php $validad_eva_resumida = 0; @endphp
+                    @endif
                   @else
-                    @php $validad_eva_resumida = 0; @endphp
+                    @if ($validadar_ampliacion == 0)
+                      <button type="submit" class="btn btn-success">
+                        <i class="fa-solid fa-check"></i> SI, PASAR A PROCESO
+                      </button>
+                    @endif
                   @endif
                 @else
-                  @if ($validadar_ampliacion == 0)
-                    <button type="submit" class="btn btn-success">
-                      <i class="fa-solid fa-check"></i> SI, PASAR A PROCESO
-                    </button>
-                  @endif
+                  <div style="width: 300px;
+                    background-color: #ffc9ca;
+                    border: 1px solid #ff6666 !important;
+                    border-radius: 5px;
+                    padding: 5px;
+                    color: #93222c;
+                    text-align: center;
+                    font-weight: bold;">VRU fuera de límite permisible
+                  </div>
                 @endif
               @endif
             @else
@@ -217,10 +247,22 @@
                 @endif
             @endif
           @elseif($credito->idevaluacion==2) {{-- Completo --}}
-            @if($estado_imprimir==0 && $validadar_ampliacion==0)
-              <button type="submit" class="btn btn-success">
-                <i class="fa-solid fa-check"></i> SI, PASAR A PROCESO
-              </button>
+            @if ($estado_limites_financiamiento_vru) {{-- VRU dentro de límite permisible --}}
+              @if($estado_imprimir==0 && $validadar_ampliacion==0)
+                <button type="submit" class="btn btn-success">
+                  <i class="fa-solid fa-check"></i> SI, PASAR A PROCESO
+                </button>
+              @endif
+            @else
+              <div style="width: 300px;
+                background-color: #ffc9ca;
+                border: 1px solid #ff6666 !important;
+                border-radius: 5px;
+                padding: 5px;
+                color: #93222c;
+                text-align: center;
+                font-weight: bold;">VRU fuera de límite permisible
+              </div>
             @endif
           @endif
       </div>

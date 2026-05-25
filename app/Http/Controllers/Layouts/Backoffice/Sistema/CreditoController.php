@@ -3251,7 +3251,9 @@ class CreditoController extends Controller
                                           ->first();
         
         $credito_formato_evaluacion = DB::table('credito_formato_evaluacion')->where('credito_formato_evaluacion.idcredito',$id)->first();
-        // dd($users_prestamo, $credito);
+        $credito_cuantitativa_control_limites = DB::table('credito_cuantitativa_control_limites')
+          ->where('credito_cuantitativa_control_limites.idcredito',$id)
+          ->first();
         
         return view(sistema_view().'/credito/aprobar_propuesta',[
           'users_prestamo'    => $users_prestamo,
@@ -3263,6 +3265,7 @@ class CreditoController extends Controller
           'credito_evaluacion_cuantitativa' => $credito_evaluacion_cuantitativa,
           'credito_evaluacion_resumida' => $credito_evaluacion_resumida,
           'credito_formato_evaluacion' => $credito_formato_evaluacion,
+          'credito_cuantitativa_control_limites' => $credito_cuantitativa_control_limites,
           //'credito_cronograma' => $credito_cronograma,
         ]);
       }

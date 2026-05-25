@@ -1357,7 +1357,14 @@
                 <td class="doble-subrayado">%</td>
                 <td class="doble-subrayado">{{ $solvencia_cuota_total }}</td>
                 <td><span class="doble-subrayado">{{ $solvencia_cuota_total_res }}</span></td>
-                <td class="doble-subrayado" colspan=2>{{ $credito_propuesta ? $credito_propuesta->solvencia_cuota_total_res_coment : '' }}</td>
+                <td class="doble-subrayado"
+                    style="background-color: #e5e5e5 !important;
+                      color: #000 !important;
+                      border: 1px solid #000000;
+                      text-align:center;"
+                    colspan=2>
+                    <b>{{ $credito_formato_evaluacion ? $credito_formato_evaluacion->estado_evaluacion : '' }}</b>
+                </td>
                 <td class="doble-subrayado">Se exije &lt; 100% conforme política</td>
               </tr>
               <tr>

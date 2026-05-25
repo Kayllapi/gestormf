@@ -1288,6 +1288,13 @@
             $validadar_resultado = 3;
           }
         }
+
+        $color_resumida_dependiente = '';
+        if ($credito_formato_evaluacion ? $credito_formato_evaluacion->estado_evaluacion : '' == 'CRÉDITO VIABLE') {
+          $color_resumida_dependiente = 'bg-success';
+        } elseif ($credito_formato_evaluacion ? $credito_formato_evaluacion->estado_evaluacion : '' == 'CRÉDITO NO VIABLE') {
+          $color_resumida_dependiente = 'bg-danger';
+        }
       @endphp
       @if ($users_prestamo->idfuenteingreso == 1) {{-- Independiente --}}
         {{-- RESULTADOS DE EVALUACIÓN --}}
@@ -1676,7 +1683,13 @@
                   <td class="doble-subrayado">%</td>
                   <td class="doble-subrayado">{{ $solvencia_cuota_total }}</td>
                   <td><span class="doble-subrayado" style="{{$stylebackground_solvencia_cuota_total}}">{{ $solvencia_cuota_total_res }}</span></td>
-                  <td class="doble-subrayado" colspan=2>{{ $credito_propuesta ? $credito_propuesta->solvencia_cuota_total_res_coment : '' }}</td>
+                  <td colspan=2>
+                    <input type="text"
+                      class="form-control text-center {{ $color_resumida_dependiente }}"
+                      value="{{ $credito_formato_evaluacion ? $credito_formato_evaluacion->estado_evaluacion : '' }}"
+                      disabled
+                      id="estado_credito_dependiente">
+                  </td>
                   <td class="doble-subrayado">Se exije &lt; 100% conforme política</td>
                 </tr>
                 <tr>

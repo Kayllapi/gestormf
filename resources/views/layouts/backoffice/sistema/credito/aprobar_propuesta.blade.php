@@ -74,7 +74,7 @@
         $validar_evaluacion = 0;
         $validad_eva_resumida  = 0;
         $rango_tope = configuracion($tienda->id,'rango_tope')['valor'];
-
+        $rango_tope_dependiente = configuracion($tienda->id,'rango_tope_dependiente')['valor'];
         //validar ampliado
         $credito_propuesta = DB::table('credito_propuesta')->where('credito_propuesta.idcredito',$credito->id)->first();
         if($credito->idmodalidad_credito == 2){ // Ampliado
@@ -168,13 +168,13 @@
                     $res_solvencia_relacion_cuota = $credito_formato_evaluacion ? $credito_formato_evaluacion->resultado_cuota_excedente : 0;
                   @endphp
                   @if ($res_solvencia_relacion_cuota > 0
-                      && $res_solvencia_relacion_cuota <= $rango_tope
+                      && $res_solvencia_relacion_cuota <= $rango_tope_dependiente
                       && $validadar_ampliacion == 0
                     )
                     <button type="submit" class="btn btn-success">
                       <i class="fa-solid fa-check"></i> SI, PASAR A PROCESO
                     </button>
-                  @elseif ($res_solvencia_relacion_cuota > $rango_tope)
+                  @elseif ($res_solvencia_relacion_cuota > $rango_tope_dependiente)
                     @php $validad_eva_resumida = 1; @endphp
                   @elseif ($res_solvencia_relacion_cuota <= 0)
                     @php $validad_eva_resumida = 1; @endphp

@@ -1645,7 +1645,7 @@
                       ?>
                       <td class="doble-subrayado">N° de entidades (Cliente y Pareja)</td>
                       <td class="doble-subrayado">N°</td>
-                      <td class="doble-subrayado  campo_moneda">{{ $limites_numero_entidades }}</td>
+                      <td class="campo_moneda"><span class="doble-subrayado" style="{{$limites_numero_entidades_style}}">{{ $limites_numero_entidades }}</span></td>
                       <td><span class="doble-subrayado" style="{{$limites_numero_entidades_style}}">{{ $limites_numero_entidades_res }}</span></td>
                       <td colspan=2><input type="text" {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto doble-subrayado" value="{{ $credito_propuesta ? $credito_propuesta->limites_numero_entidades_res_coment : '' }}"></td>
                       <td class=""><div class="cuadro-input doble-subrayado">{{ configuracion($tienda->id,'entidades_maxima')['valor'] }} Entidades</div></td>
@@ -1681,7 +1681,7 @@
                 <tr>
                   <td class="doble-subrayado">Cuota total/excedente total</td>
                   <td class="doble-subrayado">%</td>
-                  <td class="doble-subrayado"><span style="{{$stylebackground_solvencia_cuota_total}}">{{ $solvencia_cuota_total }}</span></td>
+                  <td><span class="doble-subrayado" style="{{$stylebackground_solvencia_cuota_total}}">{{ $solvencia_cuota_total }}</span></td>
                   <td><span class="doble-subrayado" style="{{$stylebackground_solvencia_cuota_total}}">{{ $solvencia_cuota_total_res }}</span></td>
                   <td colspan=2>
                     <input type="text"
@@ -1727,7 +1727,7 @@
                   @endphp
                   <td class="doble-subrayado">N° de entidades (Cliente y Pareja)</td>
                   <td class="doble-subrayado">N°</td>
-                  <td class="doble-subrayado"><span style="{{$limites_numero_entidades_style}}">{{ $limites_numero_entidades }}</span></td>
+                  <td><span class="doble-subrayado" style="{{$limites_numero_entidades_style}}">{{ $limites_numero_entidades }}</span></td>
                   <td><span class="doble-subrayado" style="{{$limites_numero_entidades_style}}">{{ $limites_numero_entidades_res }}</span></td>
                   <td class="doble-subrayado"colspan=2>{{ $credito_propuesta ? $credito_propuesta->limites_numero_entidades_res_coment : '' }}</td>
                   <td class="doble-subrayado">{{ configuracion($tienda->id,'entidades_maxima')['valor'] }} Entidades</td>

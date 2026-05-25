@@ -229,7 +229,7 @@
 
   sistema_select2({ input:'#idagencia',val:'{{$tienda->id}}' });
   sistema_select2({ input:'#idformacredito',val:'CP' });
-  sistema_select2({ input:'#idasesor',val:'{{Auth::user()->id}}' });
+  sistema_select2({ input:'#idasesor' });
   
     $(`#tabla-origendes`).on("click", "tr", function(e) {
         $('#tabla-destinodes > tbody > tr').removeClass('selected');

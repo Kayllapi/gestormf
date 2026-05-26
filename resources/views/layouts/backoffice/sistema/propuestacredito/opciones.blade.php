@@ -64,7 +64,7 @@
                     6.- INGRESO ADICIONAL - MES Y FIJOS</button>
                 </div>
                 <div class="btn-group mb-1 evaluacion-completa" id="cont_control_limites">
-                  <button type="button" class="btn btn-warning evaluacion" style="background-color: #c0f297;border-color: #212529;"
+                  <button type="button" class="btn btn-primary evaluacion" style="background-color: #c0f297;border-color: #212529;"
                           onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=control_limites')}}&detalle=false', size: 'modal-fullscreen' })">
                     7.- GARANTIAS Y LIMITES</button>
                 </div>
@@ -79,33 +79,33 @@
                     1.- EVALUACION RESUMIDA</button>
                 </div>
                 <div class="btn-group mb-1 evaluacion-resumida">
-                  <button type="button" class="btn btn-warning evaluacion" style="background-color: #c0f297;border-color: #212529;"
+                  <button type="button" class="btn btn-primary evaluacion" style="background-color: #c0f297;border-color: #212529;"
                           onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=control_limites')}}&detalle=false', size: 'modal-fullscreen' })">
                     2.- GARANTIAS Y LIMITES</button>
                 </div>
-                <button type="button" class="btn btn-secondary mb-1" style="background-color: #6e726b;border-color: #212529;"  
+                <button type="button" class="btn btn-warning1 mb-1" style="background-color: #6e726b;border-color: #212529;"  
                         onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=solicitud_checklist')}}&detalle=false', size: 'modal-fullscreen' })">
                   CHECK LIST</button>
               </div>
             @elseif($users_prestamo->idfuenteingreso == 2)
             <div class="col-md-9 mb-1">
-                <button type="button" class="btn btn-secondary" style="color: #000;background-color: #00bf3e;border-color: #00bf3e;height: 50px;margin-bottom: 5px;"
+                <button type="button" class="btn btn-secondary" style="color: #000;background-color: #9AD872;border-color: #9AD872;height: 50px;margin-bottom: 5px;"
                         onclick="form_propuesta_credito()">
                   HOJA DE PROPUESTA DE CRÉDITO</button>
             </div>
             <div class="col-sm-12">
               <div class="btn-group mb-1" id="formato_evaluacion">
-                <button type="button" class="btn btn-warning evaluacion" style="background-color: #c0f297;border-color: #212529;"
+                <button type="button" class="btn btn-primary evaluacion" style="background-color: #c0f297;border-color: #212529;"
                         onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=formato_evaluacion')}}&detalle=false', size: 'modal-fullscreen' })">
                   1.- FORMATO DE EVALUACIÓN</button>
               </div>
                 <div class="btn-group mb-1 evaluacion-resumida">
-                  <button type="button" class="btn btn-warning evaluacion" style="background-color: #c0f297;border-color: #212529;"
+                  <button type="button" class="btn btn-primary evaluacion" style="background-color: #c0f297;border-color: #212529;"
                           onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=control_limites')}}&detalle=false', size: 'modal-fullscreen' })">
                     2.- GARANTIAS Y LIMITES</button>
                 </div>
 
-              <button type="button" class="btn btn-secondary mb-1" style="background-color: #6e726b;border-color: #212529;"  
+              <button type="button" class="btn btn-warning1 mb-1" style="background-color: #6e726b;border-color: #212529;"  
                       onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=solicitud_checklist')}}&detalle=false', size: 'modal-fullscreen' })">
                 CHECK LIST</button>
             </div>

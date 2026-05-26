@@ -162,7 +162,14 @@
                                     <div style="background-color: #9AD872;padding: 7px;border-radius: 5px;color: #000;text-align: center;font-weight: bold;">CORRECTO</div></td>
                                   @elseif($value->idestado==2)
                                   <td id="resultado_cambiar_permiso{{ $value->id }}">
-                                    <div style="background-color: #dc3545;padding: 7px;border-radius: 5px;color: #fff;text-align: center;font-weight: bold;">ANULADO</div></td>
+                                    <div style="
+                                      background-color: #ffc9ca;
+                                      padding: 7px;
+                                      border: 1px solid #ff6666 !important;
+                                      border-radius: 5px;
+                                      color: #93222c;
+                                      text-align: center;
+                                      font-weight: bold;">ANULADO</div></td>
                                   @endif
                               @else
                               <td id="resultado_cambiar_permiso{{ $value->id }}" style="width:242px">
@@ -239,18 +246,20 @@
           ?>
           @if($fecha!=$ultimafecha)
                         <p class="text-center" 
-                           style="background-color: #dc3545;
+                           style="background-color: #ffc9ca;
+                                  border: 1px solid #ff6666 !important;
+                                  color: #93222c;
                                   padding: 10px;
                                   border-radius: 5px;
-                                  color: #fff;
                                   width: 100%;
                                   margin: auto;">El Crédito esta fuera de fecha, no es posible ELIMINAR.</p>
           @elseif($credito_cobranzacuota>0)
                         <p class="text-center" 
-                           style="background-color: #dc3545;
+                           style="background-color: #ffc9ca;
+                                  border: 1px solid #ff6666 !important;
+                                  color: #93222c;
                                   padding: 10px;
                                   border-radius: 5px;
-                                  color: #fff;
                                   width: 100%;
                                   margin: auto;">El Crédito tiene una cobranza, no es posible ELIMINAR.</p>
 
@@ -283,10 +292,11 @@
               @elseif($permiso=='administrador')
               @if($credito->estado=='DESEMBOLSADO')
                         <p class="text-center" 
-                           style="background-color: #dc3545;
+                           style="background-color: #ffc9ca;
+                                  border: 1px solid #ff6666 !important;
+                                  color: #93222c;
                                   padding: 10px;
                                   border-radius: 5px;
-                                  color: #fff;
                                   width: 100%;
                                   margin: auto;">Usted no tiene permiso para ELIMINAR.</p>
               @else
@@ -302,10 +312,11 @@
           
           @if($credito->estado=='DESEMBOLSADO')
                         <p class="text-center" 
-                           style="background-color: #dc3545;
+                           style="background-color: #ffc9ca;
+                                  border: 1px solid #ff6666 !important;
+                                  color: #93222c;
                                   padding: 10px;
                                   border-radius: 5px;
-                                  color: #fff;
                                   width: 100%;
                                   margin: auto;">Un Crédito desembolsado no es posible pasar a GENERAR CRÉDITO.</p>
           @else

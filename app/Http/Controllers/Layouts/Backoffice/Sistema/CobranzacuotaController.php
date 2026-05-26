@@ -1272,30 +1272,36 @@ class CobranzacuotaController extends Controller
         }
 
         elseif($id == 'show_credito'){
-          $creditos = DB::table('credito')
-                            ->join('users as cliente','cliente.id','credito.idcliente')
-                            ->where('credito.estado','DESEMBOLSADO')
-                            ->where('cliente.identificacion','LIKE','%'.$request->buscar.'%')
-                            ->where('credito.idestadocredito',1)
-                            ->orWhere('credito.estado','DESEMBOLSADO')
-                            ->where('cliente.nombrecompleto','LIKE','%'.$request->buscar.'%')
-                            ->where('credito.idestadocredito',1)
-                            ->select(
-                                'cliente.id as idcliente',
-                                'cliente.identificacion as identificacion',
-                                'cliente.nombrecompleto as nombrecliente',
-                            )
-                            ->distinct()
-                            ->orderBy('credito.fecha_desembolso','asc')
-                            ->get();
+            $creditos = DB::table('credito')
+                ->join('users as cliente', 'cliente.id', '=', 'credito.idcliente')
+                ->where('credito.estado', 'DESEMBOLSADO')
+                ->where('credito.idestadocredito', 1)
+                ->where(function ($q) use ($request) {
+                    $q->where('cliente.identificacion', 'LIKE', '%' . $request->buscar . '%')
+                    ->orWhere('cliente.nombrecompleto', 'LIKE', '%' . $request->buscar . '%');
+                })
+                ->select(
+                    'cliente.id as idcliente',
+                    'cliente.identificacion as identificacion',
+                    'cliente.nombrecompleto as nombrecliente',
+                    DB::raw('MIN(credito.fecha_desembolso) as fecha_desembolso')
+                )
+                ->groupBy(
+                    'cliente.id',
+                    'cliente.identificacion',
+                    'cliente.nombrecompleto'
+                )
+                ->orderBy('fecha_desembolso', 'asc')
+                ->get();
+
             $data = [];
-            foreach($creditos as $value){
+            foreach ($creditos as $value) {
                 $data[] = [
                     'id' => $value->idcliente,
-                    'text' => $value->identificacion.' - '.$value->nombrecliente,
+                    'text' => $value->identificacion . ' - ' . $value->nombrecliente,
                 ];
             }
-          return $data;
+            return $data;
         }
         else if($id == 'showlistacreditos'){
           $cliente = DB::table('users')->whereId($request->idcliente)->select('users.id','users.nombrecompleto','users.identificacion')->first();

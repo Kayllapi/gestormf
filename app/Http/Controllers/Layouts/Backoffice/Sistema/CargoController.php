@@ -46,7 +46,6 @@ class CargoController extends Controller
                 'importe' => 'required',              
                 'descripcion' => 'required',                              
             ];
-          
             $messages = [
                 'idtipocargo.required' => 'El "Tipo Cargo" es Obligatorio.',
                 'importe.required' => 'El "Importe" es Obligatorio.',
@@ -54,9 +53,7 @@ class CargoController extends Controller
             ];
             $this->validate($request,$rules,$messages);
             
-            
-            
-            $credito_cargo = DB::table('credito_cargo')
+            /*$credito_cargo = DB::table('credito_cargo')
                 ->where('credito_cargo.idcredito',$request->idcredito)
                 ->where('credito_cargo.idestadocredito_cargo',1)
                 ->first();
@@ -65,20 +62,17 @@ class CargoController extends Controller
                     'resultado' => 'ERROR',
                     'mensaje'   => 'Ya existe un cargo pendiente!!.'
                 ]);
+            }*/
+            
+            $credito_cargo = DB::table('credito_cargo')
+                ->orderBy('credito_cargo.codigo','desc')
+                ->limit(1)
+                ->first();
+            $codigo = 1;
+            if($credito_cargo!=''){
+                $codigo = $credito_cargo->codigo+1;
             }
-            
-                 $credito_cargo = DB::table('credito_cargo')
-                    ->orderBy('credito_cargo.codigo','desc')
-                    ->limit(1)
-                    ->first();
-                $codigo = 1;
-                if($credito_cargo!=''){
-                    $codigo = $credito_cargo->codigo+1;
-                }
           
-            
-            
-            
             DB::table('credito_cargo')->insert([
                'fecharegistro'        => Carbon::now(),
                'codigo'              => $codigo,
@@ -105,19 +99,25 @@ class CargoController extends Controller
         if($id == 'show_credito'){
           
           $creditos = DB::table('credito')
-                            ->join('users as cliente','cliente.id','credito.idcliente')
-                            ->where('credito.estado','DESEMBOLSADO')
-                            ->where('cliente.identificacion','LIKE','%'.$request->buscar.'%')
-                            ->orWhere('credito.estado','DESEMBOLSADO')
-                            ->where('cliente.nombrecompleto','LIKE','%'.$request->buscar.'%')
-                            ->select(
-                                'cliente.id as idcliente',
-                                'cliente.identificacion as identificacion',
-                                'cliente.nombrecompleto as nombrecliente',
-                            )
-                            ->distinct()
-                            ->orderBy('credito.fecha_desembolso','asc')
-                            ->get();
+            ->join('users as cliente','cliente.id','credito.idcliente')
+            ->where('credito.estado','DESEMBOLSADO')
+            ->where(function ($q) use ($request) {
+                $q->where('cliente.identificacion', 'LIKE', '%' . $request->buscar . '%')
+                  ->orWhere('cliente.nombrecompleto', 'LIKE', '%' . $request->buscar . '%');
+            })
+            ->select(
+                'cliente.id as idcliente',
+                'cliente.identificacion as identificacion',
+                'cliente.nombrecompleto as nombrecliente',
+                DB::raw('MAX(credito.fecha_desembolso) as fecha_desembolso')
+            )
+            ->groupBy(
+                'cliente.id',
+                'cliente.identificacion',
+                'cliente.nombrecompleto'
+            )
+            ->orderBy('fecha_desembolso','asc')
+            ->get();
             $data = [];
             foreach($creditos as $value){
                 $data[] = [

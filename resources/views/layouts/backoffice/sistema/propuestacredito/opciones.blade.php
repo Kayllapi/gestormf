@@ -83,7 +83,7 @@
                           onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=control_limites')}}&detalle=false', size: 'modal-fullscreen' })">
                     2.- GARANTIAS Y LIMITES</button>
                 </div>
-                <button type="button" class="btn btn-warning1 mb-1" style="background-color: #6e726b;border-color: #212529;"  
+                <button type="button" class="btn btn-warning1 mb-1" 
                         onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=solicitud_checklist')}}&detalle=false', size: 'modal-fullscreen' })">
                   CHECK LIST</button>
               </div>
@@ -105,7 +105,7 @@
                     2.- GARANTIAS Y LIMITES</button>
                 </div>
 
-              <button type="button" class="btn btn-warning1 mb-1" style="background-color: #6e726b;border-color: #212529;"  
+              <button type="button" class="btn btn-warning1 mb-1"  
                       onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=solicitud_checklist')}}&detalle=false', size: 'modal-fullscreen' })">
                 CHECK LIST</button>
             </div>

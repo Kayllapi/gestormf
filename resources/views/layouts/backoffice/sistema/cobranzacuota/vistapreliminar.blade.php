@@ -16,8 +16,8 @@
           <div class="col-md-6" style="text-align: right;"><b>PRODUCTO:</b> {{ $credito->nombreproductocredito }}</div>
       </div>
        <div class="col-sm-12 mt-2 text-center">
-            <button type="button" class="btn btn-danger" style="background-color: #144081;border-color: #144081;" onclick="verpdf('pdf_cronograma')"> CRONOGRAMA</button>
-            <button type="button" class="btn btn-danger" style="background-color: #144081;border-color: #144081;" onclick="verpdf('pdf_resumen')"> H. RESUMEN</button>
+            <button type="button" class="btn btn-primary" style="background-color: #144081;border-color: #144081;" onclick="verpdf('pdf_cronograma')"> CRONOGRAMA</button>
+            <button type="button" class="btn btn-primary" style="background-color: #144081;border-color: #144081;" onclick="verpdf('pdf_resumen')"> H. RESUMEN</button>
        </div>
        <div class="col-sm-12 mt-2">
         <iframe id="iframe_acta_aprobacion" src="{{ url('/backoffice/'.$tienda->id.'/desembolso/'.$credito->id.'/edit?view=pdf_cronograma') }}#zoom=100" frameborder="0" width="100%" height="600px"></iframe>

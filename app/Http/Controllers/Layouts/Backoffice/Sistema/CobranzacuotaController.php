@@ -1197,25 +1197,24 @@ class CobranzacuotaController extends Controller
               
           $descuento_total = number_format($cronograma['select_totalcuota'],2,'.','');
           $penalidad_pagar = $descuento_total-$total_descuento_total;
-          
-          //opciones
-          
-          $btn_congelarcredito = '<button type="button" class="btn btn-info" onclick="congelarcredito()" style="font-weight: bold;">
-    <img src="'.url('public/backoffice/nuevosistema/congelador.png').'" style="width: 17px;"> CONGELAR CRÉDITO</button>';
-          if($credito->idestado_congelarcredito==2){
-              $btn_congelarcredito = '<div class="btn btn-info" style="float:right">CRÉDITO CONGELADO ('.date_format(date_create($credito->fecha_congelarcredito),'d-m-Y').')</div>';
-          }
-          
+
             // Garantias
             $credito_garantia = DB::table('credito_garantia')
                 ->where('credito_garantia.idcredito',$request->idcredito)
                 ->where('credito_garantia.estado_listagarantia',1)
                 ->count();
-            $txt_garantia_gp = $credito_garantia>0?'<span style="color: #c40000; float: right;">Garantía en Remate</span>':'';
+            $txt_garantia_gp = $credito_garantia>0?'<span style="color: #c40000; float: right;">GARANTÍA EN REMATE</span>':'';
+
+          //opciones
+          $btn_congelarcredito = '<button type="button" class="btn btn-info" onclick="congelarcredito()" style="font-weight: bold;">
+    <img src="'.url('public/backoffice/nuevosistema/congelador.png').'" style="width: 17px;"> CONGELAR CRÉDITO</button> '.$txt_garantia_gp;
+          if($credito->idestado_congelarcredito==2){
+              $btn_congelarcredito = '<div class="btn btn-info" style="float:right">CRÉDITO CONGELADO ('.date_format(date_create($credito->fecha_congelarcredito),'d-m-Y').')</div>';
+          }
               
           $opciones_datosprestamos = '<button type="button" class="btn btn-warning" onclick="vistapreliminar()" style="background-color: #bcbcbc;
     border-color: #bcbcbc;
-    font-weight: bold;">CRONOGRAMA/HOJA DE RESUMEN</button> '.$btn_congelarcredito.' '.$txt_garantia_gp;
+    font-weight: bold;">CRONOGRAMA/HOJA DE RESUMEN</button> '.$btn_congelarcredito;
           
           $total_adelantos = DB::table('credito_adelanto')
                 ->where('credito_adelanto.numerocuota',$primera_cuota_pendiente)

@@ -1211,7 +1211,7 @@ class CobranzacuotaController extends Controller
                 ->where('credito_garantia.idcredito',$request->idcredito)
                 ->where('credito_garantia.estado_listagarantia',1)
                 ->count();
-            $txt_garantia_gp = $credito_garantia>0?'<span style="color: #c40000;">Garantía en Remate</span>':'';
+            $txt_garantia_gp = $credito_garantia>0?'<span style="color: #c40000; float: right;">Garantía en Remate</span>':'';
               
           $opciones_datosprestamos = '<button type="button" class="btn btn-warning" onclick="vistapreliminar()" style="background-color: #bcbcbc;
     border-color: #bcbcbc;

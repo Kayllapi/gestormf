@@ -426,7 +426,11 @@
   @endif  
   @if($garantias->iddescuento_joya!=0)
       descuento_joya();
-  @endif  
+  @endif
+  @if($garantias->idtipogarantia != 6 && $garantias->idmetodo_valorizacion != 0)
+      $('#idmetodo_valorizacion').val({{ $garantias->idmetodo_valorizacion }}).trigger('change');
+      metodo_valorizacion();
+  @endif
   
   $("#button-modal-tipo-garantia").on("click", function(e) {
       tipo_garantia();
@@ -527,6 +531,9 @@
       var idtipo_garantia_detalle = $("#idtipo_garantia_detalle").find('option:selected');
       let cobertura = idtipo_garantia_detalle.attr('cobertura');
       let valor_comercial = idtipo_garantia_detalle.attr('valor_comercial');
+      if (!cobertura || !valor_comercial) {
+          return;
+      }
       let valor_mercado = $('#valor_mercado').val();    
       let monto_valorcomercial = (parseFloat(valor_mercado) * parseFloat(valor_comercial)) / 100;
       let monto_cobertura = (parseFloat(monto_valorcomercial) * parseFloat(cobertura)) / 100;
@@ -643,16 +650,24 @@
       $('#valor_mercado').val(monto_valorcomercial.toFixed(2));
   }
     
+  @if($garantias->idtipogarantia == 6)
   setTimeout(function () {
       calc_valormercado();
   }, 1000);
+  @endif
     
   function calc_valormercado(){
+      if ($("#idtipogarantia :selected").val() != 6) {
+          return;
+      }
       let valormercado =  parseFloat($("#val-view-valormercado").val());
       let optionTarifaJoya = $("#idtarifario_joya").find('option:selected'); 
       let valormercado_porcentaje = parseFloat(optionTarifaJoya.attr('valormercado'));
       let cobertura = parseFloat(optionTarifaJoya.attr('cobertura'));
       let preciogramo = parseFloat(optionTarifaJoya.attr('preciogramo'));
+      if (isNaN(cobertura) || isNaN(preciogramo)) {
+          return;
+      }
       let peso = parseFloat($('#peso_neto').val());
       let monto_valorcomercial = peso*preciogramo;
     

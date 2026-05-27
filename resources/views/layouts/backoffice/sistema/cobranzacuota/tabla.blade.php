@@ -68,6 +68,7 @@
                   <span class="badge d-block">RESUMEN DE PAGOS Y SALDOS</span>
                 </div>
                 <input type="hidden" id="idcredito" value="0">
+                <input type="hidden" id="idcredito_cargo_ids_selected" value="">
                <b> N° DE CUENTA: <span id="numerodecuenta" style="font-weight: normal;"></span></b><br>
                <b> CLASIFICACIÓN: <span id="clasificacion" style="font-weight: normal;"></span></b><br>
                <b> ASES./EJEC.: <span id="asesor" style="color: #002a8d;font-weight: normal;"></span></b>
@@ -365,10 +366,20 @@
         }else{
            numerocuota = 0;
         }
+
+        // IDs de cargos seleccionados desde "CTA X COBRAR"
+        let cargoIdsCsv = '';
+        if (Array.isArray(window.idcredito_cargo_ids_selected)) {
+            cargoIdsCsv = window.idcredito_cargo_ids_selected.join(',');
+        } else {
+            cargoIdsCsv = ($('#idcredito_cargo_ids_selected').val() || '').toString().trim();
+        }
+
         modal({ route:'{{url('backoffice/'.$tienda->id.'/cobranzacuota')}}/'+idcredito+'/edit?view=cobrar'+
         '&opcion='+opcion_pago+
         '&numerocuota='+numerocuota+
-        '&opcion_pago='+opcion_pago, 
+        '&opcion_pago='+opcion_pago+
+        '&idcredito_cargo_ids='+encodeURIComponent(cargoIdsCsv),
         size: 'modal-sm' })
     }
   

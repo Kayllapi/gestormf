@@ -213,6 +213,56 @@ class CargoController extends Controller
           );
           
         }
+        else if($id == 'show_cargo_cobranza'){
+            $where = [];
+            $where[] = ['credito_cargo.idestadocredito_cargo',1];
+            
+          $credito_cargo = DB::table('credito_cargo')
+              ->join('credito_tipocargo','credito_tipocargo.id','credito_cargo.idcredito_tipocargo')
+              ->where('credito_cargo.idcredito',$request->idcredito)
+              ->where($where)
+              ->select(
+                  'credito_cargo.*',
+                  'credito_tipocargo.nombre as tipocargonombre',
+              )
+              ->orderBy('credito_cargo.id','asc')
+              ->get();
+          
+          $html = '<table class="table table-bordered" id="table-detalle-tipocargo">
+              <thead>
+              <tr>
+                <th></th>
+                <th>Tipo Cargos</th>
+                <th>Importe</th>
+                <th>Fecha</th>
+                <th>Descripción</th>
+              </tr>
+              </thead>
+              <tbody>';
+          
+          foreach($credito_cargo as $value){
+              $html .= "<tr data-valor-columna='{$value->id}' onclick='show_data_descuentodecuotas(this)'>
+                            <td>".
+                                '<label class="chk">
+                                    <input type="checkbox"
+                                        class="credito-cargo-check"
+                                        value="'.$value->id.'"
+                                        onclick="seleccionar_cargo_cobranza(this)"
+                                        checked>
+                                    <span class="checkmark"></span>
+                                </label>'.
+                            "</td>
+                            <td>{$value->tipocargonombre}</td>
+                            <td>{$value->importe}</td>
+                            <td>{$value->fecharegistro}</td>
+                            <td>{$value->descripcion}</td>
+                        </tr>";
+          }
+          $html .= "</tbody></table>";
+          return array(
+            'html' => $html
+          );
+        }
     }
 
     public function edit(Request $request, $idtienda, $id)

@@ -639,23 +639,33 @@ class CobranzacuotaController extends Controller
                         ]);
                     }
 
-                    if($request->idcredito_cargo>0 && $request->estadocargo=='on'){
-                        DB::table('credito_cargo')
-                          ->whereId($request->idcredito_cargo)
-                          ->update([
-                            'idcredito_cobranzacuota'  => $idcredito_cobranzacuota,
-                            'idestadocredito_cargo'    => 2,
-                        ]);
+                    if($request->estadocargo=='on'){
+                        $cargoIds = $request->input('idcredito_cargo_ids', []);
+                        if (!empty(json_decode($cargoIds))) {
+                            foreach (json_decode($cargoIds) as $cargoId) {
+                                DB::table('credito_cargo')
+                                  ->where('id', $cargoId)
+                                  ->update([
+                                    'idcredito_cobranzacuota'  => $idcredito_cobranzacuota,
+                                    'idestadocredito_cargo'    => 2,
+                                ]);
+                            }
+                        }
                     }
                 }elseif($request->opcion_pago=='PAGO_ACUENTA'){
                   
                 }else{
-                        DB::table('credito_cargo')
-                          ->whereId($request->idcredito_cargo)
-                          ->update([
-                            'idcredito_cobranzacuota'  => $idcredito_cobranzacuota,
-                            'idestadocredito_cargo'    => 2,
-                        ]);
+                        $cargoIds = $request->input('idcredito_cargo_ids', []);
+                        if (!empty(json_decode($cargoIds))) {
+                            foreach (json_decode($cargoIds) as $cargoId) {
+                                DB::table('credito_cargo')
+                                  ->where('id', $cargoId)
+                                  ->update([
+                                    'idcredito_cobranzacuota'  => $idcredito_cobranzacuota,
+                                    'idestadocredito_cargo'    => 2,
+                                ]);
+                            }
+                        }
                 }
             
             
@@ -1476,16 +1486,43 @@ class CobranzacuotaController extends Controller
 
             $bancos = DB::table('banco')->where('estado','ACTIVO')->get(); 
             
-            $credito_cargo = DB::table('credito_cargo')
-              ->where('credito_cargo.idestadocredito_cargo',1)
-              ->where('credito_cargo.idcredito',$id)
-              ->first();
-              
-            $idcredito_cargo = 0; 
-            $total_cargo = 0;   
-            if($credito_cargo){
-                $idcredito_cargo = $credito_cargo->id;
-                $total_cargo = $credito_cargo->importe;
+            // Si llega selección desde "CTA X COBRAR", solo considerar esos cargos
+            $cargoIds = $request->input('idcredito_cargo_ids', null);
+            if (is_string($cargoIds)) {
+                $cargoIds = array_values(array_filter(array_map('trim', explode(',', $cargoIds))));
+            } elseif (is_numeric($cargoIds)) {
+                $cargoIds = [(int) $cargoIds];
+            } elseif (!is_array($cargoIds) && $cargoIds !== null) {
+                $cargoIds = [];
+            }
+            if (is_array($cargoIds)) {
+                $cargoIds = array_values(array_filter(array_map('intval', $cargoIds)));
+            }
+
+            $credito_cargos_q = DB::table('credito_cargo')
+              ->where('credito_cargo.idestadocredito_cargo', 1)
+              ->where('credito_cargo.idcredito', $id);
+
+            if (is_array($cargoIds)) {
+                // si el usuario abrió el modal con la selección (incluso vacía),
+                // se respeta exactamente esa selección
+                if (count($cargoIds) > 0) {
+                    $credito_cargos_q->whereIn('credito_cargo.id', $cargoIds);
+                } else {
+                    $credito_cargos_q->whereRaw('1=0');
+                }
+            }
+
+            $credito_cargos = $credito_cargos_q->get();
+
+            // Compatibilidad: se mantiene el primer ID en `idcredito_cargo`
+            $idcredito_cargo = 0;
+            $idcredito_cargo_ids = [];
+            $total_cargo = 0;
+            if ($credito_cargos && $credito_cargos->count() > 0) {
+                $idcredito_cargo = (int) $credito_cargos->first()->id;
+                $idcredito_cargo_ids = $credito_cargos->pluck('id')->map(fn ($v) => (int) $v)->values()->all();
+                $total_cargo = (float) $credito_cargos->sum('importe');
             }
 
             // descuento cuota
@@ -1566,6 +1603,7 @@ class CobranzacuotaController extends Controller
                 'total_cargo' => $total_cargo,
                 'numerocuota' => $request->numerocuota,
                 'idcredito_cargo' => $idcredito_cargo,
+                'idcredito_cargo_ids' => $idcredito_cargo_ids,
                 'idcredito_descuentocuota' => $idcredito_descuentocuota,
                 'opcion_pago' => $request->opcion_pago,
             ]);

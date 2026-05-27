@@ -22,7 +22,7 @@
   
   function show_data_cargo() {
     $.ajax({
-      url:"{{url('backoffice/0/cargo/show_cargo')}}",
+      url:"{{url('backoffice/0/cargo/show_cargo_cobranza')}}",
       type:'GET',
       data: {
           idcredito : {{$credito->id}},
@@ -30,7 +30,28 @@
       },
       success: function (res){
         $('#cont_cronograma').html(res.html);
+        sync_cargo_ids_seleccionados();
       }
     }) 
+  }
+
+  function get_cargo_ids_seleccionados(){
+    const ids = [];
+    $('#cont_cronograma').find('input.credito-cargo-check:checked').each(function(){
+      const v = parseInt($(this).val(), 10);
+      if(!isNaN(v)) ids.push(v);
+    });
+    return ids;
+  }
+
+  function sync_cargo_ids_seleccionados(){
+    const ids = get_cargo_ids_seleccionados();
+    window.idcredito_cargo_ids_selected = ids;
+    $('#idcredito_cargo_ids_selected').val(ids.join(','));
+  }
+
+  function seleccionar_cargo_cobranza(e){
+    // llamada desde el HTML armado en show_cargo_cobranza
+    sync_cargo_ids_seleccionados();
   }
 </script>

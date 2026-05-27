@@ -33,6 +33,10 @@
         <button type="button" class="btn-close" id="close_opcionescredito" onclick="cerrarventana()" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <div class="modal-body">
+      <input type="hidden"
+        name="idcredito_cargo_ids"
+        id="idcredito_cargo_ids"
+        value='@json($idcredito_cargo_ids ?? [])'>
       @if($creditorefinanciado)
           <p class="text-center" 
              style="background-color: #dc3545;

@@ -141,7 +141,7 @@
               <th style="border-bottom: 2px solid #000;">CAPITAL</th>
               <th style="border-bottom: 2px solid #000;">AMORTIZ.</th>
               <th style="border-bottom: 2px solid #000;">INTERES</th>
-              <th style="border-bottom: 2px solid #000;">CARGO x <br>CUSTODIA. G.</th>
+              <th style="border-bottom: 2px solid #000;">CARGO x <br>CUST./OTROS</th>
               <th style="border-bottom: 2px solid #000;">CUOTA DE PRESTAMO <br>(Int. + Cap. + Cust.)</th>
               <th style="border-bottom: 2px solid #000;">Ss. RECAUDO (**)</th>
               <th style="border-bottom: 2px solid #000;">TOTAL A PAGAR</th>

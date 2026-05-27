@@ -10,7 +10,25 @@
           <div class="card-body p-2" id="form-credito-result">
              
             <div class="modal-body">
-              
+                <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                        <div class="row">
+                          <div class="col-sm-12 col-md-10">
+                              <div class="row">
+                                <label for="fecha_inicio" class="col-sm-3 col-form-label">AGENCIA</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control" id="idagencia" disabled>
+                                      <option></option>
+                                      @foreach($agencias as $value)
+                                          <option value="{{$value->id}}">{{$value->nombreagencia}}</option>
+                                      @endforeach
+                                    </select>
+                                </div>
+                              </div>
+                            </div>
+                        </div> 
+                    </div>
+                </div>
                 <div class="row">
                   <div class="col-sm-12">
                     <button type="button" class="btn btn-warning" onclick="cambiar_estado('PENDIENTE')"> PASAR A GENERAR CRÉDITO</button>
@@ -135,6 +153,7 @@
 
 </style>
 <script>
+  sistema_select2({ input:'#idagencia',val:'{{$tienda->id}}' });
   lista_credito();
   function lista_credito(){
     let estado_credito = $('input[name="estado_credito"]:checked').val();
@@ -144,7 +163,7 @@
       type:'GET',
       data: {
           estado : estado_credito,
-          idagencia : '{{$tienda->id}}',
+          idagencia : $('#idagencia').val(),
           inicio : $('#fecha_inicio').val(),
           fin : $('#fecha_fin').val(),
       },

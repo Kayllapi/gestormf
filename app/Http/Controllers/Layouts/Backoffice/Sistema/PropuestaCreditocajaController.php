@@ -42,9 +42,11 @@ class PropuestaCreditocajaController extends Controller
         // FIN ACTUALIZAR 
       
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
+        $agencias = DB::table('tienda')->get();
         if($request->input('view') == 'tabla'){
             return view(sistema_view().'/propuestacreditocaja/tabla',[
               'tienda' => $tienda,
+                'agencias' => $agencias,
             ]);
         }
             

@@ -1205,10 +1205,17 @@ class CobranzacuotaController extends Controller
           if($credito->idestado_congelarcredito==2){
               $btn_congelarcredito = '<div class="btn btn-info" style="float:right">CRÉDITO CONGELADO ('.date_format(date_create($credito->fecha_congelarcredito),'d-m-Y').')</div>';
           }
+          
+            // Garantias
+            $credito_garantia = DB::table('credito_garantia')
+                ->where('credito_garantia.idcredito',$request->idcredito)
+                ->where('credito_garantia.estado_listagarantia',1)
+                ->count();
+            $txt_garantia_gp = $credito_garantia>0?'<span style="color: #c40000;">Garantía en Remate</span>':'';
               
           $opciones_datosprestamos = '<button type="button" class="btn btn-warning" onclick="vistapreliminar()" style="background-color: #bcbcbc;
     border-color: #bcbcbc;
-    font-weight: bold;">CRONOGRAMA/HOJA DE RESUMEN</button> '.$btn_congelarcredito;
+    font-weight: bold;">CRONOGRAMA/HOJA DE RESUMEN</button> '.$btn_congelarcredito.' '.$txt_garantia_gp;
           
           $total_adelantos = DB::table('credito_adelanto')
                 ->where('credito_adelanto.numerocuota',$primera_cuota_pendiente)

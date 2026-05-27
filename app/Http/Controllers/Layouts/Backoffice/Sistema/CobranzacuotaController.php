@@ -644,11 +644,11 @@ class CobranzacuotaController extends Controller
                         if (!empty(json_decode($cargoIds))) {
                             foreach (json_decode($cargoIds) as $cargoId) {
                                 DB::table('credito_cargo')
-                                  ->where('id', $cargoId)
-                                  ->update([
-                                    'idcredito_cobranzacuota'  => $idcredito_cobranzacuota,
-                                    'idestadocredito_cargo'    => 2,
-                                ]);
+                                    ->where('id', $cargoId)
+                                    ->update([
+                                        'idcredito_cobranzacuota'  => $idcredito_cobranzacuota,
+                                        'idestadocredito_cargo'    => 2,
+                                    ]);
                             }
                         }
                     }
@@ -659,12 +659,21 @@ class CobranzacuotaController extends Controller
                         if (!empty(json_decode($cargoIds))) {
                             foreach (json_decode($cargoIds) as $cargoId) {
                                 DB::table('credito_cargo')
-                                  ->where('id', $cargoId)
-                                  ->update([
+                                    ->where('id', $cargoId)
+                                    ->update([
+                                        'idcredito_cobranzacuota'  => $idcredito_cobranzacuota,
+                                        'idestadocredito_cargo'    => 2,
+                                    ]);
+                            }
+                        } else {
+                            DB::table('credito_cargo')
+                                ->where('idcredito', $request->idcredito)
+                                ->where('idestadocredito_cargo', 1)
+                                ->where('idcredito_cobranzacuota', 0)
+                                ->update([
                                     'idcredito_cobranzacuota'  => $idcredito_cobranzacuota,
                                     'idestadocredito_cargo'    => 2,
                                 ]);
-                            }
                         }
                 }
             
@@ -1523,6 +1532,11 @@ class CobranzacuotaController extends Controller
                 $idcredito_cargo = (int) $credito_cargos->first()->id;
                 $idcredito_cargo_ids = $credito_cargos->pluck('id')->map(fn ($v) => (int) $v)->values()->all();
                 $total_cargo = (float) $credito_cargos->sum('importe');
+            } else {
+                $total_cargo = DB::table('credito_cargo')
+                    ->where('credito_cargo.idestadocredito_cargo', 1)
+                    ->where('credito_cargo.idcredito', $id)
+                    ->sum('importe');
             }
 
             // descuento cuota

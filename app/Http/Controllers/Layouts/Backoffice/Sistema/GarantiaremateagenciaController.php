@@ -406,10 +406,11 @@ class GarantiaremateagenciaController extends Controller
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
       
         if($request->input('view') == 'autorizar'){
+            $idpermisos = array_filter(explode(',', $request->input('idpermiso', '')));
             $usuarios = DB::table('users')
                   ->join('users_permiso','users_permiso.idusers','users.id')
                   ->join('permiso','permiso.id','users_permiso.idpermiso')
-                  ->where('users_permiso.idpermiso',$request->idpermiso)
+                  ->whereIn('users_permiso.idpermiso',$idpermisos)
                   ->where('users_permiso.idtienda',$idtienda)
                   ->select('users.*','permiso.nombre as nombrepermiso')
                   ->get();
@@ -419,10 +420,11 @@ class GarantiaremateagenciaController extends Controller
             ]);
         }
         elseif($request->input('view') == 'quitar'){
+            $idpermisos = array_filter(explode(',', $request->input('idpermiso', '')));
             $usuarios = DB::table('users')
                   ->join('users_permiso','users_permiso.idusers','users.id')
                   ->join('permiso','permiso.id','users_permiso.idpermiso')
-                  ->where('users_permiso.idpermiso',$request->idpermiso)
+                  ->whereIn('users_permiso.idpermiso',$idpermisos)
                   ->where('users_permiso.idtienda',$idtienda)
                   ->select('users.*','permiso.nombre as nombrepermiso')
                   ->get();

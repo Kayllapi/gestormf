@@ -320,7 +320,7 @@
                                   width: 100%;
                                   margin: auto;">Un Crédito desembolsado no es posible pasar a GENERAR CRÉDITO.</p>
           @else
-          <p class="text-center">¿Seguro que desea pasar a <b>"GENERAR CRÉDITO"</b>?</p>
+          <p class="text-center" style="color: #c40000;">¿Seguro que desea pasar a <b>"GENERAR CRÉDITO"</b>?</p>
           <div class="col-sm-12 mt-2 text-center">
             <button type="button" class="btn btn-success" onclick="cambiarestado()"><i class="fa-solid fa-check"></i> PASAR A GENERAR CRÉDITO</button>
           </div>

@@ -21,7 +21,7 @@
         
       }
       .linea {
-          border-top: 1px solid #000;
+          border-top: 0.5px solid #000;
           width:100%;
       }
     </style>

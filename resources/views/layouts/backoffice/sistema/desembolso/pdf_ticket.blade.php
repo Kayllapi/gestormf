@@ -11,7 +11,7 @@
           margin: 15px;
       }
       .ticket_contenedor {
-          width: 280px;
+          width: 260px;
       }
       .cabecera {
           

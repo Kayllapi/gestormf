@@ -192,7 +192,7 @@
           <div style="width: 50%; margin-top: 4px; border-bottom: 1px solid #5f5f5f;"></div>
           <p style="margin: 0;">
             - Estimado Cliente al pagar exija su comprobante respectivo.
-            <span style="float: right;"><b>CEL.: <span style="font-size: 1.1rem;">{{ $tienda->numerotelefono }}</span> // {{ $tienda->paginaweb }}</b></span>
+            <span style="float: right;"><b>CEL.: <span style="font-size: 1.3rem;">{{ $tienda->numerotelefono }}</span> // {{ $tienda->paginaweb }}</b></span>
           </p>
           <p style="margin: 0;">- Pague puntual y evite interes compensatorio adicional, mora, penalidades y gastos.</p>
         </div>

@@ -369,8 +369,8 @@ EL/LOS PRESTATARIO(S) reconoce(n) que, como parte de la evaluación para el otor
 
 <br><br>
 <br><br>
-      <div style="width:175px;margin-top: 30px;float:left;margin-right:5px;">
-            <div class="linea"></div>
+      <div style="width:175px;margin-top: 15px;float:left;margin-right:5px;">
+        <div class="linea"></div>
             <span style="padding-top:10px;"><b>{{ $usuario->nombrecompleto }}</b></span>
             <br>
             <span><b>RUC/DNI/CE: </b>{{ $usuario->identificacion }}</span>
@@ -382,7 +382,7 @@ EL/LOS PRESTATARIO(S) reconoce(n) que, como parte de la evaluación para el otor
       <div style="width:100px;margin-top: 10px;height:100px;float:left;margin-right:10px;border: 1px solid #000;">
       </div>
       @if($aval!='')
-        <div style="width:175px;margin-top: 30px;float:left;margin-right:5px;">
+        <div style="width:175px;margin-top: 15px;float:left;margin-right:5px;">
           <div class="linea"></div>
           <span style="padding-top:10px;"><b><?php echo $aval!=''?$aval->nombrecompleto:'' ?></b></span>
           <br>
@@ -408,12 +408,12 @@ EL/LOS PRESTATARIO(S) reconoce(n) que, como parte de la evaluación para el otor
         <div style="width:100px;margin-top: 10px;height:100px;float:left;margin-right:10px;border: 1px solid #000;">
         </div>
       @endif
-      <div style="width:157px;margin-top: -35px;float:left;">
+      <div style="width:157px;margin-top: -50px;float:left;">
             @if($tienda->firma!='')
             <div style="text-align:center">
-            <img src="{{ url('public/backoffice/tienda/'.$tienda->id.'/sistema/'.$tienda->firma) }}" width="100px"></div>
+            <img src="{{ url('public/backoffice/tienda/'.$tienda->id.'/sistema/'.$tienda->firma) }}" width="100px" alt="firma"></div>
             @endif
-            <div class="linea"></div>
+        <div class="linea"></div>
             <span style="padding-top:10px;"><b>{{ $tienda->nombre }}</b></span>
             <br>
             <span>{{ $tienda->representante }}</span>

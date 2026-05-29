@@ -36,7 +36,7 @@
                     <b>APE. Y NOM.:</b> {{ $usuario->nombrecompleto }}</td>
               </tr>
               <tr>
-                  <td><b>CUENTA:</b> C{{ str_pad($credito->cuenta, 8, "0", STR_PAD_LEFT) }} <b>//</b> {{ date_format(date_create($credito->fecha_desembolso),'d-m-Y h:s:i A') }}</td>
+                  <td><b>CUENTA:</b> C{{ str_pad($credito->cuenta, 8, "0", STR_PAD_LEFT) }} <b>//</b> <span style="font-size: 11px;">{{ date_format(date_create($credito->fecha_desembolso),'d-m-Y h:s:i A') }}</span></td>
               </tr>
             <tr>
               <td style="border-top: 1px dashed #000;border-bottom: 1px dashed #000;padding-top:5px;padding-bottom:5px;">

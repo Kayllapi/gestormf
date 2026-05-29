@@ -29,7 +29,6 @@
 <body>
     <div class="ticket_contenedor">
           <div class="cabecera"><b>{{ $tienda->nombre }} - {{ $tienda->nombreagencia }}</b></div>
-            <div class="linea"></div>
           <br>
           <div class="titulo"><b>DESEMBOLSO</b></div>
           <table class="tabla_informativa">
@@ -93,7 +92,7 @@
             </tr>
           </table>     
       
-      <br><br><br><br>
+      <br><br><br>
           <table class="tabla_informativa">
               <tr>
                   <td><b>FIRMA:</b> ______________________</td>

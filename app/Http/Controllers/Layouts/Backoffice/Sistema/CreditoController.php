@@ -3615,12 +3615,10 @@ class CreditoController extends Controller
               4 => 1,
             ];
             $dias = $frecuenciaDiasMap[$request->input('idforma_pago_credito')];
-            $tasa_tip = number_format(($request->input('tasa_tem') / $dias) * $request->input('cuotas'), 2, '.', '');
+            $tasa_tip = number_format(($request->input('tasa_tem') / $dias) * $request->input('cuotas'), 8, '.', '');
             if($credito->modalidad_calculo == 'Interes Compuesto'){
                 $tasa_tip = $request->input('tasa_tem');
             }
-            
-        
 
             $cronograma = genera_cronograma(
                   $request->input('monto_solicitado'),

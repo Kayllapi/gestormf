@@ -27,7 +27,7 @@
     <div class="modal-body modal-body-cualitativa">
  
           <div class="row">
-            <label class="col-sm-12 col-form-label">Desembolso por:</label>
+            <label class="col-sm-12 col-form-label">Desembolsado desde:</label>
             <div class="col-sm-12">
               <select id="idformapago" class="form-control">
                   <option></option>

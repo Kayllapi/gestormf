@@ -28,7 +28,7 @@
 </head>
 <body>
     <div class="ticket_contenedor">  
-      <div><b>{{ $tienda->nombre }} - {{ $tienda->nombreagencia }}</b></div>
+      <div><b>{{ $tienda->nombre }} - {{ $tienda->nombreagencia }}</b> <span style="float: right;">{{ strtoupper($cajero->codigo) }}</span></div>
       <div class="linea"></div>
           <table class="tabla_informativa" width="100%">
               <tr>
@@ -36,7 +36,7 @@
                     <b>APE. Y NOM.:</b> {{ $usuario->nombrecompleto }}</td>
               </tr>
               <tr>
-                  <td><b>CUENTA:</b> C{{ str_pad($credito->cuenta, 8, "0", STR_PAD_LEFT) }} <b>//</b> {{ strtoupper($cajero->codigo) }}</td>
+                  <td><b>CUENTA:</b> C{{ str_pad($credito->cuenta, 8, "0", STR_PAD_LEFT) }} <b>//</b> {{ date_format(date_create($credito->fecha_desembolso),'d-m-Y h:s:i A') }}</td>
               </tr>
             <tr>
               <td style="border-top: 1px dashed #000;border-bottom: 1px dashed #000;padding-top:5px;padding-bottom:5px;">

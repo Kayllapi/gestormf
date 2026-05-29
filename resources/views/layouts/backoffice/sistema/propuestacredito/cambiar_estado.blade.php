@@ -567,7 +567,7 @@
           },
           function(res){
             if(estado==1){
-                $(target+' > tbody > tr #resultado_cambiar_permiso'+num).html('<div style="background-color: #198754;padding: 7px;border-radius: 5px;color: #fff;text-align: center;font-weight: bold;">CORRECTO</div>');
+                $(target+' > tbody > tr #resultado_cambiar_permiso'+num).html('<div style="background-color: #9AD872;padding: 7px;border-radius: 5px;color: #000;text-align: center;font-weight: bold;">CORRECTO</div>');
             }
             else if(estado==2){
                 $(target+' > tbody > tr #resultado_cambiar_permiso'+num).html('<div style="background-color: #dc3545;padding: 7px;border-radius: 5px;color: #fff;text-align: center;font-weight: bold;">ANULADO</div>');

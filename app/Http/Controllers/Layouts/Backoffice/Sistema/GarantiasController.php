@@ -687,10 +687,21 @@ class GarantiasController extends Controller
                         'idestado' => 1,
                     ]);
             }
+
+            $credito_polizaseguro = DB::table('credito_polizaseguro')->where('id_cliente',$id)->get();
+          
+            $html_1 = '<div  class="text-danger" style="margin-top: 10px;">';
+            foreach($credito_polizaseguro as $value){
+                if($value->vigencia_hasta<now()->format('Y-m-d')){
+                    $html_1 .= '<div><img src="'.url('public/backoffice/sistema/icongarantia.png').'" style="height: 15px;"> Póliza de Garantía "'.$value->asegurado.'", venció el '.Carbon::parse($value->vigencia_hasta)->format('d/m/Y').'</div>';
+                }
+            }
+            $html_1 .= '</div>';
           
             return response()->json([
                 'resultado' => 'CORRECTO',
-                'mensaje'   => 'Se ha actualizado correctamente.'
+                'mensaje'   => 'Se ha actualizado correctamente.',
+                'credito_polizaseguro' => $html_1
             ]);
         }
     

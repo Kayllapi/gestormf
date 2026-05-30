@@ -10,6 +10,7 @@
       },
       function(resultado){
           $('#closedepositario').click();
+          $('#alert-garantia-poliza').html(resultado.credito_polizaseguro);
       },this)" id="form-editar-garantia">
   
     <input type="hidden" id="idresponsable_modificado">

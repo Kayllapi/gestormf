@@ -178,20 +178,20 @@ class PropuestaCreditoController extends Controller
           foreach($creditos as $key => $value){
               $fecha = '';
               if($value->estado=='PROCESO'){
-                  $fecha = $value->fecha_proceso!=''?date_format(date_create($value->fecha_proceso),"d/m/Y h:i A"):'';
+                  $fecha = $value->fecha_proceso!=''?date_format(date_create($value->fecha_proceso),"d-m-Y h:i A"):'';
               }
               elseif($value->estado=='APROBADO'){
-                  $fecha = $value->fecha_aprobacion!=''?date_format(date_create($value->fecha_aprobacion),"d/m/Y h:i A"):'';
+                  $fecha = $value->fecha_aprobacion!=''?date_format(date_create($value->fecha_aprobacion),"d-m-Y h:i A"):'';
               }
               elseif($value->estado=='DESAPROBADO'){
-                  $fecha = $value->fecha_desaprobacion!=''?date_format(date_create($value->fecha_desaprobacion),"d/m/Y h:i A"):'';
+                  $fecha = $value->fecha_desaprobacion!=''?date_format(date_create($value->fecha_desaprobacion),"d-m-Y h:i A"):'';
               }
               elseif($value->estado=='DESEMBOLSADO'){
                   if($value->idestadocredito==2){
                       $value->estado = 'CANCELADO';
-                      $fecha = $value->fecha_cancelado!=''?date_format(date_create($value->fecha_cancelado),"d/m/Y h:i A"):'';
+                      $fecha = $value->fecha_cancelado!=''?date_format(date_create($value->fecha_cancelado),"d-m-Y h:i A"):'';
                   }else{
-                      $fecha = $value->fecha_desembolso!=''?date_format(date_create($value->fecha_desembolso),"d/m/Y h:i A"):'';
+                      $fecha = $value->fecha_desembolso!=''?date_format(date_create($value->fecha_desembolso),"d-m-Y h:i A"):'';
                   }
               }
               $html .= "<tr id='show_data_select' idcredito='{$value->id}' estado='{$value->estado}'>

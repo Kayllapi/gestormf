@@ -159,7 +159,7 @@
                               @if($value->idusers!=0)
                                   @if($value->idestado==1)
                                   <td id="resultado_cambiar_permiso{{ $value->id }}">
-                                    <div style="background-color: #9AD872;padding: 7px;border-radius: 5px;color: #000;text-align: center;font-weight: bold;">CORRECTO</div></td>
+                                    <div style="background-color: #9AD872;padding: 7px;border-radius: 5px;color: #000;text-align: center;font-weight: bold;">F. REGISTRADO</div></td>
                                   @elseif($value->idestado==2)
                                   <td id="resultado_cambiar_permiso{{ $value->id }}">
                                     <div style="
@@ -567,7 +567,7 @@
           },
           function(res){
             if(estado==1){
-                $(target+' > tbody > tr #resultado_cambiar_permiso'+num).html('<div style="background-color: #9AD872;padding: 7px;border-radius: 5px;color: #000;text-align: center;font-weight: bold;">CORRECTO</div>');
+                $(target+' > tbody > tr #resultado_cambiar_permiso'+num).html('<div style="background-color: #9AD872;padding: 7px;border-radius: 5px;color: #000;text-align: center;font-weight: bold;">F. REGISTRADO</div>');
             }
             else if(estado==2){
                 $(target+' > tbody > tr #resultado_cambiar_permiso'+num).html('<div style="background-color: #dc3545;padding: 7px;border-radius: 5px;color: #fff;text-align: center;font-weight: bold;">ANULADO</div>');

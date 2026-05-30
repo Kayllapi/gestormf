@@ -29,15 +29,15 @@
             <table class="table table-striped table-hover" id="table-lista-credito">
               <thead class="table-dark">
                 <tr>
-                  <td>N°</td>
-                  <td>CLIENTE</td>
-                  <td>AVAL</td>
-                  <td>DESEMBOLSO</td>
-                  <td>CUOTAS</td>
-                  <td>F. PAGO</td>
-                  <td>F. APROBACIÓN</td>
-                  <td>ASESOR/EJECUTIVO</td>
-                  <td>MODA. CRÉDITO</td>
+                  <th>N°</th>
+                  <th>CLIENTE</th>
+                  <th>AVAL</th>
+                  <th>DESEMBOLSO</th>
+                  <th>CUOTAS</th>
+                  <th>F. PAGO</th>
+                  <th>F. APROBACIÓN</th>
+                  <th>ASESOR/EJECUTIVO</th>
+                  <th>MODA. CRÉDITO</th>
                 </tr>
               </thead>
               <tbody>

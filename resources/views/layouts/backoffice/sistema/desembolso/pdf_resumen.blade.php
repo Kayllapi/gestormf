@@ -104,6 +104,10 @@
         text-align: right;
         right: 0.7cm;
       }
+      .linea {
+          width: 100%;
+          border-top: 1px solid #000;
+      }
      </style>
 </head>
 <body>
@@ -113,7 +117,7 @@
   <main>
     <div class="container">
       <h4 align="center">HOJA DE RESUMEN DE PRÉSTAMO</h4>
-      <table style="width:100%; border: 2px solid #000;">
+      <table style="width:100%; border: 1px solid #000;">
         <tr>
           <td><b>Cuenta:</b> C{{ str_pad($credito->cuenta, 8, "0", STR_PAD_LEFT) }}</td>
           <td><b>Monto de préstamo S/.:</b> {{ $credito->monto_solicitado }}</td>
@@ -162,7 +166,7 @@
           </td>
         </tr>
       </table>
-      <table style="width:100%; border: 2px solid #000;border-top:0px solid #000;">
+      <table style="width:100%; border: 1px solid #000;border-top:0px solid #000;">
         <tr>
           <td style="text-align: right">
             <span style="float: left"><b>Fecha de Desembolso:</b> {{ date_format(date_create($credito->fecha_desembolso),'d-m-Y h:i:s A') }}</span>
@@ -202,7 +206,7 @@
       </table>
       @if($credito->nombreavalcredito!='')
       <br>
-      <table style="width:100%; border: 2px solid #000;">
+      <table style="width:100%; border: 1px solid #000;">
         <tr>
           <td colspan="2"><b>Aval:</b> {{ $credito->nombreavalcredito }}</td>
         </tr>
@@ -237,7 +241,7 @@
         @endif
       </table>
       <br>
-      <table style="width:100%; border: 2px solid #000;">
+      <table style="width:100%; border: 1px solid #000;">
         <tr>
           <td colspan="3"><b>TOLERANCIA POR INCUMPLIMIENTO DE PAGO DE CUOTA:</b> {{ $credito->config_dias_tolerancia_garantia }} días </td>
         </tr>
@@ -282,7 +286,7 @@
       
     ?>
         <!--tr>
-          <td colspan="3"  style="border-top: 2px solid #000;">
+          <td colspan="3"  style="border-top: 1px solid #000;">
             Por Incumplimiento de las cuotas: % de la cuota<br>
           </td>
         </tr-->
@@ -295,7 +299,7 @@
         <br>
       @if($credito->idforma_credito==1)
      <b>GESTIÓN DE DEPÓSITARIOS</b>
-      <table style="width:100%; border: 2px solid #000;">
+      <table style="width:100%; border: 1px solid #000;">
         <tr>
           <td colspan="2"><b>Depósitario (Custodia de Garantía):</b> {{ $credito->constituciongarantia_nombre }} </td>
         </tr>
@@ -330,7 +334,7 @@
       </table>
         <br>
       <b>PÓLIZA DE SEGUROS</b>
-      <table class="table" style="width:100%; border: 2px solid #000;">
+      <table class="table" style="width:100%; border: 1px solid #000;">
         <tr>
           <td><b>N° de Póliza</b></td>
           <td><b>Aseguradora:</b></td>
@@ -357,7 +361,7 @@
       </table>
         <br>
       <b>REPRESENTANTE COMÚN</b>
-      <table class="table" style="width:100%; border: 2px solid #000;">
+      <table class="table" style="width:100%; border: 1px solid #000;">
         <tr>
           <td><b>Nombres y Apellidos</b></td>
           <td><b>RUC/DNI</b></td>
@@ -405,8 +409,8 @@
 <br> 
 <br>
 <br>
-          <div style="width:175px;margin-top: 30px;float:left;margin-right:5px;">
-            <hr style="border: 1px solid #000;">
+          <div style="width:175px;margin-top: 15px;float:left;margin-right:5px;">
+            <div class="linea"></div>
             <span style="padding-top:10px;"><b>{{ $usuario->nombrecompleto }}</b></span>
             <br>
             <span><b>RUC/DNI/CE: </b>{{ $usuario->identificacion }}</span>
@@ -417,24 +421,39 @@
       </div>
       <div style="width:100px;margin-top: 10px;height:100px;float:left;margin-right:10px;border: 1px solid #000;">
       </div>
-      <div style="width:175px;margin-top: 30px;float:left;margin-right:5px;">
-            <hr style="border: 1px solid #000;">
-            <span style="padding-top:10px;"><b><?php echo $aval!=''?$aval->nombrecompleto:'' ?></b></span>
-            <br>
-            <span><b>RUC/DNI/CE: </b><?php echo $aval!=''?$aval->identificacion:'' ?></span>
-            <br>
-            <span><b>Domicilio: </b> {{ $aval!=''?$aval->direccion:'' }}, {{ $distritoaval }} - {{ $provinciaaval }} - {{ $departamentoaval }}</span>
-            <br>
-            <span><b>EL/LOS PRESTATARIO(S)</b></span>
-      </div>
-      <div style="width:100px;margin-top: 10px;height:100px;float:left;margin-right:10px;border: 1px solid #000;">
-      </div>
-      <div style="width:157px;margin-top: -35px;float:left;">
+      @if($aval!='')
+        <div style="width:175px;margin-top: 15px;float:left;margin-right:5px;">
+              <div class="linea"></div>
+              <span style="padding-top:10px;"><b><?php echo $aval!=''?$aval->nombrecompleto:'' ?></b></span>
+              <br>
+              <span><b>RUC/DNI/CE: </b><?php echo $aval!=''?$aval->identificacion:'' ?></span>
+              <br>
+              <span><b>Domicilio: </b> {{ $aval!=''?$aval->direccion:'' }}, {{ $distritoaval }} - {{ $provinciaaval }} - {{ $departamentoaval }}</span>
+              <br>
+              <span><b>EL/LOS PRESTATARIO(S)</b></span>
+        </div>
+        <div style="width:100px;margin-top: 10px;height:100px;float:left;margin-right:10px;border: 1px solid #000;">
+        </div>
+      @elseif($credito->participarconyugue_titular=='on')
+        <div style="width:175px;margin-top: 15px;float:left;margin-right:5px;">
+          <div class="linea"></div>
+          <span style="padding-top:10px;"><b><?php echo $users_prestamo->nombrecompleto_pareja ?></b></span>
+          <br>
+          <span><b>RUC/DNI/CE: </b><?php echo $users_prestamo->dni_pareja ?></span>
+          <br>
+          <span><b>Domicilio: </b>{{ $usuario->direccion }}, {{ $distrito }} - {{ $provincia }} - {{ $departamento }}</span>
+          <br>
+          <span><b>EL/LOS PRESTATARIO(S)</b></span>
+        </div>
+        <div style="width:100px;margin-top: 10px;height:100px;float:left;margin-right:10px;border: 1px solid #000;">
+        </div>
+      @endif
+      <div style="width:157px;margin-top: -50px;float:left;">
             @if($tienda->firma!='')
             <div style="text-align:center">
-            <img src="{{ url('public/backoffice/tienda/'.$tienda->id.'/sistema/'.$tienda->firma) }}" width="100px"></div>
+            <img src="{{ url('public/backoffice/tienda/'.$tienda->id.'/sistema/'.$tienda->firma) }}" width="100px" alt="firma"></div>
             @endif
-            <hr style="border: 1px solid #000;">
+            <div class="linea"></div>
             <span style="padding-top:10px;"><b>{{ $tienda->nombre }}</b></span>
             <br>
             <span>{{ $tienda->representante }}</span>

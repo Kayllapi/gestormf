@@ -744,6 +744,7 @@ class CreditoController extends Controller
                   $option_editarcredito = "";
               }
             
+              $fechaFormato = Carbon::parse($value->fecha)->format('d-m-Y');
               $html .= "<tr id='show_data_select'>
                             <td>".($key+1)."</td>
                             <td>{$value->nombrecliente}</td>
@@ -751,7 +752,7 @@ class CreditoController extends Controller
                             <td>{$value->nombreproductocredito}</td>
                             <td>{$value->monto_solicitado}</td>
                             <td>{$value->estado}</td>
-                            <td>{$value->fecha}</td>
+                            <td>{$fechaFormato}</td>
                             <td>
                               <div class='dropdown' id='menu-opcion'>
                                 <button class='btn btn-primary dropdown-toggle'  type='button' data-bs-toggle='dropdown' aria-expanded='false'>Opción</button>

@@ -32,7 +32,7 @@
             <hr style="margin-top: 8px;margin-bottom: 8px;">
             <?php $i=1 ?>
             @foreach($garantias as $value)
-            <button type="button" class="btn btn-info" onclick="verpdf('pdf_ticketprendario',{{$value->id}},{{$i}})"> TICKET DE GARANTIA {{ $i }}</button>
+            <button type="button" class="btn btn-warning1" onclick="verpdf('pdf_ticketprendario',{{$value->id}},{{$i}})"> TICKET DE GARANTIA {{ $i }}</button>
             <?php $i++ ?>
             @endforeach
             @endif

@@ -3653,7 +3653,7 @@ class CreditoController extends Controller
                 'dia_gracia'                => $request->input('dia_gracia'),
                 'tasa_tem'                  => $request->input('tasa_tem'),
                 'tasa_tem_minima'           => $request->input('tasa_tem_minima'),
-                'tasa_tip'                  => $request->input('tasa_tip'),
+                'tasa_tip'                  => $tasa_tip,
                 'tasa_tcem'                 => $request->input('tasa_tcem'),
                 'interes_total'             => $request->input('interes_total'),
                 'total_pagar'               => $request->input('total_pagar'),

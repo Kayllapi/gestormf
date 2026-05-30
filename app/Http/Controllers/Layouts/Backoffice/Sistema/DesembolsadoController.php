@@ -140,6 +140,8 @@ class DesembolsadoController extends Controller
                       $btn_validar = "<i class='fa-solid fa-check'></i> (".$users->codigo.")";
                   }
               }
+
+              $fechaFormateado = Carbon::parse($value->fecha_desembolso)->format('d-m-Y h:i A');
             
               $html .= "<tr id='show_data_select' idcredito='{$value->id}'>
                             <td>".($key+1)."</td>
@@ -148,7 +150,7 @@ class DesembolsadoController extends Controller
                             <td style='text-align:right;'>{$value->monto_solicitado}</td>
                             <td style='text-align:right;'>{$value->cuotas}</td>
                             <td>{$value->frecuencianombre}</td>
-                            <td>{$value->fecha_desembolso}</td>
+                            <td>{$fechaFormateado}</td>
                             <td>{$value->codigocajero}</td>
                             <td>{$operacionen}</td>
                             <td>{$btn_validar}</td>

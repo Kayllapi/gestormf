@@ -72,6 +72,7 @@ class OperacionextornadaController extends Controller
           $ingresoextraordinarios = DB::table('ingresoextraordinario')
               ->leftJoin('users as responsable','responsable.id','ingresoextraordinario.idresponsable')
               ->leftJoin('tienda','tienda.id','ingresoextraordinario.idtienda')
+              ->leftJoin('users as responsableeliminado','responsableeliminado.id','ingresoextraordinario.idresponsble_eliminado')
               ->where('ingresoextraordinario.idestadoeliminado',2)
               ->where($where4)
               ->select(
@@ -86,13 +87,14 @@ class OperacionextornadaController extends Controller
                   //DB::raw('CONCAT("--") as nombrecliente'),
                   'responsable.codigo as codigoresponsable',
                   'tienda.nombre as tiendanombre',
+                   'responsableeliminado.codigo as codigoresponsableeliminado',
               )
               ->orderBy('fechaextorno','asc');
           
           $gastoadministrativooperativos = DB::table('gastoadministrativooperativo')
               ->leftJoin('users as responsable','responsable.id','gastoadministrativooperativo.idresponsable')
               ->leftJoin('tienda','tienda.id','gastoadministrativooperativo.idtienda')
-              ->where('gastoadministrativooperativo.idestadoeliminado',2)
+              ->leftJoin('users as responsableeliminado','responsableeliminado.id','gastoadministrativooperativo.idresponsble_eliminado')
               ->where($where3)
               ->select(
                   DB::raw('CONCAT("ELIM. GASTO") as operacion'),
@@ -106,6 +108,7 @@ class OperacionextornadaController extends Controller
                   //DB::raw('CONCAT("--") as nombrecliente'),
                   'responsable.codigo as codigoresponsable',
                   'tienda.nombre as tiendanombre',
+                  'responsableeliminado.codigo as codigoresponsableeliminado',
               )
               ->orderBy('fechaextorno','asc');
           
@@ -127,6 +130,7 @@ class OperacionextornadaController extends Controller
                   'cliente.nombrecompleto as nombrecliente',
                   'responsable.codigo as codigoresponsable',
                   'tienda.nombre as tiendanombre',
+                  DB::raw('CONCAT("") as codigoresponsableeliminado')
               )
               ->orderBy('fechaextorno','asc');
           
@@ -152,6 +156,7 @@ class OperacionextornadaController extends Controller
                   'cliente.nombrecompleto as nombrecliente',
                   'responsable.codigo as codigoresponsable',
                   'tienda.nombre as tiendanombre',
+                  DB::raw('CONCAT("") as codigoresponsableeliminado')
               )
               ->orderBy('fechaextorno','asc')
               ->get();

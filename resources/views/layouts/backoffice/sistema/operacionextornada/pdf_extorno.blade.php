@@ -122,13 +122,14 @@
             <thead>
               <tr>
                 <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">FECHA Y HORA</th>
-                <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">CUENTA</th>
-                <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">OPERACIÓN</th>
-                <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">SUB OPERACIÓN</th>
+                <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">CUENTA.</th>
+                <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">COD/OPER.</th>
+                <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">SUB OPERACIÓN.</th>
                 <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">DESCRIPCIÓN/CLIENTES</th>
-                <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">BANCO</th>
+                <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">BANCO(OPER.)</th>
                 <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">MONTO</th>
-                <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">USUARIO</th>
+                <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">US.(EMISOR)</th>
+                <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">US.(EXTORNO)</th>
                 <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">SUCURSAL</th>
               </tr>
             </thead>
@@ -152,11 +153,12 @@
                 <td>{{$cuenta}}</td>
                 <td style="text-align: right;">S/. {{$value->total_pagar}}</td>
                 <td>{{$value->codigoresponsable}}</td>
+                <td>{{$value->codigoresponsableeliminado ?? ''}}</td>
                 <td>{{$value->tiendanombre}}</td>
               </tr>
               @endforeach
               <tr>
-                <th style="border-top: 2px solid #000;" colspan="9"></th>
+                <th style="border-top: 2px solid #000;" colspan="10"></th>
               </tr>
               <!--tr>
                 <th style="border-top: 2px solid #000;"></th>

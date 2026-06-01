@@ -1959,7 +1959,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
     
         $ingresoyegresobanco_ingreso_crediticio_cnpcps_bancos[] = [
             'banco_nombre' => $valuebancos->nombre,
-            'banco_cuenta' => '(******'.substr($valuebancos->cuenta, -5).')',
+            'banco_cuenta' => '(******'.substr($valuebancos->cuenta, -4).')',
             'banco_capital' => number_format($banco_capital, 2, '.', ''),
             'banco_interes' => number_format($banco_interes, 2, '.', ''),
             'banco_desgravcargo' => number_format($banco_desgravcargo, 2, '.', ''),
@@ -2023,7 +2023,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
 
         $ingresoyegresobanco_ingreso_cvventas[] = [
             'banco_nombre' => $valuebancos->nombre,
-            'banco_cuenta' => '(******'.substr($valuebancos->cuenta, -5).')',
+            'banco_cuenta' => '(******'.substr($valuebancos->cuenta, -4).')',
             'banco' => number_format($compra_ingresoyegresobanco_egreso_cvventa, 2, '.', ''),
             'validacion' => $validacion_1,
         ];
@@ -2087,7 +2087,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
         
         $ingresoyegresobanco_egreso_cvcompras[] = [
             'banco_nombre' => $valuebancos->nombre,
-            'banco_cuenta' => '(******'.substr($valuebancos->cuenta, -5).')',
+            'banco_cuenta' => '(******'.substr($valuebancos->cuenta, -4).')',
             'banco' => number_format($compra_ingresoyegresobanco_egreso_cvcompra, 2, '.', ''),
             'validacion' => $validacion_1,
         ];
@@ -2148,7 +2148,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
     
         $ingresoyegresobanco_ingreso_incrementocapital_bancos[] = [
             'banco_nombre' => $valuebancos->nombre,
-            'banco_cuenta' => '(******'.substr($valuebancos->cuenta, -5).')',
+            'banco_cuenta' => '(******'.substr($valuebancos->cuenta, -4).')',
             'banco' => number_format($ingresoyegresobanco_ingreso_incrementocapital_monto, 2, '.', ''),
             'validacion' => $validacion_1
         ];
@@ -2205,7 +2205,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
     
         $ingresoyegresobanco_ingreso_ingresosextraordinarios_bancos[] = [
             'banco_nombre' => $valuebancos->nombre,
-            'banco_cuenta' => '(******'.substr($valuebancos->cuenta, -5).')',
+            'banco_cuenta' => '(******'.substr($valuebancos->cuenta, -4).')',
             'banco' => number_format($ingresoyegresobanco_ingreso_ingresosextraordinarios_monto, 2, '.', ''),
             'validacion' => $validacion_1
         ];
@@ -2266,7 +2266,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
         
         $ingresoyegresobanco_egreso_crediticio_bancos[] = [
             'banco_nombre' => $valuebancos->nombre,
-            'banco_cuenta' => '(******'.substr($valuebancos->cuenta, -5).')',
+            'banco_cuenta' => '(******'.substr($valuebancos->cuenta, -4).')',
             'banco' => number_format($desembolsos_ingresoyegresobanco_egreso_crediticio, 2, '.', ''),
             'validacion' => $validacion_1,
         ];
@@ -2319,7 +2319,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
     
         $ingresoyegresobanco_egreso_reduccioncapital_bancos[] = [
             'banco_nombre' => $valuebancos->nombre,
-            'banco_cuenta' => '(******'.substr($valuebancos->cuenta, -5).')',
+            'banco_cuenta' => '(******'.substr($valuebancos->cuenta, -4).')',
             'banco' => number_format($ingresoyegresobanco_egreso_reduccioncapital_monto, 2, '.', ''),
             'validacion' => $validacion_1,
         ];
@@ -2377,7 +2377,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
     
         $ingresoyegresobanco_egreso_gastosadministrativosyoperativos_bancos[] = [
             'banco_nombre' => $valuebancos->nombre,
-            'banco_cuenta' => '(******'.substr($valuebancos->cuenta, -5).')',
+            'banco_cuenta' => '(******'.substr($valuebancos->cuenta, -4).')',
             'banco' => number_format($ingresoyegresocaja_egreso_gastosadministrativosyoperativos_monto, 2, '.', ''),
             'validacion' => $validacion_1,
         ];
@@ -2520,7 +2520,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
         $ret_banco_caja_bancos[] = [
             'banco_id' => $valuebancos->id,
             'banco_nombre' => $valuebancos->nombre,
-            'banco_cuenta' => '(******'.substr($valuebancos->cuenta, -5).')',
+            'banco_cuenta' => '(******'.substr($valuebancos->cuenta, -4).')',
             'banco' => number_format($movimientointernodineros_sum, 2, '.', ''),
             'banco_dep' => number_format($movimientointernodineros1, 2, '.', ''),
         ];
@@ -2581,7 +2581,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
         $dep_banco_caja += number_format($movimientointernodineros1, 2, '.', '');
         $ret_caja_banco_bancos[] = [
             'banco_nombre' => $valuebancos->nombre,
-            'banco_cuenta' => '(******'.substr($valuebancos->cuenta, -5).')',
+            'banco_cuenta' => '(******'.substr($valuebancos->cuenta, -4).')',
             'banco' => number_format($movimientointernodineros_sum, 2, '.', ''),
             'banco_dep' => number_format($movimientointernodineros1, 2, '.', ''),
         ];
@@ -2662,7 +2662,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
         $dep_reservacf_banco += number_format($movimientointernodineros1, 2, '.', '');
         $ret_banco_reservacf_bancos[] = [
             'banco_nombre' => $valuebancos->nombre,
-            'banco_cuenta' => '(******'.substr($valuebancos->cuenta, -5).')',
+            'banco_cuenta' => '(******'.substr($valuebancos->cuenta, -4).')',
             'banco' => number_format($movimientointernodineros_sum, 2, '.', ''),
             'banco_dep' => number_format($movimientointernodineros1, 2, '.', ''),
         ];
@@ -2870,7 +2870,7 @@ function cvconsolidadooperaciones($tienda,$idagencia,$fechacorte){
         $saldos_cuentabanco_bancos[] = [
             'banco_id' => $valuebancos->id,
             'banco_nombre' => $valuebancos->nombre,
-            'banco_cuenta' => '(******'.substr($valuebancos->cuenta, -5).')',
+            'banco_cuenta' => '(******'.substr($valuebancos->cuenta, -4).')',
             'banco' => number_format($saldos_capitalasignada_1-
                                     $saldos_capitalasignada_2+
                                     $cobranzas-$desembolsos-

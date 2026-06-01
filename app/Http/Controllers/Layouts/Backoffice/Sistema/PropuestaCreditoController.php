@@ -155,27 +155,37 @@ class PropuestaCreditoController extends Controller
           }
           
           $creditos = DB::table('credito')
-                            ->join('users as cliente','cliente.id','credito.idcliente')
-                            ->join('users as asesor','asesor.id','credito.idasesor')
-                            ->leftjoin('users as aval','aval.id','credito.idaval')
-                            ->join('modalidad_credito','modalidad_credito.id','credito.idmodalidad_credito')
-                            ->join('tipo_operacion_credito','tipo_operacion_credito.id','credito.idtipo_operacion_credito')
-                            // ->join('tarifario','tarifario.id','credito.idtarifario')
-                            ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
-                            ->where($where)
-                            ->select(
-                                'credito.*',
-                                'cliente.nombrecompleto as nombrecliente',
-                                'asesor.usuario as nombreasesor',
-                                'aval.nombrecompleto as nombreaval',
-                                'credito_prendatario.nombre as nombreproductocredito',
-                                'modalidad_credito.nombre as nombremodalidadcredito' , 
-                            )
-                            ->orderBy('credito.id','asc')
-                            ->get();
+              ->join('users as cliente','cliente.id','credito.idcliente')
+              ->join('users as asesor','asesor.id','credito.idasesor')
+              ->leftjoin('users as aval','aval.id','credito.idaval')
+              ->join('modalidad_credito','modalidad_credito.id','credito.idmodalidad_credito')
+              ->join('tipo_operacion_credito','tipo_operacion_credito.id','credito.idtipo_operacion_credito')
+              // ->join('tarifario','tarifario.id','credito.idtarifario')
+              ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
+              ->where($where)
+              ->select(
+                  'credito.*',
+                  'cliente.nombrecompleto as nombrecliente',
+                  'asesor.usuario as nombreasesor',
+                  'aval.nombrecompleto as nombreaval',
+                  'credito_prendatario.nombre as nombreproductocredito',
+                  'modalidad_credito.nombre as nombremodalidadcredito' , 
+              )
+              ->orderBy('credito.id','asc')
+              ->get();
           
           $html = '';
           foreach($creditos as $key => $value){
+              $opcion = "<div class='dropdown' id='menu-opcion'>
+                            <button class='btn btn-primary dropdown-toggle'  type='button' data-bs-toggle='dropdown' aria-expanded='false'>Opción</button>
+                            <ul class='dropdown-menu dropdown-menu-end'>
+                              <li>
+                                <a class='dropdown-item' href='javascript:;' data-valor-columna='{$value->id}' onclick='show_data(this)'>
+                                  <i class='fa fa-money-bill'></i> Garantia, Cronograma y Evaluación
+                                </a>
+                              </li>
+                            </ul>
+                          </div>";
               $fecha = '';
               if($value->estado=='PROCESO'){
                   $fecha = $value->fecha_proceso!=''?date_format(date_create($value->fecha_proceso),"d-m-Y h:i A"):'';
@@ -193,6 +203,7 @@ class PropuestaCreditoController extends Controller
                   }else{
                       $fecha = $value->fecha_desembolso!=''?date_format(date_create($value->fecha_desembolso),"d-m-Y h:i A"):'';
                   }
+                  $opcion = "";
               }
               $html .= "<tr id='show_data_select' idcredito='{$value->id}' estado='{$value->estado}'>
                             <td>".($key+1)."</td>
@@ -204,30 +215,12 @@ class PropuestaCreditoController extends Controller
                             <td>{$value->nombreasesor}</td>
                             <td>".$fecha."</td>
                             <td>{$value->nombremodalidadcredito}</td>
-                            <td>
-                              <div class='dropdown' id='menu-opcion'>
-                                <button class='btn btn-primary dropdown-toggle'  type='button' data-bs-toggle='dropdown' aria-expanded='false'>Opción</button>
-                                <ul class='dropdown-menu dropdown-menu-end'>
-                                  <li>
-                                    <a class='dropdown-item' href='javascript:;' data-valor-columna='{$value->id}' onclick='show_data(this)'>
-                                      <i class='fa fa-money-bill'></i> Garantia, Cronograma y Evaluación
-                                    </a>
-                                  </li>
-                                </ul>
-                              </div>
-                            </td>
-                            
+                            <td>{$opcion}</td>
                         </tr>";
-//                                   <li>
-//                                     <a class='dropdown-item' href='javascript:;' onclick='btnDetalleAprobacion({$value->id})'>
-//                                       <i class='fa fa-edit'></i> Detalle Aprobacion
-//                                     </a>
-//                                   </li>
           }
           return array(
             'html' => $html
           );
-          
         }
         else if( $id == 'showpermisos'){
           

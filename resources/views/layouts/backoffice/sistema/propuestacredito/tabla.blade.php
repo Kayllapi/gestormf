@@ -151,7 +151,7 @@
                   <th>ASESOR/EJECUTIVO</th>
                   <th>FECHA</th>
                   <th>MODALI. CRÉDITO</th>
-                  <th>PROPUESTA</th>
+                  <th id="opciones_columna">PROPUESTA</th>
                 </tr>
               </thead>
               <tbody>
@@ -171,6 +171,12 @@
   lista_credito();
   function lista_credito(){
     let estado_credito = $('input[name="estado_credito"]:checked').val();
+
+    if (estado_credito === 'DESEMBOLSADO' || estado_credito === 'CANCELADO') {
+      $('#opciones_columna').html('');
+    } else {
+      $('#opciones_columna').html('PROPUESTA');
+    }
     
     $.ajax({
       url:"{{url('backoffice/0/propuestacredito/showtable')}}",

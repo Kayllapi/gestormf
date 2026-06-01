@@ -82,11 +82,11 @@
         vertical-align: top;
       }
       .border-td{
-        border:solid 1px #888888;    
+        border:solid 1px #000000;    
       }
       
       .table, .table th, .table td {
-        border: 1px solid #888888;
+        border: 1px solid #000000;
         border-collapse: collapse;
       }
       
@@ -104,6 +104,10 @@
         bottom: 10px;
         text-align: right;
         right: 0.7cm;
+      }
+      .linea {
+          width: 100%;
+          border-top: 1px solid #000;
       }
      </style>
 </head>
@@ -135,16 +139,16 @@
       </div>
           <table style="width:100%;">
             <tr>
-              <th style="border-bottom: 2px solid #000;">N°</th>
-              <th style="border-bottom: 2px solid #000;">Bien</th>
-              <th style="border-bottom: 2px solid #000;">Accesorios</th>
-              <th style="border-bottom: 2px solid #000;">Año F.</th>
-              <th style="border-bottom: 2px solid #000;">Color</th>
-              <th style="border-bottom: 2px solid #000;">Serie/Motor/N°Partida</th>
-              <th style="border-bottom: 2px solid #000;">Chasis</th>
-              <th style="border-bottom: 2px solid #000;">Modelo</th>
-              <th style="border-bottom: 2px solid #000;">Placa</th>
-              <th style="border-bottom: 2px solid #000;">Estado</th>
+              <th style="border-bottom: 1px solid #000;">N°</th>
+              <th style="border-bottom: 1px solid #000;">Bien</th>
+              <th style="border-bottom: 1px solid #000;">Accesorios</th>
+              <th style="border-bottom: 1px solid #000;">Año F.</th>
+              <th style="border-bottom: 1px solid #000;">Color</th>
+              <th style="border-bottom: 1px solid #000;">Serie/Motor/N°Partida</th>
+              <th style="border-bottom: 1px solid #000;">Chasis</th>
+              <th style="border-bottom: 1px solid #000;">Modelo</th>
+              <th style="border-bottom: 1px solid #000;">Placa</th>
+              <th style="border-bottom: 1px solid #000;">Estado</th>
             </tr>
             <?php $i=1; ?>
             @foreach($garantias as $value)
@@ -191,7 +195,7 @@
       <table style="width:50%; float: right;">
         <tr>
           <td style="padding:0px; width: 150px;" align="left">
-            <hr style="border: 1px solid #000; margin-top: 50px;">
+            <div class="linea"></div>
             <span style="padding-top:10px;"><b>{{ $usuario->nombrecompleto }}</b></span>
             <br>
             <span>RUC/DNI/CE: {{ $usuario->identificacion }}</span>

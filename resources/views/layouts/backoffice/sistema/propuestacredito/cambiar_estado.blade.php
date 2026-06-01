@@ -220,10 +220,11 @@
                   @endif
               @else
                         <p class="text-center" 
-                           style="background-color: #dc3545;
+                           style="background-color: #ffc9ca;
+                                  border: 1px solid #ff6666 !important;
+                                  color: #93222c;
                                   padding: 10px;
                                   border-radius: 5px;
-                                  color: #fff;
                                   width: 80%;
                                   margin: auto;">El Comentario de Visitas es Obligatorio.</p>
                   

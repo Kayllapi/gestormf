@@ -82,8 +82,6 @@ class DesembolsadoController extends Controller
               }
           }
           
-          
-          
           $creditos = DB::table('credito')
               ->join('forma_pago_credito','forma_pago_credito.id','credito.idforma_pago_credito')
               ->join('users as cliente','cliente.id','credito.idcliente')
@@ -130,8 +128,6 @@ class DesembolsadoController extends Controller
                   $idformapago = $credito_formapago->idformapago;
               }
             
-                  
-                
               $btn_validar = '';
               if($idformapago==2){
                   $btn_validar = "<button type='button' class='btn btn-success' onclick='validar({$value->id})'><i class='fa-solid fa-check'></i> Validar</button>";
@@ -156,18 +152,6 @@ class DesembolsadoController extends Controller
                             <td>{$btn_validar}</td>
                             <td>{$value->nombremodalidadcredito}</td>
                             <td>{$value->codigoasesor}</td>
-                            <td>
-                              <div class='dropdown' id='menu-opcion'>
-                                <button class='btn btn-primary dropdown-toggle'  type='button' data-bs-toggle='dropdown' aria-expanded='false'>Opción</button>
-                                <ul class='dropdown-menu dropdown-menu-end'>
-                                  <li>
-                                    <a class='dropdown-item' href='javascript:;' data-valor-columna='{$value->id}' onclick='show_data(this)'>
-                                      <i class='fa fa-money-bill'></i> Garantia, Cronograma y Evaluación
-                                    </a>
-                                  </li>
-                                </ul>
-                              </div>
-                            </td>
                         </tr>";
               if($value->nombremodalidadcredito=='Regular'){
                   $total_neto += $value->monto_solicitado;
@@ -177,11 +161,11 @@ class DesembolsadoController extends Controller
               $total_desembolsado += $value->monto_solicitado;
           }
           if(count($creditos)==0){
-              $html.= '<tr><td colspan="17" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
+              $html.= '<tr><td colspan="16" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
           }
               $html .= '
                 <tr style="position: sticky;bottom: -1px;z-index:1;">
-                  <th style="text-align:center;" colspan="13">RESUMEN: &nbsp;&nbsp;&nbsp TOTAL GENERAL (S/): '.number_format($total_desembolsado, 2, '.', '').' &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <th style="text-align:center;" colspan="12">RESUMEN: &nbsp;&nbsp;&nbsp TOTAL GENERAL (S/): '.number_format($total_desembolsado, 2, '.', '').' &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   TOTAL REFINANCIADO (S/.): '.number_format($total_refinanciado, 2, '.', '').' &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
                   TOTAL NETO (S/.): '.number_format($total_neto, 2, '.', '').'</th>
                 </tr>';

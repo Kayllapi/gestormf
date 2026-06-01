@@ -118,7 +118,6 @@
                   <th>VALIDACIÓN</th>
                   <th>MODA. CRÉDITO</th>
                   <th>ASESOR</th>
-                  <th width="10px"></th>
                 </tr>
               </thead>
               <tbody>
@@ -167,12 +166,10 @@
       }
     })
   }
-  function show_data(e) {
-    let id = $(e).attr('data-valor-columna');
-    //$('tr.selected').removeClass('selected');
-    //$(e).addClass('selected');
-    modal({ route:"{{url('backoffice')}}/{{$tienda->id}}/propuestacredito/"+id+"/edit?view=opciones" });  
-  }
+  // function show_data(e) {
+  //   let id = $(e).attr('data-valor-columna');
+  //   modal({ route:"{{url('backoffice')}}/{{$tienda->id}}/propuestacredito/"+id+"/edit?view=opciones" });  
+  // }
  
    function vistapreliminar(){
       let idcredito = $('#table-lista-credito > tbody > tr.selected').attr('idcredito');

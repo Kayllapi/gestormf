@@ -314,7 +314,7 @@
             @else
               <table style="width:100%;">
                 <tr>
-                  <td colspan="2">No tiene ninguna garantia.</td>
+                  <td colspan="2">No tiene ninguna garantía prendaria.</td>
                 </tr>
               </table>
             @endif

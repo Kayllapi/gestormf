@@ -106,7 +106,6 @@
         right: 0.7cm;
       }
       .linea {
-          width: 100%;
           border-top: 1px solid #000;
       }
      </style>
@@ -195,7 +194,7 @@
       <table style="width:50%; float: right;">
         <tr>
           <td style="padding:0px; width: 150px;" align="left">
-            <div class="linea"></div>
+            <div class="linea" style=" margin-top: 50px;"></div>
             <span style="padding-top:10px;"><b>{{ $usuario->nombrecompleto }}</b></span>
             <br>
             <span>RUC/DNI/CE: {{ $usuario->identificacion }}</span>

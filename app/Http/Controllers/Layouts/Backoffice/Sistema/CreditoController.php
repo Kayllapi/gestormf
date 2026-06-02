@@ -727,7 +727,7 @@ class CreditoController extends Controller
                   'aval.nombrecompleto as nombreaval',
                   'credito_prendatario.nombre as nombreproductocredito' 
               )
-              ->orderBy('credito.fecha','asc')
+              ->orderBy('credito.id','asc')
               ->get();
           
           $html = '';

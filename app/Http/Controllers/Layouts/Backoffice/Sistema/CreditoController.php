@@ -712,24 +712,23 @@ class CreditoController extends Controller
 
     public function show(Request $request, $idtienda, $id)
     {
-
         if($id == 'showtable'){
           $creditos = DB::table('credito')
-                            ->join('users as cliente','cliente.id','credito.idcliente')
-                            ->leftjoin('users as aval','aval.id','credito.idaval')
-                            ->join('modalidad_credito','modalidad_credito.id','credito.idmodalidad_credito')
-                            ->join('tipo_operacion_credito','tipo_operacion_credito.id','credito.idtipo_operacion_credito')
-                            // ->join('tarifario','tarifario.id','credito.idtarifario')
-                            ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
-                            ->where('credito.estado','PENDIENTE')
-                            ->select(
-                                'credito.*',
-                                'cliente.nombrecompleto as nombrecliente',
-                                'aval.nombrecompleto as nombreaval',
-                                'credito_prendatario.nombre as nombreproductocredito' 
-                            )
-                            ->orderBy('credito.id','asc')
-                            ->get();
+              ->join('users as cliente','cliente.id','credito.idcliente')
+              ->leftjoin('users as aval','aval.id','credito.idaval')
+              ->join('modalidad_credito','modalidad_credito.id','credito.idmodalidad_credito')
+              ->join('tipo_operacion_credito','tipo_operacion_credito.id','credito.idtipo_operacion_credito')
+              // ->join('tarifario','tarifario.id','credito.idtarifario')
+              ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
+              ->where('credito.estado','PENDIENTE')
+              ->select(
+                  'credito.*',
+                  'cliente.nombrecompleto as nombrecliente',
+                  'aval.nombrecompleto as nombreaval',
+                  'credito_prendatario.nombre as nombreproductocredito' 
+              )
+              ->orderBy('credito.id','desc')
+              ->get();
           
           $html = '';
           foreach($creditos as $key => $value){

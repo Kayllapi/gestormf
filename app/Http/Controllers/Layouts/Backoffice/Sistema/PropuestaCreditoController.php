@@ -119,12 +119,11 @@ class PropuestaCreditoController extends Controller
 
     public function show(Request $request, $idtienda, $id)
     {
-
         if($id == 'showtable'){
-          
           $where = [];
           $where[] = ['credito.idtienda',$request->input('idagencia')];
           $where[] = ['credito.estado','<>','ELIMINADO'];
+          $orderBy = 'credito.id';
           
           if($request->input('estado')=='PROCESO'){
               $where[] = ['credito.estado',$request->input('estado')];
@@ -140,18 +139,21 @@ class PropuestaCreditoController extends Controller
               $where[] = ['credito.estado',$request->input('estado')];
               $where[] = ['credito.fecha_desaprobacion','>=',$request->input('inicio').' 00:00:00'];
               $where[] = ['credito.fecha_desaprobacion','<=',$request->input('fin').' 23:59:59'];
+              $orderBy = 'credito.fecha_desaprobacion';
           }
           elseif($request->input('estado')=='DESEMBOLSADO'){
               $where[] = ['credito.idestadocredito',1];
               $where[] = ['credito.estado',$request->input('estado')];
               $where[] = ['credito.fecha_desembolso','>=',$request->input('inicio').' 00:00:00'];
               $where[] = ['credito.fecha_desembolso','<=',$request->input('fin').' 23:59:59'];
+              $orderBy = 'credito.fecha_desembolso';
           }
           elseif($request->input('estado')=='CANCELADO'){
               $where[] = ['credito.idestadocredito',2];
               $where[] = ['credito.estado','DESEMBOLSADO'];
               $where[] = ['credito.fecha_cancelado','>=',$request->input('inicio').' 00:00:00'];
               $where[] = ['credito.fecha_cancelado','<=',$request->input('fin').' 23:59:59'];
+              $orderBy = 'credito.fecha_cancelado';
           }
           
           $creditos = DB::table('credito')
@@ -171,7 +173,7 @@ class PropuestaCreditoController extends Controller
                   'credito_prendatario.nombre as nombreproductocredito',
                   'modalidad_credito.nombre as nombremodalidadcredito' , 
               )
-              ->orderBy('credito.id','asc')
+              ->orderBy($orderBy)
               ->get();
           
           $html = '';

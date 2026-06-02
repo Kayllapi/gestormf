@@ -12,12 +12,23 @@
     </div>
     <div class="modal-body">
        <div class="col-sm-12 mt-2 text-center">
-         
             <button type="button" class="btn btn-primary"
-            onclick="verpdf('pdf_pago')"> VOUCHER DE PAGO</button>
+            onclick="verpdf('pdf_pago')">
+                VOUCHER DE PAGO
+            </button>
+            <button type="button" class="btn btn-success"
+            onclick="imprimirTicket('pdf_pago')">
+                <i class="fa fa-print"></i>
+            </button>
             @if($idestadocredito==2 && $credito->idforma_credito==1 && $entregargarantia=='on')
-            <button type="button" class="btn btn-warning"
-            onclick="verpdf('pdf_garantia',{{$credito->id}})"> V. ENTREGA DE GARANTIA</button>
+                <button type="button" class="btn btn-warning"
+                onclick="verpdf('pdf_garantia',{{$credito->id}})">
+                    V. ENTREGA DE GARANTIA
+                </button>
+                <button type="button" class="btn btn-success"
+                onclick="imprimirTicket('pdf_garantia',{{$credito->id}})">
+                    <i class="fa fa-print"></i>
+                </button>
             @endif
        <div class="col-sm-12 mt-2">
         <iframe id="iframe_acta_aprobacion" 
@@ -30,5 +41,40 @@
 <script>
 function verpdf(valor,idgarantia=0,num=0){
     $('#iframe_acta_aprobacion').attr('src',"{{ url('/backoffice/'.$tienda->id.'/cobranzacuota/'.$credito->id.'/edit?view=') }}"+valor+'&idcobranzacuota={{$idcobranzacuota}}&idgarantia='+idgarantia+'&num='+num+'#zoom=100');
+}
+imprimirTicket('pdf_pago');
+function imprimirTicket(tipo,idgarantia=0,num=0){
+    // opcion1
+    let url = "{{ url('/backoffice/'.$tienda->id.'/cobranzacuota/'.$credito->id.'/edit?view=') }}"
+        + tipo
+        + '&idcobranzacuota={{$idcobranzacuota}}'
+        + '&idgarantia=' + idgarantia
+        + '&num=' + num;
+
+    let iframe = document.getElementById('iframe_acta_aprobacion');
+    iframe.onload = function () {
+        iframe.contentWindow.focus();
+        iframe.contentWindow.print();
+    };
+
+    iframe.src = url;
+    // let ventana = window.open(url,'_blank');
+
+    // ventana.onload = function(){
+    //     setTimeout(function(){
+    //         ventana.print();
+    //     },1000);
+    // };
+
+    // opcion2
+    /*let url =
+        "{{ url('/backoffice/'.$tienda->id.'/cobranzacuota/'.$credito->id.'/edit') }}"
+        + "?view=" + tipo
+        + "&print=1"
+        + "&idcobranzacuota={{$idcobranzacuota}}"
+        + "&idgarantia=" + idgarantia
+        + "&num=" + num;
+
+    $('#iframe_acta_aprobacion').attr('src', url);*/
 }
 </script>

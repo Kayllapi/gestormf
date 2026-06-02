@@ -24,14 +24,14 @@
           //lista_credito_cliente(resultado.idcliente);
         //}
         
-        // imprime pago
-        imprimirPago(resultado.idcredito, resultado.idcobranzacuota);
+        // // imprime pago
+        // imprimirPago(resultado.idcredito, resultado.idcobranzacuota);
 
-        // si corresponde imprime garantía
-        if(resultado.idestadocredito == 2 &&
-          resultado.entregargarantia == 'on'){
-            imprimirGarantia(resultado.idcredito, resultado.idcobranzacuota);
-        }
+        // // si corresponde imprime garantía
+        // if(resultado.idestadocredito == 2 &&
+        //   resultado.entregargarantia == 'on'){
+        //     imprimirGarantia(resultado.idcredito, resultado.idcobranzacuota);
+        // }
 
         // sigue mostrando el modal
         ver_opciones(

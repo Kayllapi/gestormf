@@ -70,5 +70,12 @@
           </table> 
       
     </div>
+    @if(request('print') == 1)
+      <script>
+      window.onload = function(){
+          window.print();
+      };
+      </script>
+    @endif
 </body>
 </html>

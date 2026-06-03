@@ -450,8 +450,7 @@ function select_cronograma(
         // $tenencia      = $total_tenencia;
         $compensatorio = $total_compensatorio;
       
-        // $cuota         = number_format($amortizacion+$comision+$cargo+$interes, 2, '.', ''); // anterior
-        $cuota         = number_format($value->cuota_real, 2, '.', '');
+        $cuota         = number_format($amortizacion+$comision+$cargo+$interes, 2, '.', '');
         $totalcuota    = number_format($cuota+$penalidad+$tenencia+$compensatorio, 2, '.', '');
       
         $acuenta       = 0;

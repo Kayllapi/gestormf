@@ -32,7 +32,7 @@
             @endif
        <div class="col-sm-12 mt-2">
         <iframe id="iframe_acta_aprobacion" 
-        src="{{ url('/backoffice/'.$tienda->id.'/cobranzacuota/'.$credito->id.'/edit?view=pdf_pago&idcobranzacuota='.$idcobranzacuota) }}#zoom=110" 
+        src="{{ url('/backoffice/'.$tienda->id.'/cobranzacuota/'.$credito->id.'/edit?view=pdf_pago&idcobranzacuota='.$idcobranzacuota) }}#zoom=100" 
         frameborder="0" width="100%" height="600px"></iframe>
       </div>
       </div>
@@ -40,7 +40,7 @@
 </div>
 <script>
 function verpdf(valor,idgarantia=0,num=0){
-    $('#iframe_acta_aprobacion').attr('src',"{{ url('/backoffice/'.$tienda->id.'/cobranzacuota/'.$credito->id.'/edit?view=') }}"+valor+'&idcobranzacuota={{$idcobranzacuota}}&idgarantia='+idgarantia+'&num='+num+'#zoom=110');
+    $('#iframe_acta_aprobacion').attr('src',"{{ url('/backoffice/'.$tienda->id.'/cobranzacuota/'.$credito->id.'/edit?view=') }}"+valor+'&idcobranzacuota={{$idcobranzacuota}}&idgarantia='+idgarantia+'&num='+num+'#zoom=100');
 }
 imprimirTicket('pdf_pago');
 function imprimirTicket(tipo,idgarantia=0,num=0){
@@ -50,7 +50,7 @@ function imprimirTicket(tipo,idgarantia=0,num=0){
     //     + '&idcobranzacuota={{$idcobranzacuota}}'
     //     + '&idgarantia=' + idgarantia
     //     + '&num=' + num
-    //     + '#zoom=110';
+    //     + '#zoom=100';
 
     let iframe = document.getElementById('iframe_acta_aprobacion');
     iframe.onload = function () {

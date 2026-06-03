@@ -440,10 +440,16 @@ function select_cronograma(
             $pagar_interes = $interes;
             $descontar_interes = $descuento_amortizacion;
         }
-        
+
+        $ultimaCuota = $credito_cronograma->max('numerocuota');
+        if($value->numerocuota == $ultimaCuota){
+            $tenencia = $total_tenencia;
+        }else{
+            $tenencia = 0;
+        }
       
         $penalidad     = $total_penalidad;
-        $tenencia      = $total_tenencia;
+        // $tenencia      = $total_tenencia;
         $compensatorio = $total_compensatorio;
       
         $cuota         = number_format($amortizacion+$comision+$cargo+$interes, 2, '.', '');

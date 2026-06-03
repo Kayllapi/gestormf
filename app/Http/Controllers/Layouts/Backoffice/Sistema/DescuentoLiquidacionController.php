@@ -270,20 +270,27 @@ class DescuentoLiquidacionController extends Controller
     {
 
         if($id == 'show_credito'){
-          $creditos = DB::table('credito')
-                            ->join('users as cliente','cliente.id','credito.idcliente')
-                            ->where('credito.estado','DESEMBOLSADO')
-                            ->where('cliente.identificacion','LIKE','%'.$request->buscar.'%')
-                            ->orWhere('credito.estado','DESEMBOLSADO')
-                            ->where('cliente.nombrecompleto','LIKE','%'.$request->buscar.'%')
-                            ->select(
-                                'cliente.id as idcliente',
-                                'cliente.identificacion as identificacion',
-                                'cliente.nombrecompleto as nombrecliente',
-                            )
-                            ->distinct()
-                            ->orderBy('credito.fecha_desembolso','asc')
-                            ->get();
+            $creditos = DB::table('credito')
+                ->join('users as cliente', 'cliente.id', '=', 'credito.idcliente')
+                ->where('credito.estado', 'DESEMBOLSADO')
+                ->where('credito.idestadocredito', 1)
+                ->where(function ($q) use ($request) {
+                    $q->where('cliente.identificacion', 'LIKE', '%' . $request->buscar . '%')
+                    ->orWhere('cliente.nombrecompleto', 'LIKE', '%' . $request->buscar . '%');
+                })
+                ->select(
+                    'cliente.id as idcliente',
+                    'cliente.identificacion as identificacion',
+                    'cliente.nombrecompleto as nombrecliente',
+                    DB::raw('MIN(credito.fecha_desembolso) as fecha_desembolso')
+                )
+                ->groupBy(
+                    'cliente.id',
+                    'cliente.identificacion',
+                    'cliente.nombrecompleto'
+                )
+                ->orderBy('fecha_desembolso', 'asc')
+                ->get();
             $data = [];
             foreach($creditos as $value){
                 $data[] = [

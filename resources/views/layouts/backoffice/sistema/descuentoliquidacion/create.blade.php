@@ -41,28 +41,28 @@
               <td><input type="text" class="form-control campo_moneda" id="saldo_interes" disabled></td>
           </tr>
           <tr>
-              <td><b>Comisión</b></td>
-              <td><input type="text" class="form-control campo_moneda" value="{{ $cronograma['select_comision'] }}" id="data_comision" disabled></td>
-              <td><input type="text" valida_input_vacio class="form-control campo_moneda" value="0.00" id="descuento_comision" onkeyup="calcular_descuento(2)"></td>
-              <td><input type="text" class="form-control campo_moneda" id="saldo_comision" disabled></td>
-          </tr>
-          <tr>
-              <td><b>Cargo</b></td>
+              <td><b>Carg. x Cust. G./Ot.</b></td>
               <td><input type="text" class="form-control campo_moneda" value="{{ $cronograma['select_cargo'] }}" id="data_cargo" disabled></td>
               <td><input type="text" valida_input_vacio class="form-control campo_moneda" value="0.00" id="descuento_cargo" onkeyup="calcular_descuento(2)"></td>
               <td><input type="text" class="form-control campo_moneda" id="saldo_cargo" disabled></td>
           </tr>
           <tr>
-              <td><b>Penalidad</b></td>
-              <td><input type="text" class="form-control campo_moneda" value="{{ $cronograma['select_penalidad'] }}" id="data_penalidad" disabled></td>
-              <td><input type="text" valida_input_vacio class="form-control campo_moneda" value="0.00" id="descuento_penalidad" onkeyup="calcular_descuento(2)"></td>
-              <td><input type="text" class="form-control campo_moneda" id="saldo_penalidad" disabled></td>
+              <td><b>Ss. Recau.</b></td>
+              <td><input type="text" class="form-control campo_moneda" value="{{ $cronograma['select_comision'] }}" id="data_comision" disabled></td>
+              <td><input type="text" valida_input_vacio class="form-control campo_moneda" value="0.00" id="descuento_comision" onkeyup="calcular_descuento(2)"></td>
+              <td><input type="text" class="form-control campo_moneda" id="saldo_comision" disabled></td>
           </tr>
           <tr>
-              <td><b>Tenencia</b></td>
+              <td><b>P. Cust.</b></td>
               <td><input type="text" class="form-control campo_moneda" value="{{ $cronograma['select_tenencia'] }}" id="data_tenencia" disabled></td>
               <td><input type="text" valida_input_vacio class="form-control campo_moneda" value="0.00" id="descuento_tenencia" onkeyup="calcular_descuento(2)"></td>
               <td><input type="text" class="form-control campo_moneda" id="saldo_tenencia" disabled></td>
+          </tr>
+          <tr>
+              <td><b>Int. Comp.</b></td>
+              <td><input type="text" class="form-control campo_moneda" value="{{ $cronograma['select_penalidad'] }}" id="data_penalidad" disabled></td>
+              <td><input type="text" valida_input_vacio class="form-control campo_moneda" value="0.00" id="descuento_penalidad" onkeyup="calcular_descuento(2)"></td>
+              <td><input type="text" class="form-control campo_moneda" id="saldo_penalidad" disabled></td>
           </tr>
           <tr>
               <td><b>Interes Moratorio</b></td>

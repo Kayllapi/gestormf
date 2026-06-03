@@ -424,7 +424,6 @@ function select_cronograma(
             $descontar_cargo = $descuento_cargo;
         }
       
-      
         //interes
         if($descuento_interes>=$interes && $descuento_interes>0){
             $pagar_interes = 0;
@@ -436,7 +435,7 @@ function select_cronograma(
             $descuento_interes = 0;
         }else{
             $pagar_interes = $interes;
-            $descontar_interes = $descuento_amortizacion;
+            $descontar_interes = $descuento_interes;
         }
 
         $ultimaCuota = $credito_cronograma->max('numerocuota');
@@ -450,7 +449,8 @@ function select_cronograma(
         // $tenencia      = $total_tenencia;
         $compensatorio = $total_compensatorio;
       
-        $cuota         = number_format($amortizacion+$comision+$cargo+$interes, 2, '.', '');
+        // $cuota         = number_format($amortizacion+$comision+$cargo+$interes, 2, '.', ''); // anterior
+        $cuota         = number_format($value->cuota_real, 2, '.', '');
         $totalcuota    = number_format($cuota+$penalidad+$tenencia+$compensatorio, 2, '.', '');
       
         $acuenta       = 0;
@@ -499,7 +499,14 @@ function select_cronograma(
             } 
             
         
-            $pagar_cuota  = number_format(($pagar_amortizacion+$pagar_comision+$pagar_cargo+$pagar_interes), 2, '.', '');
+            $cuota_original = $value->cuota_real;
+            $descuento_cuota =
+                $descontar_amortizacion +
+                $descontar_interes +
+                $descontar_comision +
+                $descontar_cargo;
+            // $pagar_cuota  = number_format(($pagar_amortizacion+$pagar_comision+$pagar_cargo+$pagar_interes), 2, '.', ''); // anterior
+            $pagar_cuota  = number_format(($cuota_original - $descuento_cuota), 2, '.', '');
             $pagar_totalcuota  = number_format(($pagar_cuota+$pagar_penalidad+$pagar_tenencia+$pagar_compensatorio), 2, '.', '');
         
             $descontar_cuota  = number_format(($descontar_amortizacion+$descontar_comision+$descontar_cargo+$descontar_interes), 2, '.', '');

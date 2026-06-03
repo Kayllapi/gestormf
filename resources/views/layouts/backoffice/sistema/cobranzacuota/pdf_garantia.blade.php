@@ -21,7 +21,7 @@
         
       }
       .linea {
-          border-top: 1px solid #000;
+          border-top: 0.5px solid #000;
           width:100%;
       }
     </style>
@@ -45,7 +45,7 @@
             <?php $i=1 ?>
             @foreach($garantias as $value)
             <tr>
-              <td style="border-top: 1px dashed #000;border-bottom: 1px dashed #000;padding-top:5px;padding-bottom:5px;">
+              <td style="border-top: 0.8px dashed #000;border-bottom: 0.8px dashed #000;padding-top:5px;padding-bottom:5px;">
                 <b>{{ $i }}.- </b> GP{{ str_pad($value->id, 8, '0', STR_PAD_LEFT)  }}<br>
                 <b>Descripción:</b> {{ $value->descripcion }}<br>
                 <b>Serie/Motor/Nro Partida:</b> {{ $value->serie_motor_partida }}<br>

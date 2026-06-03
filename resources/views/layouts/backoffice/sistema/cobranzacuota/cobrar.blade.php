@@ -20,18 +20,17 @@
         @endif
                 
         show_data_credito(resultado.idcredito);
-        //if(resultado.idestadocredito==2){
-          //lista_credito_cliente(resultado.idcliente);
-        //}
         
-        // // imprime pago
-        // imprimirPago(resultado.idcredito, resultado.idcobranzacuota);
+        /*
+        // imprime pago
+        imprimirPago(resultado.idcredito, resultado.idcobranzacuota);
 
-        // // si corresponde imprime garantía
-        // if(resultado.idestadocredito == 2 &&
-        //   resultado.entregargarantia == 'on'){
-        //     imprimirGarantia(resultado.idcredito, resultado.idcobranzacuota);
-        // }
+        // si corresponde imprime garantía
+        if(resultado.idestadocredito == 2 &&
+          resultado.entregargarantia == 'on'){
+            imprimirGarantia(resultado.idcredito, resultado.idcobranzacuota);
+        }
+        */
 
         // sigue mostrando el modal
         ver_opciones(
@@ -258,7 +257,7 @@ input::selection {
       cobrartotalpagar();
   }
   
-  function imprimirPago(idcredito,idcobranzacuota){
+  /*function imprimirPago(idcredito,idcobranzacuota){
 
       let url =
       "{{ url('/backoffice/'.$tienda->id.'/cobranzacuota') }}/"+
@@ -285,5 +284,5 @@ input::selection {
       ventana.onload = function(){
           ventana.print();
       };
-  }
+  }*/
 </script>

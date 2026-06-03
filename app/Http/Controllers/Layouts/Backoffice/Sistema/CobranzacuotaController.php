@@ -1764,24 +1764,7 @@ class CobranzacuotaController extends Controller
                 ->where('credito_cronograma.idcredito',$credito_cobranzacuota->idcredito)
                 ->whereIn('credito_cronograma.idestadocredito_cronograma',[1,3])
                 ->count();
-          
-            /*$pdf = PDF::loadView(sistema_view().'/cobranzacuota/pdf_pago',[
-                'tienda' => $tienda,
-                'creditocuenta' => $credito_cobranzacuota->cuenta,
-                'usuario' => $usuario,
-                'cajero' => $cajero,
-                'credito' => $credito,
-                'banco' => $credito_cobranzacuota->banco,
-                'bancocuenta' => $credito_cobranzacuota->cuenta,
-                'numerooperacion' => $credito_cobranzacuota->numerooperacion,
-                'idformapago' => $credito_cobranzacuota->idformapago,
-                'pago_cuota' => $credito_cobranzacuota->pago_cuota,
-                'pago_diasatraso' => $credito_cobranzacuota->pago_diasatraso,
-                'total_pendientepago' => $credito_cobranzacuota->total_pendientepago,
-                'credito_cobranzacuota' => $credito_cobranzacuota,
-                'count_creditopendiente'   => $count_creditopendiente,
-                'count_credito_cronograma' => $count_credito_cronograma,
-            ]); */
+
             $datos = [
                 'tienda' => $tienda,
                 'creditocuenta' => $credito_cobranzacuota->cuenta,
@@ -1799,12 +1782,6 @@ class CobranzacuotaController extends Controller
                 'count_creditopendiente'   => $count_creditopendiente,
                 'count_credito_cronograma' => $count_credito_cronograma,
             ];
-            if($request->input('print') == 1){
-                return view(
-                    sistema_view().'/cobranzacuota/pdf_pago',
-                    $datos
-                );
-            }
 
             $pdf = PDF::loadView(
                 sistema_view().'/cobranzacuota/pdf_pago',
@@ -1849,20 +1826,7 @@ class CobranzacuotaController extends Controller
                 'garantias.*'
               )
               ->get();
-          
-            /*$pdf = PDF::loadView(sistema_view().'/cobranzacuota/pdf_garantia',[
-                'tienda' => $tienda,
-                'creditocuenta' => $credito_cobranzacuota->creditocuenta,
-                'usuario' => $usuario,
-                'cajero' => $cajero,
-                'banco' => $credito_cobranzacuota->banco,
-                'bancocuenta' => $credito_cobranzacuota->cuenta,
-                'operacion' => $credito_cobranzacuota->numerooperacion,
-                'idformapago' => $credito_cobranzacuota->idformapago,
-                'credito_cobranzacuota' => $credito_cobranzacuota,
-            'garantias' => $garantias,
-            'num' => $request->num,
-            ]); */
+
             $datos = [
                 'tienda' => $tienda,
                 'creditocuenta' => $credito_cobranzacuota->creditocuenta,
@@ -1877,18 +1841,10 @@ class CobranzacuotaController extends Controller
                 'num' => $request->num,
             ];
 
-            if($request->input('print') == 1){
-                return view(
-                    sistema_view().'/cobranzacuota/pdf_garantia',
-                    $datos
-                );
-            }
-
             $pdf = PDF::loadView(
                 sistema_view().'/cobranzacuota/pdf_garantia',
                 $datos
             );
-
             $pdf->setPaper('A4');
             return $pdf->stream('VOUCHER_PAGO.pdf');
         }

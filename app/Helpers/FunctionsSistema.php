@@ -45,6 +45,7 @@ function select_cronograma(
         ->where('credito_cronograma.idcredito',$idcredito)
         ->orderBy('credito_cronograma.numerocuota','asc')
         ->get();
+    // dd($credito_cronograma);
     
     $penalidad_descuento = 0;
     $tenencia_descuento = 0;
@@ -215,9 +216,6 @@ function select_cronograma(
   
     $data = [];
     foreach($credito_cronograma as $value){
-      
-        
-        
         // adelanto
         $credito_adelanto = DB::table('credito_adelanto')
             ->whereIn('credito_adelanto.idestadocredito_adelanto',[1,2])
@@ -452,7 +450,8 @@ function select_cronograma(
         // $tenencia      = $total_tenencia;
         $compensatorio = $total_compensatorio;
       
-        $cuota         = number_format($amortizacion+$comision+$cargo+$interes, 2, '.', '');
+        // $cuota         = number_format($amortizacion+$comision+$cargo+$interes, 2, '.', ''); // anterior
+        $cuota         = number_format($value->cuota_real, 2, '.', '');
         $totalcuota    = number_format($cuota+$penalidad+$tenencia+$compensatorio, 2, '.', '');
       
         $acuenta       = 0;

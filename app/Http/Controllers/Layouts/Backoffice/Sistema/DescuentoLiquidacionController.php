@@ -43,11 +43,17 @@ class DescuentoLiquidacionController extends Controller
                 $credito->modalidadproductocredito,
                 $request->numerocuota
             );
-            
+
+            $where = [];
+            if($idtienda!=0){
+                $where[] = ['users_permiso.idtienda', $idtienda];
+            }
+          
             $usuarios = DB::table('users')
                 ->join('users_permiso','users_permiso.idusers','users.id')
                 ->join('permiso','permiso.id','users_permiso.idpermiso')
                 ->whereIn('users_permiso.idpermiso',[1,2])
+                ->where($where)
                 ->select('users.*','permiso.nombre as nombrepermiso')
                 ->get();
           

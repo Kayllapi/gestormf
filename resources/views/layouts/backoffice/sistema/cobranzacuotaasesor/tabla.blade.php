@@ -126,7 +126,7 @@
                         <input type="text" class="form-control" style="background-color: #fff;" placeholder="0" id="detalle_monto_apagar" valida_input_vacio disabled/>
                       </div>
                     </div>
-                    Custo., Comp. y Morat.
+                    P. Custo., Comp. y Morat.
                     <input type="text" class="form-control" style="background-color: #fff;" placeholder="0" id="tenencia_penalidad_mora" valida_input_vacio disabled/>
 
                     <div class="mb-1 mt-1">

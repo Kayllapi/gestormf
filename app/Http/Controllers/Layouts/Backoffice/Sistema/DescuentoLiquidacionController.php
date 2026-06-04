@@ -47,7 +47,7 @@ class DescuentoLiquidacionController extends Controller
             $usuarios = DB::table('users')
                 ->join('users_permiso','users_permiso.idusers','users.id')
                 ->join('permiso','permiso.id','users_permiso.idpermiso')
-                ->where('users_permiso.idpermiso',1)
+                ->whereIn('users_permiso.idpermiso',[1,2])
                 ->select('users.*','permiso.nombre as nombrepermiso')
                 ->get();
           

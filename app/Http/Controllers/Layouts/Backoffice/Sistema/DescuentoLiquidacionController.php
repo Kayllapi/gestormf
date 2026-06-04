@@ -20,7 +20,6 @@ class DescuentoLiquidacionController extends Controller
               'tienda' => $tienda,
             ]);
         }
-            
     }
   
     public function create(Request $request,$idtienda)
@@ -29,7 +28,6 @@ class DescuentoLiquidacionController extends Controller
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
       
         if($request->view == 'registrar') {
-          
             $credito = DB::table('credito')
                 ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
                 ->where('credito.id',$request->idcredito)
@@ -38,7 +36,6 @@ class DescuentoLiquidacionController extends Controller
                     'credito_prendatario.modalidad as modalidadproductocredito'
                 )
                 ->first();
-            //dd($request->numerocuota);
             $cronograma = select_cronograma(
                 $idtienda,
                 $request->idcredito,
@@ -46,7 +43,6 @@ class DescuentoLiquidacionController extends Controller
                 $credito->modalidadproductocredito,
                 $request->numerocuota
             );
-            
             
             $usuarios = DB::table('users')
                 ->join('users_permiso','users_permiso.idusers','users.id')

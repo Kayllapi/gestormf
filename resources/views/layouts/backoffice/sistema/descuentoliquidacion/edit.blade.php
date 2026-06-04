@@ -121,7 +121,8 @@
   function load_create_descuentocuota(){
     let numerocuota = $('#table-detalle-cronograma > tbody > tr.seleccionar').attr('data-numerocuota');
     if(numerocuota == "" || numerocuota == undefined ){
-      alert('Debe de seleccionar mínimo una cuota!!!.');   
+      mensaje = 'Debe de seleccionar mínimo una cuota!!!.';
+      modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
       return false;
     }
     
@@ -133,7 +134,8 @@
     let idcredito_descuentocuota = $('#table-detalle-descuentodecuotas > tbody > tr.selected').attr('data-valor-columna');
 
     if(idcredito_descuentocuota == "" || idcredito_descuentocuota == undefined ){
-      alert('Debe de seleccionar un cuota de descuento.');   
+      mensaje = 'Debe de seleccionar un cuota de descuento.';
+      modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
       return false;
     }
 

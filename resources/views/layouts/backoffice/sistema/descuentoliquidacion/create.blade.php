@@ -20,7 +20,7 @@
         <table class="table table-bordered">
           <tr>
               <td><b>N° Cuota</b></td>
-              <td><input type="text" class="form-control" style="text-align:center;" 
+              <td><input type="text" class="form-control fw-bold" style="text-align:center;" 
                          value="{{ $cronograma['select_numerocuota_inicio']==$cronograma['select_numerocuota_fin']?$cronograma['select_numerocuota_inicio']:($cronograma['select_numerocuota_inicio'].' - '.$cronograma['select_numerocuota_fin']) }}" id="data_numerocuota" disabled>
                          <input type="hidden" value="{{ $cronograma['select_numerocuota_inicio'] }}" id="data_numerocuota_inicio">
                          <input type="hidden" value="{{ $cronograma['select_numerocuota_fin'] }}" id="data_numerocuota_fin">

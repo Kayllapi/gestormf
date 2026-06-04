@@ -13,7 +13,7 @@
         $('#close_opcionescredito').click();
     },this)"> 
     <div class="modal-header">
-        <h5 class="modal-title">Registrar Cuota Descuento</h5>
+        <h5 class="modal-title">Registrar Descuento de Cuota(s)</h5>
         <button type="button" class="btn-close" id="close_opcionescredito" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <div class="modal-body">
@@ -72,9 +72,9 @@
           </tr>
           <tr>
               <td><b>Totales</b></td>
-              <td><input type="text" class="form-control campo_moneda" value="0.00" id="data_total" disabled></td>
-              <td><input type="text" class="form-control campo_moneda" id="descuento_total" disabled></td>
-              <td><input type="text" class="form-control campo_moneda" id="saldo_total" disabled></td>
+              <td><input type="text" class="form-control campo_moneda fw-bold" value="0.00" id="data_total" disabled></td>
+              <td><input type="text" class="form-control campo_moneda fw-bold" id="descuento_total" disabled></td>
+              <td><input type="text" class="form-control campo_moneda fw-bold" id="saldo_total" disabled></td>
           </tr>
         </table>
         <div class="mt-2 bg-primary subtitulo">Aprobación</div>

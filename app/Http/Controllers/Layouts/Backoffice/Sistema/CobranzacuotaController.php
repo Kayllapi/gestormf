@@ -640,15 +640,24 @@ class CobranzacuotaController extends Controller
                     }
 
                     if($request->estadocargo=='on'){
-                        $cargoIds = $request->input('idcredito_cargo_ids', []);
-                        if (!empty(json_decode($cargoIds))) {
-                            foreach (json_decode($cargoIds) as $cargoId) {
-                                DB::table('credito_cargo')
-                                    ->where('id', $cargoId)
-                                    ->update([
-                                        'idcredito_cobranzacuota'  => $idcredito_cobranzacuota,
-                                        'idestadocredito_cargo'    => 2,
-                                    ]);
+                        if ($request->opcion_pago == 'PAGO_TOTAL') {
+                            DB::table('credito_cargo')
+                                ->where('idcredito', $request->idcredito)
+                                ->update([
+                                    'idcredito_cobranzacuota'  => $idcredito_cobranzacuota,
+                                    'idestadocredito_cargo'    => 2,
+                                ]);
+                        } else {
+                            $cargoIds = $request->input('idcredito_cargo_ids', []);
+                            if (!empty(json_decode($cargoIds))) {
+                                foreach (json_decode($cargoIds) as $cargoId) {
+                                    DB::table('credito_cargo')
+                                        ->where('id', $cargoId)
+                                        ->update([
+                                            'idcredito_cobranzacuota'  => $idcredito_cobranzacuota,
+                                            'idestadocredito_cargo'    => 2,
+                                        ]);
+                                }
                             }
                         }
                     }
@@ -1539,6 +1548,13 @@ class CobranzacuotaController extends Controller
                 $idcredito_cargo_ids = $credito_cargos->pluck('id')->map(fn ($v) => (int) $v)->values()->all();
                 $total_cargo = (float) $credito_cargos->sum('importe');
             } else {
+                $total_cargo = DB::table('credito_cargo')
+                    ->where('credito_cargo.idestadocredito_cargo', 1)
+                    ->where('credito_cargo.idcredito', $id)
+                    ->sum('importe');
+            }
+
+            if ($request->opcion_pago == 'PAGO_TOTAL') {
                 $total_cargo = DB::table('credito_cargo')
                     ->where('credito_cargo.idestadocredito_cargo', 1)
                     ->where('credito_cargo.idcredito', $id)

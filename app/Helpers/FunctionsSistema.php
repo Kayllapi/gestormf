@@ -440,7 +440,22 @@ function select_cronograma(
 
         $ultimaCuota = $credito_cronograma->max('numerocuota');
         if($value->numerocuota == $ultimaCuota){
-            $tenencia = $total_tenencia;
+            // Sumar cargo a tenencia 
+            $credito_dt = DB::table('credito')->where('id', $credito->id)
+                ->select('forma_pago_credito', 'cuotas')
+                ->first();
+            $cargoComision = 0;
+            if($credito_dt->forma_pago_credito == 'Diario'){
+                $cargoComision = ($total_cargo / ($credito_dt->cuotas * 1)) * $atraso_dias_tenencia;
+            } elseif ($credito_dt->forma_pago_credito == 'Semanal') {
+                $cargoComision = ($total_cargo / ($credito_dt->cuotas * 7)) * $atraso_dias_tenencia;
+            } elseif ($credito_dt->forma_pago_credito == 'Quincenal') {
+                $cargoComision = ($total_cargo / ($credito_dt->cuotas * 15)) * $atraso_dias_tenencia;
+            } elseif ($credito_dt->forma_pago_credito == 'Mensual') {
+                $cargoComision = ($total_cargo / ($credito_dt->cuotas * 30)) * $atraso_dias_tenencia;
+            }
+
+            $tenencia = $total_tenencia + $cargoComision;
         }else{
             $tenencia = 0;
         }

@@ -456,7 +456,6 @@ function select_cronograma(
                 } elseif ($credito_dt->forma_pago_credito == 'Mensual') {
                     $cargoComision = ($totalCargoTemporal / ($credito_dt->cuotas * 30)) * $atraso_dias_tenencia;
                 }
-                dd($atraso_dias_tenencia, $credito_dt->cuotas, $cargoComision, $totalCargoTemporal);
                 $tenencia = $total_tenencia + $cargoComision;
             } else {
                 $tenencia = $total_tenencia;

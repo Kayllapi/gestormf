@@ -535,11 +535,11 @@ function select_cronograma(
             } 
                 
             if($value->numerocuota<=$numerocuota){
-                if($value->numerocuota == $numerocuota){
-                    $tenencia = $total_tenencia;
-                }else{
-                    $tenencia = 0;
-                }
+                // if($value->numerocuota == $numerocuota){
+                //     $tenencia = $total_tenencia;
+                // }else{
+                //     $tenencia = 0;
+                // }
         
                 $select = 'selected';
                 $select_numerocuota = $select_numerocuota+1;

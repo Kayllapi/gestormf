@@ -975,7 +975,7 @@ class CobranzacuotaController extends Controller
                         <td>'.$credito->tasa_tem.'</td>
                         <td style="background-color: #efefef !important;"><b>TIP (%)</b></td>
                         <td><b>:</b></td>
-                        <td>'.$tasa_tip.'</td>
+                        <td>'.number_format($tasa_tip, 2, '.', ',').'</td>
                         <td style="background-color: #efefef!important;"><b>F. PAGO</b></td>
                         <td><b>:</b></td>
                         <td>'.$credito->forma_pago_credito_nombre.' ('.$credito->cuotas.' Cuotas)</td>

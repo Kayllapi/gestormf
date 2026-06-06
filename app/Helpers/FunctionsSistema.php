@@ -446,15 +446,17 @@ function select_cronograma(
                     ->select('forma_pago_credito', 'cuotas')
                     ->first();
                 $cargoComision = 0;
+                $totalCargoTemporal = $total_cargo+number_format($cargo, 2, '.', '');
                 if($credito_dt->forma_pago_credito == 'Diario'){
-                    $cargoComision = ($total_cargo / ($credito_dt->cuotas * 1)) * $atraso_dias_tenencia;
+                    $cargoComision = ($totalCargoTemporal / ($credito_dt->cuotas * 1)) * $atraso_dias_tenencia;
                 } elseif ($credito_dt->forma_pago_credito == 'Semanal') {
-                    $cargoComision = ($total_cargo / ($credito_dt->cuotas * 7)) * $atraso_dias_tenencia;
+                    $cargoComision = ($totalCargoTemporal / ($credito_dt->cuotas * 7)) * $atraso_dias_tenencia;
                 } elseif ($credito_dt->forma_pago_credito == 'Quincenal') {
-                    $cargoComision = ($total_cargo / ($credito_dt->cuotas * 15)) * $atraso_dias_tenencia;
+                    $cargoComision = ($totalCargoTemporal / ($credito_dt->cuotas * 15)) * $atraso_dias_tenencia;
                 } elseif ($credito_dt->forma_pago_credito == 'Mensual') {
-                    $cargoComision = ($total_cargo / ($credito_dt->cuotas * 30)) * $atraso_dias_tenencia;
+                    $cargoComision = ($totalCargoTemporal / ($credito_dt->cuotas * 30)) * $atraso_dias_tenencia;
                 }
+                dd($atraso_dias_tenencia, $credito_dt->cuotas, $cargoComision, $totalCargoTemporal);
                 $tenencia = $total_tenencia + $cargoComision;
             } else {
                 $tenencia = $total_tenencia;

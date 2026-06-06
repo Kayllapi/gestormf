@@ -404,7 +404,6 @@
           campo : valor
       },
       success: function (res){
-      //console.log(res)
         let tr_data_uno = ``;
         let tr_data_dos = ``;
         let data_uno = [];
@@ -448,9 +447,7 @@
                         </tr>`;*/
     let tr_body = '';
     let num = 1;
-    //console.log(data)
     data.forEach((valor, index) => {
- 
         let array_usuarios = valor.usuarios;
         let option_usuario = `<option disabled selected></option>`;
         let valid_estado = '';
@@ -496,7 +493,12 @@
         num++;
     });
     $(target+' > tbody').html(tr_body);
-    sistema_select2({ input:'#per_usuario'+num });
+
+    let i = 1;
+    data.forEach((valor, index) => {
+        sistema_select2({ input:'#per_usuario'+i });
+        i++;
+    });
     /*$('#table-permisos-nivel-dos > tbody input').attr('disabled',false);
     $('#table-permisos-nivel-dos > tbody select').attr('disabled',false);
     $('#table-permisos-nivel-uno > tbody input').attr('disabled',false);

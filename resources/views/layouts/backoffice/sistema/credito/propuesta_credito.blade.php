@@ -333,7 +333,6 @@
             <thead>
               <tr>
                 <th>Garantías</th>
-                
                 <th>Descripción de garantía en Propuesta</th>
                 <th>Valor de mercado (S/.)</th>
                 <th>Valor comercial (Tasado) (S/.)</th>
@@ -353,9 +352,17 @@
               @empty
               <tr sumar_garantia>
                   <td>Sin Garantia</td>
-                  <td><input type="text" class="form-control campo_moneda" monto_garantia_cliente disabled value="{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->saldo_noprendario_aval : '0.00' }}" onkeyup="cal_total_garantia_aval()" id="saldo_noprendario_aval"></td>
-                <td class="color_totales"><input type="text" disabled class="form-control campo_moneda" monto_garantia_cliente id="propuesta_general_aval" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->propuesta_monto : '0.00' }}"></td>
-                </tr>
+                  <td>
+                    <input type="text"
+                      class="form-control campo_moneda"
+                      monto_garantia_cliente
+                      disabled
+                      value="{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->saldo_noprendario_aval : '0.00' }}"
+                      onkeyup="cal_total_garantia_aval()"
+                      id="saldo_noprendario_aval">
+                  </td>
+                  <td class="color_totales"><input type="text" disabled class="form-control campo_moneda" monto_garantia_cliente id="propuesta_general_aval" value="{{ $credito_cuantitativa_deudas ? $credito_cuantitativa_deudas->propuesta_monto : '0.00' }}"></td>
+              </tr>
               @endforelse
             </tbody>
           </table>

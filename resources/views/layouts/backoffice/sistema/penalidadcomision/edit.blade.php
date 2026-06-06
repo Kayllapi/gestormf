@@ -36,6 +36,14 @@
               <input type="number" class="form-control" step="any" id="dias_maximo_penalidad" value="{{ configuracion($tienda->id,'dias_maximo_penalidad')['valor'] }}">
             </div>
           </div>
+          <div class="row mt-1">
+            <label class="col-sm-8 col-form-label" style="text-align: right;">Cargo x Cust. Garant.:</label>
+            <label class="col-sm-2 chk">
+                <input type="checkbox" name="cargo_custodia_garantia" id="cargo_custodia_garantia" {{ configuracion($tienda->id,'cargo_custodia_garantia')['valor'] == '1' ? 'checked' : '' }}>
+                <span class="checkmark"></span>
+                <span>Activar</span>
+            </label>
+          </div>
           <!--div class="mb-1">
             <span class="badge d-block">Penalidad cuota vencida (Prendaria)</span>
           </div>

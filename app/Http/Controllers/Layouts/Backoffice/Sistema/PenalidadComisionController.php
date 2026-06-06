@@ -95,8 +95,11 @@ class PenalidadComisionController extends Controller
                 'penalidad' => $value['penalidad'],
               ]);
             }
-          
+
+            $cargo_custodia_garantia = $request->cargo_custodia_garantia ? 1 : 0;
+
             configuracion_update($idtienda,'dias_maximo_penalidad',$request->dias_maximo_penalidad);
+            configuracion_update($idtienda,'cargo_custodia_garantia',$cargo_custodia_garantia);
             configuracion_update($idtienda,'penalidad_couta_simple',$request->penalidad_couta_simple);
             configuracion_update($idtienda,'penalidad_couta_compuesto',$request->penalidad_couta_compuesto);
             configuracion_update($idtienda,'dias_tolerancia',$request->dias_tolerancia);

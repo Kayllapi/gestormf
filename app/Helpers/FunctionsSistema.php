@@ -440,7 +440,7 @@ function select_cronograma(
 
         $ultimaCuota = $credito_cronograma->max('numerocuota');
         if($value->numerocuota == $ultimaCuota){
-            if (configuracion($idtienda,'cargo_custodia_garantia')['valor'] == '1') {
+            if (configuracion($idtienda,'cargo_custodia_garantia')['valor'] == '1' && $atraso_dias_tenencia>$dias_tolerancia_garantia && $atraso_dias_tenencia<=$dias_maximo_penalidad) {
                 // Sumar cargo a tenencia 
                 $credito_dt = DB::table('credito')->where('id', $credito->id)
                     ->select('forma_pago_credito', 'cuotas')

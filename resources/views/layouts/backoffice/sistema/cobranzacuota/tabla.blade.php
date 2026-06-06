@@ -509,7 +509,16 @@
         modal({ route:'{{url('backoffice/'.$tienda->id.'/cobranzacuota')}}/'+$('#idcredito').val()+'/edit?view=ver_pagoacuenta' })
     }
     function ver_cuentasporcobrar(){
-        modal({ route:'{{url('backoffice/'.$tienda->id.'/cobranzacuota')}}/'+$('#idcredito').val()+'/edit?view=ver_cuentasporcobrar' })
+        let isLastQuota = $('#table-detalle-cronograma > tbody > tr.seleccionar').is(':last-child');
+        var idcredito = $('#idcredito').val();
+        var pagototal = $('#pagototal:checked').val();
+   
+        var opcion_pago = '';
+        if(pagototal=='on' || isLastQuota ){
+           opcion_pago = 'PAGO_TOTAL';
+        }
+        modal({ route:'{{url('backoffice/'.$tienda->id.'/cobranzacuota')}}/'+idcredito+'/edit?view=ver_cuentasporcobrar'+
+        '&opcion_pago='+opcion_pago });
     }
     
     

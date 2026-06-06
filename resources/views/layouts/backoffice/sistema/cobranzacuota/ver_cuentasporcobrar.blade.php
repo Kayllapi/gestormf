@@ -27,6 +27,7 @@
       data: {
           idcredito : {{$credito->id}},
           idestado : 1,
+          opcion_pago : '{{$opcion_pago}}',
       },
       success: function (res){
         $('#cont_cronograma').html(res.html);

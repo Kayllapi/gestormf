@@ -239,19 +239,21 @@ class CargoController extends Controller
               </tr>
               </thead>
               <tbody>';
-          
-          foreach($credito_cargo as $value){
+
+            $label = '';
+            foreach($credito_cargo as $value){
+              if($request->opcion_pago != 'PAGO_TOTAL'){
+                  $label = '<label class="chk">
+                              <input type="checkbox"
+                                  class="credito-cargo-check"
+                                  value="'.$value->id.'"
+                                  onclick="seleccionar_cargo_cobranza(this)"
+                                  checked>
+                              <span class="checkmark"></span>
+                          </label>';
+              }
               $html .= "<tr data-valor-columna='{$value->id}' onclick='show_data_descuentodecuotas(this)'>
-                            <td>".
-                                '<label class="chk">
-                                    <input type="checkbox"
-                                        class="credito-cargo-check"
-                                        value="'.$value->id.'"
-                                        onclick="seleccionar_cargo_cobranza(this)"
-                                        checked>
-                                    <span class="checkmark"></span>
-                                </label>'.
-                            "</td>
+                            <td>".$label."</td>
                             <td>{$value->tipocargonombre}</td>
                             <td>{$value->importe}</td>
                             <td>{$value->fecharegistro}</td>

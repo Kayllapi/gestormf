@@ -1855,9 +1855,11 @@ class CobranzacuotaController extends Controller
             ]);
         }
         elseif($request->input('view') == 'ver_cuentasporcobrar') {
+            $opcion_pago = $request->input('opcion_pago');
             return view(sistema_view().'/cobranzacuota/ver_cuentasporcobrar',[
               'tienda' => $tienda,
               'credito' => $credito,
+              'opcion_pago' => $opcion_pago,
             ]);
         }
         elseif($request->input('view') == 'ver_pagoacuenta') {

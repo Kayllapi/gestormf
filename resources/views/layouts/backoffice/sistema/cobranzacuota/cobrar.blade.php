@@ -64,18 +64,21 @@
               <input type="hidden" id="acuenta_anterior" value="0.00">
             <label class="col-sm-8 col-form-label" style="text-align: right;">Cuentas por Cobrar</label>
             <div class="col-sm-4">
-                {{-- <div class="input-group">
-                  <div class="input-group-text">
-                    <label class="chk">
-                      <input type="checkbox" id="estadocargo" onclick="estado_cargo(this)" checked>
-                      <span class="checkmark"></span>
-                    </label>
-                  </div>
+                @if ($opcion_pago=='PAGO_TOTAL')
                   <input type="text" value="{{  $monto_cargo }}" 
                     class="form-control campo_moneda" id="cobrar_cargo" valida_input_vacio disabled>
-                </div> --}}
-                <input type="text" value="{{  $monto_cargo }}" 
-                  class="form-control campo_moneda" id="cobrar_cargo" valida_input_vacio disabled>
+                @else
+                  <div class="input-group">
+                    <div class="input-group-text">
+                      <label class="chk">
+                        <input type="checkbox" id="estadocargo" onclick="estado_cargo(this)" checked>
+                        <span class="checkmark"></span>
+                      </label>
+                    </div>
+                    <input type="text" value="{{  $monto_cargo }}" 
+                      class="form-control campo_moneda" id="cobrar_cargo" valida_input_vacio disabled>
+                  </div>
+                @endif
             </div>
             <div style="display:none;"> 
             <label class="col-sm-8 col-form-label" style="text-align: right;">Cuota a Pagar</label>

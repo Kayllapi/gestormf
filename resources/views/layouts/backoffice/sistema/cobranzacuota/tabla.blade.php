@@ -341,7 +341,7 @@
   
     function cobrar(){
         let numerocuota = $('#table-detalle-cronograma > tbody > tr.seleccionar').attr('data-numerocuota');
-        
+        let isLastQuota = $('#table-detalle-cronograma > tbody > tr.seleccionar').is(':last-child');
       
         var idcredito = $('#idcredito').val();
         var pagocuota = $('#pagocuota:checked').val();
@@ -365,6 +365,10 @@
            opcion_pago = 'PAGO_TOTAL';
         }else{
            numerocuota = 0;
+        }
+
+        if(isLastQuota ){
+           opcion_pago = 'PAGO_TOTAL';
         }
 
         // IDs de cargos seleccionados desde "CTA X COBRAR"

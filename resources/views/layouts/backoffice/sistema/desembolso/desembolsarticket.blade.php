@@ -15,6 +15,7 @@
               $('#cont_botonesdesembolso').css('display','block'); 
               $('#cont_garantias').css('display','block'); 
               $('#btn_desembolsar').css('display','none'); 
+              imprimirTicketPdf();
               $('#modal-close-desembolar-credito').click();
               removecarga({input:'#carga_desembolsar_credito'});
           },this)"> 

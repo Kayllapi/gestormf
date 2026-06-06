@@ -72,7 +72,13 @@ function verpdf(valor,idgarantia,num){
               $('#modal-close-cambiar-estado').click();*/
           //})
     //}
-     
-          
+  }
+
+  function imprimirTicketPdf(){
+      let iframe = document.getElementById('iframe_acta_aprobacion');
+      iframe.onload = function () {
+          iframe.contentWindow.focus();
+          iframe.contentWindow.print();
+      };
   }
 </script>

@@ -37,7 +37,7 @@
             </div>
           </div>
           <div class="row mt-1">
-            <label class="col-sm-8 col-form-label" style="text-align: right;">Cargo x Cust. Garant.:</label>
+            <label class="col-sm-8 col-form-label" style="text-align: right;">Cargo x Cust. Garantía (al vencimiento del período crédito):</label>
             <label class="col-sm-2 chk">
                 <input type="checkbox" name="cargo_custodia_garantia" id="cargo_custodia_garantia" {{ configuracion($tienda->id,'cargo_custodia_garantia')['valor'] == '1' ? 'checked' : '' }}>
                 <span class="checkmark"></span>

@@ -129,11 +129,13 @@ class PropuestaCreditoController extends Controller
               $where[] = ['credito.estado',$request->input('estado')];
               $where[] = ['credito.fecha_proceso','>=',$request->input('inicio').' 00:00:00'];
               $where[] = ['credito.fecha_proceso','<=',$request->input('fin').' 23:59:59'];
+              $orderBy = 'credito.fecha_proceso';
           }
           elseif($request->input('estado')=='APROBADO'){
               $where[] = ['credito.estado',$request->input('estado')];
               $where[] = ['credito.fecha_aprobacion','>=',$request->input('inicio').' 00:00:00'];
               $where[] = ['credito.fecha_aprobacion','<=',$request->input('fin').' 23:59:59'];
+              $orderBy = 'credito.fecha_aprobacion';
           }
           elseif($request->input('estado')=='DESAPROBADO'){
               $where[] = ['credito.estado',$request->input('estado')];

@@ -32,8 +32,11 @@
                   <th colspan="7">CRÉDITOS PRENDARIOS</th>
                 </tr>
                 <tr>
-                  <th style="width:200px;">NIVELES DE APROBACIÓN *</th>
-                  <th colspan="2" style="width:200px;">RIESGO CREDITICIO (S/.) *</th>
+                  <th rowspan="2" style="width:200px;">NIVELES DE APROBACIÓN *</th>
+                  <th colspan="2" rowspan="2" style="width:200px;">RIESGO CREDITICIO (S/.) *</th>
+                  <th colspan="4" style="text-align: center;">MODALIDAD</th>
+                </tr>
+                <tr>
                   <th>COMITÉ DE APROBACIÓN <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
                   <th>AUTONOMÍA DE ADMINITRACIÓN</th>
                   <th>AUTONOMÍA DE GERENCIA GENERAL</th>
@@ -213,8 +216,11 @@
                   <th colspan="7">CRÉDITOS NO PRENDARIOS</th>
                 </tr>
                 <tr>
-                  <th style="width:200px;">NIVELES DE APROBACIÓN *</th>
-                  <th colspan="2" style="width:200px;">RIESGO CREDITICIO (S/.) *</th>
+                  <th rowspan="2" style="width:200px;">NIVELES DE APROBACIÓN *</th>
+                  <th colspan="2" rowspan="2" style="width:200px;">RIESGO CREDITICIO (S/.) *</th>
+                  <th colspan="4" style="text-align: center;">MODALIDAD</th>
+                </tr>
+                <tr>
                   <th>COMITÉ DE APROBACIÓN <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
                   <th>AUTONOMÍA DE ADMINITRACIÓN</th>
                   <th>AUTONOMÍA DE GERENCIA GENERAL</th>

@@ -381,7 +381,7 @@
       <div class="col">
         <table>
           <tr>
-            <td>Funcionario que aprueba:</td>
+            <td>Funcionario(a) que aprueba:</td>
             <td class="border-td" width="100px">
             <?php $i=1 ?>
             <?php $funcionario='' ?>

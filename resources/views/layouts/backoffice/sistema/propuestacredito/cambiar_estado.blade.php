@@ -13,7 +13,9 @@
     <div class="modal-body" style="height: calc(100vh - 38px);">
       <div class="row" style="font-size: 14px;padding: 7px;">
           <div class="col-md-4"><b>CLIENTE:</b> <span style="font-weight: normal;"> {{ $usuario->nombrecompleto }}</span></div>
-          <div class="col-md-8"><b>PRODUCTO:</b> <span style="font-weight: normal;"> {{ $credito->nombreproductocredito }}</span></div>
+          <div class="col-md-3"><b>PRODUCTO:</b> <span style="font-weight: normal;"> {{ $credito->nombreproductocredito }}</span></div>
+          <div class="col-md-5"><b>ASESOR(a) / EJECUTIVO(a):</b> <span style="font-weight: normal;"> {{ $asesor->nombre }} {{ $asesor->apellidopaterno }} ({{ $asesor->nombrepermiso }})</span></div>
+
           <div class="col-md-4"><b>MONTO DE PRÉSTAMO:</b> <span style="font-weight: normal;">S/. {{ $credito->monto_solicitado }}</span></div>
           <div class="col-md-3"><b>FORMA DE PAGO:</b> <span style="font-weight: normal;"> {{ $credito->forma_pago_credito_nombre }}</span></div>
           <div class="col-md-2"><b>N° DE CUOTAS:</b> <span style="font-weight: normal;"> {{ $credito->cuotas }}</span></div>

@@ -702,7 +702,12 @@ class PropuestaCreditoController extends Controller
                               ->orderBy('permiso.rango','asc')
                               ->get();
         
-        
+        $asesor = DB::table('users')
+            ->join('users_permiso','users_permiso.idusers','users.id')
+            ->join('permiso','permiso.id','users_permiso.idpermiso')
+            ->where('users.id',$credito->idasesor)
+            ->select('users.*','permiso.nombre as nombrepermiso')
+            ->first();
         
         return view(sistema_view().'/propuestacredito/cambiar_estado',[
           'tienda' => $tienda,
@@ -713,6 +718,7 @@ class PropuestaCreditoController extends Controller
           'credito_aprobacion' => $credito_aprobacion,
           'estado' => $request->input('tipo'),
           'permiso' => $request->input('permiso'),
+          'asesor' => $asesor,
         ]);
       }
       else if( $request->input('view') == 'opciones' ){

@@ -33,7 +33,7 @@
             @endforeach
             @endif
        </div>
-       <iframe id="iframe_acta_aprobacion" src="{{ url('/backoffice/'.$tienda->id.'/desembolso/'.$credito->id.'/edit?view=pdf_cronograma') }}#zoom=100" frameborder="0" width="100%" height="600px"></iframe>
+       <iframe id="iframe_acta_aprobacion" src="{{ url('/backoffice/'.$tienda->id.'/desembolso/'.$credito->id.'/edit?view=pdf_cronograma') }}#zoom=100" frameborder="0" width="100%" style="height: calc(100vh - 180px);"></iframe>
       </div>
 </form>   
 </div>

@@ -398,8 +398,14 @@
   
       
   @endif
-  function mostrar_permisos(valor){
-    
+  
+  $('#check_uno_table').change(function() {
+    mostrar_permisos($('#tipo_validacion').val(), 1);
+  });
+  $('#check_dos_table').change(function() {
+    mostrar_permisos($('#tipo_validacion').val(), 2);
+  });
+  function mostrar_permisos(valor,numData){
     $.ajax({
       url:"{{url('backoffice/'.$tienda->id.'/propuestacredito/showpermisos')}}",
       type:'GET',
@@ -415,7 +421,6 @@
         let data_dos = [];
         if( valor == 'nivelaprobacion'){
           data_uno = res.option_nivelaprobacion_user_uno;
-          
           data_dos = res.option_nivelaprobacion_user_dos;
         }
         else if( valor == 'autonomiaadministracion'){
@@ -427,8 +432,26 @@
           data_dos = res.option_autonomiagerencia_user_dos;
         }
        
-        creaTablaPermisos(data_uno,'#table-permisos-nivel-uno',res);
-        creaTablaPermisos(data_dos,'#table-permisos-nivel-dos',res);
+        
+        $('#table-permisos-nivel-uno > tbody').html('');
+        $('#table-permisos-nivel-dos > tbody').html('');
+        if (numData==undefined) {
+          let nivel_uno = $('#check_uno_table:checked').val();
+          let nivel_dos = $('#check_dos_table:checked').val();
+      
+          if(nivel_uno=='table_uno'){
+            creaTablaPermisos(data_uno,'#table-permisos-nivel-uno',res);
+          }
+          if(nivel_dos=='table_dos'){
+            creaTablaPermisos(data_dos,'#table-permisos-nivel-dos',res);
+          }
+        }
+        if (numData==1) {
+            creaTablaPermisos(data_uno,'#table-permisos-nivel-uno',res);
+        }
+        if (numData==2) {
+          creaTablaPermisos(data_dos,'#table-permisos-nivel-dos',res);
+        }
       }
     });
     
@@ -501,7 +524,7 @@
 
     let i = 1;
     data.forEach((valor, index) => {
-        sistema_select2({ input:'#per_usuario'+i });
+        sistema_select2({ input:'#per_usuario'+i});
         i++;
     });
     /*$('#table-permisos-nivel-dos > tbody input').attr('disabled',false);

@@ -885,7 +885,6 @@ class PropuestaCreditoController extends Controller
     {
         
         if( $request->input('view') == 'cambiar_estado' ) {
-           
             if($request->input('estado')=='PENDIENTE'){
               //---------- restaurar credito
               DB::table('credito_propuesta')->where('credito_propuesta.idcredito',$id)->update([
@@ -981,8 +980,6 @@ class PropuestaCreditoController extends Controller
               }
               
               $count_credito_aprobacion = DB::table('credito_aprobacion')->where('idcredito',$id)->count();
-              
-                  
               $credito_aprobado = 'NO';
               
               if($count_credito_aprobacion==0){
@@ -1010,12 +1007,8 @@ class PropuestaCreditoController extends Controller
                           $credito_aprobado = 'CORRECTO';
                       }
                   }
-              }  
-              
-                  
-              
-                  
-              
+              }
+              // dd($count_credito_aprobacion,$valid_desaprobado, $valid_aprobacion, $can_aprobacion);
             }
             if($request->input('estado')=='DESEMBOLSADO'){
               DB::table('credito')->whereId($id)->update([

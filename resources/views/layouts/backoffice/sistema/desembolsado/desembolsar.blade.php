@@ -41,12 +41,12 @@
 function verpdf(valor,idgarantia,num){
     $('#iframe_acta_aprobacion').attr('src',"{{ url('/backoffice/'.$tienda->id.'/desembolso/'.$credito->id.'/edit?view=') }}"+valor+'&idgarantia='+idgarantia+'&num='+num+'#zoom=100');
 }
-  imprimirTicketPdf();
+  /*imprimirTicketPdf();
   function imprimirTicketPdf(){
       let iframe = document.getElementById('iframe_acta_aprobacion');
       iframe.onload = function () {
           iframe.contentWindow.focus();
           iframe.contentWindow.print();
       };
-  }
+  }*/
 </script>

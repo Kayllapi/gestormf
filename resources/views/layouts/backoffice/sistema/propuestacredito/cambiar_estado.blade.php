@@ -152,10 +152,13 @@
                                 <select class="form-control" id="per_usuario{{ $value->id }}" usuario {{$disabled}}>
                                     <option disabled selected></option>
                                     @foreach($usuario_permiso as $valueusers)
-                                    <option value="{{ $valueusers->idusers }}" idpermiso="{{ $valueusers->idpermiso }}">{{ $valueusers->nombre_personal }}</option>
+                                      <option value="{{ $valueusers->idusers }}" idpermiso="{{ $valueusers->idpermiso }}">{{ $valueusers->nombre_personal }}</option>
                                     @endforeach
                                 </select>
                               @endif
+                              <script>
+                                sistema_select2({ input:'#per_usuario{{ $value->id }}' });
+                              </script>
                               </td>
                               <td><input type="password" value="{{ $value->clave_usuario }}" password_users id="per_clave{{ $value->id }}" class="form-control text-center" {{$disabled}}></td>
                               @if($value->idusers!=0)

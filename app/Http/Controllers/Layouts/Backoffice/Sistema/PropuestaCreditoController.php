@@ -686,21 +686,65 @@ class PropuestaCreditoController extends Controller
                               ->where('nivelaprobacion.riesgocredito1','<',$credito->monto_solicitado)
                               ->where('nivelaprobacion.riesgocredito2','>=',$credito->monto_solicitado)
                               ->first();
-        
-        $credito_aprobacion = DB::table('credito_aprobacion')
+        // Registros ya guardados en BD
+        $credito_aprobacion_db = DB::table('credito_aprobacion')
                               ->leftJoin('permiso','permiso.id','credito_aprobacion.idpermiso')
                               ->leftJoin('users','users.id','credito_aprobacion.idusers')
-                              ->where('credito_aprobacion.idcredito',$credito->id)
+                              ->where('credito_aprobacion.idcredito', $credito->id)
                               ->select(
-                                'credito_aprobacion.*',
-                                'permiso.nombre as nombre_permiso',
-                                'users.nombrecompleto as nombre_usuario',
-                                'users.nombre as nombre',
-                                'users.apellidopaterno as apellidopaterno',
-                                'users.clave as clave_usuario'
+                                  'credito_aprobacion.*',
+                                  'permiso.nombre as nombre_permiso',
+                                  'users.nombrecompleto as nombre_usuario',
+                                  'users.nombre as nombre',
+                                  'users.apellidopaterno as apellidopaterno',
+                                  'users.clave as clave_usuario'
                               )
                               ->orderBy('permiso.rango','asc')
                               ->get();
+
+        // Si ya hay tipo/nivel guardado, completar con los permisos faltantes del nivel
+        $credito_aprobacion = $credito_aprobacion_db; // default
+        if($credito->aprobacion_tipo_validacion != '' && $credito->aprobacion_nivel_validacion != 0) {
+            $nivel_aprobacion_data = DB::table('nivelaprobacion')
+                ->where('nivelaprobacion.idtipocredito', $credito->idforma_credito)
+                ->where('nivelaprobacion.riesgocredito1', '<', $credito->monto_solicitado)
+                ->where('nivelaprobacion.riesgocredito2', '>=', $credito->monto_solicitado)
+                ->first();
+
+            if($nivel_aprobacion_data) {
+                $campo = $credito->aprobacion_tipo_validacion; // nivelaprobacion, autonomiaadministracion, autonomiagerencia
+                $nivel  = $credito->aprobacion_nivel_validacion == 1 ? 'tipo_uno' : 'tipo_dos';
+                
+                $json_campo = json_decode($nivel_aprobacion_data->$campo, true);
+                $permisos_requeridos = $json_campo[0][$nivel] ?? [];
+
+                $merged = collect();
+                foreach($permisos_requeridos as $permiso_req) {
+                    // Buscar si ya tiene registro guardado para este permiso
+                    $existente = $credito_aprobacion_db->firstWhere('idpermiso', $permiso_req['valor']);
+                    if($existente) {
+                        $merged->push($existente);
+                    } else {
+                        // Fila vacía para que aparezca activa en el blade
+                        $merged->push((object)[
+                            'id'             => 0,
+                            'idcredito'      => $credito->id,
+                            'idpermiso'      => $permiso_req['valor'],
+                            'idusers'        => 0,
+                            'idestado'       => 0,
+                            'comentario'     => '',
+                            'fecha'          => '',
+                            'nombre_permiso' => $permiso_req['texto'],
+                            'nombre_usuario' => '',
+                            'nombre'         => '',
+                            'apellidopaterno'=> '',
+                            'clave_usuario'  => '',
+                        ]);
+                    }
+                }
+                $credito_aprobacion = $merged;
+            }
+        }
         
         $asesor = DB::table('users')
             ->join('users_permiso','users_permiso.idusers','users.id')
@@ -927,9 +971,8 @@ class PropuestaCreditoController extends Controller
               }
 
                 $usuario = DB::table('users')
-                            ->where('users.id',$request->idusers)
-                            //->where('users.clave',$value['password'])
-                            ->first();
+                  ->where('users.id',$request->idusers)
+                  ->first();
                 if($usuario){
                   if($usuario->clave != $request->password){
                     return response()->json([
@@ -938,9 +981,74 @@ class PropuestaCreditoController extends Controller
                     ]);
                   }
                 }
+
+                // Guardar tipo/nivel de validación si aún no estaban seteados
+                DB::table('credito')->whereId($id)->update([
+                    'aprobacion_tipo_validacion'  => $request->tipo_validacion,
+                    'aprobacion_nivel_validacion' => $request->nivel_validacion,
+                ]);
+
+                // ✅ CAMBIO CLAVE: upsert solo de esta fila por idpermiso
+                // Verificar si ya existe un registro para este permiso en este crédito
+                $existente = DB::table('credito_aprobacion')
+                    ->where('idcredito', $id)
+                    ->where('idpermiso', $request->idpermiso)
+                    ->first();
+
+                if($existente){
+                    // Solo actualizar — no duplicar
+                    DB::table('credito_aprobacion')
+                        ->where('id', $existente->id)
+                        ->update([
+                            'idusers'    => $request->idusers,
+                            'comentario' => $request->comentario ?? '',
+                            'fecha'      => Carbon::now(),
+                            'idestado'   => $request->idestado,
+                        ]);
+                } else {
+                    DB::table('credito_aprobacion')->insert([
+                        'idcredito'  => $id,
+                        'idusers'    => $request->idusers,
+                        'idpermiso'  => $request->idpermiso,
+                        'comentario' => $request->comentario ?? '',
+                        'fecha'      => Carbon::now(),
+                        'idestado'   => $request->idestado,
+                    ]);
+                }
+
+                // ✅ Ahora evaluar el estado global del crédito
+                // basándonos en los registros que YA EXISTEN en BD (no en el JSON del frontend)
+                $credito_aprobacion = json_decode($request->input('credito_aprobacion'), true);
+                $total_requeridos = count($credito_aprobacion); // cuántos permisos necesita el nivel
+
+                $registros = DB::table('credito_aprobacion')
+                  ->where('idcredito', $id)
+                  ->get();
+                
+                $valid_desaprobado = $registros->where('idestado', 2)->count();
+                $valid_aprobado    = $registros->where('idestado', 1)->count();
+
+                $credito_aprobado = 'NO';
+
+                if($valid_desaprobado > 0){
+                    // Cualquier desaprobación = crédito desaprobado inmediatamente
+                    DB::table('credito')->whereId($id)->update([
+                        'idadministrador'    => Auth::user()->id,
+                        'estado'             => 'DESAPROBADO',
+                        'fecha_desaprobacion'=> Carbon::now(),
+                    ]);
+                    $credito_aprobado = 'CORRECTO';
+                } elseif($valid_aprobado >= $total_requeridos){
+                    // Todos aprobaron
+                    DB::table('credito')->whereId($id)->update([
+                        'idadministrador' => Auth::user()->id,
+                        'estado'          => 'APROBADO',
+                        'fecha_aprobacion'=> Carbon::now(),
+                    ]);
+                    $credito_aprobado = 'CORRECTO';
+                }
               
-              
-               $usuario_firma = DB::table('credito_aprobacion')
+               /*$usuario_firma = DB::table('credito_aprobacion')
                   ->where('idusers',$request->idusers)
                   ->where('idcredito',$id)
                   ->first();
@@ -966,7 +1074,6 @@ class PropuestaCreditoController extends Controller
                   'fecha'     => Carbon::now(),
                   'idestado'  => $value['idestado']
                 ]);
-                
                 if($value['idestado']==2){
                   $valid_desaprobado++;
                 }else{
@@ -976,7 +1083,6 @@ class PropuestaCreditoController extends Controller
                       $can_aprobacion++;
                   }
                 }
-                    
               }
               
               $count_credito_aprobacion = DB::table('credito_aprobacion')->where('idcredito',$id)->count();
@@ -1007,8 +1113,7 @@ class PropuestaCreditoController extends Controller
                           $credito_aprobado = 'CORRECTO';
                       }
                   }
-              }
-              // dd($count_credito_aprobacion,$valid_desaprobado, $valid_aprobacion, $can_aprobacion);
+              }*/
             }
             if($request->input('estado')=='DESEMBOLSADO'){
               DB::table('credito')->whereId($id)->update([

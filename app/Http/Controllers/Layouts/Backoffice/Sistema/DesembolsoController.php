@@ -277,9 +277,8 @@ class DesembolsoController extends Controller
       else if( $request->input('view') == 'pdf_resumen' ){
 
         $aval = DB::table('users')->where('users.id',$credito->idaval)->first();
-        $tipo_garantia1 = DB::table('tipo_garantia')->offset(0)->limit(3)->get();
-        $tipo_garantia2 = DB::table('tipo_garantia')->offset(3)->limit(3)->get();
-        $tipo_garantia3 = DB::table('tipo_garantia')->offset(6)->limit(3)->get();
+        $tipo_garantia1 = DB::table('tipo_garantia')->offset(0)->limit(4)->get();
+        $tipo_garantia2 = DB::table('tipo_garantia')->offset(4)->limit(4)->get();
         $garantias = DB::table('credito_garantia')
           ->where('credito_garantia.tipo', 'CLIENTE')
           ->where('credito_garantia.idcredito', $credito->id)
@@ -304,7 +303,6 @@ class DesembolsoController extends Controller
             'garantiasaval' => $garantiasaval,
             'tipo_garantia1' => $tipo_garantia1,
             'tipo_garantia2' => $tipo_garantia2,
-            'tipo_garantia3' => $tipo_garantia3,
             'aval' => $aval,
             'users_prestamo_aval' => $users_prestamo_aval,
         ]); 

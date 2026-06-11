@@ -243,28 +243,29 @@
       <br>
       <table style="width:100%; border: 1px solid #000;">
         <tr>
-          <td colspan="3"><b>TOLERANCIA POR INCUMPLIMIENTO DE PAGO DE CUOTA:</b> {{ $credito->config_dias_tolerancia_garantia }} días </td>
+          <td colspan="4"><b>TOLERANCIA POR INCUMPLIMIENTO DE PAGO DE CUOTA:</b> {{ $credito->config_dias_tolerancia_garantia }} días </td>
         </tr>
         @if($credito->idforma_credito==1)
-   
-        <tr>
-          <td colspan="3" style="border-top: 1px solid #000;"><b>Por custodia adicional de garantía prendaria al vencimiento del plazo, penalidad x dia (hasta {{ $credito->config_dias_maximo_penalidad }} días):</b></td>
-        </tr>
-        <tr>
-        @foreach($tipo_garantia1 as $value)
-          <td><b>{{ $value->nombre }}:</b> S/. {{ $value->penalidad }}</td>
-        @endforeach
-        </tr>
-        <tr>
-        @foreach($tipo_garantia2 as $value)
-          <td><b>{{ $value->nombre }}:</b> S/. {{ $value->penalidad }}</td>
-        @endforeach
-        </tr>
-        <tr>
-        @foreach($tipo_garantia3 as $value)
-          <td><b>{{ $value->nombre }}:</b> S/. {{ $value->penalidad }}</td>
-        @endforeach
-        </tr>
+          <tr>
+            <td colspan="4" style="border-top: 1px solid #000;">
+              <b>• Por custodia adicional de garantía prendaria al vencimiento del plazo, penalidad x dia (hasta {{ $credito->config_dias_maximo_penalidad }} días):</b>
+            </td>
+          </tr>
+          <tr>
+          @foreach($tipo_garantia1 as $value)
+            <td><b>{{ $value->nombre }}:</b> S/. {{ $value->penalidad }}</td>
+          @endforeach
+          </tr>
+          <tr>
+          @foreach($tipo_garantia2 as $value)
+            <td><b>{{ $value->nombre }}:</b> S/. {{ $value->penalidad }}</td>
+          @endforeach
+          </tr>
+          <tr>
+            <td colspan="4">
+              <b>• Alternativamente adicionará lo equivalente al cargo por custodia de garantía (hasta {{ $credito->config_dias_maximo_penalidad }} días)</b>
+            </td>
+          </tr>
         @endif
     <?php
     /*$penalidad = 0;
@@ -291,7 +292,7 @@
           </td>
         </tr-->
         <tr>
-          <td colspan="3"  style="border-top: 1px solid #000;">
+          <td colspan="4"  style="border-top: 1px solid #000;">
             <b>Tasa Moratoria Mensual:</b> {{ $credito->config_tasa_moratoria }}%
           </td>
         </tr>

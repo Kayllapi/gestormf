@@ -248,7 +248,7 @@
         @if($credito->idforma_credito==1)
           <tr>
             <td colspan="4" style="border-top: 1px solid #000;">
-              <b>• Por custodia adicional de garantía prendaria al vencimiento del plazo, penalidad x dia (hasta {{ $credito->config_dias_maximo_penalidad }} días):</b>
+              <b>>> Por custodia adicional de garantía prendaria al vencimiento del plazo, penalidad x dia (hasta {{ $credito->config_dias_maximo_penalidad }} días):</b>
             </td>
           </tr>
           <tr>
@@ -263,7 +263,7 @@
           </tr>
           <tr>
             <td colspan="4">
-              <b>• Alternativamente adicionará lo equivalente al cargo por custodia de garantía (hasta {{ $credito->config_dias_maximo_penalidad }} días)</b>
+              <b>>> Alternativamente adicionará lo equivalente al cargo por custodia de garantía (hasta {{ $credito->config_dias_maximo_penalidad }} días)</b>
             </td>
           </tr>
         @endif

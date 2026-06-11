@@ -263,7 +263,7 @@
           </tr>
           <tr>
             <td colspan="4">
-              <b>>> Alternativamente adicionará lo equivalente el cargo por custodia de garantía (hasta {{ $credito->config_dias_maximo_penalidad }} días)</b>
+              <b>>> Alternativamente adicionará lo equivalente el cargo por custodia de garantía al vencimiento del plazo (hasta {{ $credito->config_dias_maximo_penalidad }} días)</b>
             </td>
           </tr>
         @endif

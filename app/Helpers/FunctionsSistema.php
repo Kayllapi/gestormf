@@ -297,6 +297,8 @@ function select_cronograma(
         $fechapago = new DateTime($value->fechapago);
         // ---
         $interval = $fecha_hoy->diff($fechapago);
+        $atraso_dias = 0;
+        $atraso_dias_tenencia = 0;
         $atraso_dias_real = 0;
         if($fechapago<=$fecha_hoy){
             $atraso_dias = $interval->format('%a');

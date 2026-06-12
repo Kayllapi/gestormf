@@ -20,8 +20,8 @@
             </button>
         @endif
         <button type="button" class="btn btn-info" onclick="compartirVoucher()"
-            style="font-size: 19px; padding: 0px 8px;">
-            <i class="fa-solid fa-share-nodes"></i>
+            style="padding: 2.5px 8px;">
+            <i class="fa-solid fa-share-nodes" style="width: 30px; font-size: 20px;"></i>
         </button>
         <div class="col-sm-12 mt-2">
             <iframe id="iframe_acta_aprobacion" 

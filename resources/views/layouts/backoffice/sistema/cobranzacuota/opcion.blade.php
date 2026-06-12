@@ -22,11 +22,7 @@
                         V. ENTREGA DE GARANTIA
                     </button>
                 @endif
-                {{-- <button type="button" class="btn btn-info"
-                    onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/cobranzacuota/'.$credito->id.'/edit?view=compartir&idcobranzacuota='.$idcobranzacuota)}}', size: 'modal-sm' })">
-                    <i class="fa-solid fa-share"></i>
-                </button> --}}
-                <button type="button" class="btn btn-info" onclick="$('#modal_compartir').modal('show')">
+                <button type="button" class="btn btn-info" onclick="compartirVoucher()">
                     <i class="fa-solid fa-share-nodes"></i>
                 </button>
                 <div class="col-sm-12 mt-2">
@@ -38,15 +34,6 @@
         </div>
     </form>
 </div>
-
-{{-- Al final del blade, FUERA del modal principal --}}
-<div class="modal fade" id="modal_compartir" tabindex="-1" style="z-index:99999;">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content" id="contenido_modal_compartir">
-    </div>
-  </div>
-</div>
-
 <script>
 function verpdf(valor,idgarantia=0,num=0){
     $('#iframe_acta_aprobacion').attr('src',"{{ url('/backoffice/'.$tienda->id.'/cobranzacuota/'.$credito->id.'/edit?view=') }}"+valor+'&idcobranzacuota={{$idcobranzacuota}}&idgarantia='+idgarantia+'&num='+num+'#zoom=100');
@@ -59,10 +46,8 @@ function imprimirTicket(tipo,idgarantia=0,num=0){
         iframe.contentWindow.print();
     };
 }
-$('#modal_compartir').on('show.bs.modal', function(){
-    var url = "{{ url('backoffice/'.$tienda->id.'/cobranzacuota/'.$credito->id.'/edit') }}"
-            + "?view=compartir"
-            + "&idcobranzacuota={{ $idcobranzacuota }}";
-    $('#contenido_modal_compartir').load(url);
-});
+function compartirVoucher() {
+    let idcobranzacuota = {{$idcobranzacuota}};
+    modal({ route:"{{url('backoffice/'.$tienda->id.'/cobranzacuota/'.$credito->id.'/edit?view=compartir_opcion')}}&idcobranzacuota="+idcobranzacuota, size: 'modal-sm' });
+}
 </script>

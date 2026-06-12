@@ -1886,6 +1886,13 @@ class CobranzacuotaController extends Controller
               'credito' => $credito,
             ]);
         }
+        elseif($request->input('view') == 'compartir_opcion') {
+            return view(sistema_view().'/cobranzacuota/compartir_opcion', [
+                'tienda' => $tienda,
+                'credito' => $credito,
+                'idcobranzacuota' => $request->idcobranzacuota,
+            ]);
+        }
         elseif($request->input('view') == 'compartir') {
             // URL firmada no expira, sin IDs expuestos
             $url_firmada = URL::signedRoute(
@@ -1894,9 +1901,7 @@ class CobranzacuotaController extends Controller
             );
 
             return view(sistema_view().'/cobranzacuota/compartir',[
-                'tienda' => $tienda,
-                'credito' => $credito,
-                'idcobranzacuota' => $request->idcobranzacuota,
+                'tipo_compartir' => $request->tipo_compartir,
                 'url_voucher' => $url_firmada,
             ]);
         }

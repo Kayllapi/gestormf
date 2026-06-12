@@ -957,7 +957,7 @@ class CobranzacuotaController extends Controller
           if($credito!=''){
               $idcredito = $credito->id;
             
-               $tasa_tip = $credito->modalidad_calculo == 'Interes Compuesto' ? '' : $credito->tasa_tip;
+               $tasa_tip = $credito->modalidad_calculo == 'Interes Compuesto' ? 0 : $credito->tasa_tip;
                  
               $datosprestamos = '<table class="table" style="width:100%;">
                       <tr>

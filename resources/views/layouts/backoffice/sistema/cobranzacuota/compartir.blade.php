@@ -9,7 +9,7 @@
             <input type="text" class="form-control" id="campo_texto">
         </div>
         <div class="col-sm-12 mt-2">
-            <button type="button" class="btn btn-success" id="btn-save-compartir"> COMPARTIR</button>
+            <button type="button" class="btn btn-success" id="btn-save-compartir"> ENVIAR</button>
         </div>
     </div>
 </div>
@@ -26,8 +26,8 @@ $('#btn-save-compartir').on('click', function(e){
     }
 
     if(tipo == 1){
-        let asunto = encodeURIComponent('Voucher de Pago');
-        let cuerpo = encodeURIComponent('Estimado cliente, aquí está su voucher:\n{!! $url_voucher !!}');
+        let asunto = encodeURIComponent('Voucher / Documento de Crédito');
+        let cuerpo = encodeURIComponent('Estimado cliente, se adjunta su Voucher / Documento:\n{!! $url_voucher !!}');
         window.open('mailto:' + campo + '?subject=' + asunto + '&body=' + cuerpo, '_blank');
     }
     if(tipo == 2){

@@ -411,7 +411,8 @@ function pagina(param) {
 }	
 
 function modal(param) {
-    var key = $('.modal').length;
+    // var key = $('.modal').length;
+    var key = Date.now();
   
     if(param['size']==undefined) {
         param['size'] = 'modal-lg';

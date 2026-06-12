@@ -4,7 +4,6 @@
         class="btn-close"
         id="modal-close-compartir-opcion"
         data-bs-dismiss="modal"
-        onclick="cerrarCompartir()"
         aria-label="Close">
     </button>
 </div>
@@ -27,8 +26,5 @@
     function compartirCampoText(tipo_compartir) {
         let idcobranzacuota = {{$idcobranzacuota}};
         modal({ route:"{{url('backoffice/'.$tienda->id.'/cobranzacuota/'.$credito->id.'/edit?view=compartir')}}&idcobranzacuota="+idcobranzacuota+"&tipo_compartir="+tipo_compartir, size: 'modal-sm' });
-    }
-    function cerrarCompartir() {
-        $('.modal-backdrop').remove();
     }
 </script>

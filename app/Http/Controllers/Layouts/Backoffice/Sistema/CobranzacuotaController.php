@@ -1900,8 +1900,15 @@ class CobranzacuotaController extends Controller
                 ['idcobranzacuota' => $request->idcobranzacuota]
             );
 
+            $cliente = DB::table('s_users_prestamo')->where('id_s_users', $credito->idcliente)->first();
+            $correo_cliente = $cliente ? $cliente->correo_electronico : null;
+            $telefonos = json_decode($cliente->telefono_cliente, true);
+            $whatsapp_cliente = $telefonos[0]['valor'] ?? null;
+
             return view(sistema_view().'/cobranzacuota/compartir',[
                 'tienda' => $tienda,
+                'correo_cliente' => $correo_cliente,
+                'whatsapp_cliente' => $whatsapp_cliente,
                 'tipo_compartir' => $request->tipo_compartir,
                 'url_voucher' => $url_firmada,
             ]);

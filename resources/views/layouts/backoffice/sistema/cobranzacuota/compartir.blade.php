@@ -6,7 +6,8 @@
     <div class="row">
         <div class="col-sm-12">
             <label for="campo_texto">{{ $tipo_compartir == 1 ? 'Correo Electrónico' : 'Nro. de Whatsapp' }}</label>
-            <input type="text" class="form-control" id="campo_texto">
+            <input type="text" class="form-control" id="campo_texto"
+                value="{{ $tipo_compartir == 1 ? $correo_cliente : $whatsapp_cliente }}" >
         </div>
         <div class="col-sm-12 mt-2">
             <button type="button" class="btn btn-success" id="btn-save-compartir"> ENVIAR</button>
@@ -25,11 +26,6 @@ $('#btn-save-compartir').on('click', function(e){
         return;
     }
 
-    // if(tipo == 1){
-    //     let asunto = encodeURIComponent('Voucher / Documento de Crédito');
-    //     let cuerpo = encodeURIComponent('Estimado cliente, se adjunta su Voucher / Documento:\n{!! $url_voucher !!}');
-    //     window.open('mailto:' + campo + '?subject=' + asunto + '&body=' + cuerpo, '_blank');
-    // }
     if(tipo == 1){
         let asunto = encodeURIComponent('Voucher / Documento de Crédito');
         let cuerpo = encodeURIComponent(

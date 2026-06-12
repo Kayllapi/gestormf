@@ -1901,6 +1901,7 @@ class CobranzacuotaController extends Controller
             );
 
             return view(sistema_view().'/cobranzacuota/compartir',[
+                'tienda' => $tienda,
                 'tipo_compartir' => $request->tipo_compartir,
                 'url_voucher' => $url_firmada,
             ]);

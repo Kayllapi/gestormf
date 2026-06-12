@@ -82,6 +82,17 @@ class MasterController extends Controller
             ]);
 
         }
+        elseif($request->input('view') == 'compartir_opcion') {
+            return view('app/nuevosistema/compartir_opcion', [
+                'url_base' => $request->url_voucher,
+            ]);
+        }
+        elseif($request->input('view') == 'compartir') {
+            return view('app/nuevosistema/compartir', [
+                'tipo_compartir' => $request->tipo_compartir,
+                'url_voucher'    => $request->url_voucher,
+            ]);
+        }
     }
     
     public function store(Request $request)

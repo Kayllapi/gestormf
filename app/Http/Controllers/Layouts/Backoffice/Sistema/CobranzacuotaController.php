@@ -8,6 +8,7 @@ use DB;
 use Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\URL;
 use PDF;
 
 class CobranzacuotaController extends Controller
@@ -1886,114 +1887,106 @@ class CobranzacuotaController extends Controller
             ]);
         }
         elseif($request->input('view') == 'compartir') {
+            // URL firmada no expira, sin IDs expuestos
+            $url_firmada = URL::signedRoute(
+                'voucher.publico',
+                ['idcobranzacuota' => $request->idcobranzacuota]
+            );
+
             return view(sistema_view().'/cobranzacuota/compartir',[
                 'tienda' => $tienda,
                 'credito' => $credito,
                 'idcobranzacuota' => $request->idcobranzacuota,
+                'url_voucher' => $url_firmada,
             ]);
         }
     }
 
     public function update(Request $request, $idtienda, $id)
     {
-        $tienda = DB::table('tienda')->whereId($idtienda)->first();
+    }
+
+    public function destroy(Request $request, $idtienda, $id)
+    {
+    }
+
+    // Método público para servir el PDF sin auth
+    public function voucher_publico(Request $request)
+    {
+        if(! $request->hasValidSignature()) { abort(403); }
+
+        $credito_cobranzacuota = DB::table('credito_cobranzacuota')
+            ->join('credito','credito.id','credito_cobranzacuota.idcredito')
+            ->join('users as cliente','cliente.id','credito.idcliente')
+            ->where('credito_cobranzacuota.id',$request->idcobranzacuota)
+            ->select(
+                'credito_cobranzacuota.*',
+                'cliente.nombrecompleto as nombrecliente',
+                'credito.idcliente as idcliente',
+                'credito.cuenta as creditocuenta',
+            )
+            ->first();
+
+        if(! $credito_cobranzacuota) abort(404);
+
+        $tienda  = DB::table('tienda')->whereId($credito_cobranzacuota->idtienda)->first();
         $credito = DB::table('credito')
             ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
-            ->where('credito.id',$id)
+            ->where('credito.id',$credito_cobranzacuota->idcredito)
             ->select(
                 'credito.*',
                 'credito_prendatario.modalidad as modalidadproductocredito',
                 'credito_prendatario.nombre as nombreproductocredito',
             )
             ->first();
-
-        if($request->input('view') == 'compartir') {
-
-            if($request->tipo_compartir == 2){
-                // WhatsApp se maneja en el frontend, nada que hacer aquí
-                return response()->json(['resultado' => 'CORRECTO']);
-            }
-
-            // Correo
-            $credito_cobranzacuota = DB::table('credito_cobranzacuota')
-                ->join('credito','credito.id','credito_cobranzacuota.idcredito')
-                ->join('users as cliente','cliente.id','credito.idcliente')
-                ->where('credito_cobranzacuota.id',$request->idcobranzacuota)
-                ->select(
-                    'credito_cobranzacuota.*',
-                    'cliente.nombrecompleto as nombrecliente',
-                    'credito.idcliente as idcliente',
-                    'credito.cuenta as creditocuenta',
-                )
-                ->first();
-              
-            $usuario = DB::table('users')
-                ->leftJoin('ubigeo','ubigeo.id','users.idubigeo')
-                ->leftJoin('ubigeo as ubigeonacimiento','ubigeonacimiento.id','users.idubigeo_nacimiento')
-                ->leftJoin('role_user','role_user.user_id','users.id')
-                ->leftJoin('roles','roles.id','role_user.role_id')
-                ->where('users.id', $credito->idcliente)
-                ->select(
-                    'users.*',
-                    'roles.id as idroles',
-                    'roles.description as descriptionrole',
-                    'ubigeo.nombre as ubigeonombre',
-                    'ubigeonacimiento.nombre as ubigeonacimientonombre'
-                )
-                ->first();
             
-            $cajero = DB::table('users')->where('users.id',$credito_cobranzacuota->idcajero)->first();
-            
-            $count_creditopendiente = DB::table('credito_garantia')
-                  ->where('credito_garantia.idcredito',$credito_cobranzacuota->idcredito)
-                  ->where('credito_garantia.idestadoentrega',1)
-                  ->count();
-          
-            $count_credito_cronograma = DB::table('credito_cronograma')
-                ->where('credito_cronograma.idcredito',$credito_cobranzacuota->idcredito)
-                ->whereIn('credito_cronograma.idestadocredito_cronograma',[1,3])
+        $usuario = DB::table('users')
+            ->leftJoin('ubigeo','ubigeo.id','users.idubigeo')
+            ->leftJoin('ubigeo as ubigeonacimiento','ubigeonacimiento.id','users.idubigeo_nacimiento')
+            ->leftJoin('role_user','role_user.user_id','users.id')
+            ->leftJoin('roles','roles.id','role_user.role_id')
+            ->where('users.id', $credito->idcliente)
+            ->select(
+                'users.*',
+                'roles.id as idroles',
+                'roles.description as descriptionrole',
+                'ubigeo.nombre as ubigeonombre',
+                'ubigeonacimiento.nombre as ubigeonacimientonombre'
+            )
+            ->first();
+        
+        $cajero = DB::table('users')->where('users.id',$credito_cobranzacuota->idcajero)->first();
+        
+        $count_creditopendiente = DB::table('credito_garantia')
+                ->where('credito_garantia.idcredito',$credito_cobranzacuota->idcredito)
+                ->where('credito_garantia.idestadoentrega',1)
                 ->count();
+        
+        $count_credito_cronograma = DB::table('credito_cronograma')
+            ->where('credito_cronograma.idcredito',$credito_cobranzacuota->idcredito)
+            ->whereIn('credito_cronograma.idestadocredito_cronograma',[1,3])
+            ->count();
 
-            $datos = [
-                'tienda' => $tienda,
-                'creditocuenta' => $credito_cobranzacuota->cuenta,
-                'usuario' => $usuario,
-                'cajero' => $cajero,
-                'credito' => $credito,
-                'banco' => $credito_cobranzacuota->banco,
-                'bancocuenta' => $credito_cobranzacuota->cuenta,
-                'numerooperacion' => $credito_cobranzacuota->numerooperacion,
-                'idformapago' => $credito_cobranzacuota->idformapago,
-                'pago_cuota' => $credito_cobranzacuota->pago_cuota,
-                'pago_diasatraso' => $credito_cobranzacuota->pago_diasatraso,
-                'total_pendientepago' => $credito_cobranzacuota->total_pendientepago,
-                'credito_cobranzacuota' => $credito_cobranzacuota,
-                'count_creditopendiente'   => $count_creditopendiente,
-                'count_credito_cronograma' => $count_credito_cronograma,
-            ];
+        $datos = [
+            'tienda' => $tienda,
+            'creditocuenta' => $credito_cobranzacuota->cuenta,
+            'usuario' => $usuario,
+            'cajero' => $cajero,
+            'credito' => $credito,
+            'banco' => $credito_cobranzacuota->banco,
+            'bancocuenta' => $credito_cobranzacuota->cuenta,
+            'numerooperacion' => $credito_cobranzacuota->numerooperacion,
+            'idformapago' => $credito_cobranzacuota->idformapago,
+            'pago_cuota' => $credito_cobranzacuota->pago_cuota,
+            'pago_diasatraso' => $credito_cobranzacuota->pago_diasatraso,
+            'total_pendientepago' => $credito_cobranzacuota->total_pendientepago,
+            'credito_cobranzacuota' => $credito_cobranzacuota,
+            'count_creditopendiente'   => $count_creditopendiente,
+            'count_credito_cronograma' => $count_credito_cronograma,
+        ];
 
-            $pdf = PDF::loadView(sistema_view().'/cobranzacuota/pdf_pago', $datos);
-            $pdf->setPaper('A4');
-            $pdf_content = $pdf->output(); // genera en memoria, no hace stream
-
-            Mail::send([], [], function($message) use ($request, $pdf_content, $credito_cobranzacuota) {
-                $message->to($request->campo_texto)
-                    ->subject('Voucher de Pago - '.$credito_cobranzacuota->codigo)
-                    ->setBody('Adjunto encontrará su voucher de pago.')
-                    ->attachData($pdf_content, 'VOUCHER_PAGO.pdf', [
-                        'mime' => 'application/pdf'
-                    ]);
-            });
-
-            return response()->json([
-                'resultado' => 'CORRECTO',
-                'mensaje'   => 'Correo enviado correctamente.',
-            ]);
-        }
-    }
-
-    public function destroy(Request $request, $idtienda, $id)
-    {
-    
+        $pdf = PDF::loadView(sistema_view($credito_cobranzacuota->idtienda).'/cobranzacuota/pdf_pago', $datos);
+        $pdf->setPaper('A4');
+        return $pdf->stream('VOUCHER_PAGO.pdf');
     }
 }

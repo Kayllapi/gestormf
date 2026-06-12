@@ -27,7 +27,7 @@
                     <i class="fa-solid fa-share"></i>
                 </button> --}}
                 <button type="button" class="btn btn-info" onclick="$('#modal_compartir').modal('show')">
-                    <i class="fa-solid fa-share"></i>
+                    <i class="fa-solid fa-share-nodes"></i>
                 </button>
                 <div class="col-sm-12 mt-2">
                     <iframe id="iframe_acta_aprobacion" 

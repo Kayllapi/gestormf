@@ -21,18 +21,6 @@
         </div>
     </div>
 </form>
-{{-- <script>
-    sistema_select2({ input:'#tipo_compartir' });
-    $('#tipo_compartir').change(function(){
-        if($(this).val() == 1){
-            $('#campo_texto').attr('placeholder', 'Ingrese el correo electrónico');
-        } else if($(this).val() == 2){
-            $('#campo_texto').attr('placeholder', 'Ingrese el número de Whatsapp');
-        } else {
-            $('#campo_texto').attr('placeholder', '');
-        }
-    });
-</script> --}}
 <script>
 sistema_select2({ input:'#tipo_compartir' });
 
@@ -58,6 +46,17 @@ $('#btn-save-compartir').on('click', function(e){
     }
 
     if(tipo == 1){
+        let asunto = encodeURIComponent('Voucher de Pago');
+        let cuerpo = encodeURIComponent('Estimado cliente, aquí está su voucher:\n{!! $url_voucher !!}');
+        window.open('mailto:' + campo + '?subject=' + asunto + '&body=' + cuerpo, '_blank');
+    }
+
+    if(tipo == 2){
+        let mensaje = encodeURIComponent('Aquí está su voucher de pago: {!! $url_voucher !!}');
+        window.open('https://wa.me/' + campo + '?text=' + mensaje, '_blank');
+    }
+
+    /*if(tipo == 1){
         let url_pdf = "{{ url('backoffice/'.$tienda->id.'/cobranzacuota/'.$credito->id.'/edit') }}"
             + "?view=pdf_pago"
             + "&idcobranzacuota={{ $idcobranzacuota }}";
@@ -71,25 +70,6 @@ $('#btn-save-compartir').on('click', function(e){
             + "&idcobranzacuota={{ $idcobranzacuota }}";
         let mensaje = encodeURIComponent('Aquí está su voucher de pago: ' + url_pdf);
         window.open('https://wa.me/' + campo + '?text=' + mensaje, '_blank');
-    } /*else {
-        callback({
-            route: '{{ url('backoffice/'.$tienda->id.'/cobranzacuota/'.$credito->id) }}',
-            method: 'PUT',
-            data:{
-                view: 'compartir',
-                tipo_compartir: tipo,
-                campo_texto: campo,
-                idcobranzacuota: idcobranzacuota
-            }
-        },
-        function(res){
-            if(res.resultado == 'CORRECTO'){
-                alert('Correo enviado correctamente.');
-                $('#modal_compartir').modal('hide');
-            } else {
-                alert(res.mensaje);
-            }
-        },this);
     }*/
 });
 </script>

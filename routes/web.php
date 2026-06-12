@@ -2,11 +2,15 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Layouts\Backoffice\Sistema\BackupController;
+use App\Http\Controllers\Layouts\Backoffice\Sistema\CobranzacuotaController;
 
 Route::resource('/', 'Layouts\InicioController');
 //Route::get('/login', 'Layouts\Buscador\Tienda\LoginController@index');
-
 Route::resource('/inicio', 'Layouts\InicioController');
+
+// Ruta para mostrar el voucher al público
+Route::get('/voucher', [CobranzacuotaController::class, 'voucher_publico'])
+     ->name('voucher.publico');
 
 Auth::routes(); //Auth::routes(['verify' => true]);
 

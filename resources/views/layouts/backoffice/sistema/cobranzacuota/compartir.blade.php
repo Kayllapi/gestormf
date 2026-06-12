@@ -25,9 +25,18 @@ $('#btn-save-compartir').on('click', function(e){
         return;
     }
 
+    // if(tipo == 1){
+    //     let asunto = encodeURIComponent('Voucher / Documento de Crédito');
+    //     let cuerpo = encodeURIComponent('Estimado cliente, se adjunta su Voucher / Documento:\n{!! $url_voucher !!}');
+    //     window.open('mailto:' + campo + '?subject=' + asunto + '&body=' + cuerpo, '_blank');
+    // }
     if(tipo == 1){
         let asunto = encodeURIComponent('Voucher / Documento de Crédito');
-        let cuerpo = encodeURIComponent('Estimado cliente, se adjunta su Voucher / Documento:\n{!! $url_voucher !!}');
+        let cuerpo = encodeURIComponent(
+            'Estimado cliente, puede ver su Voucher / Documento haciendo clic en el siguiente enlace:\n\n'
+            + '{!! $url_voucher !!}'
+            + '\n\nSi el enlace no abre, cópielo y péguelo en su navegador.'
+        );
         window.open('mailto:' + campo + '?subject=' + asunto + '&body=' + cuerpo, '_blank');
     }
     if(tipo == 2){

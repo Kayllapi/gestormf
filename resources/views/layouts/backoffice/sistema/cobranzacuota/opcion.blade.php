@@ -19,7 +19,8 @@
                 V. ENTREGA DE GARANTIA
             </button>
         @endif
-        <button type="button" class="btn btn-info" onclick="compartirVoucher()">
+        <button type="button" class="btn btn-info" onclick="compartirVoucher()"
+            style="font-size: 19px; padding: 0px 8px;">
             <i class="fa-solid fa-share-nodes"></i>
         </button>
         <div class="col-sm-12 mt-2">

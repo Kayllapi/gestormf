@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use DB;
 use Auth;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\URL;
 use PDF;
 
 class PagoprestamoController extends Controller
@@ -173,6 +174,8 @@ class PagoprestamoController extends Controller
                       $btn_validar = "<i class='fa-solid fa-check'></i> (".$users->codigo.")";
                   }
               }  
+
+              $fechaFormateado = Carbon::parse($value->fecharegistro)->format('d-m-Y h:i A');
             
               $html .= "<tr id='show_data_select' idcredito_cobranzacuota='{$value->id}'>
                             <td style='height: 20px;'>".($key+1)."</td>
@@ -185,7 +188,7 @@ class PagoprestamoController extends Controller
                             <td style='text-align:right;height: 20px;'>{$value->total_tenencia}</td>
                             <td style='text-align:right;height: 20px;'>{$value->cobrar_cargo}</td>
                             <td style='text-align:right;height: 20px;'>{$value->total_totalcuota}</td>
-                            <td style='text-align:center;height: 20px;width: 125px;'>{$value->fecharegistro}</td>
+                            <td style='text-align:center;height: 20px;width: 125px;'>{$fechaFormateado}</td>
                             <td style='height: 20px;'>{$operacionen1}</td>
                             <td style='height: 20px;'>{$value->banco}</td>
                             <td style='width: 100px;'>{$btn_validar}</td>
@@ -263,9 +266,15 @@ class PagoprestamoController extends Controller
               ->first();
                 
         if($request->input('view') == 'ticket') {
+            // URL firmada no expira, sin IDs expuestos
+            $url_firmada = URL::signedRoute(
+                'voucher.publico',
+                ['idcobranzacuota' => $id]
+            );
             return view(sistema_view().'/pagoprestamo/ticket',[
-              'tienda' => $tienda,
-              'credito_cobranzacuota' => $credito_cobranzacuota,
+                'tienda' => $tienda,
+                'credito_cobranzacuota' => $credito_cobranzacuota,
+                'url_voucher' => $url_firmada,
             ]);
         }
         else if( $request->input('view') == 'pdf_pago' ){

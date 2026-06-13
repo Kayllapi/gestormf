@@ -181,7 +181,7 @@
         return false;
       }
       let url = "{{ url('backoffice/'.$tienda->id) }}/pagoprestamo/"+idcredito_cobranzacuota+"/edit?view=ticket";
-      modal({ route: url })
+      modal({ route: url, size: 'modal-sm' })
    }
    function ticketgarantia(){
       let idcredito_cobranzacuota = $('#table-lista-credito > tbody > tr.selected').attr('idcredito_cobranzacuota');

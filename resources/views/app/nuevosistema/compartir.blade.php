@@ -6,7 +6,7 @@
     <div class="row">
         <div class="col-sm-12">
             <label>{{ $tipo_compartir == 1 ? 'Correo Electrónico' : 'Nro. de WhatsApp' }}</label>
-            <input type="text" class="form-control" id="campo_compartir" >
+            <input type="text" class="form-control" id="campo_compartir" value="{{ $tipo_compartir == 1 ? $correo_cliente : $whatsapp_cliente }}">
         </div>
         <div class="col-sm-12 mt-2">
             <button type="button" class="btn btn-success w-100" id="btn_compartir">COMPARTIR</button>

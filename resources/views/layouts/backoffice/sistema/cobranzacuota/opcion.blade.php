@@ -19,10 +19,16 @@
                 V. ENTREGA DE GARANTIA
             </button>
         @endif
-        <button type="button" class="btn btn-info" onclick="compartirVoucher()"
+        {{-- <button type="button" class="btn btn-info" onclick="compartirVoucher()"
             style="padding: 2.5px 8px;">
             <i class="fa-solid fa-share-nodes" style="width: 30px; font-size: 20px;"></i>
-        </button>
+        </button> --}}
+        <button type="button"
+            class="btn btn-info"
+            style="padding: 2.5px 8px;"
+            onclick="abrirCompartir()">
+            <i class="fa-solid fa-share-nodes"></i>
+    </button>
         <div class="col-sm-12 mt-2">
             <iframe id="iframe_acta_aprobacion" 
             src="{{ url('/backoffice/'.$tienda->id.'/cobranzacuota/'.$credito->id.'/edit?view=pdf_pago&idcobranzacuota='.$idcobranzacuota) }}#zoom=100" 
@@ -42,8 +48,18 @@ function imprimirTicket(tipo,idgarantia=0,num=0){
         iframe.contentWindow.print();
     };
 }
-function compartirVoucher() {
+/*function compartirVoucher() {
     let idcobranzacuota = {{$idcobranzacuota}};
     modal({ route:"{{url('backoffice/'.$tienda->id.'/cobranzacuota/'.$credito->id.'/edit?view=compartir_opcion')}}&idcobranzacuota="+idcobranzacuota, size: 'modal-sm' });
+}*/
+function abrirCompartir() {
+    let url_voucher = encodeURIComponent('{!! $url_voucher !!}');
+    let idcliente = {{ $credito->idcliente }};
+    modal({ 
+        route: "{{ url('backoffice/'.$tienda->id.'/inicio/create?view=compartir_opcion') }}"
+             + "&url_voucher=" + url_voucher
+             + "&clt=" + idcliente,
+        size: 'modal-sm' 
+    });
 }
 </script>

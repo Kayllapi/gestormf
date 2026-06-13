@@ -85,12 +85,19 @@ class MasterController extends Controller
         elseif($request->input('view') == 'compartir_opcion') {
             return view('app/nuevosistema/compartir_opcion', [
                 'url_base' => $request->url_voucher,
+                'idcliente' => $request->clt,
             ]);
         }
         elseif($request->input('view') == 'compartir') {
+            $cliente = DB::table('s_users_prestamo')->where('id_s_users', $request->clt)->first();
+            $correo_cliente = $cliente ? $cliente->correo_electronico : null;
+            $telefonos = json_decode($cliente->telefono_cliente, true);
+            $whatsapp_cliente = $telefonos[0]['valor'] ?? null;
             return view('app/nuevosistema/compartir', [
                 'tipo_compartir' => $request->tipo_compartir,
-                'url_voucher'    => $request->url_voucher,
+                'url_voucher' => $request->url_voucher,
+                'correo_cliente' => $correo_cliente,
+                'whatsapp_cliente' => $whatsapp_cliente,
             ]);
         }
     }

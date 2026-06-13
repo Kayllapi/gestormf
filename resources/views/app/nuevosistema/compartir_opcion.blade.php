@@ -12,11 +12,13 @@
 </div>
 <script>
 function compartirTipo(tipo) {
-    let url_base    = '{{ $url_base }}';
+    let url_base = '{{ $url_base }}';
+    let idcliente = '{{ $idcliente }}';
     let url_voucher = decodeURIComponent(new URLSearchParams(url_base.split('?')[1]).get('url_voucher'));
     modal({ 
         route: "{{ url('backoffice/0/inicio/create?view=compartir') }}"
              + "&tipo_compartir=" + tipo 
+             + "&clt=" + idcliente 
              + "&url_voucher=" + encodeURIComponent(url_voucher), 
         size: 'modal-sm' 
     });

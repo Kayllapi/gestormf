@@ -1704,12 +1704,18 @@ class CobranzacuotaController extends Controller
         ]);
       }
         elseif($request->input('view') == 'opcion') {
+            // URL firmada no expira, sin IDs expuestos
+            $url_firmada = URL::signedRoute(
+                'voucher.publico',
+                ['idcobranzacuota' => $request->idcobranzacuota]
+            );
             return view(sistema_view().'/cobranzacuota/opcion',[
                 'tienda' => $tienda,
                 'credito' => $credito,
                 'idcobranzacuota' => $request->idcobranzacuota,
                 'idestadocredito' => $request->idestadocredito,
                 'entregargarantia'   => $request->entregargarantia,
+                'url_voucher' => $url_firmada,
             ]);
         }
         elseif($request->input('view') == 'congelarcredito') {

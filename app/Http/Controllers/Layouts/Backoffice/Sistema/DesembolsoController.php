@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use DB;
 use Auth;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\URL;
 use PDF;
 
 class DesembolsoController extends Controller
@@ -139,10 +140,6 @@ class DesembolsoController extends Controller
                     ->orderBy('credito.id','desc')
                     ->first();
 
-
-
-
-
         $usuario = DB::table('users')
               ->leftJoin('ubigeo','ubigeo.id','users.idubigeo')
               ->leftJoin('ubigeo as ubigeonacimiento','ubigeonacimiento.id','users.idubigeo_nacimiento')
@@ -162,274 +159,289 @@ class DesembolsoController extends Controller
  
         $users_prestamo = DB::table('s_users_prestamo')->where('s_users_prestamo.id_s_users',$credito->idcliente)->first();
         $users_prestamo_aval = DB::table('s_users_prestamo')->where('s_users_prestamo.id_s_users',$credito->idaval)->first();
-      if( $request->input('view') == 'desembolsar' ){
-                
-        $nivel_aprobacion = DB::table('nivelaprobacion')
-                              ->where('nivelaprobacion.idtipocredito',$credito->idforma_credito)
-                              ->where('nivelaprobacion.riesgocredito1','<',$credito->monto_solicitado)
-                              ->where('nivelaprobacion.riesgocredito2','>=',$credito->monto_solicitado)
-                              ->first();
-        
-        $credito_aprobacion = DB::table('credito_aprobacion')
-                              ->leftJoin('permiso','permiso.id','credito_aprobacion.idpermiso')
-                              ->leftJoin('users','users.id','credito_aprobacion.idusers')
-                              ->where('credito_aprobacion.idcredito',$credito->id)
-                              ->select(
-                                'credito_aprobacion.*',
-                                'permiso.nombre as nombre_permiso',
-                                'users.nombrecompleto as nombre_usuario',
-                                'users.nombre as nombre',
-                                'users.apellidopaterno as apellidopaterno',
-                                'users.clave as clave_usuario'
-                              )
-                              ->orderBy('permiso.rango','asc')
-                              ->get();
-        
-        $garantias = DB::table('credito_garantia')
-                ->leftJoin('garantias','garantias.id','credito_garantia.idgarantias')
-                ->where('idcredito', $credito->id)
-                ->where('credito_garantia.tipo', 'CLIENTE')
-                ->select(
-                  'credito_garantia.id as id'
-                )
-                ->get();
-        
-        return view(sistema_view().'/desembolso/desembolsar',[
-          'tienda' => $tienda,
-          'credito' => $credito,
-          'usuario' => $usuario,
-          'nivel_aprobacion' => $nivel_aprobacion,
-          'credito_aprobacion' => $credito_aprobacion,
-          'estado' => $request->input('tipo'),
-          'garantias' => $garantias,
-        ]);
-      }
-      elseif( $request->input('view') == 'desembolsarticket' ){
-
-        $bancos = DB::table('banco')->where('estado','ACTIVO')->get();
-        
-        $credito_propuesta = DB::table('credito_propuesta')->where('idcredito',$credito->id)->first();
-        
-        return view(sistema_view().'/desembolso/desembolsarticket',[
-          'tienda' => $tienda,
-          'credito' => $credito,
-          'usuario' => $usuario,
-          'bancos' => $bancos,
-          'credito_propuesta' => $credito_propuesta,
-        ]);
-      }
-      
-      else if( $request->input('view') == 'pdf_cronograma' ){
-
-        $credito_cronograma = DB::table('credito_cronograma')
-                              ->where('credito_cronograma.idcredito',$credito->id)
-                              ->get();
-        
-        $pdf = PDF::loadView(sistema_view().'/desembolso/pdf_cronograma',[
-            'users_prestamo'    => $users_prestamo,
+        if( $request->input('view') == 'desembolsar' ){
+                    
+            $nivel_aprobacion = DB::table('nivelaprobacion')
+                                ->where('nivelaprobacion.idtipocredito',$credito->idforma_credito)
+                                ->where('nivelaprobacion.riesgocredito1','<',$credito->monto_solicitado)
+                                ->where('nivelaprobacion.riesgocredito2','>=',$credito->monto_solicitado)
+                                ->first();
+            
+            $credito_aprobacion = DB::table('credito_aprobacion')
+                                ->leftJoin('permiso','permiso.id','credito_aprobacion.idpermiso')
+                                ->leftJoin('users','users.id','credito_aprobacion.idusers')
+                                ->where('credito_aprobacion.idcredito',$credito->id)
+                                ->select(
+                                    'credito_aprobacion.*',
+                                    'permiso.nombre as nombre_permiso',
+                                    'users.nombrecompleto as nombre_usuario',
+                                    'users.nombre as nombre',
+                                    'users.apellidopaterno as apellidopaterno',
+                                    'users.clave as clave_usuario'
+                                )
+                                ->orderBy('permiso.rango','asc')
+                                ->get();
+            
+            $garantias = DB::table('credito_garantia')
+                    ->leftJoin('garantias','garantias.id','credito_garantia.idgarantias')
+                    ->where('idcredito', $credito->id)
+                    ->where('credito_garantia.tipo', 'CLIENTE')
+                    ->select(
+                    'credito_garantia.id as id'
+                    )
+                    ->get();
+            
+            return view(sistema_view().'/desembolso/desembolsar',[
             'tienda' => $tienda,
             'credito' => $credito,
             'usuario' => $usuario,
-            'asesor' => $asesor,
-            'credito_cronograma' => $credito_cronograma,
-        ]); 
-        $pdf->setPaper('A4');
-        return $pdf->stream('CRONOGRAMA.pdf');
-      }
-      else if( $request->input('view') == 'pdf_contrato' ){
+            'nivel_aprobacion' => $nivel_aprobacion,
+            'credito_aprobacion' => $credito_aprobacion,
+            'estado' => $request->input('tipo'),
+            'garantias' => $garantias,
+            ]);
+        }
+        elseif( $request->input('view') == 'desembolsarticket' ){
 
-        $aval = DB::table('users')->where('users.id',$credito->idaval)->first();
-        $ubigeo_tienda = DB::table('ubigeo')->where('ubigeo.id',$tienda->idubigeo)->first();
-        $garantias = DB::table('credito_garantia')
-          ->leftJoin('garantias','garantias.id','credito_garantia.idgarantias')
-          ->where('idcredito', $credito->id)
-          ->where('credito_garantia.tipo', 'CLIENTE')
-          ->select(
-            'garantias.*'
-          )
-          ->get();
+            $bancos = DB::table('banco')->where('estado','ACTIVO')->get();
+            
+            $credito_propuesta = DB::table('credito_propuesta')->where('idcredito',$credito->id)->first();
+            
+            return view(sistema_view().'/desembolso/desembolsarticket',[
+            'tienda' => $tienda,
+            'credito' => $credito,
+            'usuario' => $usuario,
+            'bancos' => $bancos,
+            'credito_propuesta' => $credito_propuesta,
+            ]);
+        }
+        else if( $request->input('view') == 'pdf_cronograma' ){
 
-        $nomcredito = '';
-        if($credito->idforma_credito==1){
-            if($credito->constituciongarantia_id==1){
-                $nomcredito = 'prendario_con_posesion';
-            }elseif($credito->constituciongarantia_id==2){
-                $nomcredito = 'prendario_sin_posesion';
+            $credito_cronograma = DB::table('credito_cronograma')
+                                ->where('credito_cronograma.idcredito',$credito->id)
+                                ->get();
+            
+            $pdf = PDF::loadView(sistema_view().'/desembolso/pdf_cronograma',[
+                'users_prestamo'    => $users_prestamo,
+                'tienda' => $tienda,
+                'credito' => $credito,
+                'usuario' => $usuario,
+                'asesor' => $asesor,
+                'credito_cronograma' => $credito_cronograma,
+            ]); 
+            $pdf->setPaper('A4');
+            return $pdf->stream('CRONOGRAMA.pdf');
+        }
+        else if( $request->input('view') == 'pdf_contrato' ){
+
+            $aval = DB::table('users')->where('users.id',$credito->idaval)->first();
+            $ubigeo_tienda = DB::table('ubigeo')->where('ubigeo.id',$tienda->idubigeo)->first();
+            $garantias = DB::table('credito_garantia')
+            ->leftJoin('garantias','garantias.id','credito_garantia.idgarantias')
+            ->where('idcredito', $credito->id)
+            ->where('credito_garantia.tipo', 'CLIENTE')
+            ->select(
+                'garantias.*'
+            )
+            ->get();
+
+            $nomcredito = '';
+            if($credito->idforma_credito==1){
+                if($credito->constituciongarantia_id==1){
+                    $nomcredito = 'prendario_con_posesion';
+                }elseif($credito->constituciongarantia_id==2){
+                    $nomcredito = 'prendario_sin_posesion';
+                }
             }
+            elseif($credito->idforma_credito==2){
+                $nomcredito = 'noprendario';
+            }
+            $pdf = PDF::loadView(sistema_view().'/desembolso/pdf_contrato_'.$nomcredito,[
+                'users_prestamo' => $users_prestamo,
+                'tienda' => $tienda,
+                'credito' => $credito,
+                'usuario' => $usuario,
+                'asesor' => $asesor,
+                'aval' => $aval,
+                'garantias' => $garantias,
+                'users_prestamo_aval' => $users_prestamo_aval,
+                'ubigeo_tienda' => $ubigeo_tienda,
+            ]); 
+            $pdf->setPaper('A4');
+            return $pdf->stream('CONTRATO.pdf');
         }
-        elseif($credito->idforma_credito==2){
-            $nomcredito = 'noprendario';
+        else if( $request->input('view') == 'pdf_resumen' ){
+
+            $aval = DB::table('users')->where('users.id',$credito->idaval)->first();
+            $tipo_garantia1 = DB::table('tipo_garantia')->offset(0)->limit(4)->get();
+            $tipo_garantia2 = DB::table('tipo_garantia')->offset(4)->limit(4)->get();
+            $garantias = DB::table('credito_garantia')
+            ->where('credito_garantia.tipo', 'CLIENTE')
+            ->where('credito_garantia.idcredito', $credito->id)
+            ->select(
+                'credito_garantia.*',
+            )
+            ->get();
+            $garantiasaval = DB::table('credito_garantia')
+            ->where('tipo', 'AVAL')
+            ->where('idcredito', $credito->id)
+            ->select(
+                'credito_garantia.*',
+            )
+            ->get();
+            $pdf = PDF::loadView(sistema_view().'/desembolso/pdf_resumen',[
+                'users_prestamo'    => $users_prestamo,
+                'tienda' => $tienda,
+                'credito' => $credito,
+                'usuario' => $usuario,
+                'asesor' => $asesor,
+                'garantias' => $garantias,
+                'garantiasaval' => $garantiasaval,
+                'tipo_garantia1' => $tipo_garantia1,
+                'tipo_garantia2' => $tipo_garantia2,
+                'aval' => $aval,
+                'users_prestamo_aval' => $users_prestamo_aval,
+            ]); 
+            $pdf->setPaper('A4');
+            return $pdf->stream('RESUMEN.pdf');
         }
-        $pdf = PDF::loadView(sistema_view().'/desembolso/pdf_contrato_'.$nomcredito,[
-            'users_prestamo' => $users_prestamo,
-            'tienda' => $tienda,
-            'credito' => $credito,
-            'usuario' => $usuario,
-            'asesor' => $asesor,
-            'aval' => $aval,
-            'garantias' => $garantias,
-            'users_prestamo_aval' => $users_prestamo_aval,
-            'ubigeo_tienda' => $ubigeo_tienda,
-        ]); 
-        $pdf->setPaper('A4');
-        return $pdf->stream('CONTRATO.pdf');
-      }
-      else if( $request->input('view') == 'pdf_resumen' ){
+        else if( $request->input('view') == 'pdf_declaracion' ){
 
-        $aval = DB::table('users')->where('users.id',$credito->idaval)->first();
-        $tipo_garantia1 = DB::table('tipo_garantia')->offset(0)->limit(4)->get();
-        $tipo_garantia2 = DB::table('tipo_garantia')->offset(4)->limit(4)->get();
-        $garantias = DB::table('credito_garantia')
-          ->where('credito_garantia.tipo', 'CLIENTE')
-          ->where('credito_garantia.idcredito', $credito->id)
-          ->select(
-            'credito_garantia.*',
-          )
-          ->get();
-        $garantiasaval = DB::table('credito_garantia')
-          ->where('tipo', 'AVAL')
-          ->where('idcredito', $credito->id)
-          ->select(
-            'credito_garantia.*',
-          )
-          ->get();
-        $pdf = PDF::loadView(sistema_view().'/desembolso/pdf_resumen',[
-            'users_prestamo'    => $users_prestamo,
-            'tienda' => $tienda,
-            'credito' => $credito,
-            'usuario' => $usuario,
-            'asesor' => $asesor,
-            'garantias' => $garantias,
-            'garantiasaval' => $garantiasaval,
-            'tipo_garantia1' => $tipo_garantia1,
-            'tipo_garantia2' => $tipo_garantia2,
-            'aval' => $aval,
-            'users_prestamo_aval' => $users_prestamo_aval,
-        ]); 
-        $pdf->setPaper('A4');
-        return $pdf->stream('RESUMEN.pdf');
-      }
-      else if( $request->input('view') == 'pdf_declaracion' ){
+            $ubigeo_tienda = DB::table('ubigeo')->where('ubigeo.id',$tienda->idubigeo)->first();
+            $garantias = DB::table('credito_garantia')
+            ->leftJoin('garantias','garantias.id','credito_garantia.idgarantias')
+            ->where('idcredito', $credito->id)
+            ->where('credito_garantia.tipo', 'CLIENTE')
+            ->select(
+                'garantias.*'
+            )
+            ->get();
+            $pdf = PDF::loadView(sistema_view().'/desembolso/pdf_declaracion',[
+                'users_prestamo'    => $users_prestamo,
+                'tienda' => $tienda,
+                'credito' => $credito,
+                'usuario' => $usuario,
+                'asesor' => $asesor,
+                'garantias' => $garantias,
+                'ubigeo_tienda' => $ubigeo_tienda,
+            ]); 
+            $pdf->setPaper('A4');
+            return $pdf->stream('DECLARACION.pdf');
+        }
+        else if( $request->input('view') == 'pdf_pagare' ){
 
-        $ubigeo_tienda = DB::table('ubigeo')->where('ubigeo.id',$tienda->idubigeo)->first();
-        $garantias = DB::table('credito_garantia')
-          ->leftJoin('garantias','garantias.id','credito_garantia.idgarantias')
-          ->where('idcredito', $credito->id)
-          ->where('credito_garantia.tipo', 'CLIENTE')
-          ->select(
-            'garantias.*'
-          )
-          ->get();
-        $pdf = PDF::loadView(sistema_view().'/desembolso/pdf_declaracion',[
-            'users_prestamo'    => $users_prestamo,
-            'tienda' => $tienda,
-            'credito' => $credito,
-            'usuario' => $usuario,
-            'asesor' => $asesor,
-            'garantias' => $garantias,
-            'ubigeo_tienda' => $ubigeo_tienda,
-        ]); 
-        $pdf->setPaper('A4');
-        return $pdf->stream('DECLARACION.pdf');
-      }
-      else if( $request->input('view') == 'pdf_pagare' ){
+            $aval = DB::table('users')->where('users.id',$credito->idaval)->first();
+            $tipo_garantia1 = DB::table('tipo_garantia')->offset(0)->limit(3)->get();
+            $tipo_garantia2 = DB::table('tipo_garantia')->offset(3)->limit(3)->get();
+            $tipo_garantia3 = DB::table('tipo_garantia')->offset(6)->limit(3)->get();
+            $garantias = DB::table('credito_garantia')
+            ->where('credito_garantia.tipo', 'CLIENTE')
+            ->where('credito_garantia.idcredito', $credito->id)
+            ->select(
+                'credito_garantia.*',
+            )
+            ->get();
+            $garantiasaval = DB::table('credito_garantia')
+            ->where('tipo', 'AVAL')
+            ->where('idcredito', $credito->id)
+            ->select(
+                'credito_garantia.*',
+            )
+            ->get();
+            $pdf = PDF::loadView(sistema_view().'/desembolso/pdf_pagare',[
+                'users_prestamo'    => $users_prestamo,
+                'tienda' => $tienda,
+                'credito' => $credito,
+                'usuario' => $usuario,
+                'asesor' => $asesor,
+                'garantias' => $garantias,
+                'garantiasaval' => $garantiasaval,
+                'tipo_garantia1' => $tipo_garantia1,
+                'tipo_garantia2' => $tipo_garantia2,
+                'tipo_garantia3' => $tipo_garantia3,
+                'aval' => $aval,
+                'users_prestamo_aval' => $users_prestamo_aval,
+            ]); 
+            $pdf->setPaper('A4');
+            return $pdf->stream('RESUMEN.pdf');
+        }
+        else if( $request->input('view') == 'pdf_ticket' ){
+            $credito_formapago = DB::table('credito_formapago')
+                ->where('credito_formapago.idcredito',$credito->id)
+                ->first();
+            $idformapago = 0;
+            $banco = '';
+            $bancocuenta = '';
+            $numerooperacion = '';
+            $operacion = '';
+            if($credito_formapago){
+                $operacion = $credito_formapago->codigo;
+                $banco = $credito_formapago->banco;
+                $bancocuenta = $credito_formapago->cuenta;
+                $numerooperacion = $credito_formapago->numerooperacion;
+                $idformapago = $credito_formapago->idformapago;
+            }
+            $cajero = DB::table('users')->where('users.id',$credito->idcajero)->first();
+            $garantias = DB::table('credito_garantia')->where('idcredito', $credito->id)->get();
+            $pdf = PDF::loadView(sistema_view().'/desembolso/pdf_ticket',[
+                'users_prestamo'    => $users_prestamo,
+                'tienda' => $tienda,
+                'credito' => $credito,
+                'usuario' => $usuario,
+                'asesor' => $asesor,
+                'cajero' => $cajero,
+                'garantias' => $garantias,
+                'operacion' => $operacion,
+                'banco' => $banco,
+                'bancocuenta' => $bancocuenta,
+                'numerooperacion' => $numerooperacion,
+                'idformapago' => $idformapago,
+            ]); 
+            $pdf->setPaper('A4');
+            return $pdf->stream('DECLARACION.pdf');
+        }
+        else if( $request->input('view') == 'pdf_ticketprendario' ){
 
-        $aval = DB::table('users')->where('users.id',$credito->idaval)->first();
-        $tipo_garantia1 = DB::table('tipo_garantia')->offset(0)->limit(3)->get();
-        $tipo_garantia2 = DB::table('tipo_garantia')->offset(3)->limit(3)->get();
-        $tipo_garantia3 = DB::table('tipo_garantia')->offset(6)->limit(3)->get();
-        $garantias = DB::table('credito_garantia')
-          ->where('credito_garantia.tipo', 'CLIENTE')
-          ->where('credito_garantia.idcredito', $credito->id)
-          ->select(
-            'credito_garantia.*',
-          )
-          ->get();
-        $garantiasaval = DB::table('credito_garantia')
-          ->where('tipo', 'AVAL')
-          ->where('idcredito', $credito->id)
-          ->select(
-            'credito_garantia.*',
-          )
-          ->get();
-        $pdf = PDF::loadView(sistema_view().'/desembolso/pdf_pagare',[
-            'users_prestamo'    => $users_prestamo,
-            'tienda' => $tienda,
-            'credito' => $credito,
-            'usuario' => $usuario,
-            'asesor' => $asesor,
-            'garantias' => $garantias,
-            'garantiasaval' => $garantiasaval,
-            'tipo_garantia1' => $tipo_garantia1,
-            'tipo_garantia2' => $tipo_garantia2,
-            'tipo_garantia3' => $tipo_garantia3,
-            'aval' => $aval,
-            'users_prestamo_aval' => $users_prestamo_aval,
-        ]); 
-        $pdf->setPaper('A4');
-        return $pdf->stream('RESUMEN.pdf');
-      }
-      
-      else if( $request->input('view') == 'pdf_ticket' ){
-
-        $credito_formapago = DB::table('credito_formapago')
-            ->where('credito_formapago.idcredito',$credito->id)
+            $cajero = DB::table('users')->where('users.id',$credito->idcajero)->first();
+            $garantias = DB::table('credito_garantia')
+            ->leftJoin('garantias','garantias.id','credito_garantia.idgarantias')
+            ->where('credito_garantia.id', $request->idgarantia)
+            ->where('credito_garantia.tipo', 'CLIENTE')
+            ->select(
+                'garantias.*'
+            )
             ->first();
-        $idformapago = 0;
-        $banco = '';
-        $bancocuenta = '';
-        $numerooperacion = '';
-        $operacion = '';
-        if($credito_formapago){
-            $operacion = $credito_formapago->codigo;
-            $banco = $credito_formapago->banco;
-            $bancocuenta = $credito_formapago->cuenta;
-            $numerooperacion = $credito_formapago->numerooperacion;
-            $idformapago = $credito_formapago->idformapago;
+            $pdf = PDF::loadView(sistema_view().'/desembolso/pdf_ticketprendario',[
+                'users_prestamo'    => $users_prestamo,
+                'tienda' => $tienda,
+                'credito' => $credito,
+                'usuario' => $usuario,
+                'asesor' => $asesor,
+                'cajero' => $cajero,
+                'garantias' => $garantias,
+                'num' => $request->num,
+            ]); 
+            $pdf->setPaper('A4');
+            return $pdf->stream('DECLARACION.pdf');
         }
-        $cajero = DB::table('users')->where('users.id',$credito->idcajero)->first();
-        $garantias = DB::table('credito_garantia')->where('idcredito', $credito->id)->get();
-        $pdf = PDF::loadView(sistema_view().'/desembolso/pdf_ticket',[
-            'users_prestamo'    => $users_prestamo,
-            'tienda' => $tienda,
-            'credito' => $credito,
-            'usuario' => $usuario,
-            'asesor' => $asesor,
-            'cajero' => $cajero,
-            'garantias' => $garantias,
-            'operacion' => $operacion,
-            'banco' => $banco,
-            'bancocuenta' => $bancocuenta,
-            'numerooperacion' => $numerooperacion,
-            'idformapago' => $idformapago,
-        ]); 
-        $pdf->setPaper('A4');
-        return $pdf->stream('DECLARACION.pdf');
-      }
-      else if( $request->input('view') == 'pdf_ticketprendario' ){
+        elseif($request->input('view') == 'generar_url_firmada') {
+            $pdfs_permitidos = ['pdf_ticket','pdf_cronograma','pdf_contrato','pdf_resumen'];
 
-        $cajero = DB::table('users')->where('users.id',$credito->idcajero)->first();
-        $garantias = DB::table('credito_garantia')
-          ->leftJoin('garantias','garantias.id','credito_garantia.idgarantias')
-          ->where('credito_garantia.id', $request->idgarantia)
-          ->where('credito_garantia.tipo', 'CLIENTE')
-          ->select(
-            'garantias.*'
-          )
-          ->first();
-        $pdf = PDF::loadView(sistema_view().'/desembolso/pdf_ticketprendario',[
-            'users_prestamo'    => $users_prestamo,
-            'tienda' => $tienda,
-            'credito' => $credito,
-            'usuario' => $usuario,
-            'asesor' => $asesor,
-            'cajero' => $cajero,
-            'garantias' => $garantias,
-            'num' => $request->num,
-        ]); 
-        $pdf->setPaper('A4');
-        return $pdf->stream('DECLARACION.pdf');
-      }
+            if(!in_array($request->pdf, $pdfs_permitidos)){
+                return response()->json(['resultado' => 'ERROR', 'mensaje' => 'PDF no compartible']);
+            }
+
+            $url_firmada = URL::signedRoute('documento.publico', [
+                'idtienda'  => $idtienda,
+                'idcredito' => $id,
+                'pdf'       => $request->pdf,
+            ]);
+
+            return response()->json([
+                'resultado'   => 'CORRECTO',
+                'url_firmada' => $url_firmada,
+            ]);
+        }
     }
 
     public function update(Request $request, $idtienda, $id)
@@ -1170,5 +1182,180 @@ class DesembolsoController extends Controller
 
     public function destroy(Request $request, $idtienda, $id)
     {
+    }
+
+    public function documento_publico(Request $request)
+    {
+        if(!$request->hasValidSignature()) abort(403, 'Enlace no válido.');
+
+        $pdfs_permitidos = ['pdf_ticket','pdf_cronograma','pdf_contrato','pdf_resumen'];
+        if(!in_array($request->pdf, $pdfs_permitidos)) abort(403);
+
+        $tienda  = DB::table('tienda')->whereId($request->idtienda)->first();
+
+        $credito = DB::table('credito')
+            ->join('users as cliente','cliente.id','credito.idcliente')
+            ->leftjoin('users as aval','aval.id','credito.idaval')
+            ->join('forma_credito','forma_credito.id','credito.idforma_credito')
+            ->join('forma_pago_credito','forma_pago_credito.id','credito.idforma_pago_credito')
+            ->join('modalidad_credito','modalidad_credito.id','credito.idmodalidad_credito')
+            ->join('tipo_destino_credito','tipo_destino_credito.id','credito.idtipo_destino_credito')
+            ->join('tipo_operacion_credito','tipo_operacion_credito.id','credito.idtipo_operacion_credito')
+            ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
+            ->where('credito.id',$request->idcredito)
+
+            ->select(
+                'credito.*',
+                'cliente.codigo as codigo_cliente',
+                'cliente.identificacion as docuementocliente',
+                'cliente.nombrecompleto as nombreclientecredito',
+                'aval.identificacion as documentoaval',
+                'aval.nombrecompleto as nombreavalcredito',
+                'forma_credito.nombre as forma_credito_nombre',
+                'tipo_operacion_credito.nombre as tipo_operacion_credito_nombre',
+                'modalidad_credito.nombre as modalidad_credito_nombre',
+                'forma_pago_credito.nombre as forma_pago_credito_nombre',
+                'tipo_destino_credito.nombre as tipo_destino_credito_nombre',
+                'credito_prendatario.nombre as nombreproductocredito',
+                'credito_prendatario.modalidad as modalidad_calculo',
+                'credito_prendatario.conevaluacion as conevaluacion',
+            )
+            ->orderBy('credito.id','desc')
+            ->first();
+
+        if(!$credito) abort(404);
+
+        $usuario = DB::table('users')
+              ->leftJoin('ubigeo','ubigeo.id','users.idubigeo')
+              ->leftJoin('ubigeo as ubigeonacimiento','ubigeonacimiento.id','users.idubigeo_nacimiento')
+              ->leftJoin('role_user','role_user.user_id','users.id')
+              ->leftJoin('roles','roles.id','role_user.role_id')
+              ->where('users.id', $credito->idcliente)
+              ->select(
+                  'users.*',
+                  'roles.id as idroles',
+                  'roles.description as descriptionrole',
+                  'ubigeo.nombre as ubigeonombre',
+                  'ubigeonacimiento.nombre as ubigeonacimientonombre'
+              )
+              ->first();
+
+        $asesor = DB::table('users')->whereId($credito->idasesor)->first();
+        $users_prestamo = DB::table('s_users_prestamo')->where('s_users_prestamo.id_s_users',$credito->idcliente)->first();
+        $users_prestamo_aval = DB::table('s_users_prestamo')->where('s_users_prestamo.id_s_users',$credito->idaval)->first();
+
+        $datos_base = [
+            'tienda'             => $tienda,
+            'credito'            => $credito,
+            'usuario'            => $usuario,
+            'asesor'             => $asesor,
+            'users_prestamo'     => $users_prestamo,
+            'users_prestamo_aval'=> $users_prestamo_aval,
+        ];
+
+        if($request->pdf == 'pdf_cronograma') {
+
+            $credito_cronograma = DB::table('credito_cronograma')
+                ->where('idcredito', $credito->id)
+                ->get();
+
+            $pdf = PDF::loadView(sistema_view($request->idtienda).'/desembolso/pdf_cronograma',
+                array_merge($datos_base, [
+                    'credito_cronograma' => $credito_cronograma,
+                ])
+            );
+            return $pdf->setPaper('A4')->stream('CRONOGRAMA.pdf');
+        }
+
+        if($request->pdf == 'pdf_contrato') {
+
+            $aval          = DB::table('users')->whereId($credito->idaval)->first();
+            $ubigeo_tienda = DB::table('ubigeo')->whereId($tienda->idubigeo)->first();
+            $garantias     = DB::table('credito_garantia')
+                ->leftJoin('garantias','garantias.id','credito_garantia.idgarantias')
+                ->where('idcredito', $credito->id)
+                ->where('credito_garantia.tipo', 'CLIENTE')
+                ->select('garantias.*')
+                ->get();
+
+            $nomcredito = '';
+            if($credito->idforma_credito == 1){
+                $nomcredito = $credito->constituciongarantia_id == 1
+                    ? 'prendario_con_posesion'
+                    : 'prendario_sin_posesion';
+            } elseif($credito->idforma_credito == 2){
+                $nomcredito = 'noprendario';
+            }
+
+            $pdf = PDF::loadView(sistema_view($request->idtienda).'/desembolso/pdf_contrato_'.$nomcredito,
+                array_merge($datos_base, [
+                    'aval'          => $aval,
+                    'garantias'     => $garantias,
+                    'ubigeo_tienda' => $ubigeo_tienda,
+                ])
+            );
+            return $pdf->setPaper('A4')->stream('CONTRATO.pdf');
+        }
+
+        if($request->pdf == 'pdf_resumen') {
+
+            $aval           = DB::table('users')->whereId($credito->idaval)->first();
+            $tipo_garantia1 = DB::table('tipo_garantia')->offset(0)->limit(4)->get();
+            $tipo_garantia2 = DB::table('tipo_garantia')->offset(4)->limit(4)->get();
+            $garantias      = DB::table('credito_garantia')
+                ->where('tipo', 'CLIENTE')
+                ->where('idcredito', $credito->id)
+                ->select('credito_garantia.*')
+                ->get();
+            $garantiasaval  = DB::table('credito_garantia')
+                ->where('tipo', 'AVAL')
+                ->where('idcredito', $credito->id)
+                ->select('credito_garantia.*')
+                ->get();
+
+            $pdf = PDF::loadView(sistema_view($request->idtienda).'/desembolso/pdf_resumen',
+                array_merge($datos_base, [
+                    'aval'           => $aval,
+                    'garantias'      => $garantias,
+                    'garantiasaval'  => $garantiasaval,
+                    'tipo_garantia1' => $tipo_garantia1,
+                    'tipo_garantia2' => $tipo_garantia2,
+                ])
+            );
+            return $pdf->setPaper('A4')->stream('RESUMEN.pdf');
+        }
+
+        if($request->pdf == 'pdf_ticket') {
+
+            $credito_formapago = DB::table('credito_formapago')
+                ->where('idcredito', $credito->id)
+                ->first();
+
+            $operacion = $banco = $bancocuenta = $numerooperacion = '';
+            $idformapago = 0;
+            if($credito_formapago){
+                $operacion       = $credito_formapago->codigo;
+                $banco           = $credito_formapago->banco;
+                $bancocuenta     = $credito_formapago->cuenta;
+                $numerooperacion = $credito_formapago->numerooperacion;
+                $idformapago     = $credito_formapago->idformapago;
+            }
+
+            $cajero    = DB::table('users')->whereId($credito->idcajero)->first();
+            $garantias = DB::table('credito_garantia')->where('idcredito', $credito->id)->get();
+
+            $pdf = PDF::loadView(sistema_view($request->idtienda).'/desembolso/pdf_ticket',
+                array_merge($datos_base, [
+                    'cajero'         => $cajero,
+                    'garantias'      => $garantias,
+                    'operacion'      => $operacion,
+                    'banco'          => $banco,
+                    'bancocuenta'    => $bancocuenta,
+                    'numerooperacion'=> $numerooperacion,
+                    'idformapago'    => $idformapago,
+                ])
+            );
+            return $pdf->setPaper('A4')->stream('TICKET_DESEMBOLSO.pdf');
+        }
     }
 }

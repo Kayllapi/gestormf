@@ -119,7 +119,7 @@
   </header>
   <footer>
     <p class="page">Página </p>
-    <p class="datafooter">{{ $tienda->nombreagencia }} / {{ Auth::user()->codigo }}</p>
+    <p class="datafooter">{{ $tienda->nombreagencia }} / {{ Auth::user()->codigo ?? '' }}</p>
   </footer>
   <main>
     <div class="container">

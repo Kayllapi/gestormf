@@ -17,25 +17,32 @@
       </div>
        <div class="col-sm-12 mt-2 text-center">
             <div id="cont_botonesdesembolso" style="display:none;">
-            <button type="button" class="btn btn-primary" onclick="verpdf('pdf_ticket')"> TICKET DE DESEMBOLSO</button>
-            <button type="button" class="btn btn-primary" onclick="verpdf('pdf_cronograma')"> CRONOGRAMA</button>
-            <button type="button" class="btn btn-primary" onclick="verpdf('pdf_contrato')"> CONTRATO</button>
-            <button type="button" class="btn btn-primary" onclick="verpdf('pdf_resumen')"> H. RESUMEN</button>
-            @if($credito->idforma_credito==1)
-            <button type="button" class="btn btn-primary" onclick="verpdf('pdf_declaracion')"> DECLARACIÓN JURADA</button>
-            @endif
-            <button type="button" class="btn btn-warning" onclick="verpdf('pdf_pagare')"> PAGARÉ</button>
+                <button type="button" class="btn btn-primary" onclick="verpdf('pdf_ticket')"> TICKET DE DESEMBOLSO</button>
+                <button type="button" class="btn btn-primary" onclick="verpdf('pdf_cronograma')"> CRONOGRAMA</button>
+                <button type="button" class="btn btn-primary" onclick="verpdf('pdf_contrato')"> CONTRATO</button>
+                <button type="button" class="btn btn-primary" onclick="verpdf('pdf_resumen')"> H. RESUMEN</button>
+                @if($credito->idforma_credito==1)
+                    <button type="button" class="btn btn-primary" onclick="verpdf('pdf_declaracion')"> DECLARACIÓN JURADA</button>
+                @endif
+                <button type="button" class="btn btn-warning" onclick="verpdf('pdf_pagare')"> PAGARÉ</button>
+                <button type="button"
+                    class="btn btn-info"
+                    id="btn_compartir"
+                    style="padding: 2.5px 8px;"
+                    onclick="abrirCompartir()">
+                    <i class="fa-solid fa-share-nodes" style="width: 30px; font-size: 20px;"></i>
+                </button>
             </div>
             <button type="button" class="btn btn-success" onclick="realizar_desembolso()" id="btn_desembolsar"><i class="fa-solid fa-check"></i> DESEMBOLSAR</button>
             <div id="cont_garantias" style="display:none;">
-            @if($credito->idforma_credito==1)
-            <hr style="margin-top: 8px;margin-bottom: 8px;">
-            <?php $i=1 ?>
-            @foreach($garantias as $value)
-            <button type="button" class="btn btn-warning1" onclick="verpdf('pdf_ticketprendario',{{$value->id}},{{$i}})"> TICKET DE GARANTIA {{ $i }}</button>
-            <?php $i++ ?>
-            @endforeach
-            @endif
+                @if($credito->idforma_credito==1)
+                    <hr style="margin-top: 8px;margin-bottom: 8px;">
+                    <?php $i=1 ?>
+                    @foreach($garantias as $value)
+                        <button type="button" class="btn btn-warning1" onclick="verpdf('pdf_ticketprendario',{{$value->id}},{{$i}})"> TICKET DE GARANTIA {{ $i }}</button>
+                        <?php $i++ ?>
+                    @endforeach
+                @endif
             </div>
        </div>
         <iframe id="iframe_acta_aprobacion" src="{{ url('/backoffice/'.$tienda->id.'/desembolso/'.$credito->id.'/edit?view=pdf_cronograma') }}#zoom=100" frameborder="0" width="100%" height="600px"></iframe>
@@ -43,42 +50,50 @@
 </form>   
 </div>
 <script>
+const pdfs_compartibles = ['pdf_ticket','pdf_cronograma','pdf_contrato','pdf_resumen'];
+let pdf_activo = 'pdf_ticket';
+
 function verpdf(valor,idgarantia,num){
+    pdf_activo = valor;
+    // mostrar u ocultar botón compartir
+    if(pdfs_compartibles.includes(valor)){
+        $('#btn_compartir').show();
+    } else {
+        $('#btn_compartir').hide();
+    }
     $('#iframe_acta_aprobacion').attr('src',"{{ url('/backoffice/'.$tienda->id.'/desembolso/'.$credito->id.'/edit?view=') }}"+valor+'&idgarantia='+idgarantia+'&num='+num+'#zoom=100');
+
 }
-   
-   function realizar_desembolso(){
+$('#btn_compartir').show();
 
-          modal({ route:"{{url('backoffice')}}/{{$tienda->id}}/desembolso/{{$credito->id}}/edit?view=desembolsarticket",size:'modal-sm' });
-    //var opcion = confirm("¿Esta seguro de eliminar?");
-    //if (opcion == true) {
-       
-      
-          /*callback({
-              route: '{{ url('backoffice/'.$tienda->id.'/desembolso/'.$credito->id) }}',
-              method: 'PUT',
-              id: '#form_cambiar_estado',
-              carga: '#carga_cambiar_estado',
-              data:{
-                  view: 'realizar_desembolo',
-              }
-          },
-          function(res){*/
-              /*lista_credito();
-              verpdf('pdf_ticket');
-              $('#cont_botonesdesembolso').css('display','block'); 
-              $('#btn_desembolsar').css('display','none'); 
-              modal({ route:"{{url('backoffice')}}/{{$tienda->id}}/desembolso/"+id+"/edit?view=ticket" }); 
-              $('#modal-close-cambiar-estado').click();*/
-          //})
-    //}
+function realizar_desembolso(){
+    modal({ route:"{{url('backoffice')}}/{{$tienda->id}}/desembolso/{{$credito->id}}/edit?view=desembolsarticket",size:'modal-sm' });
   }
-
-  function imprimirTicketPdf(){
-      let iframe = document.getElementById('iframe_acta_aprobacion');
-      iframe.onload = function () {
-          iframe.contentWindow.focus();
-          iframe.contentWindow.print();
-      };
-  }
+function imprimirTicketPdf(){
+    let iframe = document.getElementById('iframe_acta_aprobacion');
+    iframe.onload = function () {
+        iframe.contentWindow.focus();
+        iframe.contentWindow.print();
+    };
+}
+function abrirCompartir() {
+    let url_voucher = encodeURIComponent(
+        "{{ url('backoffice/'.$tienda->id.'/desembolso/'.$credito->id.'/edit') }}"
+        + "?view=" + pdf_activo
+    );
+    // Firmar desde el backend... ver nota abajo
+    $.get("{{ url('backoffice/'.$tienda->id.'/desembolso/'.$credito->id.'/edit') }}", {
+        view: 'generar_url_firmada',
+        pdf: pdf_activo,
+    }, function(res){
+        let url_voucher = encodeURIComponent(res.url_firmada);
+        let idcliente = {{ $credito->idcliente }};
+        modal({ 
+            route: "{{ url('backoffice/'.$tienda->id.'/inicio/create?view=compartir_opcion') }}"
+                 + "&url_voucher=" + url_voucher
+                 + "&clt=" + idcliente,
+            size: 'modal-sm' 
+        });
+    });
+}
 </script>

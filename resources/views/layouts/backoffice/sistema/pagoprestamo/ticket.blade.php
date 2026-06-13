@@ -16,7 +16,7 @@
                 class="btn btn-info"
                 style="padding: 2.5px 8px;"
                 onclick="abrirCompartir()">
-                <i class="fa-solid fa-share-nodes"></i>
+                <i class="fa-solid fa-share-nodes" style="width: 30px; font-size: 20px;"></i>
             </button>
         </div>
         <div class="col-sm-12 mt-2 text-center">

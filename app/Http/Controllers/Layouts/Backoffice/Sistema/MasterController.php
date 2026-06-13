@@ -84,7 +84,7 @@ class MasterController extends Controller
         }
         elseif($request->input('view') == 'compartir_opcion') {
             return view('app/nuevosistema/compartir_opcion', [
-                'url_base' => $request->url_voucher,
+                'url_voucher' => $request->url_voucher,
                 'idcliente' => $request->clt,
             ]);
         }

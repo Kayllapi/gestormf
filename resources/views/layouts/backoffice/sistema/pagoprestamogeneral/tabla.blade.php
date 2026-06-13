@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h5 class="modal-title">Historial de Pagos General</h5>
+  <h5 class="modal-title">Historial de Pagos Totales de Préstamo</h5>
   
   <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>

@@ -119,8 +119,6 @@ class PermisosController extends Controller
         // $request->user()->authorizeRoles($request->path(),$idtienda);
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
 
-        
-
         if($request->input('view') == 'editar') {
             $permiso = DB::table('permiso')
                     // ->where('permiso.idtienda', $idtienda)

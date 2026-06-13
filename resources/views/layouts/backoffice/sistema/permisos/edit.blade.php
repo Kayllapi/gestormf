@@ -28,17 +28,15 @@
                 <label>Permisos *</label>
             <div class="accordion" id="accordion_1">
                 <?php
-                $modulos = DB::table('modulo')
-                    ->join('rolesmodulo','rolesmodulo.idmodulo','modulo.id')
-                    ->join('roles','roles.id','rolesmodulo.idroles')
-                    ->where('modulo.idmodulo',7)
-                    ->where('modulo.idestado',1)
-                    //->where('roles.idcategoria',4)
-                    ->select('modulo.id as id', 'modulo.nombre as nombre')
-                    ->orderBy('modulo.orden','asc')
-                    ->distinct()
-                    ->get();
-
+                    $modulos = DB::table('modulo')
+                        ->join('rolesmodulo','rolesmodulo.idmodulo','modulo.id')
+                        ->join('roles','roles.id','rolesmodulo.idroles')
+                        ->where('modulo.idmodulo', 7)
+                        ->where('modulo.idestado', 1)
+                        ->select('modulo.id as id', 'modulo.nombre as nombre', 'modulo.orden') // ← agregar orden
+                        ->orderBy('modulo.orden', 'asc')
+                        ->distinct()
+                        ->get();
                 ?>
             
                 @foreach($modulos as $subsubvalue)
@@ -72,13 +70,10 @@
                         <div class="accordion-body">
                             <?php
                                 $sistemamodulos = DB::table('modulo')
-                                    //->join('rolesmodulo','rolesmodulo.idmodulo','modulo.id')
-                                    //->join('roles','roles.id','rolesmodulo.idroles')
-                                    ->where('modulo.idmodulo',$subsubvalue->id)
-                                    ->where('modulo.idestado',1)
-                                    //->where('roles.idcategoria',4)
-                                    ->select('modulo.id as id', 'modulo.nombre as nombre', 'modulo.vista as vista')
-                                    ->orderBy('modulo.orden','asc')
+                                    ->where('modulo.idmodulo', $subsubvalue->id)
+                                    ->where('modulo.idestado', 1)
+                                    ->select('modulo.id as id', 'modulo.nombre as nombre', 'modulo.vista as vista', 'modulo.orden') // ← agregar orden
+                                    ->orderBy('modulo.orden', 'asc')
                                     ->distinct()
                                     ->get();
                             ?>
@@ -89,17 +84,15 @@
                                         ->where('permisoacceso.idmodulo',$sistemavalue->id)
                                         ->where('permisoacceso.idpermiso',$permiso->id) 
                                         ->first(); 
-                          
-                                  $sistemamodulos2 = DB::table('modulo')
-                                            ->join('rolesmodulo','rolesmodulo.idmodulo','modulo.id')
-                                            ->join('roles','roles.id','rolesmodulo.idroles')
-                                            ->where('modulo.idmodulo',$sistemavalue->id)
-                                            ->where('modulo.idestado',1)
-                                            //->where('roles.idcategoria',4)
-                                            ->select('modulo.id as id', 'modulo.nombre as nombre', 'modulo.vista as vista')
-                                            ->orderBy('modulo.orden','asc')
-                                            ->distinct()
-                                            ->get();
+                                    $sistemamodulos2 = DB::table('modulo')
+                                    ->join('rolesmodulo','rolesmodulo.idmodulo','modulo.id')
+                                    ->join('roles','roles.id','rolesmodulo.idroles')
+                                    ->where('modulo.idmodulo', $sistemavalue->id)
+                                    ->where('modulo.idestado', 1)
+                                    ->select('modulo.id as id', 'modulo.nombre as nombre', 'modulo.vista as vista', 'modulo.orden') // ← agregar orden
+                                    ->orderBy('modulo.orden', 'asc')
+                                    ->distinct()
+                                    ->get();
                                 ?>
                                 <div class="table-responsive">
                                     <table class="table" id="tabla-usuarioacceso-permisos">

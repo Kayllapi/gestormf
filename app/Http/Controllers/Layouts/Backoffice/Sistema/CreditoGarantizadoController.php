@@ -140,12 +140,14 @@ class CreditoGarantizadoController extends Controller
 
                 $key++;
                 $cuenta = $value->cuenta!=0 ? 'C'.str_pad($value->cuenta, 8, '0', STR_PAD_LEFT) : 'EN PROCESO';
+                $formacredito = $value->idforma_credito == 1 ? 'CP' : ($value->idforma_credito == 2 ? 'CNP' : '');
 
                 $html .= "<tr>
                         <td>{$key}</td>
                         <td>{$value->nombrecompleto}</td>
                         <td>{$value->identificacion}</td>
                         <td>{$cuenta}</td>
+                        <td>{$formacredito}</td>
                         <td class='campo_moneda'>{$value->monto_solicitado}</td>
                         <td class='campo_moneda'>{$cronograma['saldo_capital']}</td>
                     </tr>";

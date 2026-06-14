@@ -9,11 +9,11 @@
             onclick="buscarcliente()">
             <i class="fa fa-search"></i> Buscar Cliente
         </button>
-        <div style="display:none;float: right;margin-left: 5px;" id="cont_irainicio">
+        {{-- <div style="display:none;float: right;margin-left: 5px;" id="cont_irainicio">
             <button type="button" class="btn btn-primary" onclick="credito_garantizado()">
                 <i class="fa fa-refresh"></i> Actualizar
             </button>
-        </div>
+        </div> --}}
         <!-- Modal -->
         <div class="modal fade"
             id="exampleModal"
@@ -76,6 +76,7 @@
                                 <th>CLIENTE AVALADO</th>
                                 <th>RUC/DNI/CE</th>
                                 <th>CUENTA</th>
+                                <th>F.C</th>
                                 <th class="campo_moneda">DESEMBOLSO (S/.)</th>
                                 <th class="campo_moneda">SALDO (S/.)</th>
                             </tr>
@@ -84,7 +85,7 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <th colspan="4" class="campo_moneda"><b>TOTAL:</b></th>
+                                <th colspan="5" class="campo_moneda"><b>TOTAL:</b></th>
                                 <th class="campo_moneda"><b id="total_credito_garantizado"></b></th>
                                 <th class="campo_moneda"><b id="total_credito_garantizado_saldo"></b></th>
                             </tr>
@@ -145,7 +146,7 @@
                 $('#total_credito_garantizado_saldo').text(res.total_credito_garantizado_saldo);
 
                 $("#exampleModal").modal('hide');
-                $('#cont_irainicio').css('display','block');
+                // $('#cont_irainicio').css('display','block');
             }
         })
     }

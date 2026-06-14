@@ -67,14 +67,17 @@
                     </div>
                       <div class="col-sm-12 col-md-3" style="text-align: right;">
                           <div>
-                          <button type="button" class="btn btn-primary mb-1" onclick="ticketpago()">
-                            <i class="fa-solid fa-check" style="font-weight: bold;"></i> VOUCHER DE PAGO</button>
+                            <button type="button" class="btn btn-primary mb-1" onclick="ticketpago()">
+                              <i class="fa-solid fa-check" style="font-weight: bold;"></i> VOUCHER DE PAGO</button>
                           </div>
                           <div>
-                          <button type="button" class="btn btn-warning mb-1" onclick="ticketgarantia()">
-                            <i class="fa-solid fa-check" style="font-weight: bold;"></i> V. ENTREGA DE GARANTÍA</button>
+                            <button type="button" class="btn btn-warning mb-1" onclick="ticketgarantia()">
+                              <i class="fa-solid fa-check" style="font-weight: bold;"></i> V. ENTREGA DE GARANTÍA</button>
                           </div>
                           <div>
+                            <button type="button" class="btn btn-danger" onclick="extornar()">
+                              <i class="fa-solid fa-trash" style="font-weight: bold;"></i> EXTORNAR PAGO</button>
+                          </div>
                       </div>
                 </div>
               
@@ -170,6 +173,18 @@
       }
       let url = "{{ url('backoffice/'.$tienda->id) }}/pagoprestamo/"+idcredito_cobranzacuota+"/edit?view=ticket_garantia";
       modal({ route: url })
+   }
+
+   function extornar(){
+      let idcredito_cobranzacuota = $('#table-lista-credito > tbody > tr.selected').attr('idcredito_cobranzacuota');
+
+      if(idcredito_cobranzacuota == "" || idcredito_cobranzacuota == undefined ){
+        mensaje = 'Debe seleccionar registro de pago.';
+        modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
+        return false;
+      }
+      let url = "{{ url('backoffice/'.$tienda->id) }}/pagoprestamo/"+idcredito_cobranzacuota+"/edit?view=extornar";
+      modal({ route: url,  size: 'modal-sm' })
    }
 </script>  
 

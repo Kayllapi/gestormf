@@ -26,25 +26,22 @@
           <i class="fa-solid fa-triangle-exclamation"></i> ¿Esta seguro de extornar el pago?<br>
           <b>"{{$credito_cobranzacuota->nombrecliente}}"</b>
         </div>
-        <label class="mt-1" style="background-color: #636363;
-          color: #fff;
-          width: 100%;
-          border-radius: 5px;
-          padding: 0px 5px;
-          margin-bottom: 5px;">Aprobación</label>
-              <div class="mb-1">
-                  <label>Responsable *</label>
-                  <select class="form-select" id="idresponsable">
-                      <option value=""></option>
-                      @foreach($usuarios as $value)
-                      <option value="{{$value->id}}">{{$value->nombrecompleto}} ({{$value->nombrepermiso}})</option>
-                      @endforeach
-                  </select>
-              </div>
-              <div class="mb-1">
-                  <label>Contraseña *</label>
-                  <input type="password" class="form-control" id="responsableclave">
-              </div>
+        <div class="row">
+            <label class=" mt-2 bg-primary subtitulo">Aprobación</label>
+            <div class="mb-1">
+                <label>Responsable *</label>
+                <select class="form-select" id="idresponsable">
+                    <option value=""></option>
+                    @foreach($usuarios as $value)
+                    <option value="{{$value->id}}">{{$value->nombrecompleto}} ({{$value->nombrepermiso}})</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="mb-1">
+                <label>Contraseña *</label>
+                <input type="password" class="form-control" id="responsableclave">
+            </div>
+        </div>
     </div>
     <div class="modal-footer">
         <button type="submit" class="btn btn-primary"><i class="fa-solid fa-ban"></i> Extornar</button>

@@ -32,7 +32,7 @@
               <div class="row">
               <div class="col-md-6">
                 <div class="row">
-                  <label class="col-sm-5 col-form-label" style="text-align: right;">Monto de Prestamo</label>
+                  <label class="col-sm-5 col-form-label" style="text-align: right;">Monto de Préstamo</label>
                   <div class="col-sm-7">
                     <input type="number" step="any" class="form-control" disabled id="monto_solicitado" value="{{$cronograma['cuota_pendiente'] }}" onclick="showtasa()" onkeyup="showtasa()">
                   </div>
@@ -95,13 +95,13 @@
                   </div>
                 </div>
                 <div class="row">
-                  <label class="col-sm-5 col-form-label" style="text-align: right;">Com.Ss./Otros.(%Mes):</label>
+                  <label class="col-sm-5 col-form-label" style="text-align: right;">Ss. Recaudo S/.:</label>
                   <div class="col-sm-7">
                     <input type="number" step="any" class="form-control" id="comision" value="0." disabled>
                   </div>
                 </div>
                 <div class="row">
-                  <label class="col-sm-5 col-form-label" style="text-align: right;">Cargo S/.:</label>
+                  <label class="col-sm-5 col-form-label" style="text-align: right;">Cargo x Custodia/Otros (Periodo) S/.:</label>
                   <div class="col-sm-7">
                     <input type="number" step="any" class="form-control" id="cargo" value="{{ $credito->cargo }}">
                   </div>
@@ -123,7 +123,7 @@
               </div>
           </div>
           <div class="col-md-5">
-          <h6 style="margin-bottom: 2px; font-size: 0.8rem;">LISTA DE GARANTIAS</h6>
+          <div class="text-center" style="font-size: 12px !important;"><b>LISTA DE GARANTIAS</b></div>
           <div class="table-responsive">
             <table class="table table-striped" id="table-garantia-cliente">
               <thead>
@@ -184,17 +184,29 @@
         </div>
         <div class="col-sm-12 col-md-9">
           <div class="row">
-            <label class="col-sm-2 col-form-label" style="text-align: right;"><b>Interes Total (S/):</b></label>
-            <div class="col-sm-2 col-form-label" id="interes_total" style="font-weight: normal;">
-              {{ $credito->interes_total }}
+            <div class="col-sm-3">
+              <label class="col-form-label" style="text-align: right;"><b>Interés Total (S/):</b></label>
+              <span class="col-form-label" id="interes_total" style="font-weight: normal;">
+                {{ $credito->interes_total }}
+              </span>
             </div>
-            <label class="col-sm-2 col-form-label" style="text-align: right;"><b>Cargos y otros (S/):</b></label>
-            <div class="col-sm-2 col-form-label" id="cargo_total" style="font-weight: normal;">
-              0.00
+            <div class="col-sm-3">
+              <label class="col-form-label" style="text-align: right;"><b>Cargo x Cust./Otros (S/):</b></label>
+              <span class="col-form-label" id="total_cargo" style="font-weight: normal;">
+                0.00
+              </span>
             </div>
-            <label class="col-sm-2 col-form-label" style="text-align: right;"><b>Total a Pagar (S/):</b></label>
-            <div class="col-sm-2 col-form-label" id="total_pagar" style="font-weight: normal;">
-              {{ $credito->total_pagar }}
+            <div class="col-sm-3">
+              <label class="col-form-label" style="text-align: right;"><b>Ss. Recaudo (S/):</b></label>
+              <span class="col-form-label" id="total_comision" style="font-weight: normal;">
+                0.00
+              </span>
+            </div>
+            <div class="col-sm-3">
+              <label class="col-form-label" style="text-align: right;"><b>Total a Pagar (S/):</b></label>
+              <span class="col-form-label" id="total_pagar" style="font-weight: normal;">
+                {{ $credito->total_pagar }}
+              </span>
             </div>
           </div>
         </div>
@@ -283,40 +295,35 @@
         }
 
       </script>
-      <div class="row mt-3 justify-content-center">
-        <div class="col-sm-12 col-md-10" style="
-              overflow-y: scroll;
-              height: calc(-390px + 100vh);
-              overflow-x: scroll;">
-          <table class="table table-striped" id="table-cronograma">
-            <thead>
-              <th>Cuota N°</th>
-              <th>Fecha de Pago</th>
-              <th>Capital</th>
-              <th>Amortización</th>
-              <th>Interes</th>
-              <th>Comisión de Ss. y Desgrav.</th>
-              <th>Cargo</th>
-              <th>Cuota</th>
-            </thead>
-            <tbody>
-              
-              <tr>
-                <td colspan="8">
-                  <div style="width:100px;height:100px;"></div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+      <div class="row mt-1 justify-content-center">
+        <div class="col-sm-12 col-md-10">
+            <div style="overflow-y: scroll;height: calc(-410px + 100vh);">
+              <table class="table table-striped" id="table-cronograma">
+                <thead style="position: sticky;top: 0;z-index: 1;">
+                  <th class="text-center">Cuota N°</th>
+                  <th>Fecha de Pago</th>
+                  <th class="text-end">Capital</th>
+                  <th class="text-end">Amortización</th>
+                  <th class="text-end">Interés</th>
+                  <th class="text-end">Cargo x Cust. Garant./Otros</th>
+                  <th class="text-end">Cuota de Préstamo <br> (Cap. + Int. + Cust.)</th>
+                  <th class="text-end">Ss. Recaudo</th>
+                  <th class="text-end">Total a Pagar</th>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td colspan="8">
+                      <div style="width:100px;height:100px;"></div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           @if($view_detalle!='false')
-          <button type="submit" class="btn btn-primary"
-            style="height: fit-content;
-              margin-right: 10px;"><i class="fa-solid fa-floppy-disk"></i> REFINANCIAR CRÉDITO
-            </button>
+          <button type="submit" class="btn btn-primary mt-1"><i class="fa-solid fa-floppy-disk"></i> REFINANCIAR CRÉDITO</button>
           @endif
+        </div>
       </div>
-      
 
       <div class="row mt-1 d-none">
         <div class="col-sm-12">

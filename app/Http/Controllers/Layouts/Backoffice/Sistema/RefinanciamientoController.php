@@ -130,11 +130,6 @@ class RefinanciamientoController extends Controller
                                 </ul>
                               </div>";
               }
-                //   <li>
-                //     <a class='dropdown-item' href='javascript:;' data-valor-columna='{$value->id}' onclick='show_data(this)'>
-                //       <i class='fa fa-money-bill'></i> Garantia, Cronograma y Evaluación
-                //     </a>
-                //   </li>
               
               $html .= "<tr id='show_data_select' idcredito='{$value->id}'>
                             <td>".($key+1)."</td>
@@ -647,7 +642,7 @@ class RefinanciamientoController extends Controller
                   'idtipo_garantia_noprendaria'  => $value->idtipo_garantia_noprendaria,
 
                   'idcredito'                 => $idcreditorefinanciado,
-                  'idgarantias'               => $value->idgarantia,
+                  'idgarantias'               => $value->idgarantias,
                   'idcliente'                 => $value->idcliente,
                   'idgarantias_noprendarias'  => $value->idgarantias_noprendarias,
                   'descripcion'               => $value->descripcion,

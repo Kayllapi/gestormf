@@ -12,39 +12,42 @@
             <div class="modal-body pb-0">
               
                 <div class="row">
-                    <div class="col-sm-12 col-md-7">
+                      <div class="col-sm-12 col-md-6">
                         <div class="row">
-                           <div class="col-sm-12 col-md-10">
-                              <div class="row">
-                                <label for="fecha_inicio" class="col-sm-3 col-form-label">AGENCIA</label>
-                                <div class="col-sm-9">
-                                    <select class="form-control" id="idagencia" disabled>
-                                      <option></option>
-                                      @foreach($agencias as $value)
-                                          <option value="{{$value->id}}">{{$value->nombreagencia}}</option>
-                                      @endforeach
-                                    </select>
-                                </div>
-                              </div>
+                            <label for="fecha_inicio" class="col-sm-3 col-form-label">AGENCIA</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" id="idagencia" disabled>
+                                  <option></option>
+                                  @foreach($agencias as $value)
+                                      <option value="{{$value->id}}">{{$value->nombreagencia}}</option>
+                                  @endforeach
+                                </select>
                             </div>
-                          <div class="col-sm-12 col-md-2" style="text-align: right;">
-                              <button type="button" class="btn btn-success" onclick="lista_credito()"><i class="fa-solid fa-search"></i> FILTRAR</button>
-                          </div>
                         </div>
                         <div class="row">
-                           <div class="col-sm-12 col-md-10">
-                              <div class="row">
-                                <label for="fecha_fin" class="col-sm-3 col-form-label">CLIENTE</label>
-                                <div class="col-sm-9">
-                                    <select class="form-control" id="idcliente">
-                                      <option></option>
-                                    </select>
-                                </div>
-                              </div>
-                           </div>
+                            <label for="fecha_fin" class="col-sm-3 col-form-label">CLIENTE</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" id="idcliente">
+                                  <option></option>
+                                </select>
+                            </div>
                         </div>
-                                
-                    </div>
+                      </div>
+                      <div class="col-sm-12 col-md-6">
+                          <div class="row">
+                            <div class="col-sm-12 col-md-12" style="text-align: right;">
+                                <button type="button" class="btn btn-success" onclick="lista_credito()"><i class="fa-solid fa-search"></i> FILTRAR</button>
+                            </div>
+                          </div>
+                          <div class="row mt-1">
+                            <label for="fecha_fin" class="col-sm-4 col-form-label" style="text-align: right;">EJECUTIVO</label>
+                            <div class="col-sm-8">
+                                <select class="form-control" id="idasesor" disabled>
+                                    <option></option>
+                                </select>
+                            </div>
+                          </div>
+                      </div>
                       <!--div class="col-sm-12 col-md-5" style="text-align: right;">
                           <button type="button" class="btn btn-warning" onclick="vistapreliminar()"><i class="fa-solid fa-search"></i> VISTA PRELIMINAR</button>
                       </div-->
@@ -90,6 +93,22 @@
 
   sistema_select2({ input:'#idagencia',val:'{{$tienda->id}}' });
   sistema_select2({ idtienda:{{$tienda->id}}, json:'tienda:usuario', input:'#idcliente' });
+  sistema_select2({ input:'#idasesor',val:'{{Auth::user()->id}}' });
+
+  mostrarAsesor();
+  function mostrarAsesor(){
+      $.ajax({
+          url:"{{url('backoffice/'.$tienda->id.'/garantiaremateagencia/show_asesor')}}",
+          type:'GET',
+          data: {
+              idtienda : $('#idagencia').val(),
+          },
+          success: function (respuesta){
+              $('#idasesor').html(respuesta);  
+              sistema_select2({ input:'#idasesor',val:'{{Auth::user()->id}}' });
+          }
+      })
+  }
   
   //lista_credito();
   function lista_credito(){
@@ -105,7 +124,7 @@
       data: {
           idagencia : $('#idagencia').val(),
           idcliente : $('#idcliente').val(),
-          //idasesor : $('#idasesor').val(),
+          idasesor : $('#idasesor').val(),
           inicio : $('#fecha_inicio').val(),
           fin : $('#fecha_fin').val(),
           tipo : 'asesor',

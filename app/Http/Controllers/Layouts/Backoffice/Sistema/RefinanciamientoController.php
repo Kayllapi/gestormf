@@ -61,6 +61,10 @@ class RefinanciamientoController extends Controller
               $where[] = ['credito.idcliente',$request->idcliente];
               $where2[] = ['credito.idcliente',$request->idcliente];
           }
+          if($request->idasesor!=''){
+              $where[] = ['credito.idasesor',$request->idasesor];
+              $where2[] = ['credito.idasesor',$request->idasesor];
+          }
           
           
           $creditos = DB::table('credito')

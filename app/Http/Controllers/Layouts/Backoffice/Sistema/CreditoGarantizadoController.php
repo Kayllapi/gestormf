@@ -154,11 +154,15 @@ class CreditoGarantizadoController extends Controller
                 $total_credito_garantizado += $value->monto_solicitado;
                 $total_credito_garantizado_saldo += $cronograma['saldo_capital'];
             }
+            $html .= '
+                <tr style="position: sticky;bottom: -1px;z-index:1;">
+                  <th class="campo_moneda" colspan="5">TOTAL</th>
+                  <th class="campo_moneda">'.number_format($total_credito_garantizado, 2, '.', '').'</th>
+                  <th class="campo_moneda">'.number_format($total_credito_garantizado_saldo, 2, '.', '').'</th>
+                </tr>';
             return array(
                 'cliente' => $cliente,
                 'html' => $html,
-                'total_credito_garantizado' => number_format($total_credito_garantizado, 2, '.', ''),
-                'total_credito_garantizado_saldo' => number_format($total_credito_garantizado_saldo, 2, '.', ''),
             );
         }
     }

@@ -83,13 +83,6 @@
                         </thead>
                         <tbody>
                         </tbody>
-                        <tfoot>
-                            <tr>
-                                <th colspan="5" class="campo_moneda"><b>TOTAL:</b></th>
-                                <th class="campo_moneda"><b id="total_credito_garantizado"></b></th>
-                                <th class="campo_moneda"><b id="total_credito_garantizado_saldo"></b></th>
-                            </tr>
-                        </tfoot>
                     </table>
                 </div>
             </div>
@@ -142,8 +135,6 @@
             success: function (res){
                 $('#cliente_garantizado').val(res.cliente.identificacion + " - " + res.cliente.nombrecompleto)
                 $('#table-credito-garantizado > tbody').html(res.html);
-                $('#total_credito_garantizado').text(res.total_credito_garantizado);
-                $('#total_credito_garantizado_saldo').text(res.total_credito_garantizado_saldo);
 
                 $("#exampleModal").modal('hide');
                 // $('#cont_irainicio').css('display','block');

@@ -127,14 +127,14 @@ class RefinanciamientoController extends Controller
                                       <i class='fa fa-check'></i> Refinanciar
                                     </a>
                                   </li>
-                                  <li>
-                                    <a class='dropdown-item' href='javascript:;' data-valor-columna='{$value->id}' onclick='show_data(this)'>
-                                      <i class='fa fa-money-bill'></i> Garantia, Cronograma y Evaluación
-                                    </a>
-                                  </li>
                                 </ul>
                               </div>";
               }
+                //   <li>
+                //     <a class='dropdown-item' href='javascript:;' data-valor-columna='{$value->id}' onclick='show_data(this)'>
+                //       <i class='fa fa-money-bill'></i> Garantia, Cronograma y Evaluación
+                //     </a>
+                //   </li>
               
               $html .= "<tr id='show_data_select' idcredito='{$value->id}'>
                             <td>".($key+1)."</td>

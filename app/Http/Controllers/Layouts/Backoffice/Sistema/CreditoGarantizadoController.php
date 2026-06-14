@@ -80,22 +80,19 @@ class CreditoGarantizadoController extends Controller
                 )
                 ->first();
 
-            $avales = DB::table('users')
-                ->join('credito','credito.idcliente','users.id')
-                ->join('credito_garantia','credito_garantia.idcredito','credito.id')
-                ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
+            $avales = DB::table('credito')
+                ->join('users as cliente', 'cliente.id', 'credito.idcliente')
+                ->where('credito.idaval', $request->idcliente)
                 ->where('credito.idestadocredito',1)
                 ->whereIn('credito.estado',['PENDIENTE','PROCESO','APROBADO','DESEMBOLSADO'])
-                // ->where('credito_garantia.idgarantias_noprendarias',$id)
-                ->where('credito_garantia.idcliente',$request->idcliente)
-                ->where('credito_garantia.tipo','AVAL')
                 ->select(
-                    'users.*',
                     'credito.id as idcredito',
-                    'credito.idforma_credito as idforma_credito',
-                    'credito.cuenta as cuenta',
-                    'credito.monto_solicitado as monto_solicitado',
-                    'credito_prendatario.modalidad as modalidadproductocredito',
+                    'credito.idforma_credito',
+                    'credito.modalidad_credito',
+                    'credito.cuenta',
+                    'credito.monto_solicitado',
+                    'cliente.nombrecompleto',
+                    'cliente.identificacion',
                 )
                 ->get();
 
@@ -130,7 +127,7 @@ class CreditoGarantizadoController extends Controller
                     $tienda->id,
                     $value->idcredito,
                     $value->idforma_credito,
-                    $value->modalidadproductocredito,
+                    $value->modalidad_credito,
                     1000,
                     $total_descuento_capital,
                     $total_descuento_interes,

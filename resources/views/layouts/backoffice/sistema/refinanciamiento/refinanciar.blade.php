@@ -106,15 +106,10 @@
                     <input type="number" step="any" class="form-control" id="cargo" value="{{ $credito->cargo }}">
                   </div>
                 </div>
-                <div class="row">
-                  <label class="col-sm-5 col-form-label" style="text-align: right;"></label>
-                  <div class="col-sm-7 mt-3">
-                  </div>
-                </div>
                 @if($view_detalle!='false')
                 <div class="row">
                   <label class="col-sm-5 col-form-label" style="text-align: right;"></label>
-                  <div class="col-sm-7 mt-3">
+                  <div class="col-sm-7 ">
                     <button type="button" class="btn btn-primary" id="generar_cronograma" onclick="cronograma()">CALCULAR</button>
                   </div>
                 </div>
@@ -297,7 +292,7 @@
       </script>
       <div class="row mt-1 justify-content-center">
         <div class="col-sm-12 col-md-10">
-            <div style="overflow-y: scroll;height: calc(-410px + 100vh);">
+            <div style="overflow-y: scroll;height: calc(-360px + 100vh);">
               <table class="table table-striped" id="table-cronograma">
                 <thead style="position: sticky;top: 0;z-index: 1;">
                   <th class="text-center">Cuota N°</th>
@@ -319,10 +314,17 @@
                 </tbody>
               </table>
             </div>
-          @if($view_detalle!='false')
-          <button type="submit" class="btn btn-primary mt-1"><i class="fa-solid fa-floppy-disk"></i> REFINANCIAR CRÉDITO</button>
-          @endif
-        </div>
+          </div>
+          <div class="col-sm-12 col-md-2">
+            @if($view_detalle!='false')
+              {{-- <button type="submit" class="btn btn-warning mt-1"><i class="fa-solid fa-floppy-disk"></i> REFINANCIAR CRÉDITO</button> --}}
+              <button type="submit" class="btn btn-warning"
+                style="height: fit-content;
+                  margin-right: 10px;">
+                  <i class="fa-solid fa-floppy-disk"></i> REFINANCIAR CRÉDITO
+              </button>
+            @endif
+          </div>
       </div>
 
       <div class="row mt-1 d-none">

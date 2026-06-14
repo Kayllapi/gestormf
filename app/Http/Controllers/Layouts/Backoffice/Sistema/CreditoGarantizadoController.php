@@ -80,31 +80,33 @@ class CreditoGarantizadoController extends Controller
                 )
                 ->first();
 
-            $lista_credito_garantia_cliente_propio = DB::table('credito')
+            $avales = DB::table('users')
+                ->join('credito','credito.idcliente','users.id')
                 ->join('credito_garantia','credito_garantia.idcredito','credito.id')
                 ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
-                // ->where('credito_garantia.idcredito','<>',$credito->id)
-                ->where('credito_garantia.idcliente',$request->idcliente)
-                ->where('credito_garantia.tipo','CLIENTE')
-                ->where('credito.estado','DESEMBOLSADO')
-                ->where('credito.idforma_credito',2)
                 ->where('credito.idestadocredito',1)
+                ->whereIn('credito.estado',['PENDIENTE','PROCESO','APROBADO','DESEMBOLSADO'])
+                // ->where('credito_garantia.idgarantias_noprendarias',$id)
+                ->where('credito_garantia.idcliente',$request->idcliente)
+                ->where('credito_garantia.tipo','AVAL')
                 ->select(
+                    'users.*',
                     'credito.id as idcredito',
                     'credito.idforma_credito as idforma_credito',
-                    'credito.cuenta as credito_cuenta',
+                    'credito.cuenta as cuenta',
+                    'credito.monto_solicitado as monto_solicitado',
                     'credito_prendatario.modalidad as modalidadproductocredito',
-                    DB::raw('CONCAT("PROPIO") as tipoprestamo')
                 )
-                ->distinct()
                 ->get();
-            $credito_saldodeduda_cliente_propio = [];
 
-            foreach($lista_credito_garantia_cliente_propio as $valuec){
+            $html = '';
+            $total_credito_garantizado = 0;
+            $total_credito_garantizado_saldo = 0;
+            foreach ($avales as $key => $value) {
                 $credito_descuentocuotas = DB::table('credito_descuentocuota')
-                        ->where('credito_descuentocuota.idcredito',$valuec->idcredito)
-                        ->where('credito_descuentocuota.idestadocredito_descuentocuota',1)
-                        ->first();
+                    ->where('credito_descuentocuota.idcredito',$value->idcredito)
+                    ->where('credito_descuentocuota.idestadocredito_descuentocuota',1)
+                    ->first();
                 $total_descuento_capital = 0; 
                 $total_descuento_interes = 0; 
                 $total_descuento_comision = 0; 
@@ -123,11 +125,12 @@ class CreditoGarantizadoController extends Controller
                         $total_descuento_compensatorio = $credito_descuentocuotas->compensatorio;
                     }
                 }
+        
                 $cronograma = select_cronograma(
                     $tienda->id,
-                    $valuec->idcredito,
-                    $valuec->idforma_credito,
-                    $valuec->modalidadproductocredito,
+                    $value->idcredito,
+                    $value->idforma_credito,
+                    $value->modalidadproductocredito,
                     1000,
                     $total_descuento_capital,
                     $total_descuento_interes,
@@ -138,34 +141,25 @@ class CreditoGarantizadoController extends Controller
                     $total_descuento_compensatorio
                 );
 
-                $credito_saldodeduda_cliente_propio[] = [
-                    'idforma_credito' => $valuec->idforma_credito,
-                    'modalidad' => $valuec->modalidadproductocredito,
-                    'saldo_vigente' => $cronograma['saldo_capital'],
-
-                    'cliente_nombrecompleto' => $cliente->nombrecompleto,
-                    'cliente_identificacion' => $cliente->identificacion,
-                    'cuenta' => 'C'.str_pad($valuec->credito_cuenta, 8, "0", STR_PAD_LEFT),
-                    'cuota_pendiente' => $cronograma['cuota_pendiente'],
-                ];
-            }
-
-            $html = '';
-            $total_credito_garantizado = 0;
-            foreach ($credito_saldodeduda_cliente_propio as $key => $value) {
                 $key++;
+                $cuenta = $value->cuenta!=0 ? 'C'.str_pad($value->cuenta, 8, '0', STR_PAD_LEFT) : 'EN PROCESO';
+
                 $html .= "<tr>
                         <td>{$key}</td>
-                        <td>{$value['cliente_nombrecompleto']}</td>
-                        <td>{$value['cliente_identificacion']}</td>
-                        <td>{$value['cuenta']}</td>
-                        <td class='campo_moneda'>{$value['cuota_pendiente']}</td>
+                        <td>{$value->nombrecompleto}</td>
+                        <td>{$value->identificacion}</td>
+                        <td>{$cuenta}</td>
+                        <td class='campo_moneda'>{$value->monto_solicitado}</td>
+                        <td class='campo_moneda'>{$cronograma['saldo_capital']}</td>
                     </tr>";
-                $total_credito_garantizado = $total_credito_garantizado+$value['cuota_pendiente'];
+                $total_credito_garantizado += $value->monto_solicitado;
+                $total_credito_garantizado_saldo += $cronograma['saldo_capital'];
             }
             return array(
+                'cliente' => $cliente,
                 'html' => $html,
-                'total_credito_garantizado' => $total_credito_garantizado,
+                'total_credito_garantizado' => number_format($total_credito_garantizado, 2, '.', ''),
+                'total_credito_garantizado_saldo' => number_format($total_credito_garantizado_saldo, 2, '.', ''),
             );
         }
     }

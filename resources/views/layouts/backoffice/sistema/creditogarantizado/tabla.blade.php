@@ -9,11 +9,11 @@
             onclick="buscarcliente()">
             <i class="fa fa-search"></i> Buscar Cliente
         </button>
-        <div style="display:none;float: right;margin-left: 5px;" id="cont_irainicio">
+        {{-- <div style="display:none;float: right;margin-left: 5px;" id="cont_irainicio">
             <button type="button" class="btn btn-primary" onclick="credito_garantizado()">
                 <i class="fa fa-refresh"></i> Actualizar
             </button>
-        </div>
+        </div> --}}
         <!-- Modal -->
         <div class="modal fade"
             id="exampleModal"

@@ -67,7 +67,7 @@ class RefinanciamientoController extends Controller
           }
           
           
-          $creditos = DB::table('credito')
+          $creditos_dt = DB::table('credito')
               ->join('forma_pago_credito','forma_pago_credito.id','credito.idforma_pago_credito')
               ->join('users as cliente','cliente.id','credito.idcliente')
               ->leftjoin('users as cajero','cajero.id','credito.idcajero')
@@ -96,6 +96,52 @@ class RefinanciamientoController extends Controller
               )
               ->orderBy('credito.fecha_desembolso','asc')
               ->get();
+
+            foreach ($creditos_dt as $value) {
+                $creditorefinanciado = DB::table('credito')
+                    ->where('idcredito_refinanciado',$value->id)
+                    ->first();
+                if($creditorefinanciado){
+                    if (Carbon::parse($creditorefinanciado->fecha)->lte(now()->subDay())) {
+                        DB::table('credito')->whereId($creditorefinanciado->id)->update([
+                            'idmodalidad_credito' => 1,
+                            'fecha_refinanciamiento' => null,
+                            'idestadorefinanciamiento' => 0,
+                            'idcredito_refinanciado' => 0,
+                        ]);
+                    }
+                }
+            }
+
+            $creditos = DB::table('credito')
+                ->join('forma_pago_credito','forma_pago_credito.id','credito.idforma_pago_credito')
+                ->join('users as cliente','cliente.id','credito.idcliente')
+                ->leftjoin('users as cajero','cajero.id','credito.idcajero')
+                ->leftjoin('users as asesor','asesor.id','credito.idasesor')
+                ->leftjoin('users as administrador','administrador.id','credito.idadministrador')
+                ->leftjoin('users as aval','aval.id','credito.idaval')
+                ->join('modalidad_credito','modalidad_credito.id','credito.idmodalidad_credito')
+                ->join('tipo_operacion_credito','tipo_operacion_credito.id','credito.idtipo_operacion_credito')
+                ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
+                ->where('credito.estado','DESEMBOLSADO')
+                ->where('credito.idestadocredito',1)
+                ->where($where)
+                ->orWhere($where2)
+                ->where('credito.estado','DESEMBOLSADO')
+                ->where('credito.idestadocredito',1)
+                ->select(
+                    'credito.*',
+                    'cliente.nombrecompleto as nombrecliente',
+                    'aval.nombrecompleto as nombreaval',
+                    'credito_prendatario.nombre as nombreproductocredito' ,
+                    'modalidad_credito.nombre as nombremodalidadcredito' ,
+                    'forma_pago_credito.nombre as frecuencianombre' ,
+                    'cajero.usuario as codigocajero',
+                    'asesor.usuario as codigoasesor',
+                    'administrador.nombrecompleto as nombreadministrador',
+                )
+                ->orderBy('credito.fecha_desembolso','asc')
+                ->get();
           
           $html = '';
           $total_desembolsado = 0;
@@ -131,6 +177,8 @@ class RefinanciamientoController extends Controller
                               </div>";
               }
               
+              // fecha_desembolso
+              $fechaFormateado = date_format(date_create($value->fecha_desembolso),"d-m-Y");
               $html .= "<tr id='show_data_select' idcredito='{$value->id}'>
                             <td>".($key+1)."</td>
                             <td>{$value->nombrecliente}</td>
@@ -139,7 +187,7 @@ class RefinanciamientoController extends Controller
                             <td style='text-align:right;'>{$value->monto_solicitado}</td>
                             <td style='text-align:right;'>{$value->cuotas}</td>
                             <td>{$value->frecuencianombre}</td>
-                            <td>{$value->fecha_desembolso}</td>
+                            <td>{$fechaFormateado}</td>
                             <td>{$value->codigocajero}</td>
                             <td>{$operacionen}</td>
                             <td>{$value->nombremodalidadcredito}</td>
@@ -488,7 +536,7 @@ class RefinanciamientoController extends Controller
                 'cuota_pago'                => $cronograma['cuota_pago'],
                 'fecha_primerpago'          => $cronograma['fechainicio'],
                 'fecha_ultimopago'          => $cronograma['ultimafecha'],
-                'fecha'                     => $request->input('fecha_desembolso'),
+                'fecha_desembolso'          => $request->input('fecha_desembolso'),
                 'monto_solicitado'          => $request->input('monto_solicitado'),
                 'idforma_pago_credito'      => $request->input('idforma_pago_credito'),
                 'cuotas'                    => $request->input('cuotas'),
@@ -534,6 +582,7 @@ class RefinanciamientoController extends Controller
                 //'idforma_pago_credito'      => 1,
                 'idmodalidad_credito'       => 4, //Refinanciado
                 'fecha'                     => Carbon::now(),
+                'fecha_refinanciamiento'    => Carbon::now(),
                 'idasesor'                  => Auth::user()->id,
                 'estado'                    => 'PROCESO',
                 'idevaluacion'              => 1,

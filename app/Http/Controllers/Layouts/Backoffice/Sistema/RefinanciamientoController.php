@@ -66,7 +66,6 @@ class RefinanciamientoController extends Controller
               $where2[] = ['credito.idasesor',$request->idasesor];
           }
           
-          
           $creditos_dt = DB::table('credito')
               ->join('forma_pago_credito','forma_pago_credito.id','credito.idforma_pago_credito')
               ->join('users as cliente','cliente.id','credito.idcliente')
@@ -102,13 +101,23 @@ class RefinanciamientoController extends Controller
                     ->where('idcredito_refinanciado',$value->id)
                     ->first();
                 if($creditorefinanciado){
-                    if (Carbon::parse($creditorefinanciado->fecha_refinanciamiento)->lte(now()->subDay())) {
-                        DB::table('credito')->whereId($creditorefinanciado->id)->update([
-                            'idmodalidad_credito' => 1,
-                            'fecha_refinanciamiento' => null,
-                            'idestadorefinanciamiento' => 0,
-                            'idcredito_refinanciado' => 0,
-                        ]);
+                    if (Carbon::parse($creditorefinanciado->fecha)->lte(now()->subDay())) {
+                        DB::table('credito_cronograma')->where('idcredito', $creditorefinanciado->id)->delete();
+                        DB::table('credito_garantia')->where('idcredito', $creditorefinanciado->id)->delete();
+                        DB::table('credito_evaluacion_cualitativa')->where('idcredito', $creditorefinanciado->id)->delete();
+                        DB::table('credito_evaluacion_cuantitativa')->where('idcredito', $creditorefinanciado->id)->delete();
+                        DB::table('credito_cuantitativa_deudas')->where('idcredito', $creditorefinanciado->id)->delete();
+                        DB::table('credito_cuantitativa_control_limites')->where('idcredito', $creditorefinanciado->id)->delete();
+                        DB::table('credito_cuantitativa_ingreso_adicional')->where('idcredito', $creditorefinanciado->id)->delete();
+                        DB::table('credito_cuantitativa_margen_venta')->where('idcredito', $creditorefinanciado->id)->delete();
+                        DB::table('credito_evaluacion_resumida')->where('idcredito', $creditorefinanciado->id)->delete();
+                        DB::table('credito_flujo_caja')->where('idcredito', $creditorefinanciado->id)->delete();
+                        DB::table('credito_formato_evaluacion')->where('idcredito', $creditorefinanciado->id)->delete();
+                        DB::table('credito_propuesta')->where('idcredito', $creditorefinanciado->id)->delete();
+                        DB::table('credito_cuantitativa_inventario')->where('idcredito', $creditorefinanciado->id)->delete();
+                        DB::table('credito_polizaseguro_prestamo')->where('id_credito', $creditorefinanciado->id)->delete();
+                        DB::table('credito_representantecomun_prestamo')->where('id_credito', $creditorefinanciado->id)->delete();
+                        DB::table('credito')->whereId($creditorefinanciado->id)->delete();
                     }
                 }
             }
@@ -582,7 +591,6 @@ class RefinanciamientoController extends Controller
                 //'idforma_pago_credito'      => 1,
                 'idmodalidad_credito'       => 4, //Refinanciado
                 'fecha'                     => Carbon::now(),
-                'fecha_refinanciamiento'    => Carbon::now(),
                 'idasesor'                  => Auth::user()->id,
                 'estado'                    => 'PROCESO',
                 'idevaluacion'              => 1,

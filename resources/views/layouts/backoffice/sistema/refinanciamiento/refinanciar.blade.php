@@ -82,30 +82,76 @@
               </div>
               <div class="col-md-6">
                 <div class="row">
-                  <label class="col-sm-5 col-form-label" style="text-align: right;">Dia de Gracia:</label>
-                  <div class="col-sm-7">
+                  <label class="col-sm-8 col-form-label" style="text-align: right;">Dia de Gracia:</label>
+                  <div class="col-sm-4">
                     <input type="number" step="any" class="form-control" id="dia_gracia" value="{{ $credito->dia_gracia }}">
                   </div>
                 </div>
                 <div class="row">
-                  <label class="col-sm-5 col-form-label" style="text-align: right;">Fecha de Cálculo:</label>
-                  <div class="col-sm-7">
+                  <label class="col-sm-8 col-form-label" style="text-align: right;">Fecha de Cálculo:</label>
+                  <div class="col-sm-4">
                     <input type="date" class="form-control" id="fecha_desembolso" 
                            value="{{ Carbon\Carbon::now()->format('Y-m-d') }}" disabled>
                   </div>
                 </div>
                 <div class="row">
-                  <label class="col-sm-5 col-form-label" style="text-align: right;">Ss. Recaudo S/.:</label>
-                  <div class="col-sm-7">
+                  <label class="col-sm-8 col-form-label" style="text-align: right;">Ss. Recaudo S/.:</label>
+                  <div class="col-sm-4">
                     <input type="number" step="any" class="form-control" id="comision" value="0." disabled>
                   </div>
                 </div>
-                <div class="row">
-                  <label class="col-sm-5 col-form-label" style="text-align: right;">Cargo x Custodia/Otros (Periodo) S/.:</label>
-                  <div class="col-sm-7">
-                    <input type="number" step="any" class="form-control" id="cargo" value="{{ $credito->cargo }}">
+                <div class="row d-none">
+                  <label class="col-sm-8 col-form-label" style="text-align: right;">Cargo Mes S/.:</label>
+                  <div class="col-sm-4">
+                    <input type="number" step="any" class="form-control" id="cargomes" value="0.00">
                   </div>
                 </div>
+                @if($credito->idforma_credito==1 && $usuario->custodiagarantia_id==1)
+                    <div class="row">
+                      <label class="col-sm-8 col-form-label" style="text-align: right;">Cargo x Custodia/Otros (Periodo) S/.:</label>
+                      <div class="col-sm-4">
+                        <input type="number" step="any" class="form-control" {{ $view_detalle=='false' ? 'disabled' : '' }} id="cargo" value="{{ $credito->cargo }}" disabled>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <label class="col-sm-12 text-end" style="color: #b32121;">Gasto x custodia de garantía para cargo: 
+                        <span class="popover-hover"
+                          data-bs-content='{{ configuracion($tienda->id,'comision_gestion_garantia_cargo')['valor'] }} % Mensual, de Cobertura'>
+                          (Acreedor)
+                        </span>
+                      </label>
+                    </div>
+                @else
+                    @if ($usuario->custodiagarantia_id==2)
+                      <div class="row">
+                        <label class="col-sm-8 col-form-label" style="text-align: right;">Cargo x Custodia/Otros (Periodo) S/.:</label>
+                        <div class="col-sm-4">
+                          <input type="number" step="any" class="form-control" {{ $view_detalle=='false' ? 'disabled' : '' }} id="cargo" value="{{ $credito->cargo }}" disabled>
+                        </div>
+                      </div>
+                        <div class="row">
+                          <label class="col-sm-12 text-end" style="color: #b32121;">Gasto x custodia de garantía para cargo: 
+                            <span class="popover-hover"
+                              data-bs-content='{{ configuracion($tienda->id,'comision_gestion_garantia_convenio')['valor'] }} % Mensual, de Cobertura'>
+                              (Convenio con Acreedor)
+                            </span>
+                          </label>
+                        </div>
+                    @else
+                      <div class="row">
+                        <label class="col-sm-8 col-form-label" style="text-align: right;">Cargo x Custodia/Otros (Periodo) S/.:</label>
+                        <div class="col-sm-4">
+                          <input type="number" step="any" class="form-control" {{ $view_detalle=='false' ? 'disabled' : '' }} id="cargo" value="{{ $credito->cargo }}">
+                        </div>
+                      </div>
+                    @endif
+                    @if($credito->idforma_credito==1 && $usuario->custodiagarantia_id==0)
+                        <div class="row">
+                          <label class="col-sm-2"></label>
+                          <label class="col-sm-10 text-end" style="color: #b32121;">Seleccionar Depositario.</label>
+                        </div>
+                    @endif
+                @endif
                 @if($view_detalle!='false')
                 <div class="row">
                   <label class="col-sm-5 col-form-label" style="text-align: right;"></label>
@@ -222,6 +268,7 @@
           }
           
           let cargo       = $('#cargo').val();
+          let cargomes  = $('#cargomes').val();
           
           let tasa        = $('#tasa_tem').val();
           let tipotasa    = "{{$credito->modalidad_calculo}}" == 'Interes Simple' ? 1 : 2;
@@ -264,6 +311,7 @@
                   tipotasa: tipotasa,
                   dia_gracia: dia_gracia,
                   cargo: cargo,
+                  cargomes: cargomes,
                   idcredito: '{{ $credito->id }}'
               },
               success: function (res) {
@@ -276,14 +324,15 @@
                   }else{
                       $('#table-cronograma > tbody').html(res.cronograma);
                       $('#interes_total').html(res.interes_total);
-                      $('#cargo_total').html(res.cargo_total);
+                      $('#total_cargo').html(res.total_cargo);
+                      $('#total_comision').html(res.total_comision);
                       $('#total_pagar').html(res.total_pagar);
                     
                       $('#tasa_tem_minima').val(res.tasa_tem_minima);
                       $('#tasa_tem').val(res.tasa_tem);
                       $('#tasa_tip').val(res.tasa_tip);
                       $('#tasa_tcem').val(res.tasa_tcem);
-                      $('#comision').val(res.cargootros);
+                      $('#comision').val(res.total_comision); // anterior estaba "cargootros"
                   }
               }
           });
@@ -402,6 +451,66 @@
     if(numerocuota==''){
         return false;
     }
+
+    @if($credito->idforma_credito==1 && $usuario->custodiagarantia_id==1)
+        var comision_gestion_garantia_cargo = parseFloat({{ configuracion($tienda->id,'comision_gestion_garantia_cargo')['valor'] }});
+        var monto_cobertura_garantia =  parseFloat($('#monto_cobertura_garantia').val());
+        var cargocom = 0;
+        var cargocom_mes = 0;
+        if(frecuencia==1){
+            cargocom = ((comision_gestion_garantia_cargo/26)*numerocuota)/100;
+            cargocom_mes = ((comision_gestion_garantia_cargo/26)*26)/100;
+        }
+        else if(frecuencia==2){
+            cargocom = ((comision_gestion_garantia_cargo/4)*numerocuota)/100;
+            cargocom_mes = ((comision_gestion_garantia_cargo/4)*4)/100;
+        }
+        else if(frecuencia==3){
+            cargocom = ((comision_gestion_garantia_cargo/2)*numerocuota)/100;
+            cargocom_mes = ((comision_gestion_garantia_cargo/2)*2)/100;
+        }
+        else if(frecuencia==4){
+            cargocom = ((comision_gestion_garantia_cargo/1)*numerocuota)/100;
+            cargocom_mes = ((comision_gestion_garantia_cargo/1)*1)/100;
+        }
+        var cargo = cargocom*monto_cobertura_garantia;
+        var cargomes = cargocom_mes*monto_cobertura_garantia;
+
+        let redondeado = (Math.round(cargo * 10) / 10).toFixed(2);
+        $('#cargo').val(redondeado);
+        $('#cargomes').val(cargomes.toFixed(2));
+    @else
+        @if($usuario->custodiagarantia_id==2)
+            var comision_gestion_garantia_convenio = parseFloat({{ configuracion($tienda->id,'comision_gestion_garantia_convenio')['valor'] }});
+            var monto_cobertura_garantia =  parseFloat($('#monto_cobertura_garantia').val());
+            var cargocom = 0;
+            var cargocom_mes = 0;
+            if(frecuencia==1){
+                cargocom = ((comision_gestion_garantia_convenio/26)*numerocuota)/100;
+                cargocom_mes = ((comision_gestion_garantia_convenio/26)*26)/100;
+            }
+            else if(frecuencia==2){
+                cargocom = ((comision_gestion_garantia_convenio/4)*numerocuota)/100;
+                cargocom_mes = ((comision_gestion_garantia_convenio/4)*4)/100;
+            }
+            else if(frecuencia==3){
+                cargocom = ((comision_gestion_garantia_convenio/2)*numerocuota)/100;
+                cargocom_mes = ((comision_gestion_garantia_convenio/2)*2)/100;
+            }
+            else if(frecuencia==4){
+                cargocom = ((comision_gestion_garantia_convenio/1)*numerocuota)/100;
+                cargocom_mes = ((comision_gestion_garantia_convenio/1)*1)/100;
+            }
+            var cargo = cargocom*monto_cobertura_garantia;
+            var cargomes = cargocom_mes*monto_cobertura_garantia;
+
+            let redondeado = (Math.round(cargo * 10) / 10).toFixed(2);
+            $('#cargo').val(redondeado);
+            $('#cargomes').val(cargomes.toFixed(2));
+        @endif
+        $('#cargomes').val('0.00');
+    @endif
+
     $.ajax({
       url:"{{url('backoffice/0/credito/showtasa')}}",
       type:'GET',
@@ -415,7 +524,7 @@
       success: function (res){
         $('#tasa_tem_minima').val(res.tasa_tem_minima);
         $('#tasa_tip').val(res.tasa_tip);
-        $('#comision').val(res.cargootros);
+        // $('#comision').val(res.cargootros);
       }
     })
   }

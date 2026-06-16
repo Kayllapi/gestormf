@@ -188,11 +188,13 @@ class RefinanciamientoController extends Controller
               
               // fecha_desembolso
               $fechaFormateado = date_format(date_create($value->fecha_desembolso),"d-m-Y");
+              $formacredito = $value->idforma_credito == 1 ? 'CP' : ($value->idforma_credito == 2 ? 'CNP' : '');
               $html .= "<tr id='show_data_select' idcredito='{$value->id}'>
                             <td>".($key+1)."</td>
                             <td>{$value->nombrecliente}</td>
                             <td>{$value->nombreaval}</td>
                             <td>C{$value->cuenta}</td>
+                            <td>{$formacredito}</td>
                             <td style='text-align:right;'>{$value->monto_solicitado}</td>
                             <td style='text-align:right;'>{$value->cuotas}</td>
                             <td>{$value->frecuencianombre}</td>
@@ -210,7 +212,7 @@ class RefinanciamientoController extends Controller
           }
               $html .= '
                 <tr style="position: sticky;bottom: 0;font-weight: bold;background-color: #b7b6b7 !important;">
-                  <td colspan="4" style="text-align:right;">TOTAL S/.</td>
+                  <td colspan="5" style="text-align:right;">TOTAL S/.</td>
                   <td style="text-align:right;">'.number_format($total_desembolsado, 2, '.', '').'</td>
                   <td colspan="8" style=""></td>
                 </tr>';

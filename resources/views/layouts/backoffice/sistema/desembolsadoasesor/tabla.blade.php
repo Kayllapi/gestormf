@@ -88,6 +88,7 @@
                   <th>AVAL</th>
                   <th>DESEMBOLSO</th>
                   <th>CUOTAS</th>
+                  <th>F.C.</th>
                   <th>F. PAGO</th>
                   <th>F. DESEMBOLSO</th>
                   <th>CAJERO</th>

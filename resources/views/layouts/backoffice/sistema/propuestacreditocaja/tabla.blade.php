@@ -142,6 +142,7 @@
                   <th>AVAL</th>
                   <th>PRODUCTO</th>
                   <th>PRÉSTAMO</th>
+                  <th>F.C.</th>
                   <th>ESTADO</th>
                   <th>ASESOR/EJECUTIVO</th>
                   <th>FECHA</th>

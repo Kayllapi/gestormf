@@ -138,6 +138,7 @@ class DesembolsadoController extends Controller
               }
 
               $fechaFormateado = Carbon::parse($value->fecha_desembolso)->format('d-m-Y h:i A');
+              $formacredito = $value->idforma_credito == 1 ? 'CP' : ($value->idforma_credito == 2 ? 'CNP' : '');
             
               $html .= "<tr id='show_data_select' idcredito='{$value->id}'>
                             <td>".($key+1)."</td>
@@ -145,6 +146,7 @@ class DesembolsadoController extends Controller
                             <td>{$value->nombreaval}</td>
                             <td style='text-align:right;'>{$value->monto_solicitado}</td>
                             <td style='text-align:right;'>{$value->cuotas}</td>
+                            <td>{$formacredito}</td>
                             <td>{$value->frecuencianombre}</td>
                             <td>{$fechaFormateado}</td>
                             <td>{$value->codigocajero}</td>
@@ -165,7 +167,7 @@ class DesembolsadoController extends Controller
           }
               $html .= '
                 <tr style="position: sticky;bottom: -1px;z-index:1;">
-                  <th style="text-align:center;" colspan="12">RESUMEN: &nbsp;&nbsp;&nbsp TOTAL GENERAL (S/): '.number_format($total_desembolsado, 2, '.', '').' &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <th style="text-align:center;" colspan="13">RESUMEN: &nbsp;&nbsp;&nbsp TOTAL GENERAL (S/): '.number_format($total_desembolsado, 2, '.', '').' &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   TOTAL REFINANCIADO (S/.): '.number_format($total_refinanciado, 2, '.', '').' &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
                   TOTAL NETO (S/.): '.number_format($total_neto, 2, '.', '').'</th>
                 </tr>';

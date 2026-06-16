@@ -111,6 +111,7 @@
                   <th>AVAL</th>
                   <th width="10px">DESEMBOLSO</th>
                   <th>CUOTAS</th>
+                  <th>F.C.</th>
                   <th>F. PAGO</th>
                   <th>F. DESEMBOLSO</th>
                   <th>CAJERO</th>

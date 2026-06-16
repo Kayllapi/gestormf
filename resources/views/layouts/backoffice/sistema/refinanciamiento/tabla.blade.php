@@ -69,6 +69,7 @@
                   <td>CLIENTE</td>
                   <td>AVAL</td>
                   <td>N°. CUENTA</td>
+                  <td>F.C.</td>
                   <td>DESEM.</td>
                   <td>CUOTAS</td>
                   <td>F. PAGO</td>

@@ -128,6 +128,7 @@
                   <td  style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">AVAL</td>
                   <td  style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;width:10px">DESEMBOLSO</td>
                   <td  style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">CUOTAS</td>
+                  <td  style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">F.C.</td>
                   <td  style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">F. PAGO</td>
                   <td  style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">F. DESEMBOLSO</td>
                   <td  style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">CAJERO</td>
@@ -156,6 +157,7 @@
               }
 
               $fechaFormateado = Carbon\Carbon::parse($value->fecha_desembolso)->format('d-m-Y h:i A');
+              $formacredito = $value->idforma_credito == 1 ? 'CP' : ($value->idforma_credito == 2 ? 'CNP' : '');
             
               $html .= "<tr id='show_data_select' idcredito='{$value->id}'>
                             <td>".($key+1)."</td>
@@ -163,6 +165,7 @@
                             <td>{$value->nombreaval}</td>
                             <td style='text-align:right;'>{$value->monto_solicitado}</td>
                             <td style='text-align:right;'>{$value->cuotas}</td>
+                            <td>{$formacredito}</td>
                             <td>{$value->frecuencianombre}</td>
                             <td>{$fechaFormateado}</td>
                             <td>{$value->codigocajero}</td>
@@ -178,11 +181,11 @@
               $total_desembolsado += $value->monto_solicitado;
           }
           if(count($creditos)==0){
-              $html.= '<tr><td colspan="11" style="border-bottom: 2px solid #000;text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
+              $html.= '<tr><td colspan="12" style="border-bottom: 2px solid #000;text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
           }
               $html .= '
                 <tr>
-                  <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;" colspan="13">RESUMEN: &nbsp;&nbsp;&nbsp; TOTAL GENERAL (S/): '.number_format($total_desembolsado, 2, '.', '').' &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <th style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;" colspan="12">RESUMEN: &nbsp;&nbsp;&nbsp; TOTAL GENERAL (S/): '.number_format($total_desembolsado, 2, '.', '').' &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   TOTAL REFINANCIADO (S/.): '.number_format($total_refinanciado, 2, '.', '').' &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
                   TOTAL NETO (S/.): '.number_format($total_neto, 2, '.', '').'</th>
                 </tr>';

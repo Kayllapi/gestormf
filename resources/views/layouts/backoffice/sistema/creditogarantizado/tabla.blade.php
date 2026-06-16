@@ -135,6 +135,10 @@
             success: function (res){
                 $('#cliente_garantizado').val(res.cliente.identificacion + " - " + res.cliente.nombrecompleto)
                 $('#table-credito-garantizado > tbody').html(res.html);
+                $("tr#show_data_select").on("click", function() {
+                    $('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                });
 
                 $("#exampleModal").modal('hide');
                 // $('#cont_irainicio').css('display','block');

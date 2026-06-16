@@ -142,7 +142,7 @@ class CreditoGarantizadoController extends Controller
                 $cuenta = $value->cuenta!=0 ? 'C'.str_pad($value->cuenta, 8, '0', STR_PAD_LEFT) : 'EN PROCESO';
                 $formacredito = $value->idforma_credito == 1 ? 'CP' : ($value->idforma_credito == 2 ? 'CNP' : '');
 
-                $html .= "<tr>
+                $html .= "<tr id='show_data_select'>
                         <td>{$key}</td>
                         <td>{$value->nombrecompleto}</td>
                         <td>{$value->identificacion}</td>

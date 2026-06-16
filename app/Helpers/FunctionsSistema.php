@@ -478,8 +478,6 @@ function select_cronograma(
         $acuenta       = 0;
 
         if($value->idestadocredito_cronograma==1 or $value->idestadocredito_cronograma==3){
-        
-    
             //penalidad
             if($descuento_penalidad>=$total_penalidad && $descuento_penalidad>0){
                 $pagar_penalidad = 0;
@@ -494,17 +492,21 @@ function select_cronograma(
                 $descontar_penalidad = $descuento_penalidad;
             }
             //tenencia
-            if($descuento_tenencia>=$total_tenencia && $descuento_tenencia>0){
-                $pagar_tenencia = 0;
-                $descuento_tenencia = $descuento_tenencia-$total_tenencia;
-                $descontar_tenencia = $total_tenencia;
-            }elseif($descuento_tenencia<$total_tenencia && $descuento_tenencia>0){
-                $pagar_tenencia = $total_tenencia-$descuento_tenencia;
-                $descontar_tenencia = $descuento_tenencia;
-                $descuento_tenencia = 0;
+            if($value->numerocuota == $ultimaCuota){
+                if($descuento_tenencia>=$total_tenencia && $descuento_tenencia>0){
+                    $pagar_tenencia = 0;
+                    $descuento_tenencia = $descuento_tenencia-$total_tenencia;
+                    $descontar_tenencia = $total_tenencia;
+                }elseif($descuento_tenencia<$total_tenencia && $descuento_tenencia>0){
+                    $pagar_tenencia = $total_tenencia-$descuento_tenencia;
+                    $descontar_tenencia = $descuento_tenencia;
+                    $descuento_tenencia = 0;
+                }else{
+                    $pagar_tenencia = $total_tenencia;
+                    $descontar_tenencia = $descuento_tenencia;
+                }
             }else{
-                $pagar_tenencia = $total_tenencia;
-                $descontar_tenencia = $descuento_tenencia;
+                $pagar_tenencia = 0;
             }
             //compensatorio
             if($descuento_compensatorio>=$total_compensatorio && $descuento_compensatorio>0){

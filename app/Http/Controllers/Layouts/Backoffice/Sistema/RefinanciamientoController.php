@@ -102,7 +102,7 @@ class RefinanciamientoController extends Controller
                     ->where('idcredito_refinanciado',$value->id)
                     ->first();
                 if($creditorefinanciado){
-                    if (Carbon::parse($creditorefinanciado->fecha)->lte(now()->subDay())) {
+                    if (Carbon::parse($creditorefinanciado->fecha_refinanciamiento)->lte(now()->subDay())) {
                         DB::table('credito')->whereId($creditorefinanciado->id)->update([
                             'idmodalidad_credito' => 1,
                             'fecha_refinanciamiento' => null,

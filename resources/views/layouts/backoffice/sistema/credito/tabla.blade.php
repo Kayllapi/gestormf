@@ -24,6 +24,7 @@
                   <th>AVAL</th>
                   <th>PRODUCTO</th>
                   <th>PRÉSTAMO</th>
+                  <th>F.C.</th>
                   <th>ESTADO</th>
                   <th>FECHA DE ACTUALIZACIÓN</th>
                   <th width="10px"></th>

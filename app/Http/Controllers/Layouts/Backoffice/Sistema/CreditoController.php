@@ -744,12 +744,14 @@ class CreditoController extends Controller
               }
             
               $fechaFormato = Carbon::parse($value->fecha)->format('d-m-Y');
+              $formacredito = $value->idforma_credito == 1 ? 'CP' : ($value->idforma_credito == 2 ? 'CNP' : '');
               $html .= "<tr id='show_data_select'>
                             <td>".($key+1)."</td>
                             <td>{$value->nombrecliente}</td>
                             <td>{$value->nombreaval}</td>
                             <td>{$value->nombreproductocredito}</td>
                             <td>{$value->monto_solicitado}</td>
+                            <td>{$formacredito}</td>
                             <td>{$value->estado}</td>
                             <td>{$fechaFormato}</td>
                             <td>

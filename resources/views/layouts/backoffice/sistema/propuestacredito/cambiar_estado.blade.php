@@ -56,7 +56,7 @@
           <div class="row">
               <div class="col-md-4">
                 <div class="mb-1">
-                    <div class="mt-2 bg-primary subtitulo">Seleccionar Nivel de Aprobación</div>
+                    <div class="mt-2 bg-primary subtitulo">Seleccionar Modalidad de Aprobación</div>
                     <select class="form-control" id="tipo_validacion" onchange="mostrar_permisos(this.value)" {{ $credito->aprobacion_tipo_validacion!='' && count($credito_aprobacion)>0?'disabled':'' }}>
                       <option disabled selected></option>
                       <option value="nivelaprobacion" {{ $credito->aprobacion_tipo_validacion=='nivelaprobacion' && count($credito_aprobacion)>0?'selected':'' }}>1. COMITÉ DE APROBACIÓN</option>
@@ -65,12 +65,12 @@
                     </select>
                 </div>
                 <div class="mb-1">
-                    <div class="mt-2 bg-primary subtitulo">Nivel</div>
+                    <div class="mt-2 bg-primary subtitulo">Opciones</div>
                         <div class="form-check">
                           <input class="form-check-input" type="radio" name="exampleRadios" id="check_uno_table" 
                                  value="table_uno" {{ $credito->aprobacion_nivel_validacion==1 && count($credito_aprobacion)>0?'checked':'' }} {{ $credito->aprobacion_nivel_validacion!=0 && count($credito_aprobacion)>0?'disabled':'' }}>
                           <label class="form-check-label" for="check_uno_table">
-                            NIVEL 1
+                            OPCIÓN 1
                           </label>
                         </div>
                   
@@ -78,7 +78,7 @@
                           <input class="form-check-input" type="radio" name="exampleRadios" id="check_dos_table" 
                                  value="table_dos" {{ $credito->aprobacion_nivel_validacion==2 && count($credito_aprobacion)>0?'checked':'' }} {{ $credito->aprobacion_nivel_validacion!=0 && count($credito_aprobacion)>0?'disabled':'' }}>
                           <label class="form-check-label" for="check_dos_table">
-                            NIVEL 2
+                            OPCIÓN 2
                           </label>
                         </div>
                 </div>

@@ -60,6 +60,7 @@
                   <label class="col-sm-5 col-form-label" style="text-align: right;">TEM (%):</label>
                   <div class="col-sm-4">
                     <input type="text" step="any" class="form-control" id="tasa_tem" value="{{ $credito->tasa_tem }}">
+                    <input type="hidden" step="any" class="form-control" id="tasa_tem_old" value="{{ $credito->tasa_tem }}">
                   </div>
                   <div class="col-sm-3">
                     <input type="number" step="any" class="form-control" id="tasa_tem_minima" value="0" disabled>
@@ -271,6 +272,7 @@
           let cargomes  = $('#cargomes').val();
           
           let tasa        = $('#tasa_tem').val();
+          let tasa_tem_old = $('#tasa_tem_old').val()??0;
           let tipotasa    = "{{$credito->modalidad_calculo}}" == 'Interes Simple' ? 1 : 2;
           
           if(monto<=0){
@@ -312,6 +314,7 @@
                   fechainicio: fechainicio,
                   frecuencia: frecuencia,
                   tasa: tasa,
+                  tasa_tem_old: tasa_tem_old,
                   tipotasa: tipotasa,
                   dia_gracia: dia_gracia,
                   cargo: cargo,
@@ -321,7 +324,7 @@
               success: function (res) {
                   if(res.resultado=='ERROR'){
                       $('#table-cronograma > tbody').html('<tr><td colspan="8"><div style="width:100px;height:100px;"></div></td></tr>');
-                      //$('#tasa_tem_minima').val('0.00');
+                      $('#tasa_tem_minima').val(tasa_tem_old);
                       //$('#tasa_tem').val('0.00');
                       $('#tasa_tip').val('0.00');
                       $('#tasa_tcem').val('0.00');
@@ -527,6 +530,7 @@
           monto: monto,
           numerocuota: numerocuota,
           tasa: $('#tasa_tem').val(),
+          tasa_tem_old: $('#tasa_tem_old').val(),
           frecuencia: frecuencia,
           idcredito: '{{ $credito->id }}'
       },

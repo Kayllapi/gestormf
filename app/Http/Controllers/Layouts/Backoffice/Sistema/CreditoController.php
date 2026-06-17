@@ -1046,6 +1046,8 @@ class CreditoController extends Controller
           if($tasatarifario!=''){
               $tasa_tem_minima = $tasatarifario->tem;
               $comision_cargo = $tasatarifario->cargos_otros;
+          } else {
+              $tasa_tem_minima = $request->input('tasa_tem_old') ?? 0;
           }
           
           $frecuenciaDiasMap = [
@@ -1165,18 +1167,19 @@ class CreditoController extends Controller
                   'resultado' => 'ERROR',
                   'mensaje'   => 'No se asignado ningún tarifario para esta frecuencia de pago!!.',
               ]);
-              } else {
+              } 
+              if($request->modalidad_credito == 'REFINANCIADO') {
                 // Es refinanciado
                 $tasatarifario_db = DB::table('tarifario')
                   ->where('tarifario.idcredito_prendatario',$credito->idcredito_prendatario)
                   ->where('tarifario.idforma_pago_credito',$credito->idforma_pago_credito)
                   ->first();
-                $tasa_tem_minima = $tasa_tem;
+                $tasa_tem_minima = $request->input('tasa_tem_old')??0;
                 $comision_cargo = $tasatarifario_db->cargos_otros;
                 if($request->input('tasa')!='' && $request->input('tasa')>0 && $request->input('tasa') < $tasa_tem_minima){
                     return response()->json([
                         'resultado' => 'ERROR',
-                        'mensaje'   => 'El tasa mínima según el tarifario es '.$tasatarifario->tem.'.',
+                        'mensaje'   => 'El tasa mínima según el tarifario es '.$tasa_tem_minima.'.',
                     ]);
                 }
               }

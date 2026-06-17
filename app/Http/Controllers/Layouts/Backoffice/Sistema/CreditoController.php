@@ -1173,6 +1173,11 @@ class CreditoController extends Controller
                 $tasatarifario_db = DB::table('tarifario')
                   ->where('tarifario.idcredito_prendatario',$credito->idcredito_prendatario)
                   ->where('tarifario.idforma_pago_credito',$credito->idforma_pago_credito)
+                  ->where('tarifario.monto','>=',$credito->monto_solicitado)
+                  ->where('tarifario.cuotas','>=',$credito->cuotas)
+                  ->orderBy('tarifario.cuotas','asc')
+                  ->orderBy('tarifario.monto','asc')
+                  ->limit(1)
                   ->first();
                 $tasa_tem_minima = $request->input('tasa_tem_old')??0;
                 $comision_cargo = $tasatarifario_db->cargos_otros;

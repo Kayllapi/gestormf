@@ -235,7 +235,7 @@
                                   padding: 10px;
                                   border-radius: 5px;
                                   width: 80%;
-                                  margin: auto;">El Comentario de Visitas es Obligatorio.</p>
+                                  margin: auto;">El Comentario de Visitas y/o Verificación es Obligatorio.</p>
                   
               @endif
           </div>

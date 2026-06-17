@@ -150,13 +150,13 @@
                               <td>
                               @if($value->idusers!=0)
                                 <select class="form-control" id="per_usuario{{ $num }}" usuario {{$disabled}}>
-                                    <option value="{{ $value->idusers }}" idpermiso="{{ $value->idpermiso }}" idestado="{{ $value->idestado }}">{{ $num }}{{ $value->nombre_usuario }}</option>
+                                    <option value="{{ $value->idusers }}" idpermiso="{{ $value->idpermiso }}" idestado="{{ $value->idestado }}">{{ $value->nombre_usuario }}</option>
                                 </select>
                               @else
                                 <select class="form-control" id="per_usuario{{ $num }}" usuario {{$disabled}}>
                                     <option disabled selected></option>
                                     @foreach($usuario_permiso as $valueusers)
-                                      <option value="{{ $valueusers->idusers }}" idpermiso="{{ $valueusers->idpermiso }}">{{ $valueusers->nombre_personal }}{{ $num }}</option>
+                                      <option value="{{ $valueusers->idusers }}" idpermiso="{{ $valueusers->idpermiso }}">{{ $valueusers->nombre_personal }}</option>
                                     @endforeach
                                 </select>
                               @endif

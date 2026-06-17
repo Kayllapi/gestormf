@@ -987,7 +987,7 @@ class PropuestaCreditoController extends Controller
               if ($existeValidacion && (!$request->idregistro || $request->idregistro == 0)) {
                   return response()->json([
                       'resultado' => 'ERROR',
-                      'mensaje' => 'Este usuario ya validó este crédito.'
+                      'mensaje' => 'Este usuario ya validó su firma para la aprobación de este crédito'
                   ]);
               }
 

@@ -978,6 +978,19 @@ class PropuestaCreditoController extends Controller
                 ]);
               }
 
+              // Verificar si ya existe una aprobación para este usuario en este crédito
+              $existeValidacion = DB::table('credito_aprobacion')
+                  ->where('idcredito', $id)
+                  ->where('idusers', $request->idusers)
+                  ->exists();
+
+              if ($existeValidacion && (!$request->idregistro || $request->idregistro == 0)) {
+                  return response()->json([
+                      'resultado' => 'ERROR',
+                      'mensaje' => 'Este usuario ya validó este crédito.'
+                  ]);
+              }
+
                 $usuario = DB::table('users')
                   ->where('users.id',$request->idusers)
                   ->first();

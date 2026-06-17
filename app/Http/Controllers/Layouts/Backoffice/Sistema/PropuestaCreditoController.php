@@ -721,10 +721,16 @@ class PropuestaCreditoController extends Controller
                 $permisos_requeridos = $json_campo[0][$nivel] ?? [];
 
                 $merged = collect();
+                $ids_usados = [];
+
                 foreach($permisos_requeridos as $permiso_req) {
                     // Buscar si ya tiene registro guardado para este permiso
-                    $existente = $credito_aprobacion_db->firstWhere('idpermiso', $permiso_req['valor']);
+                    $existente = $credito_aprobacion_db->first(function($item) use ($permiso_req, $ids_usados) {
+                        return $item->idpermiso == $permiso_req['valor'] 
+                            && !in_array($item->id, $ids_usados);
+                    });
                     if($existente) {
+                        $ids_usados[] = $existente->id;
                         $merged->push($existente);
                     } else {
                         // Fila vacía para que aparezca activa en el blade
@@ -990,17 +996,10 @@ class PropuestaCreditoController extends Controller
                     'aprobacion_nivel_validacion' => $request->nivel_validacion,
                 ]);
 
-                // ✅ CAMBIO CLAVE: upsert solo de esta fila por idpermiso
-                // Verificar si ya existe un registro para este permiso en este crédito
-                $existente = DB::table('credito_aprobacion')
-                    ->where('idcredito', $id)
-                    ->where('idpermiso', $request->idpermiso)
-                    ->first();
-
-                if($existente){
+                if($request->idregistro && $request->idregistro > 0){
                     // Solo actualizar — no duplicar
                     DB::table('credito_aprobacion')
-                        ->where('id', $existente->id)
+                        ->where('id', $request->idregistro)
                         ->update([
                             'idusers'    => $request->idusers,
                             'comentario' => $request->comentario ?? '',

@@ -121,8 +121,12 @@
                         </tr>
                       </thead>
                       <tbody>
+                        @php
+                            $num = 0;
+                        @endphp
                         @foreach($credito_aprobacion as $value)
                           <?php
+                          $num++;
                           $disabled = '';
                           $color_cajatexto = 'color_cajatexto';
                           if($value->idusers!=0){
@@ -141,32 +145,32 @@
                                         )
                                         ->get();
                           ?>
-                            <tr id="{{ $value->id }}" idpermiso="{{ $value->idpermiso }}" idestado="{{ $value->idestado }}">
+                            <tr id="{{ $num }}" idpermiso="{{ $value->idpermiso }}" idestado="{{ $value->idestado }}" idregistro="{{ $value->id }}">
                               <td><span class="badge bg-warning">{{ $value->nombre_permiso }}</span></td>
                               <td>
                               @if($value->idusers!=0)
-                                <select class="form-control" id="per_usuario{{ $value->id }}" usuario {{$disabled}}>
-                                    <option value="{{ $value->idusers }}" idpermiso="{{ $value->idpermiso }}" idestado="{{ $value->idestado }}">{{ $value->nombre_usuario }}</option>
+                                <select class="form-control" id="per_usuario{{ $num }}" usuario {{$disabled}}>
+                                    <option value="{{ $value->idusers }}" idpermiso="{{ $value->idpermiso }}" idestado="{{ $value->idestado }}">{{ $num }}{{ $value->nombre_usuario }}</option>
                                 </select>
                               @else
-                                <select class="form-control" id="per_usuario{{ $value->id }}" usuario {{$disabled}}>
+                                <select class="form-control" id="per_usuario{{ $num }}" usuario {{$disabled}}>
                                     <option disabled selected></option>
                                     @foreach($usuario_permiso as $valueusers)
-                                      <option value="{{ $valueusers->idusers }}" idpermiso="{{ $valueusers->idpermiso }}">{{ $valueusers->nombre_personal }}</option>
+                                      <option value="{{ $valueusers->idusers }}" idpermiso="{{ $valueusers->idpermiso }}">{{ $valueusers->nombre_personal }}{{ $num }}</option>
                                     @endforeach
                                 </select>
                               @endif
                               <script>
-                                sistema_select2({ input:'#per_usuario{{ $value->id }}' });
+                                sistema_select2({ input:'#per_usuario{{ $num }}' });
                               </script>
                               </td>
-                              <td><input type="password" value="{{ $value->clave_usuario }}" password_users id="per_clave{{ $value->id }}" class="form-control text-center" {{$disabled}}></td>
+                              <td><input type="password" value="{{ $value->clave_usuario }}" password_users id="per_clave{{ $num }}" class="form-control text-center" {{$disabled}}></td>
                               @if($value->idusers!=0)
                                   @if($value->idestado==1)
-                                  <td id="resultado_cambiar_permiso{{ $value->id }}">
+                                  <td id="resultado_cambiar_permiso{{ $num }}">
                                     <div style="background-color: #9AD872;padding: 7px;border-radius: 5px;color: #000;text-align: center;font-weight: bold;">F. REGISTRADO</div></td>
                                   @elseif($value->idestado==2)
-                                  <td id="resultado_cambiar_permiso{{ $value->id }}">
+                                  <td id="resultado_cambiar_permiso{{ $num }}">
                                     <div style="
                                       background-color: #ffc9ca;
                                       padding: 7px;
@@ -177,12 +181,12 @@
                                       font-weight: bold;">ANULADO</div></td>
                                   @endif
                               @else
-                              <td id="resultado_cambiar_permiso{{ $value->id }}" style="width:242px">
-                                <button type="button" class="btn btn-warning" onclick="validarclave({{ $value->id }},1,'#table-permisos-nivel-uno')"><i class="fa-solid fa-check"></i> APROBAR</button>
-                                <button type="button" class="btn btn-danger" onclick="validarclave({{ $value->id }},2,'#table-permisos-nivel-uno')"><i class="fa-solid fa-ban"></i> DESAPROBAR</button>
+                              <td id="resultado_cambiar_permiso{{ $num }}" style="width:242px">
+                                <button type="button" class="btn btn-warning" onclick="validarclave({{ $num }},1,'#table-permisos-nivel-uno')"><i class="fa-solid fa-check"></i> APROBAR</button>
+                                <button type="button" class="btn btn-danger" onclick="validarclave({{ $num }},2,'#table-permisos-nivel-uno')"><i class="fa-solid fa-ban"></i> DESAPROBAR</button>
                               </td>
                               @endif
-                              <td><input type="text" comentario_users id="per_comentario{{ $value->id }}" value="{{ $value->comentario }}" class="form-control {{$color_cajatexto}}" {{$disabled}}></td>
+                              <td><input type="text" comentario_users id="per_comentario{{ $num }}" value="{{ $value->comentario }}" class="form-control {{$color_cajatexto}}" {{$disabled}}></td>
                             </tr>
                         @endforeach
                       </tbody>
@@ -507,7 +511,7 @@
             
         }*/
 
-        tr_body += `<tr id="${num}" idpermiso="${valor.idpermiso}" idestado="0">
+        tr_body += `<tr id="${num}" idpermiso="${valor.idpermiso}" idestado="0" idregistro="0">
                           <td><span class="badge bg-warning" style="color:#000">${valor.permiso}</span></td>
                           <td><select class="form-control" id="per_usuario${num}" usuario>${option_usuario}</select></td>
                           <td><input type="password" password_users id="per_clave${num}" class="form-control text-center"></td>
@@ -559,6 +563,7 @@
   }
   
   function validarclave(num,estado,target){
+        let idregistro = $(target + ' > tbody > tr#' + num).attr('idregistro') ?? 0;
       
         $(target+' > tbody > tr#'+num).attr('idestado',estado);
     
@@ -594,6 +599,7 @@
                   comentario : comentario,
                   idestado : estado,
                   credito_aprobacion : jsonAprobacion(),
+                  idregistro: idregistro,
               }
           },
           function(res){
@@ -608,9 +614,20 @@
             $(target+' > tbody > tr #per_clave'+num).attr('disabled', true);
             $(target+' > tbody > tr #per_comentario'+num).attr('disabled', true);
             $(target+' > tbody > tr #per_comentario'+num).removeClass('color_cajatexto');
-            $('#tipo_validacion').attr('disabled', true);
-            $('#check_uno_table').attr('disabled', true);
-            $('#check_dos_table').attr('disabled', true);
+
+            $('#check_uno_table').off('change').attr('disabled', true);
+            $('#check_dos_table').off('change').attr('disabled', true);
+            $('#tipo_validacion').attr('disabled', true)
+
+            if(res['credito_aprobado'] != 'CORRECTO'){
+                $('#check_uno_table').on('change', function() {
+                    mostrar_permisos($('#tipo_validacion').val(), 1);
+                });
+                $('#check_dos_table').on('change', function() {
+                    mostrar_permisos($('#tipo_validacion').val(), 2);
+                });
+            }
+
             removecarga({input:'#carga_cambiar_estado'});
           
             if(res['credito_aprobado']=='CORRECTO'){

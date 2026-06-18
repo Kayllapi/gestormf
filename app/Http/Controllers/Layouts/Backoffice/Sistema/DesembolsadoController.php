@@ -127,6 +127,10 @@ class DesembolsadoController extends Controller
                   }
                   $idformapago = $credito_formapago->idformapago;
               }
+
+              if ($value->nombremodalidadcredito=='Refinanciado') {
+                $operacionen = 'TRANSITORIO';
+              }
             
               $btn_validar = '';
               if($idformapago==2){

@@ -27,6 +27,9 @@
     </div>
     <div class="modal-body modal-body-cualitativa">
  
+      @if($credito->idmodalidad_credito==4) {{-- refinanciado --}}
+        <input type="hidden" name="idformapago" id="idformapago" value="0">
+      @else
           <div class="row">
             <label class="col-sm-12 col-form-label">Desembolsado desde:</label>
             <div class="col-sm-12">
@@ -38,54 +41,57 @@
             </div>
           </div>
           <div id="cont_banco_n" style="display:none;">
-          <div class="row">
-            <label class="col-sm-12 col-form-label">Bancos:</label>
-            <div class="col-sm-12">
-              <select id="idbanco" class="form-control" disabled>
-                  <option></option>
-                  @foreach($bancos as $value)
-                  <option value="{{ $value->id }}">{{ $value->nombre }}: ***{{ substr($value->cuenta, -5) }}</option>
-                  @endforeach
-              </select>
+            <div class="row">
+              <label class="col-sm-12 col-form-label">Bancos:</label>
+              <div class="col-sm-12">
+                <select id="idbanco" class="form-control" disabled>
+                    <option></option>
+                    @foreach($bancos as $value)
+                    <option value="{{ $value->id }}">{{ $value->nombre }}: ***{{ substr($value->cuenta, -5) }}</option>
+                    @endforeach
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-sm-12 col-form-label">Nro Operación:</label>
+              <div class="col-sm-12">
+                <input type="text" id="numerooperacion" class="form-control" disabled>
+              </div>
             </div>
           </div>
-          <div class="row">
-            <label class="col-sm-12 col-form-label">Nro Operación:</label>
-            <div class="col-sm-12">
-              <input type="text" id="numerooperacion" class="form-control" disabled>
-            </div>
-          </div>
-          </div>
+          <script>
+            sistema_select2({ input:'#idformapago', val: 1 });
+          </script>
+      @endif
           @if($credito->idmodalidad_credito==2)
-          <div class="row">
-            <div class="col-sm-4">
-              <div class="row">
-                  <label class="col-sm-12 col-form-label">Monto Desembolso:</label>
-                  <div class="col-sm-12">
-                    <input type="text" id="monto_desembolsado" value="{{$credito->monto_solicitado}}" class="form-control" disabled>
-                  </div>
+            <div class="row">
+              <div class="col-sm-4">
+                <div class="row">
+                    <label class="col-sm-12 col-form-label">Monto Desembolso:</label>
+                    <div class="col-sm-12">
+                      <input type="text" id="monto_desembolsado" value="{{$credito->monto_solicitado}}" class="form-control" disabled>
+                    </div>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="row">
+                    <label class="col-sm-12 col-form-label">Descuento de Saldo:</label>
+                    <div class="col-sm-12">
+                      <input type="text" id="descuento_saldo" 
+                            value="{{number_format($credito->monto_solicitado-$credito_propuesta->neto_destino_credito, 2, '.', '')}}" class="form-control" disabled>
+                    </div>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="row">
+                    <label class="col-sm-12 col-form-label">Neto a Entregar:</label>
+                    <div class="col-sm-12">
+                      <input type="text" id="neto_entregar" value="{{$credito_propuesta->neto_destino_credito}}" class="form-control" disabled>
+                    </div>
+                </div>
               </div>
             </div>
-            <div class="col-sm-4">
-              <div class="row">
-                  <label class="col-sm-12 col-form-label">Descuento de Saldo:</label>
-                  <div class="col-sm-12">
-                    <input type="text" id="descuento_saldo" 
-                           value="{{number_format($credito->monto_solicitado-$credito_propuesta->neto_destino_credito, 2, '.', '')}}" class="form-control" disabled>
-                  </div>
-              </div>
-            </div>
-            <div class="col-sm-4">
-              <div class="row">
-                  <label class="col-sm-12 col-form-label">Neto a Entregar:</label>
-                  <div class="col-sm-12">
-                    <input type="text" id="neto_entregar" value="{{$credito_propuesta->neto_destino_credito}}" class="form-control" disabled>
-                  </div>
-              </div>
-            </div>
-          </div>
           @endif
-      
       <div class="row mt-1">
         <div class="col" style="flex: 0 0 0%;">
           <button type="submit" class="btn btn-success"><i class="fa-solid fa-check"></i> EJECUTAR DESEMBOLSO</button>
@@ -101,7 +107,7 @@
 </div>
 <script>
   
-    sistema_select2({ input:'#idformapago', val: 1 });
+    
     sistema_select2({ input:'#idbanco' });
   
   $("#idformapago").on("change", function(e) {

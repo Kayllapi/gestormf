@@ -49,7 +49,13 @@
                   <td><b>FECHA:</b> {{ date_format(date_create($credito->fecha_desembolso),'d-m-Y h:s:i A') }}</td>
               </tr>
               <tr>
-                  <td><b>F. DESEMBOLSO:</b> {{ $idformapago==1?'CAJA':'BANCO' }} </td>
+                @php
+                    $formapago = $idformapago==1?'CAJA':'BANCO';
+                    if ($credito->idmodalidad_credito==4) { //Refinanciado
+                        $formapago = 'TRANSITORIO';
+                    }
+                @endphp
+                  <td><b>F. DESEMBOLSO:</b> {{ $formapago }} </td>
               </tr>
               @if($idformapago==2)
               <tr>

@@ -1048,9 +1048,9 @@ class CreditoController extends Controller
           if($tasatarifario!=''){
               $tasa_tem_minima = $tasatarifario->tem;
               $comision_cargo = $tasatarifario->cargos_otros;
-          } else {
+          }/* else {
               $tasa_tem_minima = $request->input('tasa_tem_old') ?? 0;
-          }
+          }*/
           
           $frecuenciaDiasMap = [
             1 => 26,
@@ -1181,14 +1181,14 @@ class CreditoController extends Controller
                   ->orderBy('tarifario.monto','asc')
                   ->limit(1)
                   ->first();
-                $tasa_tem_minima = $request->input('tasa_tem_old')??0;
                 $comision_cargo = $tasatarifario_db->cargos_otros;
+                /*$tasa_tem_minima = $request->input('tasa_tem_old')??0;
                 if($request->input('tasa')!='' && $request->input('tasa')>0 && $request->input('tasa') < $tasa_tem_minima){
                     return response()->json([
                         'resultado' => 'ERROR',
                         'mensaje'   => 'El tasa mínima según el tarifario es '.$tasa_tem_minima.'.',
                     ]);
-                }
+                }*/
               }
           }
           $frecuenciaDiasMap = [

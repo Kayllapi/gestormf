@@ -530,7 +530,7 @@
           monto: monto,
           numerocuota: numerocuota,
           tasa: $('#tasa_tem').val(),
-          tasa_tem_old: $('#tasa_tem_old').val(),
+          // tasa_tem_old: $('#tasa_tem_old').val(),
           frecuencia: frecuencia,
           idcredito: '{{ $credito->id }}'
       },

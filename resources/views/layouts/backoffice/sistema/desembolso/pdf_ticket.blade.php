@@ -31,7 +31,7 @@
           <div class="cabecera"><b>{{ $tienda->nombre }} - {{ $tienda->nombreagencia }}</b></div>
             <div class="linea"></div>
           <br>
-          <div class="titulo"><b>DESEMBOLSO</b></div>
+          <div class="titulo"><b>DESEMBOLSO @if ($credito->idmodalidad_credito==4) DE REFINANCIAMIENTO @endif</b></div>
           <table class="tabla_informativa">
               <tr>
                   <td><b>OP:</b> OP{{ str_pad($operacion, 8, "0", STR_PAD_LEFT) }}</td>

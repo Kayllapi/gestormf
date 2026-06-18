@@ -721,6 +721,8 @@ class CreditoController extends Controller
               // ->join('tarifario','tarifario.id','credito.idtarifario')
               ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
               ->where('credito.estado','PENDIENTE')
+              ->where('credito.idtienda', $idtienda)
+              ->where('credito.idasesor', auth()->user()->id)
               ->select(
                   'credito.*',
                   'cliente.nombrecompleto as nombrecliente',

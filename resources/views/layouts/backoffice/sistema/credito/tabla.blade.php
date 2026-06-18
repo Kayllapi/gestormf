@@ -12,7 +12,7 @@
         </div>
       </div>
       <div class="col-sm-12">
-            <h5 class="modal-title" style="margin-top: 10px;text-align: center;">Préstamos en Procesos</h5>
+        <h5 class="modal-title" style="margin-top: 10px;text-align: center;"><span style="float: left; font-size: 15px;">({{$tienda->nombreagencia}} / {{auth()->user()->nombrecompleto}})</span> Préstamos en Procesos</h5>
         <div class="card">
           <div class="card-body">
             <div style="overflow-y: scroll;height: calc(-394px + 100vh);">
@@ -50,7 +50,7 @@
   lista_credito();
   function lista_credito(id){
     $.ajax({
-      url:"{{url('backoffice/0/credito/showtable')}}",
+      url:"{{url('backoffice/'.$tienda->id.'/credito/showtable')}}",
       type:'GET',
       data: {
 //           idcliente : id

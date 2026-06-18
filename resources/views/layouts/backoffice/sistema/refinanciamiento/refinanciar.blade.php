@@ -324,7 +324,7 @@
               success: function (res) {
                   if(res.resultado=='ERROR'){
                       $('#table-cronograma > tbody').html('<tr><td colspan="8"><div style="width:100px;height:100px;"></div></td></tr>');
-                      $('#tasa_tem_minima').val(tasa_tem_old);
+                      // $('#tasa_tem_minima').val(tasa_tem_old);
                       //$('#tasa_tem').val('0.00');
                       $('#tasa_tip').val('0.00');
                       $('#tasa_tcem').val('0.00');

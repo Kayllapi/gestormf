@@ -609,7 +609,7 @@ class RefinanciamientoController extends Controller
                     'capital'         => $value['saldo'],
                     'amortizacion'    => $value['amortizacion'],
                     'interes'         => $value['interes'],
-                    'cuotapagar'      => 0,
+                    'cuotapagar'      => $value['cuota'],
                     'cuota_real'      => $value['cuotafinal'],
                     'resto_redondeo'  => 0,
                     'comision'        => $value['comision'],

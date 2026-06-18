@@ -472,6 +472,16 @@ class RefinanciamientoController extends Controller
                     'resultado' => 'ERROR',
                     'mensaje'   => 'No se asignado ningún tarifario para esta frecuencia de pago!!.',
                 ]);*/
+                $tasatarifario_db = DB::table('tarifario')
+                  ->where('tarifario.idcredito_prendatario',$credito->idcredito_prendatario)
+                  ->where('tarifario.idforma_pago_credito',$credito->idforma_pago_credito)
+                  ->where('tarifario.monto','>=',$credito->monto_solicitado)
+                  ->where('tarifario.cuotas','>=',$credito->cuotas)
+                  ->orderBy('tarifario.cuotas','asc')
+                  ->orderBy('tarifario.monto','asc')
+                  ->limit(1)
+                  ->first();
+                $comision_cargo = $tasatarifario_db->cargos_otros;
             }
 
             $frecuenciaDiasMap = [
@@ -1327,7 +1337,7 @@ class RefinanciamientoController extends Controller
                   'capital'         => $value['saldo'],
                   'amortizacion'    => $value['amortizacion'],
                   'interes'         => $value['interes'],
-                  'cuotapagar'      => 0,
+                  'cuotapagar'      => $value['cuota'],
                   'cuota_real'      => $value['cuotafinal'],
                   'resto_redondeo'  => 0,
                   'comision'        => $value['comision'],

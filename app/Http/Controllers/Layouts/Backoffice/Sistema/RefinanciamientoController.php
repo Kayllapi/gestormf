@@ -546,8 +546,7 @@ class RefinanciamientoController extends Controller
             $tipo_operacion_credito = DB::table('tipo_operacion_credito')->whereId($credito->idtipo_operacion_credito)->first();
             $forma_credito = DB::table('forma_credito')->whereId($credito->idforma_credito)->first();
             $tipo_destino_credito = DB::table('tipo_destino_credito')->whereId($credito->idtipo_destino_credito)->first();
-            $modalidad_credito = DB::table('modalidad_credito')->whereId($credito->idmodalidad_credito)->first();
-            
+            $modalidad_credito = DB::table('modalidad_credito')->whereId(4)->first();
     
           
             $idcreditorefinanciado = DB::table('credito')->insertGetId([

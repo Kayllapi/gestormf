@@ -306,7 +306,8 @@
                   dia_gracia: dia_gracia,
                   cargo: cargo,
                   cargomes: cargomes,
-                  idcredito: '{{ $credito->id }}'
+                  idcredito: '{{ $credito->id }}',
+                  modalidad_credito: '{{ $credito->modalidad_credito }}',
               },
               success: function (res) {
                   if(res.resultado=='ERROR'){

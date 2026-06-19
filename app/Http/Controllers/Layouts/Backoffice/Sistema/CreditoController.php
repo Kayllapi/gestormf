@@ -1069,7 +1069,6 @@ class CreditoController extends Controller
         }
         else if($id=='cronograma'){
           
-          
           $credito = DB::table('credito')
                   ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
                   ->where('credito.id',$request->input('idcredito'))
@@ -1086,7 +1085,7 @@ class CreditoController extends Controller
                 ->limit(1)
                 ->first();
           
-          if($montomaximo!='' && $request->modalidad_credito != 'REFINANCIADO'){
+          if($montomaximo!='' && strtoupper($request->modalidad_credito) != 'REFINANCIADO'){
               if($request->input('monto')>$montomaximo->monto){
                   return response()->json([
                       'resultado' => 'ERROR',
@@ -1125,7 +1124,7 @@ class CreditoController extends Controller
               }
           }
           
-          if($credito->idforma_credito == 1 && $request->modalidad_credito != 'REFINANCIADO'){
+          if($credito->idforma_credito == 1 && strtoupper($request->modalidad_credito) != 'REFINANCIADO'){
               if($request->input('monto') > $credito->monto_cobertura_garantia){
                   return response()->json([
                       'resultado' => 'ERROR',
@@ -1152,7 +1151,7 @@ class CreditoController extends Controller
               $comision_cargo = $tasatarifario->cargos_otros;
               $tasa_tem_minima = $tasatarifario->tem;
               if($request->input('tasa')!='' && $request->input('tasa')>0 && $request->input('tasa') < $tasatarifario->tem){
-                  // if($request->modalidad_credito != 'REFINANCIADO'){
+                  // if(strtoupper($request->modalidad_credito) != 'REFINANCIADO'){
                   return response()->json([
                       'resultado' => 'ERROR',
                       'mensaje'   => 'El tasa mínima según el tarifario es '.$tasatarifario->tem.'.',
@@ -1164,13 +1163,13 @@ class CreditoController extends Controller
                   }
               }
           }else{
-              if($request->modalidad_credito != 'REFINANCIADO'){
+              if(strtoupper($request->modalidad_credito) != 'REFINANCIADO'){
               return response()->json([
                   'resultado' => 'ERROR',
                   'mensaje'   => 'No se asignado ningún tarifario para esta frecuencia de pago!!.',
               ]);
               } 
-              if($request->modalidad_credito == 'REFINANCIADO') {
+              if(strtoupper($request->modalidad_credito) == 'REFINANCIADO') {
                 // Es refinanciado
                 $tasatarifario_db = DB::table('tarifario')
                   ->where('tarifario.idcredito_prendatario',$credito->idcredito_prendatario)

@@ -27,9 +27,10 @@
     </div>
     <div class="modal-body modal-body-cualitativa">
  
-      @if($credito->idmodalidad_credito==4) {{-- refinanciado --}}
+      {{-- refinanciado --}}
+      {{-- @if($credito->idmodalidad_credito==4)
         <input type="hidden" name="idformapago" id="idformapago" value="0">
-      @else
+      @else --}}
           <div class="row">
             <label class="col-sm-12 col-form-label">Desembolsado desde:</label>
             <div class="col-sm-12">
@@ -62,7 +63,7 @@
           <script>
             sistema_select2({ input:'#idformapago', val: 1 });
           </script>
-      @endif
+      {{-- @endif --}}
           @if($credito->idmodalidad_credito==2)
             <div class="row">
               <div class="col-sm-4">

@@ -109,7 +109,7 @@ class DesembolsoController extends Controller
     public function edit(Request $request, $idtienda, $id)
     {
       $tienda = DB::table('tienda')->whereId($idtienda)->first();
-      dump('id: ',$id);
+    //   dump('id: ',$id);
  
       $credito = DB::table('credito')
                     ->join('users as cliente','cliente.id','credito.idcliente')

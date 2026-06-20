@@ -16,14 +16,14 @@
         <div class="col-md-6" style="text-align: right;"><b>PRODUCTO:</b> <span style="font-weight: normal;">{{ $credito->nombreproductocredito }}</span></div>
       </div>
        <div class="col-sm-12 mt-2 mb-1 text-center">
-            <button type="button" class="btn btn-primary" onclick="verpdf('pdf_ticket')"> TICKET DE DESEMBOLSO</button>
-            <button type="button" class="btn btn-primary" onclick="verpdf('pdf_cronograma')"> CRONOGRAMA</button>
-            <button type="button" class="btn btn-primary" onclick="verpdf('pdf_contrato')"> CONTRATO</button>
-            <button type="button" class="btn btn-primary" onclick="verpdf('pdf_resumen')"> H. RESUMEN</button>
+            <button type="button" class="btn btn-primary" onclick="verpdf('pdf_ticket',0,0,{{$credito->id}})"> TICKET DE DESEMBOLSO</button>
+            <button type="button" class="btn btn-primary" onclick="verpdf('pdf_cronograma',0,0,{{$credito->id}})"> CRONOGRAMA</button>
+            <button type="button" class="btn btn-primary" onclick="verpdf('pdf_contrato',0,0,{{$credito->id}})"> CONTRATO</button>
+            <button type="button" class="btn btn-primary" onclick="verpdf('pdf_resumen',0,0,{{$credito->id}})"> H. RESUMEN</button>
             @if($credito->idforma_credito==1)
-                <button type="button" class="btn btn-primary" onclick="verpdf('pdf_declaracion')"> DECLARACIÓN JURADA</button>
+                <button type="button" class="btn btn-primary" onclick="verpdf('pdf_declaracion',0,0,{{$credito->id}})"> DECLARACIÓN JURADA</button>
             @endif
-            <button type="button" class="btn btn-warning" onclick="verpdf('pdf_pagare')"> PAGARÉ</button>
+            <button type="button" class="btn btn-warning" onclick="verpdf('pdf_pagare',0,0,{{$credito->id}})"> PAGARÉ</button>
             <button type="button"
                 class="btn btn-info"
                 id="btn_compartir"
@@ -35,7 +35,7 @@
                 <hr style="margin-top: 8px;margin-bottom: 8px;">
                 <?php $i=1 ?>
                 @foreach($garantias as $value)
-                    <button type="button" class="btn btn-warning1" onclick="verpdf('pdf_ticketprendario',{{$value->id}},{{$i}})"> TICKET DE GARANTIA {{ $i }}</button>
+                    <button type="button" class="btn btn-warning1" onclick="verpdf('pdf_ticketprendario',{{$value->id}},{{$i}},{{$credito->id}})"> TICKET DE GARANTIA {{ $i }}</button>
                     <?php $i++ ?>
                 @endforeach
             @endif
@@ -47,7 +47,7 @@
 <script>
 const pdfs_compartibles = ['pdf_ticket','pdf_cronograma','pdf_contrato','pdf_resumen'];
 let pdf_activo = 'pdf_cronograma';
-function verpdf(valor,idgarantia,num){
+function verpdf(valor,idgarantia,num,idcredito){
     pdf_activo = valor;
     // mostrar u ocultar botón compartir
     if(pdfs_compartibles.includes(valor)){
@@ -55,7 +55,7 @@ function verpdf(valor,idgarantia,num){
     } else {
         $('#btn_compartir').hide();
     }
-    $('#iframe_acta_aprobacion').attr('src',"{{ url('/backoffice/'.$tienda->id.'/desembolso/'.$credito->id.'/edit?view=') }}"+valor+'&idgarantia='+idgarantia+'&num='+num+'#zoom=100');
+    $('#iframe_acta_aprobacion').attr('src',"{{ url('/backoffice') }}/{{$tienda->id}}/desembolso/"+idcredito+"/edit?view="+valor+"&idgarantia="+idgarantia+"&num="+num+"#zoom=100");
 }
   /*imprimirTicketPdf();
   function imprimirTicketPdf(){

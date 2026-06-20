@@ -11,7 +11,7 @@
           },
           function(res){
               lista_credito();
-              verpdf('pdf_ticket');
+              verpdf('pdf_ticket',0,0,{{$credito->id}});
               $('#cont_botonesdesembolso').css('display','block'); 
               $('#cont_garantias').css('display','block'); 
               $('#btn_desembolsar').css('display','none'); 

@@ -19,7 +19,7 @@
               $('#modal-close-desembolar-credito').click();
               removecarga({input:'#carga_desembolsar_credito'});
           },this)"> 
-
+{{-- @dump($credito) --}}
   
     <div class="modal-header" style="border-bottom: 0;">
         <h5 class="modal-title">DESEMBOLSAR CRÉDITO </h5>
@@ -62,6 +62,17 @@
           </div>
           <script>
             sistema_select2({ input:'#idformapago', val: 1 });
+            sistema_select2({ input:'#idbanco' });
+            $("#idformapago").on("change", function(e) {
+                $('#cont_banco_n').css('display','none');
+                $('#numerooperacion').attr('disabled',true);
+                $('#idbanco').attr('disabled',true);
+                if(e.currentTarget.value==2){
+                    $('#cont_banco_n').css('display','block');
+                    $('#numerooperacion').attr('disabled',false);
+                    $('#idbanco').attr('disabled',false);
+                }
+            });
           </script>
       @endif
           @if($credito->idmodalidad_credito==2)
@@ -106,21 +117,3 @@
       </div>
 </form> 
 </div>
-<script>
-  
-    
-    sistema_select2({ input:'#idbanco' });
-  
-  $("#idformapago").on("change", function(e) {
-    
-      $('#cont_banco_n').css('display','none');
-      $('#numerooperacion').attr('disabled',true);
-      $('#idbanco').attr('disabled',true);
-      if(e.currentTarget.value==2){
-          $('#cont_banco_n').css('display','block');
-          $('#numerooperacion').attr('disabled',false);
-          $('#idbanco').attr('disabled',false);
-      }
-  });
-  
-</script>

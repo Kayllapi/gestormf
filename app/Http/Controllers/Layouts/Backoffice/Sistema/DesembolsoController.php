@@ -109,6 +109,7 @@ class DesembolsoController extends Controller
     public function edit(Request $request, $idtienda, $id)
     {
       $tienda = DB::table('tienda')->whereId($idtienda)->first();
+      dump('id: ',$id);
  
       $credito = DB::table('credito')
                     ->join('users as cliente','cliente.id','credito.idcliente')
@@ -205,11 +206,13 @@ class DesembolsoController extends Controller
 
             $bancos = DB::table('banco')->where('estado','ACTIVO')->get();
             
-            $credito_propuesta = DB::table('credito_propuesta')->where('idcredito',$credito->id)->first();
+            $credito_propuesta = DB::table('credito_propuesta')->where('idcredito',$id)->first();
+            $credito_desembolsar = DB::table('credito')->whereId($id)->first();
+                    // dump('desembolsar_ticket',$credito_desembolsar);
             
             return view(sistema_view().'/desembolso/desembolsarticket',[
             'tienda' => $tienda,
-            'credito' => $credito,
+            'credito' => $credito_desembolsar,
             'usuario' => $usuario,
             'bancos' => $bancos,
             'credito_propuesta' => $credito_propuesta,
@@ -465,6 +468,7 @@ class DesembolsoController extends Controller
               }
           
               $credito = DB::table('credito')->whereId($id)->first();
+            //   dd($credito);
 
               $consolidadooperaciones = consolidadooperaciones($tienda,$idtienda,now()->format('Y-m-d'));
               if($request->idformapago==1){

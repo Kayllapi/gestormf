@@ -486,16 +486,6 @@ class DesembolsoController extends Controller
                   } 
               }
           
-              $credito_ult = DB::table('credito')
-                  ->orderBy('credito.cuenta','desc')
-                  ->limit(1)
-                  ->first();
-              $codigo_credito = 1;
-              if($credito_ult!=''){
-                  $codigo_credito = $credito_ult->cuenta+1;
-              }
-          
-          
               $monto_desembolsado = 0;
               $descuento_saldo = 0;
               $neto_entregar = 0;
@@ -786,7 +776,16 @@ class DesembolsoController extends Controller
                   }
                              
               }
-              
+          
+              $credito_ult = DB::table('credito')
+                  ->orderBy('credito.cuenta','desc')
+                  ->limit(1)
+                  ->first();
+              $codigo_credito = 1;
+              if($credito_ult!=''){
+                  $codigo_credito = $credito_ult->cuenta+1;
+              }
+          
               DB::table('credito')->whereId($id)->update([
                 'cuenta' => $codigo_credito,
                 'monto_desembolsado' => $monto_desembolsado,

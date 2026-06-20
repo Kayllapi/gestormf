@@ -490,9 +490,9 @@ class DesembolsoController extends Controller
                   ->orderBy('credito.cuenta','desc')
                   ->limit(1)
                   ->first();
-              $codigo = 1;
+              $codigo_credito = 1;
               if($credito_ult!=''){
-                  $codigo = $credito_ult->cuenta+1;
+                  $codigo_credito = $credito_ult->cuenta+1;
               }
           
           
@@ -569,9 +569,9 @@ class DesembolsoController extends Controller
                               ->orderBy('credito_cobranzacuota.codigo','desc')
                               ->limit(1)
                               ->first();
-                          $codigo = 1;
+                          $codigo_cobranza = 1;
                           if($credito_cobranzacuota!=''){
-                              $codigo = $credito_cobranzacuota->codigo+1;
+                              $codigo_cobranza = $credito_cobranzacuota->codigo+1;
                           }
 
                           $bancoo = DB::table('banco')->where('banco.id',$request->idbanco!=null?$request->idbanco:0)->first();
@@ -613,7 +613,7 @@ class DesembolsoController extends Controller
 
                           $idcredito_cobranzacuota = DB::table('credito_cobranzacuota')->insertGetId([
                               'fecharegistro' => Carbon::now(),
-                              'codigo' => $codigo,
+                              'codigo' => $codigo_cobranza,
                               'total_pagar' => $cronograma['select_totalcuota'],
                               'total_recibido' => $cronograma['select_totalcuota'],
                               'vuelto' => 0,
@@ -788,7 +788,7 @@ class DesembolsoController extends Controller
               }
               
               DB::table('credito')->whereId($id)->update([
-                'cuenta' => $codigo,
+                'cuenta' => $codigo_credito,
                 'monto_desembolsado' => $monto_desembolsado,
                 'descuento_saldo' => $descuento_saldo,
                 'neto_entregar' => $neto_entregar,
@@ -918,9 +918,9 @@ class DesembolsoController extends Controller
                     ->orderBy('credito_cobranzacuota.codigo','desc')
                     ->limit(1)
                     ->first();
-                $codigo = 1;
+                $codigo_cobranza = 1;
                 if($credito_cobranzacuota!=''){
-                    $codigo = $credito_cobranzacuota->codigo+1;
+                    $codigo_cobranza = $credito_cobranzacuota->codigo+1;
                 }
 
                 //$bancoo = DB::table('banco')->where('banco.id',$request->idbanco!=null?$request->idbanco:0)->first();
@@ -951,7 +951,7 @@ class DesembolsoController extends Controller
 
                 $idcredito_cobranzacuota = DB::table('credito_cobranzacuota')->insertGetId([
                     'fecharegistro' => Carbon::now(),
-                    'codigo' => $codigo,
+                    'codigo' => $codigo_cobranza,
                     'total_pagar' => $total_pagar,
                     'total_recibido' => $total_recibido,
                     'vuelto' => 0,
@@ -1070,13 +1070,13 @@ class DesembolsoController extends Controller
                           ->orderBy('credito_adelanto.codigo','desc')
                           ->limit(1)
                           ->first();
-                      $codigo = 1;
+                      $codigo_adelanto = 1;
                       if($credito_adelanto!=''){
-                          $codigo = $credito_adelanto->codigo+1;
+                          $codigo_adelanto = $credito_adelanto->codigo+1;
                       }
                       DB::table('credito_adelanto')->insert([
                          'fecharegistro'        => Carbon::now(),
-                         'codigo'               => $codigo,
+                         'codigo'               => $codigo_adelanto,
                          'numerocuota'          => $value['numerocuota'],
                          'atraso'               => $value['atraso_dias'],
 

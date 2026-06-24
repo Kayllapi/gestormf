@@ -33,7 +33,7 @@
                     <i class="fa-solid fa-share-nodes" style="width: 30px; font-size: 20px;"></i>
                 </button>
             </div>
-            <button type="button" class="btn btn-success" onclick="realizar_desembolsoTicket({{ $credito->id }})" id="btn_desembolsar"><i class="fa-solid fa-check"></i> DESEMBOLSAR {{ $credito->id }}</button>
+            <button type="button" class="btn btn-success" onclick="realizar_desembolsoTicket({{ $credito->id }})" id="btn_desembolsar"><i class="fa-solid fa-check"></i> DESEMBOLSAR</button>
             <div id="cont_garantias" style="display:none;">
                 @if($credito->idforma_credito==1)
                     <hr style="margin-top: 8px;margin-bottom: 8px;">

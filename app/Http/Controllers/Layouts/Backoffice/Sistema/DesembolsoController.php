@@ -1041,7 +1041,7 @@ class DesembolsoController extends Controller
                             'descontar_penalidad'        => $value['descontar_penalidad'],
                             'descontar_compensatorio'    => $value['descontar_compensatorio'],
                             'descontar_totalcuota'       => $value['descontar_totalcuota'],
-                            //'idcredito_cobranzacuota'    => $idcredito_cobranzacuota,
+                            'idcredito_cobranzacuota'    => $idcredito_cobranzacuota,
                             'idestadocredito_cronograma' => 2,
                             'idestadocronograma_pago'    => 2, // =pagorealizados
                       ]);
@@ -1060,6 +1060,8 @@ class DesembolsoController extends Controller
                           ->update([
                             'acuenta' => $value['acuenta'],
                             'idestadocronograma_pago'    => 2,
+                            'idestadocredito_cronograma' => 3,
+                            'idcredito_cobranzacuota'    => $idcredito_cobranzacuota,
                       ]);
                     }
 

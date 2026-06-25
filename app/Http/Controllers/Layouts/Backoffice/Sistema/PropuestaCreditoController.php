@@ -210,7 +210,7 @@ class PropuestaCreditoController extends Controller
                   $opcion = "";
               }
               $formacredito = $value->idforma_credito == 1 ? 'CP' : ($value->idforma_credito == 2 ? 'CNP' : '');
-              $html .= "<tr id='show_data_select' idcredito='{$value->id}' estado='{$value->estado}'>
+              $html .= "<tr id='show_data_select' idcredito='{$value->id}' estado='{$value->estado}' idcredito_refinanciado='{$value->idcredito_refinanciado}'>
                             <td>".($key+1)."</td>
                             <td>{$value->nombrecliente}</td>
                             <td>{$value->nombreaval}</td>

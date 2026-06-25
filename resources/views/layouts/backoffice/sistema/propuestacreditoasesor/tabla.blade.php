@@ -31,7 +31,7 @@
                 </div>
                 <div class="row">
                   <div class="col-sm-12">
-                    <button type="button" class="btn btn-warning" onclick="cambiar_estado('PENDIENTE')"> PASAR A GENERAR CRÉDITO</button>
+                    <button type="button" class="btn btn-warning" onclick="cambiar_estado('PENDIENTE')" id="btn_pasargenerarcredito"> PASAR A GENERAR CRÉDITO</button>
                     <button type="button" class="btn btn-success" onclick="cambiar_estado('APROBADO')"> APROBAR CRÉDITO</button>
                     <button type="button" class="btn btn-info" onclick="acta_aprobacion()" style="float: right;"> 
                     <b>ACTA DE APROBACIÓN</b><br>
@@ -173,6 +173,12 @@
         $("tr#show_data_select").on("click", function() {
             $('tr.selected').removeClass('selected');
             $(this).addClass('selected');
+            let idcredito_refinanciado = $(this).attr('idcredito_refinanciado');
+            if (idcredito_refinanciado!=0) {
+              $('#btn_pasargenerarcredito').hide();
+            } else {
+              $('#btn_pasargenerarcredito').show();
+            }
         });
       }
     })

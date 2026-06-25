@@ -50,8 +50,19 @@
 </form>   
 </div>
 <script>
-const pdfs_compartibles = ['pdf_ticket','pdf_cronograma','pdf_contrato','pdf_resumen'];
-let pdf_activo = 'pdf_ticket';
+if (typeof pdfs_compartibles === 'undefined') {
+    var pdfs_compartibles = [
+        'pdf_ticket',
+        'pdf_cronograma',
+        'pdf_contrato',
+        'pdf_resumen'
+    ];
+}
+if (typeof pdf_activo === 'undefined') {
+    var pdf_activo = 'pdf_ticket';
+}
+// let pdfs_compartibles = ['pdf_ticket','pdf_cronograma','pdf_contrato','pdf_resumen'];
+// let pdf_activo = 'pdf_ticket';
 
 function verpdf(valor,idgarantia,num,idcredito){
     pdf_activo = valor;

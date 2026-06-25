@@ -62,7 +62,7 @@
                           return false;
                         }
                         if(estado == "CANCELADO"){
-                          var mensaje = "No puede eliminar un Crédito Cancelado.";
+                          var mensaje = "Es Crédito Cancelado, no se puede Pasar, Aprobar y Eliminar.";
                           modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });    
                           return false;
                         }

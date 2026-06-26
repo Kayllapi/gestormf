@@ -1421,8 +1421,9 @@ class PropuestaCreditoController extends Controller
                       ]);
 
                       $credito_cronograma = DB::table('credito_cronograma')
-                          ->where('credito_cronograma.idcredito',$credito->id)
-                          ->where('credito_cronograma.idcredito_cobranzacuota', $credito->idcredito_cobranzacuota)
+                          ->where('credito_cronograma.idcredito',$credito_cobranzacuota->idcredito)
+                          // ->where('credito_cronograma.idcredito_cobranzacuota', $credito->idcredito_cobranzacuota)
+                          ->where('credito_cronograma.idestadocronograma_pago',2)
                           ->orderBy('credito_cronograma.numerocuota','desc')
                           ->get();
 
@@ -1430,19 +1431,23 @@ class PropuestaCreditoController extends Controller
                           $total_adelanto = DB::table('credito_adelanto')
                               ->where('credito_adelanto.idestadocredito_adelanto',1)
                               ->where('credito_adelanto.numerocuota',$value->numerocuota)
+                              ->where('credito_adelanto.idcredito_cobranzacuota',$credito_cobranzacuota->id)
+                              // ->where('credito_adelanto.idcredito',$credito->id)
                               ->sum('credito_adelanto.total');
+                          $total_adelanto = (float) $total_adelanto;
+                          $value_acuenta = (float) $value->acuenta;
                           if($total_adelanto>0){
                               $acuenta = 0;
                               $idestadocredito_cronograma = 0;
                               $idestadocronograma_pago = 0;
-                              if($value->acuenta>0 && $value->acuenta<=$total_adelanto){
-                                  $acuenta = $total_adelanto-$value->acuenta; //3.20-3.20=0
+                              if($value_acuenta>0 && $value_acuenta<=$total_adelanto){
+                                  $acuenta = $total_adelanto-$value_acuenta; //3.20-3.20=0
                                   $idestadocredito_cronograma = $value->idestadocredito_cronograma == 3 ? 2 : 1;
                                   $idestadocronograma_pago = $value->idestadocredito_cronograma == 3 ? 2 : 0;
                               }else{
-                                  $acuenta = $value->acuenta-$total_adelanto; // 22.80-7.80=15
+                                  $acuenta = $value_acuenta-$total_adelanto; // 22.80-7.80=15
                                   $idestadocredito_cronograma = 1;
-                                  $idestadocronograma_pago = 0;
+                                  $idestadocronograma_pago = 2;
                               }
                               if($credito_cobranzacuota->idestado_congelarcredito==2){ // credito congelado
                                   DB::table('credito_cronograma')
@@ -1451,7 +1456,7 @@ class PropuestaCreditoController extends Controller
                                         'acuenta' => $acuenta,
                                         'idestadocredito_cronograma' => $idestadocredito_cronograma,
                                         'idestadocronograma_pago' => $idestadocronograma_pago,
-                                        'idcredito_cobranzacuota' => 0,
+                                        // 'idcredito_cobranzacuota' => 0,
                                   ]);
                               }else{
                                   DB::table('credito_cronograma')
@@ -1460,11 +1465,74 @@ class PropuestaCreditoController extends Controller
                                         'acuenta' => $acuenta,
                                         'idestadocredito_cronograma' => $idestadocredito_cronograma,
                                         'idestadocronograma_pago' => $idestadocronograma_pago,
-                                        'idcredito_cobranzacuota' => 0,
+
+                                        'tenencia'             => 0,
+                                        'penalidad'            => 0,
+                                        'compensatorio'        => 0,
+                                        'totalcuota'           => 0,
+
+                                        'atraso_dias'                => 0,
+                                        'pagar_amortizacion'         => 0,
+                                        'pagar_interes'              => 0,
+                                        'pagar_comision'             => 0,
+                                        'pagar_cargo'                => 0,
+                                        'pagar_cuota'                => 0,
+                                        'pagar_tenencia'             => 0,
+                                        'pagar_penalidad'            => 0,
+                                        'pagar_compensatorio'        => 0,
+                                        'pagar_totalcuota'           => 0,
+                                        'descontar_amortizacion'     => 0,
+                                        'descontar_interes'          => 0,
+                                        'descontar_comision'         => 0,
+                                        'descontar_cargo'            => 0,
+                                        'descontar_cuota'            => 0,
+                                        'descontar_tenencia'         => 0,
+                                        'descontar_penalidad'        => 0,
+                                        'descontar_compensatorio'    => 0,
+                                        'descontar_totalcuota'       => 0,
+                                        'idcredito_cobranzacuota'    => 0,
                                   ]);
                               }
                           }
                           else{
+                            DB::table('credito_cronograma')
+                                ->whereId($value->id)
+                                ->update([
+                                  'idestadocredito_cronograma' => $value->idestadocredito_cronograma == 3 ? 2 : 1,
+                                  'idestadocronograma_pago' => $value->idestadocredito_cronograma == 3 ? 2 : 0,
+                                  // 'idcredito_cobranzacuota' => 0,
+                            ]);
+                            if ($value->idestadocredito_cronograma != 3) {
+                              DB::table('credito_cronograma')
+                                  ->whereId($value->id)
+                                  ->update([
+                                    'tenencia'             => 0,
+                                    'penalidad'            => 0,
+                                    'compensatorio'        => 0,
+                                    'totalcuota'           => 0,
+
+                                    'atraso_dias'                => 0,
+                                    'pagar_amortizacion'         => 0,
+                                    'pagar_interes'              => 0,
+                                    'pagar_comision'             => 0,
+                                    'pagar_cargo'                => 0,
+                                    'pagar_cuota'                => 0,
+                                    'pagar_tenencia'             => 0,
+                                    'pagar_penalidad'            => 0,
+                                    'pagar_compensatorio'        => 0,
+                                    'pagar_totalcuota'           => 0,
+                                    'descontar_amortizacion'     => 0,
+                                    'descontar_interes'          => 0,
+                                    'descontar_comision'         => 0,
+                                    'descontar_cargo'            => 0,
+                                    'descontar_cuota'            => 0,
+                                    'descontar_tenencia'         => 0,
+                                    'descontar_penalidad'        => 0,
+                                    'descontar_compensatorio'    => 0,
+                                    'descontar_totalcuota'       => 0,
+                                    'idcredito_cobranzacuota'    => 0,
+                              ]);
+                            }
                             continue;
                           }
                       }

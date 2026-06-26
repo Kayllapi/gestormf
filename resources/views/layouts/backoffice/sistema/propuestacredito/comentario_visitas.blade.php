@@ -24,7 +24,7 @@
           class="btn btn-success mb-2"
           id="btn-autorizar-garantia"
           onclick="modificar_opciones()">
-          <i class="fa-solid fa-pencil"></i> Editar
+          <i class="fa-solid fa-pencil"></i> Registrar / Editar
         </button>
         {{-- @if($credito->comentariovisita!='')
           <div class="row">

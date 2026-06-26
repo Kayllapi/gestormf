@@ -20,7 +20,7 @@
         </div>
             <div class="mt-2 bg-primary subtitulo">Aprobación</div>
               <div class="mb-1">
-                  <label>Responsable *</label>
+                  <label>Responsables (Administración o Asesor de Negocios Senior) *</label>
                   <select class="form-select" id="idresponsable_validacion">
                       <option value=""></option>
                       @foreach($usuarios as $value)

@@ -932,13 +932,12 @@ class PropuestaCreditoController extends Controller
       }
       else if($request->input('view') == 'modificar'){
         $usuarios = DB::table('users')
-            ->join('users_permiso','users_permiso.idusers','users.id')
-            ->join('permiso','permiso.id','users_permiso.idpermiso')
-            ->whereIn('users_permiso.idpermiso',[1,2])
-            ->where('users_permiso.idtienda',$idtienda)
-            ->where('users_permiso.idestado',1)
-            ->select('users.*','permiso.nombre as nombrepermiso')
-            ->get();
+          ->join('users_permiso','users_permiso.idusers','users.id')
+          ->join('permiso','permiso.id','users_permiso.idpermiso')
+          ->whereIn('users_permiso.idpermiso',[1,3])
+          ->where('users_permiso.idtienda',$idtienda)
+          ->select('users.*','permiso.nombre as nombrepermiso')
+          ->get();
         return view(sistema_view().'/propuestacredito/modificar',[
           'tienda' => $tienda,
           'usuarios' => $usuarios,

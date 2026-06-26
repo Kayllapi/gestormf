@@ -930,7 +930,20 @@ class PropuestaCreditoController extends Controller
           'usuarios' => $usuarios,
         ]);
       }
-      
+      else if($request->input('view') == 'modificar'){
+        $usuarios = DB::table('users')
+            ->join('users_permiso','users_permiso.idusers','users.id')
+            ->join('permiso','permiso.id','users_permiso.idpermiso')
+            ->whereIn('users_permiso.idpermiso',[1,2])
+            ->where('users_permiso.idtienda',$idtienda)
+            ->where('users_permiso.idestado',1)
+            ->select('users.*','permiso.nombre as nombrepermiso')
+            ->get();
+        return view(sistema_view().'/propuestacredito/modificar',[
+          'tienda' => $tienda,
+          'usuarios' => $usuarios,
+        ]);
+      }
     }
 
     public function update(Request $request, $idtienda, $id)
@@ -1711,8 +1724,36 @@ class PropuestaCreditoController extends Controller
                 'mensaje'   => 'Se ha actualizado correctamente.'
             ]);
         }
-        
-    
+        else if($request->input('view') == 'modificar') {
+            $rules = [
+                'idresponsable_validacion' => 'required',          
+                'responsableclave' => 'required',              
+            ];
+            $messages = [
+                'idresponsable_validacion.required' => 'El "Responsable" es Obligatorio.',
+                'responsableclave.required' => 'La "Contraseña" es Obligatorio.',
+            ];
+            $this->validate($request,$rules,$messages);
+          
+            $usuario = DB::table('users')
+                ->where('users.id',$request->idresponsable_validacion)
+                ->where('users.clave',$request->responsableclave)
+                ->first();
+            $idresponsable = 0;
+            if($usuario!=''){
+                $idresponsable = $usuario->id;
+            }else{
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'El usuario y/o la contraseña es incorrecta!!.'
+                ]);
+            }
+            return response()->json([
+                'resultado' => 'CORRECTO',
+                'mensaje'   => 'Se ha actualizado correctamente.',
+                'idresponsable'   => $idresponsable
+            ]);
+        }
     }
 
 

@@ -34,8 +34,8 @@
         modal({ route:"{{url('backoffice/'.$tienda->id.'/propuestacredito/'.$credito->id.'/edit?view=modificar')}}" + '&vista=' +vista ,  size: 'modal-sm' });  
     }
     function autorizar_modificacion(idresponsable, vista){
-        console.log(vista);
         $('#idresponsable').val(idresponsable)
+        $('#cont_editar').show();
         if (vista == 'riesgos') {
             $('#areariesgos').removeAttr('disabled');
             $('#btn-save-riesgos').show();

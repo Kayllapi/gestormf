@@ -17,12 +17,14 @@
                               <div class="row">
                                 <label for="fecha_inicio" class="col-sm-3 col-form-label">AGENCIA</label>
                                 <div class="col-sm-9">
-                                    <select class="form-control" id="idagencia" disabled>
+                                    <input type="text" class="form-control" value="{{$tienda->nombreagencia}}" disabled>
+                                    {{-- <select class="form-control" id="idagencia" disabled>
                                       <option></option>
                                       @foreach($agencias as $value)
                                           <option value="{{$value->id}}">{{$value->nombreagencia}}</option>
                                       @endforeach
-                                    </select>
+                                    </select> --}}
+                                    <input type="hidden" id="idagencia" value="{{$tienda->id}}">
                                 </div>
                               </div>
                             </div>
@@ -163,7 +165,7 @@
   
 </style>
 <script>
-  sistema_select2({ input:'#idagencia',val:'{{$tienda->id}}' });
+  // sistema_select2({ input:'#idagencia',val:'{{$tienda->id}}' });
   lista_credito();
   function lista_credito(){
     let estado_credito = $('input[name="estado_credito"]:checked').val();

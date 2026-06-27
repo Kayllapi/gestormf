@@ -29,14 +29,16 @@
                         <div class="row">
                         <label for="fecha_fin" class="col-sm-5 col-form-label">F. CRÉDITO</label>
                         <div class="col-sm-7">
-                            <select class="form-control" id="idformacredito" disabled>
+                            <input type="text" class="form-control" value="CP" disabled>
+                            {{-- <select class="form-control" id="idformacredito" disabled>
                                 <option></option>
                                 <option value="0" selected>TODO</option>
                                 <option value="CP">CP</option>
                                 <option value="CNP">CNP</option>
-                            </select>
+                            </select> --}}
                         </div>
                         </div>
+                        <input type="hidden" id="idformacredito" value="CP">
                     </div>
                     <div class="col-sm-12 col-md-5" style="margin-left: -50px;">
                         <div class="row">
@@ -228,7 +230,7 @@
 <script>
 
   sistema_select2({ input:'#idagencia',val:'{{$tienda->id}}' });
-  sistema_select2({ input:'#idformacredito',val:'CP' });
+//   sistema_select2({ input:'#idformacredito',val:'CP' });
   sistema_select2({ input:'#idasesor' });
   
     $(`#tabla-origendes`).on("click", "tr", function(e) {

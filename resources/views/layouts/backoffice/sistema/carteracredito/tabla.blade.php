@@ -43,7 +43,7 @@
                                 <div class="col-sm-9">
                                     <select class="form-control" id="idasesor">
                                       <option></option>
-                                      <option value="0" selected>TODO</option>
+                                      <option value="0">TODO</option>
                                       <?php
                                       $usuarios = DB::table('users')
                                           ->join('users_permiso','users_permiso.idusers','users.id')
@@ -52,9 +52,11 @@
                                           ->where('users_permiso.idtienda',$tienda->id)
                                           ->select('users.*','permiso.nombre as nombrepermiso')
                                           ->get();
+                                        $num = 0;
                                       ?>
                                       @foreach($usuarios as $value)
-                                      <option value="{{$value->id}}">{{$value->nombrecompleto}} ({{$value->nombrepermiso}})</option>
+                                      <option value="{{$value->id}}" @if($num == 0) selected @endif>{{$value->nombrecompleto}} ({{$value->nombrepermiso}})</option>
+                                      @php $num++; @endphp
                                       @endforeach
                                     </select>
                                 </div>

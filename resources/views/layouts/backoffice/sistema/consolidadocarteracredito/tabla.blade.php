@@ -20,7 +20,7 @@
                                 <div class="col-sm-9">
                                     <select class="form-control" id="idagencia">
                                       <option></option>
-                                      <option value="0" selected>TODO</option>
+                                      <option value="0">TODO</option>
                                       @foreach($agencias as $value)
                                           <option value="{{$value->id}}">{{$value->nombreagencia}}</option>
                                       @endforeach
@@ -54,7 +54,7 @@
                                 <div class="col-sm-9">
                                     <select class="form-control" id="idasesor">
                                       <option></option>
-                                      <option value="0" selected>TODO</option>
+                                      <option value="0">TODO</option>
                                       <?php
                                       $usuarios = DB::table('users')
                                           ->join('users_permiso','users_permiso.idusers','users.id')
@@ -178,7 +178,7 @@
   sistema_select2({ input:'#idformacredito' });
   sistema_select2({ input:'#idasesor' });
   
-  lista_credito();
+  // lista_credito();
   function lista_credito(){
     $.ajax({
       url:"{{url('backoffice/0/consolidadocarteracredito/showtable')}}",

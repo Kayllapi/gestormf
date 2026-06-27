@@ -18,13 +18,15 @@
                               <div class="row">
                                 <label for="fecha_inicio" class="col-sm-3 col-form-label">AGENCIA</label>
                                 <div class="col-sm-9">
-                                    <select class="form-control" id="idagencia" disabled>
+                                    <input type="text" class="form-control" value="{{$tienda->nombreagencia}}" disabled>
+                                    <input type="hidden" id="idagencia" value="{{$tienda->id}}">
+                                    {{-- <select class="form-control" id="idagencia" disabled>
                                       <option></option>
                                       <option value="0" selected>TODO</option>
                                       @foreach($agencias as $value)
                                           <option value="{{$value->id}}">{{$value->nombreagencia}}</option>
                                       @endforeach
-                                    </select>
+                                    </select> --}}
                                 </div>
                               </div>
                             </div>
@@ -54,7 +56,7 @@
                                 <div class="col-sm-9">
                                     <select class="form-control" id="idasesor">
                                       <option></option>
-                                      <option value="0" selected>TODO</option>
+                                      <option value="0">TODO</option>
                                       <?php
                                       $usuarios = DB::table('users')
                                           ->join('users_permiso','users_permiso.idusers','users.id')
@@ -174,11 +176,11 @@
   var fechatotal = `${d.getFullYear()}-${(d.getMonth() + 1)}-${d.getDate()}`;
   $("#fecha_fin").val(fechatotal);*/
 
-  sistema_select2({ input:'#idagencia' });
+  // sistema_select2({ input:'#idagencia' });
   sistema_select2({ input:'#idformacredito' });
   sistema_select2({ input:'#idasesor' });
   
-  lista_credito();
+  // lista_credito();
   function lista_credito(){
     $.ajax({
       url:"{{url('backoffice/0/consolidadocarteracredito/showtable')}}",

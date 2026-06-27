@@ -25,12 +25,14 @@
                               <div class="row">
                                 <label for="fecha_inicio" class="col-sm-3 col-form-label">AGENCIA</label>
                                 <div class="col-sm-9">
-                                    <select class="form-control" id="idagencia">
+                                    <input type="text" class="form-control" value="{{$tienda->nombreagencia}}" disabled>
+                                    <input type="hidden" id="idagencia" value="{{$tienda->id}}">
+                                    {{-- <select class="form-control" id="idagencia">
                                       <option></option>
                                       @foreach($agencias as $value)
                                           <option value="{{$value->id}}">{{$value->nombreagencia}}</option>
                                       @endforeach
-                                    </select>
+                                    </select> --}}
                                 </div>
                               </div>
                             </div>
@@ -152,14 +154,14 @@
 </style>
 <script>
 
-  sistema_select2({ input:'#idagencia', val:'{{$tienda->id}}' });
+//   sistema_select2({ input:'#idagencia' });
   sistema_select2({ input:'#idasesororigen' });
   sistema_select2({ input:'#idasesordestino' });
 
-    $(`#idagencia`).on("change", function(e) {
+    // $(`#idagencia`).on("change", function(e) {
         actualizar_tabla_origen();
         actualizar_tabla_destino();
-    });
+    // });
     $(`#idasesororigen`).on("change", function(e) {
         $('#idasesordestino').removeAttr('disabled');
         $.ajax({

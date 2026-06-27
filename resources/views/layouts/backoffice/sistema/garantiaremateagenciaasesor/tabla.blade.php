@@ -15,38 +15,53 @@
                         <div class="row">
                         <label for="fecha_inicio" class="col-sm-4 col-form-label">AGENCIA</label>
                         <div class="col-sm-8">
-                            <select class="form-control" id="idagencia" disabled>
+                            <input type="text" class="form-control" value="{{$tienda->nombreagencia}}" disabled>
+                            {{-- <select class="form-control" id="idagencia_vista" disabled>
                                 <option></option>
                                     <option value="0" selected>TODA LAS AGENCIAS</option>
                                 @foreach($agencias as $value)
                                     <option value="{{$value->id}}">{{$value->nombreagencia}}</option>
                                 @endforeach
-                            </select>
+                            </select> --}}
                         </div>
                         </div>
+                        <input type="hidden" id="idagencia" value="{{$tienda->id}}">
                     </div>
                     <div class="col-sm-12 col-md-2" style="margin-left: 50px;">
                         <div class="row">
                         <label for="fecha_fin" class="col-sm-5 col-form-label">F. CRÉDITO</label>
                         <div class="col-sm-7">
-                            <select class="form-control" id="idformacredito" disabled>
+                            <input type="text" class="form-control" value="CP" disabled>
+                            {{-- <select class="form-control" id="idformacredito_vista" disabled>
                                 <option></option>
                                 <option value="0" selected>TODO</option>
                                 <option value="CP">CP</option>
                                 <option value="CNP">CNP</option>
-                            </select>
+                            </select> --}}
                         </div>
                         </div>
+                        <input type="hidden" id="idformacredito" value="CP">
                     </div>
                     <div class="col-sm-12 col-md-5" style="margin-left: -50px;">
                         <div class="row">
                         <label for="fecha_fin" class="col-sm-4 col-form-label" style="text-align: right;">EJECUTIVO</label>
                         <div class="col-sm-8">
-                            <select class="form-control" id="idasesor" disabled>
+                            @php
+                                 $usuario = DB::table('users')
+                                    ->join('users_permiso','users_permiso.idusers','users.id')
+                                    ->join('permiso','permiso.id','users_permiso.idpermiso')
+                                    ->where('users.id', Auth::user()->id)
+                                    ->select('users.nombrecompleto','permiso.nombre as nombrepermiso')
+                                    ->first();
+                                $usuarioText = "$usuario->nombrecompleto ($usuario->nombrepermiso)";
+                            @endphp
+                            <input type="text" class="form-control" value="{{$usuarioText}}" disabled>
+                            {{-- <select class="form-control" id="idasesor_vista" disabled>
                                 <option></option>
-                            </select>
+                            </select> --}}
                         </div>
                         </div>
+                        <input type="hidden" id="idasesor" value="{{Auth::user()->id}}">
                     </div>
                     <div class="col-sm-12 col-md-1" style="text-align: left;">
                         <button type="button" class="btn btn-success" onclick="actualizar_tabla_origen(),actualizar_tabla_destino()"><i class="fa-solid fa-search"></i> FILTRAR</button>
@@ -223,9 +238,9 @@
 
 <script>
 
-  sistema_select2({ input:'#idagencia',val:'{{$tienda->id}}' });
-  sistema_select2({ input:'#idformacredito',val:'CP' });
-  sistema_select2({ input:'#idasesor',val:'{{Auth::user()->id}}' });
+//   sistema_select2({ input:'#idagencia_vista',val:'{{$tienda->id}}' });
+//   sistema_select2({ input:'#idformacredito_vista',val:'CP' });
+//   sistema_select2({ input:'#idasesor_vista',val:'{{Auth::user()->id}}' });
   
     $(`#tabla-origendes`).on("click", "tr", function(e) {
         $('#tabla-destinodes > tbody > tr').removeClass('selected');
@@ -234,26 +249,26 @@
         $('#tabla-origendes > tbody > tr').removeClass('selected');
     });
   
-  cliente_tienda({{$tienda->id}});
+//   cliente_tienda({{$tienda->id}});
   
-  $("#idagencia").on("change", function(e) {
-      var idtienda = $('#idagencia').val();
-      cliente_tienda(idtienda)
-  });
+//   $("#idagencia").on("change", function(e) {
+//       var idtienda = $('#idagencia').val();
+//       cliente_tienda(idtienda)
+//   });
   
-  function cliente_tienda(idtienda){
-      $.ajax({
-          url:"{{url('backoffice/'.$tienda->id.'/garantiaremateagencia/show_asesor')}}",
-          type:'GET',
-          data: {
-              idtienda : idtienda
-          },
-          success: function (respuesta){
-              $('#idasesor').html(respuesta);  
-              sistema_select2({ input:'#idasesor',val:'{{Auth::user()->id}}' });
-          }
-      })
-  }
+//   function cliente_tienda(idtienda){
+//       $.ajax({
+//           url:"{{url('backoffice/'.$tienda->id.'/garantiaremateagencia/show_asesor')}}",
+//           type:'GET',
+//           data: {
+//               idtienda : idtienda
+//           },
+//           success: function (respuesta){
+//               $('#idasesor_vista').html(respuesta);  
+//               sistema_select2({ input:'#idasesor_vista',val:'{{Auth::user()->id}}' });
+//           }
+//       })
+//   }
   
   $('#tabla-origendes').on('change', 'input[type="checkbox"]', function () {
       if ($(this).is(':checked')) {

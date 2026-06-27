@@ -19,14 +19,16 @@
                               <div class="row">
                                 <label for="fecha_inicio" class="col-sm-3 col-form-label">AGENCIA</label>
                                 <div class="col-sm-9">
-                                    <select class="form-control" id="idagencia" disabled>
+                                    <input type="text" class="form-control" value="{{$tienda->nombreagencia}}" disabled>
+                                    {{-- <select class="form-control" id="idagencia" disabled>
                                       <option></option>
                                       @foreach($agencias as $value)
                                           <option value="{{$value->id}}">{{$value->nombreagencia}}</option>
                                       @endforeach
-                                    </select>
+                                    </select> --}}
                                 </div>
                               </div>
+                              <input type="hidden" id="idagencia" value="{{$tienda->id}}">
                             </div>
                             <label for="corte" class="col-sm-1 col-form-label">MODALIDAD</label>
                             <div class="col-sm-12 col-md-2">
@@ -84,16 +86,16 @@
   </div>
 </div>
 <script>
-    sistema_select2({ input:'#idagencia',val:'{{$tienda->id}}' });
+    // sistema_select2({ input:'#idagencia',val:'{{$tienda->id}}' });
     sistema_select2({ input:'#idmodalidad' });
     sistema_select2({ input:'#idasesor',val:'{{Auth::user()->id}}' });
   
     cliente_tienda({{$tienda->id}});
 
-    $("#idagencia").on("change", function(e) {
-        var idtienda = $('#idagencia').val();
-        cliente_tienda(idtienda)
-    });
+    // $("#idagencia").on("change", function(e) {
+    //     var idtienda = $('#idagencia').val();
+    //     cliente_tienda(idtienda)
+    // });
   
     function cliente_tienda(idtienda){
         $.ajax({

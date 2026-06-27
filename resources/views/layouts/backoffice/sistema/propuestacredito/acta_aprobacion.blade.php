@@ -30,12 +30,23 @@
 
 <script>
     // funciones para utilizar en todas las opciones
-    function modificar_opciones(){
-        modal({ route:"{{url('backoffice/'.$tienda->id.'/propuestacredito/'.$credito->id.'/edit?view=modificar')}}",  size: 'modal-sm' });  
+    function modificar_opciones(vista=''){
+        modal({ route:"{{url('backoffice/'.$tienda->id.'/propuestacredito/'.$credito->id.'/edit?view=modificar')}}" + '&vista=' +vista ,  size: 'modal-sm' });  
     }
-    function autorizar_modificacion(idresponsable){
+    function autorizar_modificacion(idresponsable, vista){
+        console.log(vista);
         $('#idresponsable').val(idresponsable)
-        $('#comentariovisita').removeAttr('disabled');
-        $('#btn-save-comentario').show();
+        if (vista == 'riesgos') {
+            $('#areariesgos').removeAttr('disabled');
+            $('#btn-save-riesgos').show();
+        }
+        if (vista == 'excepciones') {
+            $('#excepcionesautorizaciones').removeAttr('disabled');
+            $('#btn-save-excepciones').show();
+        }
+        if (vista == 'comentario') {
+            $('#comentariovisita').removeAttr('disabled');
+            $('#btn-save-comentario').show();
+        }
     }
 </script>

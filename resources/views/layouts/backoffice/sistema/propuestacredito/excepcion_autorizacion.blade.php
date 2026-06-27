@@ -20,57 +20,30 @@
         <button type="button" class="btn-close text-white" id="modal-close-garantia-cliente" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <div class="modal-body modal-body-cualitativa" style="min-height: 400px;">
-          @if($credito->excepcionesautorizaciones!='')
-          <div class="row">
-            <div class="col-sm-4">
-            </div>
-            <div class="col-sm-4">
-              <div class="mb-1">
-                  <label>Responsables (Administración) *</label>
-                  <select class="form-select" id="idresponsable" disabled>
-                      <option value=""></option>
-                      @foreach($usuarios as $value)
-                      <option value="{{$value->id}}">{{$value->nombrecompleto}} ({{$value->nombrepermiso}})</option>
-                      @endforeach
-                  </select>
-              </div>
-            </div>
-          </div>
-          @else
-          <div class="row">
-            <div class="col-sm-4">
-            </div>
-            <div class="col-sm-4">
-              <div class="mb-1">
-                  <label>Responsables (Administración) *</label>
-                  <select class="form-select" id="idresponsable">
-                      <option value=""></option>
-                      @foreach($usuarios as $value)
-                      <option value="{{$value->id}}">{{$value->nombrecompleto}} ({{$value->nombrepermiso}})</option>
-                      @endforeach
-                  </select>
-              </div>
-              <div class="mb-1">
-                  <label>Contraseña *</label>
-                  <input type="password" class="form-control" id="responsableclave">
-              </div>
-              <button type="button" class="btn btn-success" onclick="validar_identificacion('EXEPCIONES_AUTORIZACIONES')"><i class="fa-solid fa-check"></i> Validar Identificación</button>
-            </div>
-          </div>
-          <div id="cont_resultado" class="mt-1"></div>
-          @endif
+        <button type="button"
+          class="btn btn-success mb-2"
+          id="btn-autorizar-garantia"
+          onclick="modificar_opciones('excepciones')">
+          <i class="fa-solid fa-pencil"></i> Registrar / Editar
+        </button>
+      <input type="hidden" name="idresponsable" id="idresponsable" value="">
       <div id="cont_editar" <?php echo $credito->idusuario_excepcionesautorizaciones==0?'style="display:none;"':'' ?> >
       
           <div class="row">
             <div class="col-sm-12">
-              <textarea class="form-control color_cajatexto" id="excepcionesautorizaciones" cols="30" rows="10">{{ $credito->excepcionesautorizaciones }}</textarea>
+              <textarea class="form-control color_cajatexto" id="excepcionesautorizaciones" cols="30" rows="10" disabled>{{ $credito->excepcionesautorizaciones }}</textarea>
             </div>
           </div>
 
           <div class="row mt-1">
 
             <div class="col" style="flex: 0 0 0%;">
-              <button type="submit" class="btn btn-success" id="btn-save-cuantitativa"><i class="fa-solid fa-floppy-disk"></i> GUARDAR CAMBIOS</button>
+              <button type="submit"
+                class="btn btn-success"
+                id="btn-save-excepciones"
+                style="display: none;">
+                <i class="fa-solid fa-floppy-disk"></i> GUARDAR CAMBIOS
+              </button>
             </div>
             <div class="col" style="flex: 1 0 0%;">
               <div id="success-message" class="alert alert-success d-none" style="text-align:left;"></div>
@@ -81,32 +54,4 @@
           </div>
       </div>
     </div>
-</form> 
-<script>
-  @if($credito->idusuario_excepcionesautorizaciones!=0)
-    sistema_select2({ input:'#idresponsable', val:'{{$credito->idusuario_excepcionesautorizaciones}}' });
-  @else
-    sistema_select2({ input:'#idresponsable' });
-  @endif
-  
-    function validar_identificacion(permiso){
-       load('#cont_resultado')
-        $.ajax({
-            url:"{{url('backoffice/0/propuestacredito/show_validaridentificacion')}}",
-            type:'GET',
-            data: {
-                idresponsable : $('#idresponsable option:selected').val(),
-                responsableclave : $('#responsableclave').val(),
-                permiso : permiso
-            },
-            success: function (res){
-                if(res['resultado']=='CORRECTO'){
-                    $('#cont_editar').css('display','block');
-                    $('#cont_resultado').html('');
-                }else{
-                    $('#cont_resultado').html('<div class="alert alert-danger"><b>Hay un error de Identificación</b></div>');
-                }
-            }
-        });
-    }
-</script>
+</form>

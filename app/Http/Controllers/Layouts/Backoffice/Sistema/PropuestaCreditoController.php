@@ -882,65 +882,45 @@ class PropuestaCreditoController extends Controller
         return $pdf->stream('ACTA_APROBACION.pdf');
       }
       else if( $request->input('view') == 'excepcion_autorizacion' ){
-        
-        $usuarios = DB::table('users')
-            ->join('users_permiso','users_permiso.idusers','users.id')
-            ->join('permiso','permiso.id','users_permiso.idpermiso')
-            ->where('users_permiso.idpermiso',1)
-            ->where('users_permiso.idtienda',$idtienda)
-            ->select('users.*','permiso.nombre as nombrepermiso')
-            ->get();
-        
         return view(sistema_view().'/propuestacredito/excepcion_autorizacion',[
-          'users_prestamo'    => $users_prestamo,
           'tienda' => $tienda,
           'credito' => $credito,
-          'usuarios' => $usuarios,
         ]);
       }
       else if( $request->input('view') == 'area_riesgos' ){
-        
-        $usuarios = DB::table('users')
-            ->join('users_permiso','users_permiso.idusers','users.id')
-            ->join('permiso','permiso.id','users_permiso.idpermiso')
-            ->where('users_permiso.idpermiso',5)
-            ->where('users_permiso.idtienda',$idtienda)
-            ->select('users.*','permiso.nombre as nombrepermiso')
-            ->get();
         return view(sistema_view().'/propuestacredito/area_riesgos',[
-          'users_prestamo'    => $users_prestamo,
           'tienda' => $tienda,
           'credito' => $credito,
-          'usuarios' => $usuarios,
         ]);
       }
       else if( $request->input('view') == 'comentario_visitas' ){
-        
-        $usuarios = DB::table('users')
-            ->join('users_permiso','users_permiso.idusers','users.id')
-            ->join('permiso','permiso.id','users_permiso.idpermiso')
-            ->whereIn('users_permiso.idpermiso',[1,3])
-            ->where('users_permiso.idtienda',$idtienda)
-            ->select('users.*','permiso.nombre as nombrepermiso')
-            ->get();
         return view(sistema_view().'/propuestacredito/comentario_visitas',[
-          'users_prestamo'    => $users_prestamo,
           'tienda' => $tienda,
           'credito' => $credito,
-          'usuarios' => $usuarios,
         ]);
       }
       else if($request->input('view') == 'modificar'){
-        $usuarios = DB::table('users')
+        $vista = $request->vista;
+        $query = DB::table('users')
           ->join('users_permiso','users_permiso.idusers','users.id')
-          ->join('permiso','permiso.id','users_permiso.idpermiso')
-          ->whereIn('users_permiso.idpermiso',[1,3])
-          ->where('users_permiso.idtienda',$idtienda)
+          ->join('permiso','permiso.id','users_permiso.idpermiso');
+
+        if ($vista == 'excepciones') {
+          $query->where('users_permiso.idpermiso',1);
+        } elseif ($vista == 'riesgos') {
+          $query->where('users_permiso.idpermiso',5);
+        } elseif ($vista == 'comentario') {
+          $query->whereIn('users_permiso.idpermiso',[1,3]);
+        }
+
+        $usuarios = $query->where('users_permiso.idtienda',$idtienda)
           ->select('users.*','permiso.nombre as nombrepermiso')
           ->get();
+
         return view(sistema_view().'/propuestacredito/modificar',[
           'tienda' => $tienda,
           'usuarios' => $usuarios,
+          'vista' => $vista,
         ]);
       }
     }
@@ -1750,7 +1730,8 @@ class PropuestaCreditoController extends Controller
             return response()->json([
                 'resultado' => 'CORRECTO',
                 'mensaje'   => 'Se ha actualizado correctamente.',
-                'idresponsable'   => $idresponsable
+                'idresponsable'   => $idresponsable,
+                'vista'   => $request->vista
             ]);
         }
     }

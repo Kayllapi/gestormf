@@ -23,49 +23,10 @@
         <button type="button"
           class="btn btn-success mb-2"
           id="btn-autorizar-garantia"
-          onclick="modificar_opciones()">
+          onclick="modificar_opciones('comentario')">
           <i class="fa-solid fa-pencil"></i> Registrar / Editar
         </button>
-        {{-- @if($credito->comentariovisita!='')
-          <div class="row">
-            <div class="col-sm-4">
-            </div>
-            <div class="col-sm-4">
-              <div class="mb-1">
-                  <label>Responsables (Administración o Asesor de Negocios Senior) *</label>
-                  <select class="form-select" id="idresponsable" disabled>
-                      <option value=""></option>
-                      @foreach($usuarios as $value)
-                      <option value="{{$value->id}}">{{$value->nombrecompleto}} ({{$value->nombrepermiso}})</option>
-                      @endforeach
-                  </select>
-              </div>
-            </div>
-          </div>
-        @else
-          <div class="row">
-            <div class="col-sm-4">
-            </div>
-            <div class="col-sm-4">
-              <div class="mb-1">
-                  <label>Responsables (Administración o Asesor de Negocios Senior) *</label>
-                  <select class="form-select" id="idresponsable">
-                      <option value=""></option>
-                      @foreach($usuarios as $value)
-                      <option value="{{$value->id}}">{{$value->nombrecompleto}} ({{$value->nombrepermiso}})</option>
-                      @endforeach
-                  </select>
-              </div>
-              <div class="mb-1">
-                  <label>Contraseña *</label>
-                  <input type="password" class="form-control" id="responsableclave">
-              </div>
-              <button type="button" class="btn btn-success" onclick="validar_identificacion('EXEPCIONES_AUTORIZACIONES')"><i class="fa-solid fa-check"></i> Validar Identificación</button>
-            </div>
-          </div>
-          <div id="cont_resultado" class="mt-1"></div>
-        @endif --}}
-        <input type="hidden" name="idresponsable" id="idresponsable" value="">
+      <input type="hidden" name="idresponsable" id="idresponsable" value="">
       <div id="cont_editar" <?php echo $credito->idusuario_comentariovisita==0?'style="display:none;"':'' ?> >
           <div class="row">
             <div class="col-sm-12">
@@ -91,33 +52,4 @@
         </div>
       </div>
     </div>
-</form> 
-  
-<script>
-  // @if($credito->idusuario_comentariovisita!=0)
-  //   sistema_select2({ input:'#idresponsable', val:'{{$credito->idusuario_comentariovisita}}' });
-  // @else
-  //   sistema_select2({ input:'#idresponsable' });
-  // @endif
-  
-    // function validar_identificacion(permiso){
-    //    load('#cont_resultado')
-    //     $.ajax({
-    //         url:"{{url('backoffice/0/propuestacredito/show_validaridentificacion')}}",
-    //         type:'GET',
-    //         data: {
-    //             idresponsable : $('#idresponsable option:selected').val(),
-    //             responsableclave : $('#responsableclave').val(),
-    //             permiso : permiso
-    //         },
-    //         success: function (res){
-    //             if(res['resultado']=='CORRECTO'){
-    //                 $('#cont_editar').css('display','block');
-    //                 $('#cont_resultado').html('');
-    //             }else{
-    //                 $('#cont_resultado').html('<div class="alert alert-danger"><b>Hay un error de Identificación</b></div>');
-    //             }
-    //         }
-    //     });
-    // }
-</script>
+</form>

@@ -3,12 +3,13 @@
           route: '{{ url('backoffice/'.$tienda->id.'/propuestacredito/0') }}',
           method: 'PUT',
           data:{
-              view: 'modificar'
+              view: 'modificar',
+              vista: '{{$vista}}'
           }
       },
       function(resultado){
           $('#modal-close-opciones-modificar').click(); 
-          autorizar_modificacion(resultado.idresponsable);
+          autorizar_modificacion(resultado.idresponsable, resultado.vista);
       },this)">
     <div class="modal-header">
         <h5 class="modal-title">Modificar</h5>
@@ -20,7 +21,13 @@
         </div>
             <div class="mt-2 bg-primary subtitulo">Aprobación</div>
               <div class="mb-1">
-                  <label>Responsables (Administración o Asesor de Negocios Senior) *</label>
+                @if ($vista == 'riesgos')
+                    <label>Responsables (Gestor de Riesgos) *</label>
+                @elseif($vista == 'excepciones')
+                    <label>Responsables (Administración) *</label>
+                @elseif($vista == 'comentario')
+                    <label>Responsables (Administración o Asesor de Negocios Senior) *</label>
+                @endif
                   <select class="form-select" id="idresponsable_validacion">
                       <option value=""></option>
                       @foreach($usuarios as $value)

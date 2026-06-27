@@ -52,11 +52,9 @@
                                              ->where('users_permiso.idtienda',$tienda->id)
                                              ->select('users.*','permiso.nombre as nombrepermiso')
                                              ->get();
-                                            $num = 0;
                                          ?>
                                          @foreach($usuarios as $value)
-                                         <option value="{{$value->id}}" @if($num == 0) selected @endif>{{$value->nombrecompleto}} ({{$value->nombrepermiso}})</option>
-                                         @php $num++; @endphp
+                                         <option value="{{$value->id}}">{{$value->nombrecompleto}} ({{$value->nombrepermiso}})</option>
                                          @endforeach
                                        </select>
                                    </div>
@@ -156,7 +154,7 @@
   sistema_select2({ input:'#idformacredito' });
   sistema_select2({ input:'#idasesor' });
   
-  lista_credito();
+  // lista_credito();
   function lista_credito(){
     //let estado_credito = $('input[name="estado_credito"]:checked').val();
     

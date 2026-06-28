@@ -121,12 +121,26 @@
         load('#cont_loading');
         $('#iframe_acta_aprobacion').addClass('d-none');
 
-        $('#iframe_acta_aprobacion').attr('src','{{ url('/backoffice/'.$tienda->id.'/reportegarantia/0/edit?view=pdf_reporte') }}&idmodalidad='+idmodalidad+'&idasesor='+idasesor+'&idagencia='+idagencia+'#zoom=100');
-       
+        // 1. Registrar el evento ANTES de cambiar el src
         $('#iframe_acta_aprobacion').off('load').on('load', function(){
-            $('#cont_loading').html('');
-            $(this).removeClass('d-none');
+            if($(this).attr('src') !== ''){
+                $('#cont_loading').html('');
+                $(this).removeClass('d-none');
+            }
         });
+
+        // 2. Reset y luego asignar nuevo src
+        $('#iframe_acta_aprobacion').attr('src', '');
+
+        setTimeout(function(){
+            $('#iframe_acta_aprobacion').attr('src',
+                '{{ url('/backoffice/'.$tienda->id.'/reportegarantia/0/edit?view=pdf_reporte') }}'
+                + '&idmodalidad=' + idmodalidad
+                + '&idasesor=' + idasesor
+                + '&idagencia=' + idagencia
+                + '#zoom=100'
+            );
+        }, 100);
     }
   
    function exportar_excel(){

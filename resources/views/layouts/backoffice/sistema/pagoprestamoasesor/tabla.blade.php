@@ -54,6 +54,8 @@
                                         $usuario = DB::table('users')
                                             ->join('users_permiso','users_permiso.idusers','users.id')
                                             ->join('permiso','permiso.id','users_permiso.idpermiso')
+                                            ->whereIn('users_permiso.idpermiso',[3,4,7])
+                                            ->where('users_permiso.idtienda',$tienda->id)
                                             ->where('users.id', Auth::user()->id)
                                             ->select('users.nombrecompleto','permiso.nombre as nombrepermiso')
                                             ->first();

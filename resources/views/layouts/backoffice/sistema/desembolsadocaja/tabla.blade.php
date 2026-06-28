@@ -18,12 +18,14 @@
                               <div class="row">
                                 <label for="fecha_inicio" class="col-sm-3 col-form-label">AGENCIA</label>
                                 <div class="col-sm-9">
-                                    <select class="form-control" id="idagencia" disabled>
+                                    <input type="text" class="form-control" value="{{$tienda->nombreagencia}}" disabled>
+                                    <input type="hidden" id="idagencia" value="{{$tienda->id}}">
+                                    {{-- <select class="form-control" id="idagencia" disabled>
                                       <option></option>
                                       @foreach($agencias as $value)
                                           <option value="{{$value->id}}">{{$value->nombreagencia}}</option>
                                       @endforeach
-                                    </select>
+                                    </select> --}}
                                 </div>
                               </div>
                             </div>
@@ -138,7 +140,7 @@
   var fechatotal = `${d.getFullYear()}-${(d.getMonth() + 1)}-${d.getDate()}`;
   $("#fecha_fin").val(fechatotal);*/
 
-  sistema_select2({ input:'#idagencia',val:'{{$tienda->id}}' });
+  // sistema_select2({ input:'#idagencia',val:'{{$tienda->id}}' });
   sistema_select2({ idtienda:{{$tienda->id}}, json:'tienda:usuario', input:'#idcliente' });
   sistema_select2({ input:'#idasesor' });
   

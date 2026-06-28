@@ -510,9 +510,9 @@ class MovimientointernodineroController extends Controller
                
             $html .= '
                 <tr style="position: sticky;bottom: 0;">
-                  <td colspan="2" style="background-color: #144081 !important;text-align:right;color:#fff !important;">Total Retiros (S/.)</td>
-                  <td style="background-color: #144081 !important;text-align:right;color:#fff !important;">'.number_format($total, 2, '.', '').'</td>
-                  <td colspan="5" style="background-color: #144081 !important;text-align:right;color:#fff !important;"></td>
+                  <td colspan="2" style="background-color: #c2c0c2 !important;text-align:right; font-weight: bold;">Total Retiros (S/.)</td>
+                  <td style="background-color: #c2c0c2 !important;text-align:right; font-weight: bold;">'.number_format($total, 2, '.', '').'</td>
+                  <td colspan="5" style="background-color: #c2c0c2 !important;text-align:right; font-weight: bold;"></td>
                 </tr>'; 
           
             return array(
@@ -572,9 +572,9 @@ class MovimientointernodineroController extends Controller
                
             $html .= '
                 <tr style="position: sticky;bottom: 0;">
-                  <td colspan="2" style="background-color: #144081 !important;text-align:right;color:#fff !important;">Total Depósitos (S/.)</td>
-                  <td style="background-color: #144081 !important;text-align:right;color:#fff !important;">'.number_format($total, 2, '.', '').'</td>
-                  <td colspan="5" style="background-color: #144081 !important;text-align:right;color:#fff !important;"></td>
+                  <td colspan="2" style="background-color: #c2c0c2 !important;text-align:right; font-weight: bold;">Total Depósitos (S/.)</td>
+                  <td style="background-color: #c2c0c2 !important;text-align:right; font-weight: bold;">'.number_format($total, 2, '.', '').'</td>
+                  <td colspan="5" style="background-color: #c2c0c2 !important;text-align:right; font-weight: bold;"></td>
                 </tr>'; 
           
             return array(
@@ -626,9 +626,9 @@ class MovimientointernodineroController extends Controller
                
             $html .= '
                 <tr style="position: sticky;bottom: 0;">
-                  <td colspan="2" style="background-color: #144081 !important;text-align:right;color:#fff !important;">Total Retiros (S/.)</td>
-                  <td style="background-color: #144081 !important;text-align:right;color:#fff !important;">'.number_format($total, 2, '.', '').'</td>
-                  <td colspan="3" style="background-color: #144081 !important;text-align:right;color:#fff !important;"></td>
+                  <td colspan="2" style="background-color: #c2c0c2 !important;text-align:right; font-weight: bold;">Total Retiros (S/.)</td>
+                  <td style="background-color: #c2c0c2 !important;text-align:right; font-weight: bold;">'.number_format($total, 2, '.', '').'</td>
+                  <td colspan="3" style="background-color: #c2c0c2 !important;text-align:right; font-weight: bold;"></td>
                 </tr>'; 
           
             return array(
@@ -684,9 +684,9 @@ class MovimientointernodineroController extends Controller
                
             $html .= '
                 <tr style="position: sticky;bottom: 0;">
-                  <td colspan="2" style="background-color: #144081 !important;text-align:right;color:#fff !important;">Total Depósitos (S/.)</td>
-                  <td style="background-color: #144081 !important;text-align:right;color:#fff !important;">'.number_format($total, 2, '.', '').'</td>
-                  <td colspan="3" style="background-color: #144081 !important;text-align:right;color:#fff !important;"></td>
+                  <td colspan="2" style="background-color: #c2c0c2 !important;text-align:right; font-weight: bold;">Total Depósitos (S/.)</td>
+                  <td style="background-color: #c2c0c2 !important;text-align:right; font-weight: bold;">'.number_format($total, 2, '.', '').'</td>
+                  <td colspan="3" style="background-color: #c2c0c2 !important;text-align:right; font-weight: bold;"></td>
                 </tr>'; 
           
             return array(

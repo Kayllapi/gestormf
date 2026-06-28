@@ -55,7 +55,7 @@ class ReporteGarantiaController extends Controller
                 ->select('users.*','permiso.nombre as nombrepermiso')
                 ->get();
           
-            $html = '<option></option><option value="0" selected>TODO</option>';
+            $html = '<option></option><option value="0">TODO</option>';
             foreach($usuarios as $value){
                 $html .= '<option value="'.$value->id.'">'.$value->nombrecompleto.' ('.$value->nombrepermiso.')</option>';
             }

@@ -88,7 +88,7 @@
 <script>
     // sistema_select2({ input:'#idagencia',val:'{{$tienda->id}}' });
     sistema_select2({ input:'#idmodalidad' });
-    sistema_select2({ input:'#idasesor',val:'{{Auth::user()->id}}' });
+    sistema_select2({ input:'#idasesor' });
   
     cliente_tienda({{$tienda->id}});
 
@@ -106,12 +106,12 @@
             },
             success: function (respuesta){
                 $('#idasesor').html(respuesta);  
-                sistema_select2({ input:'#idasesor',val:'{{Auth::user()->id}}' });
+                sistema_select2({ input:'#idasesor' });
             }
         })
     }
   
-    verpdf();
+    // verpdf();
     function verpdf(){
         let idmodalidad = $('#idmodalidad').val();
         let idasesor = $('#idasesor').val();

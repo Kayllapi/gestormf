@@ -128,6 +128,17 @@ class CargoController extends Controller
           return $data;
         }
         else if($id == 'showlistacreditos'){
+            $where = [];
+            if($request->idagencia!=''){
+                $where[] = ['credito.idtienda',$request->idagencia];
+            }
+            if($request->idcliente!=''){
+                $where[] = ['credito.idcliente',$request->idcliente];
+            }
+            if($request->idasesor!=''){
+                $where[] = ['credito.idasesor',$request->idasesor];
+            }
+
           $cliente = DB::table('users')->whereId($request->idcliente)->select('users.id','users.nombrecompleto','users.identificacion')->first();
           $creditos = DB::table('credito')
                             ->join('forma_pago_credito','forma_pago_credito.id','credito.idforma_pago_credito')
@@ -138,6 +149,7 @@ class CargoController extends Controller
                             ->where('credito.estado','DESEMBOLSADO')
                             ->where('cliente.id',$request->idcliente)
                             ->where('credito.idestadocredito',1)
+                            ->where($where)
                             ->select(
                                 'credito.*',
                                 'cliente.identificacion as identificacion',

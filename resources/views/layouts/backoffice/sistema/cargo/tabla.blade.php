@@ -1,7 +1,7 @@
 <div class="modal-header">
     <h5 class="modal-title">
       Cargo
-      <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="buscarcliente()">
+      {{-- <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="buscarcliente()">
         <i class="fa fa-search"></i> Buscar Cliente
       </button>
       
@@ -26,12 +26,72 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> --}}
     </h5>
     <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>
 <div class="modal-body">
   <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="modal-body pb-0">
+          <div class="row">
+                <div class="col-sm-12 col-md-6">
+                  <div class="row">
+                      <label for="fecha_inicio" class="col-sm-3 col-form-label">AGENCIA</label>
+                      <div class="col-sm-9">
+                          <input type="text" class="form-control" value="{{$tienda->nombreagencia}}" disabled>
+                          <input type="hidden" id="idagencia" value="{{$tienda->id}}">
+                          {{-- <select class="form-control" id="idagencia" disabled>
+                            <option></option>
+                            @foreach($agencias as $value)
+                                <option value="{{$value->id}}">{{$value->nombreagencia}}</option>
+                            @endforeach
+                          </select> --}}
+                      </div>
+                  </div>
+                  <div class="row">
+                      <label for="fecha_fin" class="col-sm-3 col-form-label">CLIENTE</label>
+                      <div class="col-sm-9">
+                          <select class="form-control" id="idcliente">
+                            <option></option>
+                          </select>
+                      </div>
+                  </div>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <div class="row">
+                      <div class="col-sm-12 col-md-12" style="text-align: right;">
+                          <button type="button" class="btn btn-success" onclick="lista_credito_cliente()"><i class="fa-solid fa-search"></i> FILTRAR</button>
+                      </div>
+                    </div>
+                    <div class="row mt-1">
+                      <label for="fecha_fin" class="col-sm-4 col-form-label" style="text-align: right;">EJECUTIVO</label>
+                      <div class="col-sm-8">
+                          @php
+                              $usuario = DB::table('users')
+                                  ->join('users_permiso','users_permiso.idusers','users.id')
+                                  ->join('permiso','permiso.id','users_permiso.idpermiso')
+                                  ->where('users.id', Auth::user()->id)
+                                  ->select('users.nombrecompleto','permiso.nombre as nombrepermiso')
+                                  ->first();
+                              $usuarioText = "$usuario->nombrecompleto ($usuario->nombrepermiso)";
+                          @endphp
+                          <input type="text" class="form-control" value="{{$usuarioText}}" disabled>
+                          <input type="hidden" id="idasesor" value="{{Auth::user()->id}}">
+                          {{-- <select class="form-control" id="idasesor" disabled>
+                              <option></option>
+                          </select> --}}
+                      </div>
+                    </div>
+                </div>
+                <!--div class="col-sm-12 col-md-5" style="text-align: right;">
+                    <button type="button" class="btn btn-warning" onclick="vistapreliminar()"><i class="fa-solid fa-search"></i> VISTA PRELIMINAR</button>
+                </div-->
+          </div>
+        </div> 
+      </div>
+    </div>
     <div class="col-sm-12 col-md-4">
       <div class="row d-none data-cliente">
         <div class="col-sm-12">
@@ -70,46 +130,48 @@
   </div>
 </div>
 <script>
-
-  $('#idclientesearch').select2({
-      ajax: {
-          url:"{{url('backoffice/'.$tienda->id.'/cargo/show_credito')}}",
-          dataType: 'json',
-          delay: 250,
-          data: function (params) {
-              return {
-                    buscar: params.term
-              };
-          },
-          processResults: function (data) {
-              return {
-                  results: data
-              };
-          },
-          cache: true
-      },
-      placeholder: '-- Seleccionar --',
-      minimumInputLength: 2,
-      theme: 'bootstrap-5',
-      dropdownParent: $('#idclientesearch').parent().parent()
-  });
+  // $('#idclientesearch').select2({
+  //     ajax: {
+  //         url:"{{url('backoffice/'.$tienda->id.'/cargo/show_credito')}}",
+  //         dataType: 'json',
+  //         delay: 250,
+  //         data: function (params) {
+  //             return {
+  //                   buscar: params.term
+  //             };
+  //         },
+  //         processResults: function (data) {
+  //             return {
+  //                 results: data
+  //             };
+  //         },
+  //         cache: true
+  //     },
+  //     placeholder: '-- Seleccionar --',
+  //     minimumInputLength: 2,
+  //     theme: 'bootstrap-5',
+  //     dropdownParent: $('#idclientesearch').parent().parent()
+  // });
   
-  $("#idclientesearch").on("change", function(e) {
-    lista_credito_cliente(e.currentTarget.value);
-  });
+  // $("#idclientesearch").on("change", function(e) {
+  //   lista_credito_cliente(e.currentTarget.value);
+  // });
   
-  function buscarcliente(){
-      setTimeout(function () { 
-        $('#idclientesearch').select2('open');
-      }, 500);
-  }
+  // function buscarcliente(){
+  //     setTimeout(function () { 
+  //       $('#idclientesearch').select2('open');
+  //     }, 500);
+  // }
   
+  sistema_select2({ idtienda:{{$tienda->id}}, json:'tienda:usuario', input:'#idcliente' });
   function lista_credito_cliente(id){
     $.ajax({
       url:"{{url('backoffice/0/cargo/showlistacreditos')}}",
       type:'GET',
       data: {
-          idcliente : id
+          idagencia : $('#idagencia').val(),
+          idcliente : $('#idcliente').val(),
+          idasesor : $('#idasesor').val(),
       },
       success: function (res){
         

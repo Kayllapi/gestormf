@@ -79,6 +79,7 @@
       <div class="col-sm-12">
         <div class="card">
           <div class="card-body">
+              <div id="cont_loading"></div>
               <iframe id="iframe_acta_aprobacion" frameborder="0" width="100%" style="height: calc(-215px  + 100vh)"></iframe>
           </div>
         </div>
@@ -116,7 +117,16 @@
         let idmodalidad = $('#idmodalidad').val();
         let idasesor = $('#idasesor').val();
         let idagencia = $('#idagencia').val();
+
+        load('#cont_loading');
+        $('#iframe_acta_aprobacion').addClass('d-none');
+
         $('#iframe_acta_aprobacion').attr('src','{{ url('/backoffice/'.$tienda->id.'/reportegarantia/0/edit?view=pdf_reporte') }}&idmodalidad='+idmodalidad+'&idasesor='+idasesor+'&idagencia='+idagencia+'#zoom=100');
+       
+        $('#iframe_acta_aprobacion').off('load').on('load', function(){
+            $('#cont_loading').html('');
+            $(this).removeClass('d-none');
+        });
     }
   
    function exportar_excel(){

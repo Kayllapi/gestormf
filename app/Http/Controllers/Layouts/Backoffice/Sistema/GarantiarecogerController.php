@@ -47,7 +47,7 @@ class GarantiarecogerController extends Controller
 
         if($id == 'showtable'){
           $where = [];
-          $where[] = ['credito.idtienda',$idtienda];
+          $where[] = ['credito.idtienda',$request->idagencia];
           if($request->idcliente!=''){
               $where[] = ['credito.idcliente',$request->idcliente];
           }

@@ -10,9 +10,19 @@
           <div class="card-body p-2" id="form-credito-result">
              
             <div class="modal-body">
-              
-                <div class="row">
+              <div class="row">
                     <div class="col-sm-12 col-md-8">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-8">
+                                <div class="row">
+                                <label for="fecha_inicio" class="col-sm-2 col-form-label">AGENCIA</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" value="{{$tienda->nombreagencia}}" disabled>
+                                    <input type="hidden" id="idagencia" value="{{$tienda->id}}">
+                                </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-sm-12 col-md-8">
                               <div class="row">

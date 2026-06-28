@@ -15,6 +15,17 @@
                     <div class="col-sm-12 col-md-8">
                         <div class="row">
                             <div class="col-sm-12 col-md-8">
+                                <div class="row">
+                                <label for="fecha_inicio" class="col-sm-2 col-form-label">AGENCIA</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" value="{{$tienda->nombreagencia}}" disabled>
+                                    <input type="hidden" id="idagencia" value="{{$tienda->id}}">
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-8">
                               <div class="row mb-1">
                                 <label for="fecha_fin" class="col-sm-2 col-form-label">CLIENTE</label>
                                 <div class="col-sm-10">
@@ -31,13 +42,13 @@
                         <div class="row">
                             <div class="col-sm-12 col-md-4">
                               <div class="row">
-                                <label for="fecha_inicio" class="col-sm-3 col-form-label">DEL</label>
-                                <div class="col-sm-9">
+                                <label for="fecha_inicio" class="col-sm-4 col-form-label">DEL</label>
+                                <div class="col-sm-8">
                                   <input type="date" class="form-control" id="fecha_inicio" value="{{ date('Y-m-d') }}">
                                 </div>
                               </div>
                             </div>
-                            <div class="col-sm-12 col-md-3">
+                            <div class="col-sm-12 col-md-4">
                               <div class="row">
                                 <label for="fecha_fin" class="col-sm-3 col-form-label">AL</label>
                                 <div class="col-sm-9">

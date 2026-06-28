@@ -64,7 +64,8 @@
                     
                     @include('app.nuevosistema.tabla',[
                         'tabla' => '#tabla-origendes',
-                        'route' => url('backoffice/'.$tienda->id.'/garantiaremateagencia/showcliente_asignar?idagencia='.$tienda->id.'&idformacredito=CP&idasesor='.Auth::user()->id),
+                        // 'route' => url('backoffice/'.$tienda->id.'/garantiaremateagencia/showcliente_asignar?idagencia='.$tienda->id.'&idformacredito=CP&idasesor='.Auth::user()->id),
+                        'route' => '',
                         'check_id' => 'check_origen',
                         'scrollY' => 'calc(-321px  + 100vh)',
                         'dom' => 'rt',
@@ -155,7 +156,8 @@
                     <div style="text-align: center;background-color: #a7a7a7;padding: 2px;">LISTA DE REMATES</div>
                     @include('app.nuevosistema.tabla',[
                         'tabla' => '#tabla-destinodes',
-                        'route' => url('backoffice/'.$tienda->id.'/garantiaremateagencia/showcliente_destino?idagencia='.$tienda->id.'&idasesor='.Auth::user()->id),
+                        // 'route' => url('backoffice/'.$tienda->id.'/garantiaremateagencia/showcliente_destino?idagencia='.$tienda->id.'&idasesor='.Auth::user()->id),
+                        'route' => '',
                         'check_id' => 'check_destino',
                         'scrollY' => 'calc(-321px  + 100vh)',
                         'dom' => 'rt',

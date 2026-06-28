@@ -18,12 +18,14 @@
                               <div class="row">
                                 <label for="fecha_inicio" class="col-sm-3 col-form-label">AGENCIA</label>
                                 <div class="col-sm-9">
-                                    <select class="form-control" id="idagencia" disabled>
+                                    <input type="text" class="form-control" value="{{$tienda->nombreagencia}}" disabled>
+                                    <input type="hidden" id="idagencia" value="{{$tienda->id}}">
+                                    {{-- <select class="form-control" id="idagencia" disabled>
                                       <option></option>
                                       @foreach($agencias as $value)
                                           <option value="{{$value->id}}">{{$value->nombreagencia}}</option>
                                       @endforeach
-                                    </select>
+                                    </select> --}}
                                 </div>
                               </div>
                             </div>
@@ -48,7 +50,18 @@
                               <div class="row">
                                 <label for="fecha_fin" class="col-sm-3 col-form-label">EJECUTIVO</label>
                                 <div class="col-sm-9">
-                                    <select class="form-control" id="idasesor" disabled>
+                                    @php
+                                        $usuario = DB::table('users')
+                                            ->join('users_permiso','users_permiso.idusers','users.id')
+                                            ->join('permiso','permiso.id','users_permiso.idpermiso')
+                                            ->where('users.id', Auth::user()->id)
+                                            ->select('users.nombrecompleto','permiso.nombre as nombrepermiso')
+                                            ->first();
+                                        $usuarioText = "$usuario->nombrecompleto ($usuario->nombrepermiso)";
+                                    @endphp
+                                    <input type="text" class="form-control" value="{{$usuarioText}}" disabled>
+                                    <input type="hidden" id="idasesor" value="{{Auth::user()->id}}">
+                                    {{-- <select class="form-control" id="idasesor" disabled>
                                       <option></option>
                                       <?php
                                       $usuarios = DB::table('users')
@@ -61,7 +74,7 @@
                                       @foreach($usuarios as $value)
                                       <option value="{{$value->id}}">{{$value->nombrecompleto}} ({{$value->nombrepermiso}})</option>
                                       @endforeach
-                                    </select>
+                                    </select> --}}
                                 </div>
                               </div>
                            </div>
@@ -123,9 +136,9 @@
 </div>
 <script>
 
-  sistema_select2({ input:'#idagencia',val:'{{$tienda->id}}' });
+  // sistema_select2({ input:'#idagencia',val:'{{$tienda->id}}' });
   sistema_select2({ idtienda:{{$tienda->id}}, json:'tienda:usuario', input:'#idcliente' });
-  sistema_select2({ input:'#idasesor',val:'{{Auth::user()->id}}' });
+  // sistema_select2({ input:'#idasesor',val:'{{Auth::user()->id}}' });
   
   lista_credito();
   function lista_credito(){

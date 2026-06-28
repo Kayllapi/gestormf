@@ -16,6 +16,7 @@
                         <label for="fecha_inicio" class="col-sm-4 col-form-label">AGENCIA</label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control" value="{{$tienda->nombreagencia}}" disabled>
+                            <input type="hidden" id="idagencia" value="{{$tienda->id}}">
                             {{-- <select class="form-control" id="idagencia_vista" disabled>
                                 <option></option>
                                     <option value="0" selected>TODA LAS AGENCIAS</option>
@@ -25,7 +26,6 @@
                             </select> --}}
                         </div>
                         </div>
-                        <input type="hidden" id="idagencia" value="{{$tienda->id}}">
                     </div>
                     <div class="col-sm-12 col-md-2" style="margin-left: 50px;">
                         <div class="row">

@@ -12,7 +12,19 @@
         </div>
       </div>
       <div class="col-sm-12">
-        <h5 class="modal-title" style="margin-top: 10px;text-align: center;"><span style="float: left; font-size: 15px;">({{$tienda->nombreagencia}} / {{auth()->user()->nombrecompleto}})</span> Préstamos en Procesos</h5>
+        <h5 class="modal-title" style="margin-top: 10px;text-align: center;">
+          <div class="row">
+            <div class="col-2 mb-2">
+              <input type="text" class="form-control" value="{{$tienda->nombreagencia}}" disabled>
+            </div>
+            <div class="col-2 mb-2">
+              <input type="text" class="form-control" value="{{auth()->user()->nombrecompleto}}" disabled>
+            </div>
+            <div class="col-8">
+              Préstamos en Procesos
+            </div>
+          </div>
+          </h5>
         <div class="card">
           <div class="card-body">
             <div style="overflow-y: scroll;height: calc(-394px + 100vh);">

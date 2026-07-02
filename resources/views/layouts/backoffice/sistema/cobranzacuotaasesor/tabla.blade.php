@@ -207,7 +207,7 @@
   
   $('#idclientesearch').select2({
       ajax: {
-          url:"{{url('backoffice/'.$tienda->id.'/cobranzacuota/show_credito')}}",
+          url:"{{url('backoffice/'.$tienda->id.'/cobranzacuota/show_credito_tienda')}}",
           dataType: 'json',
           delay: 250,
           data: function (params) {

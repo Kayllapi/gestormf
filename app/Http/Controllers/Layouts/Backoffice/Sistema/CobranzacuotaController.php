@@ -1339,6 +1339,39 @@ class CobranzacuotaController extends Controller
             }
             return $data;
         }
+        elseif($id == 'show_credito_tienda'){
+            $creditos = DB::table('credito')
+                ->join('users as cliente', 'cliente.id', '=', 'credito.idcliente')
+                ->where('credito.estado', 'DESEMBOLSADO')
+                ->where('credito.idestadocredito', 1)
+                ->where('credito.idtienda', $idtienda)
+                ->where(function ($q) use ($request) {
+                    $q->where('cliente.identificacion', 'LIKE', '%' . $request->buscar . '%')
+                    ->orWhere('cliente.nombrecompleto', 'LIKE', '%' . $request->buscar . '%');
+                })
+                ->select(
+                    'cliente.id as idcliente',
+                    'cliente.identificacion as identificacion',
+                    'cliente.nombrecompleto as nombrecliente',
+                    DB::raw('MIN(credito.fecha_desembolso) as fecha_desembolso')
+                )
+                ->groupBy(
+                    'cliente.id',
+                    'cliente.identificacion',
+                    'cliente.nombrecompleto'
+                )
+                ->orderBy('fecha_desembolso', 'asc')
+                ->get();
+
+            $data = [];
+            foreach ($creditos as $value) {
+                $data[] = [
+                    'id' => $value->idcliente,
+                    'text' => $value->identificacion . ' - ' . $value->nombrecliente,
+                ];
+            }
+            return $data;
+        }
         else if($id == 'showlistacreditos'){
           $cliente = DB::table('users')->whereId($request->idcliente)->select('users.id','users.nombrecompleto','users.identificacion')->first();
           $creditos = DB::table('credito')

@@ -56,18 +56,6 @@
                                 <div class="col-sm-9">
                                     <select class="form-control" id="idasesor">
                                       <option></option>
-                                      <option value="0">TODO</option>
-                                      <?php
-                                      $usuarios = DB::table('users')
-                                          ->join('users_permiso','users_permiso.idusers','users.id')
-                                          ->join('permiso','permiso.id','users_permiso.idpermiso')
-                                          ->whereIn('users_permiso.idpermiso',[3,4,7])
-                                          ->select('users.*','permiso.nombre as nombrepermiso')
-                                          ->get();
-                                      ?>
-                                      @foreach($usuarios as $value)
-                                      <option value="{{$value->id}}">{{$value->nombrecompleto}} ({{$value->nombrepermiso}})</option>
-                                      @endforeach
                                     </select>
                                 </div>
                               </div>
@@ -179,6 +167,27 @@
   // sistema_select2({ input:'#idagencia' });
   sistema_select2({ input:'#idformacredito' });
   sistema_select2({ input:'#idasesor' });
+
+  cliente_tienda({{$tienda->id}});
+  
+  $("#idagencia").on("change", function(e) {
+      var idtienda = $('#idagencia').val();
+      cliente_tienda(idtienda)
+  });
+  
+  function cliente_tienda(idtienda){
+      $.ajax({
+          url:"{{url('backoffice/'.$tienda->id.'/inicio/show_asesor')}}",
+          type:'GET',
+          data: {
+              idtienda : idtienda
+          },
+          success: function (respuesta){
+              $('#idasesor').html(respuesta);  
+              sistema_select2({ input:'#idasesor' });
+          }
+      })
+  }
   
   // lista_credito();
   function lista_credito(){

@@ -32,9 +32,7 @@
                   <input type="date" class="form-control" id="fechafin" value="{{now()->format('Y-m-d')}}">
                 </div>
                 <div class="col-sm-3">
-                  <button type="button" class="btn btn-primary" onclick="lista_ingresoextraordinario()" style="font-weight: bold;">
-                                  <i class="fa-solid fa-search"></i> 
-                    Filtrar</button>
+                  <button type="button" class="btn btn-success" onclick="lista_ingresoextraordinario()"><i class="fa-solid fa-search"></i> FILTRAR</button>
                 </div>
               </div>
             </div>
@@ -45,6 +43,7 @@
         <div class="card">
           <div class="card-body">
             <div style="overflow-y: scroll;height: calc(100vh - 368px);">
+            <div id="cont_loading"></div>
             <table class="table table-striped table-hover" id="table-lista-ingresoextraordinario">
               <thead class="table-dark" style="position: sticky;top: 0;z-index:1;">
                 <tr>
@@ -80,14 +79,22 @@
     var fechainicio = $('#fechainicio').val();
     var fechafin = $('#fechafin').val();
     $.ajax({
-      url:"{{url('backoffice/0/ingresoextraordinario/show_table')}}",
+      url:"{{url('backoffice/'.$tienda->id.'/ingresoextraordinario/show_table')}}",
       type:'GET',
       data:{
           fechainicio: $('#fechainicio').val(),
           fechafin: $('#fechafin').val(),
       },
+      beforeSend: function () {
+        load('#cont_loading');
+        $('#table-lista-ingresoextraordinario').addClass('d-none');
+      },
       success: function (res){
         $('#table-lista-ingresoextraordinario > tbody').html(res.html);
+
+        // loading
+        $('#cont_loading').html('');
+        $('#table-lista-ingresoextraordinario').removeClass('d-none')
       }
     })
   }

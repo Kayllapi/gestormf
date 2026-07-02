@@ -126,6 +126,7 @@ class IngresoextraordinarioController extends Controller
     {
         if($id=='show_table'){
 
+            $where = [];
             if($request->input('fechainicio') != ''){
                 $where[] = ['ingresoextraordinario.fechapago','>=',$request->fechainicio.' 00:00:00'];
             }
@@ -138,6 +139,7 @@ class IngresoextraordinarioController extends Controller
                 ->join('credito_tipoformapago','credito_tipoformapago.id','ingresoextraordinario.idformapago')
                 ->join('users as responsable','responsable.id','ingresoextraordinario.idresponsable')
                 ->where('ingresoextraordinario.idestadoeliminado',1)
+                ->where('ingresoextraordinario.idtienda',$idtienda)
                 ->where($where)
                 ->select(
                     'ingresoextraordinario.*',

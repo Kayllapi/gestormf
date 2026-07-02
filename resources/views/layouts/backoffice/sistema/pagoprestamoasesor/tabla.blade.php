@@ -63,20 +63,6 @@
                                     @endphp
                                     <input type="text" class="form-control" value="{{$usuarioText}}" disabled>
                                     <input type="hidden" id="idasesor" value="{{Auth::user()->id}}">
-                                    {{-- <select class="form-control" id="idasesor" disabled>
-                                      <option></option>
-                                      <?php
-                                      $usuarios = DB::table('users')
-                                          ->join('users_permiso','users_permiso.idusers','users.id')
-                                          ->join('permiso','permiso.id','users_permiso.idpermiso')
-                                          ->whereIn('users_permiso.idpermiso',[3,4,7])
-                                          ->select('users.*','permiso.nombre as nombrepermiso')
-                                          ->get();
-                                      ?>
-                                      @foreach($usuarios as $value)
-                                      <option value="{{$value->id}}">{{$value->nombrecompleto}} ({{$value->nombrepermiso}})</option>
-                                      @endforeach
-                                    </select> --}}
                                 </div>
                               </div>
                            </div>
@@ -124,6 +110,7 @@
       <div class="col-sm-12 mt-1">
         <div class="card">
           <div class="card-body">
+            <div id="cont_loading"></div>
             <div style="overflow-y: scroll;height: calc(100vh - 271px);" id="tabla-pagoprestamo">
             </div>
           </div>
@@ -156,12 +143,20 @@
           inicio : $('#fecha_inicio').val(),
           fin : $('#fecha_fin').val(),
       },
+      beforeSend: function () {
+        load('#cont_loading');
+        $('#tabla-pagoprestamo').addClass('d-none');
+      },
       success: function (res){
         $('#tabla-pagoprestamo').html(res.html);
         $("tr#show_data_select").on("click", function() {
             $('tr.selected').removeClass('selected');
             $(this).addClass('selected');
         });
+
+        // loading
+        $('#cont_loading').html('');
+        $('#tabla-pagoprestamo').removeClass('d-none')
       }
     })
   }

@@ -20,12 +20,6 @@
                                 <div class="col-sm-9">
                                     <input type="text" class="form-control" value="{{$tienda->nombreagencia}}" disabled>
                                     <input type="hidden" id="idagencia" value="{{$tienda->id}}">
-                                    {{-- <select class="form-control" id="idagencia" disabled>
-                                      <option></option>
-                                      @foreach($agencias as $value)
-                                          <option value="{{$value->id}}">{{$value->nombreagencia}}</option>
-                                      @endforeach
-                                    </select> --}}
                                 </div>
                               </div>
                             </div>
@@ -91,6 +85,7 @@
       <div class="col-sm-12 mt-1">
         <div class="card">
           <div class="card-body">
+            <div id="cont_loading"></div>
             <div style="overflow-y: scroll;height: calc(100vh - 271px);" id="tabla-pagoprestamo">
             </div>
           </div>
@@ -119,12 +114,20 @@
           inicio : $('#fecha_inicio').val(),
           fin : $('#fecha_fin').val(),
       },
+      beforeSend: function () {
+        load('#cont_loading');
+        $('#tabla-pagoprestamo').addClass('d-none');
+      },
       success: function (res){
         $('#tabla-pagoprestamo').html(res.html);
         $("tr#show_data_select").on("click", function() {
             $('tr.selected').removeClass('selected');
             $(this).addClass('selected');
         });
+
+        // loading
+        $('#cont_loading').html('');
+        $('#tabla-pagoprestamo').removeClass('d-none')
       }
     })
   }

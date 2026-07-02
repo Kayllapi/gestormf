@@ -65,7 +65,7 @@ class PagoprestamoController extends Controller
               $where[] = ['credito.idcliente',$request->idcliente];
               $where2[] = ['credito.idcliente',$request->idcliente];
           }
-          if($request->idasesor!=''){
+          if($request->idasesor!='' && $request->idasesor!='0'){
               $where[] = ['credito.idasesor',$request->idasesor];
               $where2[] = ['credito.idcajero',$request->idasesor];
           }

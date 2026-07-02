@@ -50,17 +50,6 @@
                                 <div class="col-sm-9">
                                     <select class="form-control" id="idasesor">
                                       <option></option>
-                                      <?php
-                                      $usuarios = DB::table('users')
-                                          ->join('users_permiso','users_permiso.idusers','users.id')
-                                          ->join('permiso','permiso.id','users_permiso.idpermiso')
-                                          ->whereIn('users_permiso.idpermiso',[3,4,7])
-                                          ->select('users.*','permiso.nombre as nombrepermiso')
-                                          ->get();
-                                      ?>
-                                      @foreach($usuarios as $value)
-                                      <option value="{{$value->id}}">{{$value->nombrecompleto}} ({{$value->nombrepermiso}})</option>
-                                      @endforeach
                                     </select>
                                 </div>
                               </div>
@@ -112,6 +101,7 @@
       <div class="col-sm-12 mt-1">
         <div class="card">
           <div class="card-body">
+            <div id="cont_loading"></div>
             <div style="overflow-y: scroll;height: calc(100vh - 305px);" id="tabla-pagoprestamo">
             </div>
           </div>
@@ -134,6 +124,27 @@
   sistema_select2({ input:'#idagencia',val:'{{$tienda->id}}' });
   sistema_select2({ idtienda:{{$tienda->id}}, json:'tienda:usuario', input:'#idcliente' });
   sistema_select2({ input:'#idasesor' });
+
+    cliente_tienda({{$tienda->id}});
+    
+    $("#idagencia").on("change", function(e) {
+        var idtienda = $('#idagencia').val();
+        cliente_tienda(idtienda)
+    });
+    
+    function cliente_tienda(idtienda){
+        $.ajax({
+            url:"{{url('backoffice/'.$tienda->id.'/inicio/show_asesor')}}",
+            type:'GET',
+            data: {
+                idtienda : idtienda
+            },
+            success: function (respuesta){
+                $('#idasesor').html(respuesta);  
+                sistema_select2({ input:'#idasesor' });
+            }
+        })
+    }
   
   lista_credito();
   function lista_credito(){
@@ -149,6 +160,10 @@
           inicio : $('#fecha_inicio').val(),
           fin : $('#fecha_fin').val(),
       },
+      beforeSend: function () {
+        load('#cont_loading');
+        $('#tabla-pagoprestamo').addClass('d-none');
+      },
       success: function (res){
         $('#tabla-pagoprestamo').html(res.html);
         $('#tabla-pagoprestamo1').html(res.html1);
@@ -156,6 +171,10 @@
             $('tr.selected').removeClass('selected');
             $(this).addClass('selected');
         });
+
+        // loading
+        $('#cont_loading').html('');
+        $('#tabla-pagoprestamo').removeClass('d-none')
       }
     })
   }

@@ -85,79 +85,81 @@
         </div>
       </div>
   </div>
-  <div class="row mt-1"> 
-      <div class="col-sm-7">
-        <div class="card">
-          <div class="card-body">
-            <table class="table table-bordered"  style="margin-bottom: 10px;">
-              <tbody>
-                <tr>
-                  <th style='text-align:center;background-color: #E8E585 !important;font-weight: bold;'>(Días de Mora > {{configuracion($tienda->id,'dias_tolerancia_garantia')['valor']}} días)</th>
-                </tr>
-              </tbody>
-            </table>
-            <div style="height: calc(-314px + 100vh);">
-            <table class="table table-striped" id="table-lista-credito">
-              <thead class="table-dark" style="position: sticky;top: 0;"> 
-                <tr>
-                  <th>Asesor/ejecutivo</th>
-                  <th style='text-align:right;'>Cartera (S/.)</th>
-                  <th style='text-align:right;'>N° de Créditos</th>
-                  <th style='text-align:right;'>En Mora (S/.)</th>
-                  <th style='text-align:right;'>% de Mora</th>
-                  <th style='text-align:right;'>N° de Cred. En Mora</th>
-                </tr>
-              </thead>
-              <tbody>
-              </tbody>
-            </table>
+  <div id="cont_loading"></div>
+  <div id="cont_result">
+    <div class="row mt-1"> 
+        <div class="col-sm-7">
+          <div class="card">
+            <div class="card-body">
+              <table class="table table-bordered"  style="margin-bottom: 10px;">
+                <tbody>
+                  <tr>
+                    <th style='text-align:center;background-color: #E8E585 !important;font-weight: bold;'>(Días de Mora > {{configuracion($tienda->id,'dias_tolerancia_garantia')['valor']}} días)</th>
+                  </tr>
+                </tbody>
+              </table>
+              <div style="height: calc(-314px + 100vh);">
+              <table class="table table-striped" id="table-lista-credito">
+                <thead class="table-dark" style="position: sticky;top: 0;"> 
+                  <tr>
+                    <th>Asesor/ejecutivo</th>
+                    <th style='text-align:right;'>Cartera (S/.)</th>
+                    <th style='text-align:right;'>N° de Créditos</th>
+                    <th style='text-align:right;'>En Mora (S/.)</th>
+                    <th style='text-align:right;'>% de Mora</th>
+                    <th style='text-align:right;'>N° de Cred. En Mora</th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="col-sm-3">
-        <div class="card">
-          <div class="card-body">
-            <table class="table table-striped" id="table-lista-credito1">
-              <thead class="table-dark"> 
-                <tr>
-                  <th>CLASIFICACIÓN</th>
-                  <th style='text-align:center;'>SALDO</th>
-                  <th style='text-align:center;'>N° DE CRÉDITOS</th>
-                </tr>
-              </thead>
-              <tbody>
-              </tbody>
-            </table>
+        <div class="col-sm-3">
+          <div class="card">
+            <div class="card-body">
+              <table class="table table-striped" id="table-lista-credito1">
+                <thead class="table-dark"> 
+                  <tr>
+                    <th>CLASIFICACIÓN</th>
+                    <th style='text-align:center;'>SALDO</th>
+                    <th style='text-align:center;'>N° DE CRÉDITOS</th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="col-sm-2">
-        <div class="card">
-          <div class="card-body">
+        <div class="col-sm-2">
+          <div class="card">
+            <div class="card-body">
 
-            <table class="table table-striped" id="table-lista-credito2">
-              <thead class="table-dark"> 
-                <tr>
-                  <th colspan="2" style='text-align:center; background-color: #a7a7a7 !important;'>ÍNDICE DE MORA REGULAR</th>
-                </tr>
-                <tr>
-                  <th style='text-align:center;'>% de Mora</th>
-                  <th style='text-align:center;'>Clasificación Consid.</th>
-                </tr>
-              </thead>
-              <tbody>
-              </tbody>
-            </table>
+              <table class="table table-striped" id="table-lista-credito2">
+                <thead class="table-dark"> 
+                  <tr>
+                    <th colspan="2" style='text-align:center; background-color: #a7a7a7 !important;'>ÍNDICE DE MORA REGULAR</th>
+                  </tr>
+                  <tr>
+                    <th style='text-align:center;'>% de Mora</th>
+                    <th style='text-align:center;'>Clasificación Consid.</th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
-      </div>
     </div>
-                              <div style="text-align: right;margin-top:-30px">
-                                <button type="button" class="btn btn-info" onclick="exportar_pdf()" style="font-weight: bold;">
-                                  <i class="fa-solid fa-file-pdf" style="color:#000 !important;font-weight: bold;"></i> REPORTE PDF</button>
-                              </div>
-      
+    <div style="text-align: right; margin-top:-30px">
+      <button type="button" class="btn btn-info" onclick="exportar_pdf()" style="font-weight: bold;">
+        <i class="fa-solid fa-file-pdf" style="color:#000 !important;font-weight: bold;"></i> REPORTE PDF</button>
+    </div>
+  </div>
 </div>
 <script>
   /*var d= new Date();
@@ -201,6 +203,10 @@
           inicio : $('#fecha_inicio').val(),
           tipo : 'admin',
       },
+      beforeSend: function () {
+        load('#cont_loading');
+        $('#cont_result').addClass('d-none');
+      },
       success: function (res){
         $('#table-lista-credito > tbody').html(res.html);
         $('#table-lista-credito1 > tbody').html(res.html1);
@@ -209,6 +215,10 @@
             $('tr.selected').removeClass('selected');
             $(this).addClass('selected');
         });
+
+        // loading
+        $('#cont_loading').html('');
+        $('#cont_result').removeClass('d-none')
       }
     })
   }

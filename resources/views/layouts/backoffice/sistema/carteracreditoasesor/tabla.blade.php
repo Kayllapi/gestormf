@@ -55,22 +55,6 @@
                                     @endphp
                                     <input type="text" class="form-control" value="{{$usuarioText}}" disabled>
                                     <input type="hidden" id="idasesor" value="{{Auth::user()->id}}">
-                                    {{-- <select class="form-control" id="idasesor" disabled>
-                                      <option></option>
-                                      <option value="0" selected>TODO</option>
-                                      <?php
-                                      $usuarios = DB::table('users')
-                                          ->join('users_permiso','users_permiso.idusers','users.id')
-                                          ->join('permiso','permiso.id','users_permiso.idpermiso')
-                                          ->whereIn('users_permiso.idpermiso',[3,4,7])
-                                          ->where('users_permiso.idtienda',$tienda->id)
-                                          ->select('users.*','permiso.nombre as nombrepermiso')
-                                          ->get();
-                                      ?>
-                                      @foreach($usuarios as $value)
-                                      <option value="{{$value->id}}">{{$value->nombrecompleto}} ({{$value->nombrepermiso}})</option>
-                                      @endforeach
-                                    </select> --}}
                                 </div>
                             </div>   
                           </div>
@@ -155,10 +139,6 @@
       </div>
 </div>
 <script>
-  /*var d= new Date();
-  var fechatotal = `${d.getFullYear()}-${(d.getMonth() + 1)}-${d.getDate()}`;
-  $("#fecha_fin").val(fechatotal);*/
-
   // sistema_select2({ input:'#idagencia',val:'{{$tienda->id}}' });
   sistema_select2({ input:'#idformacredito' });
   // sistema_select2({ input:'#idasesor',val:'{{Auth::user()->id}}' });

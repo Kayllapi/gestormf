@@ -120,34 +120,35 @@
         <div class="card">
           <div class="card-body p-2">
             <div class="modal-body p-0" style="overflow-y: scroll;height: calc(-271px + 100vh);">
-            <table class="table table-striped table-hover" id="table-lista-credito">
-              <thead class="table-dark" style="position: sticky;top: -1px;z-index:1;"> 
-                <tr>
-                  <th>N°</th>
-                  <th>CUENTA</th>
-                  <th>RUC/DNI/CE</th>
-                  <th>Apellidos y Nombres</th>
-                  <th>RUC/DNI/CE (Aval)</th>
-                  <th>Ape. Nom. Aval</th>
-                  <th>Fecha Desemb.</th>
-                  <th>Monto Cred. (S/.)</th>
-                  <th>Saldo Cap. (S/.)</th>
-                  <th>Saldo Deuda T. (S/.)</th>
-                  <th>F. Pago</th>
-                  <th>Cuotas</th>
-                  <th>F.C.</th>
-                  <th><span style="background-color: #ffb2b2 !important;text-decoration: underline;font-weight: bold;">Días Vencido</span></th>
-                  <th>Calificación</th>
-                  <th>Producto</th>
-                  <th>Modalidad</th>
-                  <th>Tele./Celu.</th>
-                  <th>Direc/Domicilio</th>
-                </tr>
-              </thead>
-              <tbody>
-              
-              </tbody>
-            </table>
+              <div id="cont_loading"></div>
+              <table class="table table-striped table-hover" id="table-lista-credito">
+                <thead class="table-dark" style="position: sticky;top: -1px;z-index:1;"> 
+                  <tr>
+                    <th>N°</th>
+                    <th>CUENTA</th>
+                    <th>RUC/DNI/CE</th>
+                    <th>Apellidos y Nombres</th>
+                    <th>RUC/DNI/CE (Aval)</th>
+                    <th>Ape. Nom. Aval</th>
+                    <th>Fecha Desemb.</th>
+                    <th>Monto Cred. (S/.)</th>
+                    <th>Saldo Cap. (S/.)</th>
+                    <th>Saldo Deuda T. (S/.)</th>
+                    <th>F. Pago</th>
+                    <th>Cuotas</th>
+                    <th>F.C.</th>
+                    <th><span style="background-color: #ffb2b2 !important;text-decoration: underline;font-weight: bold;">Días Vencido</span></th>
+                    <th>Calificación</th>
+                    <th>Producto</th>
+                    <th>Modalidad</th>
+                    <th>Tele./Celu.</th>
+                    <th>Direc/Domicilio</th>
+                  </tr>
+                </thead>
+                <tbody>
+                
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -177,12 +178,20 @@
           inicio : $('#fecha_inicio').val(),
           tipo : 'admin',
       },
+      beforeSend: function () {
+        load('#cont_loading');
+        $('#table-lista-credito').addClass('d-none');
+      },
       success: function (res){
         $('#table-lista-credito > tbody').html(res.html);
         $("tr#show_data_select").on("click", function() {
             $('tr.selected').removeClass('selected');
             $(this).addClass('selected');
         });
+
+        // loading
+        $('#cont_loading').html('');
+        $('#table-lista-credito').removeClass('d-none')
       }
     })
   }

@@ -30,12 +30,6 @@
                                 <div class="col-sm-9">
                                     <input type="text" class="form-control" value="{{$tienda->nombreagencia}}" disabled>
                                     <input type="hidden" id="idagencia" value="{{$tienda->id}}">
-                                    {{-- <select class="form-control" id="idagencia" disabled>
-                                      <option></option>
-                                      @foreach($agencias as $value)
-                                          <option value="{{$value->id}}">{{$value->nombreagencia}}</option>
-                                      @endforeach
-                                    </select> --}}
                                 </div>
                               </div>
                             </div>
@@ -62,18 +56,6 @@
                                 <div class="col-sm-9">
                                     <select class="form-control" id="idasesor">
                                       <option></option>
-                                      <option value="0" selected>TODO</option>
-                                      <?php
-                                      $usuarios = DB::table('users')
-                                          ->join('users_permiso','users_permiso.idusers','users.id')
-                                          ->join('permiso','permiso.id','users_permiso.idpermiso')
-                                          ->whereIn('users_permiso.idpermiso',[3,4,7])
-                                          ->select('users.*','permiso.nombre as nombrepermiso')
-                                          ->get();
-                                      ?>
-                                      @foreach($usuarios as $value)
-                                      <option value="{{$value->id}}">{{$value->nombrecompleto}} ({{$value->nombrepermiso}})</option>
-                                      @endforeach
                                     </select>
                                 </div>
                               </div>
@@ -94,6 +76,8 @@
           <div class="card-body p-2">
              <div id="cont-filtro"></div>
             <div class="modal-body p-0">
+              <div id="cont_loading"></div>
+              <div id="cont-origendes">
                     @include('app.nuevosistema.tabla',[
                         'tabla' => '#tabla-origendes',
                         'route' => url('backoffice/'.$tienda->id.'/carteradecliente/showcliente'),
@@ -147,18 +131,19 @@
                             ['type' => 'text'],
                         ]
                     ])
+              </div>
             </div> 
           </div>
         </div>
       </div>
   </div>
   </form>
-                              <div style="text-align: right;">
-                                <button type="button" class="btn btn-info" onclick="exportar_pdf()" style="font-weight: bold;">
-                                  <i class="fa-solid fa-file-pdf" style="color:#000 !important;font-weight: bold;"></i> REPORTE PDF</button>
-                                <button type="button" class="btn btn-success" onclick="exportar_excel()" style="font-weight: bold;">
-                                  <i class="fa-solid fa-file-excel" style="color:#000 !important;font-weight: bold;"></i> REPORTE EXCEL</button>
-                              </div>
+  <div style="text-align: right;">
+    <button type="button" class="btn btn-info" onclick="exportar_pdf()" style="font-weight: bold;">
+      <i class="fa-solid fa-file-pdf" style="color:#000 !important;font-weight: bold;"></i> REPORTE PDF</button>
+    <button type="button" class="btn btn-success" onclick="exportar_excel()" style="font-weight: bold;">
+      <i class="fa-solid fa-file-excel" style="color:#000 !important;font-weight: bold;"></i> REPORTE EXCEL</button>
+  </div>
 </div>
 <style>
 .form-check-input {
@@ -171,6 +156,27 @@
   // sistema_select2({ input:'#idagencia', val:'{{$tienda->id}}' });
   sistema_select2({ input:'#idasesor' });
   sistema_select2({ input:'#idformacredito' });
+
+    cliente_tienda({{$tienda->id}});
+    
+    $("#idagencia").on("change", function(e) {
+        var idtienda = $('#idagencia').val();
+        cliente_tienda(idtienda)
+    });
+    
+    function cliente_tienda(idtienda){
+        $.ajax({
+            url:"{{url('backoffice/'.$tienda->id.'/inicio/show_asesor')}}",
+            type:'GET',
+            data: {
+                idtienda : idtienda
+            },
+            success: function (respuesta){
+                $('#idasesor').html(respuesta);  
+                sistema_select2({ input:'#idasesor' });
+            }
+        })
+    }
 
 
   function lista_credito(){
@@ -206,8 +212,16 @@
   }
   
   function actualizar_tabla(){
-        var root = '{{url('backoffice/'.$tienda->id.'/carteradecliente/showcliente')}}?idagencia='+$('#idagencia').val()+'&idasesor='+$('#idasesor').val()+'&idformacredito='+$('#idformacredito').val();
-        $('#tabla-origendes').DataTable().ajax.url(root).load();
+    load('#cont_loading');
+    $('#cont-origendes').addClass('d-none');
+
+    var root = '{{url('backoffice/'.$tienda->id.'/carteradecliente/showcliente')}}?idagencia='+$('#idagencia').val()+'&idasesor='+$('#idasesor').val()+'&idformacredito='+$('#idformacredito').val();
+    $('#tabla-origendes').DataTable().ajax.url(root).load();
+
+    $('#tabla-origendes').on('xhr.dt', function(e, settings, json, xhr){
+        $('#cont_loading').html('');
+        $('#cont-origendes').removeClass('d-none');
+    });
   }
 
    function exportar_pdf(){

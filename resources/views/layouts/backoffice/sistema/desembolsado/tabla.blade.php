@@ -149,7 +149,7 @@
         })
     }
   
-  lista_credito();
+  // lista_credito();
   function lista_credito(){
     //let estado_credito = $('input[name="estado_credito"]:checked').val();
     

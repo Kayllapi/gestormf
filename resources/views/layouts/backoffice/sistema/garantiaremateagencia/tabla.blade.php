@@ -61,87 +61,89 @@
                 </div>
                 <div class="row">
                 <div style="width:46%;float: left;">
-                    
-                    @include('app.nuevosistema.tabla',[
-                        'tabla' => '#tabla-origendes',
-                        // 'route' => url('backoffice/'.$tienda->id.'/garantiaremateagencia/showcliente_asignar?idagencia='.$tienda->id.'&idformacredito=CP&idasesor='.Auth::user()->id),
-                        'route' => '',
-                        'check_id' => 'check_origen',
-                        'scrollY' => 'calc(-321px  + 100vh)',
-                        'dom' => 'rt',
-                        'thead' => [
-                            ['data' => '' ],
-                            ['data' => 'N°' ],
-                            ['data' => 'CUENTA' ],
-                            ['data' => 'RUC/DNI/CE' ],
-                            ['data' => 'Apellidos y Nombres' ],
-                            ['data' => 'Monto Crédito (S/.)' ],
-                            ['data' => 'F. Pago' ],
-                            ['data' => 'Saldo Cuotas Venc. (S/.)' ],
-                            ['data' => 'Días Vencido', 'class' => 'dia_vencido' ],
-                            ['data' => 'Form. C.' ],
-                            ['data' => 'Nro. de Cuotas Cumplido y Venc.' ],
-                            ['data' => 'Tele./Celu.' ],
-                            ['data' => 'F. Compromiso' ],
-                            ['data' => 'Anotación' ],
-                            ['data' => 'Direc/Domicilio' ],
-                            ['data' => 'Calificación' ],
-                            ['data' => 'Producto' ],
-                            ['data' => 'Modalidad' ],
-                            ['data' => 'RUC/DNI/CE (Aval)' ],
-                            ['data' => 'Ape. Nom. Aval' ],
-                            ['data' => 'Ejecutivo' ],
-                        ],
-                        'tbody' => [
-                            ['data' => 'id','type'=>'check'],
-                            ['data' => 'key','type'=>'text'],
-                            ['data' => 'cuenta','type'=>'text'],
-                            ['data' => 'identificacioncliente','type'=>'text'],
-                            ['data' => 'nombrecliente','type'=>'text'],
-                            ['data' => 'monto_solicitado','type'=>'money'],
-                            ['data' => 'frecuencianombre','type'=>'text'],
-                            ['data' => 'cuota_vencida','type'=>'money'],
-                            ['data' => 'ultimo_atraso','type'=>'money'],
-                            ['data' => 'cp','type'=>'text'],
-                            ['data' => 'cuotas','type'=>'text'],
-                            ['data' => 'telefonocliente','type'=>'text'],
-                            ['data' => 'fechacompromiso','type'=>'text'],
-                            ['data' => 'comentario','type'=>'text'],
-                            ['data' => 'direccioncliente','type'=>'text'],
-                            ['data' => 'clasificacion','type'=>'text'],
-                            ['data' => 'nombreproductocredito','type'=>'text'],
-                            ['data' => 'nombremodalidadcredito','type'=>'text'],
-                            ['data' => 'identificacionaval','type'=>'text'],
-                            ['data' => 'nombreaval','type'=>'text'],
-                            ['data' => 'codigoasesor','type'=>'text'],
-                        ],
-                        'tfoot' => [
-                            ['type' => ''],
-                            ['type' => ''],
-                            ['type' => ''],
-                            ['type' => ''],
-                            ['type' => 'text'],
-                            ['type' => ''],
-                            ['type' => ''],
-                            ['type' => ''],
-                            ['type' => ''],
-                            ['type' => ''],
-                            ['type' => ''],
-                            ['type' => ''],
-                            ['type' => ''],
-                            ['type' => ''],
-                            ['type' => ''],
-                            ['type' => ''],
-                            ['type' => ''],
-                            ['type' => ''],
-                            ['type' => ''],
-                            ['type' => ''],
-                            ['type' => ''],
-                        ]
-                    ])
-                <input type="hidden" id="check_origen">
-                  <button type="button" class="btn btn-primary mt-1" id="btn-autorizar-garantia" onclick="ver_garantia()">
-                      Garantías </button>
+                    <div id="cont_loading_1"></div>
+                    <div id="cont-origendes">
+                        @include('app.nuevosistema.tabla',[
+                            'tabla' => '#tabla-origendes',
+                            // 'route' => url('backoffice/'.$tienda->id.'/garantiaremateagencia/showcliente_asignar?idagencia='.$tienda->id.'&idformacredito=CP&idasesor='.Auth::user()->id),
+                            'route' => '',
+                            'check_id' => 'check_origen',
+                            'scrollY' => 'calc(-321px  + 100vh)',
+                            'dom' => 'rt',
+                            'thead' => [
+                                ['data' => '' ],
+                                ['data' => 'N°' ],
+                                ['data' => 'CUENTA' ],
+                                ['data' => 'RUC/DNI/CE' ],
+                                ['data' => 'Apellidos y Nombres' ],
+                                ['data' => 'Monto Crédito (S/.)' ],
+                                ['data' => 'F. Pago' ],
+                                ['data' => 'Saldo Cuotas Venc. (S/.)' ],
+                                ['data' => 'Días Vencido', 'class' => 'dia_vencido' ],
+                                ['data' => 'Form. C.' ],
+                                ['data' => 'Nro. de Cuotas Cumplido y Venc.' ],
+                                ['data' => 'Tele./Celu.' ],
+                                ['data' => 'F. Compromiso' ],
+                                ['data' => 'Anotación' ],
+                                ['data' => 'Direc/Domicilio' ],
+                                ['data' => 'Calificación' ],
+                                ['data' => 'Producto' ],
+                                ['data' => 'Modalidad' ],
+                                ['data' => 'RUC/DNI/CE (Aval)' ],
+                                ['data' => 'Ape. Nom. Aval' ],
+                                ['data' => 'Ejecutivo' ],
+                            ],
+                            'tbody' => [
+                                ['data' => 'id','type'=>'check'],
+                                ['data' => 'key','type'=>'text'],
+                                ['data' => 'cuenta','type'=>'text'],
+                                ['data' => 'identificacioncliente','type'=>'text'],
+                                ['data' => 'nombrecliente','type'=>'text'],
+                                ['data' => 'monto_solicitado','type'=>'money'],
+                                ['data' => 'frecuencianombre','type'=>'text'],
+                                ['data' => 'cuota_vencida','type'=>'money'],
+                                ['data' => 'ultimo_atraso','type'=>'money'],
+                                ['data' => 'cp','type'=>'text'],
+                                ['data' => 'cuotas','type'=>'text'],
+                                ['data' => 'telefonocliente','type'=>'text'],
+                                ['data' => 'fechacompromiso','type'=>'text'],
+                                ['data' => 'comentario','type'=>'text'],
+                                ['data' => 'direccioncliente','type'=>'text'],
+                                ['data' => 'clasificacion','type'=>'text'],
+                                ['data' => 'nombreproductocredito','type'=>'text'],
+                                ['data' => 'nombremodalidadcredito','type'=>'text'],
+                                ['data' => 'identificacionaval','type'=>'text'],
+                                ['data' => 'nombreaval','type'=>'text'],
+                                ['data' => 'codigoasesor','type'=>'text'],
+                            ],
+                            'tfoot' => [
+                                ['type' => ''],
+                                ['type' => ''],
+                                ['type' => ''],
+                                ['type' => ''],
+                                ['type' => 'text'],
+                                ['type' => ''],
+                                ['type' => ''],
+                                ['type' => ''],
+                                ['type' => ''],
+                                ['type' => ''],
+                                ['type' => ''],
+                                ['type' => ''],
+                                ['type' => ''],
+                                ['type' => ''],
+                                ['type' => ''],
+                                ['type' => ''],
+                                ['type' => ''],
+                                ['type' => ''],
+                                ['type' => ''],
+                                ['type' => ''],
+                                ['type' => ''],
+                            ]
+                        ])
+                        <input type="hidden" id="check_origen">
+                        <button type="button" class="btn btn-primary mt-1" id="btn-autorizar-garantia" onclick="ver_garantia()">
+                            Garantías </button>
+                    </div>
                 </div>
                 <div class="row  text-center align-items-center" 
                      style="width:8%;float: left;height: 350px;margin-left:0px;margin-right:0px;">
@@ -153,59 +155,62 @@
                     </div>
                 </div>
                 <div style="width:46%;float: left;">
-                    <div style="text-align: center;background-color: #a7a7a7;padding: 2px;">LISTA DE REMATES</div>
-                    @include('app.nuevosistema.tabla',[
-                        'tabla' => '#tabla-destinodes',
-                        // 'route' => url('backoffice/'.$tienda->id.'/garantiaremateagencia/showcliente_destino?idagencia='.$tienda->id.'&idasesor='.Auth::user()->id),
-                        'route' => '',
-                        'check_id' => 'check_destino',
-                        'scrollY' => 'calc(-321px  + 100vh)',
-                        'dom' => 'rt',
-                        'thead' => [
-                            ['data' => '' ],
-                            ['data' => 'CLIENTE' ],
-                            ['data' => 'RUC/DNI/CE' ],
-                            ['data' => 'TIPO DE GARANTÍA' ],
-                            ['data' => 'DESCRIPCIÓN' ],
-                            ['data' => 'MODELO' ],
-                            ['data' => 'VALOR COMERCIAL' ],
-                            ['data' => 'ACCESORIOS' ],
-                            ['data' => 'COBERTURA' ],
-                            ['data' => 'COLOR' ],
-                            ['data' => 'CÓDIGO GARANTÍA' ],
-                        ],
-                        'tbody' => [
-                            ['data' => 'id','type'=>'check'],
-                            ['data' => 'cliente','type'=>'text'],
-                            ['data' => 'dni','type'=>'text'],
-                            ['data' => 'tipo_garantia','type'=>'text'],
-                            ['data' => 'descripcion','type'=>'text'],
-                            ['data' => 'modelo','type'=>'text'],
-                            ['data' => 'valorcomercial','type'=>'text'],
-                            ['data' => 'accesorios','type'=>'text'],
-                            ['data' => 'cobertura','type'=>'text'],
-                            ['data' => 'color','type'=>'text'],
-                            ['data' => 'codigo_garantia','type'=>'text'],
-                        ],
-                        'tfoot' => [
-                            ['type' => ''],
-                            ['type' => 'text'],
-                            ['type' => ''],
-                            ['type' => ''],
-                            ['type' => ''],
-                            ['type' => ''],
-                            ['type' => ''],
-                            ['type' => ''],
-                            ['type' => ''],
-                            ['type' => ''],
-                            ['type' => ''],
-                        ]
-                    ])
-                <input type="hidden" id="check_destino">
-                  <button type="button" class="btn btn-warning1 mt-1" onclick="liquidacion_garantia()">
-                     LIQUIDACIÓN DE G. <span style="font-size: 11px;">(Selec. sin check)</span></button>
-                  <button type="button" class="btn btn-info mt-1" onclick="reporte_remates()">
-                     <i class="fa-solid fa-file-pdf"></i> REMATES </button>
+                    <div id="cont_loading_2"></div>
+                    <div id="cont-destinodes">
+                        <div style="text-align: center;background-color: #a7a7a7;padding: 2px;">LISTA DE REMATES</div>
+                        @include('app.nuevosistema.tabla',[
+                            'tabla' => '#tabla-destinodes',
+                            // 'route' => url('backoffice/'.$tienda->id.'/garantiaremateagencia/showcliente_destino?idagencia='.$tienda->id.'&idasesor='.Auth::user()->id),
+                            'route' => '',
+                            'check_id' => 'check_destino',
+                            'scrollY' => 'calc(-321px  + 100vh)',
+                            'dom' => 'rt',
+                            'thead' => [
+                                ['data' => '' ],
+                                ['data' => 'CLIENTE' ],
+                                ['data' => 'RUC/DNI/CE' ],
+                                ['data' => 'TIPO DE GARANTÍA' ],
+                                ['data' => 'DESCRIPCIÓN' ],
+                                ['data' => 'MODELO' ],
+                                ['data' => 'VALOR COMERCIAL' ],
+                                ['data' => 'ACCESORIOS' ],
+                                ['data' => 'COBERTURA' ],
+                                ['data' => 'COLOR' ],
+                                ['data' => 'CÓDIGO GARANTÍA' ],
+                            ],
+                            'tbody' => [
+                                ['data' => 'id','type'=>'check'],
+                                ['data' => 'cliente','type'=>'text'],
+                                ['data' => 'dni','type'=>'text'],
+                                ['data' => 'tipo_garantia','type'=>'text'],
+                                ['data' => 'descripcion','type'=>'text'],
+                                ['data' => 'modelo','type'=>'text'],
+                                ['data' => 'valorcomercial','type'=>'text'],
+                                ['data' => 'accesorios','type'=>'text'],
+                                ['data' => 'cobertura','type'=>'text'],
+                                ['data' => 'color','type'=>'text'],
+                                ['data' => 'codigo_garantia','type'=>'text'],
+                            ],
+                            'tfoot' => [
+                                ['type' => ''],
+                                ['type' => 'text'],
+                                ['type' => ''],
+                                ['type' => ''],
+                                ['type' => ''],
+                                ['type' => ''],
+                                ['type' => ''],
+                                ['type' => ''],
+                                ['type' => ''],
+                                ['type' => ''],
+                                ['type' => ''],
+                            ]
+                        ])
+                        <input type="hidden" id="check_destino">
+                        <button type="button" class="btn btn-warning1 mt-1" onclick="liquidacion_garantia()">
+                            LIQUIDACIÓN DE G. <span style="font-size: 11px;">(Selec. sin check)</span></button>
+                        <button type="button" class="btn btn-info mt-1" onclick="reporte_remates()">
+                            <i class="fa-solid fa-file-pdf"></i> REMATES </button>
+                    </div>
                 </div>
                 </div>
             </div> 
@@ -313,13 +318,29 @@
   }
   
   function actualizar_tabla_origen(){
-        var root = '{{url('backoffice/'.$tienda->id.'/garantiaremateagencia/showcliente_asignar')}}?idagencia='+$('#idagencia').val()+'&idformacredito='+$('#idformacredito').val()+'&idasesor='+$('#idasesor').val();
-        $('#tabla-origendes').DataTable().ajax.url(root).load();
+    load('#cont_loading_1');
+    $('#cont-origendes').addClass('d-none');
+
+    var root = '{{url('backoffice/'.$tienda->id.'/garantiaremateagencia/showcliente_asignar')}}?idagencia='+$('#idagencia').val()+'&idformacredito='+$('#idformacredito').val()+'&idasesor='+$('#idasesor').val();
+    $('#tabla-origendes').DataTable().ajax.url(root).load();
+
+    $('#tabla-origendes').on('xhr.dt', function(e, settings, json, xhr){
+        $('#cont_loading_1').html('');
+        $('#cont-origendes').removeClass('d-none');
+    });
   }
   
   function actualizar_tabla_destino(){
-        var root = '{{url('backoffice/'.$tienda->id.'/garantiaremateagencia/showcliente_destino')}}?idagencia='+$('#idagencia').val()+'&idasesor='+$('#idasesor').val();
-        $('#tabla-destinodes').DataTable().ajax.url(root).load();
+    load('#cont_loading_2');
+    $('#cont-destinodes').addClass('d-none');
+
+    var root = '{{url('backoffice/'.$tienda->id.'/garantiaremateagencia/showcliente_destino')}}?idagencia='+$('#idagencia').val()+'&idasesor='+$('#idasesor').val();
+    $('#tabla-destinodes').DataTable().ajax.url(root).load();
+
+    $('#tabla-destinodes').on('xhr.dt', function(e, settings, json, xhr){
+        $('#cont_loading_2').html('');
+        $('#cont-destinodes').removeClass('d-none');
+    });
   }
 
   function liquidacion_garantia() {

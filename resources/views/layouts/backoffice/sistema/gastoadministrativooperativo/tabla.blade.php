@@ -84,7 +84,7 @@
     var fechainicio = $('#fechainicio').val();
     var fechafin = $('#fechafin').val();
     $.ajax({
-      url:"{{url('backoffice/0/gastoadministrativooperativo/show_table')}}",
+      url:"{{url('backoffice/'.$tienda->id.'/gastoadministrativooperativo/show_table')}}",
       type:'GET',
       data:{
           fechainicio: $('#fechainicio').val(),

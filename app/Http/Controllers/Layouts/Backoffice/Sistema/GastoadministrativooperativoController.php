@@ -155,6 +155,7 @@ class GastoadministrativooperativoController extends Controller
     {
         if($id=='show_table'){
 
+            $where = [];
             if($request->input('fechainicio') != ''){
                 $where[] = ['gastoadministrativooperativo.fechapago','>=',$request->fechainicio.' 00:00:00'];
             }
@@ -167,6 +168,7 @@ class GastoadministrativooperativoController extends Controller
                 ->join('credito_tipoformapago','credito_tipoformapago.id','gastoadministrativooperativo.idformapago')
                 ->join('users as responsable','responsable.id','gastoadministrativooperativo.idresponsable')
                 ->where('gastoadministrativooperativo.idestadoeliminado',1)
+                ->where('gastoadministrativooperativo.idtienda',$idtienda)
                 ->where($where)
                 ->select(
                     'gastoadministrativooperativo.*',

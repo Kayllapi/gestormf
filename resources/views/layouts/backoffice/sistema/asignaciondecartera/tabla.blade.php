@@ -53,17 +53,6 @@
                                 <div class="col-sm-9">
                                     <select class="form-control" id="idasesororigen">
                                       <option></option>
-                                      <?php
-                                      $usuarios = DB::table('users')
-                                          ->join('users_permiso','users_permiso.idusers','users.id')
-                                          ->join('permiso','permiso.id','users_permiso.idpermiso')
-                                          ->whereIn('users_permiso.idpermiso',[3,4,7])
-                                          ->select('users.*','users_permiso.id as idusers_permiso','permiso.nombre as nombrepermiso')
-                                          ->get();
-                                      ?>
-                                      @foreach($usuarios as $value)
-                                      <option value="{{$value->id}}" idusers_permiso="{{$value->idusers_permiso}}">{{$value->nombrecompleto}} ({{$value->nombrepermiso}})</option>
-                                      @endforeach
                                     </select>
                                 </div>
                               </div>
@@ -151,10 +140,30 @@
 }
 </style>
 <script>
+    sistema_select2({ input:'#idagencia', val:'{{$tienda->id}}' });
+    sistema_select2({ input:'#idasesororigen' });
+    sistema_select2({ input:'#idasesordestino' });
 
-  sistema_select2({ input:'#idagencia', val:'{{$tienda->id}}' });
-  sistema_select2({ input:'#idasesororigen' });
-  sistema_select2({ input:'#idasesordestino' });
+    cliente_tienda({{$tienda->id}});
+    
+    $("#idagencia").on("change", function(e) {
+        var idtienda = $('#idagencia').val();
+        cliente_tienda(idtienda)
+    });
+    
+    function cliente_tienda(idtienda){
+        $.ajax({
+            url:"{{url('backoffice/'.$tienda->id.'/inicio/show_asesor')}}",
+            type:'GET',
+            data: {
+                idtienda : idtienda
+            },
+            success: function (respuesta){
+                $('#idasesororigen').html(respuesta);  
+                sistema_select2({ input:'#idasesororigen' });
+            }
+        })
+    }
 
     $(`#idagencia`).on("change", function(e) {
         actualizar_tabla_origen();
@@ -168,6 +177,7 @@
           data: {
               idasesororigen : $('#idasesororigen').val(),
               idusers_permiso : $('#idasesororigen :selected').attr('idusers_permiso'),
+              idtienda : $('#idagencia').val(),
           },
           success: function (res){
               $('#idasesordestino').html(res);

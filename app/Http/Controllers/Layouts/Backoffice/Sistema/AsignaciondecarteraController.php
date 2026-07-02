@@ -166,17 +166,13 @@ class AsignaciondecarteraController extends Controller
                 ->join('users_permiso','users_permiso.idusers','users.id')
                 ->join('permiso','permiso.id','users_permiso.idpermiso')
                 ->whereIn('users_permiso.idpermiso',[3,4,7])
+                ->where('users_permiso.idtienda',$request->idtienda)
+                ->where('users_permiso.id','<>',$request->idusers_permiso)
                 ->select('users.*','users_permiso.idpermiso as idpermiso','permiso.nombre as nombrepermiso')
                 //->where('users.id','<>',$request->idasesororigen)
-                ->where('users_permiso.id','<>',$request->idusers_permiso)
                 ->get();
-            //$data = [];
             $data_html = '<option></option>';
             foreach($usuarios as $value){
-                /*$data[] = [
-                    'id' => $value->id,
-                    'text' => $value->nombrecompleto.' ('.$value->nombrepermiso.')',
-                ];*/
                 $data_html = $data_html.'<option value="'.$value->id.'">'.$value->nombrecompleto.' ('.$value->nombrepermiso.')</option>';
             }
           

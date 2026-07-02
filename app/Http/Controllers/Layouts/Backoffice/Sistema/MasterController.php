@@ -428,11 +428,15 @@ class MasterController extends Controller
                 ->join('permiso','permiso.id','users_permiso.idpermiso')
                 ->whereIn('users_permiso.idpermiso',[3,4,7]) // senior, junior, caja
                 ->where($where)
-                ->select('users.*','permiso.nombre as nombrepermiso')
+                ->select(
+                    'users.*',
+                    'users_permiso.id as idusers_permiso',
+                    'permiso.nombre as nombrepermiso'
+                )
                 ->get();
             $html = '<option></option><option value="0">TODO</option>';
             foreach($usuarios as $value){
-                $html .= '<option value="'.$value->id.'">'.$value->nombrecompleto.' ('.$value->nombrepermiso.')</option>';
+                $html .= '<option value="'.$value->id.'" idusers_permiso="'.$value->idusers_permiso.'">'.$value->nombrecompleto.' ('.$value->nombrepermiso.')</option>';
             }
             return $html;
         }

@@ -66,6 +66,7 @@ class DesembolsoController extends Controller
                             // ->join('tarifario','tarifario.id','credito.idtarifario')
                             ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
                             ->where('credito.estado','APROBADO')
+                            ->where('credito.idtienda',$idtienda)
                             //->where($where)
                             ->select(
                                 'credito.*',

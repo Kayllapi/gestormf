@@ -58,7 +58,7 @@
     //let estado_credito = $('input[name="estado_credito"]:checked').val();
     
     $.ajax({
-      url:"{{url('backoffice/0/desembolso/showtable')}}",
+      url:"{{url('backoffice/'.$tienda->id.'/desembolso/showtable')}}",
       type:'GET',
       data: {
           //estado : estado_credito,

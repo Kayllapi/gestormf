@@ -50,17 +50,6 @@
                                 <div class="col-sm-9">
                                     <select class="form-control" id="idasesor">
                                       <option></option>
-                                      <?php
-                                      $usuarios = DB::table('users')
-                                          ->join('users_permiso','users_permiso.idusers','users.id')
-                                          ->join('permiso','permiso.id','users_permiso.idpermiso')
-                                          ->whereIn('users_permiso.idpermiso',[3,4,7])
-                                          ->select('users.*','permiso.nombre as nombrepermiso')
-                                          ->get();
-                                      ?>
-                                      @foreach($usuarios as $value)
-                                      <option value="{{$value->id}}">{{$value->nombrecompleto}} ({{$value->nombrepermiso}})</option>
-                                      @endforeach
                                     </select>
                                 </div>
                               </div>
@@ -103,6 +92,7 @@
         <div class="card">
           <div class="card-body">
           <div style="overflow-y: scroll;height: calc(100vh - 305px);">
+            <div id="cont_loading"></div>
             <table class="table table-striped table-hover" id="table-lista-credito">
               <thead class="table-dark" style="position: sticky;top: 0;z-index:1;"> 
                 <tr>
@@ -134,13 +124,30 @@
       </div>
 </div>
 <script>
-  /*var d= new Date();
-  var fechatotal = `${d.getFullYear()}-${(d.getMonth() + 1)}-${d.getDate()}`;
-  $("#fecha_fin").val(fechatotal);*/
-
   sistema_select2({ input:'#idagencia',val:'{{$tienda->id}}' });
   sistema_select2({ idtienda:{{$tienda->id}}, json:'tienda:usuario', input:'#idcliente' });
   sistema_select2({ input:'#idasesor' });
+
+    cliente_tienda({{$tienda->id}});
+    
+    $("#idagencia").on("change", function(e) {
+        var idtienda = $('#idagencia').val();
+        cliente_tienda(idtienda)
+    });
+    
+    function cliente_tienda(idtienda){
+        $.ajax({
+            url:"{{url('backoffice/'.$tienda->id.'/inicio/show_asesor')}}",
+            type:'GET',
+            data: {
+                idtienda : idtienda
+            },
+            success: function (respuesta){
+                $('#idasesor').html(respuesta);  
+                sistema_select2({ input:'#idasesor' });
+            }
+        })
+    }
   
   lista_credito();
   function lista_credito(){
@@ -158,12 +165,20 @@
           fin : $('#fecha_fin').val(),
           tipo : 'admin',
       },
+      beforeSend: function () {
+        load('#cont_loading');
+        $('#table-lista-credito').addClass('d-none');
+      },
       success: function (res){
         $('#table-lista-credito > tbody').html(res.html);
         $("tr#show_data_select").on("click", function() {
             $('tr.selected').removeClass('selected');
             $(this).addClass('selected');
         });
+
+        // loading
+        $('#cont_loading').html('');
+        $('#table-lista-credito').removeClass('d-none')
       }
     })
   }

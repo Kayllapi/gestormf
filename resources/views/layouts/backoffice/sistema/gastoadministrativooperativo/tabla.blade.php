@@ -32,9 +32,7 @@
                   <input type="date" class="form-control" id="fechafin" value="{{now()->format('Y-m-d')}}">
                 </div>
                 <div class="col-sm-3">
-                  <button type="button" class="btn btn-primary" onclick="lista_gastoadministrativooperativo()" style="font-weight: bold;">
-                                  <i class="fa-solid fa-search"></i> 
-                    Filtrar</button>
+                  <button type="button" class="btn btn-success" onclick="lista_gastoadministrativooperativo()"><i class="fa-solid fa-search"></i> FILTRAR</button>
                 </div>
               </div>
             </div>
@@ -45,6 +43,7 @@
         <div class="card">
           <div class="card-body">
             <div style="overflow-y: scroll;height: calc(100vh - 401px);">
+            <div id="cont_loading"></div>
             <table class="table table-striped table-hover" id="table-lista-gastoadministrativooperativo">
               <thead class="table-dark" style="position: sticky;top: 0;z-index:1;">
                 <tr>
@@ -90,8 +89,16 @@
           fechainicio: $('#fechainicio').val(),
           fechafin: $('#fechafin').val(),
       },
+      beforeSend: function () {
+        load('#cont_loading');
+        $('#table-lista-gastoadministrativooperativo').addClass('d-none');
+      },
       success: function (res){
         $('#table-lista-gastoadministrativooperativo > tbody').html(res.html);
+
+        // loading
+        $('#cont_loading').html('');
+        $('#table-lista-gastoadministrativooperativo').removeClass('d-none')
       }
     })
   }

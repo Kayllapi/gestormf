@@ -45,12 +45,8 @@
                                     <div class="row">
                                         <label class="col-sm-3 col-form-label" style="text-align: right;">Agencia</label>
                                         <div class="col-sm-7">
-                                            <select class="form-control" id="id_agencia_compra" disabled>
-                                                <option></option>
-                                                @foreach($agencias as $value)
-                                                    <option value="{{$value->id}}">{{$value->nombreagencia}}</option>
-                                                @endforeach
-                                            </select>
+                                            <input type="text" class="form-control" value="{{$tienda->nombreagencia}}" disabled>
+                                            <input type="hidden" id="id_agencia_compra" value="{{$tienda->id}}">
                                         </div>
                                         <div class="col-sm-2">
                                             <button type="button"
@@ -85,7 +81,6 @@
                 </div>
                 <div class="col-sm-12">
                     <div class="card">
-                        <div class="card-body">
                             {{-- <table class="table table-striped table-hover"
                                 id="table-lista-compra"
                                 style="table-layout: fixed; width: 100%;">
@@ -119,6 +114,9 @@
                                 <tbody>
                                 </tbody>
                             </table> --}}
+                            
+                        <div id="cont_loading_1"></div>
+                        <div class="card-body" id="cont-lista-compra">
                             @include('app.nuevosistema.tabla',[
                                 'tabla' => '#table-lista-compra',
                                 'onclick' => 'show_data_compra',
@@ -201,46 +199,46 @@
                                     ['type' => ''],
                                 ]
                             ])
-                        </div>
-                        <div class="modal-body">
-                            <div class="row">
-                                <div class="col-3">
-                                    TOTAL: <span id="total_compra" style="font-weight: normal;"></span>
-                                </div>
-                                <div class="col-9 text-end">
-                                    <button type="button" class="btn btn-success"
-                                        @if(!$validacionDiaria['arqueocaja'])
-                                            onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Falta arquear caja '.$validacionDiaria['fechacorte'].'!!')}}', size: 'modal-sm' })"
-                                        @elseif(!$validacionDiaria['cierre_caja'])
-                                            onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Falta cerrar caja '.$validacionDiaria['fechacorte'].'!!')}}', size: 'modal-sm' })"
-                                        @elseif(!$apertura_caja)
-                                            onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Falta aperturar caja.')}}', size: 'modal-sm' })"
-                                        @elseif($arqueocaja)
-                                            onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Ya esta arqueado la caja!!')}}', size: 'modal-sm' })"
-                                        @else
-                                            onclick="validar_editcompra()"
-                                        @endif
-                                        >
-                                        <i class="fa-solid fa-pencil"></i> Editar
-                                    </button>
-                                    <button type="button" class="btn btn-danger"
-                                        @if(!$validacionDiaria['arqueocaja'])
-                                            onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Falta arquear caja '.$validacionDiaria['fechacorte'].'!!')}}', size: 'modal-sm' })"
-                                        @elseif(!$validacionDiaria['cierre_caja'])
-                                            onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Falta cerrar caja '.$validacionDiaria['fechacorte'].'!!')}}', size: 'modal-sm' })"
-                                        @elseif(!$apertura_caja)
-                                            onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Falta aperturar caja.')}}', size: 'modal-sm' })"
-                                        @elseif($arqueocaja)
-                                            onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Ya esta arqueado la caja!!')}}', size: 'modal-sm' })"
-                                        @else
-                                            onclick="eliminar_compra()"
-                                        @endif
-                                        >
-                                        <i class="fa-solid fa-trash"></i> Eliminar
-                                    </button>
-                                    <!-- <button type="button" class="btn btn-warning" style="background-color: #F9F3B5 !important;" onclick="vaucher_compra()">
-                                        <i class="fa-solid fa-copy" style="color:#000 !important;"></i> Duplicar Voucher
-                                    </button> -->
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-3">
+                                        TOTAL: <span id="total_compra" style="font-weight: normal;"></span>
+                                    </div>
+                                    <div class="col-9 text-end">
+                                        <button type="button" class="btn btn-success"
+                                            @if(!$validacionDiaria['arqueocaja'])
+                                                onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Falta arquear caja '.$validacionDiaria['fechacorte'].'!!')}}', size: 'modal-sm' })"
+                                            @elseif(!$validacionDiaria['cierre_caja'])
+                                                onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Falta cerrar caja '.$validacionDiaria['fechacorte'].'!!')}}', size: 'modal-sm' })"
+                                            @elseif(!$apertura_caja)
+                                                onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Falta aperturar caja.')}}', size: 'modal-sm' })"
+                                            @elseif($arqueocaja)
+                                                onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Ya esta arqueado la caja!!')}}', size: 'modal-sm' })"
+                                            @else
+                                                onclick="validar_editcompra()"
+                                            @endif
+                                            >
+                                            <i class="fa-solid fa-pencil"></i> Editar
+                                        </button>
+                                        <button type="button" class="btn btn-danger"
+                                            @if(!$validacionDiaria['arqueocaja'])
+                                                onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Falta arquear caja '.$validacionDiaria['fechacorte'].'!!')}}', size: 'modal-sm' })"
+                                            @elseif(!$validacionDiaria['cierre_caja'])
+                                                onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Falta cerrar caja '.$validacionDiaria['fechacorte'].'!!')}}', size: 'modal-sm' })"
+                                            @elseif(!$apertura_caja)
+                                                onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Falta aperturar caja.')}}', size: 'modal-sm' })"
+                                            @elseif($arqueocaja)
+                                                onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta&mensaje=Ya esta arqueado la caja!!')}}', size: 'modal-sm' })"
+                                            @else
+                                                onclick="eliminar_compra()"
+                                            @endif
+                                            >
+                                            <i class="fa-solid fa-trash"></i> Eliminar
+                                        </button>
+                                        <!-- <button type="button" class="btn btn-warning" style="background-color: #F9F3B5 !important;" onclick="vaucher_compra()">
+                                            <i class="fa-solid fa-copy" style="color:#000 !important;"></i> Duplicar Voucher
+                                        </button> -->
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -268,12 +266,8 @@
                                     <div class="row">
                                         <label class="col-sm-3 col-form-label" style="text-align: right;">Agencia</label>
                                         <div class="col-sm-7">
-                                            <select class="form-select" id="id_agencia_venta" disabled>
-                                                <option></option>
-                                                @foreach($agencias as $value)
-                                                    <option value="{{$value->id}}">{{$value->nombreagencia}}</option>
-                                                @endforeach
-                                            </select>
+                                            <input type="text" class="form-control" value="{{$tienda->nombreagencia}}" disabled>
+                                            <input type="hidden" id="id_agencia_venta" value="{{$tienda->id}}">
                                         </div>
                                         <div class="col-sm-2">
                                             <button type="button"
@@ -345,7 +339,8 @@
                                 </tbody>
                             </table>
                         </div> --}}
-                        <div class="card-body">
+                        <div id="cont_loading_2"></div>
+                        <div class="card-body" id="cont-lista-venta">
                             @include('app.nuevosistema.tabla',[
                                 'tabla' => '#table-lista-venta',
                                 'onclick' => 'show_data_venta',
@@ -431,13 +426,13 @@
                                     ['type' => ''],
                                 ]
                             ])
-                        </div>
-                        <div class="modal-body">
-                            <div class="row">
-                                <div class="col-3">
-                                    TOTAL: <span id="total_venta" style="font-weight: normal;"></span>
-                                </div>
-                                <div class="col-9 text-end">
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-3">
+                                        TOTAL: <span id="total_venta" style="font-weight: normal;"></span>
+                                    </div>
+                                    <div class="col-9 text-end">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -448,8 +443,8 @@
     </div>
 </div>
 <script>
-    sistema_select2({ input:'#id_agencia_compra', val:'{{$tienda->id}}' });
-    sistema_select2({ input:'#id_agencia_venta', val:'{{$tienda->id}}' });
+    // sistema_select2({ input:'#id_agencia_compra', val:'{{$tienda->id}}' });
+    // sistema_select2({ input:'#id_agencia_venta', val:'{{$tienda->id}}' });
 
     updateTotal();
     function updateTotal() {
@@ -508,9 +503,17 @@
         })
     }
     function search_compraFiltro() {
+        load('#cont_loading_1');
+        $('#cont-lista-compra').addClass('d-none');
+
         let checkcompra = $('#check_compra').is(':checked') ? 1 : 0;
         var root = '{{url('backoffice/0/compraventa/show_compra')}}?id_agencia_compra='+$('#id_agencia_compra').val()+'&fecha_inicio_compra='+$('#fecha_inicio_compra').val()+'&fecha_fin_compra='+$('#fecha_fin_compra').val()+'&check_compra='+checkcompra;
         $('#table-lista-compra').DataTable().ajax.url(root).load();
+
+        $('#table-lista-compra').on('xhr.dt', function(e, settings, json, xhr){
+            $('#cont_loading_1').html('');
+            $('#cont-lista-compra').removeClass('d-none');
+        });
 
         $.ajax({
             url:"{{url('backoffice/0/compraventa/show_table_compra')}}",
@@ -624,8 +627,16 @@
         })
     }
     function search_ventaFiltro() {
+        load('#cont_loading_2');
+        $('#cont-lista-venta').addClass('d-none');
+
         var root = '{{url('backoffice/0/compraventa/show_venta')}}?id_agencia_venta='+$('#id_agencia_venta').val()+'&fecha_inicio_venta='+$('#fecha_inicio_venta').val()+'&fecha_fin_venta='+$('#fecha_fin_venta').val();
         $('#table-lista-venta').DataTable().ajax.url(root).load();
+
+        $('#table-lista-venta').on('xhr.dt', function(e, settings, json, xhr){
+            $('#cont_loading_2').html('');
+            $('#cont-lista-venta').removeClass('d-none');
+        });
 
         $.ajax({
             url:"{{url('backoffice/0/compraventa/show_table_venta')}}",

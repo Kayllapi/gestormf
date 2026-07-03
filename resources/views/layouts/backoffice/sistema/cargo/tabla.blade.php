@@ -40,14 +40,8 @@
                   <div class="row">
                       <label for="fecha_inicio" class="col-sm-3 col-form-label">AGENCIA</label>
                       <div class="col-sm-9">
-                          {{-- <input type="text" class="form-control" value="{{$tienda->nombreagencia}}" disabled>
-                          <input type="hidden" id="idagencia" value="{{$tienda->id}}"> --}}
-                          <select class="form-control" id="idagencia">
-                            <option></option>
-                            @foreach($agencias as $value)
-                                <option value="{{$value->id}}">{{$value->nombreagencia}}</option>
-                            @endforeach
-                          </select>
+                          <input type="text" class="form-control" value="{{$tienda->nombreagencia}}" disabled>
+                          <input type="hidden" id="idagencia" value="{{$tienda->id}}">
                       </div>
                   </div>
                   <div class="row">
@@ -81,9 +75,10 @@
                           @endphp
                           <input type="text" class="form-control" value="{{$usuarioText}}" disabled>
                           <input type="hidden" id="idasesor" value="{{Auth::user()->id}}"> --}}
-                          <select class="form-control" id="idasesor">
+                          <input type="text" class="form-control" id="idasesor" value="" disabled>
+                          {{-- <select class="form-control" id="idasesor">
                               <option></option>
-                          </select>
+                          </select> --}}
                       </div>
                     </div>
                 </div>
@@ -166,39 +161,40 @@
   //     }, 500);
   // }
   
-  sistema_select2({ input:'#idagencia',val:'{{$tienda->id}}' });
-  sistema_select2({ input:'#idasesor' });
+  // sistema_select2({ input:'#idagencia',val:'{{$tienda->id}}' });
+  // sistema_select2({ input:'#idasesor' });
   sistema_select2({ idtienda:{{$tienda->id}}, json:'tienda:usuario', input:'#idcliente' });
   
-  cliente_tienda({{$tienda->id}});
+  // cliente_tienda({{$tienda->id}});
   
-  $("#idagencia").on("change", function(e) {
-      var idtienda = $('#idagencia').val();
-      cliente_tienda(idtienda)
-  });
+  // $("#idagencia").on("change", function(e) {
+  //     var idtienda = $('#idagencia').val();
+  //     cliente_tienda(idtienda)
+  // });
   
-  function cliente_tienda(idtienda){
-      $.ajax({
-          url:"{{url('backoffice/'.$tienda->id.'/inicio/show_asesor')}}",
-          type:'GET',
-          data: {
-              idtienda : idtienda
-          },
-          success: function (respuesta){
-              $('#idasesor').html(respuesta);  
-              sistema_select2({ input:'#idasesor' });
-          }
-      })
-  }
+  // function cliente_tienda(idtienda){
+  //     $.ajax({
+  //         url:"{{url('backoffice/'.$tienda->id.'/inicio/show_asesor')}}",
+  //         type:'GET',
+  //         data: {
+  //             idtienda : idtienda
+  //         },
+  //         success: function (respuesta){
+  //             $('#idasesor').html(respuesta);  
+  //             sistema_select2({ input:'#idasesor' });
+  //         }
+  //     })
+  // }
 
   function lista_credito_cliente(id){
+    $('#idasesor').val('');
     $.ajax({
       url:"{{url('backoffice/0/cargo/showlistacreditos')}}",
       type:'GET',
       data: {
           idagencia : $('#idagencia').val(),
           idcliente : $('#idcliente').val(),
-          idasesor : $('#idasesor').val(),
+          // idasesor : $('#idasesor').val(),
       },
       success: function (res){
         
@@ -210,6 +206,8 @@
         $("#exampleModal").modal('hide');
         //load_create_prestamo(res.cliente.id);
         $('#btn-create-cliente').removeClass('d-none');
+
+        $('#idasesor').val(res.asesor);
       }
     })
   }

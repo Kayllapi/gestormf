@@ -52,6 +52,7 @@ class RecepcionarasignacioncapitalController extends Controller
                 ->join('tienda','tienda.id','asignacioncapital.idtienda')
                 ->where('asignacioncapital.idestadoeliminado',1)
                 ->where('asignacioncapital.idresponsable_recfinal',0)
+                ->where('asignacioncapital.idtienda',$idtienda)
                 //->where($where)
                 ->select(
                     'asignacioncapital.*',

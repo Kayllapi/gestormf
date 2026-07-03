@@ -32,9 +32,7 @@
                   <input type="date" class="form-control" id="fechafin" value="{{now()->format('Y-m-d')}}">
                 </div>
                 <div class="col-sm-1">
-                  <button type="button" class="btn btn-primary" onclick="lista_asignacioncapital()" style="font-weight: bold;">
-                                  <i class="fa-solid fa-search"></i> 
-                    Filtrar</button>
+                  <button type="button" class="btn btn-success" onclick="lista_asignacioncapital()"><i class="fa-solid fa-search"></i> FILTRAR</button>
                 </div>
                 <div class="col-md-3">
                     <div>
@@ -51,8 +49,8 @@
       </div>
       <div class="col-sm-12">
         <div class="card">
+          <div id="cont_loading"></div>
           <div class="card-body" style="overflow-y: scroll;height: 200px;padding: 0;margin-top: 5px;overflow-x: scroll;">
-            
             <table class="table table-striped table-hover table-bordered" id="table-lista-asignacioncapital">
               <thead class="table-dark" style="position: sticky;top: 0;">
                 <tr>
@@ -71,7 +69,6 @@
                 </tr>
               </thead>
               <tbody>
-              
               </tbody>
             </table>
           </div>
@@ -82,27 +79,25 @@
     <button type="button" class="btn btn-info" onclick="exportar_pdf()" style="font-weight: bold;">
       <i class="fa-solid fa-file-pdf" style="color:#000 !important;font-weight: bold;"></i> REPORTE PDF</button>
   </div-->
-  <div class="row">
+  <div class="row" id="cont-saldocapitalasignado">
       <div class="col-sm-4">
           <div class="mb-1">
             <span class="badge d-block" style="margin-top: 10px;">SALDO DE CAPITAL ASIGNADO</span>
           </div>
          <div class="card">
           <div class="card-body" style="overflow-y: scroll;height: 150px;padding: 0;margin-top: 5px;overflow-x: scroll;">
-            
-          <table class="table table-striped table-hover table-bordered" id="table-lista-saldocapitalasignado">
-            <thead class="table-dark" style="position: sticky;top: 0;">
-              <tr>
-                <td>AGENCIA</td>
-                <td>Monto (S/.)</td>
-                <td width="10px"></td>
-              </tr>
-            </thead>
-            <tbody>
-
-            </tbody>
-          </table>
-           </div>
+            <table class="table table-striped table-hover table-bordered" id="table-lista-saldocapitalasignado">
+              <thead class="table-dark" style="position: sticky;top: 0;">
+                <tr>
+                  <td>AGENCIA</td>
+                  <td>Monto (S/.)</td>
+                  <td width="10px"></td>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
   </div>
@@ -119,9 +114,19 @@
           fechainicio: $('#fechainicio').val(),
           fechafin: $('#fechafin').val(),
       },
+      beforeSend: function () {
+        load('#cont_loading');
+        $('#table-lista-asignacioncapital').addClass('d-none');
+        $('#cont-saldocapitalasignado').addClass('d-none');
+      },
       success: function (res){
           $('#table-lista-asignacioncapital > tbody').html(res.html);
           lista_saldocapitalasignado();
+
+        // loading
+        $('#cont_loading').html('');
+        $('#table-lista-asignacioncapital').removeClass('d-none')
+        $('#cont-saldocapitalasignado').removeClass('d-none')
       }
     })
   }

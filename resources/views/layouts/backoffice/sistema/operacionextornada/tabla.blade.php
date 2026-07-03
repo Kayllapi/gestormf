@@ -57,11 +57,12 @@
         </div>
       </div>
   </div>
-      <div class="col-sm-12">
-        <div class="card">
-        <iframe id="iframe_acta_aprobacion" frameborder="0" width="100%" style="height: calc(100vh - 200px);"></iframe>
-        </div>
-      </div>
+  <div class="col-sm-12">
+    <div class="card">
+      <div id="cont_loading"></div>
+      <iframe id="iframe_acta_aprobacion" frameborder="0" width="100%" style="height: calc(100vh - 200px);"></iframe>
+    </div>
+  </div>
 </div>
 <script>
   sistema_select2({ input:'#idagencia',val:'{{$tienda->id}}' });
@@ -70,7 +71,29 @@ function verpdf(){
     let fecha_inicio = $('#fecha_inicio').val();
     let fecha_fin = $('#fecha_fin').val();
     let idagencia = $('#idagencia').val();
-    $('#iframe_acta_aprobacion').attr('src','{{ url('/backoffice/'.$tienda->id.'/operacionextornada/0/edit?view=pdf_extorno') }}&fecha_inicio='+fecha_inicio+'&fecha_fin='+fecha_fin+'&idagencia='+idagencia+'#zoom=100');
+
+    load('#cont_loading');
+    $('#iframe_acta_aprobacion').addClass('d-none');
+
+    // 1. Registrar el evento ANTES de cambiar el src
+    $('#iframe_acta_aprobacion').off('load').on('load', function(){
+        if($(this).attr('src') !== ''){
+            $('#cont_loading').html('');
+            $(this).removeClass('d-none');
+        }
+    });
+
+    // 2. Reset y luego asignar nuevo src
+    $('#iframe_acta_aprobacion').attr('src', '');
+
+    setTimeout(function(){
+        $('#iframe_acta_aprobacion').attr('src',
+            '{{ url('/backoffice/'.$tienda->id.'/operacionextornada/0/edit?view=pdf_extorno') }}'
+            + '&fecha_inicio=' + fecha_inicio
+            + '&fecha_fin=' + fecha_fin
+            + '&idagencia=' + idagencia
+            + '#zoom=100'
+        );
+    }, 100);
 }
 </script>  
-

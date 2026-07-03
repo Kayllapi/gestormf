@@ -60,11 +60,12 @@
         </div>
       </div>
   </div>
-      <div class="col-sm-12">
-        <div class="card">
-        <iframe id="iframe_acta_aprobacion" frameborder="0" width="100%" style="height: calc(100vh - 190px);"></iframe>
-        </div>
-      </div>
+  <div class="col-sm-12">
+    <div class="card">
+      <div id="cont_loading"></div>
+      <iframe id="iframe_acta_aprobacion" frameborder="0" width="100%" style="height: calc(100vh - 190px);"></iframe>
+    </div>
+  </div>
 </div>
 <script>
     sistema_select2({ input:'#idagencia',val:'{{$tienda->id}}' });
@@ -73,7 +74,30 @@
         let fechainicio = $('#fechainicio').val();
         let fechafin = $('#fechafin').val();
         let idagencia = $('#idagencia').val();
-        $('#iframe_acta_aprobacion').attr('src','{{ url('/backoffice/'.$tienda->id.'/historialpagocredito/0/edit?view=pdf_reporte') }}&fechainicio='+fechainicio+'&fechafin='+fechafin+'&idagencia='+idagencia+'#zoom=100');
+
+        load('#cont_loading');
+        $('#iframe_acta_aprobacion').addClass('d-none');
+
+        // 1. Registrar el evento ANTES de cambiar el src
+        $('#iframe_acta_aprobacion').off('load').on('load', function(){
+            if($(this).attr('src') !== ''){
+                $('#cont_loading').html('');
+                $(this).removeClass('d-none');
+            }
+        });
+
+        // 2. Reset y luego asignar nuevo src
+        $('#iframe_acta_aprobacion').attr('src', '');
+
+        setTimeout(function(){
+            $('#iframe_acta_aprobacion').attr('src',
+                '{{ url('/backoffice/'.$tienda->id.'/historialpagocredito/0/edit?view=pdf_reporte') }}'
+                + '&fechainicio=' + fechainicio
+                + '&fechafin=' + fechafin
+                + '&idagencia=' + idagencia
+                + '#zoom=100'
+            );
+        }, 100);
     }
   
    function exportar_excel(){

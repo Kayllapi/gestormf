@@ -170,6 +170,7 @@ class CvgastoadministrativooperativoController extends Controller
                 ->join('credito_tipoformapago','credito_tipoformapago.id','cvgastoadministrativooperativo.idformapago')
                 ->join('users as responsable','responsable.id','cvgastoadministrativooperativo.idresponsable')
                 ->where('cvgastoadministrativooperativo.idestadoeliminado',1)
+                ->where('cvgastoadministrativooperativo.idtienda',$idtienda)
                 ->where($where)
                 ->select(
                     'cvgastoadministrativooperativo.*',

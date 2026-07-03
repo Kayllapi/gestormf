@@ -141,6 +141,7 @@ class CvingresoextraordinarioController extends Controller
                 ->join('credito_tipoformapago','credito_tipoformapago.id','cvingresoextraordinario.idformapago')
                 ->join('users as responsable','responsable.id','cvingresoextraordinario.idresponsable')
                 ->where('cvingresoextraordinario.idestadoeliminado',1)
+                ->where('cvingresoextraordinario.idtienda',$idtienda)
                 ->where($where)
                 ->select(
                     'cvingresoextraordinario.*',

@@ -83,6 +83,7 @@
                     margin-top: 5px;
                     overflow-x: scroll;">
                 
+                <div id="cont_loading"></div>
                 <table class="table table-striped table-hover" id="table-lista-gastoadministrativooperativo">
                     <thead class="table-dark" style="position: sticky;top: 0; font-weight: bold;">
                         <tr>
@@ -122,14 +123,22 @@
         var fechainicio = $('#fechainicio').val();
         var fechafin = $('#fechafin').val();
         $.ajax({
-            url:"{{url('backoffice/0/cvgastoadministrativooperativo/show_table')}}",
+            url:"{{url('backoffice/'.$tienda->id.'/cvgastoadministrativooperativo/show_table')}}",
             type:'GET',
             data:{
                 fechainicio: $('#fechainicio').val(),
                 fechafin: $('#fechafin').val(),
             },
+            beforeSend: function () {
+                load('#cont_loading');
+                $('#table-lista-gastoadministrativooperativo').addClass('d-none');
+            },
             success: function (res){
                 $('#table-lista-gastoadministrativooperativo > tbody').html(res.html);
+
+                // loading
+                $('#cont_loading').html('');
+                $('#table-lista-gastoadministrativooperativo').removeClass('d-none')
             }
         })
     }

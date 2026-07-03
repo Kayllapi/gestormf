@@ -83,6 +83,7 @@
             margin-top: 5px;
             overflow-x: scroll;">
             
+            <div id="cont_loading"></div>
             <table class="table table-striped table-hover" id="table-lista-ingresoextraordinario">
               <thead class="table-dark" style="position: sticky;top: 0; font-weight: bold;">
                 <tr>
@@ -117,14 +118,22 @@
     var fechainicio = $('#fechainicio').val();
     var fechafin = $('#fechafin').val();
     $.ajax({
-      url:"{{url('backoffice/0/cvingresoextraordinario/show_table')}}",
+      url:"{{url('backoffice/'.$tienda->id.'/cvingresoextraordinario/show_table')}}",
       type:'GET',
       data:{
           fechainicio: $('#fechainicio').val(),
           fechafin: $('#fechafin').val(),
       },
+      beforeSend: function () {
+        load('#cont_loading');
+        $('#table-lista-ingresoextraordinario').addClass('d-none');
+      },
       success: function (res){
         $('#table-lista-ingresoextraordinario > tbody').html(res.html);
+
+        // loading
+        $('#cont_loading').html('');
+        $('#table-lista-ingresoextraordinario').removeClass('d-none')
       }
     })
   }

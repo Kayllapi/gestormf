@@ -23,7 +23,17 @@
           <div class="card-body p-2">
             <div class="modal-body">
               <div class="row">
-                <label class="col-sm-3 col-form-label" style="text-align: right;">Fecha inicio</label>
+                <label class="col-sm-1 col-form-label" style="text-align: right;">AGENCIA</label>
+                <div class="col-sm-2">
+                    <select class="form-control" id="idagencia_filtro">
+                      <option></option>
+                      <option value="0" selected>TODO</option>
+                      @foreach($agencias as $value)
+                        <option value="{{$value->id}}">{{$value->nombreagencia}}</option>
+                      @endforeach
+                    </select>
+                </div>
+                <label class="col-sm-1 col-form-label" style="text-align: right;">Fecha inicio</label>
                 <div class="col-sm-2">
                   <input type="date" class="form-control" id="fechainicio" value="{{now()->format('Y-m-d')}}">
                 </div>
@@ -34,7 +44,7 @@
                 <div class="col-sm-1">
                   <button type="button" class="btn btn-success" onclick="lista_asignacioncapital()"><i class="fa-solid fa-search"></i> FILTRAR</button>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <div>
                     <!--button type="button" class="btn btn-success mb-1" onclick="recepcionar()" id="cont_recepcionar" style="font-weight: bold; display:none;">
                       <i class="fa-solid fa-check" style="font-weight: bold;"></i> RECEPCIONAR</button-->
@@ -103,6 +113,8 @@
   </div>
 </div>
 <script>
+  sistema_select2({ input:'#idagencia_filtro',val:'{{$tienda->id}}' });
+
   lista_asignacioncapital();
   function lista_asignacioncapital(id){
     var fechainicio = $('#fechainicio').val();
@@ -113,6 +125,8 @@
       data:{
           fechainicio: $('#fechainicio').val(),
           fechafin: $('#fechafin').val(),
+          fechafin: $('#fechafin').val(),
+          idagencia: $('#idagencia_filtro').val(),
       },
       beforeSend: function () {
         load('#cont_loading');

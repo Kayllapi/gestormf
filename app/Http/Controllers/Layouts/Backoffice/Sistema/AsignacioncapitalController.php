@@ -21,12 +21,12 @@ class AsignacioncapitalController extends Controller
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
       
         if($request->input('view') == 'tabla'){
-            
+            $agencias = DB::table('tienda')->get();
             return view(sistema_view().'/asignacioncapital/tabla',[
-              'tienda' => $tienda
+                'tienda' => $tienda,
+                'agencias' => $agencias,
             ]);
         }
-            
     }
   
     public function create(Request $request,$idtienda)
@@ -265,6 +265,9 @@ class AsignacioncapitalController extends Controller
             }
             if($request->input('fechafin') != ''){
                 $where[] = ['asignacioncapital.fecharegistro','<=',$request->fechafin.' 23:59:59']; 
+            }
+            if($request->input('idagencia') != '' && $request->input('idagencia') != '0'){
+                $where[] = ['asignacioncapital.idtienda','=',$request->idagencia];
             }
           
             $asignacioncapital = DB::table('asignacioncapital')

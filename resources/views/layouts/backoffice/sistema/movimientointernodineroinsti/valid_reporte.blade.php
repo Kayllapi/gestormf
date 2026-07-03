@@ -15,12 +15,7 @@
         <button type="button" class="btn-close" id="modal-close-movimientointernodineroinsti-valid" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <div class="modal-body">
-        <label class="mt-1" style="background-color: #636363;
-          color: #fff;
-          width: 100%;
-          border-radius: 5px;
-          padding: 0px 5px;
-          margin-bottom: 5px;">Aprobación</label>
+        <div class="mt-2 bg-primary subtitulo">Aprobación</div>
               <div class="mb-1">
                   <label>Responsable *</label>
                   <select class="form-select" id="idresponsable">

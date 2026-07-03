@@ -137,7 +137,7 @@ class CargoController extends Controller
             if($request->idcliente!=''){
                 $where[] = ['credito.idcliente',$request->idcliente];
             }
-            if($request->idasesor!=''){
+            if($request->idasesor!='' && $request->idasesor!='0'){
                 $where[] = ['credito.idasesor',$request->idasesor];
             }
 

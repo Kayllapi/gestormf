@@ -145,7 +145,6 @@ class CargoController extends Controller
           $creditos = DB::table('credito')
                             ->join('forma_pago_credito','forma_pago_credito.id','credito.idforma_pago_credito')
                             ->join('users as cliente','cliente.id','credito.idcliente')
-                            ->join('users as asesor','asesor.id','credito.idasesor')
                             ->join('modalidad_credito','modalidad_credito.id','credito.idmodalidad_credito')
                             ->join('tipo_operacion_credito','tipo_operacion_credito.id','credito.idtipo_operacion_credito')
                             ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
@@ -157,12 +156,14 @@ class CargoController extends Controller
                                 'credito.*',
                                 'cliente.identificacion as identificacion',
                                 'cliente.nombrecompleto as nombrecliente',
-                                'asesor.nombrecompleto as nombreasesor',
                             )
                             ->orderBy('credito.fecha_desembolso','asc')
                             ->get();
+
+                              
           $html = '';
           $asesor = '';
+          $idasesor = '';
           foreach($creditos as $value){
               $cp = '';
               if($value->idforma_credito==1){
@@ -180,7 +181,18 @@ class CargoController extends Controller
                             <td style='width: 20px;'>{$cp}</td>
                             <td>C{$cuenta}</td>
                         </tr>";
-                $asesor = $value->nombreasesor;
+                $idasesor = $value->idasesor;
+          }
+
+          if ($idasesor!='' && $idasesor!=0 && $idasesor!=null) {
+            $usuario = DB::table('users')
+                ->join('users_permiso','users_permiso.idusers','users.id')
+                ->join('permiso','permiso.id','users_permiso.idpermiso')
+                ->whereIn('users_permiso.idpermiso',[3,4,7])
+                ->where('users.id', $idasesor)
+                ->select('users.nombrecompleto','permiso.nombre as nombrepermiso')
+                ->first();
+            $asesor = "$usuario->nombrecompleto ($usuario->nombrepermiso)";
           }
           return array(
             'cliente' => $cliente,

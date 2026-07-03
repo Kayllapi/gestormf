@@ -55,6 +55,7 @@
       </div>
   </div>
       <div class="col-sm-12">
+        <div id="cont_loading"></div>
         <div class="card" style="height: calc(100vh - 190px);">
           <iframe id="iframe_acta_aprobacion" frameborder="0" width="100%" height="100%"></iframe>
         </div>
@@ -67,7 +68,31 @@ function verpdf(){
     let fecha_inicio = $('#fecha_inicio').val();
     let fecha_fin = $('#fecha_fin').val();
     let idagencia = $('#idagencia').val();
-    $('#iframe_acta_aprobacion').attr('src','{{ url('/backoffice/'.$tienda->id.'/cvoperacionextornada/0/edit?view=pdf_extorno') }}&fecha_inicio='+fecha_inicio+'&fecha_fin='+fecha_fin+'&idagencia='+idagencia+'#zoom=100');
+
+    load('#cont_loading');
+    $('#iframe_acta_aprobacion').addClass('d-none');
+
+    // 1. Registrar el evento ANTES de cambiar el src
+    $('#iframe_acta_aprobacion').off('load').on('load', function(){
+        if($(this).attr('src') !== ''){
+            $('#cont_loading').html('');
+            $(this).removeClass('d-none');
+        }
+    });
+
+    // 2. Reset y luego asignar nuevo src
+    $('#iframe_acta_aprobacion').attr('src', '');
+
+    setTimeout(function(){
+        $('#iframe_acta_aprobacion').attr('src',
+            '{{ url('/backoffice/'.$tienda->id.'/cvoperacionextornada/0/edit?view=pdf_extorno') }}'
+            + '&fecha_inicio=' + fecha_inicio
+            + '&fecha_fin=' + fecha_fin
+            + '&idagencia=' + idagencia
+            + '#zoom=100'
+        );
+    }, 100);
+    // $('#iframe_acta_aprobacion').attr('src','{{ url('/backoffice/'.$tienda->id.'/cvoperacionextornada/0/edit?view=pdf_extorno') }}&fecha_inicio='+fecha_inicio+'&fecha_fin='+fecha_fin+'&idagencia='+idagencia+'#zoom=100');
 }
 </script>  
 

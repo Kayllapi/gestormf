@@ -54,6 +54,7 @@
       </div>
   </div>
       <div class="col-sm-12">
+        <div id="cont_loading"></div>
         <div class="card" id="cont_iframe_acta_aprobacion" style="height: calc(100vh - 190px);">
           <iframe id="iframe_acta_aprobacion" frameborder="0" width="100%" height="100%"></iframe>
         </div>
@@ -66,7 +67,32 @@
         // validar_limites();
         let corte = $('#corte').val();
         let idagencia = $('#idagencia').val();
-        $('#cont_iframe_acta_aprobacion').html(' <iframe id="iframe_acta_aprobacion" src="{{ url('/backoffice/'.$tienda->id.'/cvreporteconsolidadoopecaja/0/edit?view=pdf_reporte') }}&corte='+corte+'&idagencia='+idagencia+'#zoom=100" frameborder="0" width="100%" height="100%"></iframe>');
+
+        $('#cont_iframe_acta_aprobacion').html('<iframe id="iframe_acta_aprobacion" src="" frameborder="0" width="100%" style="height: calc(100vh - 200px);"></iframe>');
+
+        load('#cont_loading');
+        $('#iframe_acta_aprobacion').addClass('d-none');
+
+        // 1. Registrar el evento ANTES de cambiar el src
+        $('#iframe_acta_aprobacion').off('load').on('load', function(){
+            if($(this).attr('src') !== ''){
+                $('#cont_loading').html('');
+                $(this).removeClass('d-none');
+            }
+        });
+
+        // 2. Reset y luego asignar nuevo src
+        $('#iframe_acta_aprobacion').attr('src', '');
+
+        setTimeout(function(){
+            $('#iframe_acta_aprobacion').attr('src',
+                '{{ url('/backoffice/'.$tienda->id.'/cvreporteconsolidadoopecaja/0/edit?view=pdf_reporte') }}'
+                + '&corte=' + corte
+                + '&idagencia=' + idagencia
+                + '#zoom=100'
+            );
+        }, 100);
+        // $('#cont_iframe_acta_aprobacion').html(' <iframe id="iframe_acta_aprobacion" src="{{ url('/backoffice/'.$tienda->id.'/cvreporteconsolidadoopecaja/0/edit?view=pdf_reporte') }}&corte='+corte+'&idagencia='+idagencia+'#zoom=100" frameborder="0" width="100%" height="100%"></iframe>');
     }
     function validar_limites(){
         let corte = $('#corte').val();

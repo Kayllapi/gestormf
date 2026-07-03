@@ -533,6 +533,7 @@ class MovimientointernodineroController extends Controller
                 ->join('tienda','tienda.id','movimientointernodinero.idtienda')
                 ->where('movimientointernodinero.idestadoeliminado',1)
                 ->where('movimientointernodinero.idtipomovimientointerno',2)
+                ->where('movimientointernodinero.idtienda',$idtienda)
                 ->where($where)
                 ->select(
                     'movimientointernodinero.*',

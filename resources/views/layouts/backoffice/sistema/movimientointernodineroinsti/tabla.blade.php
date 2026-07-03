@@ -133,7 +133,7 @@
   function lista_movimientointernodinero_retiro2(id){
     load_nuevo_movimientointernodinero_retiro2();
     $.ajax({
-        url:"{{url('backoffice/0/movimientointernodineroinsti/show_table_retiro2')}}",
+        url:"{{url('backoffice/'.$tienda->id.'/movimientointernodineroinsti/show_table_retiro2')}}",
         type:'GET',
         data:{
             fechainicio: $('#fechainicio').val(),
@@ -159,7 +159,7 @@
   function lista_movimientointernodinero_deposito2(id){
     load_nuevo_movimientointernodinero_deposito2();
     $.ajax({
-        url:"{{url('backoffice/0/movimientointernodineroinsti/show_table_deposito2')}}",
+        url:"{{url('backoffice/'.$tienda->id.'/movimientointernodineroinsti/show_table_deposito2')}}",
         type:'GET',
         data:{
             fechainicio: $('#fechainicio').val(),

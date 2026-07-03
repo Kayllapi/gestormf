@@ -595,6 +595,7 @@ class CvmovimientointernodineroController extends Controller
                 ->join('tienda','tienda.id','cvmovimientointernodinero.idtienda')
                 ->where('cvmovimientointernodinero.idestadoeliminado',1)
                 ->where('cvmovimientointernodinero.idtipomovimientointerno',1)
+                ->where('cvmovimientointernodinero.idtienda',$idtienda)
                 ->where($where)
                 ->select(
                     'cvmovimientointernodinero.*',
@@ -653,6 +654,7 @@ class CvmovimientointernodineroController extends Controller
                 ->join('tienda','tienda.id','cvmovimientointernodinero.idtienda')
                 ->where('cvmovimientointernodinero.idestadoeliminado',1)
                 ->where('cvmovimientointernodinero.idtipomovimientointerno',2)
+                ->where('cvmovimientointernodinero.idtienda',$idtienda)
                 ->where($where)
                 ->select(
                     'cvmovimientointernodinero.*',
@@ -715,6 +717,7 @@ class CvmovimientointernodineroController extends Controller
                 ->join('tienda','tienda.id','cvmovimientointernodinero.idtienda')
                 ->where('cvmovimientointernodinero.idestadoeliminado',1)
                 ->where('cvmovimientointernodinero.idtipomovimientointerno',5)
+                ->where('cvmovimientointernodinero.idtienda',$idtienda)
                 ->where($where)
                 ->select(
                     'cvmovimientointernodinero.*',
@@ -771,6 +774,7 @@ class CvmovimientointernodineroController extends Controller
                 ->join('tienda','tienda.id','cvmovimientointernodinero.idtienda')
                 ->where('cvmovimientointernodinero.idestadoeliminado',1)
                 ->where('cvmovimientointernodinero.idtipomovimientointerno',6)
+                ->where('cvmovimientointernodinero.idtienda',$idtienda)
                 ->where($where)
                 ->select(
                     'cvmovimientointernodinero.*',

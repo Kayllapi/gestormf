@@ -274,7 +274,7 @@
   function lista_movimientointernodinero_retiro1(id){
     load_nuevo_movimientointernodinero_retiro1();
     $.ajax({
-        url:"{{url('backoffice/0/cvmovimientointernodinero/show_table_retiro1')}}",
+        url:"{{url('backoffice/'.$tienda->id.'/cvmovimientointernodinero/show_table_retiro1')}}",
         type:'GET',
         data:{
             fechainicio: $('#fechainicio').val(),
@@ -300,7 +300,7 @@
   function lista_movimientointernodinero_deposito1(id){
     load_nuevo_movimientointernodinero_deposito1();
     $.ajax({
-        url:"{{url('backoffice/0/cvmovimientointernodinero/show_table_deposito1')}}",
+        url:"{{url('backoffice/'.$tienda->id.'/cvmovimientointernodinero/show_table_deposito1')}}",
         type:'GET',
         data:{
             fechainicio: $('#fechainicio').val(),
@@ -327,7 +327,7 @@
   function lista_movimientointernodinero_retiro3(id){
     load_nuevo_movimientointernodinero_retiro3();
     $.ajax({
-        url:"{{url('backoffice/0/cvmovimientointernodinero/show_table_retiro3')}}",
+        url:"{{url('backoffice/'.$tienda->id.'/cvmovimientointernodinero/show_table_retiro3')}}",
         type:'GET',
         data:{
             fechainicio: $('#fechainicio').val(),
@@ -353,7 +353,7 @@
   function lista_movimientointernodinero_deposito3(id){
     load_nuevo_movimientointernodinero_deposito3();
     $.ajax({
-        url:"{{url('backoffice/0/cvmovimientointernodinero/show_table_deposito3')}}",
+        url:"{{url('backoffice/'.$tienda->id.'/cvmovimientointernodinero/show_table_deposito3')}}",
         type:'GET',
         data:{
             fechainicio: $('#fechainicio').val(),

@@ -79,7 +79,7 @@
         </table>
         <div class="mt-2 bg-primary subtitulo">Aprobación</div>
               <div class="mb-1">
-                  <label>Responsable (Administración) *</label>
+                  <label>Responsable *</label>
                   <select class="form-select" id="idresponsable">
                       <option value=""></option>
                       @foreach($usuarios as $value)

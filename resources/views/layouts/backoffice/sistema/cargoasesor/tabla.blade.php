@@ -40,14 +40,14 @@
                   <div class="row">
                       <label for="fecha_inicio" class="col-sm-3 col-form-label">AGENCIA</label>
                       <div class="col-sm-9">
-                          {{-- <input type="text" class="form-control" value="{{$tienda->nombreagencia}}" disabled>
-                          <input type="hidden" id="idagencia" value="{{$tienda->id}}"> --}}
-                          <select class="form-control" id="idagencia">
+                          <input type="text" class="form-control" value="{{$tienda->nombreagencia}}" disabled>
+                          <input type="hidden" id="idagencia" value="{{$tienda->id}}">
+                          {{-- <select class="form-control" id="idagencia" disabled>
                             <option></option>
                             @foreach($agencias as $value)
                                 <option value="{{$value->id}}">{{$value->nombreagencia}}</option>
                             @endforeach
-                          </select>
+                          </select> --}}
                       </div>
                   </div>
                   <div class="row">
@@ -68,7 +68,7 @@
                     <div class="row mt-1">
                       <label for="fecha_fin" class="col-sm-4 col-form-label" style="text-align: right;">EJECUTIVO</label>
                       <div class="col-sm-8">
-                          {{-- @php
+                          @php
                               $usuario = DB::table('users')
                                   ->join('users_permiso','users_permiso.idusers','users.id')
                                   ->join('permiso','permiso.id','users_permiso.idpermiso')
@@ -80,10 +80,10 @@
                               $usuarioText = "$usuario->nombrecompleto ($usuario->nombrepermiso)";
                           @endphp
                           <input type="text" class="form-control" value="{{$usuarioText}}" disabled>
-                          <input type="hidden" id="idasesor" value="{{Auth::user()->id}}"> --}}
-                          <select class="form-control" id="idasesor">
+                          <input type="hidden" id="idasesor" value="{{Auth::user()->id}}">
+                          {{-- <select class="form-control" id="idasesor" disabled>
                               <option></option>
-                          </select>
+                          </select> --}}
                       </div>
                     </div>
                 </div>
@@ -94,8 +94,7 @@
         </div> 
       </div>
     </div>
-    <div id="cont_loading"></div>
-    <div class="col-sm-12 col-md-4" id="cont-search">
+    <div class="col-sm-12 col-md-4">
       <div class="row d-none data-cliente">
         <div class="col-sm-12">
           <label>Apellidos y Nombres: </label>
@@ -166,31 +165,7 @@
   //     }, 500);
   // }
   
-  sistema_select2({ input:'#idagencia',val:'{{$tienda->id}}' });
-  sistema_select2({ input:'#idasesor' });
   sistema_select2({ idtienda:{{$tienda->id}}, json:'tienda:usuario', input:'#idcliente' });
-  
-  cliente_tienda({{$tienda->id}});
-  
-  $("#idagencia").on("change", function(e) {
-      var idtienda = $('#idagencia').val();
-      cliente_tienda(idtienda)
-  });
-  
-  function cliente_tienda(idtienda){
-      $.ajax({
-          url:"{{url('backoffice/'.$tienda->id.'/inicio/show_asesor')}}",
-          type:'GET',
-          data: {
-              idtienda : idtienda
-          },
-          success: function (respuesta){
-              $('#idasesor').html(respuesta);  
-              sistema_select2({ input:'#idasesor' });
-          }
-      })
-  }
-
   function lista_credito_cliente(id){
     $.ajax({
       url:"{{url('backoffice/0/cargo/showlistacreditos')}}",

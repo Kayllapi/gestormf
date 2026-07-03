@@ -23,10 +23,12 @@ class CvasignacioncapitalController extends Controller
         $validacionDiaria = validacionDiaria($idtienda);
       
         if($request->input('view') == 'tabla'){
+            $agencias = DB::table('tienda')->get();
             return view(sistema_view().'/cvasignacioncapital/tabla', compact(
-              'tienda',
-              'arqueocaja',
-              'validacionDiaria'
+                'tienda',
+                'arqueocaja',
+                'validacionDiaria',
+                'agencias',
             ));
         }
             
@@ -268,6 +270,9 @@ class CvasignacioncapitalController extends Controller
             }
             if($request->input('fechafin') != ''){
                 $where[] = ['cvasignacioncapital.fecharegistro','<=',$request->fechafin.' 23:59:59']; 
+            }
+            if($request->input('idagencia') != '' && $request->input('idagencia') != '0'){
+                $where[] = ['cvasignacioncapital.idtienda','=',$request->idagencia];
             }
           
             $asignacioncapital = DB::table('cvasignacioncapital')

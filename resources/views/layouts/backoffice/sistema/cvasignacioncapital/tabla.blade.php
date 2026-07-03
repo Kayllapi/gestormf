@@ -47,7 +47,17 @@
           <div class="card-body p-2">
             <div class="modal-body">
               <div class="row">
-                <label class="col-sm-3 col-form-label" style="text-align: right;">Fecha inicio</label>
+                <label class="col-sm-1 col-form-label" style="text-align: right;">AGENCIA</label>
+                <div class="col-sm-2">
+                    <select class="form-control" id="idagencia_filtro">
+                      <option></option>
+                      <option value="0" selected>TODO</option>
+                      @foreach($agencias as $value)
+                        <option value="{{$value->id}}">{{$value->nombreagencia}}</option>
+                      @endforeach
+                    </select>
+                </div>
+                <label class="col-sm-1 col-form-label" style="text-align: right;">Fecha inicio</label>
                 <div class="col-sm-2">
                   <input type="date" class="form-control" id="fechainicio" value="{{now()->format('Y-m-d')}}">
                 </div>
@@ -60,7 +70,7 @@
                                   <i class="fa-solid fa-search"></i> 
                     Filtrar</button>
                 </div>
-                <div class="col-md-3" style="text-align: right;">
+                <div class="col-md-2" style="text-align: right;">
                     <div>
                     <!--button type="button" class="btn btn-success mb-1" onclick="recepcionar()" id="cont_recepcionar" style="font-weight: bold; display:none;">
                       <i class="fa-solid fa-check" style="font-weight: bold;"></i> RECEPCIONAR</button-->
@@ -75,6 +85,7 @@
         </div>
       </div>
       <div class="col-sm-12">
+        <div id="cont_loading"></div>
         <div class="card">
           <div class="card-body" style="overflow-y: scroll;height: 200px;padding: 0;margin-top: 5px;overflow-x: scroll;">
             
@@ -107,7 +118,7 @@
     <button type="button" class="btn btn-info" onclick="exportar_pdf()" style="font-weight: bold;">
       <i class="fa-solid fa-file-pdf" style="color:#000 !important;font-weight: bold;"></i> REPORTE PDF</button>
   </div-->
-  <div class="row">
+  <div class="row" id="cont-saldocapitalasignado">
       <div class="col-sm-4">
           <div class="mb-1">
             <span class="badge d-block" style="margin-top: 10px;">SALDO DE CAPITAL ASIGNADO</span>
@@ -133,6 +144,8 @@
   </div>
 </div>
 <script>
+  sistema_select2({ input:'#idagencia_filtro',val:'{{$tienda->id}}' });
+
   lista_asignacioncapital();
   function lista_asignacioncapital(id){
     var fechainicio = $('#fechainicio').val();
@@ -143,10 +156,21 @@
       data:{
           fechainicio: $('#fechainicio').val(),
           fechafin: $('#fechafin').val(),
+          idagencia: $('#idagencia_filtro').val(),
+      },
+      beforeSend: function () {
+        load('#cont_loading');
+        $('#table-lista-asignacioncapital').addClass('d-none');
+        $('#cont-saldocapitalasignado').addClass('d-none');
       },
       success: function (res){
           $('#table-lista-asignacioncapital > tbody').html(res.html);
           lista_saldocapitalasignado();
+
+        // loading
+        $('#cont_loading').html('');
+        $('#table-lista-asignacioncapital').removeClass('d-none')
+        $('#cont-saldocapitalasignado').removeClass('d-none')
       }
     })
   }

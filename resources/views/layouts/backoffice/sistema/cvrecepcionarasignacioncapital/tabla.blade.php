@@ -55,7 +55,7 @@
     var fechainicio = $('#fechainicio').val();
     var fechafin = $('#fechafin').val();
     $.ajax({
-      url:"{{url('backoffice/0/cvrecepcionarasignacioncapital/show_table')}}",
+      url:"{{url('backoffice/'.$tienda->id.'/cvrecepcionarasignacioncapital/show_table')}}",
       type:'GET',
       data:{
           fechainicio: $('#fechainicio').val(),

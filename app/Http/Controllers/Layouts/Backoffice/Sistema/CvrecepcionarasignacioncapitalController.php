@@ -52,6 +52,7 @@ class CvrecepcionarasignacioncapitalController extends Controller
                 ->join('tienda','tienda.id','cvasignacioncapital.idtienda')
                 ->where('cvasignacioncapital.idestadoeliminado',1)
                 ->where('cvasignacioncapital.idresponsable_recfinal',0)
+                ->where('cvasignacioncapital.idtienda',$idtienda)
                 //->where($where)
                 ->select(
                     'cvasignacioncapital.*',

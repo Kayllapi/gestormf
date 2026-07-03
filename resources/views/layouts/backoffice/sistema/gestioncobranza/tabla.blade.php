@@ -249,7 +249,7 @@ table .dropdown {
       })
   }
   
-  lista_credito();
+  // lista_credito();
   function lista_credito(){
     $.ajax({
       url:"{{url('backoffice/0/gestioncobranza/showtable')}}",

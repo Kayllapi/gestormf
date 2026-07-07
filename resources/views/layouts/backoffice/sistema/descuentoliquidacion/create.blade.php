@@ -29,49 +29,49 @@
               <td><b>Saldo</b></td>
           </tr>
           <tr>
-              <td><b>Capital</b></td>
+              <td>Capital</td>
               <td><input type="text" class="form-control campo_moneda" value="{{ $cronograma['select_amortizacion'] }}" id="data_capital" disabled></td>
               <td><input type="text" valida_input_vacio class="form-control campo_moneda" value="0.00" id="descuento_capital" onkeyup="calcular_descuento(2)"></td>
               <td><input type="text" class="form-control campo_moneda" id="saldo_capital" disabled></td>
           </tr>
           <tr>
-              <td><b>Interes</b></td>
+              <td>Interes</td>
               <td><input type="text" class="form-control campo_moneda" value="{{ $cronograma['select_interes'] }}" id="data_interes" disabled></td>
               <td><input type="text" valida_input_vacio  class="form-control campo_moneda" value="0.00" id="descuento_interes" onkeyup="calcular_descuento(2)"></td>
               <td><input type="text" class="form-control campo_moneda" id="saldo_interes" disabled></td>
           </tr>
           <tr>
-              <td><b>Carg. x Cust. G./Ot.</b></td>
+              <td>Carg. x Cust. G./Ot.</td>
               <td><input type="text" class="form-control campo_moneda" value="{{ $cronograma['select_cargo'] }}" id="data_cargo" disabled></td>
               <td><input type="text" valida_input_vacio class="form-control campo_moneda" value="0.00" id="descuento_cargo" onkeyup="calcular_descuento(2)"></td>
               <td><input type="text" class="form-control campo_moneda" id="saldo_cargo" disabled></td>
           </tr>
           <tr>
-              <td><b>Ss. Recau.</b></td>
+              <td>Ss. Recau.</td>
               <td><input type="text" class="form-control campo_moneda" value="{{ $cronograma['select_comision'] }}" id="data_comision" disabled></td>
               <td><input type="text" valida_input_vacio class="form-control campo_moneda" value="0.00" id="descuento_comision" onkeyup="calcular_descuento(2)"></td>
               <td><input type="text" class="form-control campo_moneda" id="saldo_comision" disabled></td>
           </tr>
           <tr>
-              <td><b>P. Cust.</b></td>
+              <td>P. Cust.</td>
               <td><input type="text" class="form-control campo_moneda" value="{{ $cronograma['select_tenencia'] }}" id="data_tenencia" disabled></td>
               <td><input type="text" valida_input_vacio class="form-control campo_moneda" value="0.00" id="descuento_tenencia" onkeyup="calcular_descuento(2)"></td>
               <td><input type="text" class="form-control campo_moneda" id="saldo_tenencia" disabled></td>
           </tr>
           <tr>
-              <td><b>Int. Comp.</b></td>
+              <td>Int. Comp.</td>
               <td><input type="text" class="form-control campo_moneda" value="{{ $cronograma['select_penalidad'] }}" id="data_penalidad" disabled></td>
               <td><input type="text" valida_input_vacio class="form-control campo_moneda" value="0.00" id="descuento_penalidad" onkeyup="calcular_descuento(2)"></td>
               <td><input type="text" class="form-control campo_moneda" id="saldo_penalidad" disabled></td>
           </tr>
           <tr>
-              <td><b>Interes Moratorio</b></td>
+              <td>Interes Moratorio</td>
               <td><input type="text" class="form-control campo_moneda" value="{{ $cronograma['select_compensatorio'] }}" id="data_compensatorio" disabled></td>
               <td><input type="text" valida_input_vacio  class="form-control campo_moneda" value="0.00" id="descuento_compensatorio" onkeyup="calcular_descuento(2)"></td>
               <td><input type="text" class="form-control campo_moneda" id="saldo_compensatorio" disabled></td>
           </tr>
           <tr>
-              <td><b>Totales</b></td>
+              <td><b>TOTALES</b></td>
               <td><input type="text" class="form-control campo_moneda fw-bold" value="0.00" id="data_total" disabled></td>
               <td><input type="text" class="form-control campo_moneda fw-bold" id="descuento_total" disabled></td>
               <td><input type="text" class="form-control campo_moneda fw-bold" id="saldo_total" disabled></td>

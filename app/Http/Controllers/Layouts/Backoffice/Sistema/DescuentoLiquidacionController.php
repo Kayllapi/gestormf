@@ -99,62 +99,21 @@ class DescuentoLiquidacionController extends Controller
             $this->validate($request,$rules,$messages);
           
             $valid = 0;
-            if($request->data_capital<0){
+            if($request->data_compensatorio<0){
                 return response()->json([
                     'resultado' => 'ERROR',
-                    'mensaje'   => 'El Monto Descuento de capital debe ser mayor ó igual a 0.00.'
+                    'mensaje'   => 'El Monto Descuento de Compensatorio debe ser mayor ó igual a 0.00.'
                 ]);
             }
-            elseif($request->data_capital<$request->descuento_capital){
+            elseif($request->data_compensatorio<$request->descuento_compensatorio){
                 return response()->json([
                     'resultado' => 'ERROR',
-                    'mensaje'   => 'El Monto Descuento de capital debe ser máximo '.$request->data_capital.'.'
-                ]);
-            }else{
-                $valid = 1;
-            }
-            if($request->data_interes<0){
-                return response()->json([
-                    'resultado' => 'ERROR',
-                    'mensaje'   => 'El Monto Descuento de interes debe ser mayor ó igual a 0.00.'
-                ]);
-            }
-            elseif($request->data_interes<$request->descuento_interes){
-                return response()->json([
-                    'resultado' => 'ERROR',
-                    'mensaje'   => 'El Monto Descuento de interes debe ser máximo '.$request->data_interes.'.'
+                    'mensaje'   => 'El Monto Descuento de Compensatorio debe ser máximo '.$request->data_compensatorio.'.'
                 ]);
             }else{
                 $valid = 1;
             }
-            if($request->data_comision<0){
-                return response()->json([
-                    'resultado' => 'ERROR',
-                    'mensaje'   => 'El Monto Descuento de comisión debe ser mayor ó igual a 0.00.'
-                ]);
-            }
-            elseif($request->data_comision<$request->descuento_comision){
-                return response()->json([
-                    'resultado' => 'ERROR',
-                    'mensaje'   => 'El Monto Descuento de comisión debe ser máximo '.$request->data_comision.'.'
-                ]);
-            }else{
-                $valid = 1;
-            }
-            if($request->data_cargo<0){
-                return response()->json([
-                    'resultado' => 'ERROR',
-                    'mensaje'   => 'El Monto Descuento de cargo debe ser mayor ó igual a 0.00.'
-                ]);
-            }
-            elseif($request->data_cargo<$request->descuento_cargo){
-                return response()->json([
-                    'resultado' => 'ERROR',
-                    'mensaje'   => 'El Monto Descuento de cargo debe ser máximo '.$request->data_cargo.'.'
-                ]);
-            }else{
-                $valid = 1;
-            }
+
             if($request->data_penalidad<0){
                 return response()->json([
                     'resultado' => 'ERROR',
@@ -169,6 +128,7 @@ class DescuentoLiquidacionController extends Controller
             }else{
                 $valid = 1;
             }
+
             if($request->data_tenencia<0){
                 return response()->json([
                     'resultado' => 'ERROR',
@@ -183,16 +143,62 @@ class DescuentoLiquidacionController extends Controller
             }else{
                 $valid = 1;
             }
-            if($request->data_compensatorio<0){
+
+            if($request->data_comision<0){
                 return response()->json([
                     'resultado' => 'ERROR',
-                    'mensaje'   => 'El Monto Descuento de Compensatorio debe ser mayor ó igual a 0.00.'
+                    'mensaje'   => 'El Monto Descuento de comisión debe ser mayor ó igual a 0.00.'
                 ]);
             }
-            elseif($request->data_compensatorio<$request->descuento_compensatorio){
+            elseif($request->data_comision<$request->descuento_comision){
                 return response()->json([
                     'resultado' => 'ERROR',
-                    'mensaje'   => 'El Monto Descuento de Compensatorio debe ser máximo '.$request->data_compensatorio.'.'
+                    'mensaje'   => 'El Monto Descuento de comisión debe ser máximo '.$request->data_comision.'.'
+                ]);
+            }else{
+                $valid = 1;
+            }
+
+            if($request->data_cargo<0){
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'El Monto Descuento de cargo debe ser mayor ó igual a 0.00.'
+                ]);
+            }
+            elseif($request->data_cargo<$request->descuento_cargo){
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'El Monto Descuento de cargo debe ser máximo '.$request->data_cargo.'.'
+                ]);
+            }else{
+                $valid = 1;
+            }
+
+            if($request->data_interes<0){
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'El Monto Descuento de interes debe ser mayor ó igual a 0.00.'
+                ]);
+            }
+            elseif($request->data_interes<$request->descuento_interes){
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'El Monto Descuento de interes debe ser máximo '.$request->data_interes.'.'
+                ]);
+            }else{
+                $valid = 1;
+            }
+
+            if($request->data_capital<0){
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'El Monto Descuento de capital debe ser mayor ó igual a 0.00.'
+                ]);
+            }
+            elseif($request->data_capital<$request->descuento_capital){
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'El Monto Descuento de capital debe ser máximo '.$request->data_capital.'.'
                 ]);
             }else{
                 $valid = 1;

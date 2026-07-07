@@ -74,7 +74,7 @@
                     8.- FLUJO DE CAJA</button>
                 </div>
                 <div class="btn-group mb-1 evaluacion-resumida" id="cont_evaluacion_resumida">
-                  <button type="button" class="btn btn-warning evaluacion" style="background-color: #c0f297;border-color: #212529;"
+                  <button type="button" class="btn btn-primary evaluacion"
                           onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=evaluacion_resumida')}}&detalle=false', size: 'modal-fullscreen' })">
                     1.- EVALUACION RESUMIDA</button>
                 </div>

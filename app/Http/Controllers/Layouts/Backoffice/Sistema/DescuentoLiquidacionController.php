@@ -553,6 +553,7 @@ class DescuentoLiquidacionController extends Controller
                 ->select(
                     'credito_descuentocuota.*',
                     'responsable.codigo as responsable_codigo',
+                    'responsable.usuario as responsable_usuario',
                     'responsable.nombrecompleto as responsable_nombrecompleto',
                 )
                 ->orderBy('credito_descuentocuota.numerocuota','asc')
@@ -602,7 +603,7 @@ class DescuentoLiquidacionController extends Controller
                             <td style='text-align:right'>{$value->penalidad}</td>
                             <td style='text-align:right'>{$value->compensatorio}</td>
                             <td style='text-align:right'>{$value->total}</td>
-                            <td style='text-align:right'>{$value->responsable_codigo}</td>
+                            <td style='text-align:right'>{$value->responsable_usuario}</td>
                         </tr>";
                 $total_capital = $total_capital+$value->capital;
                 $total_interes = $total_interes+$value->interes;

@@ -69,7 +69,7 @@
             </tr>
             <tr>
                 <td>
-                    <b>Pagado en</b>
+                    <b>Pago en</b>
                 </td>
                 <td style="width:1px;">
                     <b>:</b>

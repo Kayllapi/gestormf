@@ -110,7 +110,14 @@ class DescuentoLiquidacionController extends Controller
                     'resultado' => 'ERROR',
                     'mensaje'   => 'El Monto Descuento de Compensatorio debe ser máximo '.$request->data_compensatorio.'.'
                 ]);
-            }else{
+            }
+            // elseif ($request->data_compensatorio==0) {
+            //     return response()->json([
+            //         'resultado' => 'ERROR',
+            //         'mensaje'   => 'El Monto Descuento de Compensatorio debe registrarse primero'
+            //     ]);
+            // }
+            else{
                 $valid = 1;
             }
 

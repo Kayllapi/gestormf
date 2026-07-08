@@ -17,14 +17,17 @@
         <button type="button" class="btn-close" id="close_opcionescredito" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <div class="modal-body">
-        <table class="table table-bordered">
-          <tr>
+        <table class="table table-bordered"><tr>
               <td><b>N° Cuota</b></td>
               <td><input type="text" class="form-control fw-bold" style="text-align:center;" 
                          value="{{ $cronograma['select_numerocuota_inicio']==$cronograma['select_numerocuota_fin']?$cronograma['select_numerocuota_inicio']:($cronograma['select_numerocuota_inicio'].' - '.$cronograma['select_numerocuota_fin']) }}" id="data_numerocuota" disabled>
                          <input type="hidden" value="{{ $cronograma['select_numerocuota_inicio'] }}" id="data_numerocuota_inicio">
                          <input type="hidden" value="{{ $cronograma['select_numerocuota_fin'] }}" id="data_numerocuota_fin">
               </td>
+              <td colspan="2"></td>
+          </tr>
+          <tr>
+              <td colspan="2" style="text-align: center;"><b>Concepto</b></td>
               <td><b>Monto Descuento</b></td>
               <td><b>Saldo</b></td>
           </tr>

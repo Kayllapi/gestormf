@@ -34,7 +34,7 @@
           <div class="titulo"><b>PAGO DE CRÉDITO</b></div>  
           <table style="width:100%;">
             <tr>
-                <td style="width:65px;">
+                <td style="width:48px;">
                     <b>Fecha</b>
                 </td>
                 <td style="width:1px;">

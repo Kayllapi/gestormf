@@ -117,8 +117,8 @@
           <div class="linea"></div>
           <table style="width:100%;">
             <tr>
-                <td style="width:65px;">
-                    <b>D. Vencido</b>
+                <td style="width:48px;">
+                    <b>D. Venc.</b>
                 </td>
                 <td style="width:1px;">
                     <b>:</b>

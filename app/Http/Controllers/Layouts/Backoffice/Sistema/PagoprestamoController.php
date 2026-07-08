@@ -139,25 +139,57 @@ class PagoprestamoController extends Controller
           
           foreach($credito_cobranzacuotas as $key => $value){
             
-              $credito_adelanto = DB::table('credito_adelanto')->where('credito_adelanto.idcredito_cobranzacuota',$value->id)->get();
-              $credito_adelanto = DB::table('credito_adelanto')->where('credito_adelanto.idcredito_cobranzacuota',$value->id)->get();
+            //   $credito_adelanto = DB::table('credito_adelanto')->where('credito_adelanto.idcredito_cobranzacuota',$value->id)->get();
+            //   $credito_adelanto = DB::table('credito_adelanto')->where('credito_adelanto.idcredito_cobranzacuota',$value->id)->get();
               
-              $t_acuenta = 0;
+            //   $t_acuenta = 0;
             
-              foreach($credito_adelanto as $valueadelanto){
-                  $credito_cronograma = DB::table('credito_cronograma')->where('credito_cronograma.id',$valueadelanto->idcredito_cronograma)->first();
-                  if($credito_cronograma){
-                      if($credito_cronograma->idestadocredito_cronograma==2){
-                      }else{
-                          if($t_cuotapagado>0){
-                              $t_acuenta = $t_acuenta+$valueadelanto->total;
-                          }else{
-                              $t_acuenta = $t_acuenta+$valueadelanto->capital+$valueadelanto->comision+$valueadelanto->cargo+$valueadelanto->interes;
-                          }
-                      }
-                  }
-              }
+            //   foreach($credito_adelanto as $valueadelanto){
+            //       $credito_cronograma = DB::table('credito_cronograma')->where('credito_cronograma.id',$valueadelanto->idcredito_cronograma)->first();
+            //       if($credito_cronograma){
+            //           if($credito_cronograma->idestadocredito_cronograma==2){
+            //           }else{
+            //               if($t_cuotapagado>0){
+            //                   $t_acuenta = $t_acuenta+$valueadelanto->total;
+            //               }else{
+            //                   $t_acuenta = $t_acuenta+$valueadelanto->capital+$valueadelanto->comision+$valueadelanto->cargo+$valueadelanto->interes;
+            //               }
+            //           }
+            //       }
+            //   }
+
+            $credito_adelanto = DB::table('credito_adelanto')->where('credito_adelanto.idcredito_cobranzacuota',$value->id)->get();
+
+            $t_cuotapagado = 0;
+            $t_acuenta = 0;
+            $t_penalidad = 0;
+            $t_tenencia = 0;
+            $t_compensatorio = 0;
+
+            foreach($credito_adelanto as $valueadelanto){
+                $credito_cronograma = DB::table('credito_cronograma')->where('credito_cronograma.id',$valueadelanto->idcredito_cronograma)->first();
+                if($credito_cronograma){
+                    if($credito_cronograma->idestadocredito_cronograma==2){
+                        $t_cuotapagado = $t_cuotapagado+$valueadelanto->total;
+                    }else{
+                        if($t_cuotapagado>0){
+                            $t_acuenta = $t_acuenta+$valueadelanto->total;
+                        }else{
+                            $t_acuenta = $t_acuenta+$valueadelanto->capital+$valueadelanto->comision+$valueadelanto->cargo+$valueadelanto->interes;
+                        }
+                    }
+                }
+                $t_penalidad = $t_penalidad+$valueadelanto->penalidad;
+                $t_tenencia = $t_tenencia+$valueadelanto->tenencia;
+                $t_compensatorio = $t_compensatorio+$valueadelanto->compensatorio;
+            }  
+
+              $t_cuotapagado = number_format($t_cuotapagado, 2, '.', '');
               $t_acuenta = number_format($t_acuenta, 2, '.', '');
+              $t_penalidad = number_format($t_penalidad, 2, '.', '');
+              $t_tenencia = number_format($t_tenencia, 2, '.', '');
+              $t_compensatorio = number_format($t_compensatorio, 2, '.', '');
+
               $operacionen1 = '';
               if($value->idformapago==0){ $operacionen1 = 'TRANSITORIO'; }
               if($value->idformapago==1){ $operacionen1 = 'CAJA'; }
@@ -176,6 +208,8 @@ class PagoprestamoController extends Controller
               }  
 
               $fechaFormateado = Carbon::parse($value->fecharegistro)->format('d-m-Y h:i A');
+
+              $total = number_format($value->total_pagar+$value->cobrar_cargo, 2, '.', '');
             
               $html .= "<tr id='show_data_select' idcredito_cobranzacuota='{$value->id}'>
                             <td style='height: 20px;'>".($key+1)."</td>
@@ -183,11 +217,11 @@ class PagoprestamoController extends Controller
                             <td style='height: 20px;'>{$cuotas}</td>
                             <td style='text-align:right;height: 20px;'>{$value->total_amortizacion}</td>
                             <td style='text-align:right;height: 20px;'>{$t_acuenta}</td>
-                            <td style='text-align:right;height: 20px;'>{$value->total_tenencia}</td>
-                            <td style='text-align:right;height: 20px;'>{$value->total_penalidad}</td>
-                            <td style='text-align:right;height: 20px;'>{$value->total_compensatorio}</td>
+                            <td style='text-align:right;height: 20px;'>{$t_tenencia}</td>
+                            <td style='text-align:right;height: 20px;'>{$t_penalidad}</td>
+                            <td style='text-align:right;height: 20px;'>{$t_compensatorio}</td>
                             <td style='text-align:right;height: 20px;'>{$value->cobrar_cargo}</td>
-                            <td style='text-align:right;height: 20px;'>{$value->total_totalcuota}</td>
+                            <td style='text-align:right;height: 20px;'>{$total}</td>
                             <td style='text-align:center;height: 20px;width: 125px;'>{$fechaFormateado}</td>
                             <td style='height: 20px;'>{$operacionen1}</td>
                             <td style='height: 20px;'>{$value->banco}</td>
@@ -199,11 +233,11 @@ class PagoprestamoController extends Controller
                     
               $total_amortizacion += $value->total_amortizacion;
               $total_acuenta += $t_acuenta;
-              $total_penalidad += $value->total_penalidad;
-              $total_compensatorio += $value->total_compensatorio;
-              $total_tenencia += $value->total_tenencia;
+              $total_penalidad += $t_penalidad;
+              $total_compensatorio += $t_compensatorio;
+              $total_tenencia += $t_tenencia;
               $cobrar_cargo += $value->cobrar_cargo;
-              $total_totalcuota += $value->total_totalcuota;
+              $total_totalcuota += $total;
             
               if($value->idformapago==0){
                   $total_extorno = $total_extorno+$total_totalcuota;
@@ -223,9 +257,9 @@ class PagoprestamoController extends Controller
                   <th colspan="3" style="text-align:right">TOTAL (S/.)</th>
                   <th style="text-align:right">'.number_format($total_amortizacion, 2, '.', '').'</th>
                   <th style="text-align:right">'.number_format($total_acuenta, 2, '.', '').'</th>
+                  <th style="text-align:right">'.number_format($total_tenencia, 2, '.', '').'</th>
                   <th style="text-align:right">'.number_format($total_penalidad, 2, '.', '').'</th>
                   <th style="text-align:right">'.number_format($total_compensatorio, 2, '.', '').'</th>
-                  <th style="text-align:right">'.number_format($total_tenencia, 2, '.', '').'</th>
                   <th style="text-align:right">'.number_format($cobrar_cargo, 2, '.', '').'</th>
                   <th style="text-align:right">'.number_format($total_totalcuota, 2, '.', '').'</th>
                   <th colspan="6"></th>

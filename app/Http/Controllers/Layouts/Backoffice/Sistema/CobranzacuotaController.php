@@ -1459,9 +1459,9 @@ class CobranzacuotaController extends Controller
                 <th>Atraso</th>
                 <th>Capital</th>
                 <th>Interes</th>
-                <th>Comisión</th>
-                <th>Cargo</th>
-                <th>Custodia</th>
+                <th>Carg. x Cust. G./Ot.</th>
+                <th>Ss. Recau.</th>
+                <th>P. Cust.</th>
                 <th>Int. Comp.</th>
                 <th>Int. Morat.</th>
                 <th>Total</th>

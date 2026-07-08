@@ -33,7 +33,7 @@
           <tr>
               <td>Capital</td>
               <td><input type="text" class="form-control campo_moneda" value="{{ $cronograma['select_amortizacion'] }}" id="data_capital" disabled></td>
-              <td><input type="text" valida_input_vacio class="form-control campo_moneda" value="0.00" id="descuento_capital" onkeyup="calcular_descuento(2)"></td>
+              <td><input type="text" valida_input_vacio class="form-control campo_moneda" value="0.00" id="descuento_capital" disabled></td>
               <td><input type="text" class="form-control campo_moneda" id="saldo_capital" disabled></td>
           </tr>
           <tr>

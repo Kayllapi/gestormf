@@ -97,7 +97,50 @@ class DescuentoLiquidacionController extends Controller
                 'responsableclave.required' => 'La "Contraseña" es Obligatorio.',
             ];
             $this->validate($request,$rules,$messages);
-          
+
+            // Validar el orden de aplicación de descuentos
+            if ($request->descuento_penalidad > 0) {
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'Debe descontar Interes Moratorio primero.'
+                ]);
+            }
+
+            if ($request->descuento_tenencia > 0) {
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'Debe descontar Int. Comp. primero.'
+                ]);
+            }
+
+            if ($request->descuento_comision > 0) {
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'Debe descontar P. Cust. primero.'
+                ]);
+            }
+
+            if ($request->descuento_cargo > 0 ) {
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'Debe descontar Ss. Recau. primero.'
+                ]);
+            }
+
+            if ($request->descuento_interes > 0) {
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'Debe descontar Carg. x Cust. G./Ot. primero.'
+                ]);
+            }
+
+            if ($request->descuento_capital > 0) {
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'Debe descontar Interes primero.'
+                ]);
+            }
+
             $valid = 0;
             if($request->data_compensatorio<0){
                 return response()->json([

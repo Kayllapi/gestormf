@@ -18,8 +18,7 @@
     </div>
     <div class="modal-body">
         <table class="table table-bordered"><tr>
-              <td></td>
-              <td><b>Concepto</b></td>
+              <td colspan="2"><b>Cuota</b></td>
               <td rowspan="2"><b>Monto Descuento</b></td>
               <td rowspan="2"><b>Saldo</b></td>
           </tr>

@@ -1456,7 +1456,7 @@ class CobranzacuotaController extends Controller
               <tr>
                 <th style="width:100px;">Fecha de Registro</th>
                 <th style="width:5px;">N° Cuota</th>
-                <th>Atraso</th>
+                <th>Vencido</th>
                 <th>Capital</th>
                 <th>Interes</th>
                 <th>Carg. x Cust. G./Ot.</th>

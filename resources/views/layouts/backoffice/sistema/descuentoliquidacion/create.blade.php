@@ -63,7 +63,7 @@
                     value="0.00"
                     id="descuento_tenencia"
                     onkeyup="calcular_descuento(2)"
-                    style="background-color: #ebeb6b; color: black;"></td>
+                    style="background-color: #f8f8b1; color: black;"></td>
               <td><input type="text" class="form-control campo_moneda" id="saldo_tenencia" disabled></td>
           </tr>
           <tr>
@@ -75,7 +75,7 @@
                     value="0.00"
                     id="descuento_penalidad"
                     onkeyup="calcular_descuento(2)"
-                    style="background-color: #ebeb6b; color: black;"></td>
+                    style="background-color: #f8f8b1; color: black;"></td>
               <td><input type="text" class="form-control campo_moneda" id="saldo_penalidad" disabled></td>
           </tr>
           <tr>
@@ -87,7 +87,7 @@
                     value="0.00"
                     id="descuento_compensatorio"
                     onkeyup="calcular_descuento(2)"
-                    style="background-color: #ebeb6b; color: black;"></td>
+                    style="background-color: #f8f8b1; color: black;"></td>
               <td><input type="text" class="form-control campo_moneda" id="saldo_compensatorio" disabled></td>
           </tr>
           <tr>

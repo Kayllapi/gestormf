@@ -57,19 +57,37 @@
           <tr>
               <td>P. Cust.</td>
               <td><input type="text" class="form-control campo_moneda" value="{{ $cronograma['select_tenencia'] }}" id="data_tenencia" disabled></td>
-              <td><input type="text" valida_input_vacio class="form-control campo_moneda" value="0.00" id="descuento_tenencia" onkeyup="calcular_descuento(2)"></td>
+              <td><input type="text"
+                    valida_input_vacio
+                    class="form-control campo_moneda"
+                    value="0.00"
+                    id="descuento_tenencia"
+                    onkeyup="calcular_descuento(2)"
+                    style="background-color: #ebeb6b; color: black;"></td>
               <td><input type="text" class="form-control campo_moneda" id="saldo_tenencia" disabled></td>
           </tr>
           <tr>
               <td>Int. Comp.</td>
               <td><input type="text" class="form-control campo_moneda" value="{{ $cronograma['select_penalidad'] }}" id="data_penalidad" disabled></td>
-              <td><input type="text" valida_input_vacio class="form-control campo_moneda" value="0.00" id="descuento_penalidad" onkeyup="calcular_descuento(2)"></td>
+              <td><input type="text"
+                    valida_input_vacio
+                    class="form-control campo_moneda"
+                    value="0.00"
+                    id="descuento_penalidad"
+                    onkeyup="calcular_descuento(2)"
+                    style="background-color: #ebeb6b; color: black;"></td>
               <td><input type="text" class="form-control campo_moneda" id="saldo_penalidad" disabled></td>
           </tr>
           <tr>
               <td>Interes Moratorio</td>
               <td><input type="text" class="form-control campo_moneda" value="{{ $cronograma['select_compensatorio'] }}" id="data_compensatorio" disabled></td>
-              <td><input type="text" valida_input_vacio  class="form-control campo_moneda" value="0.00" id="descuento_compensatorio" onkeyup="calcular_descuento(2)"></td>
+              <td><input type="text"
+                    valida_input_vacio 
+                    class="form-control campo_moneda"
+                    value="0.00"
+                    id="descuento_compensatorio"
+                    onkeyup="calcular_descuento(2)"
+                    style="background-color: #ebeb6b; color: black;"></td>
               <td><input type="text" class="form-control campo_moneda" id="saldo_compensatorio" disabled></td>
           </tr>
           <tr>

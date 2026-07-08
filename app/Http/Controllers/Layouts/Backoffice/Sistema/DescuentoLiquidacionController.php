@@ -283,6 +283,7 @@ class DescuentoLiquidacionController extends Controller
                 ->join('users as cliente', 'cliente.id', '=', 'credito.idcliente')
                 ->where('credito.estado', 'DESEMBOLSADO')
                 ->where('credito.idestadocredito', 1)
+                ->where('credito.idtienda', $idtienda)
                 ->where(function ($q) use ($request) {
                     $q->where('cliente.identificacion', 'LIKE', '%' . $request->buscar . '%')
                     ->orWhere('cliente.nombrecompleto', 'LIKE', '%' . $request->buscar . '%');

@@ -74,7 +74,7 @@
               <td><input type="text" class="form-control campo_moneda" id="saldo_compensatorio" disabled></td>
           </tr>
           <tr>
-              <td><b>TOTALES</b></td>
+              <td><b>TOTAL</b></td>
               <td><input type="text" class="form-control campo_moneda fw-bold" value="0.00" id="data_total" disabled></td>
               <td><input type="text" class="form-control campo_moneda fw-bold" id="descuento_total" disabled></td>
               <td><input type="text" class="form-control campo_moneda fw-bold" id="saldo_total" disabled></td>

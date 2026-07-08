@@ -138,26 +138,6 @@ class PagoprestamoController extends Controller
           $t_cuotapagado = 0;
           
           foreach($credito_cobranzacuotas as $key => $value){
-            
-            //   $credito_adelanto = DB::table('credito_adelanto')->where('credito_adelanto.idcredito_cobranzacuota',$value->id)->get();
-            //   $credito_adelanto = DB::table('credito_adelanto')->where('credito_adelanto.idcredito_cobranzacuota',$value->id)->get();
-              
-            //   $t_acuenta = 0;
-            
-            //   foreach($credito_adelanto as $valueadelanto){
-            //       $credito_cronograma = DB::table('credito_cronograma')->where('credito_cronograma.id',$valueadelanto->idcredito_cronograma)->first();
-            //       if($credito_cronograma){
-            //           if($credito_cronograma->idestadocredito_cronograma==2){
-            //           }else{
-            //               if($t_cuotapagado>0){
-            //                   $t_acuenta = $t_acuenta+$valueadelanto->total;
-            //               }else{
-            //                   $t_acuenta = $t_acuenta+$valueadelanto->capital+$valueadelanto->comision+$valueadelanto->cargo+$valueadelanto->interes;
-            //               }
-            //           }
-            //       }
-            //   }
-
             $credito_adelanto = DB::table('credito_adelanto')->where('credito_adelanto.idcredito_cobranzacuota',$value->id)->get();
 
             $t_cuotapagado = 0;

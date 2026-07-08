@@ -7,7 +7,7 @@
           }
       },
       function(resultado){
-          $('#cont_descuentosdecuotas').html('');
+          show_data_descuentodecuotas();
           $('#modal-close-descuentoliquidacion-eliminar').click(); 
       },this)">
     <div class="modal-header">

@@ -471,21 +471,24 @@ class DescuentoLiquidacionController extends Controller
                 ->get();
           
           $html = '<table class="table" id="table-detalle-descuentodecuotas">
-              <thead>
-              <tr>
-                <th style="width:100px;">Fecha de Registro</th>
-                <th style="width:5px;">N° Cuota</th>
-                <th>Capital</th>
-                <th>Interes</th>
-                <th>Comisión</th>
-                <th>Cargo</th>
-                <th>Custodia</th>
-                <th>Int. Comp.</th>
-                <th>Int. Morat.</th>
-                <th>Total</th>
-              </tr>
-              </thead>
-              <tbody>';
+                    <thead>
+                        <tr>
+                            <th colspan="10" style="text-align: center; text-transform: uppercase;">Propuesta de Descuento</th>
+                        </tr>
+                        <tr>
+                            <th style="width:100px;">Fecha de Registro</th>
+                            <th style="width:5px;">N° Cuota</th>
+                            <th>Capital</th>
+                            <th>Interes</th>
+                            <th>Comisión</th>
+                            <th>Cargo</th>
+                            <th>Custodia</th>
+                            <th>Int. Comp.</th>
+                            <th>Int. Morat.</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                <tbody>';
           
           $total_capital = 0;
           $total_interes = 0;

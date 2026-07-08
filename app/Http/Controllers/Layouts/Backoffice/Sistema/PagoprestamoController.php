@@ -107,10 +107,10 @@ class PagoprestamoController extends Controller
                   <th style="text-align:center">CUOTAS</th>
                   <th style="text-align:center">C. PAGADO</th>
                   <th style="text-align:center">ACUENTA</th>
-                  <th style="text-align:center">CARG. x CUST. G./OT.</th>
                   <th style="text-align:center">P. CUST.</th>
                   <th style="text-align:center">INT. COMP.</th>
                   <th style="text-align:center">INT. MORAT.</th>
+                  <th style="text-align:center">CxC</th>
                   <th style="text-align:center">TOTAL (S/.)</th>
                   <th style="text-align:center">FECHA</th>
                   <th style="text-align:center">F/L. PAGO</th>
@@ -183,10 +183,10 @@ class PagoprestamoController extends Controller
                             <td style='height: 20px;'>{$cuotas}</td>
                             <td style='text-align:right;height: 20px;'>{$value->total_amortizacion}</td>
                             <td style='text-align:right;height: 20px;'>{$t_acuenta}</td>
-                            <td style='text-align:right;height: 20px;'>{$value->cobrar_cargo}</td>
                             <td style='text-align:right;height: 20px;'>{$value->total_tenencia}</td>
                             <td style='text-align:right;height: 20px;'>{$value->total_penalidad}</td>
                             <td style='text-align:right;height: 20px;'>{$value->total_compensatorio}</td>
+                            <td style='text-align:right;height: 20px;'>{$value->cobrar_cargo}</td>
                             <td style='text-align:right;height: 20px;'>{$value->total_totalcuota}</td>
                             <td style='text-align:center;height: 20px;width: 125px;'>{$fechaFormateado}</td>
                             <td style='height: 20px;'>{$operacionen1}</td>

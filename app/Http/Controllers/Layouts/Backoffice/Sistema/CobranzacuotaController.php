@@ -1487,8 +1487,8 @@ class CobranzacuotaController extends Controller
                             <td style='text-align:center'>{$value->atraso}</td>
                             <td style='text-align:right'>{$value->capital}</td>
                             <td style='text-align:right'>{$value->interes}</td>
-                            <td style='text-align:right'>{$value->comision}</td>
                             <td style='text-align:right'>{$value->cargo}</td>
+                            <td style='text-align:right'>{$value->comision}</td>
                             <td style='text-align:right'>{$value->tenencia}</td>
                             <td style='text-align:right'>{$value->penalidad}</td>
                             <td style='text-align:right'>{$value->compensatorio}</td>
@@ -1511,8 +1511,8 @@ class CobranzacuotaController extends Controller
                 <th style="text-align:right" colspan="3">TOTAL</th>
                 <th style="text-align:right">'.number_format($total_capital, 2, '.', '').'</th>
                 <th style="text-align:right">'.number_format($total_interes, 2, '.', '').'</th>
-                <th style="text-align:right">'.number_format($total_comision, 2, '.', '').'</th>
                 <th style="text-align:right">'.number_format($total_cargo, 2, '.', '').'</th>
+                <th style="text-align:right">'.number_format($total_comision, 2, '.', '').'</th>
                 <th style="text-align:right">'.number_format($total_tenencia, 2, '.', '').'</th>
                 <th  style="text-align:right">'.number_format($total_penalidad, 2, '.', '').'</th>
                 <th style="text-align:right">'.number_format($total_compensatorio, 2, '.', '').'</th>

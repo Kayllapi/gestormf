@@ -18,7 +18,7 @@
     </div>
     <div class="modal-body">
         <table class="table table-bordered"><tr>
-              <td colspan="2"><b>Cuota</b></td>
+              <td colspan="2" style="text-align: center;"><b>Cuota</b></td>
               <td rowspan="2"><b>Monto Descuento</b></td>
               <td rowspan="2"><b>Saldo</b></td>
           </tr>

@@ -562,7 +562,7 @@ class DescuentoLiquidacionController extends Controller
             $html = '<table class="table" id="table-detalle-descuentodecuotas_historial">
                     <thead>
                         <tr>
-                            <th colspan="11" style="text-align: center; text-transform: uppercase;">Historial de Descuentos</th>
+                            <th colspan="11" style="text-align: center; text-transform: uppercase;">Historial de Descuentos Realizados</th>
                         </tr>
                         <tr>
                             <th style="width:100px;">Fecha de Registro</th>

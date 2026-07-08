@@ -592,7 +592,7 @@ class DescuentoLiquidacionController extends Controller
             
             foreach($credito_descuentocuotas as $value){
                 $fecharegistro = date_format(date_create($value->fecharegistro),'d-m-Y H:i:s A');
-                $html .= "<tr data-valor-columna='{$value->id}'>
+                $html .= "<tr data-valor-columna='{$value->id}' onclick='show_select_descuentodecuotas_historial(this)'>
                             <td style='text-align:center'>{$fecharegistro}</td>
                             <td style='text-align:center'>{$value->numerocuota}</td>
                             <td style='text-align:right'>{$value->capital}</td>

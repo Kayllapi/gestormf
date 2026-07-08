@@ -134,6 +134,14 @@
   function show_select_descuentodecuotas(e) {
     let id = $(e).attr('data-valor-columna');
     $('#table-detalle-descuentodecuotas tr.selected').removeClass('selected');
+    $('#table-detalle-descuentodecuotas_historial tr.selected').removeClass('selected');
+    $(e).addClass('selected');
+  }
+
+  function show_select_descuentodecuotas_historial(e) {
+    let id = $(e).attr('data-valor-columna');
+    $('#table-detalle-descuentodecuotas tr.selected').removeClass('selected');
+    $('#table-detalle-descuentodecuotas_historial tr.selected').removeClass('selected');
     $(e).addClass('selected');
   }
    

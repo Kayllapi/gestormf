@@ -498,29 +498,35 @@ class DescuentoLiquidacionController extends Controller
           $i = 1;
           
           foreach($credito_descuentocuotas as $value){
-               $fecharegistro = date_format(date_create($value->fecharegistro),'d-m-Y H:i:s A');
-              $html .= "<tr data-valor-columna='{$value->id}' onclick='show_select_descuentodecuotas(this)'>
-                            <td style='text-align:center'>{$fecharegistro}</td>
-                            <td style='text-align:center'>{$value->numerocuota}</td>
-                            <td style='text-align:right'>{$value->capital}</td>
-                            <td style='text-align:right'>{$value->interes}</td>
-                            <td style='text-align:right'>{$value->comision}</td>
-                            <td style='text-align:right'>{$value->cargo}</td>
-                            <td style='text-align:right'>{$value->tenencia}</td>
-                            <td style='text-align:right'>{$value->penalidad}</td>
-                            <td style='text-align:right'>{$value->compensatorio}</td>
-                            <td style='text-align:right'>{$value->total}</td>
-                        </tr>";
-          
-              $total_capital = $total_capital+$value->capital;
-              $total_interes = $total_interes+$value->interes;
-              $total_comision = $total_comision+$value->comision;
-              $total_cargo = $total_cargo+$value->cargo;
-              $total_tenencia = $total_tenencia+$value->tenencia;
-              $total_penalidad = $total_penalidad+$value->penalidad;
-              $total_compensatorio = $total_compensatorio+$value->compensatorio;
-              $total_total = $total_total+$value->total;
-              $i = $i+1;
+                if (Carbon::parse($value->fecharegistro)->lt(Carbon::today())) {
+                    DB::table('credito_descuentocuota')
+                        ->where('id', $value->id)
+                        ->delete();
+                } else {
+                    $fecharegistro = date_format(date_create($value->fecharegistro),'d-m-Y H:i:s A');
+                    $html .= "<tr data-valor-columna='{$value->id}' onclick='show_select_descuentodecuotas(this)'>
+                                    <td style='text-align:center'>{$fecharegistro}</td>
+                                    <td style='text-align:center'>{$value->numerocuota}</td>
+                                    <td style='text-align:right'>{$value->capital}</td>
+                                    <td style='text-align:right'>{$value->interes}</td>
+                                    <td style='text-align:right'>{$value->comision}</td>
+                                    <td style='text-align:right'>{$value->cargo}</td>
+                                    <td style='text-align:right'>{$value->tenencia}</td>
+                                    <td style='text-align:right'>{$value->penalidad}</td>
+                                    <td style='text-align:right'>{$value->compensatorio}</td>
+                                    <td style='text-align:right'>{$value->total}</td>
+                                </tr>";
+                
+                    $total_capital = $total_capital+$value->capital;
+                    $total_interes = $total_interes+$value->interes;
+                    $total_comision = $total_comision+$value->comision;
+                    $total_cargo = $total_cargo+$value->cargo;
+                    $total_tenencia = $total_tenencia+$value->tenencia;
+                    $total_penalidad = $total_penalidad+$value->penalidad;
+                    $total_compensatorio = $total_compensatorio+$value->compensatorio;
+                    $total_total = $total_total+$value->total;
+                    $i = $i+1;
+                }
           }
           $html .= '</tbody>
               <thead>

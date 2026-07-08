@@ -460,7 +460,6 @@ class DescuentoLiquidacionController extends Controller
           
         }
         else if($id == 'show_descuentodecuotas'){
-            
             $where = [];
             //if($request->idestado==1){
                 $where[] = ['credito_descuentocuota.idestadocredito_descuentocuota',1];
@@ -543,6 +542,98 @@ class DescuentoLiquidacionController extends Controller
             'html' => $html
           );
           
+        }
+        elseif($id == 'show_descuentodecuotas_historial'){
+            $where = [];
+            $where[] = ['credito_descuentocuota.idestadocredito_descuentocuota',2];
+            $credito_descuentocuotas = DB::table('credito_descuentocuota')
+                ->join('users as responsable','responsable.id','credito_descuentocuota.idresponsable')
+                ->where('credito_descuentocuota.idcredito',$request->idcredito)
+                ->where($where)
+                ->select(
+                    'credito_descuentocuota.*',
+                    'responsable.codigo as responsable_codigo',
+                    'responsable.nombrecompleto as responsable_nombrecompleto',
+                )
+                ->orderBy('credito_descuentocuota.numerocuota','asc')
+                ->get();
+
+            $html = '<table class="table" id="table-detalle-descuentodecuotas_historial">
+                    <thead>
+                        <tr>
+                            <th colspan="11" style="text-align: center; text-transform: uppercase;">Historial de Descuentos</th>
+                        </tr>
+                        <tr>
+                            <th style="width:100px;">Fecha de Registro</th>
+                            <th style="width:5px;">N° Cuota</th>
+                            <th>Capital</th>
+                            <th>Interes</th>
+                            <th>Comisión</th>
+                            <th>Cargo</th>
+                            <th>Custodia</th>
+                            <th>Int. Comp.</th>
+                            <th>Int. Morat.</th>
+                            <th>Total</th>
+                            <th>Responsable</th>
+                        </tr>
+                    </thead>
+                <tbody>';
+            
+            $total_capital = 0;
+            $total_interes = 0;
+            $total_comision = 0;
+            $total_cargo = 0;
+            $total_tenencia = 0;
+            $total_penalidad = 0;
+            $total_compensatorio = 0;
+            $total_total = 0;
+            $i = 1;
+            
+            foreach($credito_descuentocuotas as $value){
+                $fecharegistro = date_format(date_create($value->fecharegistro),'d-m-Y H:i:s A');
+                $html .= "<tr data-valor-columna='{$value->id}' onclick='show_select_descuentodecuotas(this)'>
+                            <td style='text-align:center'>{$fecharegistro}</td>
+                            <td style='text-align:center'>{$value->numerocuota}</td>
+                            <td style='text-align:right'>{$value->capital}</td>
+                            <td style='text-align:right'>{$value->interes}</td>
+                            <td style='text-align:right'>{$value->comision}</td>
+                            <td style='text-align:right'>{$value->cargo}</td>
+                            <td style='text-align:right'>{$value->tenencia}</td>
+                            <td style='text-align:right'>{$value->penalidad}</td>
+                            <td style='text-align:right'>{$value->compensatorio}</td>
+                            <td style='text-align:right'>{$value->total}</td>
+                            <td style='text-align:right'>{$value->responsable_codigo}</td>
+                        </tr>";
+                $total_capital = $total_capital+$value->capital;
+                $total_interes = $total_interes+$value->interes;
+                $total_comision = $total_comision+$value->comision;
+                $total_cargo = $total_cargo+$value->cargo;
+                $total_tenencia = $total_tenencia+$value->tenencia;
+                $total_penalidad = $total_penalidad+$value->penalidad;
+                $total_compensatorio = $total_compensatorio+$value->compensatorio;
+                $total_total = $total_total+$value->total;
+                $i = $i+1;
+            }
+            $html .= '</tbody>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th style="text-align:right">'.number_format($total_capital, 2, '.', '').'</th>
+                            <th style="text-align:right">'.number_format($total_interes, 2, '.', '').'</th>
+                            <th style="text-align:right">'.number_format($total_comision, 2, '.', '').'</th>
+                            <th style="text-align:right">'.number_format($total_cargo, 2, '.', '').'</th>
+                            <th style="text-align:right">'.number_format($total_tenencia, 2, '.', '').'</th>
+                            <th  style="text-align:right">'.number_format($total_penalidad, 2, '.', '').'</th>
+                            <th style="text-align:right">'.number_format($total_compensatorio, 2, '.', '').'</th>
+                            <th style="text-align:right">'.number_format($total_total, 2, '.', '').'</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                </table>';
+            return array(
+                'html' => $html
+            );
         }
     }
 

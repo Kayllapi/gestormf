@@ -74,11 +74,19 @@
           </div>
         </div>
     </div>
+    <div class="modal-body">
+        <div class="row">
+          <div class="col-md-10"><div id="cont_descuentosdecuotas_historial" style="overflow-y: scroll;height: 200px;"></div></div>
+          <div class="col-md-2">
+          </div>
+        </div>
+    </div>
 </form> 
 <script>
 
   show_data_cronograma();
   show_data_descuentodecuotas();
+  show_data_descuentodecuotas_historial();
   
   function show_data_cronograma(numerocuota=0) {
     $.ajax({
@@ -97,7 +105,7 @@
     }) 
   }
   
-  function show_data_descuentodecuotas() {    
+  function show_data_descuentodecuotas() {
     $.ajax({
       url:"{{url('backoffice/'.$tienda->id.'/descuentoliquidacion/show_descuentodecuotas')}}",
       type:'GET',
@@ -109,13 +117,30 @@
       }
     }) 
   }
+
+  function show_data_descuentodecuotas_historial() {
+    $.ajax({
+      url:"{{url('backoffice/'.$tienda->id.'/descuentoliquidacion/show_descuentodecuotas_historial')}}",
+      type:'GET',
+      data: {
+          idcredito : {{$credito->id}},
+      },
+      success: function (res){
+        $('#cont_descuentosdecuotas_historial').html(res.html);
+      }
+    }) 
+  }
   
   function show_select_descuentodecuotas(e) {
-    
     let id = $(e).attr('data-valor-columna');
     $('#table-detalle-descuentodecuotas tr.selected').removeClass('selected');
     $(e).addClass('selected');
-    
+  }
+
+  function show_select_descuentodecuotas_historial(e) {
+    let id = $(e).attr('data-valor-columna');
+    $('#table-detalle-descuentodecuotas_historial tr.selected').removeClass('selected');
+    $(e).addClass('selected');
   }
    
   function load_create_descuentocuota(){

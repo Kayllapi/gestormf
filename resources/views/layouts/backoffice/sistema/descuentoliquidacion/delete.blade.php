@@ -8,6 +8,7 @@
       },
       function(resultado){
           show_data_descuentodecuotas();
+          show_data_descuentodecuotas_historial();
           $('#modal-close-descuentoliquidacion-eliminar').click(); 
       },this)">
     <div class="modal-header">

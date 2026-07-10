@@ -1131,7 +1131,7 @@ class CobranzacuotaController extends Controller
               $totaladelanto = 0;
               $ultimafechaadelanto = 0;
               foreach($credito_adelanto as $valueade){
-                  $totaladelanto = $valueade->total_pagar;
+                  $totaladelanto += $valueade->total_pagar;
                   $ultimafechaadelanto = date_format(date_create($valueade->fecharegistro),'d-m-Y h:i:s A');
               }
               
@@ -1149,11 +1149,11 @@ class CobranzacuotaController extends Controller
                             data-numerocuota="'.$value['numerocuota'].'">
                             <td style="'.$value['style'].'">
                                 <label class="chk">
-                                  <input type="checkbox" name="seleccionar_cuota" id="numerocuotaselect"onclick="pagocuota('.$value['numerocuota'].')" '.$value['checked'].' '.$value['disabled'].' '.$disabled.'>
+                                  <input type="checkbox" name="seleccionar_cuota" id="numerocuotaselect" onclick="pagocuota('.$value['numerocuota'].')" '.$value['checked'].' '.$value['disabled'].' '.$disabled.'>
                                   <span class="checkmark"></span>
                                 </label>
                             </td>
-                            <td style="'.$value['style'].'width:10px;text-align:center;"  id="cont-popover-cuota"><span '.$fechacobranza_fecharegistro.' >'.$value['numerocuota'].
+                            <td style="'.$value['style'].'width:10px;text-align:center;" id="cont-popover-cuota"><span '.$fechacobranza_fecharegistro.' >'.$value['numerocuota'].
                             '</span></td>
                             <td style="'.$value['style'].'text-align:center;">'.$value['fecha'].'</td>
                             <td style="'.$value['style'].'text-align:right;" pagar="'.$value['pagar_amortizacion'].'" descontar="'.$value['descontar_amortizacion'].'">'.$value['amortizacion'].'</td>
@@ -1286,14 +1286,6 @@ class CobranzacuotaController extends Controller
                 ? ($monto_apagar + $tenencia_penalidad_mora - $pagoacuenta_acuenta + $descuento_porcobrar - $descuentocuotas)
                 : 0.00;
             // ====== Fin ======
-            // dd(
-            //     $monto_apagar,
-            //     $tenencia_penalidad_mora,
-            //     $pagoacuenta_acuenta,
-            //     $descuento_porcobrar,
-            //     $descuentocuotas,
-            //     $totalapagar
-            // );
           
           return array(
               'credito' => $credito,

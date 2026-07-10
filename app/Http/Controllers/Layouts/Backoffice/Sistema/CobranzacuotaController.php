@@ -1227,12 +1227,7 @@ class CobranzacuotaController extends Controller
     border-color: #bcbcbc;
     font-weight: bold;">CRONOGRAMA/HOJA DE RESUMEN</button> '.$btn_congelarcredito;
           
-          $total_adelantos = DB::table('credito_adelanto')
-                ->where('credito_adelanto.numerocuota',$primera_cuota_pendiente)
-                ->where('credito_adelanto.idcredito',$request->idcredito)
-                ->whereIn('credito_adelanto.idestadocredito_adelanto',[1,2])
-                ->where('credito_adelanto.idcredito',$request->idcredito)
-                ->sum('credito_adelanto.total');
+          
           
             // clasificacion
               $cronogramaclasi = select_cronograma(
@@ -1259,6 +1254,46 @@ class CobranzacuotaController extends Controller
               elseif($cronogramaclasi['ultimo_atraso']>120){
                   $clasificacion = 'PÉRDIDA';
               }
+
+            // ====== Variables ======
+            $total_adelantos = DB::table('credito_adelanto')
+                ->where('credito_adelanto.numerocuota',$primera_cuota_pendiente)
+                ->where('credito_adelanto.idcredito',$request->idcredito)
+                ->whereIn('credito_adelanto.idestadocredito_adelanto',[1,2])
+                ->sum('credito_adelanto.total');
+
+            $monto_apagar = (float) number_format($cronograma['select_cuota'], 2, '.', '');
+
+            $tenencia = (float) number_format($cronograma['select_tenencia'], 2, '.', '');
+            $penalidad = (float) number_format($cronograma['select_penalidad'], 2, '.', '');
+            $compensatorio = (float) number_format($cronograma['select_compensatorio'], 2, '.', '');
+            $tenencia_penalidad_mora = (float) number_format($tenencia+$penalidad+$compensatorio, 2, '.', '');
+
+            $pagoacuenta_acuenta = (float) number_format($total_adelantos, 2, '.', '');
+
+            $descuento_porcobrar = (float) number_format($total_cargo, 2, '.', '');
+
+            $descuentocuotas = (float) number_format($credito_descuentocuotas?$credito_descuentocuotas->total:'0.00', 2, '.', '');
+            // ====== Fin ======
+
+            // ====== Calcular Pendientes ======
+            $cuota_pendiente_desde_cronograma = (float) number_format($cronograma['cuota_pendiente'], 2, '.', '');
+            $cuota_pendiente = $cuota_pendiente_desde_cronograma - $pagoacuenta_acuenta;
+            // ====== Fin ======
+            
+            // ====== Calcular Total a Pagar ======
+            $totalapagar = $monto_apagar != 0
+                ? ($monto_apagar + $tenencia_penalidad_mora - $pagoacuenta_acuenta + $descuento_porcobrar - $descuentocuotas)
+                : 0.00;
+            // ====== Fin ======
+            // dd(
+            //     $monto_apagar,
+            //     $tenencia_penalidad_mora,
+            //     $pagoacuenta_acuenta,
+            //     $descuento_porcobrar,
+            //     $descuentocuotas,
+            //     $totalapagar
+            // );
           
           return array(
               'credito' => $credito,
@@ -1274,7 +1309,7 @@ class CobranzacuotaController extends Controller
               'numero_cuota_pendiente' => $cronograma['numero_cuota_pendiente'],
               'numero_cuota_vencida' => $cronograma['numero_cuota_vencida'],
               'cuota_pagada' => $cronograma['cuota_pagada'],
-              'cuota_pendiente' => $cronograma['cuota_pendiente'],
+              'cuota_pendiente' => number_format($cuota_pendiente, 2, '.', ''),
               'saldo_vencido' => $cronograma['cuota_vencida'],
               'saldo_capital' => $cronograma['saldo_capital'],
               'numero_credito' => $numero_credito,
@@ -1303,7 +1338,8 @@ class CobranzacuotaController extends Controller
               'descuento_total' => $descuento_total,
               'descuento_totaldescontado' => number_format($total_descuento_total,2,'.',''),
               'descuento_porcobrar' => number_format($total_cargo,2,'.',''),
-              'totalapagar' => number_format($cronograma['select_pagar_totalcuota']+$total_cargo,2,'.',''),
+
+              'totalapagar' => number_format($totalapagar,2,'.',''),
           );
         }
 
@@ -1660,7 +1696,39 @@ class CobranzacuotaController extends Controller
             $creditorefinanciado = DB::table('credito')
                 ->where('idcredito_refinanciado',$credito->id)
                 ->first();
-          
+
+            // ====== Variables ======
+            $total_adelantos = DB::table('credito_adelanto')
+                ->where('credito_adelanto.numerocuota',$primera_cuota_pendiente)
+                ->where('credito_adelanto.idcredito',$credito->id)
+                ->whereIn('credito_adelanto.idestadocredito_adelanto',[1,2])
+                ->sum('credito_adelanto.total');
+
+            $monto_apagar = (float) number_format($cronograma['select_cuota'], 2, '.', '');
+
+            $tenencia = (float) number_format($cronograma['select_tenencia'], 2, '.', '');
+            $penalidad = (float) number_format($cronograma['select_penalidad'], 2, '.', '');
+            $compensatorio = (float) number_format($cronograma['select_compensatorio'], 2, '.', '');
+            $tenencia_penalidad_mora = (float) number_format($tenencia+$penalidad+$compensatorio, 2, '.', '');
+
+            $pagoacuenta_acuenta = (float) number_format($total_adelantos, 2, '.', '');
+
+            $descuento_porcobrar = (float) number_format($total_cargo, 2, '.', '');
+
+            $descuentocuotas = (float) number_format($credito_descuentocuotas?$credito_descuentocuotas->total:'0.00', 2, '.', '');
+            // ====== Fin ======
+            
+            // ====== Calcular Total a Pagar ======
+            $totalapagar = $monto_apagar != 0
+                ? ($monto_apagar + $tenencia_penalidad_mora - $pagoacuenta_acuenta + $descuento_porcobrar - $descuentocuotas)
+                : 0.00;
+            // ====== Fin ======
+
+            // anterior => number_format($cronograma['select_pagar_totalcuota']-$total_adelantos,2,'.','')
+            $monto_cuotaapagar = $totalapagar;
+            // anterior => number_format($cronograma['select_pagar_totalcuota']+$total_cargo,2,'.','')
+            $monto_totalapagar = $totalapagar;
+
             return view(sistema_view().'/cobranzacuota/cobrar',[
                 'tienda' => $tienda,
                 'credito' => $credito,
@@ -1669,8 +1737,8 @@ class CobranzacuotaController extends Controller
                 'select_numerocuota_fin' => $cronograma['select_numerocuota_fin'],
                 'monto_cargo' => number_format($total_cargo,2,'.',''),
                 'total_acuenta' => $total_adelantos,
-                'monto_cuotaapagar' => number_format($cronograma['select_pagar_totalcuota']-$total_adelantos,2,'.',''),
-                'monto_totalapagar' => number_format($cronograma['select_pagar_totalcuota']+$total_cargo,2,'.',''),
+                'monto_cuotaapagar' => number_format($monto_cuotaapagar, 2, '.', ''),
+                'monto_totalapagar' => number_format($monto_totalapagar, 2, '.', ''),
                 'total_cargo' => $total_cargo,
                 'numerocuota' => $request->numerocuota,
                 'idcredito_cargo' => $idcredito_cargo,

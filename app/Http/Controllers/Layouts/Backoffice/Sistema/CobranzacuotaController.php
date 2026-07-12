@@ -813,7 +813,6 @@ class CobranzacuotaController extends Controller
                 'select_numerocuota_fin' => $cronograma['select_ultimacuotacancelada'],
             ]);
         }
-      
         elseif($request->input('view') == 'congelarcredito') {
             $rules = [       
                 'idresponsable' => 'required',          

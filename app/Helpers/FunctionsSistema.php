@@ -233,7 +233,7 @@ function select_cronograma(
         $cuota_delanto  = 0;
         $atraso_dias_adelanto = 0;
           
-        if($credito_adelanto!=''){
+        /*if($credito_adelanto!=''){
             $amortizacion_delanto_pagado  = $amortizacion_delanto_pagado+$credito_adelanto->capital;
             $amortizacion_delanto  = $amortizacion_delanto+$credito_adelanto->total_capital;
             $interes_delanto  = $interes_delanto+$credito_adelanto->total_interes;
@@ -243,7 +243,7 @@ function select_cronograma(
             //$atraso_dias_adelanto  = $atraso_dias_adelanto+$credito_adelanto->atraso;
             //$pago_acuenta = $pago_acuenta+$credito_adelanto->total;
             
-        }
+        }*/
       
         
         $total_adelanto_numcuota = DB::table('credito_adelanto')
@@ -279,19 +279,19 @@ function select_cronograma(
         
         // ---
         
-        if($credito_adelanto!='' && $detallecobranza=='detalle_cobranza'){
+        /*if($credito_adelanto!='' && $detallecobranza=='detalle_cobranza'){
             $amortizacion  = $amortizacion_delanto;
             $interes       = $interes_delanto;
             $comision      = $comision_delanto;
             $cargo         = $cargo_delanto;
             $cuota         = $cuota_delanto;
-        }else{
+        }else{*/
             $amortizacion  = $value->amortizacion;
             $interes       = $value->interes;
             $comision      = $value->comision;
             $cargo         = $value->cargo;
             $cuota         = $value->cuota_real;
-        }
+        /*}*/
       
         // ---
         $fechapago = new DateTime($value->fechapago);
@@ -712,13 +712,13 @@ function select_cronograma(
             $tot_penalidad     = $value->penalidad+$penalidad;
             $tot_tenencia      = $value->tenencia+$tenencia;
             $tot_compensatorio = $value->compensatorio+$compensatorio;
-            if($credito_adelanto!=''){
+            /*if($credito_adelanto!=''){
                 $tot_amortizacion  = $amortizacion_delanto;
                 $tot_interes       = $interes_delanto;
                 $tot_comision      = $comision_delanto;
                 $tot_cargo         = $cargo_delanto;
                 $tot_cuota         = $cuota_delanto;
-            }
+            }*/
           
             //$tot_amortizacion = number_format($amortizacion, 2, '.', '');
             //$tot_interes = number_format($interes, 2, '.', '');

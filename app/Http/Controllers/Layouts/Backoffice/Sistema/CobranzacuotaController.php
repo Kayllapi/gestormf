@@ -1261,6 +1261,32 @@ class CobranzacuotaController extends Controller
                 ->whereIn('credito_adelanto.idestadocredito_adelanto',[1,2])
                 ->sum('credito_adelanto.total');
 
+            $saldo_total_adelantos = $total_adelantos;
+
+            if ($saldo_total_adelantos >= $cronograma['select_compensatorio']) {
+                $saldo_total_adelantos -= $cronograma['select_compensatorio'];
+                $cronograma['select_compensatorio'] = 0;
+            } else {
+                $cronograma['select_compensatorio'] -= $saldo_total_adelantos;
+                $saldo_total_adelantos = 0;
+            }
+
+            if ($saldo_total_adelantos >= $cronograma['select_penalidad']) {
+                $saldo_total_adelantos -= $cronograma['select_penalidad'];
+                $cronograma['select_penalidad'] = 0;
+            } else {
+                $cronograma['select_penalidad'] -= $saldo_total_adelantos;
+                $saldo_total_adelantos = 0;
+            }
+
+            if ($saldo_total_adelantos >= $cronograma['select_tenencia']) {
+                $saldo_total_adelantos -= $cronograma['select_tenencia'];
+                $cronograma['select_tenencia'] = 0;
+            } else {
+                $cronograma['select_tenencia'] -= $saldo_total_adelantos;
+                $saldo_total_adelantos = 0;
+            }
+
             $monto_apagar = (float) number_format($cronograma['select_cuota'], 2, '.', '');
 
             $tenencia = (float) number_format($cronograma['select_tenencia'], 2, '.', '');
@@ -1281,12 +1307,19 @@ class CobranzacuotaController extends Controller
             // ====== Fin ======
             
             // ====== Calcular Total a Pagar ======
+            // $totalapagar = $monto_apagar != 0
+            //     ? ($monto_apagar + $tenencia_penalidad_mora - $pagoacuenta_acuenta + $descuento_porcobrar - $descuentocuotas)
+            //     : 0.00;
+
+            $monto_apagar = $monto_apagar != 0
+                ? $monto_apagar - $saldo_total_adelantos
+                : $monto_apagar;
             $totalapagar = $monto_apagar != 0
-                ? ($monto_apagar + $tenencia_penalidad_mora - $pagoacuenta_acuenta + $descuento_porcobrar - $descuentocuotas)
+                ? ($monto_apagar + $tenencia_penalidad_mora /*- $pagoacuenta_acuenta*/ + $descuento_porcobrar - $descuentocuotas)
                 : 0.00;
             // ====== Fin ======
-          
-          return array(
+
+            return array(
               'credito' => $credito,
               'tabla_cronorgrama' => $html,
               'opciones_datosprestamos' => $opciones_datosprestamos,
@@ -1310,10 +1343,10 @@ class CobranzacuotaController extends Controller
               //'saldo_total' => number_format($cronograma['cuota_pagada']+$cronograma['cuota_pendiente']+$cronograma['cuota_vencida'],2,'.',''),
               
               'cantidad_cuota' => $cronograma['select_numerocuota'],
-              'monto_apagar' => $cronograma['select_cuota'],
+              'monto_apagar' => $monto_apagar,
               'monto_totalapagar' => number_format($cronograma['select_pagar_totalcuota'],2,'.',''),
               'penalidad_pagar' => number_format($penalidad_pagar,2,'.',''),
-              'tenencia_penalidad_mora' => number_format($cronograma['select_tenencia']+$cronograma['select_penalidad']+$cronograma['select_compensatorio'],2,'.',''),
+              'tenencia_penalidad_mora' => number_format($tenencia_penalidad_mora,2,'.',''),
               'pagoacuenta_acuenta' => $total_adelantos,
               'pagoacuenta_capital' => $cronograma['select_amortizacion'],
               'pagoacuenta_interes' => $cronograma['select_interes'],
@@ -1329,7 +1362,6 @@ class CobranzacuotaController extends Controller
               'descuento_total' => $descuento_total,
               'descuento_totaldescontado' => number_format($total_descuento_total,2,'.',''),
               'descuento_porcobrar' => number_format($total_cargo,2,'.',''),
-
               'totalapagar' => number_format($totalapagar,2,'.',''),
           );
         }

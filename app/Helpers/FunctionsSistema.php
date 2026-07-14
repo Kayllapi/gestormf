@@ -213,6 +213,9 @@ function select_cronograma(
     $ultimo_atraso_valid = 0;
   
     $si = 0;
+
+    // Calculando cuando existe un pago a cuenta
+    $total_ten_pen_com_pagoacuenta = 0;
   
     $data = [];
     foreach($credito_cronograma as $value){
@@ -266,6 +269,9 @@ function select_cronograma(
         $checked = '';
         $style = '';
         $disabled = '';
+
+        $total_compensatorio_pagoacuenta = 0;
+        $total_penalidad_pagoacuenta = 0;
 
         //$totalcuota  = $value->cuota_real;
 
@@ -330,6 +336,21 @@ function select_cronograma(
                 $interes_diario_real = (pow(1+($tasa_moratoria/100), 1/30))-1;
                 $total_compensatorio_real = $interes_diario_real*$value->amortizacion*$atraso_dias_real;
             }
+
+            // Calculando moratorio si existe un pago a cuenta
+            $total_adelanto_capital = DB::table('credito_adelanto')
+                ->where('credito_adelanto.idestadocredito_adelanto',1) // pendiente
+                ->where('credito_adelanto.idcredito',$idcredito)
+                ->sum('credito_adelanto.capital');
+            $amortizacion_pagoacuenta = (float) $amortizacion - (float) $total_adelanto_capital;
+            if($modalidadproductocredito=='Interes Simple' && $atraso_dias>$dias_tolerancia_garantia){
+                $interes_diario = ($tasa_moratoria/100)/30;
+                $total_compensatorio_pagoacuenta = $interes_diario*$amortizacion_pagoacuenta*$atraso_dias;
+            }
+            elseif($modalidadproductocredito=='Interes Compuesto' && $atraso_dias>$dias_tolerancia_garantia){
+                $interes_diario = (pow(1+($tasa_moratoria/100), 1/30))-1;
+                $total_compensatorio_pagoacuenta = $interes_diario*$amortizacion_pagoacuenta*$atraso_dias;
+            }
           
             /*if($atraso_dias>$dias_tolerancia_garantia){
                 $total_penalidad = number_format(($value->cuota_real*($penalidad_descuento/100)), 2, '.', '');
@@ -378,6 +399,20 @@ function select_cronograma(
                 $total_tenencia_real = number_format($tenencia_descuento*$atraso_dias_tenencia_real, 2, '.', '');
             }
           
+            // Calculando compensatorio si existe un pago a cuenta
+            $total_adelanto_capital = DB::table('credito_adelanto')
+                ->where('credito_adelanto.idestadocredito_adelanto',1) // pendiente
+                ->where('credito_adelanto.idcredito',$idcredito)
+                ->sum('credito_adelanto.capital');
+            $amortizacion_pagoacuenta = (float) $amortizacion - (float) $total_adelanto_capital;
+            if($modalidadproductocredito=='Interes Simple' && $atraso_dias>$dias_tolerancia_garantia){
+                $com_interes_diario = ($tasacompensatorio/100)/30;
+                $total_penalidad_pagoacuenta = $com_interes_diario*($amortizacion_pagoacuenta+$value->interes)*$atraso_dias;
+            }
+            elseif($modalidadproductocredito=='Interes Compuesto' && $atraso_dias>$dias_tolerancia_garantia){
+                $com_interes_diario = (pow(1+($tasacompensatorio/100), 1/30))-1;
+                $total_penalidad_pagoacuenta = $com_interes_diario*($amortizacion_pagoacuenta+$value->interes)*$atraso_dias;
+            }
           
         }else{
             $atraso_dias = '-'.$interval->format('%a');
@@ -559,6 +594,14 @@ function select_cronograma(
             } 
                 
             if($value->numerocuota<=$numerocuota){
+                // ====== Calcular cuando existe Pago a Cuenta ======
+                $tenencia_pagoacuenta = (float) number_format($tenencia, 2, '.', '');
+                $penalidad_pagoacuenta = (float) number_format($total_penalidad_pagoacuenta, 2, '.', '');
+                $compensatorio_pagoacuenta = (float) number_format($total_compensatorio_pagoacuenta, 2, '.', '');
+
+                $total_ten_pen_com_pagoacuenta = $tenencia_pagoacuenta + $penalidad_pagoacuenta + $compensatorio_pagoacuenta;
+                // ====== Fin ======
+
                 // if($value->numerocuota == $numerocuota){
                 //     $tenencia = $total_tenencia;
                 // }else{
@@ -805,7 +848,7 @@ function select_cronograma(
                 $adelanto_pagar_acuenta = 0;
             }
         }
-       
+
         $data[] = [
             'id' => $value->id,
             'selected' => $select,
@@ -831,7 +874,7 @@ function select_cronograma(
             'acuenta_total_penalidad' => number_format($tot_penalidad, 2, '.', ''),
             'acuenta_total_tenencia' => number_format($tot_tenencia, 2, '.', ''),
             'acuenta_total_compensatorio' => number_format($tot_compensatorio, 2, '.', ''),
-          
+
             'amortizacion' => number_format($amortizacion, 2, '.', ''),
             'interes' => number_format($interes, 2, '.', ''),
             'comision' => number_format($comision, 2, '.', ''),
@@ -904,7 +947,7 @@ function select_cronograma(
       
         $i++;
     }
-  //dd($cuota_pendiente);
+
     return [
         'cronograma' => $data,
         'total_moracredito' => number_format($total_moracredito, 2, '.', ''),
@@ -919,7 +962,9 @@ function select_cronograma(
         'pagocuota_adelantado' => $pagocuota_adelantado,
         'pagocuota_vencido' => $pagocuota_vencido,
         'pagocuota_puntual' => $pagocuota_puntual,
-      
+
+        'pagoacuenta_custo_comp_mora' => number_format($total_ten_pen_com_pagoacuenta, 2, '.', ''),
+
         'numero_cuota_cancelada' => $numero_cuota_cancelada, 
         'numero_cuota_pendiente' => $numero_cuota_pendiente, 
         'numero_cuota_vencida' => $numero_cuota_vencida, 

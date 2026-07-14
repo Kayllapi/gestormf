@@ -1017,6 +1017,7 @@ class CobranzacuotaController extends Controller
           );
         }
         elseif($id == 'show_cobranzacuota_cronograma'){
+            $numero_cuota = $request->numerocuota;
         
           $disabled = '';
           if($request->tipo=='pagocuota'){
@@ -1056,7 +1057,7 @@ class CobranzacuotaController extends Controller
           $total_descuento_compensatorio = 0; 
           $total_descuento_total = 0; 
           if($credito_descuentocuotas){
-              if($request->numerocuota>=$credito_descuentocuotas->numerocuota_fin){
+              if($numero_cuota>=$credito_descuentocuotas->numerocuota_fin){
                   $total_descuento_capital = $credito_descuentocuotas->capital;
                   $total_descuento_interes = $credito_descuentocuotas->interes;
                   $total_descuento_comision = $credito_descuentocuotas->comision;
@@ -1067,14 +1068,13 @@ class CobranzacuotaController extends Controller
                   $total_descuento_total = $credito_descuentocuotas->total;
               }
           }
-          
-          //dd($credito->idforma_credito.'/'.$credito->modalidadproductocredito.'/'.$request->numerocuota);
+
           $cronograma = select_cronograma(
               $idtienda,
               $request->idcredito,
               $credito->idforma_credito,
               $credito->modalidadproductocredito,
-              $request->numerocuota,
+              $numero_cuota,
               $total_descuento_capital,
               $total_descuento_interes,
               $total_descuento_comision,
@@ -1292,7 +1292,8 @@ class CobranzacuotaController extends Controller
             $tenencia = (float) number_format($cronograma['select_tenencia'], 2, '.', '');
             $penalidad = (float) number_format($cronograma['select_penalidad'], 2, '.', '');
             $compensatorio = (float) number_format($cronograma['select_compensatorio'], 2, '.', '');
-            $tenencia_penalidad_mora = (float) number_format($tenencia+$penalidad+$compensatorio, 2, '.', '');
+            $total_tenencia_penalidad_mora = (float) number_format($tenencia+$penalidad+$compensatorio+$cronograma['pagoacuenta_custo_comp_mora'], 2, '.', '');
+            $tenencia_penalidad_mora = (float) number_format($total_tenencia_penalidad_mora, 2, '.', '');
 
             $pagoacuenta_acuenta = (float) number_format($total_adelantos, 2, '.', '');
 
@@ -1732,7 +1733,8 @@ class CobranzacuotaController extends Controller
             $tenencia = (float) number_format($cronograma['select_tenencia'], 2, '.', '');
             $penalidad = (float) number_format($cronograma['select_penalidad'], 2, '.', '');
             $compensatorio = (float) number_format($cronograma['select_compensatorio'], 2, '.', '');
-            $tenencia_penalidad_mora = (float) number_format($tenencia+$penalidad+$compensatorio, 2, '.', '');
+            $total_tenencia_penalidad_mora = (float) number_format($tenencia+$penalidad+$compensatorio+$cronograma['pagoacuenta_custo_comp_mora'], 2, '.', '');
+            $tenencia_penalidad_mora = (float) number_format($total_tenencia_penalidad_mora, 2, '.', '');
 
             $pagoacuenta_acuenta = (float) number_format($total_adelantos, 2, '.', '');
 

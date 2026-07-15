@@ -1021,6 +1021,7 @@ function calculos_en_pagoacuenta($idtienda=0, $idcredito=0, $numerocuota=0){
         $credito_adelanto_fecharegistro = DB::table('credito_adelanto')
             ->where('idcredito', $credito->id)
             ->where('numerocuota', $primera_cuota_pendiente)
+            ->whereIn('credito_adelanto.idestadocredito_adelanto',[1,2])
             ->orderByDesc('id')
             ->first()
             ->fecharegistro; // 2026-06-13 18:45:57

@@ -1589,14 +1589,13 @@ class CobranzacuotaController extends Controller
             );
 
             $html .= '<tr>
-                    <td colspan="7"></td>
-                    <td style="text-align:right">'.$calculos_en_pagoacuenta['tenencia_pagoacuenta'].'</td>
-                    <td style="text-align:right">'.$calculos_en_pagoacuenta['penalidad_pagoacuenta'].'</td>
-                    <td style="text-align:right">'.$calculos_en_pagoacuenta['compensatorio_pagoacuenta'].'</td>
-                    <td style="text-align:right"></td>
-                </tr>';
-
-            $html .= '</thead>
+                        <td colspan="7"></td>
+                        <td style="text-align:right">'.$calculos_en_pagoacuenta['tenencia_pagoacuenta'].'</td>
+                        <td style="text-align:right">'.$calculos_en_pagoacuenta['penalidad_pagoacuenta'].'</td>
+                        <td style="text-align:right">'.$calculos_en_pagoacuenta['compensatorio_pagoacuenta'].'</td>
+                        <td style="text-align:right"></td>
+                    </tr>
+                </thead>
               </table>';
 
           return array(

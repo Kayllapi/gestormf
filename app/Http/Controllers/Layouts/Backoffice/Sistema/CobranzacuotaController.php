@@ -1577,7 +1577,7 @@ class CobranzacuotaController extends Controller
                 <th style="text-align:right">'.number_format($total_cargo, 2, '.', '').'</th>
                 <th style="text-align:right">'.number_format($total_comision, 2, '.', '').'</th>
                 <th style="text-align:right">'.number_format($total_tenencia, 2, '.', '').'</th>
-                <th  style="text-align:right">'.number_format($total_penalidad, 2, '.', '').'</th>
+                <th style="text-align:right">'.number_format($total_penalidad, 2, '.', '').'</th>
                 <th style="text-align:right">'.number_format($total_compensatorio, 2, '.', '').'</th>
                 <th style="text-align:right">'.number_format($total_total, 2, '.', '').'</th>
               </tr>';
@@ -1589,6 +1589,17 @@ class CobranzacuotaController extends Controller
             );
 
             $html .= '<tr>
+                        <th style="text-align:right" colspan="3">SALDOS</th>
+                        <th style="text-align:right">'.$calculos_en_pagoacuenta['saldo_capital'].'</th>
+                        <th style="text-align:right">'.$calculos_en_pagoacuenta['saldo_interes'].'</th>
+                        <th style="text-align:right">'.$calculos_en_pagoacuenta['saldo_cargo'].'</th>
+                        <th style="text-align:right">'.$calculos_en_pagoacuenta['saldo_recau'].'</th>
+                        <th style="text-align:right">'.$calculos_en_pagoacuenta['saldo_custodia'].'</th>
+                        <th style="text-align:right">'.$calculos_en_pagoacuenta['saldo_compensatorio'].'</th>
+                        <th style="text-align:right">'.$calculos_en_pagoacuenta['saldo_moratorio'].'</th>
+                        <th style="text-align:right"></th>
+                    </tr>
+                    <tr>
                         <td colspan="7"></td>
                         <td style="text-align:right">'.$calculos_en_pagoacuenta['tenencia_pagoacuenta'].'</td>
                         <td style="text-align:right">'.$calculos_en_pagoacuenta['penalidad_pagoacuenta'].'</td>

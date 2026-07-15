@@ -1588,7 +1588,8 @@ class CobranzacuotaController extends Controller
                 $request->numerocuota
             );
 
-            $html .= '<tr>
+            $html .= '<tr><td colspan="11"></td></tr>
+                    <tr>
                         <th style="text-align:right" colspan="3">SALDOS</th>
                         <th style="text-align:right">'.$calculos_en_pagoacuenta['saldo_capital'].'</th>
                         <th style="text-align:right">'.$calculos_en_pagoacuenta['saldo_interes'].'</th>

@@ -1114,7 +1114,7 @@ function calculos_en_pagoacuenta($idtienda=0, $idcredito=0, $numerocuota=0){
 
         $ultimaCuota = DB::table('credito_cronograma')
             ->where('credito_cronograma.idcredito', $credito->id)
-            ->where('numerocuota', $primera_cuota_pendiente)
+            // ->where('numerocuota', $primera_cuota_pendiente)
             ->max('numerocuota');
 
         if($credito_cronograma->numerocuota == $ultimaCuota){

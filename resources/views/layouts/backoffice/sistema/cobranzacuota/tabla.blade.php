@@ -510,7 +510,8 @@
         modal({ route:'{{url('backoffice/'.$tienda->id.'/cobranzacuota')}}/'+$('#idcredito').val()+'/edit?view=ver_descuentos' })
     }
     function ver_pagoacuenta(){
-        modal({ route:'{{url('backoffice/'.$tienda->id.'/cobranzacuota')}}/'+$('#idcredito').val()+'/edit?view=ver_pagoacuenta' })
+        let numerocuota = $('#table-detalle-cronograma > tbody > tr.seleccionar').attr('data-numerocuota');
+        modal({ route:'{{url('backoffice/'.$tienda->id.'/cobranzacuota')}}/'+$('#idcredito').val()+'/edit?view=ver_pagoacuenta'+'&numerocuota='+numerocuota })
     }
     function ver_cuentasporcobrar(){
         let isLastQuota = $('#table-detalle-cronograma > tbody > tr.seleccionar').is(':last-child');

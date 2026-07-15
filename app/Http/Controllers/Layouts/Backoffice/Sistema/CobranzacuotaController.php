@@ -1225,9 +1225,7 @@ class CobranzacuotaController extends Controller
           $opciones_datosprestamos = '<button type="button" class="btn btn-warning" onclick="vistapreliminar()" style="background-color: #bcbcbc;
     border-color: #bcbcbc;
     font-weight: bold;">CRONOGRAMA/HOJA DE RESUMEN</button> '.$btn_congelarcredito;
-          
-          
-          
+
             // clasificacion
               $cronogramaclasi = select_cronograma(
                     $idtienda,
@@ -1287,12 +1285,19 @@ class CobranzacuotaController extends Controller
                 $saldo_total_adelantos = 0;
             }
 
+            $calculos_en_pagoacuenta = calculos_en_pagoacuenta(
+                $idtienda,
+                $request->idcredito,
+                $numero_cuota
+            );
+            $pagoacuenta_custo_comp_mora = $calculos_en_pagoacuenta['pagoacuenta_custo_comp_mora'];
+
             $monto_apagar = (float) number_format($cronograma['select_cuota'], 2, '.', '');
 
             $tenencia = (float) number_format($cronograma['select_tenencia'], 2, '.', '');
             $penalidad = (float) number_format($cronograma['select_penalidad'], 2, '.', '');
             $compensatorio = (float) number_format($cronograma['select_compensatorio'], 2, '.', '');
-            $total_tenencia_penalidad_mora = (float) number_format($tenencia+$penalidad+$compensatorio+$cronograma['pagoacuenta_custo_comp_mora'], 2, '.', '');
+            $total_tenencia_penalidad_mora = (float) number_format($tenencia+$penalidad+$compensatorio+$pagoacuenta_custo_comp_mora, 2, '.', '');
             $tenencia_penalidad_mora = (float) number_format($total_tenencia_penalidad_mora, 2, '.', '');
 
             $pagoacuenta_acuenta = (float) number_format($total_adelantos, 2, '.', '');
@@ -1476,8 +1481,6 @@ class CobranzacuotaController extends Controller
           
         }
         else if($id == 'show_descuentodecuotas'){
-            
-          
           $total_cronograma = DB::table('credito_cronograma')
               ->where('credito_cronograma.idcredito',$request->idcredito)
               ->where('credito_cronograma.idestadocredito_cronograma',1)
@@ -1577,9 +1580,25 @@ class CobranzacuotaController extends Controller
                 <th  style="text-align:right">'.number_format($total_penalidad, 2, '.', '').'</th>
                 <th style="text-align:right">'.number_format($total_compensatorio, 2, '.', '').'</th>
                 <th style="text-align:right">'.number_format($total_total, 2, '.', '').'</th>
-              </tr>
-              </thead>
+              </tr>';
+
+            $calculos_en_pagoacuenta = calculos_en_pagoacuenta(
+                $idtienda,
+                $request->idcredito,
+                $request->numerocuota
+            );
+
+            $html .= '<tr>
+                    <td colspan="7"></td>
+                    <td style="text-align:right">'.$calculos_en_pagoacuenta['tenencia_pagoacuenta'].'</td>
+                    <td style="text-align:right">'.$calculos_en_pagoacuenta['penalidad_pagoacuenta'].'</td>
+                    <td style="text-align:right">'.$calculos_en_pagoacuenta['compensatorio_pagoacuenta'].'</td>
+                    <td style="text-align:right"></td>
+                </tr>';
+
+            $html .= '</thead>
               </table>';
+
           return array(
             'html' => $html
           );
@@ -2016,6 +2035,7 @@ class CobranzacuotaController extends Controller
             return view(sistema_view().'/cobranzacuota/ver_pagoacuenta',[
               'tienda' => $tienda,
               'credito' => $credito,
+              'numerocuota' => $request->numerocuota
             ]);
         }
         elseif($request->input('view') == 'compartir_opcion') {

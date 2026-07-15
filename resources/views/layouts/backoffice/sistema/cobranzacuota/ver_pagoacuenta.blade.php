@@ -26,6 +26,7 @@
       data: {
           idcredito : {{$credito->id}},
           idestado : 1,
+          numerocuota: {{ $numerocuota }}
       },
       success: function (res){
         $('#cont_pagoacuenta').html(res.html);

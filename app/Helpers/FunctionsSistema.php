@@ -807,21 +807,33 @@ function select_cronograma(
         }
 
         // Solo si la cuota tiene un pago a cuenta
+        $primera_cuota_pendiente = DB::table('credito_cronograma')
+            ->where('idcredito', $idcredito)
+            ->where('idestadocredito_cronograma', 1)
+            ->orderBy('numerocuota', 'asc')
+            ->first()
+            ->numerocuota;
         $credito_adelanto2 = DB::table('credito_adelanto')
             ->whereIn('credito_adelanto.idestadocredito_adelanto',[1,2])
-            ->where('credito_adelanto.numerocuota',$numerocuota)
+            ->where('credito_adelanto.numerocuota',$primera_cuota_pendiente)
             ->where('credito_adelanto.idcredito',$idcredito)
             ->orderBy('credito_adelanto.id','desc')
             ->first();
-        if ($credito_adelanto2 != '' && $numerocuota == $value->numerocuota) {
+        if ($credito_adelanto2 != '') {
             $calculos_en_pagoacuenta = calculos_en_pagoacuenta(
                 $idtienda,
                 $idcredito,
                 $numerocuota
             );
-            $tenencia = $calculos_en_pagoacuenta['total_pagoacuenta_custodia'];
-            $penalidad = $calculos_en_pagoacuenta['total_pagoacuenta_compensatorio'];
-            $compensatorio = $calculos_en_pagoacuenta['total_pagoacuenta_moratorio'];
+            if ($numerocuota == $value->numerocuota) {
+                $tenencia = $calculos_en_pagoacuenta['total_pagoacuenta_custodia'];
+                $penalidad = $calculos_en_pagoacuenta['total_pagoacuenta_compensatorio'];
+                $compensatorio = $calculos_en_pagoacuenta['total_pagoacuenta_moratorio'];
+            } else if ($primera_cuota_pendiente == $value->numerocuota) {
+                $tenencia = $calculos_en_pagoacuenta['tenencia_pagoacuenta'];
+                $penalidad = $calculos_en_pagoacuenta['penalidad_pagoacuenta'];
+                $compensatorio = $calculos_en_pagoacuenta['compensatorio_pagoacuenta'];
+            }
         }
         // Fin
 
@@ -1026,11 +1038,11 @@ function calculos_en_pagoacuenta($idtienda=0, $idcredito=0, $numerocuota=0){
         ->first();
     if ($credito) {
         $primera_cuota_pendiente = DB::table('credito_cronograma')
-                ->where('idcredito', $credito->id)
-                ->where('idestadocredito_cronograma', 1)
-                ->orderBy('numerocuota', 'asc')
-                ->first()
-                ->numerocuota;
+            ->where('idcredito', $credito->id)
+            ->where('idestadocredito_cronograma', 1)
+            ->orderBy('numerocuota', 'asc')
+            ->first()
+            ->numerocuota;
         $credito_cronograma = DB::table('credito_cronograma')
             ->where('idcredito', $credito->id)
             ->where('numerocuota', $primera_cuota_pendiente)
@@ -1174,15 +1186,13 @@ function calculos_en_pagoacuenta($idtienda=0, $idcredito=0, $numerocuota=0){
         $tenencia_pagoacuenta = 0;
         $penalidad_pagoacuenta = 0;
         $compensatorio_pagoacuenta = 0;
-        if($credito_cronograma->numerocuota <= $numerocuota) {
-            // ====== Calcular cuando existe Pago a Cuenta ======
+        // if($credito_cronograma->numerocuota <= $numerocuota) {
             $tenencia_pagoacuenta = (float) number_format($tenencia, 2, '.', '');
             $penalidad_pagoacuenta = (float) number_format($total_penalidad_pagoacuenta, 2, '.', '');
             $compensatorio_pagoacuenta = (float) number_format($total_compensatorio_pagoacuenta, 2, '.', '');
         
             $total_ten_pen_com_pagoacuenta = $tenencia_pagoacuenta + $penalidad_pagoacuenta + $compensatorio_pagoacuenta;
-            // ====== Fin ======
-        }
+        // }
 
         
         $query_ca = DB::table('credito_adelanto')
@@ -1247,11 +1257,11 @@ function calculos_en_pagoacuenta_de_primera_cuota_pendiente($idtienda=0, $idcred
         ->first();
     if ($credito) {
         $primera_cuota_pendiente = DB::table('credito_cronograma')
-                ->where('idcredito', $credito->id)
-                ->where('idestadocredito_cronograma', 1)
-                ->orderBy('numerocuota', 'asc')
-                ->first()
-                ->numerocuota;
+            ->where('idcredito', $credito->id)
+            ->where('idestadocredito_cronograma', 1)
+            ->orderBy('numerocuota', 'asc')
+            ->first()
+            ->numerocuota;
         $credito_cronograma = DB::table('credito_cronograma')
             ->where('idcredito', $credito->id)
             ->where('numerocuota', $primera_cuota_pendiente)
@@ -1373,13 +1383,11 @@ function calculos_en_pagoacuenta_de_primera_cuota_pendiente($idtienda=0, $idcred
         $tenencia_pagoacuenta = 0;
         $penalidad_pagoacuenta = 0;
         $compensatorio_pagoacuenta = 0;
-        if($credito_cronograma->numerocuota <= $numerocuota) {
-            // ====== Calcular cuando existe Pago a Cuenta ======
+        // if($credito_cronograma->numerocuota <= $numerocuota) {
             $tenencia_pagoacuenta = (float) number_format($tenencia, 2, '.', '');
             $penalidad_pagoacuenta = (float) number_format($total_penalidad_pagoacuenta, 2, '.', '');
             $compensatorio_pagoacuenta = (float) number_format($total_compensatorio_pagoacuenta, 2, '.', '');
-            // ====== Fin ======
-        }
+        // }
 
         return [
             'tenencia_pagoacuenta' => number_format($tenencia_pagoacuenta, 2, '.', ''),

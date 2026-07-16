@@ -1080,6 +1080,29 @@ function calculos_en_pagoacuenta($idtienda=0, $idcredito=0, $numerocuota=0){
         $total_pagoacuenta_compensatorio = 0;
         $total_pagoacuenta_moratorio = 0;
 
+        // ====== Calculando Saldos ======
+        $query_ca = DB::table('credito_adelanto')
+            ->where('idcredito', $credito->id)
+            ->where('numerocuota', $primera_cuota_pendiente);
+        $ca_capital = $query_ca->sum('credito_adelanto.capital');
+        $ca_interes = $query_ca->sum('credito_adelanto.interes');
+        $ca_cargo = $query_ca->sum('credito_adelanto.cargo');
+        $ca_comision = $query_ca->sum('credito_adelanto.comision');
+        $ca_tenencia = $query_ca->sum('credito_adelanto.tenencia');
+        $ca_penalidad = $query_ca->sum('credito_adelanto.penalidad');
+        $ca_compensatorio = $query_ca->sum('credito_adelanto.compensatorio');
+
+        $data = calculos_en_pagoacuenta_de_primera_cuota_pendiente($idtienda, $idcredito, $numerocuota);
+
+        $saldo_capital = $credito_cronograma->amortizacion - $ca_capital;
+        $saldo_interes = $credito_cronograma->interes - $ca_interes;
+        $saldo_cargo = $credito_cronograma->cargo - $ca_cargo;
+        $saldo_recau = $credito_cronograma->comision_cargo - $ca_comision;
+        $saldo_custodia = $data['tenencia_pagoacuenta'] - $ca_tenencia;
+        $saldo_compensatorio = $data['penalidad_pagoacuenta'] - $ca_penalidad;
+        $saldo_moratorio = $data['compensatorio_pagoacuenta'] - $ca_compensatorio;
+        // ====== Fin ======
+
         if ($fechapago < $fecha_hoy) {
             $tenencia_descuento = 0;
             if ($credito->idforma_credito == 1) { // Prendaria
@@ -1138,11 +1161,11 @@ function calculos_en_pagoacuenta($idtienda=0, $idcredito=0, $numerocuota=0){
             // Calculando compensatorio si existe un pago a cuenta
             if($modalidadproductocredito == 'Interes Simple' && $atraso_dias > $dias_tolerancia_garantia){
                 $com_interes_diario = ($tasacompensatorio/100)/30;
-                $total_penalidad_pagoacuenta = $com_interes_diario * ($amortizacion_pagoacuenta + $credito_cronograma->interes) * $atraso_dias;
+                $total_penalidad_pagoacuenta = $com_interes_diario * ($amortizacion_pagoacuenta + $saldo_interes) * $atraso_dias;
             }
             elseif($modalidadproductocredito == 'Interes Compuesto' && $atraso_dias > $dias_tolerancia_garantia){
                 $com_interes_diario = (pow(1+($tasacompensatorio/100), 1/30))-1;
-                $total_penalidad_pagoacuenta = $com_interes_diario * ($amortizacion_pagoacuenta + $credito_cronograma->interes) * $atraso_dias;
+                $total_penalidad_pagoacuenta = $com_interes_diario * ($amortizacion_pagoacuenta + $saldo_interes) * $atraso_dias;
             }
 
             $atraso_dias_tenencia = $atraso_dias > $dias_maximo_penalidad
@@ -1193,30 +1216,6 @@ function calculos_en_pagoacuenta($idtienda=0, $idcredito=0, $numerocuota=0){
         
             $total_ten_pen_com_pagoacuenta = $tenencia_pagoacuenta + $penalidad_pagoacuenta + $compensatorio_pagoacuenta;
         // }
-
-        
-        $query_ca = DB::table('credito_adelanto')
-            ->where('idcredito', $credito->id)
-            ->where('numerocuota', $primera_cuota_pendiente);
-        $ca_capital = $query_ca->sum('credito_adelanto.capital');
-        $ca_interes = $query_ca->sum('credito_adelanto.interes');
-        $ca_cargo = $query_ca->sum('credito_adelanto.cargo');
-        $ca_comision = $query_ca->sum('credito_adelanto.comision');
-        $ca_tenencia = $query_ca->sum('credito_adelanto.tenencia');
-        $ca_penalidad = $query_ca->sum('credito_adelanto.penalidad');
-        $ca_compensatorio = $query_ca->sum('credito_adelanto.compensatorio');
-
-        $data = calculos_en_pagoacuenta_de_primera_cuota_pendiente($idtienda, $idcredito, $numerocuota);
-
-        // ====== Calculando Saldos ======
-        $saldo_capital = $credito_cronograma->amortizacion - $ca_capital;
-        $saldo_interes = $credito_cronograma->interes - $ca_interes;
-        $saldo_cargo = $credito_cronograma->cargo - $ca_cargo;
-        $saldo_recau = $credito_cronograma->comision_cargo - $ca_comision;
-        $saldo_custodia = $data['tenencia_pagoacuenta'] - $ca_tenencia;
-        $saldo_compensatorio = $data['penalidad_pagoacuenta'] - $ca_penalidad;
-        $saldo_moratorio = $data['compensatorio_pagoacuenta'] - $ca_compensatorio;
-        // ====== Fin ======
 
         // ====== Calculando Totales de pago a cuenta ======
         $total_pagoacuenta_custodia = $ca_tenencia + $tenencia_pagoacuenta;

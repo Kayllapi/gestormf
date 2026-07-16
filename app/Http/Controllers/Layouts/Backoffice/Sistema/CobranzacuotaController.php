@@ -1290,7 +1290,7 @@ class CobranzacuotaController extends Controller
                 $request->idcredito,
                 $numero_cuota
             );
-            $pagoacuenta_custo_comp_mora = $calculos_en_pagoacuenta['pagoacuenta_custo_comp_mora'];
+            $pagoacuenta_custo_comp_mora = (float) $calculos_en_pagoacuenta['pagoacuenta_custo_comp_mora'];
 
             $monto_apagar = (float) number_format($cronograma['select_cuota'], 2, '.', '');
 
@@ -1758,12 +1758,19 @@ class CobranzacuotaController extends Controller
                 ->whereIn('credito_adelanto.idestadocredito_adelanto',[1,2])
                 ->sum('credito_adelanto.total');
 
+            $calculos_en_pagoacuenta = calculos_en_pagoacuenta(
+                $idtienda,
+                $credito->id,
+                $request->numerocuota
+            );
+            $pagoacuenta_custo_comp_mora = (float) $calculos_en_pagoacuenta['pagoacuenta_custo_comp_mora'];
+
             $monto_apagar = (float) number_format($cronograma['select_cuota'], 2, '.', '');
 
             $tenencia = (float) number_format($cronograma['select_tenencia'], 2, '.', '');
             $penalidad = (float) number_format($cronograma['select_penalidad'], 2, '.', '');
             $compensatorio = (float) number_format($cronograma['select_compensatorio'], 2, '.', '');
-            $total_tenencia_penalidad_mora = (float) number_format($tenencia+$penalidad+$compensatorio+$cronograma['pagoacuenta_custo_comp_mora'], 2, '.', '');
+            $total_tenencia_penalidad_mora = (float) number_format($tenencia+$penalidad+$compensatorio+$pagoacuenta_custo_comp_mora, 2, '.', '');
             $tenencia_penalidad_mora = (float) number_format($total_tenencia_penalidad_mora, 2, '.', '');
 
             $pagoacuenta_acuenta = (float) number_format($total_adelantos, 2, '.', '');

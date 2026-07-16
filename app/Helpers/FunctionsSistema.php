@@ -834,6 +834,7 @@ function select_cronograma(
                 $penalidad = $calculos_en_pagoacuenta['penalidad_pagoacuenta'];
                 $compensatorio = $calculos_en_pagoacuenta['compensatorio_pagoacuenta'];
             }
+            $totalcuota = (float) $cuota + (float) $tenencia + (float) $penalidad + (float) $compensatorio;
         }
         // Fin
 

@@ -1059,7 +1059,7 @@ function calculos_en_pagoacuenta($idtienda=0, $idcredito=0, $numerocuota=0){
         $total_ten_pen_com_pagoacuenta = 0;
 
         $fecha_hoy = new DateTime(Carbon\Carbon::now()->format('Y-m-d'));
-        $fechapago = new DateTime($credito_adelanto?->fecharegistro); // 2026-06-13 18:45:57
+        $fechapago = new DateTime(Carbon\Carbon::parse($credito_adelanto?->fecharegistro)->format('Y-m-d'));
         $interval = $fecha_hoy->diff($fechapago);
         $atraso_dias = 0;
         $total_tenencia = 0;
@@ -1275,8 +1275,8 @@ function calculos_en_pagoacuenta_de_primera_cuota_pendiente($idtienda=0, $idcred
             ->orderByDesc('id')
             ->first();
 
-        $fecha_hoy = new DateTime($credito_adelanto?->fecharegistro); // 2026-06-13 18:45:57
-        $fechapago = new DateTime($credito_cronograma->fechapago); 
+        $fecha_hoy = new DateTime(Carbon\Carbon::parse($credito_adelanto?->fecharegistro)->format('Y-m-d'));
+        $fechapago = new DateTime(Carbon\Carbon::parse($credito_cronograma->fechapago)->format('Y-m-d'));
         $interval = $fecha_hoy->diff($fechapago);
         $atraso_dias = 0;
         $total_tenencia = 0;

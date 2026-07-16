@@ -1543,7 +1543,7 @@ class CobranzacuotaController extends Controller
           $i = 1;
           
           foreach($credito_adelantos as $value){
-               $fecharegistro = date_format(date_create($value->fecharegistro),'d-m-Y H:i:s A');
+                $fecharegistro = date_format(date_create($value->fecharegistro),'d-m-Y h:i:s A');
               $html .= "<tr data-valor-columna='{$value->id}'>
                             <td style='text-align:center'>{$fecharegistro}</td>
                             <td style='text-align:center'>{$value->numerocuota}</td>

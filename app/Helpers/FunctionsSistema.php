@@ -825,7 +825,10 @@ function select_cronograma(
                 $idcredito,
                 $numerocuota
             );
-            if ($numerocuota == $value->numerocuota) {
+
+            // mostrando el total diferenciado de pago a cuenta al seleccionar el cronograma
+            // y si selecciona cuota mostrar el total
+            /*if ($numerocuota == $value->numerocuota) {
                 $tenencia = $calculos_en_pagoacuenta['total_pagoacuenta_custodia'];
                 $penalidad = $calculos_en_pagoacuenta['total_pagoacuenta_compensatorio'];
                 $compensatorio = $calculos_en_pagoacuenta['total_pagoacuenta_moratorio'];
@@ -833,7 +836,15 @@ function select_cronograma(
                 $tenencia = $calculos_en_pagoacuenta['tenencia_pagoacuenta'];
                 $penalidad = $calculos_en_pagoacuenta['penalidad_pagoacuenta'];
                 $compensatorio = $calculos_en_pagoacuenta['compensatorio_pagoacuenta'];
+            }*/
+
+            // mostrando el total al seleccionar el cronograma
+            if ($primera_cuota_pendiente == $value->numerocuota) {
+                $tenencia = $calculos_en_pagoacuenta['total_pagoacuenta_custodia'];
+                $penalidad = $calculos_en_pagoacuenta['total_pagoacuenta_compensatorio'];
+                $compensatorio = $calculos_en_pagoacuenta['total_pagoacuenta_moratorio'];
             }
+
             $totalcuota = (float) $cuota + (float) $tenencia + (float) $penalidad + (float) $compensatorio;
         }
         // Fin

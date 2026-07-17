@@ -641,12 +641,21 @@ function select_cronograma(
             
             if($atraso_dias>=0){
                 //$style = 'box-shadow: inset 0 0 0 9999px rgb(244 172 172) !important;';
-                
                 $numero_cuota_vencida++;
-                $cuota_vencida = $cuota_vencida+$totalcuota-$value->acuenta;
+                $cuota_vencida = $cuota_vencida + $totalcuota - $value->acuenta;
+
+                // Solo si la cuota tiene un pago a cuenta
+                if ($credito_adelanto != '') {
+                    if ($primera_cuota_pendiente?->numerocuota == $value->numerocuota) {
+                        $tenencia = $calculos_en_pagoacuenta['tenencia_pagoacuenta'];
+                        $penalidad = $calculos_en_pagoacuenta['penalidad_pagoacuenta'];
+                        $compensatorio = $calculos_en_pagoacuenta['compensatorio_pagoacuenta'];
+
+                        $cuota_pendiente = (float) $cuota_pendiente + (float) $tenencia + (float) $penalidad + (float) $compensatorio;
+                        $cuota_vencida = (float) $cuota_vencida + (float) $tenencia + (float) $penalidad + (float) $compensatorio;
+                    }
+                }
             }
-            
-            
             //$saldo_pendientepago = $saldo_pendientepago+$totalcuota;
         }
         elseif($value->idestadocredito_cronograma==2){

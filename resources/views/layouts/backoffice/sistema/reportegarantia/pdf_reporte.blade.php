@@ -160,8 +160,11 @@
               <tbody>';
           
           $i = 1;
+          // Un mismo crédito puede tener varias filas en $credito_garantias (varias garantías, CLIENTE/AVAL),
+          // así que el cronograma se calcula una sola vez por crédito y se reutiliza para sus demás filas.
+          $cronogramas_por_credito = [];
           foreach($credito_garantias as $key => $value){
-        
+
               $cp = '';
               if($value->idforma_credito==1){
                   $cp = 'CP';
@@ -198,23 +201,27 @@
                   $clienteidentificacion = $value->avalidentificacion;
               }
             
-              $cronograma = select_cronograma(
-                  $value->idtienda,
-                  $value->idcredito,
-                  $value->idforma_credito,
-                  $value->modalidadproductocredito,
-                  $value->cuotas,
-                  0,
-                  0,
-                  0,
-                  0,
-                  0,
-                  0,
-                  0,
-                  0,
-                  1,
-                  'detalle_cobranza'
-              );
+              if (!isset($cronogramas_por_credito[$value->idcredito])) {
+                  $cronogramas_por_credito[$value->idcredito] = select_cronograma(
+                      $value->idtienda,
+                      $value->idcredito,
+                      $value->idforma_credito,
+                      $value->modalidadproductocredito,
+                      $value->cuotas,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      1,
+                      'detalle_cobranza',
+                      true // solo_totales: este reporte solo lee cuota_pendiente, no necesita el detalle por cuota
+                  );
+              }
+              $cronograma = $cronogramas_por_credito[$value->idcredito];
             
               $saldodeuda = '';
               $saldodeuda_valid = 0;

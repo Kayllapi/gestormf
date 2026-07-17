@@ -17,7 +17,8 @@ function select_cronograma(
     $descuento_compensatorio = 0,
     $pago_acuenta = 0,
     $estadocargo = 1,
-    $detallecobranza = '') {
+    $detallecobranza = '',
+    $solo_totales = false) {
   
     $credito = DB::table('credito')
         ->whereId($idcredito)
@@ -237,8 +238,17 @@ function select_cronograma(
         );
     }
 
+    // Antes: 1 query SUM por cada cuota del cronograma. Ahora: 1 sola query para todo el crédito,
+    // agrupada por numerocuota, y se busca en memoria dentro del foreach.
+    $adelanto_total_por_cuota = DB::table('credito_adelanto')
+        ->whereIn('credito_adelanto.idestadocredito_adelanto',[1,2])
+        ->where('credito_adelanto.idcredito',$idcredito)
+        ->select('numerocuota', DB::raw('SUM(total) as total'))
+        ->groupBy('numerocuota')
+        ->pluck('total', 'numerocuota');
+
     foreach($credito_cronograma as $value){
-        
+
         $amortizacion_delanto_pagado  = 0;
         $amortizacion_delanto  = 0;
         $interes_delanto  = 0;
@@ -246,7 +256,7 @@ function select_cronograma(
         $cargo_delanto  = 0;
         $cuota_delanto  = 0;
         $atraso_dias_adelanto = 0;
-          
+
         /*if($credito_adelanto!=''){
             $amortizacion_delanto_pagado  = $amortizacion_delanto_pagado+$credito_adelanto->capital;
             $amortizacion_delanto  = $amortizacion_delanto+$credito_adelanto->total_capital;
@@ -256,13 +266,8 @@ function select_cronograma(
             $cuota_delanto  = $cuota_delanto+($amortizacion_delanto+$interes_delanto+$comision_delanto+$cargo_delanto);
             //$atraso_dias_adelanto  = $atraso_dias_adelanto+$credito_adelanto->atraso;
             //$pago_acuenta = $pago_acuenta+$credito_adelanto->total;
-            
         }*/
-        $total_adelanto_numcuota = DB::table('credito_adelanto')
-            ->whereIn('credito_adelanto.idestadocredito_adelanto',[1,2])
-            ->where('credito_adelanto.numerocuota',$value->numerocuota)
-            ->where('credito_adelanto.idcredito',$idcredito)
-            ->sum('credito_adelanto.total');
+        $total_adelanto_numcuota = $adelanto_total_por_cuota->get($value->numerocuota, 0);
         // fin adelanto
       
         $fecha = date_format(date_create($value->fechapago),'d-m-Y');
@@ -693,7 +698,7 @@ function select_cronograma(
         }
       
       
-        // acuenta
+        // acuenta (desglose por concepto: solo se usa para el detalle por cuota, ningún total depende de esto)
         $acuenta_amortizacion = 0;
         $acuenta_interes = 0;
         $acuenta_comision = 0;
@@ -701,7 +706,7 @@ function select_cronograma(
         $acuenta_penalidad = 0;
         $acuenta_tenencia = 0;
         $acuenta_compensatorio = 0;
-      
+
         $tot_amortizacion = 0;
         $tot_interes = 0;
         $tot_comision = 0;
@@ -709,13 +714,11 @@ function select_cronograma(
         $tot_penalidad = 0;
         $tot_tenencia = 0;
         $tot_compensatorio = 0;
-      
-      
-      
-        if($pagar_acuenta>0){
-          
-            $adelanto_pagar_acuenta = $pagar_acuenta-$total_adelanto_numcuota; 
-          
+
+        if (!$solo_totales && $pagar_acuenta>0){
+
+            $adelanto_pagar_acuenta = $pagar_acuenta-$total_adelanto_numcuota;
+
             $tot_amortizacion  = $value->amortizacion;
             $tot_interes       = $value->interes;
             $tot_comision      = $value->comision;
@@ -730,7 +733,7 @@ function select_cronograma(
                 $tot_cargo         = $cargo_delanto;
                 $tot_cuota         = $cuota_delanto;
             }*/
-          
+
             //$tot_amortizacion = number_format($amortizacion, 2, '.', '');
             //$tot_interes = number_format($interes, 2, '.', '');
             //$tot_comision = number_format($comision, 2, '.', '');
@@ -738,7 +741,7 @@ function select_cronograma(
             //$tot_penalidad = number_format($penalidad, 2, '.', '');
             //$tot_tenencia = number_format($tenencia, 2, '.', '');
             //$tot_compensatorio = number_format($compensatorio, 2, '.', '');
-          
+
             if($adelanto_pagar_acuenta>$tot_compensatorio && $adelanto_pagar_acuenta>0){
                 $adelanto_pagar_acuenta = $adelanto_pagar_acuenta-$tot_compensatorio;
                 $acuenta_compensatorio = number_format($tot_compensatorio, 2, '.', '');
@@ -749,7 +752,7 @@ function select_cronograma(
                 $tot_compensatorio = $tot_compensatorio-$adelanto_pagar_acuenta;
                 $adelanto_pagar_acuenta = 0;
             }
-          
+
             if($adelanto_pagar_acuenta>$tot_tenencia && $adelanto_pagar_acuenta>0){
                 $adelanto_pagar_acuenta = $adelanto_pagar_acuenta-$tot_tenencia;
                 $acuenta_tenencia = number_format($tot_tenencia, 2, '.', '');
@@ -760,7 +763,7 @@ function select_cronograma(
                 $tot_tenencia = $tot_tenencia-$adelanto_pagar_acuenta;
                 $adelanto_pagar_acuenta = 0;
             }
-          
+
             if($adelanto_pagar_acuenta>$tot_penalidad && $adelanto_pagar_acuenta>0){
                 $adelanto_pagar_acuenta = $adelanto_pagar_acuenta-$tot_penalidad;
                 $acuenta_penalidad = number_format($tot_penalidad, 2, '.', '');
@@ -771,7 +774,7 @@ function select_cronograma(
                 $tot_penalidad = $tot_penalidad-$adelanto_pagar_acuenta;
                 $adelanto_pagar_acuenta = 0;
             }
-          
+
             if($adelanto_pagar_acuenta>$tot_cargo && $adelanto_pagar_acuenta>0){
                 $adelanto_pagar_acuenta = $adelanto_pagar_acuenta-$tot_cargo;
                 $acuenta_cargo = number_format($tot_cargo, 2, '.', '');
@@ -782,7 +785,7 @@ function select_cronograma(
                 $tot_cargo = $tot_cargo-$adelanto_pagar_acuenta;
                 $adelanto_pagar_acuenta = 0;
             }
-          
+
             if($adelanto_pagar_acuenta>$tot_comision && $adelanto_pagar_acuenta>0){
                 $adelanto_pagar_acuenta = $adelanto_pagar_acuenta-$tot_comision;
                 $acuenta_comision = number_format($tot_comision, 2, '.', '');
@@ -793,7 +796,7 @@ function select_cronograma(
                 $tot_comision = $tot_comision-$adelanto_pagar_acuenta;
                 $adelanto_pagar_acuenta = 0;
             }
-          
+
             if($adelanto_pagar_acuenta>$tot_interes && $adelanto_pagar_acuenta>0){
                 $adelanto_pagar_acuenta = $adelanto_pagar_acuenta-$tot_interes;
                 $acuenta_interes = number_format($tot_interes, 2, '.', '');
@@ -804,7 +807,7 @@ function select_cronograma(
                 $tot_interes = $tot_interes-$adelanto_pagar_acuenta;
                 $adelanto_pagar_acuenta = 0;
             }
-            
+
             if($adelanto_pagar_acuenta>$tot_amortizacion && $adelanto_pagar_acuenta>0){    // 12.80>14.50 && 12.80>0
                 $adelanto_pagar_acuenta = $adelanto_pagar_acuenta-$tot_amortizacion;
                 $acuenta_amortizacion = number_format($tot_amortizacion, 2, '.', '');
@@ -843,72 +846,74 @@ function select_cronograma(
         }
         // Fin
 
-        $data[] = [
-            'id' => $value->id,
-            'selected' => $select,
-            'disabled' => $disabled,
-            'checked' => $checked,
-            'style' => $style,
-            'seleccionar' => $seleccionar,
-            'numerocuota' => $value->numerocuota,
-            'fecha' => $fecha,
-          
-            'acuenta_amortizacion' => number_format($acuenta_amortizacion, 2, '.', ''),
-            'acuenta_interes' => number_format($acuenta_interes, 2, '.', ''),
-            'acuenta_comision' => number_format($acuenta_comision, 2, '.', ''),
-            'acuenta_cargo' => number_format($acuenta_cargo, 2, '.', ''),
-            'acuenta_penalidad' => number_format($acuenta_penalidad, 2, '.', ''),
-            'acuenta_tenencia' => number_format($acuenta_tenencia, 2, '.', ''),
-            'acuenta_compensatorio' => number_format($acuenta_compensatorio, 2, '.', ''),
-          
-            'acuenta_total_amortizacion' => number_format($tot_amortizacion, 2, '.', ''),
-            'acuenta_total_interes' => number_format($tot_interes, 2, '.', ''),
-            'acuenta_total_comision' => number_format($tot_comision, 2, '.', ''),
-            'acuenta_total_cargo' => number_format($tot_cargo, 2, '.', ''),
-            'acuenta_total_penalidad' => number_format($tot_penalidad, 2, '.', ''),
-            'acuenta_total_tenencia' => number_format($tot_tenencia, 2, '.', ''),
-            'acuenta_total_compensatorio' => number_format($tot_compensatorio, 2, '.', ''),
+        if (!$solo_totales) {
+            $data[] = [
+                'id' => $value->id,
+                'selected' => $select,
+                'disabled' => $disabled,
+                'checked' => $checked,
+                'style' => $style,
+                'seleccionar' => $seleccionar,
+                'numerocuota' => $value->numerocuota,
+                'fecha' => $fecha,
 
-            'amortizacion' => number_format($amortizacion, 2, '.', ''),
-            'interes' => number_format($interes, 2, '.', ''),
-            'comision' => number_format($comision, 2, '.', ''),
-            'cargo' => number_format($cargo, 2, '.', ''),
-            'cuota' => number_format($cuota, 2, '.', ''),
-            'atraso_dias' => $atraso_dias,
-            'atraso_dias_real' => $atraso_dias_real,
-            'penalidad' => number_format($penalidad, 2, '.', ''),
-            'tenencia' => number_format($tenencia, 2, '.', ''),
-            'compensatorio' => number_format($compensatorio, 2, '.', ''),
-            'totalcuota' => number_format($totalcuota, 2, '.', ''),
-          
-            'acuenta' => number_format($pagar_acuenta, 2, '.', ''),
-            'adelanto' => number_format($pagar_acuenta-$total_adelanto_numcuota, 2, '.', ''),
-            
-            'pagar_amortizacion' => number_format($pagar_amortizacion, 2, '.', ''),
-            'pagar_interes' => number_format($pagar_interes, 2, '.', ''),
-            'pagar_comision' => number_format($pagar_comision, 2, '.', ''),
-            'pagar_cargo' => number_format($pagar_cargo, 2, '.', ''),
-            'pagar_cuota' => number_format($pagar_cuota, 2, '.', ''),
-            'pagar_penalidad' => number_format($pagar_penalidad, 2, '.', ''),
-            'pagar_tenencia' => number_format($pagar_tenencia, 2, '.', ''),
-            'pagar_compensatorio' => number_format($pagar_compensatorio, 2, '.', ''),
-            'pagar_totalcuota' => number_format($pagar_totalcuota, 2, '.', ''),
-            
-            'descontar_amortizacion' => number_format($descontar_amortizacion, 2, '.', ''),
-            'descontar_interes' => number_format($descontar_interes, 2, '.', ''),
-            'descontar_comision' => number_format($descontar_comision, 2, '.', ''),
-            'descontar_cargo' => number_format($descontar_cargo, 2, '.', ''),
-            'descontar_cuota' => number_format($descontar_cuota, 2, '.', ''),
-            'descontar_penalidad' => number_format($descontar_penalidad, 2, '.', ''),
-            'descontar_tenencia' => number_format($descontar_tenencia, 2, '.', ''),
-            'descontar_compensatorio' => number_format($descontar_compensatorio, 2, '.', ''),
-            'descontar_totalcuota' => number_format($descontar_totalcuota, 2, '.', ''),
-            
-            'idcredito_cobranzacuota' => $value->idcredito_cobranzacuota,
-            'idestadocredito_cronograma' => $value->idestadocredito_cronograma,
-        ];
-            
-        $total_amortizacion = $total_amortizacion+number_format($amortizacion, 2, '.', ''); 
+                'acuenta_amortizacion' => number_format($acuenta_amortizacion, 2, '.', ''),
+                'acuenta_interes' => number_format($acuenta_interes, 2, '.', ''),
+                'acuenta_comision' => number_format($acuenta_comision, 2, '.', ''),
+                'acuenta_cargo' => number_format($acuenta_cargo, 2, '.', ''),
+                'acuenta_penalidad' => number_format($acuenta_penalidad, 2, '.', ''),
+                'acuenta_tenencia' => number_format($acuenta_tenencia, 2, '.', ''),
+                'acuenta_compensatorio' => number_format($acuenta_compensatorio, 2, '.', ''),
+
+                'acuenta_total_amortizacion' => number_format($tot_amortizacion, 2, '.', ''),
+                'acuenta_total_interes' => number_format($tot_interes, 2, '.', ''),
+                'acuenta_total_comision' => number_format($tot_comision, 2, '.', ''),
+                'acuenta_total_cargo' => number_format($tot_cargo, 2, '.', ''),
+                'acuenta_total_penalidad' => number_format($tot_penalidad, 2, '.', ''),
+                'acuenta_total_tenencia' => number_format($tot_tenencia, 2, '.', ''),
+                'acuenta_total_compensatorio' => number_format($tot_compensatorio, 2, '.', ''),
+
+                'amortizacion' => number_format($amortizacion, 2, '.', ''),
+                'interes' => number_format($interes, 2, '.', ''),
+                'comision' => number_format($comision, 2, '.', ''),
+                'cargo' => number_format($cargo, 2, '.', ''),
+                'cuota' => number_format($cuota, 2, '.', ''),
+                'atraso_dias' => $atraso_dias,
+                'atraso_dias_real' => $atraso_dias_real,
+                'penalidad' => number_format($penalidad, 2, '.', ''),
+                'tenencia' => number_format($tenencia, 2, '.', ''),
+                'compensatorio' => number_format($compensatorio, 2, '.', ''),
+                'totalcuota' => number_format($totalcuota, 2, '.', ''),
+
+                'acuenta' => number_format($pagar_acuenta, 2, '.', ''),
+                'adelanto' => number_format($pagar_acuenta-$total_adelanto_numcuota, 2, '.', ''),
+
+                'pagar_amortizacion' => number_format($pagar_amortizacion, 2, '.', ''),
+                'pagar_interes' => number_format($pagar_interes, 2, '.', ''),
+                'pagar_comision' => number_format($pagar_comision, 2, '.', ''),
+                'pagar_cargo' => number_format($pagar_cargo, 2, '.', ''),
+                'pagar_cuota' => number_format($pagar_cuota, 2, '.', ''),
+                'pagar_penalidad' => number_format($pagar_penalidad, 2, '.', ''),
+                'pagar_tenencia' => number_format($pagar_tenencia, 2, '.', ''),
+                'pagar_compensatorio' => number_format($pagar_compensatorio, 2, '.', ''),
+                'pagar_totalcuota' => number_format($pagar_totalcuota, 2, '.', ''),
+
+                'descontar_amortizacion' => number_format($descontar_amortizacion, 2, '.', ''),
+                'descontar_interes' => number_format($descontar_interes, 2, '.', ''),
+                'descontar_comision' => number_format($descontar_comision, 2, '.', ''),
+                'descontar_cargo' => number_format($descontar_cargo, 2, '.', ''),
+                'descontar_cuota' => number_format($descontar_cuota, 2, '.', ''),
+                'descontar_penalidad' => number_format($descontar_penalidad, 2, '.', ''),
+                'descontar_tenencia' => number_format($descontar_tenencia, 2, '.', ''),
+                'descontar_compensatorio' => number_format($descontar_compensatorio, 2, '.', ''),
+                'descontar_totalcuota' => number_format($descontar_totalcuota, 2, '.', ''),
+
+                'idcredito_cobranzacuota' => $value->idcredito_cobranzacuota,
+                'idestadocredito_cronograma' => $value->idestadocredito_cronograma,
+            ];
+        }
+
+        $total_amortizacion = $total_amortizacion+number_format($amortizacion, 2, '.', '');
         $total_interes = $total_interes+number_format($interes, 2, '.', ''); 
         $total_comision = $total_comision+number_format($comision, 2, '.', '');
         $total_cargo = $total_cargo+number_format($cargo, 2, '.', '');
@@ -1451,7 +1456,14 @@ function user_permiso(){
     return $tienda_permiso;
 }
 function configuracion($idtienda,$nombre,$idusers=''){
-  
+
+    // Se llama muchas veces por request (una vez por cuota/crédito en los reportes y cronogramas)
+    // con los mismos parámetros, así que se cachea en memoria para el resto del request.
+    $cacheKey = $idtienda.'|'.$nombre.'|'.$idusers;
+    if (isset($GLOBALS['__configuracion_cache'][$cacheKey])) {
+        return $GLOBALS['__configuracion_cache'][$cacheKey];
+    }
+
     if($idusers!=''){
         $configuracion = DB::table('s_config')
             ->where('s_config.nombre',$nombre)
@@ -1466,20 +1478,22 @@ function configuracion($idtienda,$nombre,$idusers=''){
     }
 
     $resultado = 'ERROR';
-    $nombre = '';
+    $nombreResultado = '';
     $valor = '';
-  
+
     if($configuracion!=''){
         $resultado = 'CORRECTO';
-        $nombre = $configuracion->nombre;
+        $nombreResultado = $configuracion->nombre;
         $valor = $configuracion->valor;
     }
-    
-    return [
+
+    $GLOBALS['__configuracion_cache'][$cacheKey] = [
         'resultado' => $resultado,
-        'nombre' => $nombre,
+        'nombre' => $nombreResultado,
         'valor' => $valor,
     ];
+
+    return $GLOBALS['__configuracion_cache'][$cacheKey];
 }
 function configuracion_update($idtienda,$nombre,$valor,$idusers=''){
     if($valor!=''){
@@ -1520,6 +1534,7 @@ function configuracion_update($idtienda,$nombre,$valor,$idusers=''){
     }else{
         configuracion_delete($idtienda,$nombre,$idusers);
     }
+    unset($GLOBALS['__configuracion_cache'][$idtienda.'|'.$nombre.'|'.$idusers]);
 }
 function configuracion_delete($idtienda,$nombre,$idusers=''){
     if($idusers!=''){
@@ -1534,6 +1549,7 @@ function configuracion_delete($idtienda,$nombre,$idusers=''){
         ->where('s_config.nombre',$nombre)
         ->delete();
     }
+    unset($GLOBALS['__configuracion_cache'][$idtienda.'|'.$nombre.'|'.$idusers]);
 }
 function sistema_view($idtienda=0){
     if($idtienda==0){

@@ -212,19 +212,35 @@ function select_cronograma(
     $ultimo_atraso_valid = 0;
   
     $si = 0;
-  
+
     $data = [];
+
+    // El pago a cuenta solo puede afectar a la primera cuota pendiente (al cancelarse pasa a la siguiente),
+    // por eso se calcula una sola vez aquí afuera y no en cada vuelta del foreach.
+    $primera_cuota_pendiente = DB::table('credito_cronograma')
+        ->where('idcredito', $idcredito)
+        ->where('idestadocredito_cronograma', 1)
+        ->orderBy('numerocuota', 'asc')
+        ->first()
+        ->numerocuota;
+    $credito_adelanto = DB::table('credito_adelanto')
+        ->whereIn('credito_adelanto.idestadocredito_adelanto',[1,2])
+        ->where('credito_adelanto.numerocuota',$primera_cuota_pendiente)
+        ->where('credito_adelanto.idcredito',$idcredito)
+        ->orderBy('credito_adelanto.id','desc')
+        ->first();
+    $calculos_en_pagoacuenta = null;
+    if ($credito_adelanto != '') {
+        $calculos_en_pagoacuenta = calculos_en_pagoacuenta(
+            $idtienda,
+            $idcredito,
+            $numerocuota
+        );
+    }
+
     foreach($credito_cronograma as $value){
-        // adelanto
-        $credito_adelanto = DB::table('credito_adelanto')
-            ->whereIn('credito_adelanto.idestadocredito_adelanto',[1,2])
-            ->where('credito_adelanto.numerocuota',$value->numerocuota)
-            ->where('credito_adelanto.idcredito',$idcredito)
-            ->orderBy('credito_adelanto.id','desc')
-            ->first();
         
         $amortizacion_delanto_pagado  = 0;
-      
         $amortizacion_delanto  = 0;
         $interes_delanto  = 0;
         $comision_delanto  = 0;
@@ -243,15 +259,11 @@ function select_cronograma(
             //$pago_acuenta = $pago_acuenta+$credito_adelanto->total;
             
         }*/
-        
         $total_adelanto_numcuota = DB::table('credito_adelanto')
             ->whereIn('credito_adelanto.idestadocredito_adelanto',[1,2])
             ->where('credito_adelanto.numerocuota',$value->numerocuota)
             ->where('credito_adelanto.idcredito',$idcredito)
             ->sum('credito_adelanto.total');
-      
-        
-      
         // fin adelanto
       
         $fecha = date_format(date_create($value->fechapago),'d-m-Y');
@@ -807,25 +819,8 @@ function select_cronograma(
         }
 
         // Solo si la cuota tiene un pago a cuenta
-        $primera_cuota_pendiente = DB::table('credito_cronograma')
-            ->where('idcredito', $idcredito)
-            ->where('idestadocredito_cronograma', 1)
-            ->orderBy('numerocuota', 'asc')
-            ->first()
-            ->numerocuota;
-        $credito_adelanto2 = DB::table('credito_adelanto')
-            ->whereIn('credito_adelanto.idestadocredito_adelanto',[1,2])
-            ->where('credito_adelanto.numerocuota',$primera_cuota_pendiente)
-            ->where('credito_adelanto.idcredito',$idcredito)
-            ->orderBy('credito_adelanto.id','desc')
-            ->first();
-        if ($credito_adelanto2 != '') {
-            $calculos_en_pagoacuenta = calculos_en_pagoacuenta(
-                $idtienda,
-                $idcredito,
-                $numerocuota
-            );
-
+        // ($primera_cuota_pendiente, $credito_adelanto y $calculos_en_pagoacuenta ya se calcularon antes del foreach)
+        if ($credito_adelanto != '') {
             // mostrando el total diferenciado de pago a cuenta al seleccionar el cronograma
             // y si selecciona cuota mostrar el total
             /*if ($numerocuota == $value->numerocuota) {

@@ -1740,13 +1740,7 @@ class CobranzacuotaController extends Controller
                 }
 
             }
-          
-            $total_adelantos = DB::table('credito_adelanto')
-                ->where('credito_adelanto.numerocuota',$primera_cuota_pendiente)
-                ->whereIn('credito_adelanto.idestadocredito_adelanto',[1,2])
-                ->where('credito_adelanto.idcredito',$id)
-                ->sum('credito_adelanto.total');
-          
+
             $creditorefinanciado = DB::table('credito')
                 ->where('idcredito_refinanciado',$credito->id)
                 ->first();

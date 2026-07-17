@@ -221,11 +221,10 @@ function select_cronograma(
         ->where('idcredito', $idcredito)
         ->where('idestadocredito_cronograma', 1)
         ->orderBy('numerocuota', 'asc')
-        ->first()
-        ->numerocuota;
+        ->first();
     $credito_adelanto = DB::table('credito_adelanto')
         ->whereIn('credito_adelanto.idestadocredito_adelanto',[1,2])
-        ->where('credito_adelanto.numerocuota',$primera_cuota_pendiente)
+        ->where('credito_adelanto.numerocuota',$primera_cuota_pendiente?->numerocuota)
         ->where('credito_adelanto.idcredito',$idcredito)
         ->orderBy('credito_adelanto.id','desc')
         ->first();
@@ -834,7 +833,7 @@ function select_cronograma(
             }*/
 
             // mostrando el total al seleccionar el cronograma
-            if ($primera_cuota_pendiente == $value->numerocuota) {
+            if ($primera_cuota_pendiente?->numerocuota == $value->numerocuota) {
                 $tenencia = $calculos_en_pagoacuenta['total_pagoacuenta_custodia'];
                 $penalidad = $calculos_en_pagoacuenta['total_pagoacuenta_compensatorio'];
                 $compensatorio = $calculos_en_pagoacuenta['total_pagoacuenta_moratorio'];
@@ -1052,17 +1051,16 @@ function _datos_base_pagoacuenta($idtienda, $idcredito){
         ->where('idcredito', $credito->id)
         ->where('idestadocredito_cronograma', 1)
         ->orderBy('numerocuota', 'asc')
-        ->first()
-        ->numerocuota;
+        ->first();
     $credito_cronograma = DB::table('credito_cronograma')
         ->where('idcredito', $credito->id)
-        ->where('numerocuota', $primera_cuota_pendiente)
+        ->where('numerocuota', $primera_cuota_pendiente?->numerocuota)
         ->orderBy('numerocuota','asc')
         ->first();
 
     $credito_adelanto = DB::table('credito_adelanto')
         ->where('idcredito', $credito->id)
-        ->where('numerocuota', $primera_cuota_pendiente)
+        ->where('numerocuota', $primera_cuota_pendiente?->numerocuota)
         ->whereIn('credito_adelanto.idestadocredito_adelanto',[1,2])
         ->orderByDesc('id')
         ->first();
@@ -1095,7 +1093,7 @@ function _datos_base_pagoacuenta($idtienda, $idcredito){
 
     return [
         'credito' => $credito,
-        'primera_cuota_pendiente' => $primera_cuota_pendiente,
+        'primera_cuota_pendiente' => $primera_cuota_pendiente?->numerocuota,
         'credito_cronograma' => $credito_cronograma,
         'credito_adelanto' => $credito_adelanto,
         'tenencia_descuento' => $tenencia_descuento,

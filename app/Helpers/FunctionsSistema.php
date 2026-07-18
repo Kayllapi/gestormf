@@ -1162,6 +1162,7 @@ function calculos_en_pagoacuenta($idtienda=0, $idcredito=0, $numerocuota=0, $dat
         $ca_sumas = DB::table('credito_adelanto')
             ->where('idcredito', $credito->id)
             ->where('numerocuota', $primera_cuota_pendiente)
+            ->whereIn('idestadocredito_adelanto', [1,2])
             ->selectRaw('
                 COALESCE(SUM(capital), 0) as capital,
                 COALESCE(SUM(interes), 0) as interes,

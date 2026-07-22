@@ -858,9 +858,9 @@ function select_cronograma(
 
             // mostrando el total al seleccionar el cronograma
             if ($primera_cuota_pendiente?->numerocuota == $value->numerocuota) {
-                $tenencia = $calculos_en_pagoacuenta['total_pagoacuenta_custodia'];
-                $penalidad = $calculos_en_pagoacuenta['total_pagoacuenta_compensatorio'];
-                $compensatorio = $calculos_en_pagoacuenta['total_pagoacuenta_moratorio'];
+                $tenencia = $calculos_en_pagoacuenta['total_pagoacuenta_custodia'] + $calculos_en_pagoacuenta['saldo_custodia'];
+                $penalidad = $calculos_en_pagoacuenta['total_pagoacuenta_compensatorio'] + $calculos_en_pagoacuenta['saldo_compensatorio'];
+                $compensatorio = $calculos_en_pagoacuenta['total_pagoacuenta_moratorio'] + $calculos_en_pagoacuenta['saldo_moratorio'];
             }
 
             $totalcuota = (float) $cuota + (float) $tenencia + (float) $penalidad + (float) $compensatorio;

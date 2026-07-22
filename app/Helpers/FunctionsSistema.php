@@ -562,7 +562,10 @@ function select_cronograma(
             if($pago_acuenta>=$total_totalcuotareal && $pago_acuenta>0){
                 $pago_acuenta = $pago_acuenta-$total_totalcuotareal;
                 $pagar_acuenta = $total_totalcuotareal;
-                //$select = 'selected';
+                // El pago a cuenta cubrió la cuota completa: se marca para que el controlador
+                // la cancele (idestadocredito_cronograma=2); el excedente ($pago_acuenta) sigue
+                // acarreándose a la siguiente cuota del foreach.
+                $select = 'selected';
             }elseif($pago_acuenta<$total_totalcuotareal && $pago_acuenta>0){
                 $pagar_acuenta = $pago_acuenta;
                 $pago_acuenta = 0;

@@ -9,7 +9,7 @@ Route::resource('/', 'Layouts\InicioController');
 //Route::get('/login', 'Layouts\Buscador\Tienda\LoginController@index');
 Route::resource('/inicio', 'Layouts\InicioController');
 
-// Ruta para mostrar el voucher al público
+// Ruta para mostrar el voucher al público 
 Route::get('/voucher', [CobranzacuotaController::class, 'voucher_publico'])
      ->name('voucher.publico');
 Route::get('/documento', [DesembolsoController::class, 'documento_publico'])

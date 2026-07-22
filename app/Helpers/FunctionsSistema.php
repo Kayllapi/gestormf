@@ -558,11 +558,7 @@ function select_cronograma(
           
             $total_pagoacuenta = $total_pagoacuenta+$pago_acuenta; 
           
-            
-            //dd($pago_acuenta.'>='.$pagar_totalcuota);
-          
             $total_totalcuotareal = $value->cuota_real+$total_penalidad_real+$total_tenencia_real+$total_compensatorio_real;
-            //dd($total_totalcuotareal);
             if($pago_acuenta>=$total_totalcuotareal && $pago_acuenta>0){
                 $pago_acuenta = $pago_acuenta-$total_totalcuotareal;
                 $pagar_acuenta = $total_totalcuotareal;
@@ -728,13 +724,26 @@ function select_cronograma(
 
             $adelanto_pagar_acuenta = $pagar_acuenta-$total_adelanto_numcuota;
 
-            $tot_amortizacion  = $value->amortizacion;
-            $tot_interes       = $value->interes;
-            $tot_comision      = $value->comision;
-            $tot_cargo         = $value->cargo;
-            $tot_penalidad     = $value->penalidad+$penalidad;
-            $tot_tenencia      = $value->tenencia+$tenencia;
-            $tot_compensatorio = $value->compensatorio+$compensatorio;
+            if ($calculos_en_pagoacuenta && $primera_cuota_pendiente?->numerocuota == $value->numerocuota) {
+                // Esta es la única cuota donde puede haber adelantos previos: se reparte sobre lo que
+                // REALMENTE falta pagar por concepto (saldo tras restar los adelantos ya registrados),
+                // no sobre el monto íntegro de la cuota, para no volver a descontar lo ya cubierto.
+                $tot_amortizacion  = (float) $calculos_en_pagoacuenta['saldo_capital'];
+                $tot_interes       = (float) $calculos_en_pagoacuenta['saldo_interes'];
+                $tot_comision      = (float) $calculos_en_pagoacuenta['saldo_recau'];
+                $tot_cargo         = (float) $calculos_en_pagoacuenta['saldo_cargo'];
+                $tot_penalidad     = (float) $calculos_en_pagoacuenta['saldo_compensatorio']; // Int. Comp.
+                $tot_tenencia      = (float) $calculos_en_pagoacuenta['saldo_custodia'];      // P. Cust.
+                $tot_compensatorio = (float) $calculos_en_pagoacuenta['saldo_moratorio'];     // Int. Morat.
+            } else {
+                $tot_amortizacion  = $value->amortizacion;
+                $tot_interes       = $value->interes;
+                $tot_comision      = $value->comision;
+                $tot_cargo         = $value->cargo;
+                $tot_penalidad     = $value->penalidad+$penalidad;
+                $tot_tenencia      = $value->tenencia+$tenencia;
+                $tot_compensatorio = $value->compensatorio+$compensatorio;
+            }
             /*if($credito_adelanto!=''){
                 $tot_amortizacion  = $amortizacion_delanto;
                 $tot_interes       = $interes_delanto;

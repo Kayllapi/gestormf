@@ -330,8 +330,6 @@ class CobranzacuotaController extends Controller
                             'mensaje'   => 'El "Pago a Cuenta" debe ser mayor a 0.00.'
                         ]);
                     }
-
-
                     if($request->cobrar_total_recibido>$request->cobrar_total_pagar){
                         return response()->json([
                             'resultado' => 'ERROR',
@@ -349,7 +347,6 @@ class CobranzacuotaController extends Controller
                     $request->opcion_pago = '';
                 }
                 
-                   
                 $total_cuota = 0;
                 $total_pagar = 0;
                 $total_recibido = 0;
@@ -362,13 +359,12 @@ class CobranzacuotaController extends Controller
                     $total_pagar = $request->cobrar_total_recibido;
                     $total_recibido = $request->cobrar_total_pagar;
                 } 
-              
-                
+
                 // descuento cuota
                 $credito_descuentocuotas = DB::table('credito_descuentocuota')
-                      ->where('credito_descuentocuota.idcredito',$request->idcredito)
-                      ->where('credito_descuentocuota.idestadocredito_descuentocuota',1)
-                      ->first();
+                    ->where('credito_descuentocuota.idcredito',$request->idcredito)
+                    ->where('credito_descuentocuota.idestadocredito_descuentocuota',1)
+                    ->first();
                 $total_descuento_capital = 0; 
                 $total_descuento_interes = 0; 
                 $total_descuento_comision = 0; 
@@ -389,7 +385,7 @@ class CobranzacuotaController extends Controller
                         $total_descuento_total = $credito_descuentocuotas->total;
                     }
                 }
-                
+
                 $cronograma = select_cronograma(
                     $idtienda,
                     $request->idcredito,
@@ -407,10 +403,7 @@ class CobranzacuotaController extends Controller
                     1,
                     'detalle_cobranza'
                 );
-                
-            
-                //dd($cronograma['cuota_pendiente']);
-          
+
                 $credito_cobranzacuota = DB::table('credito_cobranzacuota')
                     ->orderBy('credito_cobranzacuota.codigo','desc')
                     ->limit(1)
@@ -419,17 +412,16 @@ class CobranzacuotaController extends Controller
                 if($credito_cobranzacuota!=''){
                     $codigo = $credito_cobranzacuota->codigo+1;
                 }
-                
+
                 $bancoo = DB::table('banco')->where('banco.id',$request->idbanco!=null?$request->idbanco:0)->first();
-                
+
                 $banco = '';
                 $cuenta = '';
                 if($bancoo!=''){
                     $banco = $bancoo->nombre;
                     $cuenta = $bancoo->cuenta;
                 }
-                
-              
+
                 $pago_cuota = '';
                 $pago_diasatraso = '';
                 $i = 0 ;
@@ -547,8 +539,6 @@ class CobranzacuotaController extends Controller
                     
                       $valid_adelanto = 1;
                   }elseif($value['acuenta']>0){
-                        
-                      
                     // calcular el acuenta de la misma cobranza
                     /*$credito_cobranzacuota = DB::table('credito_cobranzacuota')
                         ->where('credito_cobranzacuota.idcredito',$request->idcredito)
@@ -570,20 +560,19 @@ class CobranzacuotaController extends Controller
                     $credito_cronograma = DB::table('credito_cronograma')
                             ->whereId($value['id'])
                             ->first();
-                    
+
                     if($credito_cronograma){
                       DB::table('credito_cronograma')
                           ->whereId($value['id'])
                           ->update([
                             'acuenta' => $value['acuenta'],
-                            'idestadocronograma_pago'    => 2,
+                            'idestadocronograma_pago' => 2,
                       ]);
                     }
-                    
+
                     $valid_adelanto = 1;
                   }
-                  
-                  
+
                   // registrado adelanto
                   if($valid_adelanto==1 && $value['adelanto']>0){
                       $credito_adelanto = DB::table('credito_adelanto')
@@ -626,8 +615,6 @@ class CobranzacuotaController extends Controller
                          'idestado'             => 1,
                       ]);
                   }
-                      
-                  
                 }
                 
                 //----

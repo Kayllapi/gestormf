@@ -735,9 +735,12 @@ function select_cronograma(
                 $tot_interes       = (float) $calculos_en_pagoacuenta['saldo_interes'];
                 $tot_comision      = (float) $calculos_en_pagoacuenta['saldo_recau'];
                 $tot_cargo         = (float) $calculos_en_pagoacuenta['saldo_cargo'];
-                $tot_penalidad     = (float) $calculos_en_pagoacuenta['saldo_compensatorio']; // Int. Comp.
-                $tot_tenencia      = (float) $calculos_en_pagoacuenta['saldo_custodia'];      // P. Cust.
-                $tot_compensatorio = (float) $calculos_en_pagoacuenta['saldo_moratorio'];     // Int. Morat.
+                // saldo_* = lo que faltaba pagar hasta el último adelanto.
+                // calculo_diario_saldo_* = mora generada desde ese último adelanto hasta hoy.
+                // Se suman para que la cascada reparta sobre el total realmente adeudado hoy.
+                $tot_penalidad     = (float) $calculos_en_pagoacuenta['saldo_compensatorio'] + (float) $calculos_en_pagoacuenta['calculo_diario_saldo_compensatorio']; // Int. Comp.
+                $tot_tenencia      = (float) $calculos_en_pagoacuenta['saldo_custodia'] + (float) $calculos_en_pagoacuenta['calculo_diario_saldo_custodia'];      // P. Cust.
+                $tot_compensatorio = (float) $calculos_en_pagoacuenta['saldo_moratorio'] + (float) $calculos_en_pagoacuenta['calculo_diario_saldo_moratorio'];     // Int. Morat.
             } else {
                 $tot_amortizacion  = $value->amortizacion;
                 $tot_interes       = $value->interes;
@@ -1283,9 +1286,9 @@ function calculos_en_pagoacuenta($idtienda=0, $idcredito=0, $numerocuota=0, $dat
         // ====== Fin ======
 
         $data_calculo_diario = calculos_en_pagoacuenta_aumento_diario($idtienda, $idcredito, $numerocuota, $datos);
-        $calculo_diario_saldo_custodia = $data_calculo_diario['tenencia_pagoacuenta'] - $ca_tenencia;
-        $calculo_diario_saldo_compensatorio = $data_calculo_diario['penalidad_pagoacuenta'] - $ca_penalidad;
-        $calculo_diario_saldo_moratorio = $data_calculo_diario['compensatorio_pagoacuenta'] - $ca_compensatorio;
+        $calculo_diario_saldo_custodia = $data_calculo_diario['tenencia_pagoacuenta'];
+        $calculo_diario_saldo_compensatorio = $data_calculo_diario['penalidad_pagoacuenta'];
+        $calculo_diario_saldo_moratorio = $data_calculo_diario['compensatorio_pagoacuenta'];
 
         return [
             'pagoacuenta_custo_comp_mora' => number_format($total_ten_pen_com_pagoacuenta, 2, '.', ''),
@@ -1305,9 +1308,9 @@ function calculos_en_pagoacuenta($idtienda=0, $idcredito=0, $numerocuota=0, $dat
             'total_pagoacuenta_compensatorio' => number_format($total_pagoacuenta_compensatorio, 2, '.', ''),
             'total_pagoacuenta_moratorio' => number_format($total_pagoacuenta_moratorio, 2, '.', ''),
 
-            'calculo_diario_saldo_custodia' => number_format($data_calculo_diario['tenencia_pagoacuenta'], 2, '.', ''),
-            'calculo_diario_saldo_compensatorio' => number_format($data_calculo_diario['penalidad_pagoacuenta'], 2, '.', ''),
-            'calculo_diario_saldo_moratorio' => number_format($data_calculo_diario['compensatorio_pagoacuenta'], 2, '.', ''),
+            'calculo_diario_saldo_custodia' => number_format($calculo_diario_saldo_custodia, 2, '.', ''),
+            'calculo_diario_saldo_compensatorio' => number_format($calculo_diario_saldo_compensatorio, 2, '.', ''),
+            'calculo_diario_saldo_moratorio' => number_format($calculo_diario_saldo_moratorio, 2, '.', ''),
         ];
     } else {
         return "Ingresa el idcredito como parámetro";

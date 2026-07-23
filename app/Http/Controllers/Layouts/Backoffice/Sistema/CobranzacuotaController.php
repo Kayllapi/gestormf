@@ -1589,9 +1589,9 @@ class CobranzacuotaController extends Controller
                     </tr>
                     <tr>
                         <td colspan="7"></td>
-                        <td style="text-align:right">'.$calculos_en_pagoacuenta['tenencia_pagoacuenta'].'</td>
-                        <td style="text-align:right">'.$calculos_en_pagoacuenta['penalidad_pagoacuenta'].'</td>
-                        <td style="text-align:right">'.$calculos_en_pagoacuenta['compensatorio_pagoacuenta'].'</td>
+                        <td style="text-align:right">'.$calculos_en_pagoacuenta['calculo_diario_saldo_custodia'].'</td>
+                        <td style="text-align:right">'.$calculos_en_pagoacuenta['calculo_diario_saldo_compensatorio'].'</td>
+                        <td style="text-align:right">'.$calculos_en_pagoacuenta['calculo_diario_saldo_moratorio'].'</td>
                         <td style="text-align:right"></td>
                     </tr>
                 </thead>

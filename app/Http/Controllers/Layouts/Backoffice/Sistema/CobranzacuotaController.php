@@ -1603,9 +1603,15 @@ class CobranzacuotaController extends Controller
                 ->where('idcredito', $request->idcredito)
                 ->orderByDesc('id')
                 ->first();
-            $calculo_diario_saldo_custodia = number_format((float) $total_tenencia - (float) $credito_adelanto_saldo->custodia, 2, '.', '');
-            $calculo_diario_saldo_compensatorio = number_format((float) $total_penalidad - (float) $credito_adelanto_saldo->compensatorio, 2, '.', '');
-            $calculo_diario_saldo_moratorio = number_format((float) $total_compensatorio - (float) $credito_adelanto_saldo->moratorio, 2, '.', '');
+            if ($credito_adelanto_saldo) {
+                $calculo_diario_saldo_custodia = number_format((float) $total_tenencia - (float) $credito_adelanto_saldo?->custodia, 2, '.', '');
+                $calculo_diario_saldo_compensatorio = number_format((float) $total_penalidad - (float) $credito_adelanto_saldo?->compensatorio, 2, '.', '');
+                $calculo_diario_saldo_moratorio = number_format((float) $total_compensatorio - (float) $credito_adelanto_saldo?->moratorio, 2, '.', '');
+            } else {
+                $calculo_diario_saldo_custodia = $calculos_en_pagoacuenta['saldo_custodia'];
+                $calculo_diario_saldo_compensatorio = $calculos_en_pagoacuenta['saldo_compensatorio'];
+                $calculo_diario_saldo_moratorio = $calculos_en_pagoacuenta['saldo_moratorio'];
+            }
 
             $html .= '<tr><td colspan="11"></td></tr>
                     <tr>
@@ -1628,11 +1634,6 @@ class CobranzacuotaController extends Controller
                     </tr>
                 </thead>
               </table>';
-                /*
-                    $calculos_en_pagoacuenta['saldo_custodia']
-                    $calculos_en_pagoacuenta['saldo_compensatorio']
-                    $calculos_en_pagoacuenta['saldo_moratorio']
-                */
 
           return array(
             'html' => $html

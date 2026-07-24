@@ -583,7 +583,7 @@ class CobranzacuotaController extends Controller
                       if($credito_adelanto!=''){
                           $codigo = $credito_adelanto->codigo+1;
                       }
-                      DB::table('credito_adelanto')->insert([
+                      $idcredito_adelanto = DB::table('credito_adelanto')->insertGetId([
                          'fecharegistro'        => Carbon::now(),
                          'codigo'               => $codigo,
                          'numerocuota'          => $value['numerocuota'],
@@ -614,6 +614,30 @@ class CobranzacuotaController extends Controller
                          'idtienda'             => $idtienda,
                          'idestado'             => 1,
                       ]);
+
+                        $calculos_en_pagoacuenta_saldos = calculos_en_pagoacuenta_saldos(
+                            $idtienda,
+                            $request->idcredito,
+                            $value['numerocuota']
+                        );
+
+                        DB::table('credito_adelanto_saldo')->insert([
+                            'fecharegistro' => now(),
+                            'cuota' => $value['numerocuota'],
+                            'capital' => $calculos_en_pagoacuenta_saldos['capital'],
+                            'interes' => $calculos_en_pagoacuenta_saldos['interes'],
+                            'cargo' => $calculos_en_pagoacuenta_saldos['cargo'],
+                            'recaudo' => $calculos_en_pagoacuenta_saldos['recaudo'],
+                            'custodia' => $calculos_en_pagoacuenta_saldos['custodia'],
+                            'compensatorio' => $calculos_en_pagoacuenta_saldos['compensatorio'],
+                            'moratorio' => $calculos_en_pagoacuenta_saldos['moratorio'],
+                            'total' => $calculos_en_pagoacuenta_saldos['total'],
+                            'idcredito_adelanto' => $idcredito_adelanto,
+                            'idcredito' => $request->idcredito,
+                            'idresponsable' => auth()->user()->id,
+                            'idtienda' => $idtienda,
+                            'idestado' => 1,
+                        ]);
                   }
                 }
                 
@@ -1575,6 +1599,14 @@ class CobranzacuotaController extends Controller
                 $request->numerocuota
             );
 
+            $credito_adelanto_saldo = DB::table('credito_adelanto_saldo')
+                ->where('idcredito', $request->idcredito)
+                ->orderByDesc('id')
+                ->first();
+            $calculo_diario_saldo_custodia = number_format((float) $total_tenencia - (float) $credito_adelanto_saldo->custodia, 2, '.', '');
+            $calculo_diario_saldo_compensatorio = number_format((float) $total_penalidad - (float) $credito_adelanto_saldo->compensatorio, 2, '.', '');
+            $calculo_diario_saldo_moratorio = number_format((float) $total_compensatorio - (float) $credito_adelanto_saldo->moratorio, 2, '.', '');
+
             $html .= '<tr><td colspan="11"></td></tr>
                     <tr>
                         <th style="text-align:right" colspan="3">SALDOS</th>
@@ -1582,9 +1614,9 @@ class CobranzacuotaController extends Controller
                         <th style="text-align:right">'.$calculos_en_pagoacuenta['saldo_interes'].'</th>
                         <th style="text-align:right">'.$calculos_en_pagoacuenta['saldo_cargo'].'</th>
                         <th style="text-align:right">'.$calculos_en_pagoacuenta['saldo_recau'].'</th>
-                        <th style="text-align:right">'.$calculos_en_pagoacuenta['saldo_custodia'].'</th>
-                        <th style="text-align:right">'.$calculos_en_pagoacuenta['saldo_compensatorio'].'</th>
-                        <th style="text-align:right">'.$calculos_en_pagoacuenta['saldo_moratorio'].'</th>
+                        <th style="text-align:right">'.$calculo_diario_saldo_custodia.'</th>
+                        <th style="text-align:right">'.$calculo_diario_saldo_compensatorio.'</th>
+                        <th style="text-align:right">'.$calculo_diario_saldo_moratorio.'</th>
                         <th style="text-align:right"></th>
                     </tr>
                     <tr>
@@ -1596,6 +1628,11 @@ class CobranzacuotaController extends Controller
                     </tr>
                 </thead>
               </table>';
+                /*
+                    $calculos_en_pagoacuenta['saldo_custodia']
+                    $calculos_en_pagoacuenta['saldo_compensatorio']
+                    $calculos_en_pagoacuenta['saldo_moratorio']
+                */
 
           return array(
             'html' => $html

@@ -1556,6 +1556,50 @@ function calculos_en_pagoacuenta_aumento_diario($idtienda=0, $idcredito=0, $nume
         return "Ingresa el idcredito como parámetro";
     }
 }
+function calculos_en_pagoacuenta_saldos($idtienda=0, $idcredito=0, $numerocuota=0){
+    $datos = $datos ?? _datos_base_pagoacuenta($idtienda, $idcredito);
+    if ($datos) {
+        $credito = $datos['credito'];
+        $primera_cuota_pendiente = $datos['primera_cuota_pendiente'];
+        $credito_cronograma = $datos['credito_cronograma'];
+
+        $ca_sumas = DB::table('credito_adelanto')
+            ->where('idcredito', $credito->id)
+            ->where('numerocuota', $primera_cuota_pendiente)
+            ->whereIn('idestadocredito_adelanto', [1,2])
+            ->selectRaw('
+                COALESCE(SUM(capital), 0) as capital,
+                COALESCE(SUM(interes), 0) as interes,
+                COALESCE(SUM(cargo), 0) as cargo,
+                COALESCE(SUM(comision), 0) as comision,
+                COALESCE(SUM(tenencia), 0) as tenencia,
+                COALESCE(SUM(penalidad), 0) as penalidad,
+                COALESCE(SUM(compensatorio), 0) as compensatorio
+            ')
+            ->first();
+        $data_calculo_diario = calculos_en_pagoacuenta_aumento_diario($idtienda, $idcredito, $numerocuota, $datos);
+
+        $capital = (float) $credito_cronograma->amortizacion - (float) $ca_sumas->capital;
+        $interes = (float) $credito_cronograma->interes - (float) $ca_sumas->interes;
+        $cargo = (float) $credito_cronograma->cargo - (float) $ca_sumas->cargo;
+        $recaudo = (float) $credito_cronograma->comision_cargo - (float) $ca_sumas->comision;
+        $custodia = (float) $ca_sumas->tenencia + (float) $data_calculo_diario['tenencia_pagoacuenta'];
+        $compensatorio = (float) $ca_sumas->penalidad + (float) $data_calculo_diario['penalidad_pagoacuenta'];
+        $moratorio = (float) $ca_sumas->compensatorio + (float) $data_calculo_diario['compensatorio_pagoacuenta'];
+        $total = $capital + $interes + $cargo + $recaudo + $custodia + $compensatorio + $moratorio;
+
+        return [
+            'capital' => number_format($capital, 2, '.', ''),
+            'interes' => number_format($interes, 2, '.', ''),
+            'cargo' => number_format($cargo, 2, '.', ''),
+            'recaudo' => number_format($recaudo, 2, '.', ''),
+            'custodia' => number_format($custodia, 2, '.', ''),
+            'compensatorio' => number_format($compensatorio, 2, '.', ''),
+            'moratorio' => number_format($moratorio, 2, '.', ''),
+            'total' => number_format($total, 2, '.', ''),
+        ];
+    }
+}
 
 function encontrar_valor($idBuscado, $datos) {
     foreach ($datos as $dato) {

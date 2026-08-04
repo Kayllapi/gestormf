@@ -1,0 +1,16 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Servir directamente archivos existentes dentro de /public/ (css, js, imagenes, build...)
+    RewriteCond %{REQUEST_URI} ^/public/
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule ^ - [L]
+
+    # Alias convencionales que los navegadores/bots piden en la raiz
+    RewriteRule ^favicon\.ico$ public/favicon.ico [L]
+    RewriteRule ^robots\.txt$ public/robots.txt [L]
+
+    # Todo lo demas pasa por el front controller dentro de public/,
+    # dejando fuera de acceso directo .env, vendor/, app/, composer.json, etc.
+    RewriteRule ^ public/index.php [L]
+</IfModule>

@@ -684,11 +684,21 @@ class PagoprestamoController extends Controller
               }
           }
 
+          // eliminar las fotos de saldo (credito_adelanto_saldo) del/los adelanto(s) que se estan extornando,
+          // sino "show_descuentodecuotas" sigue mostrando el saldo del pago ya revertido (toma la ultima por id)
+          DB::table('credito_adelanto_saldo')
+              ->whereIn('idcredito_adelanto', function($query) use ($credito_cobranzacuota) {
+                  $query->select('id')
+                      ->from('credito_adelanto')
+                      ->where('idcredito_cobranzacuota', $credito_cobranzacuota->id);
+              })
+              ->delete();
+
           DB::table('credito_adelanto')
               ->where('credito_adelanto.idcredito_cobranzacuota',$credito_cobranzacuota->id)
               ->update([
                 'credito_adelanto.idestadocredito_adelanto' => 3,
-          ]);  
+          ]);
 
           DB::table('credito_cobranzacuota')
             ->whereId($id)

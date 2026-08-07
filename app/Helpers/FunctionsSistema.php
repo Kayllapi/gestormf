@@ -558,7 +558,19 @@ function select_cronograma(
           
             $total_pagoacuenta = $total_pagoacuenta+$pago_acuenta; 
           
-            $total_totalcuotareal = $value->cuota_real+$total_penalidad_real+$total_tenencia_real+$total_compensatorio_real;
+            if ($calculos_en_pagoacuenta && $primera_cuota_pendiente?->numerocuota == $value->numerocuota) {
+                // Esta cuota ya tiene adelantos previos: el umbral de cancelacion tiene que ser
+                // el mismo saldo (neto de lo ya adelantado) que se muestra en pantalla como "Pago Total"
+                // (ver el mismo calculo mas abajo, en el bloque que arma $totalcuota para mostrar).
+                // Si no coinciden, la cuota se cancela con un monto distinto al que el usuario ve,
+                // y el excedente que se pasa a la siguiente cuota queda mal calculado.
+                $tenencia_umbral = (float) $calculos_en_pagoacuenta['total_pagoacuenta_custodia'] + (float) $calculos_en_pagoacuenta['saldo_custodia'] + (float) $calculos_en_pagoacuenta['calculo_diario_saldo_custodia'];
+                $penalidad_umbral = (float) $calculos_en_pagoacuenta['total_pagoacuenta_compensatorio'] + (float) $calculos_en_pagoacuenta['saldo_compensatorio'] + (float) $calculos_en_pagoacuenta['calculo_diario_saldo_compensatorio'];
+                $compensatorio_umbral = (float) $calculos_en_pagoacuenta['total_pagoacuenta_moratorio'] + (float) $calculos_en_pagoacuenta['saldo_moratorio'] + (float) $calculos_en_pagoacuenta['calculo_diario_saldo_moratorio'];
+                $total_totalcuotareal = (float) $value->cuota_real + $tenencia_umbral + $penalidad_umbral + $compensatorio_umbral;
+            } else {
+                $total_totalcuotareal = $value->cuota_real+$total_penalidad_real+$total_tenencia_real+$total_compensatorio_real;
+            }
             if($pago_acuenta>=$total_totalcuotareal && $pago_acuenta>0){
                 $pago_acuenta = $pago_acuenta-$total_totalcuotareal;
                 $pagar_acuenta = $total_totalcuotareal;

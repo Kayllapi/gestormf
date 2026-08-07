@@ -564,9 +564,12 @@ function select_cronograma(
                 // (ver el mismo calculo mas abajo, en el bloque que arma $totalcuota para mostrar).
                 // Si no coinciden, la cuota se cancela con un monto distinto al que el usuario ve,
                 // y el excedente que se pasa a la siguiente cuota queda mal calculado.
-                $tenencia_umbral = (float) $calculos_en_pagoacuenta['total_pagoacuenta_custodia'] + (float) $calculos_en_pagoacuenta['saldo_custodia'] + (float) $calculos_en_pagoacuenta['calculo_diario_saldo_custodia'];
-                $penalidad_umbral = (float) $calculos_en_pagoacuenta['total_pagoacuenta_compensatorio'] + (float) $calculos_en_pagoacuenta['saldo_compensatorio'] + (float) $calculos_en_pagoacuenta['calculo_diario_saldo_compensatorio'];
-                $compensatorio_umbral = (float) $calculos_en_pagoacuenta['total_pagoacuenta_moratorio'] + (float) $calculos_en_pagoacuenta['saldo_moratorio'] + (float) $calculos_en_pagoacuenta['calculo_diario_saldo_moratorio'];
+                // 'total_pagoacuenta_*' ya incluye el interes generado desde el ultimo pago a cuenta hasta hoy;
+                // no se suma 'calculo_diario_saldo_*' aparte porque es ese mismo interes calculado otra vez
+                // (ver la nota junto al bloque que arma $totalcuota para mostrar, mas abajo).
+                $tenencia_umbral = (float) $calculos_en_pagoacuenta['total_pagoacuenta_custodia'] + (float) $calculos_en_pagoacuenta['saldo_custodia'];
+                $penalidad_umbral = (float) $calculos_en_pagoacuenta['total_pagoacuenta_compensatorio'] + (float) $calculos_en_pagoacuenta['saldo_compensatorio'];
+                $compensatorio_umbral = (float) $calculos_en_pagoacuenta['total_pagoacuenta_moratorio'] + (float) $calculos_en_pagoacuenta['saldo_moratorio'];
                 $total_totalcuotareal = (float) $value->cuota_real + $tenencia_umbral + $penalidad_umbral + $compensatorio_umbral;
             } else {
                 $total_totalcuotareal = $value->cuota_real+$total_penalidad_real+$total_tenencia_real+$total_compensatorio_real;
@@ -873,9 +876,13 @@ function select_cronograma(
 
             // mostrando el total al seleccionar el cronograma
             if ($primera_cuota_pendiente?->numerocuota == $value->numerocuota) {
-                $tenencia = $calculos_en_pagoacuenta['total_pagoacuenta_custodia'] + $calculos_en_pagoacuenta['saldo_custodia'] + $calculos_en_pagoacuenta['calculo_diario_saldo_custodia'];
-                $penalidad = $calculos_en_pagoacuenta['total_pagoacuenta_compensatorio'] + $calculos_en_pagoacuenta['saldo_compensatorio'] + $calculos_en_pagoacuenta['calculo_diario_saldo_compensatorio'];
-                $compensatorio = $calculos_en_pagoacuenta['total_pagoacuenta_moratorio'] + $calculos_en_pagoacuenta['saldo_moratorio'] + $calculos_en_pagoacuenta['calculo_diario_saldo_moratorio'];
+                // OJO: 'total_pagoacuenta_custodia/compensatorio/moratorio' YA incluyen el interes generado
+                // desde el ultimo pago a cuenta hasta hoy (calculos_en_pagoacuenta lo calcula internamente,
+                // con la misma formula que 'calculo_diario_saldo_*'). Sumar 'calculo_diario_saldo_*' aqui
+                // otra vez duplicaba ese interes (se contaba dos veces en el total mostrado).
+                $tenencia = $calculos_en_pagoacuenta['total_pagoacuenta_custodia'] + $calculos_en_pagoacuenta['saldo_custodia'];
+                $penalidad = $calculos_en_pagoacuenta['total_pagoacuenta_compensatorio'] + $calculos_en_pagoacuenta['saldo_compensatorio'];
+                $compensatorio = $calculos_en_pagoacuenta['total_pagoacuenta_moratorio'] + $calculos_en_pagoacuenta['saldo_moratorio'];
             }
 
             $totalcuota = (float) $cuota + (float) $tenencia + (float) $penalidad + (float) $compensatorio;

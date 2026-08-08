@@ -17,7 +17,7 @@ class InicioController extends Controller
      */
     public function index(Request $request)
     {
-        return view('layouts/inicio/index');
+        return redirect('/login');
     }
 
     /**

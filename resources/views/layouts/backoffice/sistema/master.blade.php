@@ -667,33 +667,22 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
           })
       }
       
-        var timeLimit = 5; //tiempo en minutos
-   var conteo_nuevo = new Date(timeLimit * 60000);
-   var conteo = new Date(timeLimit * 60000);
-  
-      /*$("html,body").on("click", function(e) {
-         resetear_cierresesion();
-      });*/
-   /*contador_cierresesion();
+      // Cierre de sesion por inactividad: si no hay ninguna interaccion del usuario
+      // (mouse, teclado, scroll, touch) durante timeLimit minutos, se cierra la sesion
+      // y se manda a login. Se usa un timestamp (no un contador regresivo) para que
+      // funcione bien aunque el navegador pause el setInterval en segundo plano.
+      var timeLimit = 15; //tiempo en minutos
+      var ultimaActividad = Date.now();
 
-   function contador_cierresesion(){
-      intervaloRegresivo = setInterval("regresiva_cierresesion()", 1000);
-   }
+      ['mousemove','mousedown','keydown','scroll','touchstart','click'].forEach(function(evt){
+          document.addEventListener(evt, function(){ ultimaActividad = Date.now(); }, {passive:true});
+      });
 
-   function regresiva_cierresesion(){
-      if(conteo.getTime() > 0){
-         conteo.setTime(conteo.getTime() - 1000);
-      }else{
-         clearInterval(intervaloRegresivo);
-          // cerrar sesion
-         document.getElementById('logout-form-sistema').submit();
-      }
-
-      $('#contador_cierresesion').html((conteo.getMinutes()).toString().padStart(2, '0') + ":" + (conteo.getSeconds()).toString().padStart(2, '0'));
-   }
-   function resetear_cierresesion(){
-      conteo.setTime(conteo_nuevo.getTime());
-   }*/
+      setInterval(function(){
+          if (Date.now() - ultimaActividad >= timeLimit * 60000) {
+              document.getElementById('logout-form-sistema').submit();
+          }
+      }, 15000);
          /* fechaactual();
           function fechaactual(){
               var hoy = new Date();

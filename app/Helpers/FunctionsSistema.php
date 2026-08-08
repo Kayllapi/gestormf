@@ -1215,15 +1215,19 @@ function calculos_en_pagoacuenta($idtienda=0, $idcredito=0, $numerocuota=0, $dat
         $ca_penalidad = $ca_sumas->penalidad;
         $ca_compensatorio = $ca_sumas->compensatorio;
 
-        $data = calculos_en_pagoacuenta_de_primera_cuota_pendiente($idtienda, $idcredito, $numerocuota, $datos);
-
         $saldo_capital = $credito_cronograma->amortizacion - $ca_capital;
         $saldo_interes = $credito_cronograma->interes - $ca_interes;
         $saldo_cargo = $credito_cronograma->cargo - $ca_cargo;
         $saldo_recau = $credito_cronograma->comision_cargo - $ca_comision;
-        $saldo_custodia = $data['tenencia_pagoacuenta'] - $ca_tenencia;
-        $saldo_compensatorio = $data['penalidad_pagoacuenta'] - $ca_penalidad;
-        $saldo_moratorio = $data['compensatorio_pagoacuenta'] - $ca_compensatorio;
+        // $ca_tenencia/$ca_penalidad/$ca_compensatorio ya son la suma de lo que cada pago a cuenta
+        // calculo, en su momento, con el saldo real que existia ese dia (calculo "escalonado").
+        // Antes aqui se volvia a calcular "de un solo tramo" (todo el atraso desde el vencimiento de
+        // la cuota, pero usando el saldo YA reducido por los pagos) con calculos_en_pagoacuenta_de_primera_cuota_pendiente(),
+        // lo que subestimaba el interes de los dias anteriores al primer pago y generaba una diferencia
+        // artificial contra lo realmente cobrado. No hay nada que "reponer": lo ya cobrado es lo correcto.
+        $saldo_custodia = 0;
+        $saldo_compensatorio = 0;
+        $saldo_moratorio = 0;
         // ====== Fin ======
 
         if ($fechapago < $fecha_hoy) {

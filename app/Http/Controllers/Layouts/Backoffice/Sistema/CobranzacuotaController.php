@@ -1632,6 +1632,20 @@ class CobranzacuotaController extends Controller
                         <td style="text-align:right">'.$calculos_en_pagoacuenta['calculo_diario_saldo_moratorio'].'</td>
                         <td style="text-align:right"></td>
                     </tr>
+                    <tr>
+                        <th style="text-align:right" colspan="7">AJUSTE</th>
+                        <th style="text-align:right" class="popover-hover" data-bs-content="Diferencia entre lo que corresponde a la fecha del ultimo pago a cuenta y lo que quedo registrado en el historial de pagos.">'.$calculos_en_pagoacuenta['saldo_custodia'].'</th>
+                        <th style="text-align:right" class="popover-hover" data-bs-content="Diferencia entre lo que corresponde a la fecha del ultimo pago a cuenta y lo que quedo registrado en el historial de pagos.">'.$calculos_en_pagoacuenta['saldo_compensatorio'].'</th>
+                        <th style="text-align:right" class="popover-hover" data-bs-content="Diferencia entre lo que corresponde a la fecha del ultimo pago a cuenta y lo que quedo registrado en el historial de pagos.">'.$calculos_en_pagoacuenta['saldo_moratorio'].'</th>
+                        <th style="text-align:right"></th>
+                    </tr>
+                    <tr>
+                        <th style="text-align:right;background-color: #efefef !important;" colspan="7">TOTAL (según cronograma)</th>
+                        <th style="text-align:right;background-color: #efefef !important;">'.number_format((float)$calculos_en_pagoacuenta['total_pagoacuenta_custodia']+(float)$calculos_en_pagoacuenta['saldo_custodia'],2,'.','').'</th>
+                        <th style="text-align:right;background-color: #efefef !important;">'.number_format((float)$calculos_en_pagoacuenta['total_pagoacuenta_compensatorio']+(float)$calculos_en_pagoacuenta['saldo_compensatorio'],2,'.','').'</th>
+                        <th style="text-align:right;background-color: #efefef !important;">'.number_format((float)$calculos_en_pagoacuenta['total_pagoacuenta_moratorio']+(float)$calculos_en_pagoacuenta['saldo_moratorio'],2,'.','').'</th>
+                        <th style="text-align:right"></th>
+                    </tr>
                 </thead>
               </table>';
 

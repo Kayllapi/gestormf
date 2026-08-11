@@ -16,9 +16,15 @@
         pagocuota();
         @elseif($opcion_pago=='PAGO_ACUENTA')
         pagoacuenta();
+        @elseif($opcion_pago=='PAGO_ANTICIPADO')
+        pagoanticipado();
         @elseif($opcion_pago=='PAGO_TOTAL')
         @endif
-                
+
+        if(resultado.idcredito_nuevo){
+            alert('Crédito cancelado. Se generó el crédito nuevo N° '+resultado.idcredito_nuevo+' por S/. '+resultado.monto_credito_nuevo+'.');
+        }
+
         show_data_credito(resultado.idcredito);
 
         // sigue mostrando el modal
@@ -90,7 +96,7 @@
             <div class="col-sm-4">
               <input type="text" value="0.00" class="form-control campo_moneda" id="cobrar_vuelto" disabled>
             </div>
-          @elseif($opcion_pago=='PAGO_ACUENTA')
+          @elseif($opcion_pago=='PAGO_ACUENTA' or $opcion_pago=='PAGO_ANTICIPADO')
 
             <label class="col-sm-8 col-form-label" style="text-align: right;">A cuenta (Anterior)</label>
             <div class="col-sm-4">
@@ -111,6 +117,14 @@
             <div class="col-sm-4">
               <input type="text" value="0.00" class="form-control campo_moneda" id="cobrar_vuelto" disabled>
             </div>
+            @if($opcion_pago=='PAGO_ANTICIPADO')
+            <div class="col-sm-12 mt-1">
+                <label class="chk" style="color: #ad222f;font-weight: bold;">
+                  <input type="checkbox" id="generarcreditonuevo">
+                  <span class="checkmark"></span> ¿Generar crédito nuevo por la diferencia?
+                </label>
+            </div>
+            @endif
           @else
               <input type="hidden" id="cobrar_total_pagar" value="0.00">
               <input type="hidden" id="cobrar_total_recibido" value="0.00">
@@ -194,6 +208,8 @@ input::selection {
         //pagocuota();
         @elseif($opcion_pago=='PAGO_ACUENTA')
         pagoacuenta();
+        @elseif($opcion_pago=='PAGO_ANTICIPADO')
+        pagoanticipado();
         @elseif($opcion_pago=='PAGO_TOTAL')
         @endif
   }
@@ -217,6 +233,8 @@ input::selection {
       $('#cobrar_vuelto').val(cobrar_vuelto_efectivo.toFixed(2));
       @if($opcion_pago=='PAGO_ACUENTA')
       cronograma({{$credito->id}},0,'pagoacuenta',cobrar_total_recibido);
+      @elseif($opcion_pago=='PAGO_ANTICIPADO')
+      cronograma({{$credito->id}},0,'pagoanticipado',cobrar_total_recibido);
       @endif
   }
   

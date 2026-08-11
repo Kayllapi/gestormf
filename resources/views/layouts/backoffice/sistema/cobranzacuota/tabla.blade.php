@@ -170,7 +170,7 @@
                       </div>
                       <div>
                           <label class="radio-custom" style="color: #ad222f;">
-                              <input type="radio" name="opcion_pago" id="pagoanticipado">
+                              <input type="radio" name="opcion_pago" id="pagoanticipado" onclick="pagoanticipado()">
                               <span class="radio"></span> Pago Anticipado
                           </label>
                       </div>
@@ -338,22 +338,29 @@
             cronograma($('#idcredito').val(),1000,'pagototal');
         }
     }
-  
+    function pagoanticipado(){
+        var pagoanticipado = $('#pagoanticipado:checked').val();
+        if(pagoanticipado=='on'){
+            cronograma($('#idcredito').val(),0,'pagoanticipado');
+        }
+    }
+
     function cobrar(){
         let numerocuota = $('#table-detalle-cronograma > tbody > tr.seleccionar').attr('data-numerocuota');
         let isLastQuota = $('#table-detalle-cronograma > tbody > tr.seleccionar').is(':last-child');
-      
+
         var idcredito = $('#idcredito').val();
         var pagocuota = $('#pagocuota:checked').val();
         var pagoacuenta = $('#pagoacuenta:checked').val();
         var pagototal = $('#pagototal:checked').val();
-   
+        var pagoanticipado = $('#pagoanticipado:checked').val();
+
         var opcion_pago = '';
         if(pagocuota=='on' && numerocuota != undefined){
             opcion_pago = 'PAGO_CUOTA';
-           
+
             /*if(numerocuota == "" || numerocuota == undefined ){
-              alert('Debe de seleccionar mínimo una cuota!!!.');   
+              alert('Debe de seleccionar mínimo una cuota!!!.');
               return false;
             }*/
         }
@@ -363,6 +370,10 @@
         }
         else if(pagototal=='on'){
            opcion_pago = 'PAGO_TOTAL';
+        }
+        else if(pagoanticipado=='on'){
+           opcion_pago = 'PAGO_ANTICIPADO';
+           numerocuota = 0;
         }else{
            numerocuota = 0;
         }

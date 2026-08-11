@@ -18,7 +18,8 @@ function select_cronograma(
     $pago_acuenta = 0,
     $estadocargo = 1,
     $detallecobranza = '',
-    $solo_totales = false) {
+    $solo_totales = false,
+    $pago_anticipado = false) {
   
     $credito = DB::table('credito')
         ->whereId($idcredito)
@@ -309,7 +310,19 @@ function select_cronograma(
             $cargo         = $value->cargo;
             $cuota         = $value->cuota_real;
         /*}*/
-      
+
+        // Pago Anticipado (Variante 1): la primera cuota pendiente se cobra completa; desde
+        // la 2da cuota pendiente que el monto anticipado alcance a cubrir, se descuenta
+        // interes + cargo (custodia) de esa cuota. Se reutiliza el pool descuento_interes/
+        // descuento_cargo (mismo mecanismo que credito_descuentocuota) para que fluya por
+        // los bloques pagar/descontar de mas abajo sin duplicar logica.
+        if ($pago_anticipado && $pago_acuenta > 0 && $primera_cuota_pendiente
+            && ($value->idestadocredito_cronograma==1 || $value->idestadocredito_cronograma==3)
+            && $value->numerocuota != $primera_cuota_pendiente->numerocuota) {
+            $descuento_interes += $interes;
+            $descuento_cargo += $cargo;
+        }
+
         // ---
         $fechapago = new DateTime($value->fechapago);
         // ---
@@ -573,6 +586,11 @@ function select_cronograma(
                 $total_totalcuotareal = (float) $value->cuota_real + $tenencia_umbral + $penalidad_umbral + $compensatorio_umbral;
             } else {
                 $total_totalcuotareal = $value->cuota_real+$total_penalidad_real+$total_tenencia_real+$total_compensatorio_real;
+            }
+            if ($pago_anticipado && $primera_cuota_pendiente && $value->numerocuota != $primera_cuota_pendiente->numerocuota) {
+                // Misma cuota con el descuento de interes+cargo ya aplicado: el umbral de
+                // cobertura debe coincidir con lo que realmente se le va a cobrar al cliente.
+                $total_totalcuotareal = $total_totalcuotareal - $interes - $cargo;
             }
             if($pago_acuenta>=$total_totalcuotareal && $pago_acuenta>0){
                 $pago_acuenta = $pago_acuenta-$total_totalcuotareal;

@@ -317,7 +317,7 @@ class CobranzacuotaController extends Controller
                         ]);
                     }
                 }
-                elseif($request->opcion_pago=='PAGO_ACUENTA'){
+                elseif($request->opcion_pago=='PAGO_ACUENTA' or $request->opcion_pago=='PAGO_ANTICIPADO'){
                     if($request->cobrar_total_pagar<=0){
                         return response()->json([
                             'resultado' => 'ERROR',
@@ -354,11 +354,11 @@ class CobranzacuotaController extends Controller
                     $total_cuota = $request->cobrar_cuota_pagar;
                     $total_pagar = $request->cobrar_total_pagar;
                     $total_recibido = $request->cobrar_total_recibido;
-                }elseif($request->opcion_pago=='PAGO_ACUENTA'){
+                }elseif($request->opcion_pago=='PAGO_ACUENTA' or $request->opcion_pago=='PAGO_ANTICIPADO'){
                     $total_cuota = $request->cobrar_total_recibido;
                     $total_pagar = $request->cobrar_total_recibido;
                     $total_recibido = $request->cobrar_total_pagar;
-                } 
+                }
 
                 // descuento cuota
                 $credito_descuentocuotas = DB::table('credito_descuentocuota')
@@ -401,7 +401,8 @@ class CobranzacuotaController extends Controller
                     $total_descuento_compensatorio,
                     $total_cuota,
                     1,
-                    'detalle_cobranza'
+                    'detalle_cobranza',
+                    pago_anticipado: $request->opcion_pago=='PAGO_ANTICIPADO'
                 );
 
                 $credito_cobranzacuota = DB::table('credito_cobranzacuota')
@@ -674,8 +675,8 @@ class CobranzacuotaController extends Controller
                             }
                         }
                     }
-                }elseif($request->opcion_pago=='PAGO_ACUENTA'){
-                  
+                }elseif($request->opcion_pago=='PAGO_ACUENTA' or $request->opcion_pago=='PAGO_ANTICIPADO'){
+
                 }else{
                         $cargoIds = $request->input('idcredito_cargo_ids', []);
                         if (!empty(json_decode($cargoIds))) {
@@ -805,12 +806,256 @@ class CobranzacuotaController extends Controller
                     'saldo_pendientepago' => $cronograma['saldo_capital'],
                     'total_pendientepago' => $cronograma['cuota_pendiente'],
             ]);
-          
+
             $count_creditopendiente = DB::table('credito_garantia')
                   ->where('credito_garantia.idcredito',$request->idcredito)
                   ->where('credito_garantia.idestadoentrega',1)
                   ->count();
-          
+
+            // ====== Pago Anticipado - Variante 2 ======
+            // Ademas de aplicar el pago anticipado (arriba), cancela el saldo restante del
+            // credito viejo y genera un credito nuevo -activo de inmediato, sin pasar por
+            // evaluacion/desembolso- por la diferencia. $cronograma (recien calculado arriba
+            // con $credito->cuotas como umbral) ya trae seleccionadas todas las cuotas que
+            // quedaron pendientes tras el pago anticipado, y su 'saldo_capital' es exactamente
+            // el capital que falta por cubrir.
+            $idcredito_nuevo = null;
+            $monto_credito_nuevo = 0;
+            if($request->opcion_pago=='PAGO_ANTICIPADO' && $request->generarcreditonuevo=='on' && (float)$cronograma['saldo_capital']>0){
+                $idcredito_nuevo = DB::transaction(function() use ($request, $credito, $idtienda, $cronograma) {
+
+                    // 1) Cancelar lo que quedo pendiente del credito viejo
+                    $codigo_refinancia = DB::table('credito_cobranzacuota')->orderBy('codigo','desc')->limit(1)->value('codigo');
+                    $idcredito_cobranzacuota_refinancia = DB::table('credito_cobranzacuota')->insertGetId([
+                        'fecharegistro' => Carbon::now(),
+                        'codigo' => ($codigo_refinancia?:0)+1,
+                        'total_pagar' => $cronograma['select_totalcuota'],
+                        'total_recibido' => $cronograma['select_totalcuota'],
+                        'vuelto' => 0,
+                        'numerooperacion' => '',
+                        'banco' => '',
+                        'cuenta' => '',
+                        'proximo_vencimiento' => '',
+                        'pago_cuota' => '',
+                        'pago_diasatraso' => '',
+                        'opcion_pago' => 'REFINANCIADO',
+                        'estadocargo' => '',
+                        'cobrar_cargo' => '0.00',
+                        'total_amortizacion' => $cronograma['select_amortizacion'],
+                        'total_interes' => $cronograma['select_interes'],
+                        'total_comision' => $cronograma['select_comision'],
+                        'total_cargo' => $cronograma['select_cargo'],
+                        'total_cuota' => $cronograma['select_cuota'],
+                        'total_tenencia' => $cronograma['select_tenencia'],
+                        'total_penalidad' => $cronograma['select_penalidad'],
+                        'total_compensatorio' => $cronograma['select_compensatorio'],
+                        'total_totalcuota' => $cronograma['select_totalcuota'],
+                        'idcredito' => $request->idcredito,
+                        'idcajero' => Auth::user()->id,
+                        'idformapago' => 0,
+                        'idbanco' => 0,
+                        'idestadocredito_cobranzacuota' => 1,
+                        'idestadoextorno' => 0,
+                        'idtienda' => $idtienda,
+                        'idestado' => 1,
+                    ]);
+
+                    foreach($cronograma['cronograma'] as $value){
+                        if($value['selected']=='selected'){
+                            DB::table('credito_cronograma')
+                                ->whereId($value['id'])
+                                ->update([
+                                    'pagar_amortizacion' => $value['pagar_amortizacion'],
+                                    'pagar_interes' => $value['pagar_interes'],
+                                    'pagar_comision' => $value['pagar_comision'],
+                                    'pagar_cargo' => $value['pagar_cargo'],
+                                    'pagar_cuota' => $value['pagar_cuota'],
+                                    'pagar_tenencia' => $value['pagar_tenencia'],
+                                    'pagar_penalidad' => $value['pagar_penalidad'],
+                                    'pagar_compensatorio' => $value['pagar_compensatorio'],
+                                    'pagar_totalcuota' => $value['pagar_totalcuota'],
+                                    'idcredito_cobranzacuota' => $idcredito_cobranzacuota_refinancia,
+                                    'idestadocredito_cronograma' => 2,
+                                    'idestadocronograma_pago' => 2,
+                                ]);
+                        }
+                    }
+
+                    DB::table('credito')->whereId($request->idcredito)->update([
+                        'fecha_cancelado' => Carbon::now(),
+                        'idestadocredito' => 2,
+                        'idcredito_cobranzacuota' => $idcredito_cobranzacuota_refinancia,
+                    ]);
+
+                    DB::table('credito_garantia')
+                        ->where('idcredito', $request->idcredito)
+                        ->update([
+                            'fechaentrega' => Carbon::now(),
+                            'idestadoentrega' => 2,
+                        ]);
+
+                    // 2) Generar credito nuevo por la diferencia, activo de inmediato
+                    $montonuevo = (float) $cronograma['saldo_capital'];
+                    $cuotasnuevo = (int) $cronograma['select_numerocuota'];
+
+                    $frecuenciaDiasMap = [1=>26, 2=>4, 3=>2, 4=>1];
+                    $dias = $frecuenciaDiasMap[$credito->idforma_pago_credito];
+                    $tasa_tip_nuevo = number_format(($credito->tasa_tem / $dias) * $cuotasnuevo, 2, '.', '');
+                    $tipotasa = 1;
+                    if($credito->modalidadproductocredito=='Interes Compuesto'){
+                        $tasa_tip_nuevo = $credito->tasa_tem;
+                        $tipotasa = 2;
+                    }
+
+                    $cronograma_nuevo = genera_cronograma(
+                        $montonuevo,
+                        $cuotasnuevo,
+                        Carbon::now()->format('Y-m-d'),
+                        $credito->idforma_pago_credito,
+                        $tasa_tip_nuevo,
+                        $tipotasa,
+                        $credito->dia_gracia,
+                        $credito->comision,
+                        $credito->cargo
+                    );
+
+                    $forma_pago_credito = DB::table('forma_pago_credito')->whereId($credito->idforma_pago_credito)->first();
+
+                    // Nro de cuenta: mismo criterio que DesembolsoController al desembolsar
+                    // (max(cuenta)+1), porque este credito nace ya "desembolsado".
+                    $credito_ult = DB::table('credito')->orderBy('cuenta','desc')->limit(1)->first();
+                    $codigo_credito = $credito_ult ? $credito_ult->cuenta+1 : 1;
+
+                    $idcreditonuevo = DB::table('credito')->insertGetId([
+                        'cuenta'                     => $codigo_credito,
+                        'forma_pago_credito'         => $forma_pago_credito->nombre,
+                        'saldo_pendientepago'        => $montonuevo,
+                        'total_pendientepago'        => $cronograma_nuevo['total_cuotafinal'],
+                        'cuota_pago'                 => $cronograma_nuevo['cuota_pago'],
+                        'fecha_primerpago'           => $cronograma_nuevo['fechainicio'],
+                        'fecha_ultimopago'           => $cronograma_nuevo['ultimafecha'],
+                        'fecha_desembolso'           => Carbon::now(),
+                        'monto_solicitado'           => $montonuevo,
+                        'idforma_pago_credito'       => $credito->idforma_pago_credito,
+                        'cuotas'                     => $cuotasnuevo,
+                        'dia_gracia'                 => $credito->dia_gracia,
+                        'tasa_tem'                   => $credito->tasa_tem,
+                        'tasa_tem_minima'            => $credito->tasa_tem_minima,
+                        'tasa_tip'                   => $tasa_tip_nuevo,
+                        'tasa_tcem'                  => $credito->tasa_tcem,
+                        'interes_total'              => $cronograma_nuevo['total_interes'],
+                        'total_pagar'                => $cronograma_nuevo['total_cuotafinal'],
+                        'total_propuesta'            => $cronograma_nuevo['total_propuesta'],
+                        'comision'                   => $credito->comision,
+                        'cargo'                      => $credito->cargo,
+                        'cuota_comision'              => $cronograma_nuevo['cuota_comision'],
+                        'cuota_cargo'                => $cronograma_nuevo['cuota_cargo'],
+                        'cuota_comisioncargo'        => $cronograma_nuevo['cuota_comisioncargo'],
+                        'total_comision'             => $cronograma_nuevo['total_comision'],
+                        'total_cargo'                => $cronograma_nuevo['total_cargo'],
+                        'total_comisioncargo'        => $cronograma_nuevo['total_comisioncargo'],
+
+                        'clienteidentificacion'      => $credito->clienteidentificacion,
+                        'clientenombrecompleto'      => $credito->clientenombrecompleto,
+                        'avalidentificacion'         => $credito->avalidentificacion,
+                        'avalnombrecompleto'         => $credito->avalnombrecompleto,
+                        'credito_prendatario'        => $credito->credito_prendatario,
+                        'tipo_operacion_credito'     => $credito->tipo_operacion_credito,
+                        'forma_credito'              => $credito->forma_credito,
+                        'tipo_destino_credito'       => $credito->tipo_destino_credito,
+                        'modalidad_credito'          => $credito->modalidad_credito,
+                        'asesoridentificacion'       => $credito->asesoridentificacion,
+                        'asesornombrecompleto'       => $credito->asesornombrecompleto,
+                        'participarconyugue_titular' => $credito->participarconyugue_titular,
+                        'participarconyugue_aval'    => $credito->participarconyugue_aval,
+
+                        'idcliente'                  => $credito->idcliente,
+                        'idaval'                     => $credito->idaval!=''?$credito->idaval:0,
+                        'idcredito_prendatario'      => $credito->idcredito_prendatario,
+                        'idtipo_operacion_credito'   => $credito->idtipo_operacion_credito,
+                        'idforma_credito'            => $credito->idforma_credito,
+                        'idtipo_destino_credito'     => $credito->idtipo_destino_credito,
+                        'idcredito_refinanciado'     => $credito->id,
+                        // No es un refinanciamiento (mismas condiciones, no renegociacion): se deja
+                        // en Regular. 'idcredito_refinanciado' sigue apuntando al credito viejo para
+                        // trazabilidad; la combinacion idmodalidad_credito=1 + idcredito_refinanciado>0
+                        // es exclusiva de este flujo (el refinanciamiento real siempre usa 4) y se usa
+                        // para mostrar "REGULAR (pago anticipado)" en el cronograma.
+                        'idmodalidad_credito'        => 1, // Regular (pago anticipado)
+                        'fecha'                      => Carbon::now(),
+                        'idasesor'                   => $credito->idasesor,
+                        'estado'                     => 'DESEMBOLSADO',
+                        'idevaluacion'               => 1,
+                        'idestadocredito'            => 1,
+                        'idtienda'                   => $idtienda,
+                        'idestadorefinanciamiento'   => 1,
+                    ]);
+
+                    foreach($cronograma_nuevo['cronograma'] as $value){
+                        DB::table('credito_cronograma')->insert([
+                            'numerocuota'     => $value['numero'],
+                            'fechapago'       => $value['fechanormal'],
+                            'capital'         => $value['saldo'],
+                            'amortizacion'    => $value['amortizacion'],
+                            'interes'         => $value['interes'],
+                            'cuotapagar'      => $value['cuota'],
+                            'cuota_real'      => $value['cuotafinal'],
+                            'resto_redondeo'  => 0,
+                            'comision'        => $value['comision'],
+                            'cargo'           => $value['cargo'],
+                            'comision_cargo'  => $value['comisioncargo'],
+                            'idestadocredito_cronograma' => 1,
+                            'idcredito'       => $idcreditonuevo,
+                        ]);
+                    }
+
+                    $garantias_viejo = DB::table('credito_garantia')
+                        ->where('idcredito', $request->idcredito)
+                        ->whereIn('tipo', ['CLIENTE','AVAL'])
+                        ->get();
+                    foreach($garantias_viejo as $g){
+                        DB::table('credito_garantia')->insert([
+                            'garantias_codigo'              => $g->garantias_codigo,
+                            'garantias_tipogarantia'        => $g->garantias_tipogarantia,
+                            'garantias_serie_motor_partida' => $g->garantias_serie_motor_partida,
+                            'garantias_chasis'              => $g->garantias_chasis,
+                            'garantias_modelo_tipo'         => $g->garantias_modelo_tipo,
+                            'garantias_otros'               => $g->garantias_otros,
+                            'garantias_color'               => $g->garantias_color,
+                            'garantias_fabricacion'         => $g->garantias_fabricacion,
+                            'garantias_compra'              => $g->garantias_compra,
+                            'garantias_placa'               => $g->garantias_placa,
+                            'garantias_accesorio_doc'       => $g->garantias_accesorio_doc,
+                            'garantias_detalle_garantia'    => $g->garantias_detalle_garantia,
+                            'garantias_metodo_valorizacion' => $g->garantias_metodo_valorizacion,
+                            'garantias_tipo_joyas'          => $g->garantias_tipo_joyas,
+                            'garantias_tarifario_joya'      => $g->garantias_tarifario_joya,
+                            'garantias_descuento_joya'      => $g->garantias_descuento_joya,
+                            'garantias_valorizacion_descuento' => $g->garantias_valorizacion_descuento,
+                            'clienteidentificacion'         => $g->clienteidentificacion,
+                            'clientenombrecompleto'         => $g->clientenombrecompleto,
+                            'garantias_noprendarias_tipo_garantia_noprendaria'     => $g->garantias_noprendarias_tipo_garantia_noprendaria,
+                            'garantias_noprendarias_subtipo_garantia_noprendaria'  => $g->garantias_noprendarias_subtipo_garantia_noprendaria,
+                            'garantias_noprendarias_subtipo_garantia_noprendaria_ii' => $g->garantias_noprendarias_subtipo_garantia_noprendaria_ii,
+                            'idtipo_garantia_noprendaria'   => $g->idtipo_garantia_noprendaria,
+                            'idcredito'                     => $idcreditonuevo,
+                            'idgarantias'                   => $g->idgarantias,
+                            'idcliente'                     => $g->idcliente,
+                            'idgarantias_noprendarias'      => $g->idgarantias_noprendarias,
+                            'descripcion'                   => $g->descripcion,
+                            'valor_mercado'                 => $g->valor_mercado,
+                            'valor_comercial'               => $g->valor_comercial,
+                            'valor_realizacion'             => $g->valor_realizacion,
+                            'tipo'                          => $g->tipo,
+                            'idestadoentrega'               => 1,
+                        ]);
+                    }
+
+                    return $idcreditonuevo;
+                });
+                $monto_credito_nuevo = (float) $cronograma['saldo_capital'];
+            }
+
             return response()->json([
                 'resultado' => 'CORRECTO',
                 'mensaje'   => 'Se ha registrado correctamente.',
@@ -822,6 +1067,8 @@ class CobranzacuotaController extends Controller
                 'entregargarantia'   => $request->entregargarantia,
                 'count_creditopendiente'   => $count_creditopendiente,
                 'select_numerocuota_fin' => $cronograma['select_ultimacuotacancelada'],
+                'idcredito_nuevo' => $idcredito_nuevo,
+                'monto_credito_nuevo' => number_format($monto_credito_nuevo, 2, '.', ''),
             ]);
         }
         elseif($request->input('view') == 'congelarcredito') {
@@ -959,7 +1206,15 @@ class CobranzacuotaController extends Controller
               )
               ->orderBy('credito.id','desc')
               ->first();
-          
+
+          // idmodalidad_credito=1 (Regular) + idcredito_refinanciado>0 solo lo produce el flujo de
+          // "pago anticipado" con generacion de credito nuevo (el refinanciamiento real siempre
+          // guarda idmodalidad_credito=4), asi que se distingue con el sufijo en el cronograma.
+          $modalidad_credito_label = $credito->modalidad_credito_nombre;
+          if($credito->idmodalidad_credito==1 && $credito->idcredito_refinanciado>0){
+              $modalidad_credito_label = $credito->modalidad_credito_nombre.' (pago anticipado)';
+          }
+
           $numero_cuotas = '<option></option>';
           $datosprestamos = '';
           $idcredito = '';
@@ -998,7 +1253,7 @@ class CobranzacuotaController extends Controller
                         <td>'.$credito->nombreproductocredito.'</td>
                         <td style="background-color: #efefef !important;"><b>Modalidad de C</b></td>
                         <td><b>:</b></td>
-                        <td>'.$credito->modalidad_credito_nombre.'</td>
+                        <td>'.$modalidad_credito_label.'</td>
                         <td style="background-color: #efefef !important;"><b>F. Desembolso</b></td>
                         <td><b>:</b></td>
                         <td colspan="3">'.date_format(date_create($credito->fecha_desembolso),'d-m-Y').'</td>
@@ -1038,6 +1293,9 @@ class CobranzacuotaController extends Controller
               $disabled = 'disabled';
           }
           elseif($request->tipo=='pagototal'){
+              $disabled = 'disabled';
+          }
+          elseif($request->tipo=='pagoanticipado'){
               $disabled = 'disabled';
           }
           
@@ -1095,7 +1353,8 @@ class CobranzacuotaController extends Controller
               $total_descuento_compensatorio,
               ($request->acuenta!=null?$request->acuenta:0)-$request->cobrar_cargo,
               1,
-              'detalle_cobranza'
+              'detalle_cobranza',
+              pago_anticipado: $request->tipo=='pagoanticipado'
           );
           
           $html = '<table class="table" id="table-detalle-cronograma">

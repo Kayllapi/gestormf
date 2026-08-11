@@ -21,8 +21,8 @@
         @elseif($opcion_pago=='PAGO_TOTAL')
         @endif
 
-        if(resultado.idcredito_nuevo){
-            alert('Crédito cancelado. Se generó el crédito nuevo N° '+resultado.idcredito_nuevo+' por S/. '+resultado.monto_credito_nuevo+'.');
+        if(resultado.nuevo_cronograma_generado){
+            alert('Se generó un nuevo cronograma por el saldo restante de S/. '+resultado.monto_saldo_nuevo+' (desde la cuota N° '+resultado.numerocuota_desde_nuevo+').');
         }
 
         show_data_credito(resultado.idcredito);
@@ -33,7 +33,7 @@
             resultado.idestadocredito,
             resultado.entregargarantia
         );
-          
+
         $('#close_opcionescredito').click();
       },this)">
     <div class="modal-header">
@@ -118,12 +118,12 @@
               <input type="text" value="0.00" class="form-control campo_moneda" id="cobrar_vuelto" disabled>
             </div>
             @if($opcion_pago=='PAGO_ANTICIPADO')
-            <div class="col-sm-12 mt-1">
-                <label class="chk" style="color: #ad222f;font-weight: bold;">
-                  <input type="checkbox" id="generarcreditonuevo">
-                  <span class="checkmark"></span> ¿Generar crédito nuevo por la diferencia?
-                </label>
-            </div>
+              <div class="col-sm-12 mt-1">
+                  <label class="chk" style="color: #ad222f;font-weight: bold;">
+                    <input type="checkbox" id="generarcreditonuevo">
+                    <span class="checkmark"></span> ¿Generar crédito nuevo por la diferencia?
+                  </label>
+              </div>
             @endif
           @else
               <input type="hidden" id="cobrar_total_pagar" value="0.00">

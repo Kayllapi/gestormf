@@ -66,7 +66,7 @@ class GarantiarecogerController extends Controller
                   'credito.fecha_cancelado as fecha_cancelado',
                   'credito.monto_solicitado as monto_solicitado',
               )
-              ->orderBy('credito_garantia.fecha_cancelado','asc')
+              ->orderBy('credito.fecha_cancelado','asc')
              ->get();
           
           $html = '<table class="table table-striped table-hover" id="table-lista-credito">

@@ -1178,6 +1178,29 @@ function calculos_en_pagoacuenta($idtienda=0, $idcredito=0, $numerocuota=0, $dat
         $credito = $datos['credito'];
         $primera_cuota_pendiente = $datos['primera_cuota_pendiente'];
         $credito_cronograma = $datos['credito_cronograma'];
+        // Credito sin ninguna cuota pendiente (todo pagado/cancelado): no hay nada que
+        // acumular como pago a cuenta.
+        if (!$credito_cronograma) {
+            return [
+                'pagoacuenta_custo_comp_mora' => '0.00',
+                'tenencia_pagoacuenta' => '0.00',
+                'penalidad_pagoacuenta' => '0.00',
+                'compensatorio_pagoacuenta' => '0.00',
+                'saldo_capital' => '0.00',
+                'saldo_interes' => '0.00',
+                'saldo_cargo' => '0.00',
+                'saldo_recau' => '0.00',
+                'saldo_custodia' => '0.00',
+                'saldo_compensatorio' => '0.00',
+                'saldo_moratorio' => '0.00',
+                'total_pagoacuenta_custodia' => '0.00',
+                'total_pagoacuenta_compensatorio' => '0.00',
+                'total_pagoacuenta_moratorio' => '0.00',
+                'calculo_diario_saldo_custodia' => '0.00',
+                'calculo_diario_saldo_compensatorio' => '0.00',
+                'calculo_diario_saldo_moratorio' => '0.00',
+            ];
+        }
         $credito_adelanto = $datos['credito_adelanto'];
         $tenencia_descuento = $datos['tenencia_descuento'];
         $dias_maximo_penalidad = $datos['dias_maximo_penalidad'];
@@ -1364,6 +1387,13 @@ function calculos_en_pagoacuenta_de_primera_cuota_pendiente($idtienda=0, $idcred
         $credito = $datos['credito'];
         $primera_cuota_pendiente = $datos['primera_cuota_pendiente'];
         $credito_cronograma = $datos['credito_cronograma'];
+        if (!$credito_cronograma) {
+            return [
+                'tenencia_pagoacuenta' => '0.00',
+                'penalidad_pagoacuenta' => '0.00',
+                'compensatorio_pagoacuenta' => '0.00',
+            ];
+        }
         $credito_adelanto = $datos['credito_adelanto'];
         $tenencia_descuento = $datos['tenencia_descuento'];
         $dias_maximo_penalidad = $datos['dias_maximo_penalidad'];
@@ -1484,6 +1514,13 @@ function calculos_en_pagoacuenta_aumento_diario($idtienda=0, $idcredito=0, $nume
         $credito = $datos['credito'];
         $primera_cuota_pendiente = $datos['primera_cuota_pendiente'];
         $credito_cronograma = $datos['credito_cronograma'];
+        if (!$credito_cronograma) {
+            return [
+                'tenencia_pagoacuenta' => '0.00',
+                'penalidad_pagoacuenta' => '0.00',
+                'compensatorio_pagoacuenta' => '0.00',
+            ];
+        }
         $credito_adelanto = $datos['credito_adelanto'];
         $tenencia_descuento = $datos['tenencia_descuento'];
         $dias_maximo_penalidad = $datos['dias_maximo_penalidad'];
@@ -1604,6 +1641,18 @@ function calculos_en_pagoacuenta_saldos($idtienda=0, $idcredito=0, $numerocuota=
         $credito = $datos['credito'];
         $primera_cuota_pendiente = $datos['primera_cuota_pendiente'];
         $credito_cronograma = $datos['credito_cronograma'];
+        if (!$credito_cronograma) {
+            return [
+                'capital' => '0.00',
+                'interes' => '0.00',
+                'cargo' => '0.00',
+                'recaudo' => '0.00',
+                'custodia' => '0.00',
+                'compensatorio' => '0.00',
+                'moratorio' => '0.00',
+                'total' => '0.00',
+            ];
+        }
 
         $ca_sumas = DB::table('credito_adelanto')
             ->where('idcredito', $credito->id)

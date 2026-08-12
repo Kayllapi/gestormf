@@ -124,6 +124,11 @@
                     <span class="checkmark"></span> ¿Generar crédito nuevo por la diferencia?
                   </label>
               </div>
+              <div class="col-sm-12 mt-1">
+                  <button type="button" class="btn btn-outline-primary btn-sm" onclick="previsualizar_pagoanticipado()">
+                      <i class="fa-solid fa-eye"></i> Previsualizar cronograma
+                  </button>
+              </div>
             @endif
           @else
               <input type="hidden" id="cobrar_total_pagar" value="0.00">
@@ -238,6 +243,12 @@ input::selection {
       @endif
   }
   
+  function previsualizar_pagoanticipado(){
+      var monto = parseFloat($('#cobrar_total_recibido').val()) || 0;
+      var generarcreditonuevo = $('#generarcreditonuevo').is(':checked') ? 'on' : '';
+      modal({ route:'{{ url('backoffice/'.$tienda->id.'/cobranzacuota') }}/{{$credito->id}}/edit?view=preview_pagoanticipado&monto='+monto+'&generarcreditonuevo='+generarcreditonuevo, size: 'modal-lg' });
+  }
+
   $("#idformapago").on("change", function(e) {
     
       $('#cont_banco_n').css('display','none');

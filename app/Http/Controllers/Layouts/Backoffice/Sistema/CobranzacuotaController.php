@@ -2047,6 +2047,79 @@ class CobranzacuotaController extends Controller
                 'opcion_pago' => $request->opcion_pago,
             ]);
         }
+        elseif($request->input('view') == 'preview_pagoanticipado') {
+            // Previsualizacion del "Pago Anticipado": ejecuta exactamente el mismo codigo que
+            // store() correria (misma cascada de cuotas, mismo descuento de interes/cargo, misma
+            // renovacion de cronograma si se marca "generar credito nuevo"), pero dentro de una
+            // transaccion que SIEMPRE se revierte al final -no se persiste nada-. Se reutiliza
+            // store() en vez de reimplementar el calculo aca, para que la previsualizacion nunca
+            // se desincronice de lo que realmente pasa al cobrar.
+            $monto = (float) ($request->monto ?? 0);
+            if ($monto <= 0) {
+                return view(sistema_view().'/cobranzacuota/preview_pagoanticipado', [
+                    'error' => 'Ingrese un monto mayor a 0.00 para previsualizar.',
+                ]);
+            }
+
+            DB::beginTransaction();
+            try {
+                $estados_antes = DB::table('credito_cronograma')
+                    ->where('idcredito', $id)
+                    ->pluck('idestadocredito_cronograma', 'numerocuota');
+
+                $simRequest = new Request();
+                $simRequest->merge([
+                    'view' => 'registrar',
+                    'idcredito' => $id,
+                    'numerocuota' => 0,
+                    'opcion_pago' => 'PAGO_ANTICIPADO',
+                    'cobrar_total_pagar' => $monto,
+                    'cobrar_total_recibido' => $monto,
+                    'cobrar_vuelto' => 0,
+                    'idformapago' => 1,
+                    'idbanco' => 0,
+                    'numerooperacion' => '',
+                    'idcredito_cargo_ids' => '[]',
+                    'idcredito_descuentocuota' => 0,
+                    'generarcreditonuevo' => $request->generarcreditonuevo,
+                    'entregargarantia' => '',
+                ]);
+
+                $resultado = json_decode($this->store($simRequest, $idtienda)->getContent(), true);
+
+                if (($resultado['resultado'] ?? '') !== 'CORRECTO') {
+                    return view(sistema_view().'/cobranzacuota/preview_pagoanticipado', [
+                        'error' => $resultado['mensaje'] ?? 'No se pudo calcular la previsualización.',
+                    ]);
+                }
+
+                $numerocuota_ultima_anterior = 0;
+                if (!empty($resultado['nuevo_cronograma_generado'])) {
+                    $numerocuota_ultima_anterior = (int) DB::table('credito_pagoanticipado_historial')
+                        ->where('idcredito', $id)
+                        ->orderBy('id', 'desc')
+                        ->value('numerocuota_ultima_anterior');
+                }
+
+                $cuotas = DB::table('credito_cronograma')
+                    ->where('idcredito', $id)
+                    ->orderBy('numerocuota')
+                    ->get();
+
+                $credito_despues = DB::table('credito')->where('id', $id)->first();
+
+                return view(sistema_view().'/cobranzacuota/preview_pagoanticipado', [
+                    'resultado' => $resultado,
+                    'cuotas' => $cuotas,
+                    'estados_antes' => $estados_antes,
+                    'numerocuota_ultima_anterior' => $numerocuota_ultima_anterior,
+                    'credito_despues' => $credito_despues,
+                    'monto' => $monto,
+                ]);
+            } finally {
+                DB::rollBack();
+            }
+        }
         elseif($request->input('view') == 'vistapreliminar'){
                 
 

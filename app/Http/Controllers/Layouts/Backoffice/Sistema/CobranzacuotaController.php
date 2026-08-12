@@ -405,6 +405,26 @@ class CobranzacuotaController extends Controller
                     pago_anticipado: $request->opcion_pago=='PAGO_ANTICIPADO'
                 );
 
+                // Pago Anticipado (Cancelacion Total): el monto ingresado debe alcanzar para
+                // cubrir TODAS las cuotas pendientes (con el descuento de interes/cargo ya
+                // aplicado arriba). Se valida ANTES de escribir nada en la BD: si alguna cuota
+                // pendiente no queda 'selected', el monto no alcanza.
+                if ($request->opcion_pago=='PAGO_ANTICIPADO' && $request->modalidad_pagoanticipado=='cancelacion_total') {
+                    $falta_cubrir = false;
+                    foreach ($cronograma['cronograma'] as $value) {
+                        if (in_array($value['idestadocredito_cronograma'], [1,3]) && $value['selected'] != 'selected') {
+                            $falta_cubrir = true;
+                            break;
+                        }
+                    }
+                    if ($falta_cubrir) {
+                        return response()->json([
+                            'resultado' => 'ERROR',
+                            'mensaje'   => 'El monto ingresado no cubre el saldo total del crédito. Para "Cancelación Total" el pago debe alcanzar para cubrir todas las cuotas pendientes.',
+                        ]);
+                    }
+                }
+
                 $credito_cobranzacuota = DB::table('credito_cobranzacuota')
                     ->orderBy('credito_cobranzacuota.codigo','desc')
                     ->limit(1)
@@ -812,7 +832,7 @@ class CobranzacuotaController extends Controller
                   ->where('credito_garantia.idestadoentrega',1)
                   ->count();
 
-            // ====== Pago Anticipado - Variante 2 ======
+            // ====== Pago Anticipado - Caso 2 (Reduccion de Cuota) ======
             // Ademas de aplicar el pago anticipado con descuento (arriba), si queda saldo de
             // capital sin cubrir se cierra el cronograma pendiente actual (misma tecnica de
             // siempre: cobranza tipo REFINANCIADO) y se genera un cronograma NUEVO para ese
@@ -826,7 +846,7 @@ class CobranzacuotaController extends Controller
             $nuevo_cronograma_generado = false;
             $monto_saldo_nuevo = 0;
             $numerocuota_desde_nuevo = 0;
-            if($request->opcion_pago=='PAGO_ANTICIPADO' && $request->generarcreditonuevo=='on' && (float)$cronograma['saldo_capital']>0){
+            if($request->opcion_pago=='PAGO_ANTICIPADO' && $request->modalidad_pagoanticipado=='reduccion_cuota' && (float)$cronograma['saldo_capital']>0){
                 $numerocuota_ultima_anterior = 0;
                 DB::transaction(function() use ($request, $credito, $idtienda, $cronograma, &$numerocuota_ultima_anterior) {
 
@@ -999,6 +1019,50 @@ class CobranzacuotaController extends Controller
                 $numerocuota_desde_nuevo = $numerocuota_ultima_anterior + 1;
             }
 
+            // ====== Pago Anticipado - Caso 1 (Reduccion de Plazo) ======
+            // Si tras aplicar el pago con descuento (arriba) quedan cuotas pendientes, se
+            // "comprime" el calendario: las cuotas que siguen pendientes conservan su monto
+            // (capital/interes/cargo) y su numerocuota, pero pasan a usar las primeras fechas
+            // del calendario ORIGINAL del credito (las que dejaron libres las cuotas ya
+            // pagadas), en vez de esperar a sus fechas originales. Asi el credito termina antes
+            // sin cambiar el monto de las cuotas restantes.
+            $plazo_reducido = false;
+            $fecha_ultimopago_nueva = null;
+            if($request->opcion_pago=='PAGO_ANTICIPADO' && $request->modalidad_pagoanticipado=='reduccion_plazo' && (float)$cronograma['saldo_capital']>0){
+                DB::transaction(function() use ($request, &$fecha_ultimopago_nueva) {
+
+                    // Calendario original completo (no cambia aunque ya se hayan comprimido
+                    // fechas antes: siempre se toma el orden vigente de numerocuota).
+                    $fechas_calendario = DB::table('credito_cronograma')
+                        ->where('idcredito', $request->idcredito)
+                        ->orderBy('numerocuota', 'asc')
+                        ->pluck('fechapago')
+                        ->values();
+
+                    $cuotas_pendientes = DB::table('credito_cronograma')
+                        ->where('idcredito', $request->idcredito)
+                        ->whereIn('idestadocredito_cronograma', [1,3])
+                        ->orderBy('numerocuota', 'asc')
+                        ->get();
+
+                    $nuevas_fechas = $fechas_calendario->take($cuotas_pendientes->count())->values();
+
+                    foreach ($cuotas_pendientes as $i => $cuota) {
+                        DB::table('credito_cronograma')
+                            ->whereId($cuota->id)
+                            ->update(['fechapago' => $nuevas_fechas[$i]]);
+                    }
+
+                    $fecha_ultimopago_nueva = $nuevas_fechas->last();
+
+                    DB::table('credito')->whereId($request->idcredito)->update([
+                        'fecha_primerpago' => $nuevas_fechas->first(),
+                        'fecha_ultimopago' => $fecha_ultimopago_nueva,
+                    ]);
+                });
+                $plazo_reducido = true;
+            }
+
             return response()->json([
                 'resultado' => 'CORRECTO',
                 'mensaje'   => 'Se ha registrado correctamente.',
@@ -1013,6 +1077,8 @@ class CobranzacuotaController extends Controller
                 'nuevo_cronograma_generado' => $nuevo_cronograma_generado,
                 'monto_saldo_nuevo' => number_format($monto_saldo_nuevo, 2, '.', ''),
                 'numerocuota_desde_nuevo' => $numerocuota_desde_nuevo,
+                'plazo_reducido' => $plazo_reducido,
+                'fecha_ultimopago_nueva' => $fecha_ultimopago_nueva ? date_format(date_create($fecha_ultimopago_nueva),'d-m-Y') : null,
             ]);
         }
         elseif($request->input('view') == 'congelarcredito') {
@@ -2049,11 +2115,11 @@ class CobranzacuotaController extends Controller
         }
         elseif($request->input('view') == 'preview_pagoanticipado') {
             // Previsualizacion del "Pago Anticipado": ejecuta exactamente el mismo codigo que
-            // store() correria (misma cascada de cuotas, mismo descuento de interes/cargo, misma
-            // renovacion de cronograma si se marca "generar credito nuevo"), pero dentro de una
-            // transaccion que SIEMPRE se revierte al final -no se persiste nada-. Se reutiliza
-            // store() en vez de reimplementar el calculo aca, para que la previsualizacion nunca
-            // se desincronice de lo que realmente pasa al cobrar.
+            // store() correria para la modalidad elegida (reduccion_plazo / reduccion_cuota /
+            // cancelacion_total), pero dentro de una transaccion que SIEMPRE se revierte al
+            // final -no se persiste nada-. Se reutiliza store() en vez de reimplementar el
+            // calculo aca, para que la previsualizacion nunca se desincronice de lo que
+            // realmente pasa al cobrar.
             $monto = (float) ($request->monto ?? 0);
             if ($monto <= 0) {
                 return view(sistema_view().'/cobranzacuota/preview_pagoanticipado', [
@@ -2066,6 +2132,10 @@ class CobranzacuotaController extends Controller
                 $estados_antes = DB::table('credito_cronograma')
                     ->where('idcredito', $id)
                     ->pluck('idestadocredito_cronograma', 'numerocuota');
+
+                $fechas_antes = DB::table('credito_cronograma')
+                    ->where('idcredito', $id)
+                    ->pluck('fechapago', 'numerocuota');
 
                 $simRequest = new Request();
                 $simRequest->merge([
@@ -2081,7 +2151,7 @@ class CobranzacuotaController extends Controller
                     'numerooperacion' => '',
                     'idcredito_cargo_ids' => '[]',
                     'idcredito_descuentocuota' => 0,
-                    'generarcreditonuevo' => $request->generarcreditonuevo,
+                    'modalidad_pagoanticipado' => $request->modalidad,
                     'entregargarantia' => '',
                 ]);
 
@@ -2112,6 +2182,7 @@ class CobranzacuotaController extends Controller
                     'resultado' => $resultado,
                     'cuotas' => $cuotas,
                     'estados_antes' => $estados_antes,
+                    'fechas_antes' => $fechas_antes,
                     'numerocuota_ultima_anterior' => $numerocuota_ultima_anterior,
                     'credito_despues' => $credito_despues,
                     'monto' => $monto,

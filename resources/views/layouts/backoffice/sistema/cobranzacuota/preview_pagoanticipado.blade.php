@@ -12,12 +12,17 @@
     <div class="alert alert-info" style="font-size: 13px;">
         Monto simulado: <b>S/. {{ number_format($monto, 2, '.', '') }}</b>.
         @if(!empty($resultado['nuevo_cronograma_generado']))
-            Se generaría un <b>nuevo cronograma</b> por el saldo restante de
-            <b>S/. {{ $resultado['monto_saldo_nuevo'] }}</b>,
+            <b>Reducción de Cuota:</b> se generaría un <b>nuevo cronograma</b> por el saldo
+            restante de <b>S/. {{ $resultado['monto_saldo_nuevo'] }}</b>,
             desde la cuota N° <b>{{ $resultado['numerocuota_desde_nuevo'] }}</b>.
+        @elseif(!empty($resultado['plazo_reducido']))
+            <b>Reducción de Plazo:</b> las cuotas restantes conservan su monto, pero se
+            adelantan sus fechas; el crédito terminaría el
+            <b>{{ $resultado['fecha_ultimopago_nueva'] }}</b>.
         @else
-            El pago no genera un cronograma nuevo (no se marcó "generar crédito nuevo por la
-            diferencia", o el monto ingresado alcanza a cubrir todas las cuotas pendientes).
+            El pago cubre las cuotas seleccionadas sin generar cambios adicionales al
+            cronograma (si eligió "Cancelación Total", esto significa que el crédito quedaría
+            completamente cancelado).
         @endif
         <br>
         <span style="color:#6c757d;">Esta es solo una previsualización, no se ha guardado nada.</span>
@@ -39,6 +44,7 @@
         @foreach($cuotas as $c)
             @php
                 $estado_antes = $estados_antes[$c->numerocuota] ?? null;
+                $fecha_antes = $fechas_antes[$c->numerocuota] ?? null;
                 $es_cuota_nueva = $numerocuota_ultima_anterior > 0 && $c->numerocuota > $numerocuota_ultima_anterior;
                 if ($es_cuota_nueva) {
                     $label = 'CRONOGRAMA NUEVO';
@@ -46,6 +52,9 @@
                 } elseif ($estado_antes == 1 && $c->idestadocredito_cronograma == 2) {
                     $label = 'SE CANCELA CON ESTE PAGO';
                     $color = '#d1e7dd';
+                } elseif ($fecha_antes && $fecha_antes != $c->fechapago) {
+                    $label = 'FECHA REPROGRAMADA (antes: '.date_format(date_create($fecha_antes),'d-m-Y').')';
+                    $color = '#cfe2ff';
                 } elseif ($c->idestadocredito_cronograma == 2) {
                     $label = 'YA PAGADA/CANCELADA';
                     $color = '#efefef';

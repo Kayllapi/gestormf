@@ -24,6 +24,9 @@
         if(resultado.nuevo_cronograma_generado){
             alert('Se generó un nuevo cronograma por el saldo restante de S/. '+resultado.monto_saldo_nuevo+' (desde la cuota N° '+resultado.numerocuota_desde_nuevo+').');
         }
+        if(resultado.plazo_reducido){
+            alert('Se redujo el plazo del crédito. Las cuotas restantes ahora vencen antes; la última cuota queda para el '+resultado.fecha_ultimopago_nueva+'.');
+        }
 
         show_data_credito(resultado.idcredito);
 
@@ -118,11 +121,13 @@
               <input type="text" value="0.00" class="form-control campo_moneda" id="cobrar_vuelto" disabled>
             </div>
             @if($opcion_pago=='PAGO_ANTICIPADO')
-              <div class="col-sm-12 mt-1">
-                  <label class="chk" style="color: #ad222f;font-weight: bold;">
-                    <input type="checkbox" id="generarcreditonuevo">
-                    <span class="checkmark"></span> ¿Generar crédito nuevo por la diferencia?
-                  </label>
+              <label class="col-sm-12 col-form-label" style="font-weight:bold;">Modalidad</label>
+              <div class="col-sm-12">
+                <select id="modalidad_pagoanticipado" class="form-control">
+                    <option value="reduccion_plazo">Pago anticipado (Reducción de Plazo)</option>
+                    <option value="reduccion_cuota">Pago anticipado (Reducción de Cuota)</option>
+                    <option value="cancelacion_total">Pago anticipado (Cancelación Total)</option>
+                </select>
               </div>
               <div class="col-sm-12 mt-1">
                   <button type="button" class="btn btn-outline-primary btn-sm" onclick="previsualizar_pagoanticipado()">
@@ -245,8 +250,8 @@ input::selection {
   
   function previsualizar_pagoanticipado(){
       var monto = parseFloat($('#cobrar_total_recibido').val()) || 0;
-      var generarcreditonuevo = $('#generarcreditonuevo').is(':checked') ? 'on' : '';
-      modal({ route:'{{ url('backoffice/'.$tienda->id.'/cobranzacuota') }}/{{$credito->id}}/edit?view=preview_pagoanticipado&monto='+monto+'&generarcreditonuevo='+generarcreditonuevo, size: 'modal-lg' });
+      var modalidad = $('#modalidad_pagoanticipado').val();
+      modal({ route:'{{ url('backoffice/'.$tienda->id.'/cobranzacuota') }}/{{$credito->id}}/edit?view=preview_pagoanticipado&monto='+monto+'&modalidad='+modalidad, size: 'modal-lg' });
   }
 
   $("#idformapago").on("change", function(e) {

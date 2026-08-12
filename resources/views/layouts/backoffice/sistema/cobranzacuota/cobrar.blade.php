@@ -86,9 +86,9 @@
               <div class="col-sm-12">
                 <select id="modalidad_pagoanticipado" class="form-control">
                     <option></option>
-                    <option value="reduccion_plazo">1. Pago anticipado (Reducción de Plazo)</option>
-                    <option value="reduccion_cuota">2. Pago anticipado (Reducción de Cuota)</option>
-                    <option value="cancelacion_total">3. Pago anticipado (Cancelación Total)</option>
+                    <option value="reduccion_plazo">1. Pago anticipado Parcial (con Reducción de Plazo)</option>
+                    <option value="reduccion_cuota">2. Pago anticipado Parcial (con Reducción de Cuota)</option>
+                    <option value="cancelacion_total">3. Pago anticipado Total (Cancelación)</option>
                 </select>
               </div>
               <div class="col-sm-12 mt-1">

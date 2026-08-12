@@ -124,9 +124,10 @@
               <label class="col-sm-12 col-form-label" style="font-weight:bold;">Modalidad</label>
               <div class="col-sm-12">
                 <select id="modalidad_pagoanticipado" class="form-control">
-                    <option value="reduccion_plazo">Pago anticipado (Reducción de Plazo)</option>
-                    <option value="reduccion_cuota">Pago anticipado (Reducción de Cuota)</option>
-                    <option value="cancelacion_total">Pago anticipado (Cancelación Total)</option>
+                    <option></option>
+                    <option value="reduccion_plazo">1. Pago anticipado (Reducción de Plazo)</option>
+                    <option value="reduccion_cuota">2. Pago anticipado (Reducción de Cuota)</option>
+                    <option value="cancelacion_total">3. Pago anticipado (Cancelación Total)</option>
                 </select>
               </div>
               <div class="col-sm-12 mt-1">
@@ -210,6 +211,7 @@ input::selection {
   valida_input_vacio();
   sistema_select2({ input:'#idformapago', val: 1 });
   sistema_select2({ input:'#idbanco' });
+  sistema_select2({ input:'#modalidad_pagoanticipado' });
   
   $("#cobrar_total_recibido").select();
   

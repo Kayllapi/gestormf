@@ -336,6 +336,12 @@ class CobranzacuotaController extends Controller
                             'mensaje'   => 'El "Pago a Cuenta" debe ser menor ó igual al "Dinero Recibido".'
                         ]);
                     }
+                    if($request->opcion_pago=='PAGO_ANTICIPADO' && !in_array($request->modalidad_pagoanticipado, ['reduccion_plazo','reduccion_cuota','cancelacion_total'])){
+                        return response()->json([
+                            'resultado' => 'ERROR',
+                            'mensaje'   => 'Debe seleccionar una modalidad de pago anticipado.'
+                        ]);
+                    }
                 }else{
                     if($request->cobrar_cargo<=0){
                         return response()->json([

@@ -1,44 +1,5 @@
-<form action="javascript:;" 
-      onsubmit="callback({
-          route: '{{ url('backoffice/'.$tienda->id.'/cobranzacuota') }}',
-          method: 'POST',
-          data:{
-              view: 'registrar',
-              idcredito: {{$credito->id}},
-              numerocuota: {{$numerocuota}},
-              opcion_pago: '{{$opcion_pago}}',
-              idcredito_cargo: {{$idcredito_cargo}},
-              idcredito_descuentocuota: {{$idcredito_descuentocuota}}
-          }
-      },
-      function(resultado){
-        @if($opcion_pago=='PAGO_CUOTA')
-        pagocuota();
-        @elseif($opcion_pago=='PAGO_ACUENTA')
-        pagoacuenta();
-        @elseif($opcion_pago=='PAGO_ANTICIPADO')
-        pagoanticipado();
-        @elseif($opcion_pago=='PAGO_TOTAL')
-        @endif
-
-        if(resultado.nuevo_cronograma_generado){
-            alert('Se generó un nuevo cronograma por el saldo restante de S/. '+resultado.monto_saldo_nuevo+' (desde la cuota N° '+resultado.numerocuota_desde_nuevo+').');
-        }
-        if(resultado.plazo_reducido){
-            alert('Se redujo el plazo del crédito. Las cuotas restantes ahora vencen antes; la última cuota queda para el '+resultado.fecha_ultimopago_nueva+'.');
-        }
-
-        show_data_credito(resultado.idcredito);
-
-        // sigue mostrando el modal
-        ver_opciones(
-            resultado.idcobranzacuota,
-            resultado.idestadocredito,
-            resultado.entregargarantia
-        );
-
-        $('#close_opcionescredito').click();
-      },this)">
+<form action="javascript:;"
+      onsubmit="return enviar_cobro(this)">
     <div class="modal-header">
         <h5 class="modal-title">COBRAR</h5>
         <button type="button" class="btn-close" id="close_opcionescredito" onclick="cerrarventana()" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -215,6 +176,59 @@ input::selection {
   
   $("#cobrar_total_recibido").select();
   
+  function enviar_cobro(thisForm){
+      @if($opcion_pago=='PAGO_ANTICIPADO')
+      if($('#modalidad_pagoanticipado').val()==''){
+          let mensaje = 'Debe seleccionar una modalidad de pago anticipado.';
+          modal({ route:'{{ url('backoffice/'.$tienda->id.'/inicio/create?view=alerta') }}&mensaje='+mensaje, size: 'modal-sm' });
+          return false;
+      }
+      @endif
+
+      callback({
+          route: '{{ url('backoffice/'.$tienda->id.'/cobranzacuota') }}',
+          method: 'POST',
+          data:{
+              view: 'registrar',
+              idcredito: {{$credito->id}},
+              numerocuota: {{$numerocuota}},
+              opcion_pago: '{{$opcion_pago}}',
+              idcredito_cargo: {{$idcredito_cargo}},
+              idcredito_descuentocuota: {{$idcredito_descuentocuota}}
+          }
+      },
+      function(resultado){
+        @if($opcion_pago=='PAGO_CUOTA')
+        pagocuota();
+        @elseif($opcion_pago=='PAGO_ACUENTA')
+        pagoacuenta();
+        @elseif($opcion_pago=='PAGO_ANTICIPADO')
+        pagoanticipado();
+        @elseif($opcion_pago=='PAGO_TOTAL')
+        @endif
+
+        if(resultado.nuevo_cronograma_generado){
+            alert('Se generó un nuevo cronograma por el saldo restante de S/. '+resultado.monto_saldo_nuevo+' (desde la cuota N° '+resultado.numerocuota_desde_nuevo+').');
+        }
+        if(resultado.plazo_reducido){
+            alert('Se redujo el plazo del crédito. Las cuotas restantes ahora vencen antes; la última cuota queda para el '+resultado.fecha_ultimopago_nueva+'.');
+        }
+
+        show_data_credito(resultado.idcredito);
+
+        // sigue mostrando el modal
+        ver_opciones(
+            resultado.idcobranzacuota,
+            resultado.idestadocredito,
+            resultado.entregargarantia
+        );
+
+        $('#close_opcionescredito').click();
+      }, thisForm);
+
+      return false;
+  }
+
   function cerrarventana(){
         @if($opcion_pago=='PAGO_CUOTA')
         //pagocuota();

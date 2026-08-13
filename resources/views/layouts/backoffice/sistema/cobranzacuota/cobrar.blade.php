@@ -103,7 +103,7 @@
                   </div>
               </div>
               <div class="col-sm-12 mt-1">
-                  <button type="button" class="btn btn-outline-primary btn-sm" onclick="previsualizar_pagoanticipado()">
+                  <button type="button" class="btn btn-primary btn-sm" onclick="previsualizar_pagoanticipado()">
                       <i class="fa-solid fa-eye"></i> Previsualizar cronograma
                   </button>
               </div>

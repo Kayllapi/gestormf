@@ -2059,9 +2059,11 @@ class CobranzacuotaController extends Controller
             // calculo aca, para que la previsualizacion nunca se desincronice de lo que
             // realmente pasa al cobrar.
             $monto = (float) ($request->monto ?? 0);
+            $modalidad = $request->modalidad;
             if ($monto <= 0) {
                 return view(sistema_view().'/cobranzacuota/preview_pagoanticipado', [
                     'error' => 'Ingrese un monto mayor a 0.00 para previsualizar.',
+                    'modalidad' => $modalidad,
                 ]);
             }
 
@@ -2103,6 +2105,7 @@ class CobranzacuotaController extends Controller
                 if (($resultado['resultado'] ?? '') !== 'CORRECTO') {
                     return view(sistema_view().'/cobranzacuota/preview_pagoanticipado', [
                         'error' => $resultado['mensaje'] ?? 'No se pudo calcular la previsualización.',
+                        'modalidad' => $modalidad,
                     ]);
                 }
 
@@ -2121,6 +2124,7 @@ class CobranzacuotaController extends Controller
                     'montos_antes' => $montos_antes,
                     'credito_despues' => $credito_despues,
                     'monto' => $monto,
+                    'modalidad' => $modalidad,
                 ]);
             } finally {
                 DB::rollBack();

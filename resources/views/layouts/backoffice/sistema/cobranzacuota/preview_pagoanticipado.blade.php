@@ -1,5 +1,13 @@
+@php
+    $titulos_modalidad = [
+        'reduccion_plazo' => 'Previsualización - Pago Anticipado Parcial (con Reducción de Plazo)',
+        'reduccion_cuota' => 'Previsualización - Pago Anticipado Parcial (con Reducción de Cuota)',
+        'cancelacion_total' => 'Previsualización - Pago Anticipado Total (Cancelación)',
+    ];
+    $titulo_modal = $titulos_modalidad[$modalidad ?? ''] ?? 'Previsualización - Pago Anticipado';
+@endphp
 <div class="modal-header">
-    <h5 class="modal-title">Previsualización - Pago Anticipado</h5>
+    <h5 class="modal-title">{{ $titulo_modal }}</h5>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
 <div class="modal-body">

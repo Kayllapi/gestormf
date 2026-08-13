@@ -40,7 +40,7 @@
     @if($modalidad == 'cancelacion_total')
         <table class="table table-sm table-bordered" style="width:100%;max-width:420px;">
             <tr>
-                <td>Total (sin descuento)</td>
+                <td>Total de deuda</td>
                 <td style="text-align:right;">S/. {{ number_format($total_sin_descuento, 2, '.', '') }}</td>
             </tr>
             <tr>

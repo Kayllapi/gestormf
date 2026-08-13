@@ -592,7 +592,11 @@ function select_cronograma(
             if ($pago_anticipado && $fechapago > $fecha_hoy) {
                 // Misma cuota con el descuento de interes+cargo+comision ya aplicado: el umbral
                 // de cobertura debe coincidir con lo que realmente se le va a cobrar al cliente.
-                $total_totalcuotareal = $total_totalcuotareal - $interes - $cargo - $comision;
+                // number_format evita arrastrar el error de precision de punto flotante de la resta
+                // (p.ej. 36.09-0.75-1.90-6.20 = 27.239999999999998), que hacia que el umbral quedara
+                // una fraccion de centavo por encima del monto redondeado que realmente se le pide
+                // al cliente, rechazando pagos que si alcanzan a cubrir la cuota.
+                $total_totalcuotareal = (float) number_format($total_totalcuotareal - $interes - $cargo - $comision, 2, '.', '');
             }
             if($pago_acuenta>=$total_totalcuotareal && $pago_acuenta>0){
                 $pago_acuenta = $pago_acuenta-$total_totalcuotareal;

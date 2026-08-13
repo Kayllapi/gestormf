@@ -1867,8 +1867,60 @@ class CobranzacuotaController extends Controller
           return array(
             'html' => $html
           );
-          
+
         }
+    }
+
+    // Totales de referencia para el "Pago Anticipado - Cancelacion Total": el "total de deuda"
+    // se calcula EXACTAMENTE igual que el "TOTAL A PAGAR" de la tabla principal de
+    // cobranzacuota (mismo calculo que usa "Pago Total": todas las cuotas pendientes, sin el
+    // descuento de pago anticipado), reutilizando show_cobranzacuota_cronograma() para que
+    // nunca se desincronice de lo que el cajero ve ahi. El "saldo" (el minimo real que exige la
+    // validacion del store() para Cancelacion Total) se calcula corriendo la MISMA cascada de
+    // pagos real (select_cronograma con un monto grande para que alcance a cubrir todo) en vez
+    // de una formula aparte: una formula aparte no tenia en cuenta, por ejemplo, que una cuota
+    // ya tuviera un adelanto previo aplicado, y terminaba mostrando un saldo mas bajo del que
+    // realmente hacia falta. El "descuento" es solo informativo: la diferencia entre ambos.
+    private function _totalesCancelacionTotal($idtienda, $idcredito)
+    {
+        $totalDeudaRequest = new Request();
+        $totalDeudaRequest->merge([
+            'idcredito' => $idcredito,
+            'numerocuota' => 1000,
+            'tipo' => 'pagototal',
+            'acuenta' => 0,
+            'cobrar_cargo' => 0,
+        ]);
+        $totalDeudaResultado = $this->show($totalDeudaRequest, $idtienda, 'show_cobranzacuota_cronograma');
+        $total_deuda = (float) $totalDeudaResultado['totalapagar'];
+
+        // El descuento de Pago Anticipado es, cuota por cuota, exactamente su interes+cargo+comision
+        // cuando su fecha aun no vence (fecha > hoy) — asi lo aplica select_cronograma() de forma
+        // autocontenida (ver bloque "Pago Anticipado" ahi mismo). Se calcula directo de credito_cronograma
+        // en vez de reusar select_cronograma() con un pago_acuenta ficticio: ese pago_acuenta ficticio
+        // se mezcla con los adelantos ya aplicados a la primera cuota pendiente (credito_adelanto) y
+        // termina sumando ese adelanto DOS VECES (una en $total_deuda, que ya lo neteo, y otra en el
+        // "saldo" resultante de la cascada), inflando el saldo mostrado por encima de lo que la
+        // validacion real (store()) exige.
+        $fecha_hoy = new \DateTime(Carbon::now()->format('Y-m-d'));
+        $cuotasPendientes = DB::table('credito_cronograma')
+            ->where('idcredito', $idcredito)
+            ->whereIn('idestadocredito_cronograma', [1,3])
+            ->get();
+
+        $descuento = 0;
+        foreach ($cuotasPendientes as $c) {
+            $fechapago = new \DateTime($c->fechapago);
+            if ($fechapago > $fecha_hoy) {
+                $descuento += (float) $c->interes + (float) $c->cargo + (float) $c->comision;
+            }
+        }
+
+        return [
+            'total_deuda' => $total_deuda,
+            'descuento' => $descuento,
+            'saldo' => $total_deuda - $descuento,
+        ];
     }
 
     public function edit(Request $request, $idtienda, $id)
@@ -2039,24 +2091,16 @@ class CobranzacuotaController extends Controller
             // anterior => number_format($cronograma['select_pagar_totalcuota']+$total_cargo,2,'.','')
             $monto_totalapagar = $totalapagar;
 
-            // Para el select de "Pago Anticipado": cuanto haria falta pagar HOY para una
-            // Cancelacion Total, con el descuento de interes+cargo+comision de las cuotas
-            // futuras ya aplicado (mismo criterio que la previsualizacion), para que el cajero
-            // sepa el monto sin tener que abrir la previsualizacion primero.
+            // Para el select de "Pago Anticipado - Cancelacion Total": cuanto haria falta pagar
+            // HOY (total de deuda, igual al "TOTAL A PAGAR" de la tabla principal, menos el
+            // descuento de pago anticipado), para que el cajero sepa el monto sin tener que
+            // abrir la previsualizacion primero.
             $total_cancelacion_sin_descuento = 0;
             $total_cancelacion_descuento = 0;
             if($request->opcion_pago=='PAGO_ANTICIPADO'){
-                $fecha_hoy_cancelacion = Carbon::now()->startOfDay();
-                $cuotas_pendientes_cancelacion = DB::table('credito_cronograma')
-                    ->where('idcredito', $credito->id)
-                    ->whereIn('idestadocredito_cronograma', [1,3])
-                    ->get();
-                foreach($cuotas_pendientes_cancelacion as $cp){
-                    $total_cancelacion_sin_descuento += (float) $cp->cuota_real;
-                    if(Carbon::parse($cp->fechapago)->gt($fecha_hoy_cancelacion)){
-                        $total_cancelacion_descuento += (float) $cp->interes + (float) $cp->cargo + (float) $cp->comision;
-                    }
-                }
+                $totalesCancelacion = $this->_totalesCancelacionTotal($idtienda, $credito->id);
+                $total_cancelacion_sin_descuento = $totalesCancelacion['total_deuda'];
+                $total_cancelacion_descuento = $totalesCancelacion['descuento'];
             }
 
             return view(sistema_view().'/cobranzacuota/cobrar',[
@@ -2110,6 +2154,16 @@ class CobranzacuotaController extends Controller
                     ->get()
                     ->keyBy('numerocuota');
 
+                // Se calcula ANTES de simular el pago: para Cancelacion Total, despues de
+                // simular ya no quedarian cuotas pendientes que consultar.
+                $total_sin_descuento = 0;
+                $total_descuento = 0;
+                if ($modalidad == 'cancelacion_total') {
+                    $totalesCancelacion = $this->_totalesCancelacionTotal($idtienda, $id);
+                    $total_sin_descuento = $totalesCancelacion['total_deuda'];
+                    $total_descuento = $totalesCancelacion['descuento'];
+                }
+
                 $simRequest = new Request();
                 $simRequest->merge([
                     'view' => 'registrar',
@@ -2143,24 +2197,6 @@ class CobranzacuotaController extends Controller
                     ->get();
 
                 $credito_despues = DB::table('credito')->where('id', $id)->first();
-
-                // Para Cancelacion Total: desglose de cuanto se hubiera cobrado SIN el
-                // descuento de pago anticipado vs. cuanto se descuenta (interes+cargo+comision
-                // de las cuotas con fecha posterior a hoy) vs. el saldo que realmente se cobra.
-                $total_sin_descuento = 0;
-                $total_descuento = 0;
-                if ($modalidad == 'cancelacion_total') {
-                    $fecha_hoy = Carbon::now()->startOfDay();
-                    foreach ($montos_antes as $numerocuota => $m) {
-                        if (($estados_antes[$numerocuota] ?? null) == 1) {
-                            $total_sin_descuento += (float) $m->cuota_real;
-                            $fecha_cuota = Carbon::parse($fechas_antes[$numerocuota]);
-                            if ($fecha_cuota->gt($fecha_hoy)) {
-                                $total_descuento += (float) $m->interes + (float) $m->cargo + (float) $m->comision;
-                            }
-                        }
-                    }
-                }
 
                 return view(sistema_view().'/cobranzacuota/preview_pagoanticipado', [
                     'resultado' => $resultado,

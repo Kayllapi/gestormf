@@ -82,6 +82,10 @@
               <input type="text" value="0.00" class="form-control campo_moneda" id="cobrar_vuelto" disabled>
             </div>
             @if($opcion_pago=='PAGO_ANTICIPADO')
+              <div class="col-sm-12" id="alerta_monto_cancelacion" style="display:none;">
+                  <div class="alert alert-warning" style="font-size: 12px;padding:6px 10px;margin-bottom:4px;">
+                  </div>
+              </div>
               <label class="col-sm-12 col-form-label" style="font-weight:bold;">Modalidad</label>
               <div class="col-sm-12">
                 <select id="modalidad_pagoanticipado" class="form-control">
@@ -93,7 +97,7 @@
               </div>
               <div class="col-sm-12 mt-1" id="info_saldo_pagoanticipado" style="display:none;">
                   <div class="alert alert-info" style="font-size: 12px;padding:6px 10px;margin-bottom:0;">
-                      Total sin descuento: <b>S/. {{ number_format($total_cancelacion_sin_descuento, 2, '.', '') }}</b><br>
+                      Total de deuda: <b>S/. {{ number_format($total_cancelacion_sin_descuento, 2, '.', '') }}</b><br>
                       Descuento (cuotas futuras): <b>- S/. {{ number_format($total_cancelacion_descuento, 2, '.', '') }}</b><br>
                       Saldo total con descuento (si cancela todo hoy): <b>S/. {{ number_format($total_cancelacion_sin_descuento - $total_cancelacion_descuento, 2, '.', '') }}</b>
                   </div>
@@ -181,13 +185,29 @@ input::selection {
   sistema_select2({ input:'#idbanco' });
   sistema_select2({ input:'#modalidad_pagoanticipado' });
 
-  $('#modalidad_pagoanticipado').on('change', function(){
-      if($(this).val()!=''){
+  var saldoTotalConDescuentoCancelacion = {{ (float) $total_cancelacion_sin_descuento - (float) $total_cancelacion_descuento }};
+
+  function verificar_monto_cancelacion(){
+      var modalidad = $('#modalidad_pagoanticipado').val();
+      if(modalidad=='cancelacion_total'){
           $('#info_saldo_pagoanticipado').css('display','block');
+          var montoIngresado = parseFloat($('#cobrar_total_recibido').val()) || 0;
+          if(montoIngresado > saldoTotalConDescuentoCancelacion){
+              $('#alerta_monto_cancelacion .alert').text('El monto ingresado (S/. '+montoIngresado.toFixed(2)+') es MAYOR al saldo a pagar con descuento (S/. '+saldoTotalConDescuentoCancelacion.toFixed(2)+').');
+              $('#alerta_monto_cancelacion').css('display','block');
+          }else if(montoIngresado < saldoTotalConDescuentoCancelacion){
+              $('#alerta_monto_cancelacion .alert').text('El monto ingresado (S/. '+montoIngresado.toFixed(2)+') es MENOR al saldo a pagar con descuento (S/. '+saldoTotalConDescuentoCancelacion.toFixed(2)+').');
+              $('#alerta_monto_cancelacion').css('display','block');
+          }else{
+              $('#alerta_monto_cancelacion').css('display','none');
+          }
       }else{
           $('#info_saldo_pagoanticipado').css('display','none');
+          $('#alerta_monto_cancelacion').css('display','none');
       }
-  });
+  }
+
+  $('#modalidad_pagoanticipado').on('change', verificar_monto_cancelacion);
 
   $("#cobrar_total_recibido").select();
   
@@ -283,6 +303,7 @@ input::selection {
       cronograma({{$credito->id}},0,'pagoacuenta',cobrar_total_recibido);
       @elseif($opcion_pago=='PAGO_ANTICIPADO')
       cronograma({{$credito->id}},0,'pagoanticipado',cobrar_total_recibido);
+      verificar_monto_cancelacion();
       @endif
   }
   

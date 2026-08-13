@@ -18,7 +18,7 @@
     </div>
 @else
     <div class="alert alert-info" style="font-size: 13px;">
-        Monto simulado: <b>S/. {{ number_format($monto, 2, '.', '') }}</b>.
+        Monto a abonar: <b>S/. {{ number_format($monto, 2, '.', '') }}</b>.
         @if(!empty($resultado['cuota_reducida']))
             <b>Reducción de Cuota:</b> se recalcularían las cuotas pendientes sobre el saldo
             restante de <b>S/. {{ $resultado['monto_saldo_nuevo'] }}</b>; la nueva cuota sería de
@@ -37,6 +37,23 @@
         <span style="color:#6c757d;">Esta es solo una previsualización, no se ha guardado nada.</span>
     </div>
 
+    @if($modalidad == 'cancelacion_total')
+        <table class="table table-sm table-bordered" style="width:100%;max-width:420px;">
+            <tr>
+                <td>Total (sin descuento)</td>
+                <td style="text-align:right;">S/. {{ number_format($total_sin_descuento, 2, '.', '') }}</td>
+            </tr>
+            <tr>
+                <td>Descuento (Interés + Carg. x Cust. G./Ot. + Ss. Recau.)</td>
+                <td style="text-align:right;color:#198754;">- S/. {{ number_format($total_descuento, 2, '.', '') }}</td>
+            </tr>
+            <tr style="font-weight:bold;background-color:#f8f9fa;">
+                <td>Saldo a pagar (con descuento)</td>
+                <td style="text-align:right;">S/. {{ number_format($total_sin_descuento - $total_descuento, 2, '.', '') }}</td>
+            </tr>
+        </table>
+    @endif
+
     <table class="table table-sm" style="width:100%;">
         <thead>
             <tr>
@@ -45,6 +62,7 @@
                 <th>Capital</th>
                 <th>Interés</th>
                 <th>Cargo</th>
+                <th>Ss. Recau.</th>
                 <th>Cuota</th>
                 <th>Estado tras el pago</th>
             </tr>
@@ -59,6 +77,7 @@
                     $monto_antes->amortizacion != $c->amortizacion
                     || $monto_antes->interes != $c->interes
                     || $monto_antes->cargo != $c->cargo
+                    || $monto_antes->comision != $c->comision
                     || $monto_antes->cuota_real != $c->cuota_real
                 );
                 if ($estado_antes == 1 && $c->idestadocredito_cronograma == 2) {
@@ -84,6 +103,7 @@
                 <td>{{ $c->amortizacion }}</td>
                 <td>{{ $c->interes }}</td>
                 <td>{{ $c->cargo }}</td>
+                <td>{{ $c->comision }}</td>
                 <td>{{ $c->cuota_real }}</td>
                 <td><b>{{ $label }}</b></td>
             </tr>

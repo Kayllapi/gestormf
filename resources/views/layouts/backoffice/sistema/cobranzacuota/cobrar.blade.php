@@ -91,6 +91,13 @@
                     <option value="cancelacion_total">3. Pago anticipado Total (Cancelación)</option>
                 </select>
               </div>
+              <div class="col-sm-12 mt-1" id="info_saldo_pagoanticipado" style="display:none;">
+                  <div class="alert alert-info" style="font-size: 12px;padding:6px 10px;margin-bottom:0;">
+                      Total sin descuento: <b>S/. {{ number_format($total_cancelacion_sin_descuento, 2, '.', '') }}</b><br>
+                      Descuento (cuotas futuras): <b>- S/. {{ number_format($total_cancelacion_descuento, 2, '.', '') }}</b><br>
+                      Saldo total con descuento (si cancela todo hoy): <b>S/. {{ number_format($total_cancelacion_sin_descuento - $total_cancelacion_descuento, 2, '.', '') }}</b>
+                  </div>
+              </div>
               <div class="col-sm-12 mt-1">
                   <button type="button" class="btn btn-outline-primary btn-sm" onclick="previsualizar_pagoanticipado()">
                       <i class="fa-solid fa-eye"></i> Previsualizar cronograma
@@ -173,13 +180,28 @@ input::selection {
   sistema_select2({ input:'#idformapago', val: 1 });
   sistema_select2({ input:'#idbanco' });
   sistema_select2({ input:'#modalidad_pagoanticipado' });
-  
+
+  $('#modalidad_pagoanticipado').on('change', function(){
+      if($(this).val()!=''){
+          $('#info_saldo_pagoanticipado').css('display','block');
+      }else{
+          $('#info_saldo_pagoanticipado').css('display','none');
+      }
+  });
+
   $("#cobrar_total_recibido").select();
   
   function enviar_cobro(thisForm){
       @if($opcion_pago=='PAGO_ANTICIPADO')
       if($('#modalidad_pagoanticipado').val()==''){
           let mensaje = 'Debe seleccionar una modalidad de pago anticipado.';
+          modal({ route:'{{ url('backoffice/'.$tienda->id.'/inicio/create?view=alerta') }}&mensaje='+mensaje, size: 'modal-sm' });
+          return false;
+      }
+      var saldoTotalPendiente = {{ (float) $credito->total_pendientepago }};
+      var montoIngresado = parseFloat($('#cobrar_total_recibido').val()) || 0;
+      if(montoIngresado > saldoTotalPendiente){
+          let mensaje = 'El monto ingresado no puede superar el saldo total pendiente del crédito (S/. '+saldoTotalPendiente.toFixed(2)+').';
           modal({ route:'{{ url('backoffice/'.$tienda->id.'/inicio/create?view=alerta') }}&mensaje='+mensaje, size: 'modal-sm' });
           return false;
       }

@@ -348,6 +348,21 @@ class CobranzacuotaController extends Controller
                             'mensaje'   => 'El monto ingresado no puede superar el saldo total pendiente del crédito (S/. '.number_format($credito->total_pendientepago, 2, '.', '').').'
                         ]);
                     }
+                    // Cancelacion Total exige el monto EXACTO (ni mas ni menos): al ser una
+                    // cancelacion no tiene sentido dejar vuelto ni un saldo pendiente. Se compara
+                    // contra el mismo "saldo" (ya redondeado hacia arriba) que se le muestra al
+                    // cajero en el modal y en la previsualizacion, para que sean siempre el mismo numero.
+                    if($request->opcion_pago=='PAGO_ANTICIPADO' && $request->modalidad_pagoanticipado=='cancelacion_total'){
+                        $totalesCancelacion = $this->_totalesCancelacionTotal($idtienda, $request->idcredito);
+                        $montoIngresado = number_format((float)$request->cobrar_total_recibido, 2, '.', '');
+                        $montoExacto = number_format($totalesCancelacion['saldo'], 2, '.', '');
+                        if($montoIngresado != $montoExacto){
+                            return response()->json([
+                                'resultado' => 'ERROR',
+                                'mensaje'   => 'Para "Cancelación Total" debe ingresar el monto exacto: S/. '.$montoExacto.' (ingresó S/. '.$montoIngresado.').'
+                            ]);
+                        }
+                    }
                 }else{
                     if($request->cobrar_cargo<=0){
                         return response()->json([
@@ -416,26 +431,6 @@ class CobranzacuotaController extends Controller
                     'detalle_cobranza',
                     pago_anticipado: $request->opcion_pago=='PAGO_ANTICIPADO'
                 );
-
-                // Pago Anticipado (Cancelacion Total): el monto ingresado debe alcanzar para
-                // cubrir TODAS las cuotas pendientes (con el descuento de interes/cargo ya
-                // aplicado arriba). Se valida ANTES de escribir nada en la BD: si alguna cuota
-                // pendiente no queda 'selected', el monto no alcanza.
-                if ($request->opcion_pago=='PAGO_ANTICIPADO' && $request->modalidad_pagoanticipado=='cancelacion_total') {
-                    $falta_cubrir = false;
-                    foreach ($cronograma['cronograma'] as $value) {
-                        if (in_array($value['idestadocredito_cronograma'], [1,3]) && $value['selected'] != 'selected') {
-                            $falta_cubrir = true;
-                            break;
-                        }
-                    }
-                    if ($falta_cubrir) {
-                        return response()->json([
-                            'resultado' => 'ERROR',
-                            'mensaje'   => 'El monto ingresado no cubre el saldo total del crédito. Para "Cancelación Total" el pago debe alcanzar para cubrir todas las cuotas pendientes.',
-                        ]);
-                    }
-                }
 
                 $credito_cobranzacuota = DB::table('credito_cobranzacuota')
                     ->orderBy('credito_cobranzacuota.codigo','desc')
@@ -1916,10 +1911,20 @@ class CobranzacuotaController extends Controller
             }
         }
 
+        // El saldo se redondea siempre hacia ARRIBA (nunca hacia abajo): asi el monto exacto que
+        // se le exige al cliente para la Cancelacion Total nunca queda ni un centavo corto por
+        // errores de precision de punto flotante en la resta. El "descuento" se recalcula a partir
+        // de ese saldo ya redondeado para que Total = Descuento + Saldo siga cuadrando exacto en
+        // el desglose que se le muestra al cajero. Ademas se redondea al multiplo de S/.0.10 hacia
+        // arriba (no al centavo) para que sea un monto comodo de cobrar/pagar en efectivo.
+        $saldo_raw = round($total_deuda - $descuento, 2);
+        $saldo = ceil(($saldo_raw * 10) - 0.0001) / 10;
+        $descuento = round($total_deuda - $saldo, 2);
+
         return [
             'total_deuda' => $total_deuda,
             'descuento' => $descuento,
-            'saldo' => $total_deuda - $descuento,
+            'saldo' => $saldo,
         ];
     }
 

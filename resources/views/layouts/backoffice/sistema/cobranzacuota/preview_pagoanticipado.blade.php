@@ -48,7 +48,7 @@
                 <td style="text-align:right;color:#198754;">- S/. {{ number_format($total_descuento, 2, '.', '') }}</td>
             </tr>
             <tr style="font-weight:bold;background-color:#f8f9fa;">
-                <td>Saldo a pagar (con descuento)</td>
+                <td>Monto exacto a cancelar</td>
                 <td style="text-align:right;">S/. {{ number_format($total_sin_descuento - $total_descuento, 2, '.', '') }}</td>
             </tr>
         </table>

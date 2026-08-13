@@ -194,7 +194,7 @@ input::selection {
           var montoIngresado = parseFloat($('#cobrar_total_recibido').val()) || 0;
           if(montoIngresado.toFixed(2) != saldoTotalConDescuentoCancelacion.toFixed(2)){
               var diferencia = montoIngresado > saldoTotalConDescuentoCancelacion ? 'MAYOR' : 'MENOR';
-              $('#alerta_monto_cancelacion .alert').text('Monto ingresado (S/. '+montoIngresado.toFixed(2)+') es '+diferencia+' al monto de cancelación (S/. '+saldoTotalConDescuentoCancelacion.toFixed(2)+').');
+              $('#alerta_monto_cancelacion .alert').text('Monto ingresado (S/. '+montoIngresado.toFixed(2)+') es '+diferencia+' a la cancelación (S/. '+saldoTotalConDescuentoCancelacion.toFixed(2)+').');
               $('#alerta_monto_cancelacion').css('display','block');
           }else{
               $('#alerta_monto_cancelacion').css('display','none');

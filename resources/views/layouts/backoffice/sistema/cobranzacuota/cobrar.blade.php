@@ -99,7 +99,7 @@
                   <div class="alert alert-info" style="padding:6px 10px;margin-bottom:0;text-align:left;">
                       <b>Total de deuda</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : S/. {{ number_format($total_cancelacion_sin_descuento, 2, '.', '') }}<br>
                       <b>Descuento (cuotas futuras)</b> &nbsp;: S/. {{ number_format($total_cancelacion_descuento, 2, '.', '') }}<br>
-                      <b>Monto a cancelar</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : S/. {{ number_format($total_cancelacion_sin_descuento - $total_cancelacion_descuento, 2, '.', '') }}
+                      <span style="background-color: #dfdf79;"><b>Monto a cancelar</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : S/. {{ number_format($total_cancelacion_sin_descuento - $total_cancelacion_descuento, 2, '.', '') }}</span>
                   </div>
               </div>
               <div class="col-sm-12 mt-1">

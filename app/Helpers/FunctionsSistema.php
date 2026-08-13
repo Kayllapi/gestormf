@@ -315,17 +315,18 @@ function select_cronograma(
         $fechapago = new DateTime($value->fechapago);
         // ---
 
-        // Pago Anticipado (Variante 1): las cuotas ya vencidas (fecha anterior a hoy) se cobran
-        // completas; desde la cuota de hoy en adelante (fechas que aun no vencen) que el monto
-        // anticipado alcance a cubrir, se descuenta interes + cargo (custodia), solo se cobra
-        // capital. Se reutiliza el pool descuento_interes/descuento_cargo (mismo mecanismo que
-        // credito_descuentocuota) para que fluya por los bloques pagar/descontar de mas abajo
-        // sin duplicar logica.
+        // Pago Anticipado (Variante 1): las cuotas ya vencidas (fecha anterior o igual a hoy) se
+        // cobran completas; solo las cuotas con fecha POSTERIOR a hoy (aun no vencen) que el
+        // monto anticipado alcance a cubrir se descuentan interes + cargo (custodia) + comision
+        // (Ss. Recau.), y se cobra solo capital. Se reutiliza el pool descuento_interes/
+        // descuento_cargo/descuento_comision (mismo mecanismo que credito_descuentocuota) para
+        // que fluya por los bloques pagar/descontar de mas abajo sin duplicar logica.
         if ($pago_anticipado && $pago_acuenta > 0
             && ($value->idestadocredito_cronograma==1 || $value->idestadocredito_cronograma==3)
-            && $fechapago >= $fecha_hoy) {
+            && $fechapago > $fecha_hoy) {
             $descuento_interes += $interes;
             $descuento_cargo += $cargo;
+            $descuento_comision += $comision;
         }
         $interval = $fecha_hoy->diff($fechapago);
         $atraso_dias = 0;
@@ -588,10 +589,10 @@ function select_cronograma(
             } else {
                 $total_totalcuotareal = $value->cuota_real+$total_penalidad_real+$total_tenencia_real+$total_compensatorio_real;
             }
-            if ($pago_anticipado && $fechapago >= $fecha_hoy) {
-                // Misma cuota con el descuento de interes+cargo ya aplicado: el umbral de
-                // cobertura debe coincidir con lo que realmente se le va a cobrar al cliente.
-                $total_totalcuotareal = $total_totalcuotareal - $interes - $cargo;
+            if ($pago_anticipado && $fechapago > $fecha_hoy) {
+                // Misma cuota con el descuento de interes+cargo+comision ya aplicado: el umbral
+                // de cobertura debe coincidir con lo que realmente se le va a cobrar al cliente.
+                $total_totalcuotareal = $total_totalcuotareal - $interes - $cargo - $comision;
             }
             if($pago_acuenta>=$total_totalcuotareal && $pago_acuenta>0){
                 $pago_acuenta = $pago_acuenta-$total_totalcuotareal;

@@ -98,7 +98,7 @@
               <div class="col-sm-12 mt-1" id="info_saldo_pagoanticipado" style="display:none;">
                   <div class="alert alert-info" style="padding:6px 10px;margin-bottom:0;text-align:left;">
                       Total de deuda &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : <b>S/. {{ number_format($total_cancelacion_sin_descuento, 2, '.', '') }}</b><br>
-                      Descuento (cuotas futuras) &nbsp;: <b>- S/. {{ number_format($total_cancelacion_descuento, 2, '.', '') }}</b><br>
+                      Descuento (cuotas futuras) &nbsp;: <b>S/. {{ number_format($total_cancelacion_descuento, 2, '.', '') }}</b><br>
                       Monto a cancelar &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : <b>S/. {{ number_format($total_cancelacion_sin_descuento - $total_cancelacion_descuento, 2, '.', '') }}</b>
                   </div>
               </div>

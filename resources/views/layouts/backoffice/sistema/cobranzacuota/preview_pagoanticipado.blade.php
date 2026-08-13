@@ -11,10 +11,11 @@
 @else
     <div class="alert alert-info" style="font-size: 13px;">
         Monto simulado: <b>S/. {{ number_format($monto, 2, '.', '') }}</b>.
-        @if(!empty($resultado['nuevo_cronograma_generado']))
-            <b>Reducción de Cuota:</b> se generaría un <b>nuevo cronograma</b> por el saldo
-            restante de <b>S/. {{ $resultado['monto_saldo_nuevo'] }}</b>,
-            desde la cuota N° <b>{{ $resultado['numerocuota_desde_nuevo'] }}</b>.
+        @if(!empty($resultado['cuota_reducida']))
+            <b>Reducción de Cuota:</b> se recalcularían las cuotas pendientes sobre el saldo
+            restante de <b>S/. {{ $resultado['monto_saldo_nuevo'] }}</b>; la nueva cuota sería de
+            aproximadamente <b>S/. {{ $resultado['cuota_pago_nueva'] }}</b> (mismas fechas, mismo
+            N° de cuotas).
         @elseif(!empty($resultado['plazo_reducido']))
             <b>Reducción de Plazo:</b> las cuotas restantes conservan su monto, pero se
             adelantan sus fechas; el crédito terminaría el
@@ -45,13 +46,19 @@
             @php
                 $estado_antes = $estados_antes[$c->numerocuota] ?? null;
                 $fecha_antes = $fechas_antes[$c->numerocuota] ?? null;
-                $es_cuota_nueva = $numerocuota_ultima_anterior > 0 && $c->numerocuota > $numerocuota_ultima_anterior;
-                if ($es_cuota_nueva) {
-                    $label = 'CRONOGRAMA NUEVO';
-                    $color = '#cfe2ff';
-                } elseif ($estado_antes == 1 && $c->idestadocredito_cronograma == 2) {
+                $monto_antes = $montos_antes[$c->numerocuota] ?? null;
+                $monto_cambio = $monto_antes && (
+                    $monto_antes->amortizacion != $c->amortizacion
+                    || $monto_antes->interes != $c->interes
+                    || $monto_antes->cargo != $c->cargo
+                    || $monto_antes->cuota_real != $c->cuota_real
+                );
+                if ($estado_antes == 1 && $c->idestadocredito_cronograma == 2) {
                     $label = 'SE CANCELA CON ESTE PAGO';
                     $color = '#d1e7dd';
+                } elseif ($monto_cambio) {
+                    $label = 'MONTO RECALCULADO (cuota antes: '.number_format($monto_antes->cuota_real, 2, '.', '').')';
+                    $color = '#cfe2ff';
                 } elseif ($fecha_antes && $fecha_antes != $c->fechapago) {
                     $label = 'FECHA REPROGRAMADA (antes: '.date_format(date_create($fecha_antes),'d-m-Y').')';
                     $color = '#cfe2ff';

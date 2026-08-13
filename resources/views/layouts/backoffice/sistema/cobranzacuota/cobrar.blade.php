@@ -207,8 +207,8 @@ input::selection {
         @elseif($opcion_pago=='PAGO_TOTAL')
         @endif
 
-        if(resultado.nuevo_cronograma_generado){
-            alert('Se generó un nuevo cronograma por el saldo restante de S/. '+resultado.monto_saldo_nuevo+' (desde la cuota N° '+resultado.numerocuota_desde_nuevo+').');
+        if(resultado.cuota_reducida){
+            alert('Se recalcularon las cuotas pendientes sobre el saldo restante de S/. '+resultado.monto_saldo_nuevo+'. La nueva cuota es de aproximadamente S/. '+resultado.cuota_pago_nueva+'.');
         }
         if(resultado.plazo_reducido){
             alert('Se redujo el plazo del crédito. Las cuotas restantes ahora vencen antes; la última cuota queda para el '+resultado.fecha_ultimopago_nueva+'.');

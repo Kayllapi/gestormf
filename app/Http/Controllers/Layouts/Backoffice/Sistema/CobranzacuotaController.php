@@ -840,86 +840,35 @@ class CobranzacuotaController extends Controller
 
             // ====== Pago Anticipado - Caso 2 (Reduccion de Cuota) ======
             // Ademas de aplicar el pago anticipado con descuento (arriba), si queda saldo de
-            // capital sin cubrir se cierra el cronograma pendiente actual (misma tecnica de
-            // siempre: cobranza tipo REFINANCIADO) y se genera un cronograma NUEVO para ese
-            // saldo, pero sobre el MISMO credito/cuenta -no se crea un credito nuevo-. Las
-            // cuotas nuevas continuan la numeracion (no se reinicia en 1: credito_adelanto,
-            // credito_descuentocuota y el extorno asumen numerocuota unico por credito) y las
-            // condiciones anteriores (tasa, cuotas, montos, fechas) se guardan en
+            // capital sin cubrir se reparte ese saldo entre las MISMAS cuotas que ya estaban
+            // pendientes: no se cierra nada con una cobranza REFINANCIADO ni se agregan cuotas
+            // nuevas -a diferencia de como funcionaba antes-, solo se recalculan los montos
+            // (capital/interes/cargo/comision) de esas cuotas, dejando intactos su numerocuota
+            // y su fecha. Las condiciones anteriores (tasa, montos) se guardan en
             // credito_pagoanticipado_historial antes de sobreescribirlas, para no perder la
-            // foto historica del credito original. Como es el mismo credito, las garantias no
+            // foto historica del credito original y para poder seguir mostrando el sufijo
+            // "(pago anticipado)" en el cronograma. Como es el mismo credito, las garantias no
             // se tocan: siguen respaldando la misma cuenta.
-            $nuevo_cronograma_generado = false;
+            $cuota_reducida = false;
             $monto_saldo_nuevo = 0;
-            $numerocuota_desde_nuevo = 0;
+            $cuota_pago_nueva = 0;
             if($request->opcion_pago=='PAGO_ANTICIPADO' && $request->modalidad_pagoanticipado=='reduccion_cuota' && (float)$cronograma['saldo_capital']>0){
-                $numerocuota_ultima_anterior = 0;
-                DB::transaction(function() use ($request, $credito, $idtienda, $cronograma, &$numerocuota_ultima_anterior) {
+                DB::transaction(function() use ($request, $credito, $idtienda, $cronograma, &$cuota_pago_nueva) {
 
-                    $numerocuota_ultima_anterior = (int) DB::table('credito_cronograma')
+                    // 1) Cuotas que se van a recalcular: las que siguen pendientes despues del
+                    // pago aplicado arriba (mismo numerocuota, misma fecha).
+                    $cuotas_pendientes = DB::table('credito_cronograma')
                         ->where('idcredito', $request->idcredito)
-                        ->max('numerocuota');
+                        ->whereIn('idestadocredito_cronograma', [1,3])
+                        ->orderBy('numerocuota', 'asc')
+                        ->get();
 
-                    // 1) Cerrar lo que quedo pendiente del cronograma actual
-                    $codigo_refinancia = DB::table('credito_cobranzacuota')->orderBy('codigo','desc')->limit(1)->value('codigo');
-                    $idcredito_cobranzacuota_refinancia = DB::table('credito_cobranzacuota')->insertGetId([
-                        'fecharegistro' => Carbon::now(),
-                        'codigo' => ($codigo_refinancia?:0)+1,
-                        'total_pagar' => $cronograma['select_totalcuota'],
-                        'total_recibido' => $cronograma['select_totalcuota'],
-                        'vuelto' => 0,
-                        'numerooperacion' => '',
-                        'banco' => '',
-                        'cuenta' => '',
-                        'proximo_vencimiento' => '',
-                        'pago_cuota' => '',
-                        'pago_diasatraso' => '',
-                        'opcion_pago' => 'REFINANCIADO',
-                        'estadocargo' => '',
-                        'cobrar_cargo' => '0.00',
-                        'total_amortizacion' => $cronograma['select_amortizacion'],
-                        'total_interes' => $cronograma['select_interes'],
-                        'total_comision' => $cronograma['select_comision'],
-                        'total_cargo' => $cronograma['select_cargo'],
-                        'total_cuota' => $cronograma['select_cuota'],
-                        'total_tenencia' => $cronograma['select_tenencia'],
-                        'total_penalidad' => $cronograma['select_penalidad'],
-                        'total_compensatorio' => $cronograma['select_compensatorio'],
-                        'total_totalcuota' => $cronograma['select_totalcuota'],
-                        'idcredito' => $request->idcredito,
-                        'idcajero' => Auth::user()->id,
-                        'idformapago' => 0,
-                        'idbanco' => 0,
-                        'idestadocredito_cobranzacuota' => 1,
-                        'idestadoextorno' => 0,
-                        'idtienda' => $idtienda,
-                        'idestado' => 1,
-                    ]);
-
-                    foreach($cronograma['cronograma'] as $value){
-                        if($value['selected']=='selected'){
-                            DB::table('credito_cronograma')
-                                ->whereId($value['id'])
-                                ->update([
-                                    'pagar_amortizacion' => $value['pagar_amortizacion'],
-                                    'pagar_interes' => $value['pagar_interes'],
-                                    'pagar_comision' => $value['pagar_comision'],
-                                    'pagar_cargo' => $value['pagar_cargo'],
-                                    'pagar_cuota' => $value['pagar_cuota'],
-                                    'pagar_tenencia' => $value['pagar_tenencia'],
-                                    'pagar_penalidad' => $value['pagar_penalidad'],
-                                    'pagar_compensatorio' => $value['pagar_compensatorio'],
-                                    'pagar_totalcuota' => $value['pagar_totalcuota'],
-                                    'idcredito_cobranzacuota' => $idcredito_cobranzacuota_refinancia,
-                                    'idestadocredito_cronograma' => 2,
-                                    'idestadocronograma_pago' => 2,
-                                ]);
-                        }
-                    }
-
-                    // 2) Calcular el cronograma nuevo para el saldo restante
+                    // 2) Calcular la nueva distribucion capital/interes/cargo para el saldo
+                    // restante, usando la MISMA cantidad de cuotas que ya estaban pendientes
+                    // (las fechas de genera_cronograma() se descartan, se usan las que ya tenia
+                    // cada cuota).
                     $montonuevo = (float) $cronograma['saldo_capital'];
-                    $cuotasnuevo = (int) $cronograma['select_numerocuota'];
+                    $cuotasnuevo = $cuotas_pendientes->count();
 
                     $frecuenciaDiasMap = [1=>26, 2=>4, 3=>2, 4=>1];
                     $dias = $frecuenciaDiasMap[$credito->idforma_pago_credito];
@@ -941,6 +890,7 @@ class CobranzacuotaController extends Controller
                         $credito->comision,
                         $credito->cargo
                     );
+                    $cuota_pago_nueva = $cronograma_nuevo['cuota_pago'];
 
                     // 3) Guardar la foto historica de las condiciones ANTERIORES del credito,
                     // antes de sobreescribirlas en el paso 5.
@@ -970,44 +920,40 @@ class CobranzacuotaController extends Controller
                         'fecha_primerpago' => $credito->fecha_primerpago,
                         'fecha_ultimopago' => $credito->fecha_ultimopago,
                         'saldo_capital_trasladado' => $montonuevo,
-                        'numerocuota_ultima_anterior' => $numerocuota_ultima_anterior,
-                        'numerocuota_desde_nuevo' => $numerocuota_ultima_anterior + 1,
+                        'numerocuota_ultima_anterior' => $cuotas_pendientes->first()->numerocuota - 1,
+                        'numerocuota_desde_nuevo' => $cuotas_pendientes->first()->numerocuota,
                         'idcredito' => $request->idcredito,
-                        'idcredito_cobranzacuota' => $idcredito_cobranzacuota_refinancia,
+                        'idcredito_cobranzacuota' => 0,
                         'idresponsable' => Auth::user()->id,
                         'idtienda' => $idtienda,
                         'idestado' => 1,
                     ]);
 
-                    // 4) Insertar las cuotas del cronograma nuevo, continuando la numeracion
-                    foreach($cronograma_nuevo['cronograma'] as $value){
-                        DB::table('credito_cronograma')->insert([
-                            'numerocuota'     => $numerocuota_ultima_anterior + $value['numero'],
-                            'fechapago'       => $value['fechanormal'],
-                            'capital'         => $value['saldo'],
-                            'amortizacion'    => $value['amortizacion'],
-                            'interes'         => $value['interes'],
-                            'cuotapagar'      => $value['cuota'],
-                            'cuota_real'      => $value['cuotafinal'],
-                            'resto_redondeo'  => 0,
-                            'comision'        => $value['comision'],
-                            'cargo'           => $value['cargo'],
-                            'comision_cargo'  => $value['comisioncargo'],
-                            'idestadocredito_cronograma' => 1,
-                            'idcredito'       => $request->idcredito,
-                        ]);
+                    // 4) Actualizar los montos de las MISMAS cuotas pendientes (fecha y
+                    // numerocuota intactos).
+                    foreach ($cuotas_pendientes as $i => $cuota) {
+                        $value = $cronograma_nuevo['cronograma'][$i];
+                        DB::table('credito_cronograma')
+                            ->whereId($cuota->id)
+                            ->update([
+                                'capital'         => $value['saldo'],
+                                'amortizacion'    => $value['amortizacion'],
+                                'interes'         => $value['interes'],
+                                'cuotapagar'      => $value['cuota'],
+                                'cuota_real'      => $value['cuotafinal'],
+                                'comision'        => $value['comision'],
+                                'cargo'           => $value['cargo'],
+                                'comision_cargo'  => $value['comisioncargo'],
+                            ]);
                     }
 
-                    // 5) Actualizar el credito (misma fila/cuenta) con las condiciones del
-                    // cronograma nuevo
+                    // 5) Actualizar el credito (misma fila/cuenta/cuotas/fechas) con los
+                    // montos nuevos.
                     DB::table('credito')->whereId($request->idcredito)->update([
                         'monto_solicitado'    => $montonuevo,
                         'saldo_pendientepago' => $montonuevo,
                         'total_pendientepago' => $cronograma_nuevo['total_cuotafinal'],
                         'cuota_pago'          => $cronograma_nuevo['cuota_pago'],
-                        'fecha_primerpago'    => $cronograma_nuevo['fechainicio'],
-                        'fecha_ultimopago'    => $cronograma_nuevo['ultimafecha'],
-                        'cuotas'              => $numerocuota_ultima_anterior + $cuotasnuevo,
                         'tasa_tip'            => $tasa_tip_nuevo,
                         'interes_total'       => $cronograma_nuevo['total_interes'],
                         'total_pagar'         => $cronograma_nuevo['total_cuotafinal'],
@@ -1020,9 +966,8 @@ class CobranzacuotaController extends Controller
                         'total_comisioncargo' => $cronograma_nuevo['total_comisioncargo'],
                     ]);
                 });
-                $nuevo_cronograma_generado = true;
+                $cuota_reducida = true;
                 $monto_saldo_nuevo = (float) $cronograma['saldo_capital'];
-                $numerocuota_desde_nuevo = $numerocuota_ultima_anterior + 1;
             }
 
             // ====== Pago Anticipado - Caso 1 (Reduccion de Plazo) ======
@@ -1080,9 +1025,9 @@ class CobranzacuotaController extends Controller
                 'entregargarantia'   => $request->entregargarantia,
                 'count_creditopendiente'   => $count_creditopendiente,
                 'select_numerocuota_fin' => $cronograma['select_ultimacuotacancelada'],
-                'nuevo_cronograma_generado' => $nuevo_cronograma_generado,
+                'cuota_reducida' => $cuota_reducida,
                 'monto_saldo_nuevo' => number_format($monto_saldo_nuevo, 2, '.', ''),
-                'numerocuota_desde_nuevo' => $numerocuota_desde_nuevo,
+                'cuota_pago_nueva' => number_format($cuota_pago_nueva, 2, '.', ''),
                 'plazo_reducido' => $plazo_reducido,
                 'fecha_ultimopago_nueva' => $fecha_ultimopago_nueva ? date_format(date_create($fecha_ultimopago_nueva),'d-m-Y') : null,
             ]);
@@ -1398,21 +1343,8 @@ class CobranzacuotaController extends Controller
               <tbody>';
 
           
-          // Si el credito tuvo un "Pago Anticipado - Variante 2", el cronograma anterior a esa
-          // renovacion (numerocuota <= numerocuota_ultima_anterior) ya quedo resuelto (pagado o
-          // cancelado por la cobranza REFINANCIADO); en la tabla solo se muestra el cronograma
-          // vigente (el mas reciente).
-          $numerocuota_ultima_anterior_pagoanticipado = (int) DB::table('credito_pagoanticipado_historial')
-              ->where('idcredito', $request->idcredito)
-              ->orderBy('id', 'desc')
-              ->value('numerocuota_ultima_anterior');
-
           $primera_cuota_pendiente = 0;
           foreach($cronograma['cronograma'] as $value){
-
-              if($numerocuota_ultima_anterior_pagoanticipado > 0 && $value['numerocuota'] <= $numerocuota_ultima_anterior_pagoanticipado){
-                  continue;
-              }
 
               if($value['idestadocredito_cronograma']==1 && $primera_cuota_pendiente==0){
                   $primera_cuota_pendiente = $value['numerocuota'];
@@ -2143,6 +2075,11 @@ class CobranzacuotaController extends Controller
                     ->where('idcredito', $id)
                     ->pluck('fechapago', 'numerocuota');
 
+                $montos_antes = DB::table('credito_cronograma')
+                    ->where('idcredito', $id)
+                    ->get()
+                    ->keyBy('numerocuota');
+
                 $simRequest = new Request();
                 $simRequest->merge([
                     'view' => 'registrar',
@@ -2169,14 +2106,6 @@ class CobranzacuotaController extends Controller
                     ]);
                 }
 
-                $numerocuota_ultima_anterior = 0;
-                if (!empty($resultado['nuevo_cronograma_generado'])) {
-                    $numerocuota_ultima_anterior = (int) DB::table('credito_pagoanticipado_historial')
-                        ->where('idcredito', $id)
-                        ->orderBy('id', 'desc')
-                        ->value('numerocuota_ultima_anterior');
-                }
-
                 $cuotas = DB::table('credito_cronograma')
                     ->where('idcredito', $id)
                     ->orderBy('numerocuota')
@@ -2189,7 +2118,7 @@ class CobranzacuotaController extends Controller
                     'cuotas' => $cuotas,
                     'estados_antes' => $estados_antes,
                     'fechas_antes' => $fechas_antes,
-                    'numerocuota_ultima_anterior' => $numerocuota_ultima_anterior,
+                    'montos_antes' => $montos_antes,
                     'credito_despues' => $credito_despues,
                     'monto' => $monto,
                 ]);

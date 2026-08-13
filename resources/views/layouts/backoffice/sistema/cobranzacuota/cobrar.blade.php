@@ -83,7 +83,7 @@
             </div>
             @if($opcion_pago=='PAGO_ANTICIPADO')
               <div class="col-sm-12" id="alerta_monto_cancelacion" style="display:none;">
-                  <div class="alert alert-warning" style="font-size: 12px;padding:6px 10px;margin-bottom:4px;">
+                  <div class="alert alert-danger" style="padding:6px 10px;margin-bottom:4px;">
                   </div>
               </div>
               <label class="col-sm-12 col-form-label" style="font-weight:bold;">Modalidad</label>
@@ -96,7 +96,7 @@
                 </select>
               </div>
               <div class="col-sm-12 mt-1" id="info_saldo_pagoanticipado" style="display:none;">
-                  <div class="alert alert-info" style="font-size: 12px;padding:6px 10px;margin-bottom:0;">
+                  <div class="alert alert-info" style="padding:6px 10px;margin-bottom:0;">
                       Total de deuda: <b>S/. {{ number_format($total_cancelacion_sin_descuento, 2, '.', '') }}</b><br>
                       Descuento (cuotas futuras): <b>- S/. {{ number_format($total_cancelacion_descuento, 2, '.', '') }}</b><br>
                       Monto exacto a cancelar hoy: <b>S/. {{ number_format($total_cancelacion_sin_descuento - $total_cancelacion_descuento, 2, '.', '') }}</b> (debe ingresar este monto, ni más ni menos)
@@ -194,7 +194,7 @@ input::selection {
           var montoIngresado = parseFloat($('#cobrar_total_recibido').val()) || 0;
           if(montoIngresado.toFixed(2) != saldoTotalConDescuentoCancelacion.toFixed(2)){
               var diferencia = montoIngresado > saldoTotalConDescuentoCancelacion ? 'MAYOR' : 'MENOR';
-              $('#alerta_monto_cancelacion .alert').text('El monto ingresado (S/. '+montoIngresado.toFixed(2)+') es '+diferencia+' al monto exacto de cancelación (S/. '+saldoTotalConDescuentoCancelacion.toFixed(2)+'). Para "Cancelación Total" el monto debe ser exacto, ni más ni menos.');
+              $('#alerta_monto_cancelacion .alert').text('El monto ingresado (S/. '+montoIngresado.toFixed(2)+') es '+diferencia+' al monto exacto de cancelación (S/. '+saldoTotalConDescuentoCancelacion.toFixed(2)+').');
               $('#alerta_monto_cancelacion').css('display','block');
           }else{
               $('#alerta_monto_cancelacion').css('display','none');

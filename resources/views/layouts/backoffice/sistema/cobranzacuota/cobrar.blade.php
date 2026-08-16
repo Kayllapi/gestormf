@@ -106,18 +106,18 @@
                           <td style="text-align:left;"><b>Descuento (cuotas futuras)</b></td>
                           <td style="text-align:right;">S/. {{ number_format($total_cancelacion_descuento, 2, '.', '') }}</td>
                       </tr>
-                      <tr style="background-color: #e5edf7;">
+                      <tr style="background-color: #efefef;">
                           <td style="text-align:left;"><b>Monto a cancelar</b></td>
                           <td style="text-align:right;"><b>S/. {{ number_format($total_cancelacion_saldo, 2, '.', '') }}</b></td>
                       </tr>
                   </table>
                 </div>
               </div>
-              <div class="col-sm-12 mt-1">
+                <div class="col-sm-12 mt-1 text-end">
                   <button type="button" class="btn btn-primary btn-sm" onclick="previsualizar_pagoanticipado()">
-                      <i class="fa-solid fa-eye"></i> Previsualizar cronograma
+                    <i class="fa-solid fa-eye"></i> Previsualizar cronograma
                   </button>
-              </div>
+                </div>
             @endif
           @else
               <input type="hidden" id="cobrar_total_pagar" value="0.00">

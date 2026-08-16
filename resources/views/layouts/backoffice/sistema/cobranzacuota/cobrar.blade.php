@@ -95,21 +95,23 @@
                     <option value="cancelacion_total">3. Pago anticipado Total (Cancelación)</option>
                 </select>
               </div>
-              <div class="col-sm-12 mt-1 px-4 py-2" id="info_saldo_pagoanticipado" style="display:none;">
+              <div class="col-sm-12 mt-1" id="info_saldo_pagoanticipado" style="display:none;">
+                <div class="alert alert-info" style="padding:6px 10px">
                   <table class="table table-sm table-bordered" style="margin-bottom:0;border-color: transparent !important;">
                       <tr>
-                          <td><b>Total de deuda</b></td>
+                          <td style="text-align:left;"><b>Total de deuda</b></td>
                           <td style="text-align:right;">S/. {{ number_format($total_cancelacion_sin_descuento, 2, '.', '') }}</td>
                       </tr>
                       <tr>
-                          <td><b>Descuento (cuotas futuras)</b></td>
+                          <td style="text-align:left;"><b>Descuento (cuotas futuras)</b></td>
                           <td style="text-align:right;">S/. {{ number_format($total_cancelacion_descuento, 2, '.', '') }}</td>
                       </tr>
                       <tr style="background-color: #e5edf7;">
-                          <td><b>Monto a cancelar</b></td>
+                          <td style="text-align:left;"><b>Monto a cancelar</b></td>
                           <td style="text-align:right;"><b>S/. {{ number_format($total_cancelacion_sin_descuento - $total_cancelacion_descuento, 2, '.', '') }}</b></td>
                       </tr>
                   </table>
+                </div>
               </div>
               <div class="col-sm-12 mt-1">
                   <button type="button" class="btn btn-primary btn-sm" onclick="previsualizar_pagoanticipado()">

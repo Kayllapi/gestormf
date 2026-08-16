@@ -99,15 +99,15 @@
                 <div class="alert alert-primary" style="padding:6px 10px">
                   <table class="table table-sm table-bordered" style="margin-bottom:0;border-color: transparent !important;">
                       <tr>
-                          <td style="text-align:left;"><b>Total de deuda</b></td>
-                          <td style="text-align:right;">S/. {{ number_format($total_cancelacion_sin_descuento, 2, '.', '') }}</td>
+                          <th style="text-align:left;"><b>Total de deuda</b></th>
+                          <th style="text-align:right;">S/. {{ number_format($total_cancelacion_sin_descuento, 2, '.', '') }}</th>
                       </tr>
                       <tr id="fila_monto_abonar" style="display:none;">
                           <td style="text-align:left;"><b>Monto a Abonar</b></td>
                           <td style="text-align:right;" id="td_monto_abonar">S/. 0.00</td>
                       </tr>
                       <tr>
-                          <td style="text-align:left;"><b>Descuento (cuotas futuras)</b></td>
+                          <td style="text-align:left;"><b>Descuento (Interés + Carg. x Cust. G./Ot. + Ss. Recau.)</b></td>
                           <td style="text-align:right;" id="td_descuento_pagoanticipado">S/. {{ number_format($total_cancelacion_descuento, 2, '.', '') }}</td>
                       </tr>
                       <tr style="background-color: #efefef;">

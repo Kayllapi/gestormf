@@ -1954,24 +1954,22 @@ class CobranzacuotaController extends Controller
         ];
     }
 
-    // Un credito esta "vencido" cuando su primera cuota pendiente ya paso su fecha de pago (no
-    // basta con que venza HOY: eso todavia se considera al dia). Mientras este vencido, los casos
-    // 1 (Reduccion de Plazo) y 2 (Reduccion de Cuota) quedan bloqueados: no tiene sentido seguir
-    // extendiendo/recalculando cuotas futuras sobre un credito que ya viene atrasado; solo se
-    // permite el caso 3 (Cancelacion Total).
+    // Un credito esta "vencido" cuando NINGUNA cuota pendiente tiene fecha futura (todas sus
+    // cuotas pendientes ya vencieron o vencen HOY, dias vencidos >= 0). Mientras quede al menos
+    // una cuota pendiente con fecha futura (dias vencidos negativo), los casos 1 (Reduccion de
+    // Plazo) y 2 (Reduccion de Cuota) siguen permitidos, aunque otras cuotas anteriores ya esten
+    // atrasadas: todavia hay algo futuro sobre lo cual reprogramar fechas o recalcular montos.
+    // Solo cuando ya no queda ninguna cuota futura se bloquean esos dos casos y solo se permite
+    // el caso 3 (Cancelacion Total).
     private function _creditoVencido($idcredito)
     {
-        $primera_cuota_pendiente = DB::table('credito_cronograma')
+        $fecha_hoy = Carbon::now()->format('Y-m-d');
+        $tieneCuotaFutura = DB::table('credito_cronograma')
             ->where('idcredito', $idcredito)
             ->whereIn('idestadocredito_cronograma', [1,3])
-            ->orderBy('numerocuota', 'asc')
-            ->first();
-        if (!$primera_cuota_pendiente) {
-            return false;
-        }
-        $fecha_hoy = new \DateTime(Carbon::now()->format('Y-m-d'));
-        $fechapago = new \DateTime($primera_cuota_pendiente->fechapago);
-        return $fechapago < $fecha_hoy;
+            ->whereDate('fechapago', '>', $fecha_hoy)
+            ->exists();
+        return !$tieneCuotaFutura;
     }
 
     public function edit(Request $request, $idtienda, $id)

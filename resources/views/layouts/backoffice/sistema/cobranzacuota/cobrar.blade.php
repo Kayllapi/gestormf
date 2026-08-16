@@ -215,6 +215,15 @@ input::selection {
           }else{
               $('#alerta_monto_cancelacion').css('display','none');
           }
+      }else if(modalidad=='reduccion_plazo' || modalidad=='reduccion_cuota'){
+          $('#info_saldo_pagoanticipado').css('display','block');
+          var montoIngresado = parseFloat($('#cobrar_total_recibido').val()) || 0;
+          if(montoIngresado >= saldoTotalConDescuentoCancelacion){
+              $('#alerta_monto_cancelacion .alert').text('El monto ingresado (S/. '+montoIngresado.toFixed(2)+') no puede ser igual ni mayor al monto de cancelación total (S/. '+saldoTotalConDescuentoCancelacion.toFixed(2)+'). Si desea cancelar el crédito completo, seleccione el caso 3 (Cancelación Total).');
+              $('#alerta_monto_cancelacion').css('display','block');
+          }else{
+              $('#alerta_monto_cancelacion').css('display','none');
+          }
       }else{
           $('#info_saldo_pagoanticipado').css('display','none');
           $('#alerta_monto_cancelacion').css('display','none');
@@ -246,6 +255,11 @@ input::selection {
       var montoIngresado = parseFloat($('#cobrar_total_recibido').val()) || 0;
       if(montoIngresado > saldoTotalPendiente){
           let mensaje = 'El monto ingresado no puede superar el saldo total pendiente del crédito (S/. '+saldoTotalPendiente.toFixed(2)+').';
+          modal({ route:'{{ url('backoffice/'.$tienda->id.'/inicio/create?view=alerta') }}&mensaje='+mensaje, size: 'modal-sm' });
+          return false;
+      }
+      if(($('#modalidad_pagoanticipado').val()=='reduccion_plazo' || $('#modalidad_pagoanticipado').val()=='reduccion_cuota') && montoIngresado >= saldoTotalConDescuentoCancelacion){
+          let mensaje = 'El monto ingresado no puede ser igual ni mayor al monto de cancelación total (S/. '+saldoTotalConDescuentoCancelacion.toFixed(2)+'). Si desea cancelar el crédito completo, seleccione el caso 3 (Cancelación Total).';
           modal({ route:'{{ url('backoffice/'.$tienda->id.'/inicio/create?view=alerta') }}&mensaje='+mensaje, size: 'modal-sm' });
           return false;
       }

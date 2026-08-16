@@ -357,6 +357,18 @@ class CobranzacuotaController extends Controller
                             'mensaje'   => 'El monto ingresado no puede superar el saldo total pendiente del crédito (S/. '.number_format($credito->total_pendientepago, 2, '.', '').').'
                         ]);
                     }
+                    // Reduccion de Plazo/Cuota son para pagos PARCIALES: si el monto ingresado ya
+                    // alcanza (o supera) lo que costaria cancelar todo el credito hoy, no tiene
+                    // sentido reprogramar/recalcular cuotas — corresponde usar Cancelacion Total.
+                    if($request->opcion_pago=='PAGO_ANTICIPADO' && in_array($request->modalidad_pagoanticipado, ['reduccion_plazo','reduccion_cuota'])){
+                        $totalesCancelacion = $this->_totalesCancelacionTotal($idtienda, $request->idcredito);
+                        if((float)$request->cobrar_total_recibido >= $totalesCancelacion['saldo']){
+                            return response()->json([
+                                'resultado' => 'ERROR',
+                                'mensaje'   => 'El monto ingresado no puede ser igual ni mayor al monto de cancelación total (S/. '.number_format($totalesCancelacion['saldo'], 2, '.', '').'). Si desea cancelar el crédito completo, seleccione el caso 3 (Cancelación Total).'
+                            ]);
+                        }
+                    }
                     // Cancelacion Total exige el monto EXACTO (ni mas ni menos): al ser una
                     // cancelacion no tiene sentido dejar vuelto ni un saldo pendiente. Se compara
                     // contra el mismo "saldo" (ya redondeado hacia abajo) que se le muestra al

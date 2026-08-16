@@ -17,7 +17,7 @@
         {{ $error }}
     </div>
 @else
-    <div class="alert alert-info" style="font-size: 13px; text-align: left; border: 1px solid #ffdf7d !important; background-color: #ffdf7d !important;">
+    <div class="alert alert-info" style="font-size: 13px; text-align: left; border: 1px solid #f9e5a8 !important; background-color: #f9e5a8 !important;">
         Monto a abonar: <b>S/. {{ number_format($monto, 2, '.', '') }}</b>.
         @if(!empty($resultado['cuota_reducida']))
             <b>Reducción de Cuota:</b> se recalcularían las cuotas pendientes sobre el saldo
@@ -83,10 +83,10 @@
                     $color = '#d1e7dd';
                 } elseif ($monto_cambio) {
                     $label = 'MONTO RECALCULADO (cuota antes: '.number_format($monto_antes->cuota_real, 2, '.', '').')';
-                    $color = '#ffdf7d';
+                    $color = '#f9e5a8';
                 } elseif ($fecha_antes && $fecha_antes != $c->fechapago) {
                     $label = 'FECHA REPROGRAMADA (antes: '.date_format(date_create($fecha_antes),'d-m-Y').')';
-                    $color = '#ffdf7d';
+                    $color = '#f9e5a8';
                 } elseif ($c->idestadocredito_cronograma == 2) {
                     $label = 'YA PAGADA/CANCELADA';
                     $color = '#efefef';

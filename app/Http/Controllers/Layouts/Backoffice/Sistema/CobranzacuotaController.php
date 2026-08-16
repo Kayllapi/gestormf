@@ -1643,6 +1643,12 @@ class CobranzacuotaController extends Controller
           );
         }
 
+        elseif($id == 'show_descuento_pagoanticipado'){
+            return [
+                'descuento' => $this->_descuentoPagoAnticipado($idtienda, $request->idcredito, (float) $request->monto),
+            ];
+        }
+
         elseif($id == 'show_credito'){
             $creditos = DB::table('credito')
                 ->join('users as cliente', 'cliente.id', '=', 'credito.idcliente')
@@ -1964,6 +1970,41 @@ class CobranzacuotaController extends Controller
             'descuento' => $descuento,
             'saldo' => $saldo,
         ];
+    }
+
+    // Para los casos 1 (Reduccion de Plazo) y 2 (Reduccion de Cuota), a diferencia del caso 3
+    // (Cancelacion Total, que siempre paga TODO y por lo tanto siempre alcanza el descuento
+    // completo de todas las cuotas futuras), el abono puede ser parcial: el descuento real que se
+    // aplicaria solo cubre las cuotas futuras hasta donde el abono realmente alcance en la cascada
+    // de pagos (select_cronograma). Por eso se corre la cascada real con el monto abonado en vez
+    // de sumar el descuento de TODAS las cuotas futuras como hace _totalesCancelacionTotal().
+    private function _descuentoPagoAnticipado($idtienda, $idcredito, $montoAbonado)
+    {
+        if ($montoAbonado <= 0) {
+            return 0.0;
+        }
+
+        $credito = DB::table('credito')
+            ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
+            ->where('credito.id', $idcredito)
+            ->select('credito.*','credito_prendatario.modalidad as modalidadproductocredito')
+            ->first();
+
+        $cronograma = select_cronograma(
+            $idtienda, $idcredito, $credito->idforma_credito, $credito->modalidadproductocredito,
+            0, 0,0,0,0,0,0,0,
+            $montoAbonado,
+            1, 'detalle_cobranza', false, true
+        );
+
+        $descuento = 0;
+        foreach ($cronograma['cronograma'] as $v) {
+            if (in_array($v['idestadocredito_cronograma'], [1,3])) {
+                $descuento += (float) $v['descontar_interes'] + (float) $v['descontar_cargo'] + (float) $v['descontar_comision'];
+            }
+        }
+
+        return round($descuento, 2);
     }
 
     // Un credito esta "vencido" cuando NINGUNA cuota pendiente tiene fecha futura (todas sus

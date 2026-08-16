@@ -102,13 +102,17 @@
                           <td style="text-align:left;"><b>Total de deuda</b></td>
                           <td style="text-align:right;">S/. {{ number_format($total_cancelacion_sin_descuento, 2, '.', '') }}</td>
                       </tr>
+                      <tr id="fila_monto_abonar" style="display:none;">
+                          <td style="text-align:left;"><b>Monto a Abonar</b></td>
+                          <td style="text-align:right;" id="td_monto_abonar">S/. 0.00</td>
+                      </tr>
                       <tr>
                           <td style="text-align:left;"><b>Descuento (cuotas futuras)</b></td>
-                          <td style="text-align:right;">S/. {{ number_format($total_cancelacion_descuento, 2, '.', '') }}</td>
+                          <td style="text-align:right;" id="td_descuento_pagoanticipado">S/. {{ number_format($total_cancelacion_descuento, 2, '.', '') }}</td>
                       </tr>
                       <tr style="background-color: #efefef;">
-                          <td style="text-align:left;"><b>Monto a cancelar</b></td>
-                          <td style="text-align:right;"><b>S/. {{ number_format($total_cancelacion_saldo, 2, '.', '') }}</b></td>
+                          <td style="text-align:left;" id="td_label_saldo_pagoanticipado"><b>Monto a cancelar</b></td>
+                          <td style="text-align:right;" id="td_saldo_pagoanticipado"><b>S/. {{ number_format($total_cancelacion_saldo, 2, '.', '') }}</b></td>
                       </tr>
                   </table>
                 </div>
@@ -196,8 +200,44 @@ input::selection {
   sistema_select2({ input:'#idbanco' });
   sistema_select2({ input:'#modalidad_pagoanticipado' });
 
+  var totalDeudaCancelacion = {{ (float) $total_cancelacion_sin_descuento }};
+  var totalDescuentoCancelacion = {{ (float) $total_cancelacion_descuento }};
   var saldoTotalConDescuentoCancelacion = {{ (float) $total_cancelacion_saldo }};
   var creditoVencido = {{ ($credito_vencido ?? false) ? 'true' : 'false' }};
+
+  // Caso 1/2: a diferencia del caso 3 (que siempre paga TODO y por eso siempre alcanza el
+  // descuento completo de las cuotas futuras), el abono es parcial: el descuento real solo
+  // cubre las cuotas futuras hasta donde el abono realmente llegue. Se recalcula via AJAX
+  // (mismo calculo que usa la cascada real de pagos) cada vez que cambia el monto.
+  var totalDescuentoCaso12 = 0;
+  var descuentoCaso12Ajax = null;
+
+  function actualizar_descuento_caso12(monto){
+      if(descuentoCaso12Ajax){ descuentoCaso12Ajax.abort(); }
+      descuentoCaso12Ajax = $.ajax({
+          url: '{{ url('backoffice/'.$tienda->id.'/cobranzacuota/show_descuento_pagoanticipado') }}',
+          type: 'GET',
+          data: { idcredito: {{$credito->id}}, monto: monto },
+          success: function(respuesta){
+              totalDescuentoCaso12 = parseFloat(respuesta.descuento) || 0;
+              var modalidadActual = $('#modalidad_pagoanticipado').val();
+              if(modalidadActual=='reduccion_plazo' || modalidadActual=='reduccion_cuota'){
+                  pintar_tabla_caso12(parseFloat($('#cobrar_total_recibido').val()) || 0);
+              }
+          }
+      });
+  }
+
+  function pintar_tabla_caso12(montoIngresado){
+      // Redondeado hacia abajo al multiplo de S/.0.10, igual que el "Monto a cancelar" del
+      // caso 3, para mostrar un saldo comodo de manejar en efectivo.
+      var saldoRestante = Math.floor(((totalDeudaCancelacion - montoIngresado - totalDescuentoCaso12) * 10) + 0.0001) / 10;
+      $('#fila_monto_abonar').css('display','table-row');
+      $('#td_monto_abonar').text('S/. '+montoIngresado.toFixed(2));
+      $('#td_descuento_pagoanticipado').text('S/. '+totalDescuentoCaso12.toFixed(2));
+      $('#td_label_saldo_pagoanticipado').html('<b>Saldo</b>');
+      $('#td_saldo_pagoanticipado').html('<b>S/. '+saldoRestante.toFixed(2)+'</b>');
+  }
 
   function verificar_monto_cancelacion(){
       var modalidad = $('#modalidad_pagoanticipado').val();
@@ -206,6 +246,10 @@ input::selection {
           $('#alerta_monto_cancelacion .alert').text('El Crédito esta vencido.');
           $('#alerta_monto_cancelacion').css('display','block');
       }else if(modalidad=='cancelacion_total'){
+          $('#fila_monto_abonar').css('display','none');
+          $('#td_descuento_pagoanticipado').text('S/. '+totalDescuentoCancelacion.toFixed(2));
+          $('#td_label_saldo_pagoanticipado').html('<b>Monto a cancelar</b>');
+          $('#td_saldo_pagoanticipado').html('<b>S/. '+saldoTotalConDescuentoCancelacion.toFixed(2)+'</b>');
           $('#info_saldo_pagoanticipado').css('display','block');
           var montoIngresado = parseFloat($('#cobrar_total_recibido').val()) || 0;
           if(montoIngresado.toFixed(2) != saldoTotalConDescuentoCancelacion.toFixed(2)){
@@ -216,8 +260,10 @@ input::selection {
               $('#alerta_monto_cancelacion').css('display','none');
           }
       }else if(modalidad=='reduccion_plazo' || modalidad=='reduccion_cuota'){
-          $('#info_saldo_pagoanticipado').css('display','block');
           var montoIngresado = parseFloat($('#cobrar_total_recibido').val()) || 0;
+          pintar_tabla_caso12(montoIngresado);
+          $('#info_saldo_pagoanticipado').css('display','block');
+          actualizar_descuento_caso12(montoIngresado);
           if(montoIngresado >= saldoTotalConDescuentoCancelacion){
               $('#alerta_monto_cancelacion .alert').text('El monto ingresado (S/. '+montoIngresado.toFixed(2)+') no puede ser igual ni mayor al monto de cancelación total (S/. '+saldoTotalConDescuentoCancelacion.toFixed(2)+'). Si desea cancelar el crédito completo, seleccione el caso 3 (Cancelación Total).');
               $('#alerta_monto_cancelacion').css('display','block');

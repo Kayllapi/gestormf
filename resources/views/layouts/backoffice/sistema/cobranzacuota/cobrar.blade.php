@@ -95,8 +95,8 @@
                     <option value="cancelacion_total">3. Pago anticipado Total (Cancelación)</option>
                 </select>
               </div>
-              <div class="col-sm-12 mt-1" id="info_saldo_pagoanticipado" style="display:none;">
-                <div class="alert alert-info" style="padding:6px 10px">
+              <div class="col-sm-12 mt-1 py-2" id="info_saldo_pagoanticipado" style="display:none;">
+                <div class="alert alert-primary" style="padding:6px 10px">
                   <table class="table table-sm table-bordered" style="margin-bottom:0;border-color: transparent !important;">
                       <tr>
                           <td style="text-align:left;"><b>Total de deuda</b></td>

@@ -228,10 +228,15 @@ input::selection {
       });
   }
 
+  // Redondeo normal al multiplo de S/.0.10 mas cercano (.x5 hacia arriba, p.ej. 52.55->52.60 y
+  // 52.54->52.50). El epsilon evita el error clasico de precision de punto flotante en JS
+  // (52.55*10 da 525.4999999999994, no 525.5).
+  function redondearDiezCentavos(valor){
+      return Math.round((valor * 10) + (valor >= 0 ? 1e-9 : -1e-9)) / 10;
+  }
+
   function pintar_tabla_caso12(montoIngresado){
-      // Redondeado hacia abajo al multiplo de S/.0.10, igual que el "Monto a cancelar" del
-      // caso 3, para mostrar un saldo comodo de manejar en efectivo.
-      var saldoRestante = Math.floor(((totalDeudaCancelacion - montoIngresado - totalDescuentoCaso12) * 10) + 0.0001) / 10;
+      var saldoRestante = redondearDiezCentavos(totalDeudaCancelacion - montoIngresado - totalDescuentoCaso12);
       $('#fila_monto_abonar').css('display','table-row');
       $('#td_monto_abonar').text('S/. '+montoIngresado.toFixed(2));
       $('#td_descuento_pagoanticipado').text('S/. '+totalDescuentoCaso12.toFixed(2));

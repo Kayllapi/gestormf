@@ -1020,9 +1020,13 @@ class CobranzacuotaController extends Controller
                 DB::transaction(function() use ($request, &$fecha_ultimopago_nueva) {
 
                     // Calendario original completo (no cambia aunque ya se hayan comprimido
-                    // fechas antes: siempre se toma el orden vigente de numerocuota).
+                    // fechas antes: siempre se toma el orden vigente de numerocuota), pero SOLO
+                    // las fechas aun no vencidas (fecha > hoy): reutilizar una fecha de hoy o del
+                    // pasado dejaria la cuota reprogramada vencida desde el momento en que se crea.
+                    $fecha_hoy = Carbon::now()->format('Y-m-d');
                     $fechas_calendario = DB::table('credito_cronograma')
                         ->where('idcredito', $request->idcredito)
+                        ->where('fechapago', '>', $fecha_hoy)
                         ->orderBy('numerocuota', 'asc')
                         ->pluck('fechapago')
                         ->values();
@@ -1953,17 +1957,23 @@ class CobranzacuotaController extends Controller
             }
         }
 
-        // El saldo se redondea siempre hacia ABAJO al multiplo de S/.0.10 mas cercano, para que sea
-        // un monto comodo de cobrar/pagar en efectivo. Los centimos que quedan de diferencia (nunca
-        // mas de 9) se condonan: store() fuerza el cierre de TODAS las cuotas pendientes cuando el
-        // monto ingresado coincide con este saldo (ver bloque "cancelacion_total" en store()), sin
-        // importar que la cascada real hubiese necesitado unos centimos mas para cerrar la ultima
-        // cuota por si sola. OJO: el "descuento" mostrado NO se recalcula a partir de este redondeo
+        // El saldo se redondea al multiplo de S/.0.10 mas cercano (redondeo normal: .x5 hacia
+        // arriba, p.ej. 52.55->52.60 y 52.54->52.50), para que sea un monto comodo de cobrar/pagar
+        // en efectivo. La diferencia (nunca mas de 5 centimos, para cualquier lado) se condona:
+        // store() fuerza el cierre de TODAS las cuotas pendientes cuando el monto ingresado
+        // coincide con este saldo (ver bloque "cancelacion_total" en store()), sin importar que la
+        // cascada real hubiese necesitado unos centimos mas (o menos) para cerrar la ultima cuota
+        // por si sola. OJO: el "descuento" mostrado NO se recalcula a partir de este redondeo
         // (adrede) — es solo el descuento real por cuotas futuras (arriba); el redondeo de caja es
         // un concepto aparte, por eso Total ya no cuadra exacto con Descuento+Saldo en el desglose.
         $descuento = round($descuento, 2);
         $saldo_raw = round($total_deuda - $descuento, 2);
-        $saldo = floor(($saldo_raw * 10) + 0.0001) / 10;
+        $saldo = round($saldo_raw, 1);
+        // Si casi no hay descuento (p.ej. ninguna cuota futura), redondear hacia arriba no debe
+        // inventar un cobro por encima de lo que realmente se debe hoy.
+        if ($saldo > $total_deuda) {
+            $saldo = $total_deuda;
+        }
 
         return [
             'total_deuda' => $total_deuda,

@@ -342,6 +342,15 @@ class CobranzacuotaController extends Controller
                             'mensaje'   => 'Debe seleccionar una modalidad de pago anticipado.'
                         ]);
                     }
+                    // Con el credito vencido (la primera cuota pendiente ya paso su fecha de pago)
+                    // no tiene sentido reprogramar fechas (caso 1) ni recalcular cuotas futuras
+                    // (caso 2) sobre un credito atrasado: solo se permite Cancelacion Total.
+                    if($request->opcion_pago=='PAGO_ANTICIPADO' && in_array($request->modalidad_pagoanticipado, ['reduccion_plazo','reduccion_cuota']) && $this->_creditoVencido($request->idcredito)){
+                        return response()->json([
+                            'resultado' => 'ERROR',
+                            'mensaje'   => 'El Crédito esta vencido.'
+                        ]);
+                    }
                     if($request->opcion_pago=='PAGO_ANTICIPADO' && (float)$request->cobrar_total_recibido > (float)$credito->total_pendientepago){
                         return response()->json([
                             'resultado' => 'ERROR',
@@ -350,7 +359,7 @@ class CobranzacuotaController extends Controller
                     }
                     // Cancelacion Total exige el monto EXACTO (ni mas ni menos): al ser una
                     // cancelacion no tiene sentido dejar vuelto ni un saldo pendiente. Se compara
-                    // contra el mismo "saldo" (ya redondeado hacia arriba) que se le muestra al
+                    // contra el mismo "saldo" (ya redondeado hacia abajo) que se le muestra al
                     // cajero en el modal y en la previsualizacion, para que sean siempre el mismo numero.
                     if($request->opcion_pago=='PAGO_ANTICIPADO' && $request->modalidad_pagoanticipado=='cancelacion_total'){
                         $totalesCancelacion = $this->_totalesCancelacionTotal($idtienda, $request->idcredito);
@@ -1945,6 +1954,26 @@ class CobranzacuotaController extends Controller
         ];
     }
 
+    // Un credito esta "vencido" cuando su primera cuota pendiente ya paso su fecha de pago (no
+    // basta con que venza HOY: eso todavia se considera al dia). Mientras este vencido, los casos
+    // 1 (Reduccion de Plazo) y 2 (Reduccion de Cuota) quedan bloqueados: no tiene sentido seguir
+    // extendiendo/recalculando cuotas futuras sobre un credito que ya viene atrasado; solo se
+    // permite el caso 3 (Cancelacion Total).
+    private function _creditoVencido($idcredito)
+    {
+        $primera_cuota_pendiente = DB::table('credito_cronograma')
+            ->where('idcredito', $idcredito)
+            ->whereIn('idestadocredito_cronograma', [1,3])
+            ->orderBy('numerocuota', 'asc')
+            ->first();
+        if (!$primera_cuota_pendiente) {
+            return false;
+        }
+        $fecha_hoy = new \DateTime(Carbon::now()->format('Y-m-d'));
+        $fechapago = new \DateTime($primera_cuota_pendiente->fechapago);
+        return $fechapago < $fecha_hoy;
+    }
+
     public function edit(Request $request, $idtienda, $id)
     {
       
@@ -2120,11 +2149,13 @@ class CobranzacuotaController extends Controller
             $total_cancelacion_sin_descuento = 0;
             $total_cancelacion_descuento = 0;
             $total_cancelacion_saldo = 0;
+            $credito_vencido = false;
             if($request->opcion_pago=='PAGO_ANTICIPADO'){
                 $totalesCancelacion = $this->_totalesCancelacionTotal($idtienda, $credito->id);
                 $total_cancelacion_sin_descuento = $totalesCancelacion['total_deuda'];
                 $total_cancelacion_descuento = $totalesCancelacion['descuento'];
                 $total_cancelacion_saldo = $totalesCancelacion['saldo'];
+                $credito_vencido = $this->_creditoVencido($credito->id);
             }
 
             return view(sistema_view().'/cobranzacuota/cobrar',[
@@ -2146,6 +2177,7 @@ class CobranzacuotaController extends Controller
                 'total_cancelacion_sin_descuento' => $total_cancelacion_sin_descuento,
                 'total_cancelacion_descuento' => $total_cancelacion_descuento,
                 'total_cancelacion_saldo' => $total_cancelacion_saldo,
+                'credito_vencido' => $credito_vencido,
             ]);
         }
         elseif($request->input('view') == 'preview_pagoanticipado') {

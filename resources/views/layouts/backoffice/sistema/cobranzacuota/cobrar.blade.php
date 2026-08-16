@@ -90,8 +90,8 @@
               <div class="col-sm-12">
                 <select id="modalidad_pagoanticipado" class="form-control">
                     <option></option>
-                    <option value="reduccion_plazo">1. Pago anticipado Parcial (con Reducción de Plazo)</option>
-                    <option value="reduccion_cuota">2. Pago anticipado Parcial (con Reducción de Cuota)</option>
+                    <option value="reduccion_plazo" @if($credito_vencido ?? false) disabled @endif>1. Pago anticipado Parcial (con Reducción de Plazo)</option>
+                    <option value="reduccion_cuota" @if($credito_vencido ?? false) disabled @endif>2. Pago anticipado Parcial (con Reducción de Cuota)</option>
                     <option value="cancelacion_total">3. Pago anticipado Total (Cancelación)</option>
                 </select>
               </div>
@@ -197,10 +197,15 @@ input::selection {
   sistema_select2({ input:'#modalidad_pagoanticipado' });
 
   var saldoTotalConDescuentoCancelacion = {{ (float) $total_cancelacion_saldo }};
+  var creditoVencido = {{ ($credito_vencido ?? false) ? 'true' : 'false' }};
 
   function verificar_monto_cancelacion(){
       var modalidad = $('#modalidad_pagoanticipado').val();
-      if(modalidad=='cancelacion_total'){
+      if(creditoVencido && (modalidad=='reduccion_plazo' || modalidad=='reduccion_cuota')){
+          $('#info_saldo_pagoanticipado').css('display','none');
+          $('#alerta_monto_cancelacion .alert').text('El Crédito esta vencido.');
+          $('#alerta_monto_cancelacion').css('display','block');
+      }else if(modalidad=='cancelacion_total'){
           $('#info_saldo_pagoanticipado').css('display','block');
           var montoIngresado = parseFloat($('#cobrar_total_recibido').val()) || 0;
           if(montoIngresado.toFixed(2) != saldoTotalConDescuentoCancelacion.toFixed(2)){
@@ -218,12 +223,22 @@ input::selection {
 
   $('#modalidad_pagoanticipado').on('change', verificar_monto_cancelacion);
 
+  if(creditoVencido){
+      $('#alerta_monto_cancelacion .alert').text('El Crédito esta vencido.');
+      $('#alerta_monto_cancelacion').css('display','block');
+  }
+
   $("#cobrar_total_recibido").select();
   
   function enviar_cobro(thisForm){
       @if($opcion_pago=='PAGO_ANTICIPADO')
       if($('#modalidad_pagoanticipado').val()==''){
           let mensaje = 'Debe seleccionar una modalidad de pago anticipado.';
+          modal({ route:'{{ url('backoffice/'.$tienda->id.'/inicio/create?view=alerta') }}&mensaje='+mensaje, size: 'modal-sm' });
+          return false;
+      }
+      if(creditoVencido && ($('#modalidad_pagoanticipado').val()=='reduccion_plazo' || $('#modalidad_pagoanticipado').val()=='reduccion_cuota')){
+          let mensaje = 'El Crédito esta vencido.';
           modal({ route:'{{ url('backoffice/'.$tienda->id.'/inicio/create?view=alerta') }}&mensaje='+mensaje, size: 'modal-sm' });
           return false;
       }

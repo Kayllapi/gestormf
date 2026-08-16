@@ -108,7 +108,7 @@
                       </tr>
                       <tr style="background-color: #e5edf7;">
                           <td style="text-align:left;"><b>Monto a cancelar</b></td>
-                          <td style="text-align:right;"><b>S/. {{ number_format($total_cancelacion_sin_descuento - $total_cancelacion_descuento, 2, '.', '') }}</b></td>
+                          <td style="text-align:right;"><b>S/. {{ number_format($total_cancelacion_saldo, 2, '.', '') }}</b></td>
                       </tr>
                   </table>
                 </div>
@@ -196,7 +196,7 @@ input::selection {
   sistema_select2({ input:'#idbanco' });
   sistema_select2({ input:'#modalidad_pagoanticipado' });
 
-  var saldoTotalConDescuentoCancelacion = {{ (float) $total_cancelacion_sin_descuento - (float) $total_cancelacion_descuento }};
+  var saldoTotalConDescuentoCancelacion = {{ (float) $total_cancelacion_saldo }};
 
   function verificar_monto_cancelacion(){
       var modalidad = $('#modalidad_pagoanticipado').val();

@@ -432,6 +432,21 @@ class CobranzacuotaController extends Controller
                     pago_anticipado: $request->opcion_pago=='PAGO_ANTICIPADO'
                 );
 
+                // Cancelacion Total: el monto ya fue validado como el saldo oficial (redondeado
+                // hacia abajo al multiplo de S/.0.10 mas cercano, ver _totalesCancelacionTotal()).
+                // Ese redondeo puede dejar la cascada real a centimos de cerrar la ULTIMA cuota por
+                // si sola (le faltaria pago_acuenta para llegar a su umbral). Para "Cancelacion
+                // Total" esa diferencia se condona siempre: se fuerzan como cerradas TODAS las
+                // cuotas pendientes, sin tocar los montos ya calculados (capital/interes/etc. de
+                // cada cuota siguen siendo los reales), solo el estado de seleccion.
+                if ($request->opcion_pago=='PAGO_ANTICIPADO' && $request->modalidad_pagoanticipado=='cancelacion_total') {
+                    foreach ($cronograma['cronograma'] as $k => $value) {
+                        if (in_array($value['idestadocredito_cronograma'], [1,3])) {
+                            $cronograma['cronograma'][$k]['selected'] = 'selected';
+                        }
+                    }
+                }
+
                 $credito_cobranzacuota = DB::table('credito_cobranzacuota')
                     ->orderBy('credito_cobranzacuota.codigo','desc')
                     ->limit(1)
@@ -1911,21 +1926,17 @@ class CobranzacuotaController extends Controller
             }
         }
 
-        // El saldo se redondea siempre hacia ARRIBA (nunca hacia abajo): asi el monto exacto que
-        // se le exige al cliente para la Cancelacion Total nunca queda ni un centavo corto por
-        // errores de precision de punto flotante en la resta. El "descuento" se recalcula a partir
-        // de ese saldo ya redondeado para que Total = Descuento + Saldo siga cuadrando exacto en
-        // el desglose que se le muestra al cajero. Ademas se redondea al multiplo de S/.0.10 hacia
-        // arriba (no al centavo) para que sea un monto comodo de cobrar/pagar en efectivo.
+        // El saldo se redondea siempre hacia ABAJO al multiplo de S/.0.10 mas cercano, para que sea
+        // un monto comodo de cobrar/pagar en efectivo. Los centimos que quedan de diferencia (nunca
+        // mas de 9) se condonan: store() fuerza el cierre de TODAS las cuotas pendientes cuando el
+        // monto ingresado coincide con este saldo (ver bloque "cancelacion_total" en store()), sin
+        // importar que la cascada real hubiese necesitado unos centimos mas para cerrar la ultima
+        // cuota por si sola. OJO: el "descuento" mostrado NO se recalcula a partir de este redondeo
+        // (adrede) — es solo el descuento real por cuotas futuras (arriba); el redondeo de caja es
+        // un concepto aparte, por eso Total ya no cuadra exacto con Descuento+Saldo en el desglose.
+        $descuento = round($descuento, 2);
         $saldo_raw = round($total_deuda - $descuento, 2);
-        $saldo = ceil(($saldo_raw * 10) - 0.0001) / 10;
-        // Si no hay descuento (ninguna cuota pendiente con fecha futura, p.ej. todas ya vencieron
-        // o vencen hoy), redondear al multiplo de S/.0.10 no debe inventar un cobro extra: el
-        // saldo nunca puede superar el total de deuda.
-        if ($saldo > $total_deuda) {
-            $saldo = $total_deuda;
-        }
-        $descuento = round($total_deuda - $saldo, 2);
+        $saldo = floor(($saldo_raw * 10) + 0.0001) / 10;
 
         return [
             'total_deuda' => $total_deuda,
@@ -2108,10 +2119,12 @@ class CobranzacuotaController extends Controller
             // abrir la previsualizacion primero.
             $total_cancelacion_sin_descuento = 0;
             $total_cancelacion_descuento = 0;
+            $total_cancelacion_saldo = 0;
             if($request->opcion_pago=='PAGO_ANTICIPADO'){
                 $totalesCancelacion = $this->_totalesCancelacionTotal($idtienda, $credito->id);
                 $total_cancelacion_sin_descuento = $totalesCancelacion['total_deuda'];
                 $total_cancelacion_descuento = $totalesCancelacion['descuento'];
+                $total_cancelacion_saldo = $totalesCancelacion['saldo'];
             }
 
             return view(sistema_view().'/cobranzacuota/cobrar',[
@@ -2132,6 +2145,7 @@ class CobranzacuotaController extends Controller
                 'opcion_pago' => $request->opcion_pago,
                 'total_cancelacion_sin_descuento' => $total_cancelacion_sin_descuento,
                 'total_cancelacion_descuento' => $total_cancelacion_descuento,
+                'total_cancelacion_saldo' => $total_cancelacion_saldo,
             ]);
         }
         elseif($request->input('view') == 'preview_pagoanticipado') {

@@ -1919,6 +1919,12 @@ class CobranzacuotaController extends Controller
         // arriba (no al centavo) para que sea un monto comodo de cobrar/pagar en efectivo.
         $saldo_raw = round($total_deuda - $descuento, 2);
         $saldo = ceil(($saldo_raw * 10) - 0.0001) / 10;
+        // Si no hay descuento (ninguna cuota pendiente con fecha futura, p.ej. todas ya vencieron
+        // o vencen hoy), redondear al multiplo de S/.0.10 no debe inventar un cobro extra: el
+        // saldo nunca puede superar el total de deuda.
+        if ($saldo > $total_deuda) {
+            $saldo = $total_deuda;
+        }
         $descuento = round($total_deuda - $saldo, 2);
 
         return [

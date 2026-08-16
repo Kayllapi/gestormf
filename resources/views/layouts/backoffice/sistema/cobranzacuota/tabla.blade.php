@@ -390,6 +390,17 @@
             cargoIdsCsv = ($('#idcredito_cargo_ids_selected').val() || '').toString().trim();
         }
 
+        if(opcion_pago=='PAGO_ANTICIPADO'){
+            // El Pago Anticipado requiere autorización (usuario+contraseña) antes de mostrar el
+            // modal de cobro: se abre primero el modal de autorización, y solo si es correcta
+            // recien se abre el modal de "cobrar".
+            modal({ route:'{{url('backoffice/'.$tienda->id.'/cobranzacuota')}}/'+idcredito+'/edit?view=autorizar_pagoanticipado'+
+            '&numerocuota='+numerocuota+
+            '&idcredito_cargo_ids='+encodeURIComponent(cargoIdsCsv),
+            size: 'modal-sm' })
+            return;
+        }
+
         modal({ route:'{{url('backoffice/'.$tienda->id.'/cobranzacuota')}}/'+idcredito+'/edit?view=cobrar'+
         '&opcion='+opcion_pago+
         '&numerocuota='+numerocuota+

@@ -2049,9 +2049,26 @@ class CobranzacuotaController extends Controller
                 )
                 ->first();
         
-        if($request->input('view') == 'cobrar') {
+        if($request->input('view') == 'autorizar_pagoanticipado') {
+            $usuarios = DB::table('users')
+                ->join('users_permiso','users_permiso.idusers','users.id')
+                ->join('permiso','permiso.id','users_permiso.idpermiso')
+                ->where('users_permiso.idpermiso',2)
+                ->where('users_permiso.idtienda',$idtienda)
+                ->select('users.*','permiso.nombre as nombrepermiso')
+                ->get();
 
-            $bancos = DB::table('banco')->where('estado','ACTIVO')->get(); 
+            return view(sistema_view().'/cobranzacuota/autorizar_pagoanticipado',[
+                'tienda' => $tienda,
+                'credito' => $credito,
+                'usuarios' => $usuarios,
+                'numerocuota' => $request->numerocuota,
+                'idcredito_cargo_ids' => $request->idcredito_cargo_ids,
+            ]);
+        }
+        elseif($request->input('view') == 'cobrar') {
+
+            $bancos = DB::table('banco')->where('estado','ACTIVO')->get();
             
             // Si llega selección desde "CTA X COBRAR", solo considerar esos cargos
             $cargoIds = $request->input('idcredito_cargo_ids', null);
@@ -2610,6 +2627,34 @@ class CobranzacuotaController extends Controller
 
     public function update(Request $request, $idtienda, $id)
     {
+        if($request->input('view') == 'autorizar_pagoanticipado'){
+            $rules = [
+                'idresponsable' => 'required',
+                'responsableclave' => 'required',
+            ];
+            $messages = [
+                'idresponsable.required' => 'El "Responsable" es Obligatorio.',
+                'responsableclave.required' => 'La "Contraseña" es Obligatorio.',
+            ];
+            $this->validate($request,$rules,$messages);
+
+            $usuario = DB::table('users')
+                ->where('users.id',$request->idresponsable)
+                ->where('users.clave',$request->responsableclave)
+                ->first();
+
+            if(!$usuario){
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'El usuario y/o la contraseña es incorrecta!!.'
+                ]);
+            }
+
+            return response()->json([
+                'resultado' => 'CORRECTO',
+                'mensaje'   => 'Autorización correcta.',
+            ]);
+        }
     }
 
     public function destroy(Request $request, $idtienda, $id)

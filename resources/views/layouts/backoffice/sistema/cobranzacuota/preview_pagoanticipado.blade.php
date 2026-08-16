@@ -1,8 +1,8 @@
 @php
     $titulos_modalidad = [
-        'reduccion_plazo' => 'Previsualización - Pago Anticipado Parcial (con Reducción de Plazo)',
-        'reduccion_cuota' => 'Previsualización - Pago Anticipado Parcial (con Reducción de Cuota)',
-        'cancelacion_total' => 'Previsualización - Pago Anticipado Total (Cancelación)',
+        'reduccion_plazo' => 'Previsualización - 1. Pago Anticipado Parcial (con Reducción de Plazo)',
+        'reduccion_cuota' => 'Previsualización - 2. Pago Anticipado Parcial (con Reducción de Cuota)',
+        'cancelacion_total' => 'Previsualización - 3. Pago Anticipado Total (Cancelación)',
     ];
     $titulo_modal = $titulos_modalidad[$modalidad ?? ''] ?? 'Previsualización - Pago Anticipado';
 @endphp
@@ -17,7 +17,7 @@
         {{ $error }}
     </div>
 @else
-    <div class="alert alert-info" style="font-size: 13px;">
+    <div class="alert alert-info" style="font-size: 13px; text-align: left;">
         Monto a abonar: <b>S/. {{ number_format($monto, 2, '.', '') }}</b>.
         @if(!empty($resultado['cuota_reducida']))
             <b>Reducción de Cuota:</b> se recalcularían las cuotas pendientes sobre el saldo
@@ -33,8 +33,6 @@
             cronograma (si eligió "Cancelación Total", esto significa que el crédito quedaría
             completamente cancelado).
         @endif
-        <br>
-        <span style="color:#6c757d;">Esta es solo una previsualización, no se ha guardado nada.</span>
     </div>
 
     @if($modalidad == 'cancelacion_total')

@@ -96,11 +96,20 @@
                 </select>
               </div>
               <div class="col-sm-12 mt-1" id="info_saldo_pagoanticipado" style="display:none;">
-                  <div class="alert alert-info" style="padding:6px 10px;margin-bottom:0;text-align:left;">
-                      <b>Total de deuda</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : S/. {{ number_format($total_cancelacion_sin_descuento, 2, '.', '') }}<br>
-                      <b>Descuento (cuotas futuras)</b> &nbsp;: S/. {{ number_format($total_cancelacion_descuento, 2, '.', '') }}<br>
-                      <span style="background-color: #e5edf7;"><b>Monto a cancelar</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : S/. {{ number_format($total_cancelacion_sin_descuento - $total_cancelacion_descuento, 2, '.', '') }}</span>
-                  </div>
+                  <table class="table table-sm table-bordered" style="margin-bottom:0;">
+                      <tr>
+                          <td><b>Total de deuda</b></td>
+                          <td style="text-align:right;">S/. {{ number_format($total_cancelacion_sin_descuento, 2, '.', '') }}</td>
+                      </tr>
+                      <tr>
+                          <td><b>Descuento (cuotas futuras)</b></td>
+                          <td style="text-align:right;">S/. {{ number_format($total_cancelacion_descuento, 2, '.', '') }}</td>
+                      </tr>
+                      <tr style="background-color: #e5edf7;">
+                          <td><b>Monto a cancelar</b></td>
+                          <td style="text-align:right;"><b>S/. {{ number_format($total_cancelacion_sin_descuento - $total_cancelacion_descuento, 2, '.', '') }}</b></td>
+                      </tr>
+                  </table>
               </div>
               <div class="col-sm-12 mt-1">
                   <button type="button" class="btn btn-primary btn-sm" onclick="previsualizar_pagoanticipado()">

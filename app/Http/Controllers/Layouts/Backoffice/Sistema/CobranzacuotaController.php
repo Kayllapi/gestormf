@@ -1007,16 +1007,17 @@ class CobranzacuotaController extends Controller
                 $monto_saldo_nuevo = (float) $cronograma['saldo_capital'];
             }
 
-            // ====== Pago Anticipado - Caso 1 (Reduccion de Plazo) ======
+            // ====== Pago Anticipado - Compresion de fechas (Caso 1 y Caso 2) ======
             // Si tras aplicar el pago con descuento (arriba) quedan cuotas pendientes, se
-            // "comprime" el calendario: las cuotas que siguen pendientes conservan su monto
-            // (capital/interes/cargo) y su numerocuota, pero pasan a usar las primeras fechas
-            // del calendario ORIGINAL del credito (las que dejaron libres las cuotas ya
-            // pagadas), en vez de esperar a sus fechas originales. Asi el credito termina antes
-            // sin cambiar el monto de las cuotas restantes.
+            // "comprime" el calendario: las cuotas que siguen pendientes pasan a usar las primeras
+            // fechas AUN NO VENCIDAS del calendario ORIGINAL del credito (las que dejaron libres
+            // las cuotas ya pagadas), en vez de esperar a sus fechas originales. Asi el credito
+            // termina antes. Aplica tanto al Caso 1 (Reduccion de Plazo, donde el monto de cada
+            // cuota no cambia) como al Caso 2 (Reduccion de Cuota, donde arriba ya se recalcularon
+            // los montos sobre el saldo restante): en ambos casos las fechas se comprimen igual.
             $plazo_reducido = false;
             $fecha_ultimopago_nueva = null;
-            if($request->opcion_pago=='PAGO_ANTICIPADO' && $request->modalidad_pagoanticipado=='reduccion_plazo' && (float)$cronograma['saldo_capital']>0){
+            if($request->opcion_pago=='PAGO_ANTICIPADO' && in_array($request->modalidad_pagoanticipado, ['reduccion_plazo','reduccion_cuota']) && (float)$cronograma['saldo_capital']>0){
                 DB::transaction(function() use ($request, &$fecha_ultimopago_nueva) {
 
                     // Calendario original completo (no cambia aunque ya se hayan comprimido
@@ -1039,13 +1040,20 @@ class CobranzacuotaController extends Controller
 
                     $nuevas_fechas = $fechas_calendario->take($cuotas_pendientes->count())->values();
 
+                    // Puede haber menos fechas futuras libres que cuotas pendientes (p.ej. si la
+                    // mora acumulada en cuotas vencidas hizo que el monto alcanzara para cerrar
+                    // menos cuotas de las esperadas): a esas cuotas "sobrantes" se les deja su
+                    // fecha actual en vez de asignarles una fecha inexistente.
                     foreach ($cuotas_pendientes as $i => $cuota) {
+                        if (!isset($nuevas_fechas[$i])) {
+                            continue;
+                        }
                         DB::table('credito_cronograma')
                             ->whereId($cuota->id)
                             ->update(['fechapago' => $nuevas_fechas[$i]]);
                     }
 
-                    $fecha_ultimopago_nueva = $nuevas_fechas->last();
+                    $fecha_ultimopago_nueva = $nuevas_fechas->isNotEmpty() ? $nuevas_fechas->last() : $cuotas_pendientes->last()->fechapago;
 
                     DB::table('credito')->whereId($request->idcredito)->update([
                         'fecha_primerpago' => $nuevas_fechas->first(),

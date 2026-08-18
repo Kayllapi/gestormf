@@ -14,7 +14,7 @@
                             <a href="{{ route('bd.descargar') }}" class="btn btn-info">
                                 <i class="fa-solid fa-database"></i> BASE DE DATOS
                             </a>
-                            <a href="https://github.com/Kayllapi/gestormf/archive/refs/heads/main.zip"
+                            <a href="https://github.com/Kayllapi/gestormf/archive/refs/heads/prod.zip"
                                 class="btn btn-success"
                                 download>
                                 <i class="fa-solid fa-code"></i> SISTEMA

@@ -893,7 +893,7 @@ class CobranzacuotaController extends Controller
                 DB::transaction(function() use ($request, $credito, $idtienda, $cronograma, &$cuota_pago_nueva) {
 
                     // 1) Cuotas que se van a recalcular: las que siguen pendientes despues del
-                    // pago aplicado arriba (mismo numerocuota, misma fecha).
+                    // pago aplicado arriba.
                     $cuotas_pendientes = DB::table('credito_cronograma')
                         ->where('idcredito', $request->idcredito)
                         ->whereIn('idestadocredito_cronograma', [1,3])
@@ -901,11 +901,39 @@ class CobranzacuotaController extends Controller
                         ->get();
 
                     // 2) Calcular la nueva distribucion capital/interes/cargo para el saldo
-                    // restante, usando la MISMA cantidad de cuotas que ya estaban pendientes
-                    // (las fechas de genera_cronograma() se descartan, se usan las que ya tenia
-                    // cada cuota).
+                    // restante. En vez de mantener la MISMA cantidad de cuotas que ya estaban
+                    // pendientes, se recalcula cuantas cuotas hacen falta para llegar hasta la
+                    // fecha final YA PROGRAMADA del credito (credito.fecha_ultimopago): asi se
+                    // aprovecha TODO el plazo restante original para repartir el saldo, bajando
+                    // mas el monto de cada cuota (puede terminar en MAS cuotas que antes; es lo
+                    // esperado). Se cuenta con la misma logica de fechas que usa
+                    // genera_cronograma() internamente (cronograma_fecha(), que salta domingos y
+                    // feriados), para que el conteo sea exacto.
                     $montonuevo = (float) $cronograma['saldo_capital'];
-                    $cuotasnuevo = $cuotas_pendientes->count();
+
+                    $feriados = DB::table('feriados')->get();
+                    $fechaGracia = date_create(Carbon::now()->format('Y-m-d'));
+                    date_add($fechaGracia, date_interval_create_from_date_string($credito->dia_gracia.' day'));
+                    $fechaCursor = date_format($fechaGracia, 'Y-m-d');
+                    $fechaObjetivo = $credito->fecha_ultimopago;
+
+                    $cuotasnuevo = 0;
+                    $fechaGenerada = $fechaCursor;
+                    do {
+                        $cuotasnuevo++;
+                        $paso = cronograma_fecha($credito->idforma_pago_credito, $fechaCursor, $feriados);
+                        $fechaCursor = $paso['fecha_inicio'];
+                        $fechaGenerada = $paso['fecha_normal'];
+                    } while ($fechaGenerada < $fechaObjetivo && $cuotasnuevo < 1000);
+
+                    // El cronograma recalculado nunca puede tener MENOS cuotas que las que ya
+                    // estaban pendientes (no se puede "despendiente" una cuota que no se esta
+                    // pagando): si el conteo hasta la fecha objetivo da menos (p.ej. porque el
+                    // credito quedo con menos cuotas cubiertas de lo esperado), se usa como piso
+                    // la cantidad de cuotas pendientes actual.
+                    if ($cuotasnuevo < $cuotas_pendientes->count()) {
+                        $cuotasnuevo = $cuotas_pendientes->count();
+                    }
 
                     $frecuenciaDiasMap = [1=>26, 2=>4, 3=>2, 4=>1];
                     $dias = $frecuenciaDiasMap[$credito->idforma_pago_credito];
@@ -966,8 +994,9 @@ class CobranzacuotaController extends Controller
                         'idestado' => 1,
                     ]);
 
-                    // 4) Actualizar los montos de las MISMAS cuotas pendientes (fecha y
-                    // numerocuota intactos).
+                    // 4) Actualizar los montos Y FECHAS de las cuotas que ya estaban pendientes
+                    // (mismo numerocuota, se les asigna la fecha que les toca en el cronograma
+                    // recalculado).
                     foreach ($cuotas_pendientes as $i => $cuota) {
                         $value = $cronograma_nuevo['cronograma'][$i];
                         DB::table('credito_cronograma')
@@ -981,11 +1010,42 @@ class CobranzacuotaController extends Controller
                                 'comision'        => $value['comision'],
                                 'cargo'           => $value['cargo'],
                                 'comision_cargo'  => $value['comisioncargo'],
+                                'fechapago'       => $value['fechanormal'],
                             ]);
                     }
 
-                    // 5) Actualizar el credito (misma fila/cuenta/cuotas/fechas) con los
-                    // montos nuevos.
+                    // 4b) Si el cronograma recalculado necesita MAS cuotas de las que habia
+                    // pendientes (lo esperado, al repartir el saldo en todo el plazo original),
+                    // se insertan las cuotas adicionales, correlativas a partir de la ultima
+                    // cuota pendiente.
+                    $numerocuota_siguiente = $cuotas_pendientes->last()->numerocuota + 1;
+                    for ($i = $cuotas_pendientes->count(); $i < $cuotasnuevo; $i++) {
+                        $value = $cronograma_nuevo['cronograma'][$i];
+                        DB::table('credito_cronograma')->insert([
+                            'numerocuota'     => $numerocuota_siguiente,
+                            'fechapago'       => $value['fechanormal'],
+                            'capital'         => $value['saldo'],
+                            'amortizacion'    => $value['amortizacion'],
+                            'interes'         => $value['interes'],
+                            'cuotapagar'      => $value['cuota'],
+                            'cuota_real'      => $value['cuotafinal'],
+                            'resto_redondeo'  => 0,
+                            'comision'        => $value['comision'],
+                            'cargo'           => $value['cargo'],
+                            'comision_cargo'  => $value['comisioncargo'],
+                            'idestadocredito_cronograma' => 1,
+                            'idcredito'       => $request->idcredito,
+                        ]);
+                        $numerocuota_siguiente++;
+                    }
+
+                    // 5) Actualizar el credito con los montos nuevos, el total de cuotas (las ya
+                    // cerradas + las nuevas pendientes) y la fecha final real del cronograma
+                    // recalculado (deberia coincidir con la fecha final original, o quedar muy
+                    // cerca segun donde caiga el ultimo paso de la frecuencia de pago).
+                    $cuotas_totales_nuevo = ($cuotas_pendientes->first()->numerocuota - 1) + $cuotasnuevo;
+                    $fecha_ultimopago_nueva_reduccioncuota = $cronograma_nuevo['cronograma'][$cuotasnuevo - 1]['fechanormal'];
+
                     DB::table('credito')->whereId($request->idcredito)->update([
                         'monto_solicitado'    => $montonuevo,
                         'saldo_pendientepago' => $montonuevo,
@@ -1001,23 +1061,26 @@ class CobranzacuotaController extends Controller
                         'total_comision'      => $cronograma_nuevo['total_comision'],
                         'total_cargo'         => $cronograma_nuevo['total_cargo'],
                         'total_comisioncargo' => $cronograma_nuevo['total_comisioncargo'],
+                        'cuotas'              => $cuotas_totales_nuevo,
+                        'fecha_ultimopago'    => $fecha_ultimopago_nueva_reduccioncuota,
                     ]);
                 });
                 $cuota_reducida = true;
                 $monto_saldo_nuevo = (float) $cronograma['saldo_capital'];
             }
 
-            // ====== Pago Anticipado - Compresion de fechas (Caso 1 y Caso 2) ======
+            // ====== Pago Anticipado - Caso 1 (Reduccion de Plazo) ======
             // Si tras aplicar el pago con descuento (arriba) quedan cuotas pendientes, se
-            // "comprime" el calendario: las cuotas que siguen pendientes pasan a usar las primeras
-            // fechas AUN NO VENCIDAS del calendario ORIGINAL del credito (las que dejaron libres
-            // las cuotas ya pagadas), en vez de esperar a sus fechas originales. Asi el credito
-            // termina antes. Aplica tanto al Caso 1 (Reduccion de Plazo, donde el monto de cada
-            // cuota no cambia) como al Caso 2 (Reduccion de Cuota, donde arriba ya se recalcularon
-            // los montos sobre el saldo restante): en ambos casos las fechas se comprimen igual.
+            // "comprime" el calendario: las cuotas que siguen pendientes conservan su monto
+            // (capital/interes/cargo) y su numerocuota, pero pasan a usar las primeras fechas AUN
+            // NO VENCIDAS del calendario ORIGINAL del credito (las que dejaron libres las cuotas
+            // ya pagadas), en vez de esperar a sus fechas originales. Asi el credito termina antes
+            // sin cambiar el monto de las cuotas restantes. El Caso 2 (Reduccion de Cuota) NO usa
+            // este bloque: ahi las fechas ya se recalculan arriba, junto con los montos, repartiendo
+            // el saldo en todo el plazo hasta la fecha final original del credito.
             $plazo_reducido = false;
             $fecha_ultimopago_nueva = null;
-            if($request->opcion_pago=='PAGO_ANTICIPADO' && in_array($request->modalidad_pagoanticipado, ['reduccion_plazo','reduccion_cuota']) && (float)$cronograma['saldo_capital']>0){
+            if($request->opcion_pago=='PAGO_ANTICIPADO' && $request->modalidad_pagoanticipado=='reduccion_plazo' && (float)$cronograma['saldo_capital']>0){
                 DB::transaction(function() use ($request, &$fecha_ultimopago_nueva) {
 
                     // Calendario original completo (no cambia aunque ya se hayan comprimido

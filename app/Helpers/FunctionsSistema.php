@@ -674,9 +674,20 @@ function select_cronograma(
             
             //---
             $numero_cuota_pendiente++;
-            $cuota_pendiente = $cuota_pendiente+$totalcuota;
+            // "cuota_pendiente" se arma sumando cada componente (cuota/penalidad/tenencia/
+            // compensatorio) redondeado a centavos POR SEPARADO, igual que "select_cuota" +
+            // "select_penalidad" + "select_tenencia" + "select_compensatorio" (usados para el
+            // "TOTAL A PAGAR"/Pago Total). Antes se sumaba $totalcuota (que redondea la
+            // combinacion de los 4 componentes de UNA sola vez por cuota); con muchas cuotas
+            // acumulando centimos de mora, "redondear y sumar" vs "sumar y redondear" podian
+            // diferir en 1 centimo entre "Pendientes" y "Pago Total".
+            $cuota_pendiente = $cuota_pendiente
+                + (float) number_format($cuota, 2, '.', '')
+                + (float) number_format($penalidad, 2, '.', '')
+                + (float) number_format($tenencia, 2, '.', '')
+                + (float) number_format($compensatorio, 2, '.', '');
             $saldo_capital = $saldo_capital+$amortizacion; //($value->acuenta>0?($totalcuota-$value->acuenta-$value->acuenta):0)
-            
+
             if($atraso_dias>=0){
                 //$style = 'box-shadow: inset 0 0 0 9999px rgb(244 172 172) !important;';
                 $numero_cuota_vencida++;
@@ -689,7 +700,10 @@ function select_cronograma(
                         $penalidad = $calculos_en_pagoacuenta['calculo_diario_saldo_compensatorio'];
                         $compensatorio = $calculos_en_pagoacuenta['calculo_diario_saldo_moratorio'];
 
-                        $cuota_pendiente = (float) $cuota_pendiente + (float) $tenencia + (float) $penalidad + (float) $compensatorio;
+                        $cuota_pendiente = (float) $cuota_pendiente
+                            + (float) number_format($tenencia, 2, '.', '')
+                            + (float) number_format($penalidad, 2, '.', '')
+                            + (float) number_format($compensatorio, 2, '.', '');
                         $cuota_vencida = (float) $cuota_vencida + (float) $tenencia + (float) $penalidad + (float) $compensatorio;
                     }
                 }

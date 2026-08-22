@@ -508,20 +508,22 @@ class CobranzacuotaController extends Controller
                     ]);
                 }
 
-                // Reduccion de Cuota: la cascada de arriba, si el monto alcanza, cierra cuotas
-                // futuras una por una (aprovechando su descuento de interes/cargo/comision). Para
-                // este caso NO se quiere eso: solo deben cerrarse las cuotas ya vencidas o de hoy;
-                // cualquier cuota futura que haya quedado 'selected' se revierte aca (se le quita
-                // tambien el 'acuenta'/'adelanto' que le habia calculado la cascada, para que el
-                // loop de mas abajo no la trate como si tuviera un pago a cuenta parcial ni le
-                // registre un credito_adelanto). Lo que hubiera costado cerrarla (su capital, ya
-                // que una cuota futura viaja con interes/cargo/comision en 0 por el descuento) se
-                // guarda como "excedente": en el bloque de reduccion_cuota (mas abajo) ese
-                // excedente, mas el capital de las cuotas vencidas que si se cierran, se resta del
-                // saldo total para armar el monto nuevo a repartir entre las cuotas que siguen
-                // pendientes.
+                // Reduccion de Cuota / Reduccion de Plazo: la cascada de arriba, si el monto
+                // alcanza, cierra cuotas futuras una por una (aprovechando su descuento de
+                // interes/cargo/comision). Para estos dos casos NO se quiere eso: solo deben
+                // cerrarse las cuotas ya vencidas o de hoy; cualquier cuota futura que haya
+                // quedado 'selected' se revierte aca (se le quita tambien el 'acuenta'/'adelanto'
+                // que le habia calculado la cascada, para que el loop de mas abajo no la trate
+                // como si tuviera un pago a cuenta parcial ni le registre un credito_adelanto).
+                // Lo que hubiera costado cerrarla (su capital, ya que una cuota futura viaja con
+                // interes/cargo/comision en 0 por el descuento) se guarda como "excedente": en
+                // Reduccion de Cuota (mas abajo) ese excedente se resta del saldo para repartirlo
+                // reamortizando; en Reduccion de Plazo se usa para saber cuantas cuotas futuras
+                // ($reduccionCapitalExtra_cuotas) ya quedaron cubiertas por el abono y por lo tanto
+                // sobran (se eliminan del cronograma en vez de reamortizar, ver mas abajo).
                 $reduccionCapitalExtra = 0;
-                if ($request->opcion_pago=='PAGO_ANTICIPADO' && $request->modalidad_pagoanticipado=='reduccion_cuota') {
+                $reduccionCapitalExtra_cuotas = 0;
+                if ($request->opcion_pago=='PAGO_ANTICIPADO' && in_array($request->modalidad_pagoanticipado, ['reduccion_cuota','reduccion_plazo'])) {
                     $fecha_hoy_reduccioncuota = new \DateTime(Carbon::now()->format('Y-m-d'));
                     foreach ($cronograma['cronograma'] as $k => $value) {
                         if (!in_array($value['idestadocredito_cronograma'], [1,3]) || $value['selected'] != 'selected') {
@@ -533,6 +535,7 @@ class CobranzacuotaController extends Controller
                             $cronograma['cronograma'][$k]['acuenta'] = '0.00';
                             $cronograma['cronograma'][$k]['adelanto'] = '0.00';
                             $reduccionCapitalExtra += (float) $value['pagar_totalcuota'];
+                            $reduccionCapitalExtra_cuotas++;
                         } else {
                             $reduccionCapitalExtra += (float) $value['amortizacion'];
                         }
@@ -1162,23 +1165,33 @@ class CobranzacuotaController extends Controller
             }
 
             // ====== Pago Anticipado - Caso 1 (Reduccion de Plazo) ======
-            // Si tras aplicar el pago con descuento (arriba) quedan cuotas pendientes, se
-            // "comprime" el calendario: las cuotas que siguen pendientes conservan su monto
-            // (capital/interes/cargo) y su numerocuota, pero pasan a usar las primeras fechas AUN
-            // NO VENCIDAS del calendario ORIGINAL del credito (las que dejaron libres las cuotas
-            // ya pagadas), en vez de esperar a sus fechas originales. Asi el credito termina antes
-            // sin cambiar el monto de las cuotas restantes. El Caso 2 (Reduccion de Cuota) NO usa
-            // este bloque: ahi las fechas ya se recalculan arriba, junto con los montos, repartiendo
-            // el saldo en todo el plazo hasta la fecha final original del credito.
+            // La cuota NO se recalcula (se mantiene igual, con su capital/interes/cargo
+            // original): el abono extra se trata como si ya hubiera prepagado, de una, tantas
+            // cuotas futuras como alcance ($reduccionCapitalExtra_cuotas, calculado arriba al
+            // revertir el cierre que habia hecho la cascada general sobre esas mismas cuotas
+            // futuras) -exactamente como pide PAGOANTICIPADO.md: misma cuota, menos cuotas-. Esas
+            // cuotas ya cubiertas se ELIMINAN del cronograma (nunca tuvieron pago ni vencieron,
+            // eran solo proyeccion). Las que sobreviven usan el MISMO mecanismo de fechas que ya
+            // existia (sin tocar): se comprimen a las primeras fechas aun no vencidas que dejaron
+            // libres las cuotas ya cerradas.
             $plazo_reducido = false;
             $fecha_ultimopago_nueva = null;
+            $cuotas_eliminadas_plazo = 0;
             if($request->opcion_pago=='PAGO_ANTICIPADO' && $request->modalidad_pagoanticipado=='reduccion_plazo' && (float)$cronograma['saldo_capital']>0){
-                DB::transaction(function() use ($request, $credito, $idtienda, $cronograma, &$fecha_ultimopago_nueva) {
+                DB::transaction(function() use ($request, $credito, $idtienda, $cronograma, $reduccionCapitalExtra, $reduccionCapitalExtra_cuotas, &$fecha_ultimopago_nueva, &$cuotas_eliminadas_plazo) {
 
-                    // Calendario original completo (no cambia aunque ya se hayan comprimido
-                    // fechas antes: siempre se toma el orden vigente de numerocuota), pero SOLO
-                    // las fechas aun no vencidas (fecha > hoy): reutilizar una fecha de hoy o del
-                    // pasado dejaria la cuota reprogramada vencida desde el momento en que se crea.
+                    $cuotas_pendientes = DB::table('credito_cronograma')
+                        ->where('idcredito', $request->idcredito)
+                        ->whereIn('idestadocredito_cronograma', [1,3])
+                        ->orderBy('numerocuota', 'asc')
+                        ->get();
+
+                    // Calendario de fechas TODAVIA no vencidas, capturado ANTES de eliminar nada:
+                    // incluye las fechas de las cuotas que se van a eliminar mas abajo. Es
+                    // justamente esa "reserva" de fechas tempranas la que permite comprimir las
+                    // cuotas que sobreviven hacia el inicio del calendario (reutilizar una fecha
+                    // de hoy o del pasado dejaria la cuota reprogramada vencida desde el momento
+                    // en que se crea).
                     $fecha_hoy = Carbon::now()->format('Y-m-d');
                     $fechas_calendario = DB::table('credito_cronograma')
                         ->where('idcredito', $request->idcredito)
@@ -1187,16 +1200,8 @@ class CobranzacuotaController extends Controller
                         ->pluck('fechapago')
                         ->values();
 
-                    $cuotas_pendientes = DB::table('credito_cronograma')
-                        ->where('idcredito', $request->idcredito)
-                        ->whereIn('idestadocredito_cronograma', [1,3])
-                        ->orderBy('numerocuota', 'asc')
-                        ->get();
-
                     // Guardar la foto historica (mismo formato que el Caso 2), para poder armar el
-                    // sufijo "P. Anticip. Parc- Reduc. Plazo" en "Modalidad de C". Aca las
-                    // condiciones (tasa/montos) no cambian, solo las fechas, pero se deja el mismo
-                    // registro para tener rastro de que este credito tuvo un pago anticipado.
+                    // sufijo "P. Anticip. Parc- Reduc. Plazo" en "Modalidad de C".
                     DB::table('credito_pagoanticipado_historial')->insert([
                         'fecharegistro' => Carbon::now(),
                         'monto_solicitado' => $credito->monto_solicitado,
@@ -1222,7 +1227,7 @@ class CobranzacuotaController extends Controller
                         'total_propuesta' => $credito->total_propuesta,
                         'fecha_primerpago' => $credito->fecha_primerpago,
                         'fecha_ultimopago' => $credito->fecha_ultimopago,
-                        'saldo_capital_trasladado' => (float) $cronograma['saldo_capital'],
+                        'saldo_capital_trasladado' => (float) $cronograma['saldo_capital'] - $reduccionCapitalExtra,
                         'numerocuota_ultima_anterior' => $cuotas_pendientes->first()->numerocuota - 1,
                         'numerocuota_desde_nuevo' => $cuotas_pendientes->first()->numerocuota,
                         'idcredito' => $request->idcredito,
@@ -1233,6 +1238,23 @@ class CobranzacuotaController extends Controller
                         'modalidad_pagoanticipado' => 'reduccion_plazo',
                     ]);
 
+                    // Eliminar, del FRENTE de las cuotas que siguen pendientes (las futuras mas
+                    // proximas -las mismas que la cascada general iba a cerrar de una y se
+                    // revirtieron arriba-), tantas como el abono extra ya cubrio. Nunca se elimina
+                    // la ultima cuota que quede (piso de 1), para no dejar el credito sin cronograma.
+                    $cuotas_eliminadas_plazo = min($reduccionCapitalExtra_cuotas, max(0, $cuotas_pendientes->count() - 1));
+                    if ($cuotas_eliminadas_plazo > 0) {
+                        $cuotas_a_eliminar = $cuotas_pendientes->take($cuotas_eliminadas_plazo);
+                        DB::table('credito_cronograma')
+                            ->whereIn('id', $cuotas_a_eliminar->pluck('id'))
+                            ->delete();
+                        $cuotas_pendientes = $cuotas_pendientes->slice($cuotas_eliminadas_plazo)->values();
+                    }
+
+                    // A partir de aca, EXACTAMENTE el mismo mecanismo de fechas que ya existia,
+                    // pero usando el calendario CAPTURADO ANTES del borrado (para que las fechas
+                    // tempranas que dejaron libres las cuotas eliminadas sigan disponibles para
+                    // comprimir las que sobreviven).
                     $nuevas_fechas = $fechas_calendario->take($cuotas_pendientes->count())->values();
 
                     // Puede haber menos fechas futuras libres que cuotas pendientes (p.ej. si la
@@ -1250,9 +1272,15 @@ class CobranzacuotaController extends Controller
 
                     $fecha_ultimopago_nueva = $nuevas_fechas->isNotEmpty() ? $nuevas_fechas->last() : $cuotas_pendientes->last()->fechapago;
 
+                    $total_pendientepago_nuevo = $cuotas_pendientes->sum('cuota_real');
+                    $cuotas_totales_nuevo = $credito->cuotas - $cuotas_eliminadas_plazo;
+
                     DB::table('credito')->whereId($request->idcredito)->update([
-                        'fecha_primerpago' => $nuevas_fechas->first(),
-                        'fecha_ultimopago' => $fecha_ultimopago_nueva,
+                        'saldo_pendientepago' => (float) $cronograma['saldo_capital'] - $reduccionCapitalExtra,
+                        'total_pendientepago' => $total_pendientepago_nuevo,
+                        'cuotas'              => $cuotas_totales_nuevo,
+                        'fecha_primerpago'    => $nuevas_fechas->first(),
+                        'fecha_ultimopago'    => $fecha_ultimopago_nueva,
                     ]);
                 });
                 $plazo_reducido = true;
@@ -1274,6 +1302,7 @@ class CobranzacuotaController extends Controller
                 'cuota_pago_nueva' => number_format($cuota_pago_nueva, 2, '.', ''),
                 'plazo_reducido' => $plazo_reducido,
                 'fecha_ultimopago_nueva' => $fecha_ultimopago_nueva ? date_format(date_create($fecha_ultimopago_nueva),'d-m-Y') : null,
+                'cuotas_eliminadas' => $cuotas_eliminadas_plazo,
             ]);
         }
         elseif($request->input('view') == 'congelarcredito') {

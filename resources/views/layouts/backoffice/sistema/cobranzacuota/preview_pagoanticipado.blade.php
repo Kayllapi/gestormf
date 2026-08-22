@@ -25,8 +25,9 @@
             aproximadamente <b>S/. {{ $resultado['cuota_pago_nueva'] }}</b> (mismas fechas, mismo
             N° de cuotas).
         @elseif(!empty($resultado['plazo_reducido']))
-            <b>Reducción de Plazo:</b> las cuotas restantes conservan su monto, pero se
-            adelantan sus fechas; el crédito terminaría el
+            <b>Reducción de Plazo:</b> las cuotas restantes conservan su monto original y solo
+            adelantan sus fechas; se eliminarían <b>{{ $resultado['cuotas_eliminadas'] }}</b>
+            cuota(s) ya cubiertas por el abono, y el crédito terminaría el
             <b>{{ $resultado['fecha_ultimopago_nueva'] }}</b>.
         @else
             El pago cubre las cuotas seleccionadas sin generar cambios adicionales al
@@ -104,6 +105,22 @@
                 <td>{{ $c->comision }}</td>
                 <td>{{ $c->cuota_real }}</td>
                 <td><b>{{ $label }}</b></td>
+            </tr>
+        @endforeach
+        @php
+            $numerocuotas_actuales = $cuotas->pluck('numerocuota')->all();
+        @endphp
+        @foreach($montos_antes as $numerocuota => $m)
+            @continue(in_array($numerocuota, $numerocuotas_actuales))
+            <tr style="background-color: #f8d7da !important;">
+                <td>{{ $numerocuota }}</td>
+                <td>{{ date_format(date_create($fechas_antes[$numerocuota]), 'd-m-Y') }}</td>
+                <td>{{ $m->amortizacion }}</td>
+                <td>{{ $m->interes }}</td>
+                <td>{{ $m->cargo }}</td>
+                <td>{{ $m->comision }}</td>
+                <td>{{ $m->cuota_real }}</td>
+                <td><b>ELIMINADA</b></td>
             </tr>
         @endforeach
         </tbody>

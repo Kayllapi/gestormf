@@ -342,7 +342,8 @@ input::selection {
             alert('Se recalcularon las cuotas pendientes sobre el saldo restante de S/. '+resultado.monto_saldo_nuevo+'. La nueva cuota es de aproximadamente S/. '+resultado.cuota_pago_nueva+'.');
         }
         if(resultado.plazo_reducido){
-            alert('Se redujo el plazo del crédito. Las cuotas restantes ahora vencen antes; la última cuota queda para el '+resultado.fecha_ultimopago_nueva+'.');
+            var msjEliminadas = resultado.cuotas_eliminadas > 0 ? (' Se eliminaron '+resultado.cuotas_eliminadas+' cuota(s) ya cubiertas por el abono.') : '';
+            alert('Se redujo el plazo del crédito. La cuota se mantiene igual; las cuotas restantes ahora vencen antes, la última queda para el '+resultado.fecha_ultimopago_nueva+'.'+msjEliminadas);
         }
 
         show_data_credito(resultado.idcredito);

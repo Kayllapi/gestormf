@@ -351,11 +351,28 @@ class CobranzacuotaController extends Controller
                             'mensaje'   => 'El Crédito esta vencido.'
                         ]);
                     }
-                    if($request->opcion_pago=='PAGO_ANTICIPADO' && (float)$request->cobrar_total_recibido > (float)$credito->total_pendientepago){
-                        return response()->json([
-                            'resultado' => 'ERROR',
-                            'mensaje'   => 'El monto ingresado no puede superar el saldo total pendiente del crédito (S/. '.number_format($credito->total_pendientepago, 2, '.', '').').'
-                        ]);
+                    if($request->opcion_pago=='PAGO_ANTICIPADO'){
+                        // El total_pendientepago cacheado en credito puede estar desactualizado
+                        // (p.ej. un credito recien creado que aun no registro ningun pago). Se
+                        // recalcula en vivo con select_cronograma(), la misma fuente de verdad que
+                        // usa el resto del sistema, en vez de confiar en el campo cacheado.
+                        $cronograma_pendiente_actual = select_cronograma(
+                            $idtienda,
+                            $request->idcredito,
+                            $credito->idforma_credito,
+                            $credito->modalidadproductocredito,
+                            $credito->cuotas,
+                            0, 0, 0, 0, 0, 0, 0,
+                            0,
+                            1,
+                            'detalle_cobranza'
+                        );
+                        if((float)$request->cobrar_total_recibido > (float)$cronograma_pendiente_actual['cuota_pendiente']){
+                            return response()->json([
+                                'resultado' => 'ERROR',
+                                'mensaje'   => 'El monto ingresado no puede superar el saldo total pendiente del crédito (S/. '.number_format($cronograma_pendiente_actual['cuota_pendiente'], 2, '.', '').').'
+                            ]);
+                        }
                     }
                     // Reduccion de Plazo/Cuota son para pagos PARCIALES: si el monto ingresado ya
                     // alcanza (o supera) lo que costaria cancelar todo el credito hoy, no tiene

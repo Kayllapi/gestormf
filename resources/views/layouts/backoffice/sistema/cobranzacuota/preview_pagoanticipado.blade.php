@@ -20,14 +20,15 @@
     <div class="alert alert-info" style="font-size: 13px; text-align: left; border: 1px solid #f8ebc4 !important; background-color: #f8ebc4 !important;">
         Monto a abonar: <b>S/. {{ number_format($monto, 2, '.', '') }}</b>.
         @if(!empty($resultado['cuota_reducida']))
-            <b>Reducción de Cuota:</b> se recalcularían las cuotas pendientes sobre el saldo
+            <b>Reducción de Cuota:</b> se recalcularían las cuotas pendientes sobre el saldo capital
             restante de <b>S/. {{ $resultado['monto_saldo_nuevo'] }}</b>; la nueva cuota sería de
             aproximadamente <b>S/. {{ $resultado['cuota_pago_nueva'] }}</b> (mismas fechas, mismo
             N° de cuotas).
         @elseif(!empty($resultado['plazo_reducido']))
             <b>Reducción de Plazo:</b> las cuotas restantes conservan su monto original y solo
             adelantan sus fechas; se eliminarían <b>{{ $resultado['cuotas_eliminadas'] }}</b>
-            cuota(s) ya cubiertas por el abono, y el crédito terminaría el
+            cuota(s) ya cubiertas por el abono, el saldo capital
+            restante de <b>S/. {{ $resultado['monto_saldo_nuevo'] }}</b> y el crédito terminaría el
             <b>{{ $resultado['fecha_ultimopago_nueva'] }}</b>.
         @else
             El pago cubre las cuotas seleccionadas sin generar cambios adicionales al

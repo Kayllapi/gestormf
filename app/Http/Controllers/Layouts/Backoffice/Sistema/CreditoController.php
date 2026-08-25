@@ -3668,6 +3668,7 @@ class CreditoController extends Controller
             DB::table('credito')->whereId($id)->update([
                 'forma_pago_credito'        => $forma_pago_credito->nombre,
                 'saldo_pendientepago'       => $request->input('monto_solicitado'),
+                'total_pendientepago'       => $request->input('total_pagar'),
                 'cuota_pago'                => $cronograma['cuota_pago'],
                 'fecha_primerpago'          => $cronograma['fechainicio'],
                 'fecha_ultimopago'          => $cronograma['ultimafecha'],

@@ -86,13 +86,13 @@
                     $color = '#d1e7dd';
                 } elseif ($monto_cambio) {
                     $label = 'MONTO RECALCULADO (cuota antes: '.number_format($monto_antes->cuota_real, 2, '.', '').')';
-                    $color = '#f9e5a8';
+                    $color = '#f8ebc4';
                 } elseif ($fecha_antes && $fecha_antes != $c->fechapago) {
                     $label = 'FECHA REPROGRAMADA (antes: N° '.$numero_antes.', '.date_format(date_create($fecha_antes),'d-m-Y').')';
-                    $color = '#f9e5a8';
+                    $color = '#f8ebc4';
                 } elseif ($numero_cambio) {
                     $label = 'RENUMERADA (antes: N° '.$numero_antes.')';
-                    $color = '#f9e5a8';
+                    $color = '#f8ebc4';
                 } elseif ($c->idestadocredito_cronograma == 2) {
                     $label = 'YA PAGADA/CANCELADA';
                     $color = '#efefef';

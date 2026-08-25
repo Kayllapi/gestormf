@@ -17,7 +17,7 @@
         {{ $error }}
     </div>
 @else
-    <div class="alert alert-info" style="font-size: 13px; text-align: left; border: 1px solid #f9e5a8 !important; background-color: #f9e5a8 !important;">
+    <div class="alert alert-info" style="font-size: 13px; text-align: left; border: 1px solid #f8ebc4 !important; background-color: #f8ebc4 !important;">
         Monto a abonar: <b>S/. {{ number_format($monto, 2, '.', '') }}</b>.
         @if(!empty($resultado['cuota_reducida']))
             <b>Reducción de Cuota:</b> se recalcularían las cuotas pendientes sobre el saldo

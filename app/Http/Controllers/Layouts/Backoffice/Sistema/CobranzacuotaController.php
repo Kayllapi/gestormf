@@ -502,10 +502,41 @@ class CobranzacuotaController extends Controller
                 // sobran (se eliminan del cronograma en vez de reamortizar, ver mas abajo).
                 $reduccionCapitalExtra = 0;
                 $reduccionCapitalExtra_cuotas = 0;
+                // Recibo/ticket: las cuotas futuras que este bloque desmarca (mas abajo) nunca
+                // pasan por el loop que arma "pago_cuota" ni por los "select_*" de select_cronograma
+                // (que ademas nunca se llenan aca: select_cronograma recibe numerocuota=0 en pago
+                // anticipado). Se capturan aparte, solo para mostrar en el ticket/listado de
+                // extorno, sin afectar el cronograma real (eso ya lo maneja $reduccionCapitalExtra).
+                $reduccion_pago_cuota = '';
+                $reduccion_pago_diasatraso = '';
+                $reduccion_total_amortizacion = 0;
+                $reduccion_total_interes = 0;
+                $reduccion_total_comision = 0;
+                $reduccion_total_cargo = 0;
+                $reduccion_total_cuota = 0;
+                $reduccion_total_totalcuota = 0;
+                $reduccion_total_adelanto_parcial = 0;
                 if ($request->opcion_pago=='PAGO_ANTICIPADO' && in_array($request->modalidad_pagoanticipado, ['reduccion_cuota','reduccion_plazo'])) {
                     $fecha_hoy_reduccioncuota = new \DateTime(Carbon::now()->format('Y-m-d'));
                     foreach ($cronograma['cronograma'] as $k => $value) {
-                        if (!in_array($value['idestadocredito_cronograma'], [1,3]) || $value['selected'] != 'selected') {
+                        if (!in_array($value['idestadocredito_cronograma'], [1,3])) {
+                            continue;
+                        }
+                        if ($value['selected'] != 'selected') {
+                            // La cascada no alcanzo a cerrar esta cuota completa, pero le dejo un
+                            // adelanto parcial (el "sobrante" del monto ingresado, p.ej. si cubre
+                            // 10 cuotas de 28.80 con un pago de 300, sobran 12). Como esta cuota no
+                            // queda 'selected' (se va a eliminar/reamortizar mas abajo junto con el
+                            // resto), ese sobrante no debe quedar guardado como credito_adelanto de
+                            // una cuota que esta por desaparecer: se suma tambien al excedente, para
+                            // que siga reduciendo capital en vez de perderse.
+                            $adelanto_parcial = (float) ($value['adelanto'] ?? 0);
+                            if ($adelanto_parcial > 0) {
+                                $cronograma['cronograma'][$k]['acuenta'] = '0.00';
+                                $cronograma['cronograma'][$k]['adelanto'] = '0.00';
+                                $reduccionCapitalExtra += $adelanto_parcial;
+                                $reduccion_total_adelanto_parcial += $adelanto_parcial;
+                            }
                             continue;
                         }
                         $fechaCuota = \DateTime::createFromFormat('d-m-Y', $value['fecha'])->setTime(0, 0, 0);
@@ -515,6 +546,14 @@ class CobranzacuotaController extends Controller
                             $cronograma['cronograma'][$k]['adelanto'] = '0.00';
                             $reduccionCapitalExtra += (float) $value['pagar_totalcuota'];
                             $reduccionCapitalExtra_cuotas++;
+                            $reduccion_pago_cuota .= ($reduccion_pago_cuota === '' ? '' : ', ').$value['numerocuota'];
+                            $reduccion_pago_diasatraso .= ($reduccion_pago_diasatraso === '' ? '' : ', ').$value['atraso_dias'];
+                            $reduccion_total_amortizacion += (float) $value['amortizacion'];
+                            $reduccion_total_interes += (float) $value['interes'];
+                            $reduccion_total_comision += (float) $value['comision'];
+                            $reduccion_total_cargo += (float) $value['cargo'];
+                            $reduccion_total_cuota += (float) $value['cuota'];
+                            $reduccion_total_totalcuota += (float) $value['pagar_totalcuota'];
                         } else {
                             $reduccionCapitalExtra += (float) $value['amortizacion'];
                         }
@@ -550,11 +589,20 @@ class CobranzacuotaController extends Controller
                       }
                         $pago_cuota = $pago_cuota.$coma.$value['numerocuota'];
                         $pago_diasatraso = $pago_diasatraso.$coma.$value['atraso_dias'];
-                        
+
                         $i++;
                   }
                 }
-          
+
+                // Reduccion de Cuota/Plazo: agregar las cuotas futuras capturadas arriba (las que
+                // el bloque de reduccion desmarco) al recibo, ya que el loop de encima no las ve
+                // (dejaron de estar 'selected' a proposito, para no marcarlas como pagadas en el
+                // cronograma real).
+                if ($reduccion_pago_cuota !== '') {
+                    $pago_cuota = $pago_cuota === '' ? $reduccion_pago_cuota : $pago_cuota.', '.$reduccion_pago_cuota;
+                    $pago_diasatraso = $pago_diasatraso === '' ? $reduccion_pago_diasatraso : $pago_diasatraso.', '.$reduccion_pago_diasatraso;
+                }
+
                 $idcredito_cobranzacuota = DB::table('credito_cobranzacuota')->insertGetId([
                     'fecharegistro' => Carbon::now(),
                     'codigo' => $codigo,
@@ -564,7 +612,7 @@ class CobranzacuotaController extends Controller
                     'numerooperacion' => $request->numerooperacion!=''?$request->numerooperacion:'',
                     'banco' => $banco,
                     'cuenta' => $cuenta,
-                  
+
                     'proximo_vencimiento' => $cronograma['proximo_vencimiento'],
                     'saldo_pendientepago' => $cronograma['saldo_capital'],
                     'total_pendientepago' => $cronograma['cuota_pendiente'],
@@ -573,18 +621,18 @@ class CobranzacuotaController extends Controller
                     'opcion_pago' => $request->opcion_pago,
                     'estadocargo' => $request->estadocargo!=null?$request->estadocargo:'',
                     'cobrar_cargo' => $request->cobrar_cargo!=null?$request->cobrar_cargo:'0.00',
-                  
-                    'total_amortizacion'         => $cronograma['select_amortizacion'],
-                    'total_interes'              => $cronograma['select_interes'],
-                    'total_comision'             => $cronograma['select_comision'],
-                    'total_cargo'                => $cronograma['select_cargo'],
-                    'total_cuota'                => $cronograma['select_cuota'],
+
+                    'total_amortizacion'         => (float) $cronograma['select_amortizacion'] + $reduccion_total_amortizacion,
+                    'total_interes'              => (float) $cronograma['select_interes'] + $reduccion_total_interes,
+                    'total_comision'             => (float) $cronograma['select_comision'] + $reduccion_total_comision,
+                    'total_cargo'                => (float) $cronograma['select_cargo'] + $reduccion_total_cargo,
+                    'total_cuota'                => (float) $cronograma['select_cuota'] + $reduccion_total_cuota,
                     'total_tenencia'             => $cronograma['select_tenencia'],
                     'total_penalidad'            => $cronograma['select_penalidad'],
                     'total_compensatorio'        => $cronograma['select_compensatorio'],
-                    'total_totalcuota'           => $cronograma['select_totalcuota'],
+                    'total_totalcuota'           => (float) $cronograma['select_totalcuota'] + $reduccion_total_totalcuota,
                     'total_pagoacuenta'          => $cronograma['total_pagoacuenta'],
-                    'total_adelanto'             => $cronograma['select_adelanto'],
+                    'total_adelanto'             => (float) $cronograma['select_adelanto'] + $reduccion_total_adelanto_parcial,
                     //'numerocuota_pagoacuenta'          => $request->numerocuota,
                     'total_pagar_amortizacion'         => $cronograma['select_pagar_amortizacion'],
                     'total_pagar_interes'              => $cronograma['select_pagar_interes'],
@@ -1055,6 +1103,16 @@ class CobranzacuotaController extends Controller
                         $tasa_tip_nuevo = $credito->tasa_tem;
                         $tipotasa = 2;
                     }
+                    // genera_cronograma() espera la comision como TASA % (la del tarifario), no
+                    // como el monto absoluto de credito.comision (eran cosas distintas: la tasa no
+                    // se guarda despues de la creacion, solo el monto ya calculado); se reconstruye
+                    // despejando la misma formula que la genero.
+                    $tasa_comision_nuevo = tasa_comision_desde_absoluto(
+                        $credito->total_comision,
+                        $credito->monto_solicitado,
+                        $credito->cuotas,
+                        $credito->idforma_pago_credito
+                    );
 
                     $cronograma_nuevo = genera_cronograma(
                         $montonuevo,
@@ -1064,7 +1122,7 @@ class CobranzacuotaController extends Controller
                         $tasa_tip_nuevo,
                         $tipotasa,
                         $credito->dia_gracia,
-                        $credito->comision,
+                        $tasa_comision_nuevo,
                         $credito->cargo
                     );
                     $cuota_pago_nueva = $cronograma_nuevo['cuota_pago'];
@@ -1264,8 +1322,11 @@ class CobranzacuotaController extends Controller
 
                     // Eliminar, del FRENTE de las cuotas que siguen pendientes (las futuras mas
                     // proximas -las mismas que la cascada general iba a cerrar de una y se
-                    // revirtieron arriba-), tantas como el abono extra ya cubrio. Nunca se elimina
-                    // la ultima cuota que quede (piso de 1), para no dejar el credito sin cronograma.
+                    // revirtieron arriba-), tantas como el abono extra ya cubrio ENTERAS. Nunca se
+                    // elimina la ultima cuota que quede (piso de 1), para no dejar el credito sin
+                    // cronograma. El resto del abono (lo que no alcanzo para una cuota entera mas)
+                    // ya quedo sumado a $reduccionCapitalExtra (ver el loop que lo calcula, mas
+                    // arriba) y se aplica abajo como reduccion de capital sobre las que sobreviven.
                     $cuotas_eliminadas_plazo = min($reduccionCapitalExtra_cuotas, max(0, $cuotas_pendientes->count() - 1));
                     if ($cuotas_eliminadas_plazo > 0) {
                         $cuotas_a_eliminar = $cuotas_pendientes->take($cuotas_eliminadas_plazo);
@@ -1275,44 +1336,103 @@ class CobranzacuotaController extends Controller
                         $cuotas_pendientes = $cuotas_pendientes->slice($cuotas_eliminadas_plazo)->values();
                     }
 
-                    // A partir de aca, EXACTAMENTE el mismo mecanismo de fechas que ya existia,
-                    // pero usando el calendario CAPTURADO ANTES del borrado (para que las fechas
-                    // tempranas que dejaron libres las cuotas eliminadas sigan disponibles para
-                    // comprimir las que sobreviven).
-                    $nuevas_fechas = $fechas_calendario->take($cuotas_pendientes->count())->values();
+                    // Las que sobreviven se REGENERAN (mismo capital/interes recalculado desde el
+                    // saldo ya reducido, igual que Reduccion de Cuota), no solo renumeradas: el
+                    // abono anticipado tambien redujo el capital de las que quedan, asi que su
+                    // interes (proporcional al capital, en Interes Simple) tiene que bajar con el.
+                    // La cantidad de cuotas NO cambia con el recalculo (a diferencia de Reduccion
+                    // de Cuota, que reparte en todo el plazo restante): siguen siendo las que
+                    // sobrevivieron arriba, solo con montos mas bajos.
+                    $montonuevo = (float) $cronograma['saldo_capital'] - $reduccionCapitalExtra;
+                    $cuotasnuevo = $cuotas_pendientes->count();
 
-                    // Las fechas del calendario original que quedan SIN USAR (las ultimas, al
-                    // fondo) son las que le hubieran tocado a las cuotas eliminadas: se guardan
-                    // solo para mostrarlas en la previsualizacion (fila "ELIMINADA"), no se les
-                    // asigna a ninguna cuota real.
-                    $fechas_eliminadas_plazo = $fechas_calendario->slice($cuotas_pendientes->count())->values();
+                    $cuotaAnterior = DB::table('credito_cronograma')
+                        ->where('idcredito', $request->idcredito)
+                        ->where('numerocuota', $numerocuota_inicio_original - 1)
+                        ->first();
+                    $fechaAncla = $cuotaAnterior ? $cuotaAnterior->fechapago : Carbon::now()->format('Y-m-d');
+                    // genera_cronograma() le suma el dia_gracia del credito a la fecha de inicio
+                    // antes de dar el primer paso; se resta aca para que, al sumarselo de nuevo
+                    // internamente, el resultado siga siendo la fecha ancla original (el dia_gracia
+                    // ya se aplico una vez, al crear el credito).
+                    $fechaGracia = date_create($fechaAncla);
+                    date_sub($fechaGracia, date_interval_create_from_date_string($credito->dia_gracia.' day'));
+                    $fechaInicioCronogramaNuevo = date_format($fechaGracia, 'Y-m-d');
 
-                    // Puede haber menos fechas futuras libres que cuotas pendientes (p.ej. si la
-                    // mora acumulada en cuotas vencidas hizo que el monto alcanzara para cerrar
-                    // menos cuotas de las esperadas): a esas cuotas "sobrantes" se les deja su
-                    // fecha actual en vez de asignarles una fecha inexistente. Ademas se
-                    // renumeran consecutivamente (sin el hueco que dejaron las eliminadas), para
-                    // que el cronograma se vea correlativo en todo el sistema, no solo aca.
+                    $frecuenciaDiasMap = [1=>26, 2=>4, 3=>2, 4=>1];
+                    $dias = $frecuenciaDiasMap[$credito->idforma_pago_credito];
+                    $tasa_tip_nuevo = number_format(($credito->tasa_tem / $dias) * $cuotasnuevo, 2, '.', '');
+                    $tipotasa = 1;
+                    if($credito->modalidadproductocredito=='Interes Compuesto'){
+                        $tasa_tip_nuevo = $credito->tasa_tem;
+                        $tipotasa = 2;
+                    }
+                    // genera_cronograma() espera la comision como TASA % (la del tarifario), no
+                    // como el monto absoluto de credito.comision (eran cosas distintas: la tasa no
+                    // se guarda despues de la creacion, solo el monto ya calculado); se reconstruye
+                    // despejando la misma formula que la genero.
+                    $tasa_comision_nuevo = tasa_comision_desde_absoluto(
+                        $credito->total_comision,
+                        $credito->monto_solicitado,
+                        $credito->cuotas,
+                        $credito->idforma_pago_credito
+                    );
+
+                    $cronograma_nuevo = genera_cronograma(
+                        $montonuevo,
+                        $cuotasnuevo,
+                        $fechaInicioCronogramaNuevo,
+                        $credito->idforma_pago_credito,
+                        $tasa_tip_nuevo,
+                        $tipotasa,
+                        $credito->dia_gracia,
+                        $tasa_comision_nuevo,
+                        $credito->cargo
+                    );
+
                     foreach ($cuotas_pendientes as $i => $cuota) {
-                        $update = ['numerocuota' => $numerocuota_inicio_original + $i];
-                        if (isset($nuevas_fechas[$i])) {
-                            $update['fechapago'] = $nuevas_fechas[$i];
-                        }
+                        $value = $cronograma_nuevo['cronograma'][$i];
                         DB::table('credito_cronograma')
                             ->whereId($cuota->id)
-                            ->update($update);
+                            ->update([
+                                'numerocuota'     => $numerocuota_inicio_original + $i,
+                                'fechapago'       => $value['fechanormal'],
+                                'capital'         => $value['saldo'],
+                                'amortizacion'    => $value['amortizacion'],
+                                'interes'         => $value['interes'],
+                                'cuotapagar'      => $value['cuota'],
+                                'cuota_real'      => $value['cuotafinal'],
+                                'comision'        => $value['comision'],
+                                'cargo'           => $value['cargo'],
+                                'comision_cargo'  => $value['comisioncargo'],
+                            ]);
                     }
 
-                    $fecha_ultimopago_nueva = $nuevas_fechas->isNotEmpty() ? $nuevas_fechas->last() : $cuotas_pendientes->last()->fechapago;
+                    $fecha_ultimopago_nueva = $cronograma_nuevo['cronograma'][$cuotasnuevo - 1]['fechanormal'];
+                    // Las fechas que le hubieran tocado a las cuotas eliminadas (calendario
+                    // original, antes de comprimir) solo se guardan para mostrarlas en la
+                    // previsualizacion (fila "ELIMINADA"); no se le asignan a ninguna cuota real.
+                    $fechas_eliminadas_plazo = $fechas_calendario->slice($cuotasnuevo)->values();
 
-                    $total_pendientepago_nuevo = $cuotas_pendientes->sum('cuota_real');
                     $cuotas_totales_nuevo = $credito->cuotas - $cuotas_eliminadas_plazo;
 
                     DB::table('credito')->whereId($request->idcredito)->update([
-                        'saldo_pendientepago' => (float) $cronograma['saldo_capital'] - $reduccionCapitalExtra,
-                        'total_pendientepago' => $total_pendientepago_nuevo,
+                        'monto_solicitado'    => $montonuevo,
+                        'saldo_pendientepago' => $montonuevo,
+                        'total_pendientepago' => $cronograma_nuevo['total_cuotafinal'],
+                        'cuota_pago'          => $cronograma_nuevo['cuota_pago'],
+                        'tasa_tip'            => $tasa_tip_nuevo,
+                        'interes_total'       => $cronograma_nuevo['total_interes'],
+                        'total_pagar'         => $cronograma_nuevo['total_cuotafinal'],
+                        'total_propuesta'     => $cronograma_nuevo['total_propuesta'],
+                        'cuota_comision'      => $cronograma_nuevo['cuota_comision'],
+                        'cuota_cargo'         => $cronograma_nuevo['cuota_cargo'],
+                        'cuota_comisioncargo' => $cronograma_nuevo['cuota_comisioncargo'],
+                        'total_comision'      => $cronograma_nuevo['total_comision'],
+                        'total_cargo'         => $cronograma_nuevo['total_cargo'],
+                        'total_comisioncargo' => $cronograma_nuevo['total_comisioncargo'],
                         'cuotas'              => $cuotas_totales_nuevo,
-                        'fecha_primerpago'    => $nuevas_fechas->first(),
+                        'fecha_primerpago'    => $cronograma_nuevo['cronograma'][0]['fechanormal'],
                         'fecha_ultimopago'    => $fecha_ultimopago_nueva,
                     ]);
                 });

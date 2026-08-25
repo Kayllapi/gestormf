@@ -162,7 +162,13 @@ class PagoprestamoController extends Controller
                 $t_penalidad = $t_penalidad+$valueadelanto->penalidad;
                 $t_tenencia = $t_tenencia+$valueadelanto->tenencia;
                 $t_compensatorio = $t_compensatorio+$valueadelanto->compensatorio;
-            }  
+            }
+
+              // Pago Anticipado (reduccion_cuota/reduccion_plazo): el sobrante que no alcanzo para
+              // una cuota entera mas no genera credito_adelanto (esa cuota se elimina y se
+              // reamortiza); credito_cobranzacuota.total_adelanto guarda ese sobrante para que
+              // igual se vea en esta columna.
+              $t_acuenta = $t_acuenta + (float) $value->total_adelanto;
 
               $t_cuotapagado = number_format($t_cuotapagado, 2, '.', '');
               $t_acuenta = number_format($t_acuenta, 2, '.', '');

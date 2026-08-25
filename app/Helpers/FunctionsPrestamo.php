@@ -300,6 +300,24 @@ function genera_cronograma($montosolicitado,$numerocuota,$fechainicio,$frecuenci
 // "cancelacion_total" no entra: no elimina/recalcula filas, solo marca-como-pagada via el
 // mecanismo generico (idcredito_cobranzacuota), que el extorno ya revierte por su cuenta.
 //
+// genera_cronograma() espera la COMISION como una TASA % (la del tarifario, p.ej. 2.50), no como
+// el monto absoluto que queda guardado en credito.comision/total_comision (p.ej. 18.80) -son cosas
+// distintas: la tasa nunca se guarda en `credito` despues de la creacion, solo el monto ya
+// calculado-. Se reconstruye despejando la formula que usa genera_cronograma() para llegar de una
+// a la otra: total_comision = monto*((tasa/dias)*cuotas)/100 => tasa = total_comision*100*dias /
+// (monto*cuotas). Coincide exactamente con la tasa real solo si (monto, cuotas, total_comision)
+// son los que tenia el credito ANTES de cualquier reduccion (por eso quien llama a esto siempre
+// pasa el monto/cuotas/comision ORIGINALES, del historial o del credito recien creado -nunca los
+// de un cronograma ya reducido, que arrastrarian el mismo error si no se corrige antes).
+function tasa_comision_desde_absoluto($total_comision, $monto_solicitado, $cuotas, $idforma_pago_credito) {
+    $frecuenciaDiasMap = [1 => 26, 2 => 4, 3 => 2, 4 => 1];
+    $dias = $frecuenciaDiasMap[$idforma_pago_credito];
+    if ((float) $monto_solicitado <= 0 || (float) $cuotas <= 0) {
+        return 0;
+    }
+    return ((float) $total_comision * 100 * $dias) / ((float) $monto_solicitado * (float) $cuotas);
+}
+
 // Devuelve true si encontro y revirtio algo estructural, false si no habia nada que hacer (p.ej.
 // cancelacion_total, o un pago de antes de que existiera este vinculo).
 function revertir_pagoanticipado($idcredito, $idcredito_cobranzacuota) {
@@ -325,6 +343,13 @@ function revertir_pagoanticipado($idcredito, $idcredito_cobranzacuota) {
         ->first();
     $tipotasa = $credito_actual->modalidadproductocredito == 'Interes Compuesto' ? 2 : 1;
 
+    $tasa_comision = tasa_comision_desde_absoluto(
+        $historial->total_comision,
+        $historial->monto_solicitado,
+        $historial->cuotas,
+        $credito_actual->idforma_pago_credito
+    );
+
     $cronograma_original = genera_cronograma(
         $historial->monto_solicitado,
         $historial->cuotas,
@@ -333,7 +358,7 @@ function revertir_pagoanticipado($idcredito, $idcredito_cobranzacuota) {
         $historial->tasa_tip,
         $tipotasa,
         $historial->dia_gracia,
-        $historial->comision,
+        $tasa_comision,
         $historial->cargo
     );
 
@@ -363,6 +388,7 @@ function revertir_pagoanticipado($idcredito, $idcredito_cobranzacuota) {
     }
 
     DB::table('credito')->where('id', $idcredito)->update([
+        'monto_solicitado'    => $historial->monto_solicitado,
         'saldo_pendientepago' => $historial->saldo_pendientepago,
         'total_pendientepago' => $historial->total_pendientepago,
         'cuotas'              => $historial->cuotas,

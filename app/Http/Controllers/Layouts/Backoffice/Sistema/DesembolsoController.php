@@ -142,6 +142,25 @@ class DesembolsoController extends Controller
                     ->orderBy('credito.id','desc')
                     ->first();
 
+        // Si el credito tuvo al menos un Pago Anticipado (credito_pagoanticipado_historial), se
+        // distingue con el sufijo de la modalidad MAS RECIENTE (mismo criterio y mismas etiquetas
+        // que CobranzacuotaController::show/show_cobranzacuota), para que el PDF de cronograma/
+        // resumen (boton "CRONOGRAMA/HOJA DE RESUMEN" en cobranzacuota) muestre el detalle en
+        // "Modalidad de Credito" igual que el resto del sistema.
+        $ultimoPagoAnticipado = DB::table('credito_pagoanticipado_historial')
+            ->where('idcredito', $credito->id)
+            ->orderBy('id', 'desc')
+            ->first();
+        if($ultimoPagoAnticipado){
+            $sufijosPagoAnticipado = [
+                'reduccion_cuota'   => 'P. Anticip. Parc- Reduc. Cuota',
+                'reduccion_plazo'   => 'P. Anticip. Parc- Reduc. Plazo',
+                'cancelacion_total' => 'P. Anticip. Total - Cancelacion',
+            ];
+            $sufijoPagoAnticipado = $sufijosPagoAnticipado[$ultimoPagoAnticipado->modalidad_pagoanticipado] ?? 'pago anticipado';
+            $credito->modalidad_credito_nombre = $credito->modalidad_credito_nombre.' - '.$sufijoPagoAnticipado;
+        }
+
         $usuario = DB::table('users')
               ->leftJoin('ubigeo','ubigeo.id','users.idubigeo')
               ->leftJoin('ubigeo as ubigeonacimiento','ubigeonacimiento.id','users.idubigeo_nacimiento')
@@ -156,7 +175,7 @@ class DesembolsoController extends Controller
                   'ubigeonacimiento.nombre as ubigeonacimientonombre'
               )
               ->first();
-      
+
         $asesor = DB::table('users')->where('users.id',$credito->idasesor)->first();
  
         $users_prestamo = DB::table('s_users_prestamo')->where('s_users_prestamo.id_s_users',$credito->idcliente)->first();

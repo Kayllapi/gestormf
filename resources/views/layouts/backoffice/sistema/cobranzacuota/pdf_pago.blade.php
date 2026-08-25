@@ -155,7 +155,12 @@
                         $t_tenencia = $t_tenencia+$valueadelanto->tenencia;
                         $t_compensatorio = $t_compensatorio+$valueadelanto->compensatorio;
                     }
-                  
+
+                    // Pago Anticipado (reduccion_cuota/reduccion_plazo): el sobrante que no alcanzo
+                    // para una cuota entera mas no genera credito_adelanto (esa cuota se elimina y
+                    // se reamortiza, ver CobranzacuotaController::store); credito_cobranzacuota.
+                    // total_adelanto guarda ese sobrante para que igual se vea aca.
+                    $t_acuenta = $t_acuenta + (float) $credito_cobranzacuota->total_adelanto;
                     ?>
           <table style="width:100%;">
             <tr>

@@ -608,80 +608,131 @@ class PagoprestamoController extends Controller
               'idestadocredito_cargo'    => 1,
           ]);
           //------------------------------
-        
-          $credito_cronograma = DB::table('credito_cronograma')
-              ->where('credito_cronograma.idcredito',$credito_cobranzacuota->idcredito)
-              ->where('credito_cronograma.idestadocronograma_pago',2)
-              ->orderBy('credito_cronograma.numerocuota','desc')
-              ->get();
 
-          foreach($credito_cronograma as $value){
-              $total_adelanto = DB::table('credito_adelanto')
-                  ->where('credito_adelanto.idestadocredito_adelanto',1)
-                  ->where('credito_adelanto.numerocuota',$value->numerocuota)
-                  ->where('credito_adelanto.idcredito_cobranzacuota',$credito_cobranzacuota->id)
-                  ->sum('credito_adelanto.total');
-              if($total_adelanto>0){
-                  $acuenta = 0;
-                  $idestadocredito_cronograma = 0;
-                  $idestadocronograma_pago = 0;
-                  if($value->acuenta>0 && $value->acuenta<=$total_adelanto){
-                      $acuenta = $total_adelanto-$value->acuenta; //3.20-3.20=0
-                      $idestadocredito_cronograma = 1;
-                      $idestadocronograma_pago = 0;
-                  }else{
-                      $acuenta = $value->acuenta-$total_adelanto; // 22.80-7.80=15
-                      $idestadocredito_cronograma = 1;
-                      $idestadocronograma_pago = 2;
-                  }
-                  if($credito_cobranzacuota->idestado_congelarcredito==2){ // credito congelado
-                      DB::table('credito_cronograma')
-                          ->whereId($value->id)
-                          ->update([
-                            'acuenta' => $acuenta,
-                            'idestadocredito_cronograma' => $idestadocredito_cronograma,
-                            'idestadocronograma_pago' => $idestadocronograma_pago,
-                      ]);
-                  }else{
-                      DB::table('credito_cronograma')
-                          ->whereId($value->id)
-                          ->update([
-                            'acuenta' => $acuenta,
-                            'idestadocredito_cronograma' => $idestadocredito_cronograma,
-                            'idestadocronograma_pago' => $idestadocronograma_pago,
+          // restaurar cronograma: pago directo de cuota(s) vs pago a cuenta/adelanto
+          // (antes solo se restauraba el cronograma via credito_adelanto, dejando las
+          // cuotas de un PAGO_CUOTA/PAGO_TOTAL marcadas como pagadas tras el extorno)
+          if($credito_cobranzacuota->opcion_pago=='PAGO_CUOTA' or $credito_cobranzacuota->opcion_pago=='PAGO_TOTAL'){
 
-
-                            'tenencia'             => 0,
-                            'penalidad'            => 0,
-                            'compensatorio'        => 0,
-                            'totalcuota'           => 0,
-
-                            'atraso_dias'                => 0,
-                            'pagar_amortizacion'         => 0,
-                            'pagar_interes'              => 0,
-                            'pagar_comision'             => 0,
-                            'pagar_cargo'                => 0,
-                            'pagar_cuota'                => 0,
-                            'pagar_tenencia'             => 0,
-                            'pagar_penalidad'            => 0,
-                            'pagar_compensatorio'        => 0,
-                            'pagar_totalcuota'           => 0,
-                            'descontar_amortizacion'     => 0,
-                            'descontar_interes'          => 0,
-                            'descontar_comision'         => 0,
-                            'descontar_cargo'            => 0,
-                            'descontar_cuota'            => 0,
-                            'descontar_tenencia'         => 0,
-                            'descontar_penalidad'        => 0,
-                            'descontar_compensatorio'    => 0,
-                            'descontar_totalcuota'       => 0,
-                            'idcredito_cobranzacuota'    => 0,
-                      ]);
-                  }
-
+              if($credito_cobranzacuota->idestado_congelarcredito==2){ // credito congelado
+                  DB::table('credito_cronograma')
+                      ->where('credito_cronograma.idcredito_cobranzacuota',$id)
+                      ->update([
+                        'acuenta' => 0,
+                        'idestadocredito_cronograma' => 1,
+                        'idestadocronograma_pago' => 0,
+                  ]);
               }else{
-                  break;
+                  DB::table('credito_cronograma')
+                      ->where('credito_cronograma.idcredito_cobranzacuota',$id)
+                      ->update([
+                        'tenencia'             => 0,
+                        'penalidad'            => 0,
+                        'compensatorio'        => 0,
+                        'totalcuota'           => 0,
+                        'acuenta'              => 0,
+
+                        'atraso_dias'                => 0,
+                        'pagar_amortizacion'         => 0,
+                        'pagar_interes'              => 0,
+                        'pagar_comision'             => 0,
+                        'pagar_cargo'                => 0,
+                        'pagar_cuota'                => 0,
+                        'pagar_tenencia'             => 0,
+                        'pagar_penalidad'            => 0,
+                        'pagar_compensatorio'        => 0,
+                        'pagar_totalcuota'           => 0,
+                        'descontar_amortizacion'     => 0,
+                        'descontar_interes'          => 0,
+                        'descontar_comision'         => 0,
+                        'descontar_cargo'            => 0,
+                        'descontar_cuota'            => 0,
+                        'descontar_tenencia'         => 0,
+                        'descontar_penalidad'        => 0,
+                        'descontar_compensatorio'    => 0,
+                        'descontar_totalcuota'       => 0,
+                        'idestadocredito_cronograma' => 1,
+                        'idestadocronograma_pago'    => 0,
+                  ]);
               }
+
+          }else{
+
+              $credito_cronograma = DB::table('credito_cronograma')
+                  ->where('credito_cronograma.idcredito',$credito_cobranzacuota->idcredito)
+                  ->where('credito_cronograma.idestadocronograma_pago',2)
+                  ->orderBy('credito_cronograma.numerocuota','desc')
+                  ->get();
+
+              foreach($credito_cronograma as $value){
+                  $total_adelanto = DB::table('credito_adelanto')
+                      ->where('credito_adelanto.idestadocredito_adelanto',1)
+                      ->where('credito_adelanto.numerocuota',$value->numerocuota)
+                      ->where('credito_adelanto.idcredito_cobranzacuota',$credito_cobranzacuota->id)
+                      ->sum('credito_adelanto.total');
+                  if($total_adelanto>0){
+                      $acuenta = 0;
+                      $idestadocredito_cronograma = 0;
+                      $idestadocronograma_pago = 0;
+                      if($value->acuenta>0 && $value->acuenta<=$total_adelanto){
+                          $acuenta = $total_adelanto-$value->acuenta; //3.20-3.20=0
+                          $idestadocredito_cronograma = 1;
+                          $idestadocronograma_pago = 0;
+                      }else{
+                          $acuenta = $value->acuenta-$total_adelanto; // 22.80-7.80=15
+                          $idestadocredito_cronograma = 1;
+                          $idestadocronograma_pago = 2;
+                      }
+                      if($credito_cobranzacuota->idestado_congelarcredito==2){ // credito congelado
+                          DB::table('credito_cronograma')
+                              ->whereId($value->id)
+                              ->update([
+                                'acuenta' => $acuenta,
+                                'idestadocredito_cronograma' => $idestadocredito_cronograma,
+                                'idestadocronograma_pago' => $idestadocronograma_pago,
+                          ]);
+                      }else{
+                          DB::table('credito_cronograma')
+                              ->whereId($value->id)
+                              ->update([
+                                'acuenta' => $acuenta,
+                                'idestadocredito_cronograma' => $idestadocredito_cronograma,
+                                'idestadocronograma_pago' => $idestadocronograma_pago,
+
+
+                                'tenencia'             => 0,
+                                'penalidad'            => 0,
+                                'compensatorio'        => 0,
+                                'totalcuota'           => 0,
+
+                                'atraso_dias'                => 0,
+                                'pagar_amortizacion'         => 0,
+                                'pagar_interes'              => 0,
+                                'pagar_comision'             => 0,
+                                'pagar_cargo'                => 0,
+                                'pagar_cuota'                => 0,
+                                'pagar_tenencia'             => 0,
+                                'pagar_penalidad'            => 0,
+                                'pagar_compensatorio'        => 0,
+                                'pagar_totalcuota'           => 0,
+                                'descontar_amortizacion'     => 0,
+                                'descontar_interes'          => 0,
+                                'descontar_comision'         => 0,
+                                'descontar_cargo'            => 0,
+                                'descontar_cuota'            => 0,
+                                'descontar_tenencia'         => 0,
+                                'descontar_penalidad'        => 0,
+                                'descontar_compensatorio'    => 0,
+                                'descontar_totalcuota'       => 0,
+                                'idcredito_cobranzacuota'    => 0,
+                          ]);
+                      }
+
+                  }else{
+                      break;
+                  }
+              }
+
           }
 
           // eliminar las fotos de saldo (credito_adelanto_saldo) del/los adelanto(s) que se estan extornando,
@@ -708,10 +759,13 @@ class PagoprestamoController extends Controller
                 'idresponsableextorno'  => $idresponsable,
           ]);
           // restaurar estado de credito
+          // (si el pago extornado habia dejado el credito marcado como cancelado,
+          // fecha_cancelado debe limpiarse: ya no esta cancelado)
           DB::table('credito')
             ->whereId($credito_cobranzacuota->idcredito)
             ->update([
                 'idestadocredito'  => 1,
+                'fecha_cancelado'  => null,
           ]);
           // restaurar garantias
           DB::table('credito_garantia')

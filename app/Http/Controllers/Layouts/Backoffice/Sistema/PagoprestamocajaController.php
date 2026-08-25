@@ -488,10 +488,13 @@ class PagoprestamocajaController extends Controller
                   'idresponsableextorno'  => $idresponsable,
             ]);
             // restaurar estado de credito
+            // (si el pago extornado habia dejado el credito marcado como cancelado,
+            // fecha_cancelado debe limpiarse: ya no esta cancelado)
             DB::table('credito')
               ->whereId($credito_cobranzacuota->idcredito)
               ->update([
                   'idestadocredito'  => 1,
+                  'fecha_cancelado'  => null,
             ]);
             // restaurar garantias
             DB::table('credito_garantia')
@@ -499,7 +502,68 @@ class PagoprestamocajaController extends Controller
               ->update([
                 'idestadoentrega' => 1,
             ]);
-        
+
+            // recalcular y restaurar el saldo pendiente del credito
+            // (store() lo actualiza en cada cobranza, pero el extorno nunca lo recalculaba,
+            // dejando saldo_pendientepago/total_pendientepago con el valor de la cobranza revertida)
+            $credito_actual = DB::table('credito')
+                ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
+                ->where('credito.id',$credito_cobranzacuota->idcredito)
+                ->select('credito.*','credito_prendatario.modalidad as modalidadproductocredito')
+                ->first();
+
+            $primera_cuota_pendiente_restaurada = DB::table('credito_cronograma')
+                ->where('idcredito',$credito_cobranzacuota->idcredito)
+                ->where('idestadocredito_cronograma',1)
+                ->orderBy('numerocuota','asc')
+                ->value('numerocuota');
+
+            $credito_descuentocuotas = DB::table('credito_descuentocuota')
+                ->where('credito_descuentocuota.idcredito',$credito_cobranzacuota->idcredito)
+                ->where('credito_descuentocuota.idestadocredito_descuentocuota',1)
+                ->first();
+            $total_descuento_capital = 0;
+            $total_descuento_interes = 0;
+            $total_descuento_comision = 0;
+            $total_descuento_cargo = 0;
+            $total_descuento_penalidad = 0;
+            $total_descuento_tenencia = 0;
+            $total_descuento_compensatorio = 0;
+            if($credito_descuentocuotas && $primera_cuota_pendiente_restaurada>=$credito_descuentocuotas->numerocuota_fin){
+                $total_descuento_capital = $credito_descuentocuotas->capital;
+                $total_descuento_interes = $credito_descuentocuotas->interes;
+                $total_descuento_comision = $credito_descuentocuotas->comision;
+                $total_descuento_cargo = $credito_descuentocuotas->cargo;
+                $total_descuento_penalidad = $credito_descuentocuotas->penalidad;
+                $total_descuento_tenencia = $credito_descuentocuotas->tenencia;
+                $total_descuento_compensatorio = $credito_descuentocuotas->compensatorio;
+            }
+
+            $cronograma_restaurado = select_cronograma(
+                $idtienda,
+                $credito_cobranzacuota->idcredito,
+                $credito_actual->idforma_credito,
+                $credito_actual->modalidadproductocredito,
+                $credito_actual->cuotas,
+                $total_descuento_capital,
+                $total_descuento_interes,
+                $total_descuento_comision,
+                $total_descuento_cargo,
+                $total_descuento_penalidad,
+                $total_descuento_tenencia,
+                $total_descuento_compensatorio,
+                0,
+                1,
+                'detalle_cobranza'
+            );
+
+            DB::table('credito')
+                ->whereId($credito_cobranzacuota->idcredito)
+                ->update([
+                    'saldo_pendientepago' => $cronograma_restaurado['saldo_capital'],
+                    'total_pendientepago' => $cronograma_restaurado['cuota_pendiente'],
+                ]);
+
           return response()->json([
               'resultado'           => 'CORRECTO',
               'mensaje'             => 'Se ha elimino correctamente.',

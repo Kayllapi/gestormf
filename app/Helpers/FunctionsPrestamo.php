@@ -285,6 +285,111 @@ function genera_cronograma($montosolicitado,$numerocuota,$fechainicio,$frecuenci
         ]);
 }
 
+// Revierte, al extornar el pago que la origino, una mutacion de credito_cronograma hecha por
+// "Pago Anticipado" en modalidad reduccion_cuota / reduccion_plazo: esas dos, a diferencia de un
+// pago normal, no solo marcan cuotas como pagadas (eso ya lo revierte el extorno generico via
+// idcredito_cobranzacuota) sino que ELIMINAN y/o RECALCULAN filas completas de credito_cronograma
+// (fechas, montos, cantidad de cuotas), asi que hace falta reconstruirlas.
+//
+// Se usa la foto guardada en credito_pagoanticipado_historial (vinculada al pago via
+// idcredito_cobranzacuota) para regenerar, con genera_cronograma() -deterministico para los
+// mismos parametros-, el cronograma ORIGINAL tal como estaba justo antes de este pago, y solo se
+// reemplazan las cuotas desde "numerocuota_desde_nuevo" en adelante (las anteriores, ya cerradas
+// antes de este pago, no se tocan aca).
+//
+// "cancelacion_total" no entra: no elimina/recalcula filas, solo marca-como-pagada via el
+// mecanismo generico (idcredito_cobranzacuota), que el extorno ya revierte por su cuenta.
+//
+// Devuelve true si encontro y revirtio algo estructural, false si no habia nada que hacer (p.ej.
+// cancelacion_total, o un pago de antes de que existiera este vinculo).
+function revertir_pagoanticipado($idcredito, $idcredito_cobranzacuota) {
+    $historial = DB::table('credito_pagoanticipado_historial')
+        ->where('idcredito_cobranzacuota', $idcredito_cobranzacuota)
+        ->orderBy('id', 'desc')
+        ->first();
+
+    if (!$historial || $historial->modalidad_pagoanticipado == 'cancelacion_total') {
+        return false;
+    }
+
+    // idforma_pago_credito, tipo de tasa (simple/compuesto) y fecha_desembolso son fijos durante
+    // toda la vida del credito -no cambian con un pago anticipado-, por eso se leen del credito
+    // ACTUAL en vez de guardarse en el historial. fecha_desembolso es la semilla real que espera
+    // genera_cronograma(): "fecha_primerpago" (guardado en el historial) es un RESULTADO -la
+    // fecha ya calculada de la cuota 1-, no un parametro de entrada; pasarlo como fechainicio
+    // duplicaria el primer paso del cronograma y correria todas las fechas un periodo de mas.
+    $credito_actual = DB::table('credito')
+        ->join('credito_prendatario', 'credito_prendatario.id', 'credito.idcredito_prendatario')
+        ->where('credito.id', $idcredito)
+        ->select('credito.idforma_pago_credito', 'credito.fecha_desembolso', 'credito_prendatario.modalidad as modalidadproductocredito')
+        ->first();
+    $tipotasa = $credito_actual->modalidadproductocredito == 'Interes Compuesto' ? 2 : 1;
+
+    $cronograma_original = genera_cronograma(
+        $historial->monto_solicitado,
+        $historial->cuotas,
+        date('Y-m-d', strtotime($credito_actual->fecha_desembolso)),
+        $credito_actual->idforma_pago_credito,
+        $historial->tasa_tip,
+        $tipotasa,
+        $historial->dia_gracia,
+        $historial->comision,
+        $historial->cargo
+    );
+
+    DB::table('credito_cronograma')
+        ->where('idcredito', $idcredito)
+        ->where('numerocuota', '>=', $historial->numerocuota_desde_nuevo)
+        ->delete();
+
+    foreach ($cronograma_original['cronograma'] as $value) {
+        if ($value['numero'] >= $historial->numerocuota_desde_nuevo) {
+            DB::table('credito_cronograma')->insert([
+                'numerocuota'     => $value['numero'],
+                'fechapago'       => $value['fechanormal'],
+                'capital'         => $value['saldo'],
+                'amortizacion'    => $value['amortizacion'],
+                'interes'         => $value['interes'],
+                'cuotapagar'      => $value['cuota'],
+                'cuota_real'      => $value['cuotafinal'],
+                'resto_redondeo'  => 0,
+                'comision'        => $value['comision'],
+                'cargo'           => $value['cargo'],
+                'comision_cargo'  => $value['comisioncargo'],
+                'idestadocredito_cronograma' => 1,
+                'idcredito'       => $idcredito,
+            ]);
+        }
+    }
+
+    DB::table('credito')->where('id', $idcredito)->update([
+        'saldo_pendientepago' => $historial->saldo_pendientepago,
+        'total_pendientepago' => $historial->total_pendientepago,
+        'cuotas'              => $historial->cuotas,
+        'dia_gracia'          => $historial->dia_gracia,
+        'tasa_tem'            => $historial->tasa_tem,
+        'tasa_tem_minima'     => $historial->tasa_tem_minima,
+        'tasa_tip'            => $historial->tasa_tip,
+        'tasa_tcem'           => $historial->tasa_tcem,
+        'comision'            => $historial->comision,
+        'cargo'               => $historial->cargo,
+        'cuota_pago'          => $historial->cuota_pago,
+        'cuota_comision'      => $historial->cuota_comision,
+        'cuota_cargo'         => $historial->cuota_cargo,
+        'cuota_comisioncargo' => $historial->cuota_comisioncargo,
+        'total_comision'      => $historial->total_comision,
+        'total_cargo'         => $historial->total_cargo,
+        'total_comisioncargo' => $historial->total_comisioncargo,
+        'interes_total'       => $historial->interes_total,
+        'total_pagar'         => $historial->total_pagar,
+        'total_propuesta'     => $historial->total_propuesta,
+        'fecha_primerpago'    => $historial->fecha_primerpago,
+        'fecha_ultimopago'    => $historial->fecha_ultimopago,
+    ]);
+
+    return true;
+}
+
 
 function cronograma_fecha($frecuencia,$fechainicio,$feriados){
   

@@ -312,7 +312,7 @@ class PagoprestamocajaController extends Controller
           //dd('...');
         
               
-            if($credito_cobranzacuota->opcion_pago=='PAGO_CUOTA' or $credito_cobranzacuota->opcion_pago=='PAGO_TOTAL'){
+            if($credito_cobranzacuota->opcion_pago=='PAGO_CUOTA' or $credito_cobranzacuota->opcion_pago=='PAGO_TOTAL' or $credito_cobranzacuota->opcion_pago=='PAGO_ANTICIPADO'){
 
                 // restaurar pago
                 DB::table('credito_descuentocuota')
@@ -476,8 +476,15 @@ class PagoprestamocajaController extends Controller
                             'acuenta' => $credito_cronograma->acuenta+$value['acuenta'],
                       ]);
                     }*/
-                    
-                
+
+
+            }
+
+            // Pago Anticipado (reduccion_cuota / reduccion_plazo): ademas de lo de arriba (que ya
+            // revierte las cuotas vencidas/de hoy que se cerraron de una), hay que reconstruir el
+            // cronograma que esas dos modalidades eliminaron/recalcularon estructuralmente.
+            if($credito_cobranzacuota->opcion_pago=='PAGO_ANTICIPADO'){
+                revertir_pagoanticipado($credito_cobranzacuota->idcredito, $id);
             }
 
             DB::table('credito_cobranzacuota')

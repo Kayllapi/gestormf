@@ -302,7 +302,7 @@ input::selection {
           modal({ route:'{{ url('backoffice/'.$tienda->id.'/inicio/create?view=alerta') }}&mensaje='+mensaje, size: 'modal-sm' });
           return false;
       }
-      var saldoTotalPendiente = {{ (float) $credito->total_pendientepago }};
+      var saldoTotalPendiente = {{ (float) $saldo_total_pendiente }};
       var montoIngresado = parseFloat($('#cobrar_total_recibido').val()) || 0;
       if(montoIngresado > saldoTotalPendiente){
           let mensaje = 'El monto ingresado no puede superar el saldo total pendiente del crédito (S/. '+saldoTotalPendiente.toFixed(2)+').';

@@ -612,7 +612,7 @@ class PagoprestamoController extends Controller
           // restaurar cronograma: pago directo de cuota(s) vs pago a cuenta/adelanto
           // (antes solo se restauraba el cronograma via credito_adelanto, dejando las
           // cuotas de un PAGO_CUOTA/PAGO_TOTAL marcadas como pagadas tras el extorno)
-          if($credito_cobranzacuota->opcion_pago=='PAGO_CUOTA' or $credito_cobranzacuota->opcion_pago=='PAGO_TOTAL'){
+          if($credito_cobranzacuota->opcion_pago=='PAGO_CUOTA' or $credito_cobranzacuota->opcion_pago=='PAGO_TOTAL' or $credito_cobranzacuota->opcion_pago=='PAGO_ANTICIPADO'){
 
               if($credito_cobranzacuota->idestado_congelarcredito==2){ // credito congelado
                   DB::table('credito_cronograma')
@@ -733,6 +733,13 @@ class PagoprestamoController extends Controller
                   }
               }
 
+          }
+
+          // Pago Anticipado (reduccion_cuota / reduccion_plazo): ademas de lo de arriba (que ya
+          // revierte las cuotas vencidas/de hoy que se cerraron de una), hay que reconstruir el
+          // cronograma que esas dos modalidades eliminaron/recalcularon estructuralmente.
+          if($credito_cobranzacuota->opcion_pago=='PAGO_ANTICIPADO'){
+              revertir_pagoanticipado($credito_cobranzacuota->idcredito, $id);
           }
 
           // eliminar las fotos de saldo (credito_adelanto_saldo) del/los adelanto(s) que se estan extornando,

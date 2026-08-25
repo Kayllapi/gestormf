@@ -483,46 +483,8 @@ class CobranzacuotaController extends Controller
                             $cronograma['cronograma'][$k]['selected'] = 'selected';
                         }
                     }
-
-                    // Foto historica (mismo formato que los otros dos casos), solo para poder
-                    // armar el sufijo "P. Anticip. Total - Cancelacion" en "Modalidad de C". Aca
-                    // no hay saldo/cuotas que trasladar (el credito queda cerrado), asi que esos
-                    // campos van en 0.
-                    DB::table('credito_pagoanticipado_historial')->insert([
-                        'fecharegistro' => Carbon::now(),
-                        'monto_solicitado' => $credito->monto_solicitado,
-                        'saldo_pendientepago' => $credito->saldo_pendientepago,
-                        'total_pendientepago' => $credito->total_pendientepago,
-                        'cuotas' => $credito->cuotas,
-                        'dia_gracia' => $credito->dia_gracia,
-                        'tasa_tem' => $credito->tasa_tem,
-                        'tasa_tem_minima' => $credito->tasa_tem_minima,
-                        'tasa_tip' => $credito->tasa_tip,
-                        'tasa_tcem' => $credito->tasa_tcem,
-                        'comision' => $credito->comision,
-                        'cargo' => $credito->cargo,
-                        'cuota_pago' => $credito->cuota_pago,
-                        'cuota_comision' => $credito->cuota_comision,
-                        'cuota_cargo' => $credito->cuota_cargo,
-                        'cuota_comisioncargo' => $credito->cuota_comisioncargo,
-                        'total_comision' => $credito->total_comision,
-                        'total_cargo' => $credito->total_cargo,
-                        'total_comisioncargo' => $credito->total_comisioncargo,
-                        'interes_total' => $credito->interes_total,
-                        'total_pagar' => $credito->total_pagar,
-                        'total_propuesta' => $credito->total_propuesta,
-                        'fecha_primerpago' => $credito->fecha_primerpago,
-                        'fecha_ultimopago' => $credito->fecha_ultimopago,
-                        'saldo_capital_trasladado' => 0,
-                        'numerocuota_ultima_anterior' => 0,
-                        'numerocuota_desde_nuevo' => 0,
-                        'idcredito' => $request->idcredito,
-                        'idcredito_cobranzacuota' => 0,
-                        'idresponsable' => Auth::user()->id,
-                        'idtienda' => $idtienda,
-                        'idestado' => 1,
-                        'modalidad_pagoanticipado' => 'cancelacion_total',
-                    ]);
+                    // Foto historica: se guarda mas abajo, ya con el id del pago (ver
+                    // "Foto historica - Cancelacion Total" tras crear credito_cobranzacuota).
                 }
 
                 // Reduccion de Cuota / Reduccion de Plazo: la cascada de arriba, si el monto
@@ -651,9 +613,48 @@ class CobranzacuotaController extends Controller
                     'idtienda' => $idtienda,
                     'idestado' => 1,
                 ]);
-              
-              
-                
+
+                // Foto historica - Cancelacion Total: se guarda aca (recien existe
+                // $idcredito_cobranzacuota) para que el extorno pueda encontrarla despues. No hay
+                // saldo/cuotas que trasladar (el credito queda cerrado), asi que esos campos van en 0.
+                if ($request->opcion_pago=='PAGO_ANTICIPADO' && $request->modalidad_pagoanticipado=='cancelacion_total') {
+                    DB::table('credito_pagoanticipado_historial')->insert([
+                        'fecharegistro' => Carbon::now(),
+                        'monto_solicitado' => $credito->monto_solicitado,
+                        'saldo_pendientepago' => $credito->saldo_pendientepago,
+                        'total_pendientepago' => $credito->total_pendientepago,
+                        'cuotas' => $credito->cuotas,
+                        'dia_gracia' => $credito->dia_gracia,
+                        'tasa_tem' => $credito->tasa_tem,
+                        'tasa_tem_minima' => $credito->tasa_tem_minima,
+                        'tasa_tip' => $credito->tasa_tip,
+                        'tasa_tcem' => $credito->tasa_tcem,
+                        'comision' => $credito->comision,
+                        'cargo' => $credito->cargo,
+                        'cuota_pago' => $credito->cuota_pago,
+                        'cuota_comision' => $credito->cuota_comision,
+                        'cuota_cargo' => $credito->cuota_cargo,
+                        'cuota_comisioncargo' => $credito->cuota_comisioncargo,
+                        'total_comision' => $credito->total_comision,
+                        'total_cargo' => $credito->total_cargo,
+                        'total_comisioncargo' => $credito->total_comisioncargo,
+                        'interes_total' => $credito->interes_total,
+                        'total_pagar' => $credito->total_pagar,
+                        'total_propuesta' => $credito->total_propuesta,
+                        'fecha_primerpago' => $credito->fecha_primerpago,
+                        'fecha_ultimopago' => $credito->fecha_ultimopago,
+                        'saldo_capital_trasladado' => 0,
+                        'numerocuota_ultima_anterior' => 0,
+                        'numerocuota_desde_nuevo' => 0,
+                        'idcredito' => $request->idcredito,
+                        'idcredito_cobranzacuota' => $idcredito_cobranzacuota,
+                        'idresponsable' => Auth::user()->id,
+                        'idtienda' => $idtienda,
+                        'idestado' => 1,
+                        'modalidad_pagoanticipado' => 'cancelacion_total',
+                    ]);
+                }
+
                 //CAMBIAR ESTADO DE CUOTAS
                 
                 foreach($cronograma['cronograma'] as $value){
@@ -981,7 +982,7 @@ class CobranzacuotaController extends Controller
             $monto_saldo_nuevo = 0;
             $cuota_pago_nueva = 0;
             if($request->opcion_pago=='PAGO_ANTICIPADO' && $request->modalidad_pagoanticipado=='reduccion_cuota' && (float)$cronograma['saldo_capital']>0){
-                DB::transaction(function() use ($request, $credito, $idtienda, $cronograma, $reduccionCapitalExtra, &$cuota_pago_nueva) {
+                DB::transaction(function() use ($request, $credito, $idtienda, $cronograma, $reduccionCapitalExtra, $idcredito_cobranzacuota, &$cuota_pago_nueva) {
 
                     // 1) Cuotas que se van a recalcular: las que siguen pendientes despues del
                     // pago aplicado arriba (la cascada de mas arriba ya viene limitada a solo
@@ -1099,7 +1100,7 @@ class CobranzacuotaController extends Controller
                         'numerocuota_ultima_anterior' => $cuotas_pendientes->first()->numerocuota - 1,
                         'numerocuota_desde_nuevo' => $cuotas_pendientes->first()->numerocuota,
                         'idcredito' => $request->idcredito,
-                        'idcredito_cobranzacuota' => 0,
+                        'idcredito_cobranzacuota' => $idcredito_cobranzacuota,
                         'idresponsable' => Auth::user()->id,
                         'idtienda' => $idtienda,
                         'idestado' => 1,
@@ -1196,7 +1197,7 @@ class CobranzacuotaController extends Controller
             $cuotas_eliminadas_plazo = 0;
             $fechas_eliminadas_plazo = collect();
             if($request->opcion_pago=='PAGO_ANTICIPADO' && $request->modalidad_pagoanticipado=='reduccion_plazo' && (float)$cronograma['saldo_capital']>0){
-                DB::transaction(function() use ($request, $credito, $idtienda, $cronograma, $reduccionCapitalExtra, $reduccionCapitalExtra_cuotas, &$fecha_ultimopago_nueva, &$cuotas_eliminadas_plazo, &$fechas_eliminadas_plazo) {
+                DB::transaction(function() use ($request, $credito, $idtienda, $cronograma, $reduccionCapitalExtra, $reduccionCapitalExtra_cuotas, $idcredito_cobranzacuota, &$fecha_ultimopago_nueva, &$cuotas_eliminadas_plazo, &$fechas_eliminadas_plazo) {
 
                     $cuotas_pendientes = DB::table('credito_cronograma')
                         ->where('idcredito', $request->idcredito)
@@ -1254,7 +1255,7 @@ class CobranzacuotaController extends Controller
                         'numerocuota_ultima_anterior' => $cuotas_pendientes->first()->numerocuota - 1,
                         'numerocuota_desde_nuevo' => $cuotas_pendientes->first()->numerocuota,
                         'idcredito' => $request->idcredito,
-                        'idcredito_cobranzacuota' => 0,
+                        'idcredito_cobranzacuota' => $idcredito_cobranzacuota,
                         'idresponsable' => Auth::user()->id,
                         'idtienda' => $idtienda,
                         'idestado' => 1,
@@ -2530,6 +2531,9 @@ class CobranzacuotaController extends Controller
                 'total_cancelacion_descuento' => $total_cancelacion_descuento,
                 'total_cancelacion_saldo' => $total_cancelacion_saldo,
                 'credito_vencido' => $credito_vencido,
+                // Live (select_cronograma), no el campo cacheado credito.total_pendientepago:
+                // ese cache puede quedar en 0.00 (p.ej. credito recien creado sin pagos aun).
+                'saldo_total_pendiente' => $cronograma['cuota_pendiente'],
             ]);
         }
         elseif($request->input('view') == 'preview_pagoanticipado') {

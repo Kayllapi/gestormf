@@ -67,8 +67,21 @@
             </tr>
         </thead>
         <tbody>
+        @php
+            $total_capital = 0;
+            $total_interes = 0;
+            $total_cargo = 0;
+            $total_comision = 0;
+            $total_cuota = 0;
+        @endphp
         @foreach($cuotas as $c)
             @php
+                $total_capital += (float) $c->amortizacion;
+                $total_interes += (float) $c->interes;
+                $total_cargo += (float) $c->cargo;
+                $total_comision += (float) $c->comision;
+                $total_cuota += (float) $c->cuota_real;
+
                 $estado_antes = $estados_antes[$c->id] ?? null;
                 $fecha_antes = $fechas_antes[$c->id] ?? null;
                 $monto_antes = $montos_antes[$c->id] ?? null;
@@ -133,6 +146,17 @@
             </tr>
         @endforeach
         </tbody>
+        <thead>
+            <tr style="font-weight:bold;">
+                <th colspan="2" style="text-align: right;">TOTALES:</th>
+                <th>{{ number_format($total_capital, 2, '.', '') }}</th>
+                <th>{{ number_format($total_interes, 2, '.', '') }}</th>
+                <th>{{ number_format($total_cargo, 2, '.', '') }}</th>
+                <th>{{ number_format($total_comision, 2, '.', '') }}</th>
+                <th>{{ number_format($total_cuota, 2, '.', '') }}</th>
+                <th></th>
+            </tr>
+        </thead>
     </table>
 @endif
 </div>

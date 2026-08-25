@@ -16,7 +16,7 @@
                         <div class="row">
                            <div class="col-sm-12 col-md-6">
                               <div class="row">
-                                <label for="fecha_inicio" class="col-sm-3 col-form-label">AGENCIA</label>
+                                <label for="idagencia" class="col-sm-3 col-form-label">AGENCIA</label>
                                 <div class="col-sm-9">
                                     <input type="text" class="form-control" value="{{$tienda->nombreagencia}}" disabled>
                                     <input type="hidden" id="idagencia" value="{{$tienda->id}}">
@@ -30,7 +30,7 @@
                         <div class="row">
                            <div class="col-sm-12 col-md-6">
                               <div class="row">
-                                <label for="fecha_fin" class="col-sm-3 col-form-label">CLIENTE</label>
+                                <label for="idcliente" class="col-sm-3 col-form-label">CLIENTE</label>
                                 <div class="col-sm-9">
                                     <select class="form-control" id="idcliente">
                                       <option></option>
@@ -40,7 +40,7 @@
                            </div>
                            <div class="col-sm-12 col-md-6">
                               <div class="row">
-                                <label for="fecha_fin" class="col-sm-3 col-form-label">EJECUTIVO</label>
+                                <label for="idasesor" class="col-sm-3 col-form-label">EJECUTIVO</label>
                                 <div class="col-sm-9">
                                     <select class="form-control" id="idasesor">
                                       <option></option>
@@ -116,13 +116,14 @@
                 idtienda : idtienda
             },
             success: function (respuesta){
-                $('#idasesor').html(respuesta);  
+                $('#idasesor').html(respuesta);
+                $('#idasesor').val('0');
                 sistema_select2({ input:'#idasesor' });
             }
         })
     }
   
-  // lista_credito();
+  lista_credito();
   function lista_credito(){
     //let estado_credito = $('input[name="estado_credito"]:checked').val();
     

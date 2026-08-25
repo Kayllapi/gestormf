@@ -95,7 +95,6 @@ class DesembolsadoController extends Controller
               ->where('credito.estado','DESEMBOLSADO')
               ->where($where)
               ->orWhere($where2)
-              ->where('credito.estado','DESEMBOLSADO')
               ->select(
                   'credito.*',
                   'cliente.nombrecompleto as nombrecliente',

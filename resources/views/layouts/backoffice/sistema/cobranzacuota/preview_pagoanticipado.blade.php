@@ -69,9 +69,11 @@
         <tbody>
         @foreach($cuotas as $c)
             @php
-                $estado_antes = $estados_antes[$c->numerocuota] ?? null;
-                $fecha_antes = $fechas_antes[$c->numerocuota] ?? null;
-                $monto_antes = $montos_antes[$c->numerocuota] ?? null;
+                $estado_antes = $estados_antes[$c->id] ?? null;
+                $fecha_antes = $fechas_antes[$c->id] ?? null;
+                $monto_antes = $montos_antes[$c->id] ?? null;
+                $numero_antes = $monto_antes->numerocuota ?? null;
+                $numero_cambio = $numero_antes !== null && $numero_antes != $c->numerocuota;
                 $monto_cambio = $monto_antes && (
                     $monto_antes->amortizacion != $c->amortizacion
                     || $monto_antes->interes != $c->interes
@@ -86,7 +88,10 @@
                     $label = 'MONTO RECALCULADO (cuota antes: '.number_format($monto_antes->cuota_real, 2, '.', '').')';
                     $color = '#f9e5a8';
                 } elseif ($fecha_antes && $fecha_antes != $c->fechapago) {
-                    $label = 'FECHA REPROGRAMADA (antes: '.date_format(date_create($fecha_antes),'d-m-Y').')';
+                    $label = 'FECHA REPROGRAMADA (antes: N° '.$numero_antes.', '.date_format(date_create($fecha_antes),'d-m-Y').')';
+                    $color = '#f9e5a8';
+                } elseif ($numero_cambio) {
+                    $label = 'RENUMERADA (antes: N° '.$numero_antes.')';
                     $color = '#f9e5a8';
                 } elseif ($c->idestadocredito_cronograma == 2) {
                     $label = 'YA PAGADA/CANCELADA';
@@ -108,18 +113,22 @@
             </tr>
         @endforeach
         @php
-            $numerocuotas_actuales = $cuotas->pluck('numerocuota')->all();
+            // Filas sinteticas "ELIMINADA": no corresponden a ninguna fila real de la base de
+            // datos (esas cuotas ya no existen), se arman solo para mostrar, al final de la
+            // numeracion consecutiva, cuantas cuotas y que fechas del calendario original ya no
+            // hacen falta.
+            $numero_siguiente = ($cuotas->max('numerocuota') ?? 0) + 1;
+            $fechas_eliminadas = $resultado['fechas_eliminadas'] ?? [];
         @endphp
-        @foreach($montos_antes as $numerocuota => $m)
-            @continue(in_array($numerocuota, $numerocuotas_actuales))
+        @foreach($fechas_eliminadas as $fecha_eliminada)
             <tr style="background-color: #f8d7da !important;">
-                <td>{{ $numerocuota }}</td>
-                <td>{{ date_format(date_create($fechas_antes[$numerocuota]), 'd-m-Y') }}</td>
-                <td>{{ $m->amortizacion }}</td>
-                <td>{{ $m->interes }}</td>
-                <td>{{ $m->cargo }}</td>
-                <td>{{ $m->comision }}</td>
-                <td>{{ $m->cuota_real }}</td>
+                <td>{{ $numero_siguiente++ }}</td>
+                <td>{{ $fecha_eliminada }}</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
                 <td><b>ELIMINADA</b></td>
             </tr>
         @endforeach

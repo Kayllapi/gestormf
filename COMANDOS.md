@@ -6,7 +6,7 @@ mysql -u sgm_user -p sgm < database/sql/11082026150000create_credito_pagoanticip
 mysql -u sgm_user -p sgm < database/sql/21082026120000alter_credito_pagoanticipado_historial_add_modalidad.sql
 
 # verificar si se subio la base de datos
-mysql -u sgm_user -p sgm -e "DESCRIBE credito_pagoanticipado_historial;"
+mysql -u sgm_user -p sgm -e "DESCRIBE 21082026120000alter_credito_pagoanticipado_historial_add_modalidad;"
 ```
 
 # Comando para sacar copia de base de datos

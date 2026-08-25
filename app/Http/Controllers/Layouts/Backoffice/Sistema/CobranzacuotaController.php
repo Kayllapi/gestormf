@@ -1177,14 +1177,20 @@ class CobranzacuotaController extends Controller
             $plazo_reducido = false;
             $fecha_ultimopago_nueva = null;
             $cuotas_eliminadas_plazo = 0;
+            $fechas_eliminadas_plazo = collect();
             if($request->opcion_pago=='PAGO_ANTICIPADO' && $request->modalidad_pagoanticipado=='reduccion_plazo' && (float)$cronograma['saldo_capital']>0){
-                DB::transaction(function() use ($request, $credito, $idtienda, $cronograma, $reduccionCapitalExtra, $reduccionCapitalExtra_cuotas, &$fecha_ultimopago_nueva, &$cuotas_eliminadas_plazo) {
+                DB::transaction(function() use ($request, $credito, $idtienda, $cronograma, $reduccionCapitalExtra, $reduccionCapitalExtra_cuotas, &$fecha_ultimopago_nueva, &$cuotas_eliminadas_plazo, &$fechas_eliminadas_plazo) {
 
                     $cuotas_pendientes = DB::table('credito_cronograma')
                         ->where('idcredito', $request->idcredito)
                         ->whereIn('idestadocredito_cronograma', [1,3])
                         ->orderBy('numerocuota', 'asc')
                         ->get();
+
+                    // numerocuota desde donde arranca la renumeracion de las que sobreviven: justo
+                    // despues de la ultima cuota ya cerrada, para que la numeracion quede
+                    // consecutiva (sin huecos) tras eliminar las cuotas cubiertas por el abono.
+                    $numerocuota_inicio_original = $cuotas_pendientes->first()->numerocuota;
 
                     // Calendario de fechas TODAVIA no vencidas, capturado ANTES de eliminar nada:
                     // incluye las fechas de las cuotas que se van a eliminar mas abajo. Es
@@ -1257,17 +1263,26 @@ class CobranzacuotaController extends Controller
                     // comprimir las que sobreviven).
                     $nuevas_fechas = $fechas_calendario->take($cuotas_pendientes->count())->values();
 
+                    // Las fechas del calendario original que quedan SIN USAR (las ultimas, al
+                    // fondo) son las que le hubieran tocado a las cuotas eliminadas: se guardan
+                    // solo para mostrarlas en la previsualizacion (fila "ELIMINADA"), no se les
+                    // asigna a ninguna cuota real.
+                    $fechas_eliminadas_plazo = $fechas_calendario->slice($cuotas_pendientes->count())->values();
+
                     // Puede haber menos fechas futuras libres que cuotas pendientes (p.ej. si la
                     // mora acumulada en cuotas vencidas hizo que el monto alcanzara para cerrar
                     // menos cuotas de las esperadas): a esas cuotas "sobrantes" se les deja su
-                    // fecha actual en vez de asignarles una fecha inexistente.
+                    // fecha actual en vez de asignarles una fecha inexistente. Ademas se
+                    // renumeran consecutivamente (sin el hueco que dejaron las eliminadas), para
+                    // que el cronograma se vea correlativo en todo el sistema, no solo aca.
                     foreach ($cuotas_pendientes as $i => $cuota) {
-                        if (!isset($nuevas_fechas[$i])) {
-                            continue;
+                        $update = ['numerocuota' => $numerocuota_inicio_original + $i];
+                        if (isset($nuevas_fechas[$i])) {
+                            $update['fechapago'] = $nuevas_fechas[$i];
                         }
                         DB::table('credito_cronograma')
                             ->whereId($cuota->id)
-                            ->update(['fechapago' => $nuevas_fechas[$i]]);
+                            ->update($update);
                     }
 
                     $fecha_ultimopago_nueva = $nuevas_fechas->isNotEmpty() ? $nuevas_fechas->last() : $cuotas_pendientes->last()->fechapago;
@@ -1303,6 +1318,7 @@ class CobranzacuotaController extends Controller
                 'plazo_reducido' => $plazo_reducido,
                 'fecha_ultimopago_nueva' => $fecha_ultimopago_nueva ? date_format(date_create($fecha_ultimopago_nueva),'d-m-Y') : null,
                 'cuotas_eliminadas' => $cuotas_eliminadas_plazo,
+                'fechas_eliminadas' => $fechas_eliminadas_plazo->map(fn($f) => date_format(date_create($f),'d-m-Y'))->values()->all(),
             ]);
         }
         elseif($request->input('view') == 'congelarcredito') {
@@ -2517,18 +2533,22 @@ class CobranzacuotaController extends Controller
 
             DB::beginTransaction();
             try {
+                // Claveado por "id" (no "numerocuota"): en Reduccion de Plazo las cuotas que
+                // sobreviven se RENUMERAN para quedar consecutivas tras eliminar las que ya
+                // cubrio el abono, asi que "numerocuota" deja de ser una clave estable para
+                // comparar el antes/despues de la misma fila.
                 $estados_antes = DB::table('credito_cronograma')
                     ->where('idcredito', $id)
-                    ->pluck('idestadocredito_cronograma', 'numerocuota');
+                    ->pluck('idestadocredito_cronograma', 'id');
 
                 $fechas_antes = DB::table('credito_cronograma')
                     ->where('idcredito', $id)
-                    ->pluck('fechapago', 'numerocuota');
+                    ->pluck('fechapago', 'id');
 
                 $montos_antes = DB::table('credito_cronograma')
                     ->where('idcredito', $id)
                     ->get()
-                    ->keyBy('numerocuota');
+                    ->keyBy('id');
 
                 // Se calcula ANTES de simular el pago: para Cancelacion Total, despues de
                 // simular ya no quedarian cuotas pendientes que consultar.

@@ -1258,7 +1258,7 @@ class CobranzacuotaController extends Controller
             $cuotas_eliminadas_plazo = 0;
             $fechas_eliminadas_plazo = collect();
             if($request->opcion_pago=='PAGO_ANTICIPADO' && $request->modalidad_pagoanticipado=='reduccion_plazo' && (float)$cronograma['saldo_capital']>0){
-                DB::transaction(function() use ($request, $credito, $idtienda, $cronograma, $reduccionCapitalExtra, $reduccionCapitalExtra_cuotas, $idcredito_cobranzacuota, &$fecha_ultimopago_nueva, &$cuotas_eliminadas_plazo, &$fechas_eliminadas_plazo) {
+                DB::transaction(function() use ($request, $credito, $idtienda, $cronograma, $reduccionCapitalExtra, $reduccionCapitalExtra_cuotas, $idcredito_cobranzacuota, &$fecha_ultimopago_nueva, &$cuotas_eliminadas_plazo, &$fechas_eliminadas_plazo, &$monto_saldo_nuevo) {
 
                     $cuotas_pendientes = DB::table('credito_cronograma')
                         ->where('idcredito', $request->idcredito)
@@ -1355,6 +1355,7 @@ class CobranzacuotaController extends Controller
                     // arriba). Sin ese sobrante, $montonuevo coincide exacto con la suma de capital
                     // de las sobrevivientes y la ultima cuota tampoco cambia.
                     $montonuevo = (float) $cronograma['saldo_capital'] - $reduccionCapitalExtra;
+                    $monto_saldo_nuevo = $montonuevo;
                     $cuotasnuevo = $cuotas_pendientes->count();
 
                     $total_amortizacion_supervivientes = (float) $cuotas_pendientes->sum(fn($c) => (float) $c->amortizacion);

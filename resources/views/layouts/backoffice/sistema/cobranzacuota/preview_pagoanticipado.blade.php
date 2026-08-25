@@ -27,8 +27,8 @@
         @elseif(!empty($resultado['plazo_reducido']))
             <b>Reducción de Plazo:</b> las cuotas restantes conservan su monto original y solo
             adelantan sus fechas; se eliminarían <b>{{ $resultado['cuotas_eliminadas'] }}</b>
-            cuota(s) ya cubiertas por el abono, el saldo capital
-            restante de <b>S/. {{ $resultado['monto_saldo_nuevo'] }}</b> y el crédito terminaría el
+            cuota(s) ya cubiertas por el abono, dejando el saldo capital
+            restante en <b>S/. {{ $resultado['monto_saldo_nuevo'] }}</b>, y el crédito terminaría el
             <b>{{ $resultado['fecha_ultimopago_nueva'] }}</b>.
         @else
             El pago cubre las cuotas seleccionadas sin generar cambios adicionales al

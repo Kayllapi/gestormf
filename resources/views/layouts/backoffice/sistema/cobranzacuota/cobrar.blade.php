@@ -99,7 +99,7 @@
                 <div class="alert alert-primary" style="padding:6px 10px">
                   <table class="table table-sm table-bordered" style="margin-bottom:0;border-color: transparent !important;">
                       <tr>
-                          <th style="text-align:left;"><b>Total de deuda</b></th>
+                          <th style="text-align:left;"><b>Total de deuda inicial programada</b></th>
                           <th style="text-align:right;">S/. {{ number_format($total_cancelacion_sin_descuento, 2, '.', '') }}</th>
                       </tr>
                       <tr id="fila_monto_abonar" style="display:none;">
@@ -240,7 +240,7 @@ input::selection {
       $('#fila_monto_abonar').css('display','table-row');
       $('#td_monto_abonar').text('S/. '+montoIngresado.toFixed(2));
       $('#td_descuento_pagoanticipado').text('S/. '+totalDescuentoCaso12.toFixed(2));
-      $('#td_label_saldo_pagoanticipado').html('<b>Saldo</b>');
+      $('#td_label_saldo_pagoanticipado').html('<b>Saldo capital restante</b>');
       $('#td_saldo_pagoanticipado').html('<b>S/. '+saldoRestante.toFixed(2)+'</b>');
   }
 

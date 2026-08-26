@@ -210,16 +210,23 @@ input::selection {
   // cubre las cuotas futuras hasta donde el abono realmente llegue. Se recalcula via AJAX
   // (mismo calculo que usa la cascada real de pagos) cada vez que cambia el monto.
   var totalDescuentoCaso12 = 0;
+  // Saldo capital restante REAL (exacto al de la previsualizacion, ver abajo): null mientras se
+  // recalcula via AJAX -no se estima con una formula aparte, el Caso 1 puede terminar eliminando
+  // cuotas extra por el ahorro de interes, algo que "total - monto - descuento" no reproduce-.
+  var montoSaldoNuevoCaso12 = null;
   var descuentoCaso12Ajax = null;
 
   function actualizar_descuento_caso12(monto){
       if(descuentoCaso12Ajax){ descuentoCaso12Ajax.abort(); }
+      montoSaldoNuevoCaso12 = null;
       descuentoCaso12Ajax = $.ajax({
           url: '{{ url('backoffice/'.$tienda->id.'/cobranzacuota/show_descuento_pagoanticipado') }}',
           type: 'GET',
-          data: { idcredito: {{$credito->id}}, monto: monto },
+          data: { idcredito: {{$credito->id}}, monto: monto, modalidad: $('#modalidad_pagoanticipado').val() },
           success: function(respuesta){
               totalDescuentoCaso12 = parseFloat(respuesta.descuento) || 0;
+              montoSaldoNuevoCaso12 = (respuesta.monto_saldo_nuevo !== undefined && respuesta.monto_saldo_nuevo !== null)
+                  ? parseFloat(respuesta.monto_saldo_nuevo) : null;
               var modalidadActual = $('#modalidad_pagoanticipado').val();
               if(modalidadActual=='reduccion_plazo' || modalidadActual=='reduccion_cuota'){
                   pintar_tabla_caso12(parseFloat($('#cobrar_total_recibido').val()) || 0);
@@ -228,20 +235,20 @@ input::selection {
       });
   }
 
-  // Redondeo normal al multiplo de S/.0.10 mas cercano (.x5 hacia arriba, p.ej. 52.55->52.60 y
-  // 52.54->52.50). El epsilon evita el error clasico de precision de punto flotante en JS
-  // (52.55*10 da 525.4999999999994, no 525.5).
-  function redondearDiezCentavos(valor){
-      return Math.round((valor * 10) + (valor >= 0 ? 1e-9 : -1e-9)) / 10;
-  }
-
   function pintar_tabla_caso12(montoIngresado){
-      var saldoRestante = redondearDiezCentavos(totalDeudaCancelacion - montoIngresado - totalDescuentoCaso12);
       $('#fila_monto_abonar').css('display','table-row');
       $('#td_monto_abonar').text('S/. '+montoIngresado.toFixed(2));
       $('#td_descuento_pagoanticipado').text('S/. '+totalDescuentoCaso12.toFixed(2));
-      $('#td_label_saldo_pagoanticipado').html('<b>Saldo capital restante</b>');
-      $('#td_saldo_pagoanticipado').html('<b>S/. '+saldoRestante.toFixed(2)+'</b>');
+      $('#td_label_saldo_pagoanticipado').html('<b>Saldo capital de deuda a reprogramar</b>');
+      // Mismo saldo que calcula la previsualizacion real (Caso 1/2): mientras el AJAX de
+      // show_descuento_pagoanticipado no responda todavia, se muestra "Calculando..." en vez de
+      // estimar con una formula aparte (que no reproduce, p.ej., las cuotas extra que el Caso 1
+      // puede eliminar por el ahorro de interes).
+      if(montoSaldoNuevoCaso12 !== null){
+          $('#td_saldo_pagoanticipado').html('<b>S/. '+montoSaldoNuevoCaso12.toFixed(2)+'</b>');
+      }else{
+          $('#td_saldo_pagoanticipado').html('<i>Calculando...</i>');
+      }
   }
 
   function verificar_monto_cancelacion(){

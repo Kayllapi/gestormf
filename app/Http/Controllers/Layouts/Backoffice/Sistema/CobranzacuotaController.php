@@ -2108,8 +2108,23 @@ class CobranzacuotaController extends Controller
         }
 
         elseif($id == 'show_descuento_pagoanticipado'){
+            // El "saldo capital restante" de este resumen rapido (se recalcula en vivo al escribir
+            // el monto, ANTES de abrir la previsualizacion completa) tiene que coincidir EXACTO con
+            // el que muestra la previsualizacion real: una formula aparte (total-monto-descuento) no
+            // reproduce el Caso 1 (puede terminar eliminando cuotas extra por el ahorro de interes)
+            // ni el Caso 2. Se simula el mismo store() que corre la previsualizacion, revertido, y
+            // se lee 'monto_saldo_nuevo' del resultado.
+            $monto_saldo_nuevo = null;
+            if ((float) $request->monto > 0 && in_array($request->modalidad, ['reduccion_plazo','reduccion_cuota'])) {
+                $resultado = $this->_simularPagoAnticipado($idtienda, $request->idcredito, (float) $request->monto, $request->modalidad);
+                if (($resultado['resultado'] ?? '') === 'CORRECTO') {
+                    $monto_saldo_nuevo = $resultado['monto_saldo_nuevo'] ?? null;
+                }
+            }
+
             return [
                 'descuento' => $this->_descuentoPagoAnticipado($idtienda, $request->idcredito, (float) $request->monto),
+                'monto_saldo_nuevo' => $monto_saldo_nuevo,
             ];
         }
 
@@ -2475,6 +2490,38 @@ class CobranzacuotaController extends Controller
         }
 
         return round($descuento, 2);
+    }
+
+    // Corre store() para PAGO_ANTICIPADO dentro de una transaccion que SIEMPRE se revierte (nunca
+    // persiste nada), para simular "que pasaria" con este monto/modalidad. La usan tanto el resumen
+    // rapido (show_descuento_pagoanticipado, se recalcula en vivo al escribir el monto) como -en
+    // linea, no via este helper, ver 'preview_pagoanticipado'- la previsualizacion completa: mismo
+    // codigo real de store(), nunca una formula aparte que se pueda desincronizar.
+    private function _simularPagoAnticipado($idtienda, $idcredito, $monto, $modalidad)
+    {
+        DB::beginTransaction();
+        try {
+            $simRequest = new Request();
+            $simRequest->merge([
+                'view' => 'registrar',
+                'idcredito' => $idcredito,
+                'numerocuota' => 0,
+                'opcion_pago' => 'PAGO_ANTICIPADO',
+                'cobrar_total_pagar' => $monto,
+                'cobrar_total_recibido' => $monto,
+                'cobrar_vuelto' => 0,
+                'idformapago' => 1,
+                'idbanco' => 0,
+                'numerooperacion' => '',
+                'idcredito_cargo_ids' => '[]',
+                'idcredito_descuentocuota' => 0,
+                'modalidad_pagoanticipado' => $modalidad,
+                'entregargarantia' => '',
+            ]);
+            return json_decode($this->store($simRequest, $idtienda)->getContent(), true);
+        } finally {
+            DB::rollBack();
+        }
     }
 
     // Un credito esta "vencido" cuando NINGUNA cuota pendiente tiene fecha futura (todas sus

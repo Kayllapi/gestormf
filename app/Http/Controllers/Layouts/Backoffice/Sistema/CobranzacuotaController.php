@@ -1339,29 +1339,43 @@ class CobranzacuotaController extends Controller
                         $cuotas_pendientes = $cuotas_pendientes->slice($cuotas_eliminadas_plazo)->values();
                     }
 
-                    // Las que sobreviven CONSERVAN su capital/interes/comision/cargo/cuota
-                    // originales (asi es "reduccion de PLAZO": misma cuota, menos cuotas -a
-                    // diferencia de Reduccion de Cuota, que si reamortiza todo). Solo se les
-                    // reasigna numerocuota y fecha, comprimiendolas hacia las primeras fechas aun
-                    // no vencidas que dejaron libres las cuotas eliminadas (=$fechas_calendario,
-                    // capturado arriba ANTES de eliminar nada: sus primeras $cuotasnuevo fechas son
-                    // las que le tocan a las sobrevivientes; el resto -mismo indice que usa
-                    // $fechas_eliminadas_plazo mas abajo- son las que quedan libres).
+                    // Las que sobreviven mantienen su CUOTA (total a pagar) original -asi es
+                    // "reduccion de PLAZO": misma cuota, menos cuotas-, pero el INTERES de cada una
+                    // se recalcula sobre $montonuevo (el saldo YA REDUCIDO por este abono), no sobre
+                    // el monto original del credito: por eso baja respecto al interes que traia cada
+                    // cuota (calculado en su momento sobre el monto total original, repartido entre
+                    // TODAS las cuotas originales). Como la cuota no cambia, el ahorro de interes
+                    // pasa integro a CAPITAL (se amortiza mas rapido de lo que el cronograma
+                    // original preveia). Cargo y comision (Ss. Recau.) no se tocan.
                     //
-                    // La UNICA cuota que cambia de monto es la ULTIMA sobreviviente: absorbe,
-                    // restando SOLO de su capital (interes/comision/cargo quedan intactos), el
-                    // "sobrante" que el abono no alcanzo a cubrir como una cuota futura entera (esa
-                    // parte ya esta sumada en $reduccionCapitalExtra, ver el loop que la calcula mas
-                    // arriba). Sin ese sobrante, $montonuevo coincide exacto con la suma de capital
-                    // de las sobrevivientes y la ultima cuota tampoco cambia.
+                    // Solo se les reasigna numerocuota y fecha, comprimiendolas hacia las primeras
+                    // fechas aun no vencidas que dejaron libres las cuotas eliminadas
+                    // (=$fechas_calendario, capturado arriba ANTES de eliminar nada: sus primeras
+                    // $cuotasnuevo fechas son las que le tocan a las sobrevivientes; el resto -mismo
+                    // indice que usa $fechas_eliminadas_plazo mas abajo- son las que quedan libres).
                     $montonuevo = (float) $cronograma['saldo_capital'] - $reduccionCapitalExtra;
                     $monto_saldo_nuevo = $montonuevo;
                     $cuotasnuevo = $cuotas_pendientes->count();
 
-                    $total_amortizacion_supervivientes = (float) $cuotas_pendientes->sum(fn($c) => (float) $c->amortizacion);
-                    $sobrante_ultima_cuota = round($total_amortizacion_supervivientes - $montonuevo, 2);
-
                     $fechas_supervivientes = $fechas_calendario->take($cuotasnuevo)->values();
+
+                    // El interes recalculado (formula "Interes Simple" de genera_cronograma, pero
+                    // usando $montonuevo en vez del monto original) no depende de $cuotasnuevo -se
+                    // simplifica algebraicamente-, pero se calcula igual paso a paso (tasa_tip,
+                    // total, por-cuota) para que el redondeo sea IDENTICO al que usa el resto del
+                    // sistema. Interes Compuesto no entra: ahi se preserva el comportamiento previo
+                    // (solo la ultima cuota absorbe el sobrante del abono, sin recalcular interes).
+                    $es_interes_simple = $credito->modalidadproductocredito != 'Interes Compuesto';
+                    if ($es_interes_simple) {
+                        $frecuenciaDiasMap = [1=>26, 2=>4, 3=>2, 4=>1];
+                        $dias = $frecuenciaDiasMap[$credito->idforma_pago_credito];
+                        $tasa_tip_nuevo = number_format(($credito->tasa_tem / $dias) * $cuotasnuevo, 2, '.', '');
+                        $total_interes_nuevo_calc = (float) number_format((($montonuevo * $tasa_tip_nuevo) / 100), 2, '.', '');
+                        $interes_nuevo_por_cuota = (float) number_format($total_interes_nuevo_calc / $cuotasnuevo, 2, '.', '');
+                    } else {
+                        $total_amortizacion_supervivientes = (float) $cuotas_pendientes->sum(fn($c) => (float) $c->amortizacion);
+                        $sobrante_ultima_cuota = round($total_amortizacion_supervivientes - $montonuevo, 2);
+                    }
 
                     $saldo_running = $montonuevo;
                     $total_interes_nuevo = 0;
@@ -1369,16 +1383,44 @@ class CobranzacuotaController extends Controller
                     $total_cargo_nuevo = 0;
                     $total_comisioncargo_nuevo = 0;
                     $total_pendientepago_nuevo = 0;
+                    $suma_interes_nuevo_parcial = 0;
+                    $suma_capital_nuevo_parcial = 0;
 
                     foreach ($cuotas_pendientes as $i => $cuota) {
-                        $amortizacion = (float) $cuota->amortizacion;
-                        $cuota_real = (float) $cuota->cuota_real;
-                        $cuotapagar = (float) $cuota->cuotapagar;
+                        $cargo = (float) $cuota->cargo;
+                        $comision = (float) $cuota->comision;
+                        $es_ultima = ($i == $cuotasnuevo - 1);
 
-                        if ($i == $cuotasnuevo - 1 && $sobrante_ultima_cuota != 0) {
-                            $amortizacion = round($amortizacion - $sobrante_ultima_cuota, 2);
-                            $cuota_real   = round($cuota_real - $sobrante_ultima_cuota, 2);
-                            $cuotapagar   = round($cuotapagar - $sobrante_ultima_cuota, 2);
+                        if ($es_interes_simple) {
+                            if ($es_ultima) {
+                                // Remanente: para que la suma de intereses de las sobrevivientes
+                                // cierre EXACTO en $total_interes_nuevo_calc (mismo mecanismo que usa
+                                // genera_cronograma en su ultima cuota).
+                                $interes = round($total_interes_nuevo_calc - $suma_interes_nuevo_parcial, 2);
+                                // Capital: lo que falte para llegar exacto a $montonuevo (asi se
+                                // absorbe, en un solo paso, tanto el sobrante del abono como el
+                                // efecto del interes mas bajo).
+                                $amortizacion = round($montonuevo - $suma_capital_nuevo_parcial, 2);
+                                $cuota_real = round($amortizacion + $interes + $cargo + $comision, 2);
+                                $cuotapagar = $cuota_real;
+                            } else {
+                                $interes = $interes_nuevo_por_cuota;
+                                $amortizacion = round((float) $cuota->cuota_real - $interes - $cargo - $comision, 2);
+                                $cuota_real = (float) $cuota->cuota_real;
+                                $cuotapagar = (float) $cuota->cuotapagar;
+                            }
+                            $suma_interes_nuevo_parcial = round($suma_interes_nuevo_parcial + $interes, 2);
+                            $suma_capital_nuevo_parcial = round($suma_capital_nuevo_parcial + $amortizacion, 2);
+                        } else {
+                            $interes = (float) $cuota->interes;
+                            $amortizacion = (float) $cuota->amortizacion;
+                            $cuota_real = (float) $cuota->cuota_real;
+                            $cuotapagar = (float) $cuota->cuotapagar;
+                            if ($es_ultima && $sobrante_ultima_cuota != 0) {
+                                $amortizacion = round($amortizacion - $sobrante_ultima_cuota, 2);
+                                $cuota_real   = round($cuota_real - $sobrante_ultima_cuota, 2);
+                                $cuotapagar   = round($cuotapagar - $sobrante_ultima_cuota, 2);
+                            }
                         }
 
                         DB::table('credito_cronograma')
@@ -1388,14 +1430,15 @@ class CobranzacuotaController extends Controller
                                 'fechapago'       => $fechas_supervivientes[$i],
                                 'capital'         => number_format($saldo_running, 2, '.', ''),
                                 'amortizacion'    => number_format($amortizacion, 2, '.', ''),
+                                'interes'         => number_format($interes, 2, '.', ''),
                                 'cuotapagar'      => number_format($cuotapagar, 2, '.', ''),
                                 'cuota_real'      => number_format($cuota_real, 2, '.', ''),
                             ]);
 
                         $saldo_running -= $amortizacion;
-                        $total_interes_nuevo += (float) $cuota->interes;
-                        $total_comision_nuevo += (float) $cuota->comision;
-                        $total_cargo_nuevo += (float) $cuota->cargo;
+                        $total_interes_nuevo += $interes;
+                        $total_comision_nuevo += $comision;
+                        $total_cargo_nuevo += $cargo;
                         $total_comisioncargo_nuevo += (float) $cuota->comision_cargo;
                         $total_pendientepago_nuevo += $cuota_real;
                     }
@@ -1408,12 +1451,12 @@ class CobranzacuotaController extends Controller
 
                     $cuotas_totales_nuevo = $credito->cuotas - $cuotas_eliminadas_plazo;
 
-                    // interes/comision/cargo/comisioncargo NO se tocan por cuota (ver arriba), asi
-                    // que cuota_pago/cuota_comision/cuota_cargo/cuota_comisioncargo/tasa_tip/
-                    // total_propuesta -todos valores "por cuota" o derivados de la tasa- siguen
-                    // describiendo correctamente el credito y no se actualizan aca; solo los TOTALES
-                    // bajan, porque hay menos cuotas sumando.
-                    DB::table('credito')->whereId($request->idcredito)->update([
+                    // comision/cargo/comisioncargo NO se tocan por cuota (ver arriba), asi que
+                    // cuota_pago/cuota_comision/cuota_cargo/cuota_comisioncargo/total_propuesta
+                    // -valores "por cuota" que no cambiaron- siguen describiendo correctamente el
+                    // credito y no se actualizan aca. tasa_tip SI se actualiza cuando hay recalculo
+                    // de interes (Interes Simple), para que quede coherente con el interes nuevo.
+                    $update_credito = [
                         'monto_solicitado'    => $montonuevo,
                         'saldo_pendientepago' => $montonuevo,
                         'total_pendientepago' => number_format($total_pendientepago_nuevo, 2, '.', ''),
@@ -1425,7 +1468,11 @@ class CobranzacuotaController extends Controller
                         'cuotas'              => $cuotas_totales_nuevo,
                         'fecha_primerpago'    => $fechas_supervivientes->first(),
                         'fecha_ultimopago'    => $fecha_ultimopago_nueva,
-                    ]);
+                    ];
+                    if ($es_interes_simple) {
+                        $update_credito['tasa_tip'] = $tasa_tip_nuevo;
+                    }
+                    DB::table('credito')->whereId($request->idcredito)->update($update_credito);
                 });
                 $plazo_reducido = true;
             }

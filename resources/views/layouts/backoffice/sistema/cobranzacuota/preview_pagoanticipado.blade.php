@@ -88,13 +88,12 @@
                 $monto_antes = $montos_antes[$c->id] ?? null;
                 $numero_antes = $monto_antes->numerocuota ?? null;
                 $numero_cambio = $numero_antes !== null && $numero_antes != $c->numerocuota;
-                $monto_cambio = $monto_antes && (
-                    $monto_antes->amortizacion != $c->amortizacion
-                    || $monto_antes->interes != $c->interes
-                    || $monto_antes->cargo != $c->cargo
-                    || $monto_antes->comision != $c->comision
-                    || $monto_antes->cuota_real != $c->cuota_real
-                );
+                // Solo importa si cambio el TOTAL que se le cobra (cuota_real): en el Caso 1
+                // (Reduccion de Plazo) el interes de cada cuota se recalcula internamente (baja) y
+                // el capital sube para compensar, pero la cuota que paga el cliente sigue siendo la
+                // misma -eso no es un "monto recalculado", es la fecha que se reprogramo-. Solo la
+                // ultima cuota sobreviviente, que si cambia de total, debe marcarse como recalculada.
+                $monto_cambio = $monto_antes && ($monto_antes->cuota_real != $c->cuota_real);
                 if ($estado_antes == 1 && $c->idestadocredito_cronograma == 2) {
                     $label = 'SE CANCELA CON ESTE PAGO';
                     $color = '#d1e7dd';

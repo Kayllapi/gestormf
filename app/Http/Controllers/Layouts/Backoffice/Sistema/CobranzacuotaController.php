@@ -1357,8 +1357,6 @@ class CobranzacuotaController extends Controller
                     $monto_saldo_nuevo = $montonuevo;
                     $cuotasnuevo = $cuotas_pendientes->count();
 
-                    $fechas_supervivientes = $fechas_calendario->take($cuotasnuevo)->values();
-
                     // El interes recalculado (formula "Interes Simple" de genera_cronograma, pero
                     // usando $montonuevo en vez del monto original) no depende de $cuotasnuevo -se
                     // simplifica algebraicamente-, pero se calcula igual paso a paso (tasa_tip,
@@ -1369,13 +1367,42 @@ class CobranzacuotaController extends Controller
                     if ($es_interes_simple) {
                         $frecuenciaDiasMap = [1=>26, 2=>4, 3=>2, 4=>1];
                         $dias = $frecuenciaDiasMap[$credito->idforma_pago_credito];
-                        $tasa_tip_nuevo = number_format(($credito->tasa_tem / $dias) * $cuotasnuevo, 2, '.', '');
-                        $total_interes_nuevo_calc = (float) number_format((($montonuevo * $tasa_tip_nuevo) / 100), 2, '.', '');
-                        $interes_nuevo_por_cuota = (float) number_format($total_interes_nuevo_calc / $cuotasnuevo, 2, '.', '');
+
+                        // El interes mas bajo libera capital en cada cuota (misma cuota, menos
+                        // interes = mas capital); ese capital extra puede alcanzar para terminar de
+                        // pagar $montonuevo en MENOS cuotas de las que se dejaron sobrevivientes
+                        // arriba (calculadas con la logica vieja, de capital-por-cuota mas chico). Si
+                        // la ultima sobreviviente quedaria en capital negativo (ya esta de mas: el
+                        // ahorro de interes de las demas ya cubrio $montonuevo sin ella), esa cuota
+                        // tambien se elimina y se repite el calculo con una cuota menos -piso de 1,
+                        // igual que la eliminacion del frente de mas arriba-.
+                        while (true) {
+                            $tasa_tip_nuevo = number_format(($credito->tasa_tem / $dias) * $cuotasnuevo, 2, '.', '');
+                            $total_interes_nuevo_calc = (float) number_format((($montonuevo * $tasa_tip_nuevo) / 100), 2, '.', '');
+                            $interes_nuevo_por_cuota = (float) number_format($total_interes_nuevo_calc / $cuotasnuevo, 2, '.', '');
+
+                            $suma_capital_regulares = 0;
+                            foreach ($cuotas_pendientes->slice(0, $cuotasnuevo - 1) as $cuota_regular) {
+                                $suma_capital_regulares = round($suma_capital_regulares + ((float) $cuota_regular->cuota_real - $interes_nuevo_por_cuota - (float) $cuota_regular->cargo - (float) $cuota_regular->comision), 2);
+                            }
+                            $capital_ultima_tentativo = round($montonuevo - $suma_capital_regulares, 2);
+
+                            if ($capital_ultima_tentativo >= 0 || $cuotasnuevo <= 1) {
+                                break;
+                            }
+
+                            $cuota_extra_eliminada = $cuotas_pendientes->last();
+                            DB::table('credito_cronograma')->whereId($cuota_extra_eliminada->id)->delete();
+                            $cuotas_pendientes = $cuotas_pendientes->slice(0, $cuotas_pendientes->count() - 1)->values();
+                            $cuotasnuevo--;
+                            $cuotas_eliminadas_plazo++;
+                        }
                     } else {
                         $total_amortizacion_supervivientes = (float) $cuotas_pendientes->sum(fn($c) => (float) $c->amortizacion);
                         $sobrante_ultima_cuota = round($total_amortizacion_supervivientes - $montonuevo, 2);
                     }
+
+                    $fechas_supervivientes = $fechas_calendario->take($cuotasnuevo)->values();
 
                     $saldo_running = $montonuevo;
                     $total_interes_nuevo = 0;

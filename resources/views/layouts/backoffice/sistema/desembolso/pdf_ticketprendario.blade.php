@@ -28,7 +28,7 @@
 </head>
 <body>
     <div class="ticket_contenedor">  
-      <div><b>{{ $tienda->nombre }} - {{ $tienda->nombreagencia }}</b> <span style="float: right;">{{ strtoupper($cajero->codigo) }}</span></div>
+      <div><b>{{ $tienda->nombre }} - {{ $tienda->nombreagencia }}</b> <span style="float: right;">{{ strtoupper($cajero->codigo ?? '') }}</span></div>
       <div class="linea"></div>
           <table class="tabla_informativa" width="100%">
               <tr>

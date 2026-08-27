@@ -1,5 +1,7 @@
 /.subversion
 /public/backoffice/tienda
+/public/public
+/public/storage
 /logs
 /node_modules
 /storage/*.key

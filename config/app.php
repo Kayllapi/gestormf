@@ -155,7 +155,12 @@ return [
     |
     */
 
-    'providers' => ServiceProvider::defaultProviders()->merge([
+    'providers' => ServiceProvider::defaultProviders()->except([
+        // Este provider nativo de Laravel 13 se pelea por el binding 'image'
+        // con intervention/image v2 (usan el mismo accessor). Al ser un
+        // provider "deferred", gana siempre y rompe Image::make().
+        \Illuminate\Image\ImageServiceProvider::class,
+    ])->merge([
         /*
          * Package Service Providers...
          */

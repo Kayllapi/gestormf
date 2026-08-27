@@ -93,8 +93,14 @@ class DesembolsadoController extends Controller
               ->join('tipo_operacion_credito','tipo_operacion_credito.id','credito.idtipo_operacion_credito')
               ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
               ->where('credito.estado','DESEMBOLSADO')
-              ->where($where)
-              ->orWhere($where2)
+              ->where(function($query) use ($where, $where2){
+                  $query->where(function($query) use ($where){
+                      $query->where($where);
+                  })
+                  ->orWhere(function($query) use ($where2){
+                      $query->where($where2);
+                  });
+              })
               ->select(
                   'credito.*',
                   'cliente.nombrecompleto as nombrecliente',

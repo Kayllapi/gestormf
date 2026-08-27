@@ -1,0 +1,11 @@
+{
+    "files.exclude": {
+        "public/public": true
+    },
+    "files.watcherExclude": {
+        "public/public/**": true
+    },
+    "search.exclude": {
+        "public/public": true
+    }
+}

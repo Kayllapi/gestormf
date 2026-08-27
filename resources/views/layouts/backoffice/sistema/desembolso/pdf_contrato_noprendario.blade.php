@@ -273,7 +273,7 @@ EL/LOS PRESTATARIO(S) y/o SU(S) AVAL(ES) SOLIDARIO(S), declaramos haber recibido
           </td>
           <td style="padding:5px;border: 1px solid #000;text-align:center;" colspan="2">
             @if($tienda->firma!='')
-            <img src="{{ url('public/backoffice/tienda/'.$tienda->id.'/sistema/'.$tienda->firma) }}" height="60px">
+            <img src="{{ public_path('backoffice/tienda/'.$tienda->id.'/sistema/'.$tienda->firma) }}" height="60px">
             @endif
           </td>
         </tr>

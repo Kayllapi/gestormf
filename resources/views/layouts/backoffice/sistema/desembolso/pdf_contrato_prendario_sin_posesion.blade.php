@@ -411,7 +411,7 @@ EL/LOS PRESTATARIO(S) reconoce(n) que, como parte de la evaluación para el otor
       <div style="width:157px;margin-top: -50px;float:left;">
             @if($tienda->firma!='')
             <div style="text-align:center">
-            <img src="{{ url('public/backoffice/tienda/'.$tienda->id.'/sistema/'.$tienda->firma) }}" width="100px" alt="firma"></div>
+            <img src="{{ public_path('backoffice/tienda/'.$tienda->id.'/sistema/'.$tienda->firma) }}" width="100px" alt="firma"></div>
             @endif
         <div class="linea"></div>
             <span style="padding-top:10px;"><b>{{ $tienda->nombre }}</b></span>

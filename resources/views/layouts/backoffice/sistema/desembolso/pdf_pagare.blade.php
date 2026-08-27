@@ -110,7 +110,7 @@
 </head>
 <body>
   @if($tienda->imagen!='')
-      <img src="{{ url('public/backoffice/tienda/'.$tienda->id.'/sistema/'.$tienda->imagen) }}" height="50px" 
+      <img src="{{ public_path('backoffice/tienda/'.$tienda->id.'/sistema/'.$tienda->imagen) }}" height="50px"
            style="position:absolute;margin-top:-10px;margin-right:5px;">
   @endif
   <main>

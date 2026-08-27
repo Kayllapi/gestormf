@@ -7,6 +7,20 @@ define('LARAVEL_START', microtime(true));
 
 /*
 |--------------------------------------------------------------------------
+| Force Working Directory To The Project Root
+|--------------------------------------------------------------------------
+|
+| Herd/Valet's server.php does chdir() into this "public" folder before
+| requiring this file, so getcwd() inside the app resolves relative to
+| "public" instead of the project root. That duplicates "public" in any
+| path built as getcwd().'/public/...'. Restore the expected cwd here.
+|
+*/
+
+chdir(dirname(__DIR__));
+
+/*
+|--------------------------------------------------------------------------
 | Check If The Application Is Under Maintenance
 |--------------------------------------------------------------------------
 |

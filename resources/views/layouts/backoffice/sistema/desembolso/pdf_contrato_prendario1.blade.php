@@ -289,7 +289,7 @@ Ambas partes y de forma separada, declaran tener la capacidad necesaria y la fac
       </div>
       <div style="width:157px;margin-top: -45px;float:left;">
             @if($tienda->firma!='')
-            <img src="{{ url('public/backoffice/tienda/'.$tienda->id.'/sistema/'.$tienda->firma) }}" width="140px">
+            <img src="{{ public_path('backoffice/tienda/'.$tienda->id.'/sistema/'.$tienda->firma) }}" width="140px">
             @endif
             <hr style="border: 1px solid #000;">
             <span style="padding-top:10px;"><b>{{ $tienda->nombre }}</b></span>

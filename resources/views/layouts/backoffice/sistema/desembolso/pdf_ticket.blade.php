@@ -105,7 +105,7 @@
                   <td><b>FIRMA:</b> ______________________</td>
               </tr>
               <tr>
-                  <td><b>CAJA:</b> {{ strtoupper($cajero->codigo) }}</td>
+                  <td><b>CAJA:</b> {{ strtoupper($cajero->codigo ?? '') }}</td>
               </tr>
           </table>  
     </div>

@@ -375,11 +375,11 @@ function select_cronograma(
           
             if($modalidadproductocredito=='Interes Simple' && $atraso_dias>$dias_tolerancia_garantia){
                 $com_interes_diario = ($tasacompensatorio/100)/30;
-                $total_penalidad = $com_interes_diario*($value->amortizacion+$value->interes)*$atraso_dias;
+                $total_penalidad = $com_interes_diario*($value->amortizacion)*$atraso_dias;
             }
             elseif($modalidadproductocredito=='Interes Compuesto' && $atraso_dias>$dias_tolerancia_garantia){
                 $com_interes_diario = (pow(1+($tasacompensatorio/100), 1/30))-1;
-                $total_penalidad = $com_interes_diario*($value->amortizacion+$value->interes)*$atraso_dias;
+                $total_penalidad = $com_interes_diario*($value->amortizacion)*$atraso_dias;
             }
           
             $atraso_dias_tenencia = $atraso_dias;

@@ -394,11 +394,11 @@ function select_cronograma(
             // interes compensatorio real          
             if($modalidadproductocredito=='Interes Simple' && $atraso_dias_real>$dias_tolerancia_garantia){
                 $com_interes_diario_real = ($tasacompensatorio/100)/30;
-                $total_penalidad_real = $com_interes_diario_real*($value->amortizacion+$value->interes)*$atraso_dias_real;
+                $total_penalidad_real = $com_interes_diario_real*($value->amortizacion)*$atraso_dias_real;
             }
             elseif($modalidadproductocredito=='Interes Compuesto' && $atraso_dias_real>$dias_tolerancia_garantia){
                 $com_interes_diario_real = (pow(1+($tasacompensatorio/100), 1/30))-1;
-                $total_penalidad_real = $com_interes_diario_real*($value->amortizacion+$value->interes)*$atraso_dias_real;
+                $total_penalidad_real = $com_interes_diario_real*($value->amortizacion)*$atraso_dias_real;
             }
           
             $atraso_dias_tenencia_real = $atraso_dias_real;
@@ -1314,11 +1314,11 @@ function calculos_en_pagoacuenta($idtienda=0, $idcredito=0, $numerocuota=0, $dat
             // Calculando compensatorio si existe un pago a cuenta
             if($modalidadproductocredito == 'Interes Simple' && $atraso_dias > $dias_tolerancia_garantia){
                 $com_interes_diario = ($tasacompensatorio/100)/30;
-                $total_penalidad_pagoacuenta = $com_interes_diario * ($amortizacion_pagoacuenta + $saldo_interes) * $atraso_dias;
+                $total_penalidad_pagoacuenta = $com_interes_diario * ($amortizacion_pagoacuenta) * $atraso_dias;
             }
             elseif($modalidadproductocredito == 'Interes Compuesto' && $atraso_dias > $dias_tolerancia_garantia){
                 $com_interes_diario = (pow(1+($tasacompensatorio/100), 1/30))-1;
-                $total_penalidad_pagoacuenta = $com_interes_diario * ($amortizacion_pagoacuenta + $saldo_interes) * $atraso_dias;
+                $total_penalidad_pagoacuenta = $com_interes_diario * ($amortizacion_pagoacuenta) * $atraso_dias;
             }
 
             $atraso_dias_tenencia = $atraso_dias > $dias_maximo_penalidad
@@ -1472,11 +1472,11 @@ function calculos_en_pagoacuenta_de_primera_cuota_pendiente($idtienda=0, $idcred
             // Calculando compensatorio si existe un pago a cuenta
             if($modalidadproductocredito == 'Interes Simple' && $atraso_dias > $dias_tolerancia_garantia){
                 $com_interes_diario = ($tasacompensatorio/100)/30;
-                $total_penalidad_pagoacuenta = $com_interes_diario * ($saldo_capital + $saldo_interes) * $atraso_dias;
+                $total_penalidad_pagoacuenta = $com_interes_diario * ($saldo_capital) * $atraso_dias;
             }
             elseif($modalidadproductocredito == 'Interes Compuesto' && $atraso_dias > $dias_tolerancia_garantia){
                 $com_interes_diario = (pow(1+($tasacompensatorio/100), 1/30))-1;
-                $total_penalidad_pagoacuenta = $com_interes_diario * ($saldo_capital + $saldo_interes) * $atraso_dias;
+                $total_penalidad_pagoacuenta = $com_interes_diario * ($saldo_capital) * $atraso_dias;
             }
 
             $atraso_dias_tenencia = $atraso_dias > $dias_maximo_penalidad
@@ -1599,11 +1599,11 @@ function calculos_en_pagoacuenta_aumento_diario($idtienda=0, $idcredito=0, $nume
             // Calculando compensatorio si existe un pago a cuenta
             if($modalidadproductocredito == 'Interes Simple'){ // && $atraso_dias > $dias_tolerancia_garantia
                 $com_interes_diario = ($tasacompensatorio/100)/30;
-                $total_penalidad_pagoacuenta = $com_interes_diario * ($saldo_capital + $saldo_interes) * $atraso_dias;
+                $total_penalidad_pagoacuenta = $com_interes_diario * ($saldo_capital) * $atraso_dias;
             }
             elseif($modalidadproductocredito == 'Interes Compuesto'){ // && $atraso_dias > $dias_tolerancia_garantia
                 $com_interes_diario = (pow(1+($tasacompensatorio/100), 1/30))-1;
-                $total_penalidad_pagoacuenta = $com_interes_diario * ($saldo_capital + $saldo_interes) * $atraso_dias;
+                $total_penalidad_pagoacuenta = $com_interes_diario * ($saldo_capital) * $atraso_dias;
             }
 
             $atraso_dias_tenencia = $atraso_dias > $dias_maximo_penalidad

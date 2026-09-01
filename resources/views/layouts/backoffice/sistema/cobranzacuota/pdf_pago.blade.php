@@ -142,7 +142,14 @@
                         $credito_cronograma = DB::table('credito_cronograma')->where('credito_cronograma.id',$valueadelanto->idcredito_cronograma)->first();
                         if($credito_cronograma){
                             if($credito_cronograma->idestadocredito_cronograma==2){
-                                $t_cuotapagado = $t_cuotapagado+$valueadelanto->total;
+                                // "Importe de Cuota(s)" = solo la cuota (capital+interes+comision+cargo).
+                                // La penalidad/custodia/compensatorio del adelanto va aparte, en
+                                // "Cust., I. Comp. y I. Morat." ($t_penalidad+$t_tenencia+$t_compensatorio).
+                                $t_cuotapagado = $t_cuotapagado
+                                    + $valueadelanto->total
+                                    - $valueadelanto->penalidad
+                                    - $valueadelanto->tenencia
+                                    - $valueadelanto->compensatorio;
                             }else{
                                 if($t_cuotapagado>0){
                                     $t_acuenta = $t_acuenta+$valueadelanto->total;
@@ -160,7 +167,12 @@
                     // para una cuota entera mas no genera credito_adelanto (esa cuota se elimina y
                     // se reamortiza, ver CobranzacuotaController::store); credito_cobranzacuota.
                     // total_adelanto guarda ese sobrante para que igual se vea aca.
-                    $t_acuenta = $t_acuenta + (float) $credito_cobranzacuota->total_adelanto;
+                    // Solo aplica a PAGO_ANTICIPADO: en PAGO_CUOTA/PAGO_TOTAL total_adelanto guarda
+                    // el monto entero de la(s) cuota(s) pagada(s) (no es un pago a cuenta) y en
+                    // PAGO_ACUENTA el detalle ya lo suma el foreach de arriba; sumarlo aca duplicaba.
+                    if($credito_cobranzacuota->opcion_pago=='PAGO_ANTICIPADO'){
+                        $t_acuenta = $t_acuenta + (float) $credito_cobranzacuota->total_adelanto;
+                    }
                     ?>
           <table style="width:100%;">
             <tr>

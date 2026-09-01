@@ -150,7 +150,13 @@ class PagoprestamoController extends Controller
                 $credito_cronograma = DB::table('credito_cronograma')->where('credito_cronograma.id',$valueadelanto->idcredito_cronograma)->first();
                 if($credito_cronograma){
                     if($credito_cronograma->idestadocredito_cronograma==2){
-                        $t_cuotapagado = $t_cuotapagado+$valueadelanto->total;
+                        // "C. PAGADO" = solo la cuota (capital+interes+comision+cargo). La
+                        // penalidad/custodia/compensatorio del adelanto van en sus propias columnas.
+                        $t_cuotapagado = $t_cuotapagado
+                            + $valueadelanto->total
+                            - $valueadelanto->penalidad
+                            - $valueadelanto->tenencia
+                            - $valueadelanto->compensatorio;
                     }else{
                         if($t_cuotapagado>0){
                             $t_acuenta = $t_acuenta+$valueadelanto->total;
@@ -167,8 +173,12 @@ class PagoprestamoController extends Controller
               // Pago Anticipado (reduccion_cuota/reduccion_plazo): el sobrante que no alcanzo para
               // una cuota entera mas no genera credito_adelanto (esa cuota se elimina y se
               // reamortiza); credito_cobranzacuota.total_adelanto guarda ese sobrante para que
-              // igual se vea en esta columna.
-              $t_acuenta = $t_acuenta + (float) $value->total_adelanto;
+              // igual se vea en esta columna. Solo aplica a PAGO_ANTICIPADO: en PAGO_CUOTA/
+              // PAGO_TOTAL total_adelanto guarda el monto entero de la(s) cuota(s) pagada(s) (no
+              // es un pago a cuenta) y en PAGO_ACUENTA el detalle ya lo suma el foreach de arriba.
+              if($value->opcion_pago=='PAGO_ANTICIPADO'){
+                  $t_acuenta = $t_acuenta + (float) $value->total_adelanto;
+              }
 
               $t_cuotapagado = number_format($t_cuotapagado, 2, '.', '');
               $t_acuenta = number_format($t_acuenta, 2, '.', '');
@@ -201,7 +211,7 @@ class PagoprestamoController extends Controller
                             <td style='height: 20px;'>".($key+1)."</td>
                             <td style='height: 20px;'>{$value->nombrecliente}</td>
                             <td style='height: 20px;'>{$cuotas}</td>
-                            <td style='text-align:right;height: 20px;'>{$value->total_amortizacion}</td>
+                            <td style='text-align:right;height: 20px;'>{$t_cuotapagado}</td>
                             <td style='text-align:right;height: 20px;'>{$t_acuenta}</td>
                             <td style='text-align:right;height: 20px;'>{$t_tenencia}</td>
                             <td style='text-align:right;height: 20px;'>{$t_penalidad}</td>
@@ -217,7 +227,7 @@ class PagoprestamoController extends Controller
                         </tr>";
                         
                     
-              $total_amortizacion += $value->total_amortizacion;
+              $total_amortizacion += $t_cuotapagado;
               $total_acuenta += $t_acuenta;
               $total_penalidad += $t_penalidad;
               $total_compensatorio += $t_compensatorio;

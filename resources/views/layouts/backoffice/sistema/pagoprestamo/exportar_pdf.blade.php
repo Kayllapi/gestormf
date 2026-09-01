@@ -172,7 +172,13 @@
                   $credito_cronograma = DB::table('credito_cronograma')->where('credito_cronograma.id',$valueadelanto->idcredito_cronograma)->first();
                   if($credito_cronograma){
                       if($credito_cronograma->idestadocredito_cronograma==2){
-                          $t_cuotapagado = $t_cuotapagado+$valueadelanto->total;
+                          // "C. PAGADO" = solo la cuota (capital+interes+comision+cargo); la
+                          // penalidad/custodia/compensatorio del adelanto van en sus propias columnas.
+                          $t_cuotapagado = $t_cuotapagado
+                              + $valueadelanto->total
+                              - $valueadelanto->penalidad
+                              - $valueadelanto->tenencia
+                              - $valueadelanto->compensatorio;
                       }else{
                           if($t_cuotapagado>0){
                               $t_acuenta = $t_acuenta+$valueadelanto->total;

@@ -2344,6 +2344,16 @@ class CobranzacuotaController extends Controller
                 $request->numerocuota
             );
 
+            // "SALDOS" = monto programado de la 1ra cuota pendiente - lo ya aplicado en pagos a
+            // cuenta (credito_adelanto). Si NO hay ningun pago a cuenta ($credito_adelantos vacio),
+            // ese "saldo" es toda la cuota y confunde: se muestra en 0.00, porque no hay un pago
+            // parcial en curso del cual quede un remanente.
+            $hay_pagoacuenta = count($credito_adelantos) > 0;
+
+            // Fecha hasta la que se calcula el atraso (interes comp./morat./custodia): siempre "hoy",
+            // igual que calculos_en_pagoacuenta*(): $fecha_hoy = Carbon::now()->format('Y-m-d').
+            $fecha_calculo = Carbon::now()->format('d-m-Y');
+
             $credito_adelanto_saldo = DB::table('credito_adelanto_saldo')
                 ->where('idcredito', $request->idcredito)
                 ->orderByDesc('id')
@@ -2361,17 +2371,17 @@ class CobranzacuotaController extends Controller
             $html .= '<tr><td colspan="11"></td></tr>
                     <tr>
                         <th style="text-align:right" colspan="3">SALDOS</th>
-                        <th style="text-align:right">'.$calculos_en_pagoacuenta['saldo_capital'].'</th>
-                        <th style="text-align:right">'.$calculos_en_pagoacuenta['saldo_interes'].'</th>
-                        <th style="text-align:right">'.$calculos_en_pagoacuenta['saldo_cargo'].'</th>
-                        <th style="text-align:right">'.$calculos_en_pagoacuenta['saldo_recau'].'</th>
-                        <th style="text-align:right">'.$calculo_diario_saldo_custodia.'</th>
-                        <th style="text-align:right">'.$calculo_diario_saldo_compensatorio.'</th>
-                        <th style="text-align:right">'.$calculo_diario_saldo_moratorio.'</th>
+                        <th style="text-align:right">'.($hay_pagoacuenta ? $calculos_en_pagoacuenta['saldo_capital'] : '0.00').'</th>
+                        <th style="text-align:right">'.($hay_pagoacuenta ? $calculos_en_pagoacuenta['saldo_interes'] : '0.00').'</th>
+                        <th style="text-align:right">'.($hay_pagoacuenta ? $calculos_en_pagoacuenta['saldo_cargo'] : '0.00').'</th>
+                        <th style="text-align:right">'.($hay_pagoacuenta ? $calculos_en_pagoacuenta['saldo_recau'] : '0.00').'</th>
+                        <th style="text-align:right">'.($hay_pagoacuenta ? $calculo_diario_saldo_custodia : '0.00').'</th>
+                        <th style="text-align:right">'.($hay_pagoacuenta ? $calculo_diario_saldo_compensatorio : '0.00').'</th>
+                        <th style="text-align:right">'.($hay_pagoacuenta ? $calculo_diario_saldo_moratorio : '0.00').'</th>
                         <th style="text-align:right"></th>
                     </tr>
                     <tr>
-                        <td colspan="7"></td>
+                        <td colspan="7" style="text-align:right">'.$fecha_calculo.'</td>
                         <td style="text-align:right">'.$calculos_en_pagoacuenta['calculo_diario_saldo_custodia'].'</td>
                         <td style="text-align:right">'.$calculos_en_pagoacuenta['calculo_diario_saldo_compensatorio'].'</td>
                         <td style="text-align:right">'.$calculos_en_pagoacuenta['calculo_diario_saldo_moratorio'].'</td>

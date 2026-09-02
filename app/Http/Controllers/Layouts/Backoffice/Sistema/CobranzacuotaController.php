@@ -2370,7 +2370,8 @@ class CobranzacuotaController extends Controller
 
             $html .= '<tr><td colspan="11"></td></tr>
                     <tr>
-                        <th style="text-align:right" colspan="3">SALDOS</th>
+                        <th style="text-align:left">Fecha</th>
+                        <th style="text-align:right" colspan="2">SALDOS</th>
                         <th style="text-align:right">'.($hay_pagoacuenta ? $calculos_en_pagoacuenta['saldo_capital'] : '0.00').'</th>
                         <th style="text-align:right">'.($hay_pagoacuenta ? $calculos_en_pagoacuenta['saldo_interes'] : '0.00').'</th>
                         <th style="text-align:right">'.($hay_pagoacuenta ? $calculos_en_pagoacuenta['saldo_cargo'] : '0.00').'</th>
@@ -2381,7 +2382,8 @@ class CobranzacuotaController extends Controller
                         <th style="text-align:right"></th>
                     </tr>
                     <tr>
-                        <td colspan="7" style="text-align:right">'.$fecha_calculo.'</td>
+                        <td style="text-align:left">'.$fecha_calculo.'</td>
+                        <td colspan="6" style="text-align:right"></td>
                         <td style="text-align:right">'.$calculos_en_pagoacuenta['calculo_diario_saldo_custodia'].'</td>
                         <td style="text-align:right">'.$calculos_en_pagoacuenta['calculo_diario_saldo_compensatorio'].'</td>
                         <td style="text-align:right">'.$calculos_en_pagoacuenta['calculo_diario_saldo_moratorio'].'</td>

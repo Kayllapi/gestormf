@@ -2068,6 +2068,11 @@ class CobranzacuotaController extends Controller
             // ====== Calcular Pendientes ======
             $cuota_pendiente_desde_cronograma = (float) number_format($cronograma['cuota_pendiente'], 2, '.', '');
             $cuota_pendiente = $cuota_pendiente_desde_cronograma - $pagoacuenta_acuenta;
+            // "Cumplido y Vencidos" se netea igual que "Pendientes" (mismo $pagoacuenta_acuenta),
+            // para que ambos coincidan cuando todas las cuotas pendientes estan vencidas. Antes
+            // select_cronograma neteaba "Vencidos" con credito_cronograma.acuenta, que arrastra
+            // centimos residuales de pagos/extornos y desalineaba los dos montos por 1 centimo.
+            $saldo_vencido = (float) number_format($cronograma['cuota_vencida'], 2, '.', '') - $pagoacuenta_acuenta;
             // ====== Fin ======
             
             // ====== Calcular Total a Pagar ======
@@ -2098,7 +2103,7 @@ class CobranzacuotaController extends Controller
               'numero_cuota_vencida' => $cronograma['numero_cuota_vencida'],
               'cuota_pagada' => $cronograma['cuota_pagada'],
               'cuota_pendiente' => number_format($cuota_pendiente, 2, '.', ''),
-              'saldo_vencido' => $cronograma['cuota_vencida'],
+              'saldo_vencido' => number_format($saldo_vencido, 2, '.', ''),
               'saldo_capital' => $cronograma['saldo_capital'],
               'numero_credito' => $numero_credito,
               'estadocuotas' => $credito->forma_pago_credito_nombre,

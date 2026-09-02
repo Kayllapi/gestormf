@@ -695,17 +695,18 @@ function select_cronograma(
             if($atraso_dias>=0){
                 //$style = 'box-shadow: inset 0 0 0 9999px rgb(244 172 172) !important;';
                 $numero_cuota_vencida++;
-                // "Cumplido y Vencidos" se arma igual que "Pendientes" (arriba): sumando cada
-                // componente redondeado a centavos POR SEPARADO, no $totalcuota (que redondea la
-                // combinacion de los 4 de una sola vez). Con varias cuotas acumulando centimos de
-                // mora, mezclar ambos metodos hacia que "Pendientes" y "Cumplido y Vencidos"
-                // difirieran en 1-2 centimos aun con todas las cuotas vencidas.
+                // "Cumplido y Vencidos" se arma EXACTAMENTE igual que "Pendientes" (arriba): sumando
+                // cada componente redondeado a centavos POR SEPARADO, y SIN restar $value->acuenta.
+                // Antes restaba $value->acuenta (la columna credito_cronograma.acuenta), que puede
+                // quedar con centimos residuales de un pago/extorno anterior sin un credito_adelanto
+                // activo detras, y eso hacia que "Vencidos" saliera 1 centimo por debajo de
+                // "Pendientes" aun con todas las cuotas vencidas. El neteo real por pago a cuenta se
+                // hace en el controlador (restando $pagoacuenta_acuenta), igual que para "Pendientes".
                 $cuota_vencida = $cuota_vencida
                     + (float) number_format($cuota, 2, '.', '')
                     + (float) number_format($penalidad, 2, '.', '')
                     + (float) number_format($tenencia, 2, '.', '')
-                    + (float) number_format($compensatorio, 2, '.', '')
-                    - $value->acuenta;
+                    + (float) number_format($compensatorio, 2, '.', '');
 
                 // Solo si la cuota tiene un pago a cuenta
                 if ($credito_adelanto != '') {

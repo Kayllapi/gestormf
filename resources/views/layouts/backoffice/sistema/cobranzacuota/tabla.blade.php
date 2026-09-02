@@ -131,7 +131,9 @@
                     <input type="text" class="form-control" style="background-color: #fff;" placeholder="0" id="tenencia_penalidad_mora" valida_input_vacio disabled/>
 
                     <div class="mb-1 mt-1">
-                      <span class="badge d-block">PAGO A CUENTA - <a href="javascript:;" onclick="ver_pagoacuenta()" style="color: #ad222f;">Ver</a></span>
+                      <span class="badge d-block">
+                        <span style="background-color: #ffc107;padding-left: 5px;padding-right: 5px;">PAGO A CUENTA</span> - <a href="javascript:;" onclick="ver_pagoacuenta()" style="color: #ad222f;">Ver</a>
+                      </span>
                     </div>
                     <input type="text" value="0.00" disabled style="background-color: #fff;" class="form-control" id="pagoacuenta_acuenta" valida_input_vacio>
 

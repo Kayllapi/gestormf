@@ -2029,9 +2029,32 @@ class CobranzacuotaController extends Controller
 
             $monto_apagar = (float) number_format($cronograma['select_cuota'], 2, '.', '');
 
-            $tenencia = (float) number_format($cronograma['select_tenencia'], 2, '.', '');
-            $penalidad = (float) number_format($cronograma['select_penalidad'], 2, '.', '');
-            $compensatorio = (float) number_format($cronograma['select_compensatorio'], 2, '.', '');
+            // Anti doble-conteo de la mora de la 1ra cuota pendiente:
+            // cuando esa cuota ya tiene un pago a cuenta previo, su mora (P. Cust. / Int. Comp. /
+            // Int. Morat.) la calcula calculos_en_pagoacuenta() y viaja en $pagoacuenta_custo_comp_mora.
+            // Pero select_cronograma() TAMBIEN la mete dentro de select_tenencia/penalidad/compensatorio,
+            // asi que sumar ambos contaba esa mora dos veces e inflaba el "Total a Pagar"
+            // (p.ej. 346.70 en vez de 275.52). Para esa cuota se usa solo la cifra de
+            // calculos_en_pagoacuenta (la misma que muestra la fila de la tabla) y de select_* se
+            // conserva unicamente la mora de las OTRAS cuotas seleccionadas.
+            if ((float) $total_adelantos > 0) {
+                $sel_tenencia = 0; $sel_penalidad = 0; $sel_compensatorio = 0;
+                foreach ($cronograma['cronograma'] as $vc) {
+                    if ($vc['selected'] === 'selected' && $vc['numerocuota'] != $primera_cuota_pendiente) {
+                        $sel_tenencia      += (float) $vc['tenencia'];
+                        $sel_penalidad     += (float) $vc['penalidad'];
+                        $sel_compensatorio += (float) $vc['compensatorio'];
+                    }
+                }
+            } else {
+                $sel_tenencia      = (float) $cronograma['select_tenencia'];
+                $sel_penalidad     = (float) $cronograma['select_penalidad'];
+                $sel_compensatorio = (float) $cronograma['select_compensatorio'];
+            }
+
+            $tenencia = (float) number_format($sel_tenencia, 2, '.', '');
+            $penalidad = (float) number_format($sel_penalidad, 2, '.', '');
+            $compensatorio = (float) number_format($sel_compensatorio, 2, '.', '');
             $total_tenencia_penalidad_mora = (float) number_format($tenencia+$penalidad+$compensatorio+$pagoacuenta_custo_comp_mora, 2, '.', '');
             $tenencia_penalidad_mora = (float) number_format($total_tenencia_penalidad_mora, 2, '.', '');
 
@@ -2715,9 +2738,28 @@ class CobranzacuotaController extends Controller
 
             $monto_apagar = (float) number_format($cronograma['select_cuota'], 2, '.', '');
 
-            $tenencia = (float) number_format($cronograma['select_tenencia'], 2, '.', '');
-            $penalidad = (float) number_format($cronograma['select_penalidad'], 2, '.', '');
-            $compensatorio = (float) number_format($cronograma['select_compensatorio'], 2, '.', '');
+            // Anti doble-conteo de la mora de la 1ra cuota pendiente (ver misma nota en
+            // show_cobranzacuota_cronograma): si esa cuota ya tiene un pago a cuenta previo, su mora
+            // viene en $pagoacuenta_custo_comp_mora; de select_* solo se conserva la mora de las
+            // OTRAS cuotas seleccionadas para no contarla dos veces.
+            if ((float) $total_adelantos > 0) {
+                $sel_tenencia = 0; $sel_penalidad = 0; $sel_compensatorio = 0;
+                foreach ($cronograma['cronograma'] as $vc) {
+                    if ($vc['selected'] === 'selected' && $vc['numerocuota'] != $primera_cuota_pendiente) {
+                        $sel_tenencia      += (float) $vc['tenencia'];
+                        $sel_penalidad     += (float) $vc['penalidad'];
+                        $sel_compensatorio += (float) $vc['compensatorio'];
+                    }
+                }
+            } else {
+                $sel_tenencia      = (float) $cronograma['select_tenencia'];
+                $sel_penalidad     = (float) $cronograma['select_penalidad'];
+                $sel_compensatorio = (float) $cronograma['select_compensatorio'];
+            }
+
+            $tenencia = (float) number_format($sel_tenencia, 2, '.', '');
+            $penalidad = (float) number_format($sel_penalidad, 2, '.', '');
+            $compensatorio = (float) number_format($sel_compensatorio, 2, '.', '');
             $total_tenencia_penalidad_mora = (float) number_format($tenencia+$penalidad+$compensatorio+$pagoacuenta_custo_comp_mora, 2, '.', '');
             $tenencia_penalidad_mora = (float) number_format($total_tenencia_penalidad_mora, 2, '.', '');
 

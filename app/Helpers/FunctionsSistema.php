@@ -691,7 +691,17 @@ function select_cronograma(
             if($atraso_dias>=0){
                 //$style = 'box-shadow: inset 0 0 0 9999px rgb(244 172 172) !important;';
                 $numero_cuota_vencida++;
-                $cuota_vencida = $cuota_vencida + $totalcuota - $value->acuenta;
+                // "Cumplido y Vencidos" se arma igual que "Pendientes" (arriba): sumando cada
+                // componente redondeado a centavos POR SEPARADO, no $totalcuota (que redondea la
+                // combinacion de los 4 de una sola vez). Con varias cuotas acumulando centimos de
+                // mora, mezclar ambos metodos hacia que "Pendientes" y "Cumplido y Vencidos"
+                // difirieran en 1-2 centimos aun con todas las cuotas vencidas.
+                $cuota_vencida = $cuota_vencida
+                    + (float) number_format($cuota, 2, '.', '')
+                    + (float) number_format($penalidad, 2, '.', '')
+                    + (float) number_format($tenencia, 2, '.', '')
+                    + (float) number_format($compensatorio, 2, '.', '')
+                    - $value->acuenta;
 
                 // Solo si la cuota tiene un pago a cuenta
                 if ($credito_adelanto != '') {
@@ -704,7 +714,10 @@ function select_cronograma(
                             + (float) number_format($tenencia, 2, '.', '')
                             + (float) number_format($penalidad, 2, '.', '')
                             + (float) number_format($compensatorio, 2, '.', '');
-                        $cuota_vencida = (float) $cuota_vencida + (float) $tenencia + (float) $penalidad + (float) $compensatorio;
+                        $cuota_vencida = (float) $cuota_vencida
+                            + (float) number_format($tenencia, 2, '.', '')
+                            + (float) number_format($penalidad, 2, '.', '')
+                            + (float) number_format($compensatorio, 2, '.', '');
                     }
                 }
             }

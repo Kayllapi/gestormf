@@ -2941,7 +2941,7 @@ class CobranzacuotaController extends Controller
             $usuarios = DB::table('users')
                 ->join('users_permiso','users_permiso.idusers','users.id')
                 ->join('permiso','permiso.id','users_permiso.idpermiso')
-                ->where('users_permiso.idpermiso',1)
+                ->whereIn('users_permiso.idpermiso',[1,2])
                 ->where('users_permiso.idtienda',$idtienda)
                 ->select('users.*','permiso.nombre as nombrepermiso')
                 ->get();

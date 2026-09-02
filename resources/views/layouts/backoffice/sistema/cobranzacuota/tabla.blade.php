@@ -133,7 +133,7 @@
                     <div class="mb-1 mt-1">
                       <span class="badge d-block">PAGO A CUENTA - <a href="javascript:;" onclick="ver_pagoacuenta()" style="color: #ad222f;">Ver</a></span>
                     </div>
-                    <input type="text" value="0.00" disabled style="background-color: #dfdf79;" class="form-control" id="pagoacuenta_acuenta" valida_input_vacio>
+                    <input type="text" value="0.00" disabled style="background-color: #fff;" class="form-control" id="pagoacuenta_acuenta" valida_input_vacio>
 
                     <div class="mb-1 mt-1">
                       <span class="badge d-block">CTA X COBRAR - <a href="javascript:;" onclick="ver_cuentasporcobrar()" style="color: #ad222f;">Ver</a></span>

@@ -379,11 +379,11 @@ function select_cronograma(
           
             if($modalidadproductocredito=='Interes Simple' && $atraso_dias>$dias_tolerancia_garantia){
                 $com_interes_diario = ($tasacompensatorio/100)/30;
-                $total_penalidad = $com_interes_diario*($value->amortizacion)*$atraso_dias;
+                $total_penalidad = $com_interes_diario*($value->amortizacion+$value->interes)*$atraso_dias;
             }
             elseif($modalidadproductocredito=='Interes Compuesto' && $atraso_dias>$dias_tolerancia_garantia){
                 $com_interes_diario = (pow(1+($tasacompensatorio/100), $atraso_dias/30))-1;
-                $total_penalidad = $com_interes_diario*($value->amortizacion);
+                $total_penalidad = $com_interes_diario*($value->amortizacion+$value->interes);
             }
           
             $atraso_dias_tenencia = $atraso_dias;
@@ -398,11 +398,11 @@ function select_cronograma(
             // interes compensatorio real          
             if($modalidadproductocredito=='Interes Simple' && $atraso_dias_real>$dias_tolerancia_garantia){
                 $com_interes_diario_real = ($tasacompensatorio/100)/30;
-                $total_penalidad_real = $com_interes_diario_real*($value->amortizacion)*$atraso_dias_real;
+                $total_penalidad_real = $com_interes_diario_real*($value->amortizacion+$value->interes)*$atraso_dias_real;
             }
             elseif($modalidadproductocredito=='Interes Compuesto' && $atraso_dias_real>$dias_tolerancia_garantia){
                 $com_interes_diario_real = (pow(1+($tasacompensatorio/100), $atraso_dias_real/30))-1;
-                $total_penalidad_real = $com_interes_diario_real*($value->amortizacion);
+                $total_penalidad_real = $com_interes_diario_real*($value->amortizacion+$value->interes);
             }
           
             $atraso_dias_tenencia_real = $atraso_dias_real;

@@ -344,27 +344,17 @@ function select_cronograma(
             //}
             
             // interes moratorio
-            if($modalidadproductocredito=='Interes Simple' && $atraso_dias>$dias_tolerancia_garantia){
-                $interes_diario = ($tasa_moratoria/100)/30;
+            // Simple y Compuesto usan la MISMA formula: tasa diaria equivalente
+            // ((1+tasa_moratoria)^(1/30)-1) multiplicada linealmente por los dias de atraso.
+            if(($modalidadproductocredito=='Interes Simple' || $modalidadproductocredito=='Interes Compuesto') && $atraso_dias>$dias_tolerancia_garantia){
+                $interes_diario = (pow(1+($tasa_moratoria/100), 1/30))-1;
                 $total_compensatorio = $interes_diario*$amortizacion*$atraso_dias;
-            }
-            elseif($modalidadproductocredito=='Interes Compuesto' && $atraso_dias>$dias_tolerancia_garantia){
-                // Compuesto: se capitaliza la tasa mensual sobre TODO el periodo de atraso
-                // ((1+i)^(dias/30) - 1), en vez de convertirla a una tasa diaria y multiplicarla
-                // linealmente por los dias ((1+i)^(1/30)-1) x dias. Por eso ya no se multiplica
-                // por $atraso_dias al final: el exponente dias/30 ya lo incorpora.
-                $interes_diario = (pow(1+($tasa_moratoria/100), $atraso_dias/30))-1;
-                $total_compensatorio = $interes_diario*$amortizacion;
             }
 
             //real
-            if($modalidadproductocredito=='Interes Simple' && $atraso_dias_real>$dias_tolerancia_garantia){
-                $interes_diario_real = ($tasa_moratoria/100)/30;
+            if(($modalidadproductocredito=='Interes Simple' || $modalidadproductocredito=='Interes Compuesto') && $atraso_dias_real>$dias_tolerancia_garantia){
+                $interes_diario_real = (pow(1+($tasa_moratoria/100), 1/30))-1;
                 $total_compensatorio_real = $interes_diario_real*$value->amortizacion*$atraso_dias_real;
-            }
-            elseif($modalidadproductocredito=='Interes Compuesto' && $atraso_dias_real>$dias_tolerancia_garantia){
-                $interes_diario_real = (pow(1+($tasa_moratoria/100), $atraso_dias_real/30))-1;
-                $total_compensatorio_real = $interes_diario_real*$value->amortizacion;
             }
           
             /*if($atraso_dias>$dias_tolerancia_garantia){
@@ -1320,13 +1310,10 @@ function calculos_en_pagoacuenta($idtienda=0, $idcredito=0, $numerocuota=0, $dat
             $amortizacion_pagoacuenta = (float) $credito_cronograma->amortizacion - (float) $ca_capital;
 
             // Calculando moratorio si existe un pago a cuenta
-            if($modalidadproductocredito == 'Interes Simple' && $atraso_dias > $dias_tolerancia_garantia){
-                $interes_diario = ($tasa_moratoria/100)/30;
+            // Simple y Compuesto usan la MISMA formula: tasa diaria equivalente x dias de atraso.
+            if(($modalidadproductocredito == 'Interes Simple' || $modalidadproductocredito == 'Interes Compuesto') && $atraso_dias > $dias_tolerancia_garantia){
+                $interes_diario = (pow(1+($tasa_moratoria/100), 1/30))-1;
                 $total_compensatorio_pagoacuenta = $interes_diario*$amortizacion_pagoacuenta*$atraso_dias;
-            }
-            elseif($modalidadproductocredito == 'Interes Compuesto' && $atraso_dias > $dias_tolerancia_garantia){
-                $interes_diario = (pow(1+($tasa_moratoria/100), $atraso_dias/30))-1;
-                $total_compensatorio_pagoacuenta = $interes_diario*$amortizacion_pagoacuenta;
             }
 
             // Calculando compensatorio si existe un pago a cuenta
@@ -1478,13 +1465,10 @@ function calculos_en_pagoacuenta_de_primera_cuota_pendiente($idtienda=0, $idcred
             $modalidadproductocredito = $credito->modalidadproductocredito;
 
             // Calculando moratorio si existe un pago a cuenta
-            if($modalidadproductocredito == 'Interes Simple' && $atraso_dias > $dias_tolerancia_garantia){
-                $interes_diario = ($tasa_moratoria/100)/30;
+            // Simple y Compuesto usan la MISMA formula: tasa diaria equivalente x dias de atraso.
+            if(($modalidadproductocredito == 'Interes Simple' || $modalidadproductocredito == 'Interes Compuesto') && $atraso_dias > $dias_tolerancia_garantia){
+                $interes_diario = (pow(1+($tasa_moratoria/100), 1/30))-1;
                 $total_compensatorio_pagoacuenta = $interes_diario*$saldo_capital*$atraso_dias;
-            }
-            elseif($modalidadproductocredito == 'Interes Compuesto' && $atraso_dias > $dias_tolerancia_garantia){
-                $interes_diario = (pow(1+($tasa_moratoria/100), $atraso_dias/30))-1;
-                $total_compensatorio_pagoacuenta = $interes_diario*$saldo_capital;
             }
 
             // Calculando compensatorio si existe un pago a cuenta
@@ -1605,13 +1589,10 @@ function calculos_en_pagoacuenta_aumento_diario($idtienda=0, $idcredito=0, $nume
             $modalidadproductocredito = $credito->modalidadproductocredito;
 
             // Calculando moratorio si existe un pago a cuenta
-            if($modalidadproductocredito == 'Interes Simple'){ // && $atraso_dias > $dias_tolerancia_garantia
-                $interes_diario = ($tasa_moratoria/100)/30;
+            // Simple y Compuesto usan la MISMA formula: tasa diaria equivalente x dias de atraso.
+            if($modalidadproductocredito == 'Interes Simple' || $modalidadproductocredito == 'Interes Compuesto'){ // && $atraso_dias > $dias_tolerancia_garantia
+                $interes_diario = (pow(1+($tasa_moratoria/100), 1/30))-1;
                 $total_compensatorio_pagoacuenta = $interes_diario*$saldo_capital*$atraso_dias;
-            }
-            elseif($modalidadproductocredito == 'Interes Compuesto'){ // && $atraso_dias > $dias_tolerancia_garantia
-                $interes_diario = (pow(1+($tasa_moratoria/100), $atraso_dias/30))-1;
-                $total_compensatorio_pagoacuenta = $interes_diario*$saldo_capital;
             }
 
             // Calculando compensatorio si existe un pago a cuenta

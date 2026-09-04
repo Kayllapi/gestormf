@@ -293,7 +293,7 @@
         </tr-->
         <tr>
           <td colspan="4"  style="border-top: 1px solid #000;">
-            <b>Tasa Moratoria Mensual:</b> {{ $credito->config_tasa_moratoria }}%
+            <b>Tasa Efectiva Moratoria Mensual:</b> {{ $credito->config_tasa_moratoria }}%
           </td>
         </tr>
       </table>

@@ -344,16 +344,16 @@ function select_cronograma(
             //}
             
             // interes moratorio
-            // Simple y Compuesto usan la MISMA formula: tasa diaria equivalente
-            // ((1+tasa_moratoria)^(1/30)-1) multiplicada linealmente por los dias de atraso.
+            // Simple y Compuesto usan la MISMA formula: tasa diaria simple
+            // (tasa_moratoria/30) multiplicada linealmente por los dias de atraso.
             if(($modalidadproductocredito=='Interes Simple' || $modalidadproductocredito=='Interes Compuesto') && $atraso_dias>$dias_tolerancia_garantia){
-                $interes_diario = (pow(1+($tasa_moratoria/100), 1/30))-1;
+                $interes_diario = ($tasa_moratoria/100)/30;
                 $total_compensatorio = $interes_diario*$amortizacion*$atraso_dias;
             }
 
             //real
             if(($modalidadproductocredito=='Interes Simple' || $modalidadproductocredito=='Interes Compuesto') && $atraso_dias_real>$dias_tolerancia_garantia){
-                $interes_diario_real = (pow(1+($tasa_moratoria/100), 1/30))-1;
+                $interes_diario_real = ($tasa_moratoria/100)/30;
                 $total_compensatorio_real = $interes_diario_real*$value->amortizacion*$atraso_dias_real;
             }
           
@@ -1310,9 +1310,9 @@ function calculos_en_pagoacuenta($idtienda=0, $idcredito=0, $numerocuota=0, $dat
             $amortizacion_pagoacuenta = (float) $credito_cronograma->amortizacion - (float) $ca_capital;
 
             // Calculando moratorio si existe un pago a cuenta
-            // Simple y Compuesto usan la MISMA formula: tasa diaria equivalente x dias de atraso.
+            // Simple y Compuesto usan la MISMA formula: tasa diaria simple x dias de atraso.
             if(($modalidadproductocredito == 'Interes Simple' || $modalidadproductocredito == 'Interes Compuesto') && $atraso_dias > $dias_tolerancia_garantia){
-                $interes_diario = (pow(1+($tasa_moratoria/100), 1/30))-1;
+                $interes_diario = ($tasa_moratoria/100)/30;
                 $total_compensatorio_pagoacuenta = $interes_diario*$amortizacion_pagoacuenta*$atraso_dias;
             }
 
@@ -1465,9 +1465,9 @@ function calculos_en_pagoacuenta_de_primera_cuota_pendiente($idtienda=0, $idcred
             $modalidadproductocredito = $credito->modalidadproductocredito;
 
             // Calculando moratorio si existe un pago a cuenta
-            // Simple y Compuesto usan la MISMA formula: tasa diaria equivalente x dias de atraso.
+            // Simple y Compuesto usan la MISMA formula: tasa diaria simple x dias de atraso.
             if(($modalidadproductocredito == 'Interes Simple' || $modalidadproductocredito == 'Interes Compuesto') && $atraso_dias > $dias_tolerancia_garantia){
-                $interes_diario = (pow(1+($tasa_moratoria/100), 1/30))-1;
+                $interes_diario = ($tasa_moratoria/100)/30;
                 $total_compensatorio_pagoacuenta = $interes_diario*$saldo_capital*$atraso_dias;
             }
 
@@ -1589,9 +1589,9 @@ function calculos_en_pagoacuenta_aumento_diario($idtienda=0, $idcredito=0, $nume
             $modalidadproductocredito = $credito->modalidadproductocredito;
 
             // Calculando moratorio si existe un pago a cuenta
-            // Simple y Compuesto usan la MISMA formula: tasa diaria equivalente x dias de atraso.
+            // Simple y Compuesto usan la MISMA formula: tasa diaria simple x dias de atraso.
             if($modalidadproductocredito == 'Interes Simple' || $modalidadproductocredito == 'Interes Compuesto'){ // && $atraso_dias > $dias_tolerancia_garantia
-                $interes_diario = (pow(1+($tasa_moratoria/100), 1/30))-1;
+                $interes_diario = ($tasa_moratoria/100)/30;
                 $total_compensatorio_pagoacuenta = $interes_diario*$saldo_capital*$atraso_dias;
             }
 

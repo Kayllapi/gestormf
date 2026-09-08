@@ -130,49 +130,25 @@
           </table>   
      
                     <?php
-                    $credito_adelanto = DB::table('credito_adelanto')->where('credito_adelanto.idcredito_cobranzacuota',$credito_cobranzacuota->id)->get();
-              
-                    $t_cuotapagado = 0;
-                    $t_acuenta = 0;
-                    $t_penalidad = 0;
-                    $t_tenencia = 0;
-                    $t_compensatorio = 0;
+                    // Se muestran los importes ya consolidados en credito_cobranzacuota (Camino A),
+                    // no el desglose de credito_adelanto (que puede venir con la mora duplicada).
+                    $es_acuenta    = ($credito_cobranzacuota->opcion_pago == 'PAGO_ACUENTA');
+                    $es_anticipado = ($credito_cobranzacuota->opcion_pago == 'PAGO_ANTICIPADO');
 
-                    foreach($credito_adelanto as $valueadelanto){
-                        $credito_cronograma = DB::table('credito_cronograma')->where('credito_cronograma.id',$valueadelanto->idcredito_cronograma)->first();
-                        if($credito_cronograma){
-                            if($credito_cronograma->idestadocredito_cronograma==2){
-                                // "Importe de Cuota(s)" = solo la cuota (capital+interes+comision+cargo).
-                                // La penalidad/custodia/compensatorio del adelanto va aparte, en
-                                // "Cust., I. Comp. y I. Morat." ($t_penalidad+$t_tenencia+$t_compensatorio).
-                                $t_cuotapagado = $t_cuotapagado
-                                    + $valueadelanto->total
-                                    - $valueadelanto->penalidad
-                                    - $valueadelanto->tenencia
-                                    - $valueadelanto->compensatorio;
-                            }else{
-                                if($t_cuotapagado>0){
-                                    $t_acuenta = $t_acuenta+$valueadelanto->total;
-                                }else{
-                                    $t_acuenta = $t_acuenta+$valueadelanto->capital+$valueadelanto->comision+$valueadelanto->cargo+$valueadelanto->interes;
-                                }
-                            }
-                        }
-                        $t_penalidad = $t_penalidad+$valueadelanto->penalidad;
-                        $t_tenencia = $t_tenencia+$valueadelanto->tenencia;
-                        $t_compensatorio = $t_compensatorio+$valueadelanto->compensatorio;
-                    }
+                    $t_tenencia      = (float) $credito_cobranzacuota->total_tenencia;
+                    $t_penalidad     = (float) $credito_cobranzacuota->total_penalidad;
+                    $t_compensatorio = (float) $credito_cobranzacuota->total_compensatorio;
 
-                    // Pago Anticipado (reduccion_cuota/reduccion_plazo): el sobrante que no alcanzo
-                    // para una cuota entera mas no genera credito_adelanto (esa cuota se elimina y
-                    // se reamortiza, ver CobranzacuotaController::store); credito_cobranzacuota.
-                    // total_adelanto guarda ese sobrante para que igual se vea aca.
-                    // Solo aplica a PAGO_ANTICIPADO: en PAGO_CUOTA/PAGO_TOTAL total_adelanto guarda
-                    // el monto entero de la(s) cuota(s) pagada(s) (no es un pago a cuenta) y en
-                    // PAGO_ACUENTA el detalle ya lo suma el foreach de arriba; sumarlo aca duplicaba.
-                    if($credito_cobranzacuota->opcion_pago=='PAGO_ANTICIPADO'){
-                        $t_acuenta = $t_acuenta + (float) $credito_cobranzacuota->total_adelanto;
-                    }
+                    // "Importe de Cuota(s)" = la(s) cuota(s) sin recargos (= columna "cuota" del cronograma).
+                    $t_cuotapagado = $es_acuenta
+                        ? 0
+                        : ((float) $credito_cobranzacuota->total_totalcuota - $t_tenencia - $t_penalidad - $t_compensatorio);
+
+                    // "Pago a Cuenta": monto recibido en un pago a cuenta; en pago anticipado, el
+                    // sobrante que se aplico a capital. En pago de cuota/total no hay pago a cuenta.
+                    $t_acuenta = $es_acuenta
+                        ? (float) $credito_cobranzacuota->total_pagar
+                        : ($es_anticipado ? (float) $credito_cobranzacuota->total_adelanto : 0);
                     ?>
           <table style="width:100%;">
             <tr>
@@ -189,8 +165,8 @@
             <tr>
                 <td style="border-top: 0.8px dashed #000;padding-top:5px;padding-bottom:5px;">
                     <b>Importe de Cuota(s)</b><br>
-                    <b>Pago a Cuenta</b> 
-                    @if($t_acuenta>0 && ($t_penalidad+$t_tenencia+$t_compensatorio)>0)
+                    <b>Pago a Cuenta</b>
+                    @if($es_acuenta && $t_acuenta>0)
                     <div style="text-align:right;float:right;">Cuota</div>
                     @endif
                     <br>
@@ -205,7 +181,7 @@
                         ->first();
                     ?>
                 <td width="5px" style="border-top: 0.8px dashed #000;padding-top:5px;padding-bottom:5px;text-align:right;">
-                  @if($t_acuenta>0 && ($t_penalidad+$t_tenencia+$t_compensatorio)>0)
+                  @if($es_acuenta && $t_acuenta>0)
                   &nbsp;
                   <br><b><?php if($credito_ultadelanto){ echo $credito_ultadelanto->numerocuota; } ?></b>
                   <br>&nbsp;

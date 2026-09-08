@@ -157,6 +157,7 @@
       
           $total_caja = 0;
           $total_banco = 0;
+          $total_transitorio = 0;
           
           
           foreach($credito_cobranzacuotas as $key => $value){
@@ -231,6 +232,10 @@
                   $cp = 'CC';
               }
               $fecharegistro = date_format(date_create($value->fecharegistro),"d-m-Y H:i:s A");
+              // "Total (S/.)" = lo realmente cobrado/recibido (igual que pagoprestamo y el voucher),
+              // no total_totalcuota (suma aritmetica de conceptos, antes de redondeo de caja).
+              $total_operacion_num = (float) $value->total_pagar + (float) $value->cobrar_cargo;
+              $total_operacion = number_format($total_operacion_num, 2, '.', '');
               $html .= "<tr id='show_data_select' idcredito_cobranzacuota='{$value->id}'>
                             <td style='height: 20px;'>".($key+1)."</td>
                             <td style='height: 20px;'>C{$value->cuentacredito}</td>
@@ -248,7 +253,7 @@
                             <td style='text-align:right;height: 20px;'>{$value->total_tenencia}</td>
                             <td style='text-align:right;height: 20px;'>{$value->total_penalidad}</td>
                             <td style='text-align:right;height: 20px;'>{$value->total_compensatorio}</td>
-                            <td style='text-align:right;height: 20px;'>{$value->total_totalcuota}</td>
+                            <td style='text-align:right;height: 20px;'>{$total_operacion}</td>
                             <td style='height: 20px;'>{$operacionen1}</td>
                         </tr>";
                         
@@ -261,13 +266,17 @@
               $total_tenencia += $value->total_tenencia;
               $total_penalidad += $value->total_penalidad;
               $total_compensatorio += $value->total_compensatorio;
-              $total_totalcuota += $value->total_totalcuota;  
-            
+              $total_totalcuota += $total_operacion_num;
+
+              // Resumen por forma de pago (antes acumulaba el total corrido; TRANSIT. iba fijo en 0.00).
+              if($value->idformapago==0){
+                  $total_transitorio = $total_transitorio+$total_operacion_num;
+              }
               if($value->idformapago==1){
-                  $total_caja = $total_caja+$total_totalcuota;
+                  $total_caja = $total_caja+$total_operacion_num;
               }
               if($value->idformapago==2){
-                  $total_banco = $total_banco+$total_totalcuota;
+                  $total_banco = $total_banco+$total_operacion_num;
               }
           }
           if(count($credito_cobranzacuotas)==0){
@@ -299,7 +308,7 @@
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;width:70px;">BANCO</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;width:70px;">'.number_format($total_banco, 2, '.', '').'</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;width:70px;">TRANSIT.</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;width:70px;">0.00</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;width:70px;">'.number_format($total_transitorio, 2, '.', '').'</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;width:70px;">T. EFE. (S/.)</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;width:70px;">'.number_format($total_caja+$total_banco, 2, '.', '').'</td>
                   <td style="" colspan="4"></td>

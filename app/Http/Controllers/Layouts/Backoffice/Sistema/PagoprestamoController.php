@@ -135,65 +135,42 @@ class PagoprestamoController extends Controller
           $total_caja = 0;
           $total_banco = 0;
 
-          $t_cuotapagado = 0;
-          
           foreach($credito_cobranzacuotas as $key => $value){
-            $credito_adelanto = DB::table('credito_adelanto')->where('credito_adelanto.idcredito_cobranzacuota',$value->id)->get();
 
-            $t_cuotapagado = 0;
-            $t_acuenta = 0;
-            $t_penalidad = 0;
-            $t_tenencia = 0;
-            $t_compensatorio = 0;
+              // Importes ya consolidados en credito_cobranzacuota (Camino A), no el desglose
+              // de credito_adelanto (que puede venir con la mora duplicada).
+              $es_acuenta    = ($value->opcion_pago == 'PAGO_ACUENTA');
+              $es_anticipado = ($value->opcion_pago == 'PAGO_ANTICIPADO');
 
-            foreach($credito_adelanto as $valueadelanto){
-                $credito_cronograma = DB::table('credito_cronograma')->where('credito_cronograma.id',$valueadelanto->idcredito_cronograma)->first();
-                if($credito_cronograma){
-                    if($credito_cronograma->idestadocredito_cronograma==2){
-                        // "C. PAGADO" = solo la cuota (capital+interes+comision+cargo). La
-                        // penalidad/custodia/compensatorio del adelanto van en sus propias columnas.
-                        $t_cuotapagado = $t_cuotapagado
-                            + $valueadelanto->total
-                            - $valueadelanto->penalidad
-                            - $valueadelanto->tenencia
-                            - $valueadelanto->compensatorio;
-                    }else{
-                        if($t_cuotapagado>0){
-                            $t_acuenta = $t_acuenta+$valueadelanto->total;
-                        }else{
-                            $t_acuenta = $t_acuenta+$valueadelanto->capital+$valueadelanto->comision+$valueadelanto->cargo+$valueadelanto->interes;
-                        }
-                    }
-                }
-                $t_penalidad = $t_penalidad+$valueadelanto->penalidad;
-                $t_tenencia = $t_tenencia+$valueadelanto->tenencia;
-                $t_compensatorio = $t_compensatorio+$valueadelanto->compensatorio;
-            }
+              $t_tenencia      = (float) $value->total_tenencia;       // P. CUST.
+              $t_penalidad     = (float) $value->total_penalidad;      // INT. COMP.
+              $t_compensatorio = (float) $value->total_compensatorio;  // INT. MORAT.
 
-              // Pago Anticipado (reduccion_cuota/reduccion_plazo): el sobrante que no alcanzo para
-              // una cuota entera mas no genera credito_adelanto (esa cuota se elimina y se
-              // reamortiza); credito_cobranzacuota.total_adelanto guarda ese sobrante para que
-              // igual se vea en esta columna. Solo aplica a PAGO_ANTICIPADO: en PAGO_CUOTA/
-              // PAGO_TOTAL total_adelanto guarda el monto entero de la(s) cuota(s) pagada(s) (no
-              // es un pago a cuenta) y en PAGO_ACUENTA el detalle ya lo suma el foreach de arriba.
-              if($value->opcion_pago=='PAGO_ANTICIPADO'){
-                  $t_acuenta = $t_acuenta + (float) $value->total_adelanto;
-              }
+              // "C. PAGADO" = la(s) cuota(s) sin recargos (= columna "cuota" del cronograma).
+              $t_cuotapagado = $es_acuenta
+                  ? 0
+                  : ((float) $value->total_totalcuota - $t_tenencia - $t_penalidad - $t_compensatorio);
 
-              $t_cuotapagado = number_format($t_cuotapagado, 2, '.', '');
-              $t_acuenta = number_format($t_acuenta, 2, '.', '');
-              $t_penalidad = number_format($t_penalidad, 2, '.', '');
-              $t_tenencia = number_format($t_tenencia, 2, '.', '');
+              // "ACUENTA": monto recibido en un pago a cuenta; en pago anticipado, el sobrante
+              // aplicado a capital.
+              $t_acuenta = $es_acuenta
+                  ? (float) $value->total_pagar
+                  : ($es_anticipado ? (float) $value->total_adelanto : 0);
+
+              $t_cuotapagado   = number_format($t_cuotapagado, 2, '.', '');
+              $t_acuenta       = number_format($t_acuenta, 2, '.', '');
+              $t_penalidad     = number_format($t_penalidad, 2, '.', '');
+              $t_tenencia      = number_format($t_tenencia, 2, '.', '');
               $t_compensatorio = number_format($t_compensatorio, 2, '.', '');
 
               $operacionen1 = '';
               if($value->idformapago==0){ $operacionen1 = 'TRANSITORIO'; }
               if($value->idformapago==1){ $operacionen1 = 'CAJA'; }
               if($value->idformapago==2){ $operacionen1 = 'BANCO'; }
-            
+
               $cuotas = str_replace(',',', ',$value->pago_cuota);
               $num_operacion =  'OP'.str_pad($value->codigo, 10, "0", STR_PAD_LEFT);
-            
+
               $btn_validar = '';
               if($value->idformapago==2){
                   $btn_validar = "<button type='button' class='btn btn-success' onclick='validar({$value->id})'><i class='fa-solid fa-check'></i> Validar</button>";
@@ -201,12 +178,13 @@ class PagoprestamoController extends Controller
                       $users = DB::table('users')->whereId($value->validar_responsable)->first();
                       $btn_validar = "<i class='fa-solid fa-check'></i> (".$users->codigo.")";
                   }
-              }  
+              }
 
               $fechaFormateado = Carbon::parse($value->fecharegistro)->format('d-m-Y h:i A');
 
-              $total = number_format($value->total_pagar+$value->cobrar_cargo, 2, '.', '');
-            
+              $total_num = (float) $value->total_pagar + (float) $value->cobrar_cargo;
+              $total = number_format($total_num, 2, '.', '');
+
               $html .= "<tr id='show_data_select' idcredito_cobranzacuota='{$value->id}'>
                             <td style='height: 20px;'>".($key+1)."</td>
                             <td style='height: 20px;'>{$value->nombrecliente}</td>
@@ -225,25 +203,20 @@ class PagoprestamoController extends Controller
                             <td style='height: 20px;'>{$num_operacion}</td>
                             <td style='height: 20px;'>{$value->usuariocajero}</td>
                         </tr>";
-                        
-                    
-              $total_amortizacion += $t_cuotapagado;
-              $total_acuenta += $t_acuenta;
-              $total_penalidad += $t_penalidad;
-              $total_compensatorio += $t_compensatorio;
-              $total_tenencia += $t_tenencia;
-              $cobrar_cargo += $value->cobrar_cargo;
-              $total_totalcuota += $total;
-            
-              if($value->idformapago==0){
-                  $total_extorno = $total_extorno+$total_totalcuota;
-              }
-              if($value->idformapago==1){
-                  $total_caja = $total_caja+$total_totalcuota;
-              }
-              if($value->idformapago==2){
-                  $total_banco = $total_banco+$total_totalcuota;
-              }
+
+
+              $total_amortizacion  += (float) $t_cuotapagado;
+              $total_acuenta       += (float) $t_acuenta;
+              $total_penalidad     += (float) $t_penalidad;
+              $total_compensatorio += (float) $t_compensatorio;
+              $total_tenencia      += (float) $t_tenencia;
+              $cobrar_cargo        += (float) $value->cobrar_cargo;
+              $total_totalcuota    += $total_num;
+
+              // Resumen de efectivo por forma de pago (antes acumulaba el total corrido).
+              if($value->idformapago==0){ $total_extorno += $total_num; }
+              if($value->idformapago==1){ $total_caja    += $total_num; }
+              if($value->idformapago==2){ $total_banco   += $total_num; }
           }
           if(count($credito_cobranzacuotas)==0){
               $html.= '<tr><td colspan="14" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';

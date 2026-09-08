@@ -312,7 +312,7 @@
               <td class="border-td campo_numero">{{ $credito->cuota_pago }}</td>
             </tr>
             <tr>
-              <td>TEM(%):</td>
+              <td>{{ $credito->modalidad_calculo == 'Interes Compuesto' ? 'TEM' : 'TNM' }}(%):</td>
               <td class="border-td campo_numero">{{ $credito->tasa_tem }}</td>
               <td>F. Pago:</td>
               <td class="border-td">{{ $credito->forma_pago_credito_nombre }}</td>

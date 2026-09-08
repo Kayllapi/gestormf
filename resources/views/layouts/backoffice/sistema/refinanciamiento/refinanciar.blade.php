@@ -56,8 +56,13 @@
                     <input type="hidden" step="any" class="form-control" id="coutas_max_credito" value="0">
                   </div>
                 </div>
+                @php
+                  $esCompuesto = $credito->modalidad_calculo == 'Interes Compuesto';
+                  $tem_label  = $esCompuesto ? 'TEM' : 'TNM';
+                  $tcem_label = $esCompuesto ? 'TCEM' : 'TCNM';
+                @endphp
                 <div class="row">
-                  <label class="col-sm-5 col-form-label" style="text-align: right;">TEM (%):</label>
+                  <label class="col-sm-5 col-form-label" style="text-align: right;">{{ $tem_label }} (%):</label>
                   <div class="col-sm-4">
                     <input type="text" step="any" class="form-control" id="tasa_tem" value="{{ $credito->tasa_tem }}">
                     <input type="hidden" step="any" class="form-control" id="tasa_tem_old" value="{{ $credito->tasa_tem }}">
@@ -75,7 +80,7 @@
                 </div>  
                 </div>
                 <div class="row">
-                  <label class="col-sm-5 col-form-label" style="text-align: right;">TCEM (%):</label>
+                  <label class="col-sm-5 col-form-label" style="text-align: right;">{{ $tcem_label }} (%):</label>
                   <div class="col-sm-7">
                     <input type="number" step="any" class="form-control" id="tasa_tcem" value="0.00" disabled>
                   </div>

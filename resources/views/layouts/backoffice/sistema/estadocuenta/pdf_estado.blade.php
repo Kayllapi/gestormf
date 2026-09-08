@@ -130,7 +130,7 @@
               <th style="border-bottom: 2px solid #000;">F. DESEMBOLSO</th>
               <th style="border-bottom: 2px solid #000;">F. PAGO</th>
               <th style="border-bottom: 2px solid #000;">N° CUOTA</th>
-              <th style="border-bottom: 2px solid #000;">TEM</th>
+              <th style="border-bottom: 2px solid #000;">TEM / TNM</th>
               <th style="border-bottom: 2px solid #000;">ESTADO</th>
               <th style="border-bottom: 2px solid #000;">SUCURSAL</th>
             </tr>
@@ -161,7 +161,7 @@
               <td>{{date_format(date_create($value->fecha_desembolso),'d-m-Y h:i:s A')}}</td>
               <td>{{ strtoupper($value->forma_pago_credito_nombre) }}</td>
               <td style="text-align: right;">{{$value->cuotas}}</td>
-              <td style="text-align: right;">{{$value->tasa_tem}}</td>
+              <td style="text-align: right;">{{$value->tasa_tem}} ({{ ($value->modalidad_calculo ?? '') == 'Interes Compuesto' ? 'TEM' : 'TNM' }})</td>
               <td>
                 @if($value->idestadocredito==2)
                 CANCELADO

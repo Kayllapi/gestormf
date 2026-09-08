@@ -29,7 +29,7 @@
             <td>{{ date_format(date_create($credito->fecha_ultimopago),'d-m-Y') }}</td>
           </tr>
           <tr>
-            <td><b>TEM (%)</b></td>
+            <td><b>{{ $credito->modalidad_calculo == 'Interes Compuesto' ? 'TEM' : 'TNM' }} (%)</b></td>
             <td style="width:2px;"><b>:</b></td>
             <td>{{ $credito->tasa_tem }}</td>
             <td><b>TIP (%)</b></td>

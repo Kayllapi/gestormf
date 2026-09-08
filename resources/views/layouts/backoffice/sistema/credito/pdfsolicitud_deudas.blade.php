@@ -592,7 +592,7 @@
               <th colspan=2>Plazo</th>
               <th rowspan=2>FORMA DE PAGO</th>
               <th rowspan=2>Monto Préstamo (S/.)</th>
-              <th rowspan=2 width="50px">TEM</th>
+              <th rowspan=2 width="50px">{{ $credito->modalidad_calculo == 'Interes Compuesto' ? 'TEM' : 'TNM' }}</th>
 
               <th rowspan=2 width="70px">Servicios de Recaudo (S/.)</th>
               <th rowspan=2>Cargos (S/.)</th>

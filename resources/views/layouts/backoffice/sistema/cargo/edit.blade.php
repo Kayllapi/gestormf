@@ -15,6 +15,9 @@
     <div class="mb-1 mt-1">
       <span class="badge d-block">DATOS DE PRÉSTAMO</span>
     </div>
+    @php
+      $tem_label = $credito->modalidad_calculo == 'Interes Compuesto' ? 'TEM' : 'TNM';
+    @endphp
     <div class="modal-body">
         <table class="table table-bordered">
           <tr>
@@ -26,7 +29,7 @@
             <td style="width: 60px;">{{ date_format(date_create($credito->fecha_ultimopago),'d-m-Y') }}</td>
           </tr>
           <tr>
-            <td><b>TEM (%):</b></td>
+            <td><b>{{ $tem_label }} (%):</b></td>
             <td>{{ $credito->tasa_tem }}</td>
             <td><b>TIP (%):</b></td>
             <td>{{ $credito->tasa_tip }}</td>

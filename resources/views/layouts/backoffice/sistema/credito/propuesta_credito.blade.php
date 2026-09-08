@@ -247,7 +247,7 @@
                 <td><input type="text" class="form-control campo_moneda" disabled id="propuesta_total_pagar" value="{{ $credito->cuota_pago }}"></td>
               </tr>
               <tr>
-                <td style="text-align: right;">TEM(%):</td>
+                <td style="text-align: right;">{{ $credito->modalidad_calculo == 'Interes Compuesto' ? 'TEM' : 'TNM' }}(%):</td>
                 <td><input type="text" class="form-control campo_moneda" disabled id="propuesta_tem" value="{{ $credito->tasa_tem }}"></td>
                 <td style="text-align: right;">F. Pago:</td>
                 <td><input type="text" class="form-control campo_moneda" disabled id="nombre_forma_pago_credito" value="{{ $credito->forma_pago_credito_nombre }}"></td>

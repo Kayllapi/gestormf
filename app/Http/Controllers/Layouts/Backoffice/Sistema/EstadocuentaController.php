@@ -669,6 +669,7 @@ class EstadocuentaController extends Controller
               ->select(
                   'credito.*',
                   'credito_prendatario.nombre as nombreproductocredito',
+                  'credito_prendatario.modalidad as modalidad_calculo',
                   'forma_pago_credito.nombre as forma_pago_credito_nombre',
                   'tienda.nombre as tiendanombre',
                   'tienda.nombreagencia as nombreagencia',

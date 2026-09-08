@@ -45,7 +45,7 @@
                     </div>
                   </div>
                   <div class="row">
-                    <label class="col-sm-5 col-form-label" style="text-align: right;">TEM (%):</label>
+                    <label class="col-sm-5 col-form-label" style="text-align: right;">TNM (%):</label>
                     <div class="col-sm-4">
                       <input type="number" step="any" class="form-control" id="tasa_tem" value="0.00" onkeyup="calcula_tip();" onkeydown="calcula_tip();">
                     </div>
@@ -62,7 +62,7 @@
                     </div>
                   </div>
                   <div class="row">
-                    <label class="col-sm-5 col-form-label" style="text-align: right;">TCEM (%):</label>
+                    <label class="col-sm-5 col-form-label" style="text-align: right;">TCNM (%):</label>
                     <div class="col-sm-7">
                       <input type="number" step="any" class="form-control" id="tasa_tcem" value="0.00" disabled>
                     </div>

@@ -148,12 +148,17 @@
         </tr>
         <tr>
           <td><b>Modalidad de Crédito:</b> {{ $credito->modalidad_credito_nombre }}</td>
+          @php
+            $esCompuesto = $credito->modalidad_calculo == 'Interes Compuesto';
+            $tem_label   = $esCompuesto ? 'Tasa de Interes Compensatorio Efectivo Mensual (TEM)' : 'Tasa de Interes Compensatorio Nominal Mensual (TNM)';
+            $tcem_label  = $esCompuesto ? '(TCEM)' : '(TCNM)';
+          @endphp
           <td>
             @if (configuracion($tienda->id,'activar_tem')['valor'] == '1')
               @if($credito->cuotas==1)
-                <b>Tasa de Interes Compensatorio Efectivo Mensual (TEM):</b> {{ $credito->tasa_tip }} %
+                <b>{{ $tem_label }}:</b> {{ $credito->tasa_tip }} %
               @else
-                <b>Tasa de Interes Compensatorio Efectivo Mensual (TEM):</b> {{ $credito->tasa_tem }} %
+                <b>{{ $tem_label }}:</b> {{ $credito->tasa_tem }} %
               @endif
             @endif
           </td>
@@ -161,7 +166,7 @@
           <td></td>
           <td>
             @if (configuracion($tienda->id,'activar_tcem')['valor'] == '1')
-              <b>(TCEM):</b> {{ $credito->tasa_tcem }} %
+              <b>{{ $tcem_label }}:</b> {{ $credito->tasa_tcem }} %
             @endif
           </td>
         </tr>

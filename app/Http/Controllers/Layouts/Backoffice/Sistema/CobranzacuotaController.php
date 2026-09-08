@@ -1688,7 +1688,10 @@ class CobranzacuotaController extends Controller
               $idcredito = $credito->id;
             
                $tasa_tip = $credito->modalidad_calculo == 'Interes Compuesto' ? 0 : $credito->tasa_tip;
-                 
+
+               // Si el calculo es Interes Compuesto se muestra la TEM; si es Interes Simple, la TNM.
+               $tasa_tem_label = $credito->modalidad_calculo == 'Interes Compuesto' ? 'TEM (%)' : 'TNM (%)';
+
               $datosprestamos = '<table class="table" style="width:100%;">
                       <tr>
                         <td style="background-color: #efefef !important;width: 90px;"><b>Préstamo S/.</b></td>
@@ -1702,7 +1705,7 @@ class CobranzacuotaController extends Controller
                         <td ">'.date_format(date_create($credito->fecha_ultimopago),'d-m-Y').'</td>
                       </tr>
                       <tr>
-                        <td style="background-color: #efefef !important;"><b>TEM (%)</b></td>
+                        <td style="background-color: #efefef !important;"><b>'.$tasa_tem_label.'</b></td>
                         <td><b>:</b></td>
                         <td>'.$credito->tasa_tem.'</td>
                         <td style="background-color: #efefef !important;"><b>TIP (%)</b></td>

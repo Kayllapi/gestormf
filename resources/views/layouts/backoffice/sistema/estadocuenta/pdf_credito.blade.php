@@ -123,17 +123,22 @@
           <td><b>:</b> {{ $credito->docuementocliente }}</td>
         </tr>
       </table>
+      @php
+        $esCompuesto = $credito->modalidad_calculo == 'Interes Compuesto';
+        $tem_label  = $esCompuesto ? 'TEM' : 'TNM';
+        $tcem_label = $esCompuesto ? 'TCEM' : 'TCNM';
+      @endphp
       <table style="width:100%;">
         <tr>
           <td style="width:140px;"><b>CUENTA</b></td>
           <td><b>:</b> C{{ str_pad($credito->cuenta, 8, "0", STR_PAD_LEFT) }}</td>
-          <td style="width:130px;"><b>TEM</b></td>
+          <td style="width:130px;"><b>{{ $tem_label }}</b></td>
           <td><b>:</b> {{ $credito->tasa_tem }}%</td>
         </tr>
         <tr>
           <td><b>PRÉSTAMO S/.</b> </td>
           <td><b>:</b> {{ $credito->monto_solicitado }}</td>
-          <td><b>TCEM</b></td>
+          <td><b>{{ $tcem_label }}</b></td>
           <td><b>:</b> {{ $credito->tasa_tem }}%</td>
         </tr>
         <tr>

@@ -3,7 +3,7 @@
         <tr></tr>
         <tr>
             <th></th>
-            <th style="font-weight: 900; background-color:#31353d; color: #ffffff; text-align: center; font-size: 12px; "
+            <th style="font-weight: 900; text-align: center; font-size: 12px; "
                 colspan="17">
               {{ $titulo }}
             </th>

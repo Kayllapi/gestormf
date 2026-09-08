@@ -8,7 +8,7 @@
     @if($credito->estado=='PROCESO')
           <div class="col-sm-12">
             <div class="btn-group mb-1" id="formato_evaluacion">
-               <button type="button" class="btn btn-warning evaluacion" style="background-color: #f297ec;border-color: #212529;"
+               <button type="button" class="btn btn-success evaluacion" style="background-color: #f297ec;border-color: #212529;"
                       onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/propuestacredito/'.$credito->id.'/edit?view=excepcion_autorizacion&detalle=false')}}', size: 'modal-fullscreen' })">
                   1.- EXCEPCIONES Y AUTORIZACIONES</button>
             </div>
@@ -18,7 +18,7 @@
                   2.- OPINIÓN DE ÁREA DE RIESGOS</button>
               </div>
               <div class="btn-group mb-1 evaluacion-resumida">
-                 <button type="button" class="btn btn-warning evaluacion" style="background-color: #f297ec;border-color: #212529;"
+                 <button type="button" class="btn btn-primary evaluacion" style="background-color: #f297ec;border-color: #212529;"
                         onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/propuestacredito/'.$credito->id.'/edit?view=comentario_visitas&detalle=false')}}', size: 'modal-fullscreen' })">
                   3.- COMENTARIO DE VISITAS Y/O VERIFICACIÓN</button>
               </div>

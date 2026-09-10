@@ -14,7 +14,7 @@
       <div class="row justify-content-center">
         <div class="col-sm-12 col-md-6">
           <div class="row">
-            <label class="col-sm-3 col-form-label">Tipo Crédito:</label>
+            <label class="col-sm-3 col-form-label">Modalidad de Crédito:</label>
             <div class="col-sm-6">
               <select class="form-control" id="idforma_credito">
                 <option></option>
@@ -54,7 +54,7 @@
             </div>
           </div>
           <div class="row">
-            <label class="col-sm-3 col-form-label">TEM (%):</label>
+            <label class="col-sm-3 col-form-label" id="label-tem">TEM/TNC (%):</label>
             <div class="col-sm-6">
               <input type="number" class="form-control" value="0.00" step="any" id="tem">
             </div>
@@ -84,9 +84,11 @@
   
   $("#idforma_credito").on("change", function(e) {
     carga_producto_credito();
+    actualizar_nombre_tasa();
     lista_tarifario();
   });
   $("#idcredito_prendatario").on("change", function(e) {
+    actualizar_nombre_tasa();
     lista_tarifario();
   });
   $("#idforma_pago_credito").on("change", function(e) {
@@ -104,13 +106,31 @@
         let option_select = `<option></option>`;
         var i = 1;
         $.each(res, function( key, value ) {
-          option_select += `<option value="${value.id}">${value.nombre}</option>`;
+          option_select += `<option value="${value.id}" data-modalidad="${value.modalidad}">${value.nombre}</option>`;
           i++;
         });
         $('#idcredito_prendatario').html(option_select);
         sistema_select2({ input:'#idcredito_prendatario'});
+        actualizar_nombre_tasa();
 
       }
     })
   }
+
+  // Ajusta el nombre de la tasa segun la modalidad de calculo del producto:
+  //  - Interes Simple    => TNM
+  //  - Interes Compuesto => TEM
+  //  - Sin producto      => TEM/TNC (se muestra todo)
+  function actualizar_nombre_tasa(){
+    let modalidad = ($("#idcredito_prendatario").find('option:selected').data('modalidad') || '').toString().toUpperCase();
+    let etiqueta = 'TEM/TNC';
+    if(modalidad.indexOf('SIMPLE') !== -1){
+      etiqueta = 'TNM';
+    } else if(modalidad.indexOf('COMPUESTO') !== -1){
+      etiqueta = 'TEM';
+    }
+    $('#th-tem').text(etiqueta + ' %');
+    $('#label-tem').text(etiqueta + ' (%):');
+  }
+  actualizar_nombre_tasa();
 </script>    

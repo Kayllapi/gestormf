@@ -15,7 +15,7 @@
       <div class="row justify-content-center">
         <div class="col-sm-12 col-md-6">
           <div class="row">
-            <label class="col-sm-3 col-form-label">Tipo Crédito:</label>
+            <label class="col-sm-3 col-form-label">Modalidad de Crédito:</label>
             <div class="col-sm-6">
               <select class="form-control" id="idforma_credito">
                 <option></option>

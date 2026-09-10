@@ -26,7 +26,7 @@
                   <td>CÓDIGO</td>
                   <td>MONTO (<=)</td>
                   <td>CUOTA (<=)</td>
-                  <td>TEM %</td>
+                  <td id="th-tem">TEM/TNC %</td>
                   <td>Ss. RECAUDO %</td>
                   <td>FORMA DE PAGO</td>
                   <td>TIPO DE CRÉDITO</td>

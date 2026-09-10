@@ -132,6 +132,7 @@
   
   $("#idcliente").on("change", function(e) {
       let idcliente = $("#idcliente").find('option:selected').val();
+      verificar_credito_refinanciado();
       $.ajax({
         url:"{{url('backoffice/0/credito/show_verificarcliente')}}",
         type:'GET',
@@ -152,6 +153,7 @@
   
   $("#idforma_credito").on("change", function(e) {
       let idforma_credito = $("#idforma_credito").find('option:selected').val();
+      verificar_credito_refinanciado();
       show_producto_credito();
     
       var html_idmodalidad_credito = '<option></option>';
@@ -166,6 +168,32 @@
                            
       $('#idmodalidad_credito').html(html_idmodalidad_credito);
   });
+   function verificar_credito_refinanciado(){
+     let idcliente = $("#idcliente").find('option:selected').val();
+     let idforma_credito = $("#idforma_credito").find('option:selected').val();
+
+     if(idcliente == undefined || idcliente == '' || idforma_credito != 2){
+        return;
+     }
+
+     $.ajax({
+        url:"{{url('backoffice/0/credito/show_verificarcreditorefinanciado')}}",
+        type:'GET',
+        data: {
+          idcliente: idcliente,
+          idforma_credito: idforma_credito
+        },
+        success: function (res){
+
+          if(res['resultado']=='TIENE REFINANCIADO'){
+              mensaje = 'El cliente no puede registrar un crédito No Prendario porque ya tiene un crédito No Prendario refinanciado (N° de cuenta '+res['cuenta']+').';
+              modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
+              $('#idforma_credito').val(null).trigger("change");
+          }
+
+        }
+     })
+   }
    function show_producto_credito(){
      let tipo = $("#idforma_credito").find('option:selected').val();
       $.ajax({

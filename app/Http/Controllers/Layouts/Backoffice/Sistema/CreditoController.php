@@ -135,7 +135,26 @@ class CreditoController extends Controller
             $modalidad_credito = DB::table('modalidad_credito')->whereId($request->input('idmodalidad_credito'))->first();
             
             // ---- FIN SELECCIONAR LOS DATOS FILTRADOS
-          
+
+            // ---- VALIDACION: cliente con credito No Prendario refinanciado
+            if($request->input('idforma_credito') == 2){ // 2 = No Prendario
+                $credito_norefinanciable = DB::table('credito')
+                    ->where('credito.idcliente', $request->input('idcliente'))
+                    ->where('credito.idforma_credito', 2)     // No Prendario
+                    ->where('credito.idmodalidad_credito', 4) // Refinanciado
+                    ->where('credito.estado', '<>', 'ELIMINADO')
+                    ->orderBy('credito.id', 'desc')
+                    ->first();
+
+                if($credito_norefinanciable != ''){
+                    return response()->json([
+                        'resultado' => 'ERROR',
+                        'mensaje'   => 'El cliente no puede registrar un crédito No Prendario porque ya cuenta con un crédito No Prendario refinanciado (N° de cuenta: C'.str_pad($credito_norefinanciable->cuenta, 8, "0", STR_PAD_LEFT).').'
+                    ]);
+                }
+            }
+            // ---- FIN VALIDACION
+
             $idcredito = DB::table('credito')->insertGetId([
               
               'clienteidentificacion'     => $clienteidentificacion,
@@ -827,7 +846,33 @@ class CreditoController extends Controller
               'resultado' => $result,
               'motivo' => $motivo,
           ];
-          
+
+        }
+        else if($id == 'show_verificarcreditorefinanciado'){
+
+          $result = '';
+          $cuenta = '';
+
+          if($request->input('idforma_credito') == 2 && $request->input('idcliente') != ''){ // 2 = No Prendario
+              $credito_refinanciado = DB::table('credito')
+                  ->where('credito.idcliente', $request->input('idcliente'))
+                  ->where('credito.idforma_credito', 2)     // No Prendario
+                  ->where('credito.idmodalidad_credito', 4) // Refinanciado
+                  ->where('credito.estado', '<>', 'ELIMINADO')
+                  ->orderBy('credito.id', 'desc')
+                  ->first();
+
+              if($credito_refinanciado != ''){
+                  $result = 'TIENE REFINANCIADO';
+                  $cuenta = 'C'.str_pad($credito_refinanciado->cuenta, 8, "0", STR_PAD_LEFT);
+              }
+          }
+
+          return [
+              'resultado' => $result,
+              'cuenta' => $cuenta,
+          ];
+
         }
         else if($id == 'showgarantias'){
           $html = '';

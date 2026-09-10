@@ -55,16 +55,16 @@
                   </div>
                   <div>
                   <div class="row">
+                    <label class="col-sm-5 col-form-label" style="text-align: right;">TCNM (%):</label>
+                    <div class="col-sm-7">
+                      <input type="number" step="any" class="form-control" id="tasa_tcem" value="0.00" disabled>
+                    </div>
+                  </div>
+                  <div class="row">
                     <label class="col-sm-5 col-form-label" style="text-align: right;">Tasa TIP (%):</label>
                     <div class="col-sm-7">
                       <input type="number" step="any" class="form-control" id="tasa_tip" value="0.00" disabled>
                       <input type="hidden" step="any" class="form-control" id="tasa_tip_2" value="0.00" disabled>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <label class="col-sm-5 col-form-label" style="text-align: right;">TCNM (%):</label>
-                    <div class="col-sm-7">
-                      <input type="number" step="any" class="form-control" id="tasa_tcem" value="0.00" disabled>
                     </div>
                   </div>
                   </div>

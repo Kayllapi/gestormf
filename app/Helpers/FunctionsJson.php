@@ -265,7 +265,7 @@ function json_sucursal($idtienda){
             'ubigeo.nombre as ubigeonombre',
         )
         // ->where('tienda.id',$idtienda)
-        ->orderBy('tienda.id','desc')
+        ->orderBy('tienda.id','asc')
         ->get();
     foreach($tiendas as $value){
         $tabla[] = [

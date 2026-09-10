@@ -915,7 +915,7 @@ class CreditoController extends Controller
               $disabled_garantia = $request->detalle=='false' ? 'disabled' : '';
               
               $idgarantia_prendaria = $value->tipo_garantia == 'Prendario' ? $value->id : 0;
-              $idgarantia_noprendaria = $value->tipo_garantia == 'No Prendario' ? $value->id : 0;
+              $idgarantia_noprendaria = $value->tipo_garantia == 'Regular' ? $value->id : 0;
             
               $descripcion = $value->descripcion;
               if(strlen($descripcion)>=100){

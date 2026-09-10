@@ -423,12 +423,11 @@
                     <div class="col-sm-12 col-md-3">
                         <div class="mb-1">
                             <label>&nbsp;</label>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox"  id="casanegocio" {{ $users_prestamo ? ($users_prestamo->casanegocio=='SI'?'checked':'') : '' }}>
-                                <label class="form-check-label" for="casanegocio" style="margin-top: 0px">
-                                Casa/Negocio:
-                                </label>
-                            </div>
+                            <label class="chk" style="margin-top: 6px;">
+                                <input type="checkbox" id="casanegocio" {{ $users_prestamo ? ($users_prestamo->casanegocio=='SI'?'checked':'') : '' }}>
+                                <span class="checkmark"></span>
+                                <span>Casa/Negocio:</span>
+                            </label>
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-5">

@@ -186,7 +186,7 @@
         success: function (res){
 
           if(res['resultado']=='TIENE REFINANCIADO'){
-              mensaje = 'El cliente no puede registrar un crédito No Prendario porque ya tiene un crédito No Prendario refinanciado (N° de cuenta '+res['cuenta']+').';
+              mensaje = 'El cliente no puede generar un crédito No Prendario, tiene un crédito refinanciado (N° de cuenta '+res['cuenta']+').';
               modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
               $('#idforma_credito').val(null).trigger("change");
           }

@@ -68,7 +68,7 @@
       @endif
       <br>
       <span class="badge bg-success">
-          <b>TOTAL COBERTURA:</b><span style="font-weight: normal;"> S/. <span id="total_cobertura_cliente">{{ $credito->monto_cobertura_garantia }}</span></span>
+          <b>TOTAL COBERTURA (Prendarios):</b><span style="font-weight: normal;"> S/. <span id="total_cobertura_cliente">{{ $credito->monto_cobertura_garantia }}</span></span>
       </span>
       @if($view_detalle!='false')
       <br>

@@ -73,16 +73,16 @@
                 </div>
                 <div style="{{ $credito->modalidad_calculo == 'Interes Compuesto' ? 'display:none;' : '' }}">
                 <div class="row">
-                  <label class="col-sm-5 col-form-label" style="text-align: right;">TIP (%):</label>
+                  <label class="col-sm-5 col-form-label" style="text-align: right;">{{ $tcem_label }} (%):</label>
                   <div class="col-sm-7">
-                    <input type="number" step="any" class="form-control" id="tasa_tip" value="0.00" disabled>
+                    <input type="number" step="any" class="form-control" id="tasa_tcem" value="0.00" disabled>
                   </div>
                 </div>  
                 </div>
                 <div class="row">
-                  <label class="col-sm-5 col-form-label" style="text-align: right;">{{ $tcem_label }} (%):</label>
+                  <label class="col-sm-5 col-form-label" style="text-align: right;">TIP (%):</label>
                   <div class="col-sm-7">
-                    <input type="number" step="any" class="form-control" id="tasa_tcem" value="0.00" disabled>
+                    <input type="number" step="any" class="form-control" id="tasa_tip" value="0.00" disabled>
                   </div>
                 </div> 
               </div>

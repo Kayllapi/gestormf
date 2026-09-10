@@ -915,7 +915,7 @@ class CreditoController extends Controller
               $disabled_garantia = $request->detalle=='false' ? 'disabled' : '';
               
               $idgarantia_prendaria = $value->tipo_garantia == 'Prendario' ? $value->id : 0;
-              $idgarantia_noprendaria = $value->tipo_garantia == 'Regular' ? $value->id : 0;
+              $idgarantia_noprendaria = $value->tipo_garantia == 'No Prendario' ? $value->id : 0;
             
               $descripcion = $value->descripcion;
               if(strlen($descripcion)>=100){
@@ -960,8 +960,12 @@ class CreditoController extends Controller
                               border-radius: 3px;padding-top: 2px;
                               padding-bottom: 2px;'>".calcularDiasPasados($value->fecharegistro).' DIA(S)</div>';
               }
+
+              // La columna "Tipo" muestra "Regular" en lugar de "No Prendario" (se conserva el valor interno para la logica)
+              $tipo_garantia_label = $value->tipo_garantia == 'No Prendario' ? 'Regular' : $value->tipo_garantia;
+
               $html .= "<tr idgarantia='{$idgarantia_prendaria}' idgarantianoprendataria='{$idgarantia_noprendaria}' idcliente='{$value->idclientegarantia}'>
-                          <td value='{$value->tipo_garantia}' tipo_garantia>{$value->tipo_garantia}</td>
+                          <td value='{$value->tipo_garantia}' tipo_garantia>{$tipo_garantia_label}</td>
                           <td value='{$value->descripcion}' descripcion>
                           <label 
                                   data-bs-toggle='popover' 

@@ -11,8 +11,8 @@
         <i class="fa fa-user"></i> Buscar Cliente
       </button>
       
-      <button type="button" class="btn btn-warning d-none" id="btn-create-cliente" onclick="load_create_garantia()"><i class="fa-solid fa-plus"></i> NUEVA GARANTÍA</button>
-      <button type="button" class="btn btn-primary d-none" id="btn-create-depositario" onclick="load_create_depositario()">
+      <button type="button" class="btn btn-primary d-none" id="btn-create-cliente" onclick="load_create_garantia()"><i class="fa-solid fa-plus"></i> NUEVA GARANTÍA</button>
+      <button type="button" class="btn btn-warning d-none" id="btn-create-depositario" onclick="load_create_depositario()">
         <i class="fa-solid fa-list"></i> Gestión de Depósitario y Póliza de Seguros</button>
 
       <!-- Modal -->

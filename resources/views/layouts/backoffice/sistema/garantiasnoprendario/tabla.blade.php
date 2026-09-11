@@ -5,7 +5,7 @@
         <i class="fa fa-user"></i> Buscar Cliente
       </button>
       
-      <button type="button" class="btn btn-primary d-none" id="btn-create-cliente" onclick="load_create_garantianoprendaria()"><i class="fa-solid fa-plus"></i> NUEVA GARANTÍA</button>
+      <button type="button" class="btn btn-warning d-none" id="btn-create-cliente" onclick="load_create_garantianoprendaria()"><i class="fa-solid fa-plus"></i> NUEVA GARANTÍA</button>
 
       <!-- Modal -->
       <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

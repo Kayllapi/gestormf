@@ -31,6 +31,21 @@
           </div>
         </div>
       </div>
+
+      <!-- Modal Motivo Lista Negra -->
+      <div class="modal fade" id="modalMotivoListaNegra" tabindex="-1" aria-labelledby="modalMotivoListaNegraLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="modalMotivoListaNegraLabel">Motivo - Lista Negra</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="alert alert-danger" id="motivo_listanegra_texto"></div>
+            </div>
+          </div>
+        </div>
+      </div>
     </h5>
     <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>
@@ -151,6 +166,10 @@
       }
   }
   
+  function ver_motivo_listanegra(){
+      $('#modalMotivoListaNegra').modal('show');
+  }
+
   function buscarcliente(){
       setTimeout(function () { 
         $('#idclientesearch').select2('open');
@@ -176,7 +195,8 @@
         $('#btn-create-cliente').removeClass('d-none');
         $('#cont_listanegra').html('');
         if(res.estado_listanegra==2){
-          $('#cont_listanegra').html('<span style="background-color: #ffc9ca;padding-left: 5px;padding-right: 5px;border-radius: 5px;color: #93222c; float: right;">Cliente en Lista Negra</div>');
+          $('#cont_listanegra').html('<span style="background-color: #ffc9ca;padding-left: 5px;padding-right: 5px;border-radius: 5px;color: #93222c; float: right;cursor: pointer;" onclick="ver_motivo_listanegra()">Cliente en Lista Negra</span>');
+          $('#motivo_listanegra_texto').text(res.motivo_listanegra);
         }
         
         $('#idultimocredito_resumida').val(res.idultimocredito_resumida);

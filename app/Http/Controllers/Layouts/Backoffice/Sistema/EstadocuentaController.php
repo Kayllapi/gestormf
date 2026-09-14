@@ -310,8 +310,10 @@ class EstadocuentaController extends Controller
           
           $s_listanegra = DB::table('s_listanegra')->where('idcliente',$request->idcliente)->first();
           $estado_listanegra = 1;
+          $motivo_listanegra = '';
           if($s_listanegra){
               $estado_listanegra = 2;
+              $motivo_listanegra = $s_listanegra->motivo;
           }
           $creditos = DB::table('credito')
                             ->join('forma_pago_credito','forma_pago_credito.id','credito.idforma_pago_credito')
@@ -412,7 +414,8 @@ class EstadocuentaController extends Controller
             'idultimocredito_resumida' => $idultimocredito_resumida,
             'idultimocredito_completa' => $idultimocredito_completa,
             'html' => $html,
-            'estado_listanegra' => $estado_listanegra
+            'estado_listanegra' => $estado_listanegra,
+            'motivo_listanegra' => $motivo_listanegra
           );
           
         }

@@ -1868,7 +1868,7 @@ class CobranzacuotaController extends Controller
               $totaladelanto = 0;
               $ultimafechaadelanto = 0;
               foreach($credito_adelanto as $valueade){
-                  $totaladelanto += $valueade->total_pagar;
+                  $totaladelanto += $valueade->total;
                   $ultimafechaadelanto = date_format(date_create($valueade->fecharegistro),'d-m-Y h:i:s A');
               }
               

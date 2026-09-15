@@ -37,23 +37,21 @@
                   <th colspan="5" style="text-align: center;">MODALIDAD</th>
                 </tr>
                 <tr>
-                  <th>COMITÉ DE APROBACIÓN (Incluye Proponente) <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
-                  <th>AUTONOMÍA DE ADMINITRACIÓN (Incluye Proponente) <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
-                  <th>AUTONOMÍA DE GERENCIA GENERAL (Incluye Proponente) <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
-                  <th>Escalamiento de Crédito <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
+                  <th>COMITÉ DE APROBACIÓN (Incluye Proponente)</th>
+                  <th>AUTONOMÍA DE ADMINITRACIÓN (Incluye Proponente)</th>
+                  <th>AUTONOMÍA DE GERENCIA GENERAL (Incluye Proponente)</th>
+                  <th style="background-color: #FFF2CC !important;">Escalamiento de Crédito</th>
                   <th><a href="javascript:;" class="btn btn-success" onclick="agregar_nivelaprobacion_prendario()">
                       <i class="fa-solid fa-plus"></i>
                     </a></th>
                 </tr>
               </thead>
               <tbody num="{{ count($nivelaprobacions_prendario) }}">
-                @if(count($nivelaprobacions_prendario) == 0)
-                  <tr class="tr-proponente-aviso">
-                    <td></td>
-                    <td colspan="2">Proponente</td>
-                    <td colspan="5">Debe registrar su clave el proponente Asesor(a)/Ejecutivo de operaciones/caja</td>
-                  </tr>
-                @endif
+                <tr class="tr-proponente-aviso">
+                  <td></td>
+                  <td colspan="2">Proponente</td>
+                  <td colspan="5">Debe registrar su clave el proponente Asesor(a)/Ejecutivo de operaciones/caja</td>
+                </tr>
                 @foreach($nivelaprobacions_prendario as $key => $value)
                   <tr id="{{ $key }}">
                     <td>
@@ -275,23 +273,21 @@
                   <th colspan="5" style="text-align: center;">MODALIDAD</th>
                 </tr>
                 <tr>
-                  <th>COMITÉ DE APROBACIÓN (Incluye Proponente) <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
-                  <th>AUTONOMÍA DE ADMINITRACIÓN (Incluye Proponente) <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
-                  <th>AUTONOMÍA DE GERENCIA GENERAL (Incluye Proponente) <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
-                  <th>Escalamiento de Crédito <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
+                  <th>COMITÉ DE APROBACIÓN (Incluye Proponente)</th>
+                  <th>AUTONOMÍA DE ADMINITRACIÓN (Incluye Proponente)</th>
+                  <th>AUTONOMÍA DE GERENCIA GENERAL (Incluye Proponente)</th>
+                  <th style="background-color: #FFF2CC !important;">Escalamiento de Crédito</th>
                   <th><a href="javascript:;" class="btn btn-success" onclick="agregar_nivelaprobacion_noprendario()">
                       <i class="fa-solid fa-plus"></i>
                     </a></th>
                 </tr>
               </thead>
               <tbody num="{{ count($nivelaprobacions_noprendario) }}">
-                @if(count($nivelaprobacions_noprendario) == 0)
-                  <tr class="tr-proponente-aviso">
-                    <td></td>
-                    <td colspan="2">Proponente</td>
-                    <td colspan="5">Debe registrar su clave el proponente Asesor(a)/Ejecutivo de operaciones/caja</td>
-                  </tr>
-                @endif
+                <tr class="tr-proponente-aviso">
+                  <td></td>
+                  <td colspan="2">Proponente</td>
+                  <td colspan="5">Debe registrar su clave el proponente Asesor(a)/Ejecutivo de operaciones/caja</td>
+                </tr>
                 @foreach($nivelaprobacions_noprendario as $key => $value)
                   <tr id="{{ $key }}">
                     <td>
@@ -526,6 +522,9 @@
   .select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__rendered .select2-selection__choice .select2-selection__choice__remove {
     width: 8px;
   }
+  .tr-proponente-aviso td {
+    background-color: #FFF2CC !important;
+  }
 </style>
 <script>
 
@@ -730,7 +729,6 @@ function agregar_nivelaprobacion_prendario(nivelaprobacionnombre='',riesgocredit
                   <td><a id="del${num}" href="javascript:;" onclick="eliminar_creditoprendario(${num})" class="btn btn-danger btn-sm" style="padding: 4px 11px;"><i class="fa fa-close"></i></a></td>
                 </tr>`;
 
-    $("#table-creditosprendarios > tbody > tr.tr-proponente-aviso").remove();
     $("#table-creditosprendarios > tbody").append(tabla);
     $("#table-creditosprendarios > tbody").attr('num',parseInt(num)+1);
   
@@ -1122,7 +1120,6 @@ function agregar_nivelaprobacion_noprendario(nivelaprobacionnombre='',riesgocred
                   <td><a id="del${num}" href="javascript:;" onclick="eliminar_creditonoprendario(${num})" class="btn btn-danger btn-sm" style="padding: 4px 11px;"><i class="fa fa-close"></i></a></td>
                 </tr>`;
     */
-    $("#table-creditosnoprendarios > tbody > tr.tr-proponente-aviso").remove();
     $("#table-creditosnoprendarios > tbody").append(tabla);
     $("#table-creditosnoprendarios > tbody").attr('num',parseInt(num)+1);
 
@@ -1166,13 +1163,6 @@ function eliminar_creditoprendario(num){
   $(document).off('click', '#btn-save-confirm');
   $(document).on('click', '#btn-save-confirm', function () {
       $("#table-creditosprendarios tbody tr#" + num).remove();
-      if($("#table-creditosprendarios > tbody > tr").length == 0){
-          $("#table-creditosprendarios > tbody").append(`<tr class="tr-proponente-aviso">
-              <td></td>
-              <td colspan="2">Proponente</td>
-              <td colspan="5">Debe registrar su clave el proponente Asesor(a)/Ejecutivo de operaciones/caja</td>
-          </tr>`);
-      }
       $('.modal').modal('hide');
   });
   // var opcion = confirm("¿Esta seguro de eliminar?");
@@ -1186,13 +1176,6 @@ function eliminar_creditonoprendario(num){
   $(document).off('click', '#btn-save-confirm');
   $(document).on('click', '#btn-save-confirm', function () {
       $("#table-creditosnoprendarios tbody tr#"+num).remove();
-      if($("#table-creditosnoprendarios > tbody > tr").length == 0){
-          $("#table-creditosnoprendarios > tbody").append(`<tr class="tr-proponente-aviso">
-              <td></td>
-              <td colspan="2">Proponente</td>
-              <td colspan="5">Debe registrar su clave el proponente Asesor(a)/Ejecutivo de operaciones/caja</td>
-          </tr>`);
-      }
       $('.modal').modal('hide');
   });
 }

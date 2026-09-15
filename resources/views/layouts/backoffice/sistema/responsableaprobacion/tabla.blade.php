@@ -29,23 +29,31 @@
             <table class="table table-striped table-hover table-bordered" id="table-creditosprendarios">
               <thead class="table-dark">
                 <tr>
-                  <th colspan="7">CRÉDITOS PRENDARIOS</th>
+                  <th colspan="8">CRÉDITOS PRENDARIOS</th>
                 </tr>
                 <tr>
                   <th rowspan="2" style="width:200px;">NIVELES DE APROBACIÓN *</th>
                   <th colspan="2" rowspan="2" style="width:200px;">RIESGO CREDITICIO (S/.) *</th>
-                  <th colspan="4" style="text-align: center;">MODALIDAD</th>
+                  <th colspan="5" style="text-align: center;">MODALIDAD</th>
                 </tr>
                 <tr>
                   <th>COMITÉ DE APROBACIÓN (Incluye Proponente) <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
                   <th>AUTONOMÍA DE ADMINITRACIÓN (Incluye Proponente) <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
                   <th>AUTONOMÍA DE GERENCIA GENERAL (Incluye Proponente) <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
+                  <th>Escalamiento de Crédito <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
                   <th><a href="javascript:;" class="btn btn-success" onclick="agregar_nivelaprobacion_prendario()">
                       <i class="fa-solid fa-plus"></i>
                     </a></th>
                 </tr>
               </thead>
               <tbody num="{{ count($nivelaprobacions_prendario) }}">
+                @if(count($nivelaprobacions_prendario) == 0)
+                  <tr class="tr-proponente-aviso">
+                    <td></td>
+                    <td colspan="2">Proponente</td>
+                    <td colspan="5">Debe registrar su clave el proponente Asesor(a)/Ejecutivo de operaciones/caja</td>
+                  </tr>
+                @endif
                 @foreach($nivelaprobacions_prendario as $key => $value)
                   <tr id="{{ $key }}">
                     <td>
@@ -201,7 +209,53 @@
                             </button>
                           @endforeach
                         </span>
-                      </div> 
+                      </div>
+                    </td>
+                    <td class="align-top">
+                      <div class="row">
+                        <div class="col-12 col-md-9">
+                          <label>Responsables:</label>
+                          <select class="form-select" id="asignacion_cprendario{{ $key }}" onchange="addPermisoTable(this,'#container_permiso_asignacion{{ $key }}', $('input[name=asignacion{{ $key }}]:checked').val() )">
+                            <option></option>
+                            @foreach($permisos as $value_per)
+                              <option value="{{ $value_per->id }}">{{ $value_per->nombre }}</option>
+                            @endforeach
+                          </select>
+                          <script>sistema_select2({ input:'#asignacion_cprendario{{ $key }}' });</script>
+                        </div>
+                        <div class="col-12 col-md-3">
+                          <label>Opción:</label>
+                          <label class="radio-custom">
+                              <input type="radio" name="asignacion{{ $key }}" value="1" checked>
+                              <span class="radio"></span> 1
+                          </label>
+                          <label class="radio-custom">
+                              <input type="radio" name="asignacion{{ $key }}" value="2">
+                              <span class="radio"></span> 2
+                          </label>
+                        </div>
+                      </div>
+                      <div id="container_permiso_asignacion{{ $key }}" data_asignacion >
+                        <?php
+                          $data_asignacion = json_decode($value->asignacion);
+                          $data_asignacion_uno = $data_asignacion[0]->tipo_uno;
+                          $data_asignacion_dos = $data_asignacion[0]->tipo_dos;
+                        ?>
+                        <span class="tipo_uno">
+                          @foreach($data_asignacion_uno as $permiso_val)
+                            <button type="button" class="btn btn-warning m-1" valor_option="{{ $permiso_val->valor }}" text_option="{{ $permiso_val->texto }}">
+                              {{ $permiso_val->texto }} <span class="badge text-bg-danger" onclick="removePermiso(this)"><i class="fa-solid fa-xmark"></i></span>
+                            </button>
+                          @endforeach
+                        </span>
+                        <span class="tipo_dos">
+                          @foreach($data_asignacion_dos as $permiso_val)
+                            <button type="button" class="btn btn-info m-1" valor_option="{{ $permiso_val->valor }}" text_option="{{ $permiso_val->texto }}">
+                              {{ $permiso_val->texto }} <span class="badge text-bg-danger" onclick="removePermiso(this)"><i class="fa-solid fa-xmark"></i></span>
+                            </button>
+                          @endforeach
+                        </span>
+                      </div>
                     </td>
                     <td><a id="del{{ $key }}" href="javascript:;" onclick="eliminar_creditoprendario({{ $key }})" class="btn btn-danger btn-sm" style="padding: 4px 11px;"><i class="fa fa-close"></i></a></td>
                   </tr>
@@ -213,23 +267,31 @@
             <table class="table table-striped table-hover table-bordered" id="table-creditosnoprendarios">
               <thead class="table-dark">
                 <tr>
-                  <th colspan="7">CRÉDITOS NO PRENDARIOS</th>
+                  <th colspan="8">CRÉDITOS NO PRENDARIOS</th>
                 </tr>
                 <tr>
                   <th rowspan="2" style="width:200px;">NIVELES DE APROBACIÓN *</th>
                   <th colspan="2" rowspan="2" style="width:200px;">RIESGO CREDITICIO (S/.) *</th>
-                  <th colspan="4" style="text-align: center;">MODALIDAD</th>
+                  <th colspan="5" style="text-align: center;">MODALIDAD</th>
                 </tr>
                 <tr>
                   <th>COMITÉ DE APROBACIÓN (Incluye Proponente) <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
                   <th>AUTONOMÍA DE ADMINITRACIÓN (Incluye Proponente) <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
                   <th>AUTONOMÍA DE GERENCIA GENERAL (Incluye Proponente) <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
+                  <th>Escalamiento de Crédito <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
                   <th><a href="javascript:;" class="btn btn-success" onclick="agregar_nivelaprobacion_noprendario()">
                       <i class="fa-solid fa-plus"></i>
                     </a></th>
                 </tr>
               </thead>
               <tbody num="{{ count($nivelaprobacions_noprendario) }}">
+                @if(count($nivelaprobacions_noprendario) == 0)
+                  <tr class="tr-proponente-aviso">
+                    <td></td>
+                    <td colspan="2">Proponente</td>
+                    <td colspan="5">Debe registrar su clave el proponente Asesor(a)/Ejecutivo de operaciones/caja</td>
+                  </tr>
+                @endif
                 @foreach($nivelaprobacions_noprendario as $key => $value)
                   <tr id="{{ $key }}">
                     <td>
@@ -383,7 +445,53 @@
                             </button>
                           @endforeach
                         </span>
-                      </div> 
+                      </div>
+                    </td>
+                    <td class="align-top">
+                      <div class="row">
+                        <div class="col-12 col-md-9">
+                          <label>Responsables:</label>
+                          <select class="form-select" id="asignacion_cprendario_noprendario{{ $key }}" onchange="addPermisoTable(this,'#container_permiso_asignacion_noprendario{{ $key }}', $('input[name=asignacion_noprendario{{ $key }}]:checked').val() )">
+                            <option></option>
+                            @foreach($permisos as $value_per)
+                              <option value="{{ $value_per->id }}">{{ $value_per->nombre }}</option>
+                            @endforeach
+                          </select>
+                          <script>sistema_select2({ input:'#asignacion_cprendario_noprendario{{ $key }}' });</script>
+                        </div>
+                        <div class="col-12 col-md-3">
+                          <label>Opción:</label>
+                          <label class="radio-custom">
+                              <input type="radio" name="asignacion_noprendario{{ $key }}" value="1" checked>
+                              <span class="radio"></span> 1
+                          </label>
+                          <label class="radio-custom">
+                              <input type="radio" name="asignacion_noprendario{{ $key }}" value="2">
+                              <span class="radio"></span> 2
+                          </label>
+                        </div>
+                      </div>
+                      <div id="container_permiso_asignacion_noprendario{{ $key }}" data_asignacion >
+                        <?php
+                          $data_asignacion_noprendario = json_decode($value->asignacion);
+                          $data_asignacion_noprendario_uno = $data_asignacion_noprendario[0]->tipo_uno;
+                          $data_asignacion_noprendario_dos = $data_asignacion_noprendario[0]->tipo_dos;
+                        ?>
+                        <span class="tipo_uno">
+                          @foreach($data_asignacion_noprendario_uno as $permiso_val)
+                            <button type="button" class="btn btn-warning m-1" valor_option="{{ $permiso_val->valor }}" text_option="{{ $permiso_val->texto }}">
+                              {{ $permiso_val->texto }} <span class="badge text-bg-danger" onclick="removePermiso(this)"><i class="fa-solid fa-xmark"></i></span>
+                            </button>
+                          @endforeach
+                        </span>
+                        <span class="tipo_dos">
+                          @foreach($data_asignacion_noprendario_dos as $permiso_val)
+                            <button type="button" class="btn btn-info m-1" valor_option="{{ $permiso_val->valor }}" text_option="{{ $permiso_val->texto }}">
+                              {{ $permiso_val->texto }} <span class="badge text-bg-danger" onclick="removePermiso(this)"><i class="fa-solid fa-xmark"></i></span>
+                            </button>
+                          @endforeach
+                        </span>
+                      </div>
                     </td>
                     <td><a id="del{{ $key }}" href="javascript:;" onclick="eliminar_creditonoprendario({{ $key }})" class="btn btn-danger btn-sm" style="padding: 4px 11px;"><i class="fa fa-close"></i></a></td>
                   </tr>
@@ -432,7 +540,7 @@
 //                             '{{$value->autonomiagerencia}}');
 @endforeach
   
-function agregar_nivelaprobacion_prendario(nivelaprobacionnombre='',riesgocredito1='',riesgocredito2='',nivelaprobacion='',autonomiaadministracion='',autonomiagerencia=''){
+function agregar_nivelaprobacion_prendario(nivelaprobacionnombre='',riesgocredito1='',riesgocredito2='',nivelaprobacion='',autonomiaadministracion='',autonomiagerencia='',asignacion=''){
   
   var option_nivelaprobacion = '';
   @foreach($permisos as $value)
@@ -472,7 +580,20 @@ function agregar_nivelaprobacion_prendario(nivelaprobacionnombre='',riesgocredit
       }
       option_autonomiagerencia = option_autonomiagerencia+'<option value="{{ $value->id }}" '+selected+'>{{ $value->nombre }}</option>';
   @endforeach
-     
+
+  var option_asignacion = '';
+  @foreach($permisos as $value)
+      var selected = '';
+      var asignaciones =  asignacion.split(',');
+      for(var i = 0;i <  asignaciones.length;i++){
+          if({{$value->id}} == asignaciones[i]){
+              selected = 'selected';
+              break;
+          }
+      }
+      option_asignacion = option_asignacion+'<option value="{{ $value->id }}" '+selected+'>{{ $value->nombre }}</option>';
+  @endforeach
+
   var num = $("#table-creditosprendarios > tbody").attr('num');
   let btn_eliminar = `<button type="button" onclick="eliminar_producto(this)" class="btn btn-danger "><i class="fa-solid fa-trash"></i></button>` ;
 
@@ -578,11 +699,40 @@ function agregar_nivelaprobacion_prendario(nivelaprobacionnombre='',riesgocredit
                       ${option_autonomiagerencia}
                     </select>
                   </td>
+                  <td class="align-top">
+                    <div class="row">
+                      <div class="col-12 col-md-9">
+                        <label>Responsables:</label>
+                        <select class="form-select" id="asignacion_cprendario${num}" onchange="addPermisoTable(this,'#container_permiso_asignacion${num}', $('input[name=asignacion${num}]:checked').val() )">
+                          ${option_asignacion}
+                        </select>
+                      </div>
+                      <div class="col-12 col-md-3">
+                          <label>Opción:</label>
+                          <label class="radio-custom">
+                              <input type="radio" name="asignacion${num}" value="1" checked>
+                              <span class="radio"></span> 1
+                          </label>
+                          <label class="radio-custom">
+                              <input type="radio" name="asignacion${num}" value="2">
+                              <span class="radio"></span> 2
+                          </label>
+                      </div>
+                    </div>
+                    <div id="container_permiso_asignacion${num}" data_asignacion >
+                      <span class="tipo_uno"></span>
+                      <span class="tipo_dos"></span>
+                    </div>
+                    <select class="form-select d-none" id="asignacion${num}" multiple="multiple">
+                      ${option_asignacion}
+                    </select>
+                  </td>
                   <td><a id="del${num}" href="javascript:;" onclick="eliminar_creditoprendario(${num})" class="btn btn-danger btn-sm" style="padding: 4px 11px;"><i class="fa fa-close"></i></a></td>
                 </tr>`;
-  
+
+    $("#table-creditosprendarios > tbody > tr.tr-proponente-aviso").remove();
     $("#table-creditosprendarios > tbody").append(tabla);
-    $("#table-creditosprendarios > tbody").attr('num',parseInt(num)+1);  
+    $("#table-creditosprendarios > tbody").attr('num',parseInt(num)+1);
   
   
 //   sistema_select2({ input:'#nivelaprobacion'+num });
@@ -624,7 +774,7 @@ function removePermiso(e){
   
 function getJsonPermiso(table){
   let data = [];
-  $(`#${table} > tbody > tr`).each(function() {
+  $(`#${table} > tbody > tr`).not('.tr-proponente-aviso').each(function() {
     let nombre_aprobacion = $(this).find('textarea[nombre_aprobacion]').val();
     let riesgocredito_one = $(this).find('input[riesgocredito_one]').val();
     let riesgocredito_two = $(this).find('input[riesgocredito_two]').val();
@@ -707,8 +857,33 @@ function getJsonPermiso(table){
       tipo_uno: data_autonomiagerencia_one,
       tipo_dos: data_autonomiagerencia_two,
     });
-    
-    
+    // FOUR TD
+    let data_asignacion = [];
+
+    let data_asignacion_one = [];
+    $(this).find('div[data_asignacion] > span.tipo_uno > button').each(function() {
+      let valor = $(this).attr('valor_option');
+      let texto = $(this).attr('text_option');
+      data_asignacion_one.push({
+            valor: valor,
+            texto: texto,
+        });
+    });
+    let data_asignacion_two = [];
+    $(this).find('div[data_asignacion] > span.tipo_dos > button').each(function() {
+      let valor = $(this).attr('valor_option');
+      let texto = $(this).attr('text_option');
+      data_asignacion_two.push({
+            valor: valor,
+            texto: texto,
+        });
+    });
+
+    data_asignacion.push({
+      tipo_uno: data_asignacion_one,
+      tipo_dos: data_asignacion_two,
+    });
+
 
     // Agregar data_nivelaprobacion a data
     data.push({
@@ -718,13 +893,14 @@ function getJsonPermiso(table){
       data_nivelaprobacion: data_nivelaprobacion,
       data_autonomiaadministracion: data_autonomiaadministracion,
       data_autonomiagerencia: data_autonomiagerencia,
+      data_asignacion: data_asignacion,
     });
     
   });
   return JSON.stringify(data);
 }
   
-function agregar_nivelaprobacion_noprendario(nivelaprobacionnombre='',riesgocredito1='',riesgocredito2='',nivelaprobacion='',autonomiaadministracion='',autonomiagerencia=''){
+function agregar_nivelaprobacion_noprendario(nivelaprobacionnombre='',riesgocredito1='',riesgocredito2='',nivelaprobacion='',autonomiaadministracion='',autonomiagerencia='',asignacion=''){
   
   var option_nivelaprobacion = '<option></option>';
   @foreach($permisos as $value)
@@ -764,7 +940,20 @@ function agregar_nivelaprobacion_noprendario(nivelaprobacionnombre='',riesgocred
       }
       option_autonomiagerencia = option_autonomiagerencia+'<option value="{{ $value->id }}" '+selected+'>{{ $value->nombre }}</option>';
   @endforeach
-     
+
+  var option_asignacion = '<option></option>';
+  @foreach($permisos as $value)
+      var selected = '';
+      var asignaciones =  asignacion.split(',');
+      for(var i = 0;i <  asignaciones.length;i++){
+          if({{$value->id}} == asignaciones[i]){
+              selected = 'selected';
+              break;
+          }
+      }
+      option_asignacion = option_asignacion+'<option value="{{ $value->id }}" '+selected+'>{{ $value->nombre }}</option>';
+  @endforeach
+
   var num = $("#table-creditosnoprendarios > tbody").attr('num');
   let btn_eliminar = `<button type="button" onclick="eliminar_producto(this)" class="btn btn-danger "><i class="fa-solid fa-trash"></i></button>` ;
 
@@ -870,6 +1059,34 @@ function agregar_nivelaprobacion_noprendario(nivelaprobacionnombre='',riesgocred
                       ${option_autonomiagerencia}
                     </select>
                   </td>
+                  <td class="align-top">
+                    <div class="row">
+                      <div class="col-12 col-md-9">
+                        <label>Responsables:</label>
+                        <select class="form-select" id="asignacion_cprendario_noprendario${num}" onchange="addPermisoTable(this,'#container_permiso_asignacion_noprendario${num}', $('input[name=asignacion_noprendario${num}]:checked').val() )">
+                          ${option_asignacion}
+                        </select>
+                      </div>
+                      <div class="col-12 col-md-3">
+                          <label>Opción:</label>
+                          <label class="radio-custom">
+                              <input type="radio" name="asignacion_noprendario${num}" value="1" checked>
+                              <span class="radio"></span> 1
+                          </label>
+                          <label class="radio-custom">
+                              <input type="radio" name="asignacion_noprendario${num}" value="2">
+                              <span class="radio"></span> 2
+                          </label>
+                      </div>
+                    </div>
+                    <div id="container_permiso_asignacion_noprendario${num}" data_asignacion >
+                      <span class="tipo_uno"></span>
+                      <span class="tipo_dos"></span>
+                    </div>
+                    <select class="form-select d-none" id="asignacion_noprendario${num}" multiple="multiple">
+                      ${option_asignacion}
+                    </select>
+                  </td>
                   <td><a id="del${num}" href="javascript:;" onclick="eliminar_creditonoprendario(${num})" class="btn btn-danger btn-sm" style="padding: 4px 11px;"><i class="fa fa-close"></i></a></td>
                 </tr>`;
     /*
@@ -905,8 +1122,9 @@ function agregar_nivelaprobacion_noprendario(nivelaprobacionnombre='',riesgocred
                   <td><a id="del${num}" href="javascript:;" onclick="eliminar_creditonoprendario(${num})" class="btn btn-danger btn-sm" style="padding: 4px 11px;"><i class="fa fa-close"></i></a></td>
                 </tr>`;
     */
+    $("#table-creditosnoprendarios > tbody > tr.tr-proponente-aviso").remove();
     $("#table-creditosnoprendarios > tbody").append(tabla);
-    $("#table-creditosnoprendarios > tbody").attr('num',parseInt(num)+1);  
+    $("#table-creditosnoprendarios > tbody").attr('num',parseInt(num)+1);
 
 //   sistema_select2({ input:'#nivelaprobacion_noprendario'+num });
 //   sistema_select2({ input:'#autonomiaadministracion_noprendario'+num });
@@ -915,7 +1133,7 @@ function agregar_nivelaprobacion_noprendario(nivelaprobacionnombre='',riesgocred
 
 function select_creditosprendarios(){
     var data = '';
-    $("#table-creditosprendarios > tbody > tr").each(function() {
+    $("#table-creditosprendarios > tbody > tr").not('.tr-proponente-aviso').each(function() {
         var num = $(this).attr('id');        
         var nivelaprobacionnombre = $("#nivelaprobacionnombre"+num).val();
         var riesgocredito1 = $("#riesgocredito1"+num).val();
@@ -929,7 +1147,7 @@ function select_creditosprendarios(){
 }  
 function select_creditosnoprendarios(){
     var data = '';
-    $("#table-creditosnoprendarios > tbody > tr").each(function() {
+    $("#table-creditosnoprendarios > tbody > tr").not('.tr-proponente-aviso').each(function() {
         var num = $(this).attr('id');
         var nivelaprobacionnombre = $("#nivelaprobacionnombre_noprendario"+num).val();
         var riesgocredito1 = $("#riesgocredito1_noprendario"+num).val();
@@ -948,6 +1166,13 @@ function eliminar_creditoprendario(num){
   $(document).off('click', '#btn-save-confirm');
   $(document).on('click', '#btn-save-confirm', function () {
       $("#table-creditosprendarios tbody tr#" + num).remove();
+      if($("#table-creditosprendarios > tbody > tr").length == 0){
+          $("#table-creditosprendarios > tbody").append(`<tr class="tr-proponente-aviso">
+              <td></td>
+              <td colspan="2">Proponente</td>
+              <td colspan="5">Debe registrar su clave el proponente Asesor(a)/Ejecutivo de operaciones/caja</td>
+          </tr>`);
+      }
       $('.modal').modal('hide');
   });
   // var opcion = confirm("¿Esta seguro de eliminar?");
@@ -961,6 +1186,13 @@ function eliminar_creditonoprendario(num){
   $(document).off('click', '#btn-save-confirm');
   $(document).on('click', '#btn-save-confirm', function () {
       $("#table-creditosnoprendarios tbody tr#"+num).remove();
+      if($("#table-creditosnoprendarios > tbody > tr").length == 0){
+          $("#table-creditosnoprendarios > tbody").append(`<tr class="tr-proponente-aviso">
+              <td></td>
+              <td colspan="2">Proponente</td>
+              <td colspan="5">Debe registrar su clave el proponente Asesor(a)/Ejecutivo de operaciones/caja</td>
+          </tr>`);
+      }
       $('.modal').modal('hide');
   });
 }

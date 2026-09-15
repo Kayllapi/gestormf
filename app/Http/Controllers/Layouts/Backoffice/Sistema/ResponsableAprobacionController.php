@@ -92,6 +92,7 @@ class ResponsableAprobacionController extends Controller
                 'nivelaprobacion' => json_encode($value['data_nivelaprobacion']),
                 'autonomiaadministracion' => json_encode($value['data_autonomiaadministracion']),
                 'autonomiagerencia' => json_encode($value['data_autonomiagerencia']),
+                'asignacion' => json_encode($value['data_asignacion']),
                 'idtipocredito' => 1,
               ]);
             }
@@ -105,6 +106,7 @@ class ResponsableAprobacionController extends Controller
                 'nivelaprobacion' => json_encode($value['data_nivelaprobacion']),
                 'autonomiaadministracion' => json_encode($value['data_autonomiaadministracion']),
                 'autonomiagerencia' => json_encode($value['data_autonomiagerencia']),
+                'asignacion' => json_encode($value['data_asignacion']),
                 'idtipocredito' => 2,
               ]);
             }

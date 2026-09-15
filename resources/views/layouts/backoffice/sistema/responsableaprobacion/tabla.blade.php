@@ -29,7 +29,7 @@
             <table class="table table-striped table-hover table-bordered" id="table-creditosprendarios">
               <thead class="table-dark">
                 <tr>
-                  <th colspan="8" style="text-align: center;">CRÉDITOS PRENDARIOS</th>
+                  <th colspan="8" style="text-align: center; font-size: 18px; background-color: #fff2cc !important;">CRÉDITOS PRENDARIOS</th>
                 </tr>
                 <tr>
                   <th rowspan="2" style="width:200px; text-align: center;">NIVELES DE APROBACIÓN *</th>
@@ -265,7 +265,7 @@
             <table class="table table-striped table-hover table-bordered" id="table-creditosnoprendarios">
               <thead class="table-dark">
                 <tr>
-                  <th colspan="8" style="text-align: center;">CRÉDITOS NO PRENDARIOS</th>
+                  <th colspan="8" style="text-align: center; font-size: 18px; background-color: #fff2cc !important;">CRÉDITOS NO PRENDARIOS</th>
                 </tr>
                 <tr>
                   <th rowspan="2" style="width:200px; text-align: center;">NIVELES DE APROBACIÓN *</th>

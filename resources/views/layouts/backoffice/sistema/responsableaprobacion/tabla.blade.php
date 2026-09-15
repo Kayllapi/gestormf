@@ -29,18 +29,18 @@
             <table class="table table-striped table-hover table-bordered" id="table-creditosprendarios">
               <thead class="table-dark">
                 <tr>
-                  <th colspan="8">CRÉDITOS PRENDARIOS</th>
+                  <th colspan="8" style="text-align: center;">CRÉDITOS PRENDARIOS</th>
                 </tr>
                 <tr>
-                  <th rowspan="2" style="width:200px;">NIVELES DE APROBACIÓN *</th>
-                  <th colspan="2" rowspan="2" style="width:200px;">RIESGO CREDITICIO (S/.) *</th>
+                  <th rowspan="2" style="width:200px; text-align: center;">NIVELES DE APROBACIÓN *</th>
+                  <th colspan="2" rowspan="2" style="width:200px; text-align: center;">RIESGO CREDITICIO (S/.) *</th>
                   <th colspan="5" style="text-align: center;">MODALIDAD</th>
                 </tr>
                 <tr>
-                  <th>COMITÉ DE APROBACIÓN (Incluye Proponente) <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
-                  <th>AUTONOMÍA DE ADMINITRACIÓN (Incluye Proponente) <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
-                  <th>AUTONOMÍA DE GERENCIA GENERAL (Incluye Proponente) <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
-                  <th>ESCALAMIENTO DE CRÉDITO</th>
+                  <th style="text-align: center;">COMITÉ DE APROBACIÓN (Incluye Proponente) <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
+                  <th style="text-align: center;">AUTONOMÍA DE ADMINITRACIÓN (Incluye Proponente) <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
+                  <th style="text-align: center;">AUTONOMÍA DE GERENCIA GENERAL (Incluye Proponente) <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
+                  <th style="background-color: #b7b6b78a !important; text-align: center;">ESCALAMIENTO DE CRÉDITO</th>
                   <th><a href="javascript:;" class="btn btn-success" onclick="agregar_nivelaprobacion_prendario()">
                       <i class="fa-solid fa-plus"></i>
                     </a></th>
@@ -265,18 +265,18 @@
             <table class="table table-striped table-hover table-bordered" id="table-creditosnoprendarios">
               <thead class="table-dark">
                 <tr>
-                  <th colspan="8">CRÉDITOS NO PRENDARIOS</th>
+                  <th colspan="8" style="text-align: center;">CRÉDITOS NO PRENDARIOS</th>
                 </tr>
                 <tr>
-                  <th rowspan="2" style="width:200px;">NIVELES DE APROBACIÓN *</th>
-                  <th colspan="2" rowspan="2" style="width:200px;">RIESGO CREDITICIO (S/.) *</th>
+                  <th rowspan="2" style="width:200px; text-align: center;">NIVELES DE APROBACIÓN *</th>
+                  <th colspan="2" rowspan="2" style="width:200px; text-align: center;">RIESGO CREDITICIO (S/.) *</th>
                   <th colspan="5" style="text-align: center;">MODALIDAD</th>
                 </tr>
                 <tr>
-                  <th>COMITÉ DE APROBACIÓN (Incluye Proponente) <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
-                  <th>AUTONOMÍA DE ADMINITRACIÓN (Incluye Proponente) <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
-                  <th>AUTONOMÍA DE GERENCIA GENERAL (Incluye Proponente) <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
-                  <th>ESCALAMIENTO DE CRÉDITO</th>
+                  <th style="text-align: center;">COMITÉ DE APROBACIÓN (Incluye Proponente) <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
+                  <th style="text-align: center;">AUTONOMÍA DE ADMINITRACIÓN (Incluye Proponente) <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
+                  <th style="text-align: center;">AUTONOMÍA DE GERENCIA GENERAL (Incluye Proponente) <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
+                  <th style="background-color: #b7b6b78a !important; text-align: center;">ESCALAMIENTO DE CRÉDITO</th>
                   <th><a href="javascript:;" class="btn btn-success" onclick="agregar_nivelaprobacion_noprendario()">
                       <i class="fa-solid fa-plus"></i>
                     </a></th>

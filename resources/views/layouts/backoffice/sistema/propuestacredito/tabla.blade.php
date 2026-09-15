@@ -56,9 +56,9 @@
                           return false;
                         }
                         
-                        if(estado == "DESAPROBADO"){  
-                          var mensaje = "o puede eliminar un Crédito Desaprobado.";
-                          modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });  
+                        if(estado == "DESAPROBADO" && tipo != "APROBADO"){
+                          var mensaje = "No puede eliminar un Crédito Desaprobado.";
+                          modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
                           return false;
                         }
                         if(estado == "CANCELADO"){

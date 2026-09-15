@@ -371,6 +371,20 @@ class CreditoController extends Controller
                     'fecha' => Carbon::now(),
                     'idcredito' => $idcredito,
                     'vinculacion_deudor' => $credito_cuantitativa_control_limites->vinculacion_deudor,
+
+                    'cliente_saldo_vigente_cliente_det' => $credito_cuantitativa_control_limites->cliente_saldo_vigente_cliente_det,
+                    'cliente_saldo_vigente_aval_det' => $credito_cuantitativa_control_limites->cliente_saldo_vigente_aval_det,
+
+                    'credito_saldodeduda_cliente_propio_det' => $credito_cuantitativa_control_limites->credito_saldodeduda_cliente_propio_det,
+                    'credito_saldodeduda_cliente_aval_det' => $credito_cuantitativa_control_limites->credito_saldodeduda_cliente_aval_det,
+                    'credito_saldodeduda_aval_propio_det' => $credito_cuantitativa_control_limites->credito_saldodeduda_aval_propio_det,
+                    'credito_saldodeduda_aval_aval_det' => $credito_cuantitativa_control_limites->credito_saldodeduda_aval_aval_det,
+
+                    'total_saldodeuda_cliente_propio' => $credito_cuantitativa_control_limites->total_saldodeuda_cliente_propio,
+                    'total_saldodeuda_cliente_aval' => $credito_cuantitativa_control_limites->total_saldodeuda_cliente_aval,
+                    'total_saldodeuda_aval_propio' => $credito_cuantitativa_control_limites->total_saldodeuda_aval_propio,
+                    'total_saldodeuda_aval_aval' => $credito_cuantitativa_control_limites->total_saldodeuda_aval_aval,
+
                     'total_garantia_cliente' => $credito_cuantitativa_control_limites->total_garantia_cliente,
                     'cantidad_garante_natural' => $credito_cuantitativa_control_limites->cantidad_garante_natural,
                     'cantidad_garante_juridico' => $credito_cuantitativa_control_limites->cantidad_garante_juridico,
@@ -680,6 +694,7 @@ class CreditoController extends Controller
                     'idcredito' => $idcredito,
                     'fecha' => Carbon::now(),
                     'monto_compra_deuda' => $credito_propuesta->monto_compra_deuda,
+                    'monto_compra_deuda_det' => $credito_propuesta->monto_compra_deuda_det,
 
                     'idclasificacion_cliente' => $credito_propuesta->idclasificacion_cliente,
                     'idclasificacion_cliente_pareja' => $credito_propuesta->idclasificacion_cliente_pareja,

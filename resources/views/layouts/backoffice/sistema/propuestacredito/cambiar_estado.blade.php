@@ -236,10 +236,113 @@
                                   border-radius: 5px;
                                   width: 80%;
                                   margin: auto;">El Comentario de Visitas y/o Verificación es Obligatorio.</p>
-                  
+
               @endif
           </div>
-                
+
+          @if($credito->estado == 'DESAPROBADO' && $credito->idforma_credito == 2 && count($credito_escalamiento) > 0)
+          <div class="col-sm-12 col-md-12 mt-3" id="cont_escalamiento_gate">
+              <div class="mt-2 bg-primary subtitulo text-center">ESCALAMIENTO DE CRÉDITO</div>
+              <div class="row" style="padding:10px;">
+                  <div class="col-md-4">
+                      <label>Asesor(a) / Ejecutivo(a) que creó el crédito</label>
+                      <input type="text" class="form-control" value="{{ $asesor->nombrecompleto ?? '' }}" disabled>
+                  </div>
+                  <div class="col-md-4">
+                      <label>Contraseña *</label>
+                      <input type="password" class="form-control" id="escalamiento_asesor_clave">
+                  </div>
+                  <div class="col-md-4 d-flex align-items-end">
+                      <button type="button" class="btn btn-primary" onclick="validarasesorescalamiento()"><i class="fa-solid fa-check"></i> REGISTRAR</button>
+                  </div>
+              </div>
+          </div>
+          <div class="col-sm-12 col-md-12 mt-3" id="cont_escalamiento_tabla" style="display:none;">
+              <div class="mt-2 bg-primary subtitulo text-center">ESCALAMIENTO DE CRÉDITO</div>
+              <table class="table" id="table-permisos-escalamiento">
+                <thead>
+                  <tr>
+                    <th width="220px">Cargos con Permiso</th>
+                    <th width="300px">Usuario</th>
+                    <th width="150px">Contraseña</th>
+                    <th width="220px"></th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @php
+                      $num_esc = 0;
+                  @endphp
+                  @foreach($credito_escalamiento as $value)
+                    <?php
+                    $num_esc++;
+                    $disabled = '';
+                    $color_cajatexto = 'color_cajatexto';
+                    if($value->idusers!=0){
+                      $disabled = 'disabled';
+                      $color_cajatexto = '';
+                    }
+
+                    $usuario_permiso_esc = DB::table('users_permiso')
+                                  ->join('users','users.id','users_permiso.idusers')
+                                  ->join('permiso','permiso.id','users_permiso.idpermiso')
+                                  ->where('users_permiso.idpermiso',$value->idpermiso)
+                                  ->where('users_permiso.idtienda',$tienda->id)
+                                  ->select(
+                                    'users_permiso.*',
+                                    DB::raw('CONCAT(users.nombrecompleto," (",permiso.nombre,")") as nombre_personal')
+                                  )
+                                  ->get();
+                    ?>
+                      <tr id="{{ $num_esc }}" idpermiso="{{ $value->idpermiso }}" idestado="{{ $value->idestado }}" idregistro="{{ $value->id }}">
+                        <td><span class="badge bg-warning">{{ $value->nombre_permiso }}</span></td>
+                        <td>
+                        @if($value->idusers!=0)
+                          <select class="form-control" id="esc_usuario{{ $num_esc }}" usuario {{$disabled}}>
+                              <option value="{{ $value->idusers }}" idpermiso="{{ $value->idpermiso }}" idestado="{{ $value->idestado }}">{{ $value->nombre_usuario }}</option>
+                          </select>
+                        @else
+                          <select class="form-control" id="esc_usuario{{ $num_esc }}" usuario {{$disabled}}>
+                              <option disabled selected></option>
+                              @foreach($usuario_permiso_esc as $valueusers)
+                                <option value="{{ $valueusers->idusers }}" idpermiso="{{ $valueusers->idpermiso }}">{{ $valueusers->nombre_personal }}</option>
+                              @endforeach
+                          </select>
+                        @endif
+                        <script>
+                          sistema_select2({ input:'#esc_usuario{{ $num_esc }}' });
+                        </script>
+                        </td>
+                        <td><input type="password" value="{{ $value->clave_usuario }}" password_users id="esc_clave{{ $num_esc }}" class="form-control text-center" {{$disabled}}></td>
+                        @if($value->idusers!=0)
+                            @if($value->idestado==1)
+                            <td id="resultado_cambiar_permiso_esc{{ $num_esc }}">
+                              <div style="background-color: #9AD872;padding: 7px;border-radius: 5px;color: #000;text-align: center;font-weight: bold;">F. REGISTRADO</div></td>
+                            @elseif($value->idestado==2)
+                            <td id="resultado_cambiar_permiso_esc{{ $num_esc }}">
+                              <div style="
+                                background-color: #ffc9ca;
+                                padding: 7px;
+                                border: 1px solid #ff6666 !important;
+                                border-radius: 5px;
+                                color: #93222c;
+                                text-align: center;
+                                font-weight: bold;">ANULADO</div></td>
+                            @endif
+                        @else
+                        <td id="resultado_cambiar_permiso_esc{{ $num_esc }}" style="width:242px">
+                          <button type="button" class="btn btn-warning" onclick="validarclave({{ $num_esc }},1,'#table-permisos-escalamiento','esc','escalamiento')"><i class="fa-solid fa-check"></i> APROBAR</button>
+                          <button type="button" class="btn btn-danger" onclick="validarclave({{ $num_esc }},2,'#table-permisos-escalamiento','esc','escalamiento')"><i class="fa-solid fa-ban"></i> DESAPROBAR</button>
+                        </td>
+                        @endif
+                        <td><input type="text" comentario_users id="esc_comentario{{ $num_esc }}" value="{{ $value->comentario }}" class="form-control {{$color_cajatexto}}" {{$disabled}}></td>
+                      </tr>
+                  @endforeach
+                </tbody>
+              </table>
+          </div>
+          @endif
+
         @elseif($estado == 'APROBADO')
           <p class="text-center">¿Seguro que desea pasar el crédito a <b>{{ $estado }}</b>?</p>
           <div class="col-sm-12 mt-2 text-center">
@@ -562,19 +665,48 @@
           })
   }
   
-  function validarclave(num,estado,target){
+  function validarasesorescalamiento(){
+    let password = $('#escalamiento_asesor_clave').val();
+    if(password == undefined || password == ''){
+      var mensaje = "Debe escribir la contraseña del Asesor(a)/Ejecutivo(a).";
+      modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
+      return false;
+    }
+    $.ajax({
+      url: "{{ url('backoffice/'.$tienda->id.'/propuestacredito/show_validaridentificacion') }}",
+      type: 'GET',
+      data: {
+        idresponsable: {{ $credito->idasesor }},
+        responsableclave: password
+      },
+      success: function(res){
+        if(res.resultado == 'CORRECTO'){
+          $('#cont_escalamiento_gate').hide();
+          $('#cont_escalamiento_tabla').show();
+        }else{
+          var mensaje = "La contraseña del Asesor(a)/Ejecutivo(a) es incorrecta.";
+          modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
+        }
+      }
+    });
+  }
+  function validarclave(num,estado,target,prefix,ronda){
+        prefix = prefix || 'per';
+        ronda = ronda || 'normal';
+        let resultId = (prefix=='per' ? 'resultado_cambiar_permiso' : 'resultado_cambiar_permiso_'+prefix) + num;
+
         let idregistro = $(target + ' > tbody > tr#' + num).attr('idregistro') ?? 0;
-      
+
         $(target+' > tbody > tr#'+num).attr('idestado',estado);
-    
-        let idpermiso = $('#per_usuario'+num+' option:selected').attr('idpermiso');  
-          
-        let idusers = $(target+' > tbody > tr #per_usuario'+num).val();
-        let password = $(target+' > tbody > tr #per_clave'+num).val();
-        let comentario = $(target+' > tbody > tr #per_comentario'+num).val();
+
+        let idpermiso = $('#'+prefix+'_usuario'+num+' option:selected').attr('idpermiso');
+
+        let idusers = $(target+' > tbody > tr #'+prefix+'_usuario'+num).val();
+        let password = $(target+' > tbody > tr #'+prefix+'_clave'+num).val();
+        let comentario = $(target+' > tbody > tr #'+prefix+'_comentario'+num).val();
         let nivel_uno = $('#check_uno_table:checked').val();
         let nivel_dos = $('#check_dos_table:checked').val();
-    
+
         let nivel_a = '';
         if(nivel_uno=='table_uno'){
             nivel_a = '1';
@@ -591,6 +723,7 @@
               data:{
                   view: 'cambiar_estado',
                   estado: '{{ $estado }}',
+                  ronda: ronda,
                   tipo_validacion : $('#tipo_validacion option:selected').val(),
                   nivel_validacion : nivel_a,
                   idpermiso : idpermiso,
@@ -598,22 +731,22 @@
                   password : password,
                   comentario : comentario,
                   idestado : estado,
-                  credito_aprobacion : jsonAprobacion(),
+                  credito_aprobacion : ronda=='escalamiento' ? jsonAprobacionEscalamiento() : jsonAprobacion(),
                   idregistro: idregistro,
               }
           },
           function(res){
             if(estado==1){
-                $(target+' > tbody > tr #resultado_cambiar_permiso'+num).html('<div style="background-color: #9AD872;padding: 7px;border-radius: 5px;color: #000;text-align: center;font-weight: bold;">F. REGISTRADO</div>');
+                $(target+' > tbody > tr #'+resultId).html('<div style="background-color: #9AD872;padding: 7px;border-radius: 5px;color: #000;text-align: center;font-weight: bold;">F. REGISTRADO</div>');
             }
             else if(estado==2){
-                $(target+' > tbody > tr #resultado_cambiar_permiso'+num).html('<div style="background-color: #dc3545;padding: 7px;border-radius: 5px;color: #fff;text-align: center;font-weight: bold;">ANULADO</div>');
+                $(target+' > tbody > tr #'+resultId).html('<div style="background-color: #dc3545;padding: 7px;border-radius: 5px;color: #fff;text-align: center;font-weight: bold;">ANULADO</div>');
             }
-            
-            $(target+' > tbody > tr #per_usuario'+num).attr('disabled', true);
-            $(target+' > tbody > tr #per_clave'+num).attr('disabled', true);
-            $(target+' > tbody > tr #per_comentario'+num).attr('disabled', true);
-            $(target+' > tbody > tr #per_comentario'+num).removeClass('color_cajatexto');
+
+            $(target+' > tbody > tr #'+prefix+'_usuario'+num).attr('disabled', true);
+            $(target+' > tbody > tr #'+prefix+'_clave'+num).attr('disabled', true);
+            $(target+' > tbody > tr #'+prefix+'_comentario'+num).attr('disabled', true);
+            $(target+' > tbody > tr #'+prefix+'_comentario'+num).removeClass('color_cajatexto');
 
             $('#check_uno_table').off('change').attr('disabled', true);
             $('#check_dos_table').off('change').attr('disabled', true);
@@ -629,12 +762,12 @@
             }
 
             removecarga({input:'#carga_cambiar_estado'});
-          
+
             if(res['credito_aprobado']=='CORRECTO'){
               lista_credito();
-              $('#modal-close-cambiar-estado').click(); 
+              $('#modal-close-cambiar-estado').click();
             }
-         
+
           })
   }
   
@@ -686,7 +819,26 @@
     });
     return JSON.stringify(data);
   }
-  
-  
+
+  function jsonAprobacionEscalamiento(){
+    let data = [];
+    $('#table-permisos-escalamiento > tbody > tr').each(function() {
+        let idpermiso = $(this).attr('idpermiso');
+        let idestado = $(this).attr('idestado');
+        let idusers = $(this).find('select[usuario]').val();
+        let password = $(this).find('input[password_users]').val();
+        let comentario = $(this).find('input[comentario_users]').val();
+        data.push({
+          idpermiso : idpermiso,
+          idusers : idusers!=undefined?idusers:0,
+          password : password!=undefined?password:'',
+          comentario : comentario!=undefined?comentario:'',
+          idestado : idestado!=undefined?idestado:0
+        });
+    });
+    return JSON.stringify(data);
+  }
+
+
 
 </script>

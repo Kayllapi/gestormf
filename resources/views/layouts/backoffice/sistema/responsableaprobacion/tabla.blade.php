@@ -37,10 +37,10 @@
                   <th colspan="5" style="text-align: center;">MODALIDAD</th>
                 </tr>
                 <tr>
-                  <th>COMITÉ DE APROBACIÓN (Incluye Proponente)</th>
-                  <th>AUTONOMÍA DE ADMINITRACIÓN (Incluye Proponente)</th>
-                  <th>AUTONOMÍA DE GERENCIA GENERAL (Incluye Proponente)</th>
-                  <th style="background-color: #FFF2CC !important;">Escalamiento de Crédito</th>
+                  <th>COMITÉ DE APROBACIÓN (Incluye Proponente) <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
+                  <th>AUTONOMÍA DE ADMINITRACIÓN (Incluye Proponente) <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
+                  <th>AUTONOMÍA DE GERENCIA GENERAL (Incluye Proponente) <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
+                  <th>ESCALAMIENTO DE CRÉDITO</th>
                   <th><a href="javascript:;" class="btn btn-success" onclick="agregar_nivelaprobacion_prendario()">
                       <i class="fa-solid fa-plus"></i>
                     </a></th>
@@ -273,10 +273,10 @@
                   <th colspan="5" style="text-align: center;">MODALIDAD</th>
                 </tr>
                 <tr>
-                  <th>COMITÉ DE APROBACIÓN (Incluye Proponente)</th>
-                  <th>AUTONOMÍA DE ADMINITRACIÓN (Incluye Proponente)</th>
-                  <th>AUTONOMÍA DE GERENCIA GENERAL (Incluye Proponente)</th>
-                  <th style="background-color: #FFF2CC !important;">Escalamiento de Crédito</th>
+                  <th>COMITÉ DE APROBACIÓN (Incluye Proponente) <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
+                  <th>AUTONOMÍA DE ADMINITRACIÓN (Incluye Proponente) <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
+                  <th>AUTONOMÍA DE GERENCIA GENERAL (Incluye Proponente) <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
+                  <th>ESCALAMIENTO DE CRÉDITO</th>
                   <th><a href="javascript:;" class="btn btn-success" onclick="agregar_nivelaprobacion_noprendario()">
                       <i class="fa-solid fa-plus"></i>
                     </a></th>

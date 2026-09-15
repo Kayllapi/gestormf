@@ -523,7 +523,8 @@
     width: 8px;
   }
   .tr-proponente-aviso td {
-    background-color: #FFF2CC !important;
+    background-color: #cfecc5 !important;
+    color: black !important;
   }
 </style>
 <script>

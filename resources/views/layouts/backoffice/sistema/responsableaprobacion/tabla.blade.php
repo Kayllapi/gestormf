@@ -37,9 +37,9 @@
                   <th colspan="5" style="text-align: center;">MODALIDAD</th>
                 </tr>
                 <tr>
-                  <th style="text-align: center;">COMITÉ DE APROBACIÓN (Incluye Proponente) <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
-                  <th style="text-align: center;">AUTONOMÍA DE ADMINITRACIÓN (Incluye Proponente) <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
-                  <th style="text-align: center;">AUTONOMÍA DE GERENCIA GENERAL (Incluye Proponente) <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
+                  <th style="text-align: center;">COMITÉ DE APROBACIÓN <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
+                  <th style="text-align: center;">AUTONOMÍA DE ADMINITRACIÓN <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
+                  <th style="text-align: center;">AUTONOMÍA DE GERENCIA GENERAL <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
                   <th style="background-color: #b7b6b78a !important; text-align: center;">ESCALAMIENTO DE CRÉDITO</th>
                   <th><a href="javascript:;" class="btn btn-success" onclick="agregar_nivelaprobacion_prendario()">
                       <i class="fa-solid fa-plus"></i>
@@ -273,9 +273,9 @@
                   <th colspan="5" style="text-align: center;">MODALIDAD</th>
                 </tr>
                 <tr>
-                  <th style="text-align: center;">COMITÉ DE APROBACIÓN (Incluye Proponente) <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
-                  <th style="text-align: center;">AUTONOMÍA DE ADMINITRACIÓN (Incluye Proponente) <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
-                  <th style="text-align: center;">AUTONOMÍA DE GERENCIA GENERAL (Incluye Proponente) <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
+                  <th style="text-align: center;">COMITÉ DE APROBACIÓN <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
+                  <th style="text-align: center;">AUTONOMÍA DE ADMINITRACIÓN <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
+                  <th style="text-align: center;">AUTONOMÍA DE GERENCIA GENERAL <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
                   <th style="background-color: #b7b6b78a !important; text-align: center;">ESCALAMIENTO DE CRÉDITO</th>
                   <th><a href="javascript:;" class="btn btn-success" onclick="agregar_nivelaprobacion_noprendario()">
                       <i class="fa-solid fa-plus"></i>

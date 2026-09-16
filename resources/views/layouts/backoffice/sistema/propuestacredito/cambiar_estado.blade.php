@@ -78,7 +78,7 @@
           <div class="col-sm-12 col-md-12" id="cont_escalamiento_gate_registrado">
               <div class="alert alert-success mb-0">
                   <i class="fa-solid fa-check"></i>
-                  Asesor(a)/Ejecutivo(a) Proponente registró firma: ({{ $asesor->nombrecompleto ?? '' }}) el {{ \Carbon\Carbon::parse($fecha_gate_asesor)->format('d/m/Y H:i') }}.
+                  Asesor(a)/Ejecutivo(a) Proponente ({{ $asesor->nombrecompleto ?? '' }}): Registró firma el {{ \Carbon\Carbon::parse($fecha_gate_asesor)->format('d/m/Y H:i') }}.
               </div>
           </div>
           @endif

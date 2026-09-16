@@ -768,16 +768,20 @@ class CobranzacuotaController extends Controller
                             ->whereId($value['id'])
                             ->first();
 
-                    if($credito_cronograma){
+                    // Una cuota ya cancelada trae su propio 'acuenta' historico (de cuando
+                    // se pago), no un adelanto de ESTE pago; select_cronograma lo devuelve
+                    // tal cual para las cuotas ya pagadas. Sin este resguardo se reescribia
+                    // sobre una cuota ajena a esta cobranza.
+                    if($credito_cronograma && $credito_cronograma->idestadocredito_cronograma!=2){
                       DB::table('credito_cronograma')
                           ->whereId($value['id'])
                           ->update([
                             'acuenta' => $value['acuenta'],
                             'idestadocronograma_pago' => 2,
                       ]);
-                    }
 
-                    $valid_adelanto = 1;
+                      $valid_adelanto = 1;
+                    }
                   }
 
                   // registrado adelanto

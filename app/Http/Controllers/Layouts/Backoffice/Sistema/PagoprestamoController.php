@@ -598,10 +598,15 @@ class PagoprestamoController extends Controller
           ]);
           //------------------------------
 
-          // restaurar cronograma: pago directo de cuota(s) vs pago a cuenta/adelanto
+          // restaurar cronograma: pago directo de cuota(s)/total (incluye el pago
+          // cancelatorio que genera un refinanciamiento al desembolsar, cuyo
+          // opcion_pago llega vacío) vs pago a cuenta/adelanto.
           // (antes solo se restauraba el cronograma via credito_adelanto, dejando las
-          // cuotas de un PAGO_CUOTA/PAGO_TOTAL marcadas como pagadas tras el extorno)
-          if($credito_cobranzacuota->opcion_pago=='PAGO_CUOTA' or $credito_cobranzacuota->opcion_pago=='PAGO_TOTAL' or $credito_cobranzacuota->opcion_pago=='PAGO_ANTICIPADO'){
+          // cuotas de un PAGO_CUOTA/PAGO_TOTAL marcadas como pagadas tras el extorno,
+          // y en el caso de un pago cancelatorio de refinanciamiento -opcion_pago vacío-
+          // caía en la rama de adelantos, que no filtra por idcredito_cobranzacuota y
+          // podía dejar cuotas de otros pagos mal marcadas)
+          if($credito_cobranzacuota->opcion_pago!='PAGO_ACUENTA'){
 
               if($credito_cobranzacuota->idestado_congelarcredito==2){ // credito congelado
                   DB::table('credito_cronograma')
@@ -830,6 +835,46 @@ class PagoprestamoController extends Controller
                   'saldo_pendientepago' => $cronograma_restaurado['saldo_capital'],
                   'total_pendientepago' => $cronograma_restaurado['cuota_pendiente'],
               ]);
+
+          // Si este pago fue justo el que cancelo el credito (credito.idcredito_cobranzacuota
+          // == $id, capturado en $credito_actual ANTES de esta funcion) y ese cierre vino de
+          // un refinanciamiento, el credito nuevo generado queda huerfano al extornar: sigue
+          // "DESEMBOLSADO" y bloquea el viejo con "El Credito esta En Refinanciamiento". Se
+          // elimina junto a sus dependientes, pero solo si nunca tuvo actividad real (cobranzas/
+          // adelantos/cargos/descuentos); si ya le cobraron algo, no se toca.
+          if((int) $credito_actual->idcredito_cobranzacuota === (int) $id){
+              $credito_refinanciado_nuevo = DB::table('credito')
+                  ->where('idcredito_refinanciado', $credito_cobranzacuota->idcredito)
+                  ->first();
+
+              if($credito_refinanciado_nuevo){
+                  $tiene_actividad =
+                      DB::table('credito_cobranzacuota')->where('idcredito',$credito_refinanciado_nuevo->id)->exists()
+                      || DB::table('credito_adelanto')->where('idcredito',$credito_refinanciado_nuevo->id)->exists()
+                      || DB::table('credito_cargo')->where('idcredito',$credito_refinanciado_nuevo->id)->exists()
+                      || DB::table('credito_descuentocuota')->where('idcredito',$credito_refinanciado_nuevo->id)->exists();
+
+                  if(!$tiene_actividad){
+                      DB::table('credito_cronograma')->where('idcredito', $credito_refinanciado_nuevo->id)->delete();
+                      DB::table('credito_garantia')->where('idcredito', $credito_refinanciado_nuevo->id)->delete();
+                      DB::table('credito_evaluacion_cualitativa')->where('idcredito', $credito_refinanciado_nuevo->id)->delete();
+                      DB::table('credito_evaluacion_cuantitativa')->where('idcredito', $credito_refinanciado_nuevo->id)->delete();
+                      DB::table('credito_cuantitativa_deudas')->where('idcredito', $credito_refinanciado_nuevo->id)->delete();
+                      DB::table('credito_cuantitativa_control_limites')->where('idcredito', $credito_refinanciado_nuevo->id)->delete();
+                      DB::table('credito_cuantitativa_ingreso_adicional')->where('idcredito', $credito_refinanciado_nuevo->id)->delete();
+                      DB::table('credito_cuantitativa_margen_venta')->where('idcredito', $credito_refinanciado_nuevo->id)->delete();
+                      DB::table('credito_evaluacion_resumida')->where('idcredito', $credito_refinanciado_nuevo->id)->delete();
+                      DB::table('credito_flujo_caja')->where('idcredito', $credito_refinanciado_nuevo->id)->delete();
+                      DB::table('credito_formato_evaluacion')->where('idcredito', $credito_refinanciado_nuevo->id)->delete();
+                      DB::table('credito_propuesta')->where('idcredito', $credito_refinanciado_nuevo->id)->delete();
+                      DB::table('credito_cuantitativa_inventario')->where('idcredito', $credito_refinanciado_nuevo->id)->delete();
+                      DB::table('credito_formapago')->where('idcredito', $credito_refinanciado_nuevo->id)->delete();
+                      DB::table('credito_polizaseguro_prestamo')->where('id_credito', $credito_refinanciado_nuevo->id)->delete();
+                      DB::table('credito_representantecomun_prestamo')->where('id_credito', $credito_refinanciado_nuevo->id)->delete();
+                      DB::table('credito')->whereId($credito_refinanciado_nuevo->id)->delete();
+                  }
+              }
+          }
 
           return response()->json([
               'resultado'           => 'CORRECTO',

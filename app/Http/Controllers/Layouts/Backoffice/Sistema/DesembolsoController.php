@@ -986,7 +986,7 @@ class DesembolsoController extends Controller
                     'saldo_pendientepago' => $cronograma['cuota_pendiente'],
                     'pago_cuota' => $pago_cuota,
                     'pago_diasatraso' => $pago_diasatraso,
-                    'opcion_pago' => '',
+                    'opcion_pago' => 'PAGO_TOTAL',
                     'estadocargo' => '',
                     'cobrar_cargo' => '0.00',
 
@@ -1074,7 +1074,13 @@ class DesembolsoController extends Controller
                             ->whereId($value['id'])
                             ->first();
 
-                    if($credito_cronograma){
+                    // Una cuota ya cancelada (idestadocredito_cronograma==2) trae su propio
+                    // 'acuenta' historico (de cuando se pago), no un adelanto de ESTE pago;
+                    // select_cronograma lo devuelve tal cual para las cuotas ya pagadas. Sin
+                    // este resguardo, este bloque la reasignaba al cobranzacuota actual y la
+                    // dejaba en estado 3 (como si tuviera un acuenta pendiente de este pago),
+                    // ocultando que ya estaba cancelada por un pago anterior.
+                    if($credito_cronograma && $credito_cronograma->idestadocredito_cronograma!=2){
                       DB::table('credito_cronograma')
                           ->whereId($value['id'])
                           ->update([
@@ -1083,9 +1089,9 @@ class DesembolsoController extends Controller
                             'idestadocredito_cronograma' => 3,
                             'idcredito_cobranzacuota'    => $idcredito_cobranzacuota,
                       ]);
-                    }
 
-                    $valid_adelanto = 1;
+                      $valid_adelanto = 1;
+                    }
                   }
 
 

@@ -62,7 +62,7 @@
               <div class="mt-2 bg-primary subtitulo text-center">VERIFICAR EL REGISTRO COMO ASESOR</div>
               <div class="row" style="padding:10px;">
                   <div class="col-md-4">
-                      <label>Asesor(a) / Ejecutivo(a) que creó el crédito</label>
+                      <label>Asesor(a) / Ejecutivo(a) - Registro de firma</label>
                       <input type="text" class="form-control" value="{{ $asesor->nombrecompleto ?? '' }}" disabled>
                   </div>
                   <div class="col-md-4">
@@ -78,7 +78,7 @@
           <div class="col-sm-12 col-md-12" id="cont_escalamiento_gate_registrado">
               <div class="alert alert-success mb-0">
                   <i class="fa-solid fa-check"></i>
-                  Ya ha sido registrado por el Asesor(a)/Ejecutivo(a) que creó el crédito ({{ $asesor->nombrecompleto ?? '' }}) el {{ \Carbon\Carbon::parse($fecha_gate_asesor)->format('d/m/Y H:i') }}.
+                  Firma registrada del Asesor(a)/Ejecutivo(a) Proponente: ({{ $asesor->nombrecompleto ?? '' }}) el {{ \Carbon\Carbon::parse($fecha_gate_asesor)->format('d/m/Y H:i') }}.
               </div>
           </div>
           @endif

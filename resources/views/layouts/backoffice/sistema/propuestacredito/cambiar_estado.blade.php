@@ -53,6 +53,36 @@
       
       @else
         @if($estado == 'APROBADO')
+          <?php
+            $fecha_gate_asesor = $credito->estado == 'DESAPROBADO'
+                ? $credito->fecha_validacion_asesor_escalamiento
+                : $credito->fecha_validacion_asesor;
+          ?>
+          <div class="col-sm-12 col-md-12" id="cont_escalamiento_gate" @if($fecha_gate_asesor) style="display:none;" @endif>
+              <div class="mt-2 bg-primary subtitulo text-center">VERIFICAR EL REGISTRO COMO ASESOR</div>
+              <div class="row" style="padding:10px;">
+                  <div class="col-md-4">
+                      <label>Asesor(a) / Ejecutivo(a) que creó el crédito</label>
+                      <input type="text" class="form-control" value="{{ $asesor->nombrecompleto ?? '' }}" disabled>
+                  </div>
+                  <div class="col-md-4">
+                      <label>Contraseña *</label>
+                      <input type="password" class="form-control" id="escalamiento_asesor_clave">
+                  </div>
+                  <div class="col-md-4 d-flex align-items-end">
+                      <button type="button" class="btn btn-primary" id="btn_registrar_escalamiento" onclick="validarasesorescalamiento()"><i class="fa-solid fa-check"></i> REGISTRAR</button>
+                  </div>
+              </div>
+          </div>
+          @if($fecha_gate_asesor)
+          <div class="col-sm-12 col-md-12" id="cont_escalamiento_gate_registrado">
+              <div class="alert alert-success mb-0">
+                  <i class="fa-solid fa-check"></i>
+                  Ya ha sido registrado por el Asesor(a)/Ejecutivo(a) que creó el crédito ({{ $asesor->nombrecompleto ?? '' }}) el {{ \Carbon\Carbon::parse($fecha_gate_asesor)->format('d/m/Y H:i') }}.
+              </div>
+          </div>
+          @endif
+          <div id="cont_aprobacion_formulario" @if(!$fecha_gate_asesor) style="display:none;" @endif>
           <div class="row">
               <div class="col-md-4">
                 <div class="mb-1">
@@ -107,23 +137,6 @@
                   </div>
                 </div>
               </div>
-              @if($estado == 'APROBADO')
-                <div class="col-sm-12 col-md-12 mt-3" id="cont_escalamiento_gate">
-                    <div class="mt-2 bg-primary subtitulo text-center">ESCALAMIENTO DE CRÉDITO</div>
-                    <div class="row" style="padding:10px;">
-                        <div class="col-md-4">
-                            <label>Asesor(a) / Ejecutivo(a) que creó el crédito</label>
-                            <input type="text" class="form-control" value="{{ $asesor->nombrecompleto ?? '' }}" disabled>
-                        </div>
-                        <div class="col-md-4">
-                            <label>Contraseña *</label>
-                            <input type="password" class="form-control" id="escalamiento_asesor_clave" disabled placeholder="">
-                        </div>
-                        <div class="col-md-4 d-flex align-items-end">
-                            <button type="button" class="btn btn-primary" id="btn_registrar_escalamiento" onclick="validarasesorescalamiento()" disabled><i class="fa-solid fa-check"></i> REGISTRAR</button>
-                        </div>
-                    </div>
-                </div>
                 <div class="col-sm-12 col-md-12 mt-3" id="cont_escalamiento_tabla" style="display:none;">
                     <div class="mt-2 bg-primary subtitulo text-center">ESCALAMIENTO DE CRÉDITO</div>
                     <table class="table" id="table-permisos-escalamiento">
@@ -210,7 +223,6 @@
                       </tbody>
                     </table>
                 </div>
-              @endif
               @if($credito->comentariovisita!='' or $credito->idforma_credito==1)
                   @if($credito->aprobacion_tipo_validacion!='' && $credito->aprobacion_nivel_validacion!=0 && count($credito_aprobacion)>0 )
                   <div class="col-sm-12 col-md-12">
@@ -343,6 +355,7 @@
 
               @endif
           </div>
+          </div>
 
         @elseif($estado == 'APROBADO')
           <p class="text-center">¿Seguro que desea pasar el crédito a <b>{{ $estado }}</b>?</p>
@@ -466,7 +479,16 @@
 
 </style>
 <script>
-    sistema_select2({ input:'#tipo_validacion' });
+    // #tipo_validacion vive dentro de #cont_aprobacion_formulario. Cuando el gate ya
+    // esta validado, ese contenedor es visible desde el primer render — pero el modal
+    // en si (el wrapper que lo inserta) puede seguir en su transicion de apertura justo
+    // cuando este <script> corre, asi que el select sigue "invisible" para el calculo de
+    // ancho de select2 en ese instante y la inicializacion queda a medias (sin clase
+    // select2-hidden-accessible, solo el <select> nativo). Un setTimeout(0) alcanza para
+    // correrlo despues de que el modal termine de mostrarse.
+    @if(isset($fecha_gate_asesor) && $fecha_gate_asesor)
+    setTimeout(function(){ sistema_select2({ input:'#tipo_validacion' }); }, 0);
+    @endif
     sistema_select2({ input:'#idresponsable' });
   @if($credito->aprobacion_tipo_validacion!='' && $credito->aprobacion_nivel_validacion!=0)
   //setTimeout(function() {
@@ -507,24 +529,38 @@
       
   @endif
   
+  // Si el Asesor(a)/Ejecutivo(a) ya quedó registrado en una visita anterior a este
+  // modal (queda guardado en credito.fecha_validacion_asesor / _escalamiento), no se
+  // vuelve a pedir la contraseña: en cuanto se elige la Opción aparece la tabla directo.
+  // 'var' (no 'let'/'const') a proposito: este modal puede reabrirse varias veces sin
+  // recargar la pagina completa, reinyectando este mismo <script> en el scope global;
+  // 'let' revienta con "already been declared" la segunda vez que se abre.
+  var gateYaValidado = {{ (isset($fecha_gate_asesor) && $fecha_gate_asesor) ? 'true' : 'false' }};
+
+  function mostrarTablaSegunOpcion(){
+    @if($credito->estado == 'DESAPROBADO')
+    $('#cont_escalamiento_tabla').show();
+    @else
+    if($('#check_uno_table').is(':checked')){
+      $('#cont_permiso_nivel_uno').show();
+    } else if($('#check_dos_table').is(':checked')){
+      $('#cont_permiso_nivel_dos').show();
+    }
+    @endif
+  }
+
   $('#check_uno_table').change(function() {
     mostrar_permisos($('#tipo_validacion').val(), 1);
-    actualizarGateEscalamiento();
   });
   $('#check_dos_table').change(function() {
     mostrar_permisos($('#tipo_validacion').val(), 2);
-    actualizarGateEscalamiento();
   });
-  // El gate de ESCALAMIENTO (contraseña + REGISTRAR) solo se habilita una vez elegida
-  // la Opción 1/2: primero se elige la Opción, luego se valida al asesor, y recién ahí
-  // aparece la tabla que corresponda (la normal para aprobación inicial, o la de
-  // escalamiento si el crédito viene DESAPROBADO — ver validarasesorescalamiento()).
-  function actualizarGateEscalamiento(){
-    let opcionElegida = $('#check_uno_table').is(':checked') || $('#check_dos_table').is(':checked');
-    $('#escalamiento_asesor_clave').prop('disabled', !opcionElegida);
-    $('#btn_registrar_escalamiento').prop('disabled', !opcionElegida);
+  // Si ya estaba validado y la Opción ya venia elegida de antes (caso DESAPROBADO, o
+  // una aprobación inicial donde ya se habia elegido Opción en una visita anterior),
+  // se muestra la tabla de una vez, sin esperar un cambio de radio.
+  if(gateYaValidado && ($('#check_uno_table').is(':checked') || $('#check_dos_table').is(':checked'))){
+    mostrarTablaSegunOpcion();
   }
-  actualizarGateEscalamiento();
   function mostrar_permisos(valor,numData){
     $.ajax({
       url:"{{url('backoffice/'.$tienda->id.'/propuestacredito/showpermisos')}}",
@@ -679,12 +715,6 @@
   }
   
   function validarasesorescalamiento(){
-    let opcionElegida = $('#check_uno_table').is(':checked') || $('#check_dos_table').is(':checked');
-    if(!opcionElegida){
-      var mensaje = "Debe seleccionar primero la Opción 1 ó 2.";
-      modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
-      return false;
-    }
     let password = $('#escalamiento_asesor_clave').val();
     if(password == undefined || password == ''){
       var mensaje = "Debe escribir la contraseña del Asesor(a)/Ejecutivo(a).";
@@ -696,20 +726,17 @@
       type: 'GET',
       data: {
         idresponsable: {{ $credito->idasesor }},
-        responsableclave: password
+        responsableclave: password,
+        idcredito: {{ $credito->id }},
+        ronda: '{{ $credito->estado == "DESAPROBADO" ? "escalamiento" : "normal" }}'
       },
       success: function(res){
         if(res.resultado == 'CORRECTO'){
+          gateYaValidado = true;
           $('#cont_escalamiento_gate').hide();
-          @if($credito->estado == 'DESAPROBADO')
-          $('#cont_escalamiento_tabla').show();
-          @else
-          if($('#check_uno_table').is(':checked')){
-            $('#cont_permiso_nivel_uno').show();
-          } else {
-            $('#cont_permiso_nivel_dos').show();
-          }
-          @endif
+          $('#cont_aprobacion_formulario').show();
+          sistema_select2({ input:'#tipo_validacion' });
+          mostrarTablaSegunOpcion();
         }else{
           var mensaje = "La contraseña del Asesor(a)/Ejecutivo(a) es incorrecta.";
           modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
@@ -818,6 +845,7 @@
     } else {
         tableUnoInputs.add(tableUnoSelects).attr('disabled', true);
     }
+    if(gateYaValidado){ mostrarTablaSegunOpcion(); }
   });
   
   function jsonAprobacion(){

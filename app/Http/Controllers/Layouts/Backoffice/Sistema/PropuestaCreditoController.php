@@ -599,6 +599,17 @@ class PropuestaCreditoController extends Controller
                 ->where('users.clave',$request->responsableclave)
                 ->first();
             if($usuario!=''){
+                // Gate del Asesor(a)/Ejecutivo(a) que creó el crédito: se guarda para no
+                // volver a pedir la contraseña la próxima vez que se abra este modal
+                // (ronda normal e escalamiento se registran por separado).
+                if($request->filled('idcredito') && $request->filled('ronda')){
+                    $campo = $request->ronda == 'escalamiento'
+                        ? 'fecha_validacion_asesor_escalamiento'
+                        : 'fecha_validacion_asesor';
+                    DB::table('credito')->whereId($request->idcredito)->update([
+                        $campo => Carbon::now(),
+                    ]);
+                }
                 return [
                     'resultado' => 'CORRECTO'
                 ];

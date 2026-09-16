@@ -755,12 +755,13 @@ class PropuestaCreditoController extends Controller
             }
         }
 
-        // Escalamiento de Crédito: segunda ronda de aprobación, solo para créditos
-        // No Prendarios que ya fueron DESAPROBADOS una vez. Reutiliza la misma OPCIÓN
-        // 1/2 (aprobacion_nivel_validacion) ya elegida en la ronda normal, y guarda sus
-        // firmas en credito_aprobacion con posicion=1 (independiente de la ronda normal).
+        // Escalamiento de Crédito: segunda ronda de aprobación, solo para créditos que ya
+        // fueron DESAPROBADOS una vez (de cualquier tipo, prendario o no prendario).
+        // Reutiliza la misma OPCIÓN 1/2 (aprobacion_nivel_validacion) ya elegida en la
+        // ronda normal, y guarda sus firmas en credito_aprobacion con posicion=1
+        // (independiente de la ronda normal).
         $credito_escalamiento = collect();
-        if($credito->estado == 'DESAPROBADO' && $request->input('tipo') == 'APROBADO' && $credito->idforma_credito == 2 && $credito->aprobacion_nivel_validacion != 0){
+        if($credito->estado == 'DESAPROBADO' && $request->input('tipo') == 'APROBADO' && $credito->aprobacion_nivel_validacion != 0){
             $nivel_aprobacion_escalamiento = DB::table('nivelaprobacion')
                 ->where('nivelaprobacion.idtipocredito', $credito->idforma_credito)
                 ->where('nivelaprobacion.riesgocredito1', '<', $credito->monto_solicitado)

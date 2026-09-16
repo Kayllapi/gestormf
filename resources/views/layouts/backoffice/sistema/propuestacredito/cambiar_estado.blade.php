@@ -107,6 +107,110 @@
                   </div>
                 </div>
               </div>
+              @if($estado == 'APROBADO')
+                <div class="col-sm-12 col-md-12 mt-3" id="cont_escalamiento_gate">
+                    <div class="mt-2 bg-primary subtitulo text-center">ESCALAMIENTO DE CRÉDITO</div>
+                    <div class="row" style="padding:10px;">
+                        <div class="col-md-4">
+                            <label>Asesor(a) / Ejecutivo(a) que creó el crédito</label>
+                            <input type="text" class="form-control" value="{{ $asesor->nombrecompleto ?? '' }}" disabled>
+                        </div>
+                        <div class="col-md-4">
+                            <label>Contraseña *</label>
+                            <input type="password" class="form-control" id="escalamiento_asesor_clave" disabled placeholder="">
+                        </div>
+                        <div class="col-md-4 d-flex align-items-end">
+                            <button type="button" class="btn btn-primary" id="btn_registrar_escalamiento" onclick="validarasesorescalamiento()" disabled><i class="fa-solid fa-check"></i> REGISTRAR</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-12 mt-3" id="cont_escalamiento_tabla" style="display:none;">
+                    <div class="mt-2 bg-primary subtitulo text-center">ESCALAMIENTO DE CRÉDITO</div>
+                    <table class="table" id="table-permisos-escalamiento">
+                      <thead>
+                        <tr>
+                          <th width="220px">Cargos con Permiso</th>
+                          <th width="300px">Usuario</th>
+                          <th width="150px">Contraseña</th>
+                          <th width="220px"></th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        @if(count($credito_escalamiento) > 0)
+                        @php
+                            $num_esc = 0;
+                        @endphp
+                        @foreach($credito_escalamiento as $value)
+                          <?php
+                          $num_esc++;
+                          $disabled = '';
+                          $color_cajatexto = 'color_cajatexto';
+                          if($value->idusers!=0){
+                            $disabled = 'disabled';
+                            $color_cajatexto = '';
+                          }
+
+                          $usuario_permiso_esc = DB::table('users_permiso')
+                                        ->join('users','users.id','users_permiso.idusers')
+                                        ->join('permiso','permiso.id','users_permiso.idpermiso')
+                                        ->where('users_permiso.idpermiso',$value->idpermiso)
+                                        ->where('users_permiso.idtienda',$tienda->id)
+                                        ->select(
+                                          'users_permiso.*',
+                                          DB::raw('CONCAT(users.nombrecompleto," (",permiso.nombre,")") as nombre_personal')
+                                        )
+                                        ->get();
+                          ?>
+                            <tr id="{{ $num_esc }}" idpermiso="{{ $value->idpermiso }}" idestado="{{ $value->idestado }}" idregistro="{{ $value->id }}">
+                              <td><span class="badge bg-warning">{{ $value->nombre_permiso }}</span></td>
+                              <td>
+                              @if($value->idusers!=0)
+                                <select class="form-control" id="esc_usuario{{ $num_esc }}" usuario {{$disabled}}>
+                                    <option value="{{ $value->idusers }}" idpermiso="{{ $value->idpermiso }}" idestado="{{ $value->idestado }}">{{ $value->nombre_usuario }}</option>
+                                </select>
+                              @else
+                                <select class="form-control" id="esc_usuario{{ $num_esc }}" usuario {{$disabled}}>
+                                    <option disabled selected></option>
+                                    @foreach($usuario_permiso_esc as $valueusers)
+                                      <option value="{{ $valueusers->idusers }}" idpermiso="{{ $valueusers->idpermiso }}">{{ $valueusers->nombre_personal }}</option>
+                                    @endforeach
+                                </select>
+                              @endif
+                              <script>
+                                sistema_select2({ input:'#esc_usuario{{ $num_esc }}' });
+                              </script>
+                              </td>
+                              <td><input type="password" value="{{ $value->clave_usuario }}" password_users id="esc_clave{{ $num_esc }}" class="form-control text-center" {{$disabled}}></td>
+                              @if($value->idusers!=0)
+                                  @if($value->idestado==1)
+                                  <td id="resultado_cambiar_permiso_esc{{ $num_esc }}">
+                                    <div style="background-color: #9AD872;padding: 7px;border-radius: 5px;color: #000;text-align: center;font-weight: bold;">F. REGISTRADO</div></td>
+                                  @elseif($value->idestado==2)
+                                  <td id="resultado_cambiar_permiso_esc{{ $num_esc }}">
+                                    <div style="
+                                      background-color: #ffc9ca;
+                                      padding: 7px;
+                                      border: 1px solid #ff6666 !important;
+                                      border-radius: 5px;
+                                      color: #93222c;
+                                      text-align: center;
+                                      font-weight: bold;">ANULADO</div></td>
+                                  @endif
+                              @else
+                              <td id="resultado_cambiar_permiso_esc{{ $num_esc }}" style="width:242px">
+                                <button type="button" class="btn btn-warning" onclick="validarclave({{ $num_esc }},1,'#table-permisos-escalamiento','esc','escalamiento')"><i class="fa-solid fa-check"></i> APROBAR</button>
+                                <button type="button" class="btn btn-danger" onclick="validarclave({{ $num_esc }},2,'#table-permisos-escalamiento','esc','escalamiento')"><i class="fa-solid fa-ban"></i> DESAPROBAR</button>
+                              </td>
+                              @endif
+                              <td><input type="text" comentario_users id="esc_comentario{{ $num_esc }}" value="{{ $value->comentario }}" class="form-control {{$color_cajatexto}}" {{$disabled}}></td>
+                            </tr>
+                        @endforeach
+                        @endif
+                      </tbody>
+                    </table>
+                </div>
+              @endif
               @if($credito->comentariovisita!='' or $credito->idforma_credito==1)
                   @if($credito->aprobacion_tipo_validacion!='' && $credito->aprobacion_nivel_validacion!=0 && count($credito_aprobacion)>0 )
                   <div class="col-sm-12 col-md-12">
@@ -239,109 +343,6 @@
 
               @endif
           </div>
-
-          @if($credito->estado == 'DESAPROBADO' && $credito->idforma_credito == 2 && count($credito_escalamiento) > 0)
-          <div class="col-sm-12 col-md-12 mt-3" id="cont_escalamiento_gate">
-              <div class="mt-2 bg-primary subtitulo text-center">ESCALAMIENTO DE CRÉDITO</div>
-              <div class="row" style="padding:10px;">
-                  <div class="col-md-4">
-                      <label>Asesor(a) / Ejecutivo(a) que creó el crédito</label>
-                      <input type="text" class="form-control" value="{{ $asesor->nombrecompleto ?? '' }}" disabled>
-                  </div>
-                  <div class="col-md-4">
-                      <label>Contraseña *</label>
-                      <input type="password" class="form-control" id="escalamiento_asesor_clave">
-                  </div>
-                  <div class="col-md-4 d-flex align-items-end">
-                      <button type="button" class="btn btn-primary" onclick="validarasesorescalamiento()"><i class="fa-solid fa-check"></i> REGISTRAR</button>
-                  </div>
-              </div>
-          </div>
-          <div class="col-sm-12 col-md-12 mt-3" id="cont_escalamiento_tabla" style="display:none;">
-              <div class="mt-2 bg-primary subtitulo text-center">ESCALAMIENTO DE CRÉDITO</div>
-              <table class="table" id="table-permisos-escalamiento">
-                <thead>
-                  <tr>
-                    <th width="220px">Cargos con Permiso</th>
-                    <th width="300px">Usuario</th>
-                    <th width="150px">Contraseña</th>
-                    <th width="220px"></th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  @php
-                      $num_esc = 0;
-                  @endphp
-                  @foreach($credito_escalamiento as $value)
-                    <?php
-                    $num_esc++;
-                    $disabled = '';
-                    $color_cajatexto = 'color_cajatexto';
-                    if($value->idusers!=0){
-                      $disabled = 'disabled';
-                      $color_cajatexto = '';
-                    }
-
-                    $usuario_permiso_esc = DB::table('users_permiso')
-                                  ->join('users','users.id','users_permiso.idusers')
-                                  ->join('permiso','permiso.id','users_permiso.idpermiso')
-                                  ->where('users_permiso.idpermiso',$value->idpermiso)
-                                  ->where('users_permiso.idtienda',$tienda->id)
-                                  ->select(
-                                    'users_permiso.*',
-                                    DB::raw('CONCAT(users.nombrecompleto," (",permiso.nombre,")") as nombre_personal')
-                                  )
-                                  ->get();
-                    ?>
-                      <tr id="{{ $num_esc }}" idpermiso="{{ $value->idpermiso }}" idestado="{{ $value->idestado }}" idregistro="{{ $value->id }}">
-                        <td><span class="badge bg-warning">{{ $value->nombre_permiso }}</span></td>
-                        <td>
-                        @if($value->idusers!=0)
-                          <select class="form-control" id="esc_usuario{{ $num_esc }}" usuario {{$disabled}}>
-                              <option value="{{ $value->idusers }}" idpermiso="{{ $value->idpermiso }}" idestado="{{ $value->idestado }}">{{ $value->nombre_usuario }}</option>
-                          </select>
-                        @else
-                          <select class="form-control" id="esc_usuario{{ $num_esc }}" usuario {{$disabled}}>
-                              <option disabled selected></option>
-                              @foreach($usuario_permiso_esc as $valueusers)
-                                <option value="{{ $valueusers->idusers }}" idpermiso="{{ $valueusers->idpermiso }}">{{ $valueusers->nombre_personal }}</option>
-                              @endforeach
-                          </select>
-                        @endif
-                        <script>
-                          sistema_select2({ input:'#esc_usuario{{ $num_esc }}' });
-                        </script>
-                        </td>
-                        <td><input type="password" value="{{ $value->clave_usuario }}" password_users id="esc_clave{{ $num_esc }}" class="form-control text-center" {{$disabled}}></td>
-                        @if($value->idusers!=0)
-                            @if($value->idestado==1)
-                            <td id="resultado_cambiar_permiso_esc{{ $num_esc }}">
-                              <div style="background-color: #9AD872;padding: 7px;border-radius: 5px;color: #000;text-align: center;font-weight: bold;">F. REGISTRADO</div></td>
-                            @elseif($value->idestado==2)
-                            <td id="resultado_cambiar_permiso_esc{{ $num_esc }}">
-                              <div style="
-                                background-color: #ffc9ca;
-                                padding: 7px;
-                                border: 1px solid #ff6666 !important;
-                                border-radius: 5px;
-                                color: #93222c;
-                                text-align: center;
-                                font-weight: bold;">ANULADO</div></td>
-                            @endif
-                        @else
-                        <td id="resultado_cambiar_permiso_esc{{ $num_esc }}" style="width:242px">
-                          <button type="button" class="btn btn-warning" onclick="validarclave({{ $num_esc }},1,'#table-permisos-escalamiento','esc','escalamiento')"><i class="fa-solid fa-check"></i> APROBAR</button>
-                          <button type="button" class="btn btn-danger" onclick="validarclave({{ $num_esc }},2,'#table-permisos-escalamiento','esc','escalamiento')"><i class="fa-solid fa-ban"></i> DESAPROBAR</button>
-                        </td>
-                        @endif
-                        <td><input type="text" comentario_users id="esc_comentario{{ $num_esc }}" value="{{ $value->comentario }}" class="form-control {{$color_cajatexto}}" {{$disabled}}></td>
-                      </tr>
-                  @endforeach
-                </tbody>
-              </table>
-          </div>
-          @endif
 
         @elseif($estado == 'APROBADO')
           <p class="text-center">¿Seguro que desea pasar el crédito a <b>{{ $estado }}</b>?</p>
@@ -508,10 +509,22 @@
   
   $('#check_uno_table').change(function() {
     mostrar_permisos($('#tipo_validacion').val(), 1);
+    actualizarGateEscalamiento();
   });
   $('#check_dos_table').change(function() {
     mostrar_permisos($('#tipo_validacion').val(), 2);
+    actualizarGateEscalamiento();
   });
+  // El gate de ESCALAMIENTO (contraseña + REGISTRAR) solo se habilita una vez elegida
+  // la Opción 1/2: primero se elige la Opción, luego se valida al asesor, y recién ahí
+  // aparece la tabla que corresponda (la normal para aprobación inicial, o la de
+  // escalamiento si el crédito viene DESAPROBADO — ver validarasesorescalamiento()).
+  function actualizarGateEscalamiento(){
+    let opcionElegida = $('#check_uno_table').is(':checked') || $('#check_dos_table').is(':checked');
+    $('#escalamiento_asesor_clave').prop('disabled', !opcionElegida);
+    $('#btn_registrar_escalamiento').prop('disabled', !opcionElegida);
+  }
+  actualizarGateEscalamiento();
   function mostrar_permisos(valor,numData){
     $.ajax({
       url:"{{url('backoffice/'.$tienda->id.'/propuestacredito/showpermisos')}}",
@@ -666,6 +679,12 @@
   }
   
   function validarasesorescalamiento(){
+    let opcionElegida = $('#check_uno_table').is(':checked') || $('#check_dos_table').is(':checked');
+    if(!opcionElegida){
+      var mensaje = "Debe seleccionar primero la Opción 1 ó 2.";
+      modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
+      return false;
+    }
     let password = $('#escalamiento_asesor_clave').val();
     if(password == undefined || password == ''){
       var mensaje = "Debe escribir la contraseña del Asesor(a)/Ejecutivo(a).";
@@ -682,7 +701,15 @@
       success: function(res){
         if(res.resultado == 'CORRECTO'){
           $('#cont_escalamiento_gate').hide();
+          @if($credito->estado == 'DESAPROBADO')
           $('#cont_escalamiento_tabla').show();
+          @else
+          if($('#check_uno_table').is(':checked')){
+            $('#cont_permiso_nivel_uno').show();
+          } else {
+            $('#cont_permiso_nivel_dos').show();
+          }
+          @endif
         }else{
           var mensaje = "La contraseña del Asesor(a)/Ejecutivo(a) es incorrecta.";
           modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
@@ -780,17 +807,16 @@
     let tableUnoSelects = $('#table-permisos-nivel-uno > tbody select');
 
     tableDosInputs.add(tableDosSelects).add(tableUnoInputs).add(tableUnoSelects).attr('disabled', false);
-    
+
+    // Los contenedores (#cont_permiso_nivel_uno/dos) NO se muestran aqui: recien se
+    // muestran cuando se valida la clave del asesor en el gate de ESCALAMIENTO (ver
+    // validarasesorescalamiento()). Aca solo se deja preparada la tabla que corresponda.
     $('#cont_permiso_nivel_uno').css('display','none');
     $('#cont_permiso_nivel_dos').css('display','none');
     if (valCheck === 'table_uno') {
         tableDosInputs.add(tableDosSelects).attr('disabled', true);
-        $('#cont_permiso_nivel_uno').css('display','block');
-        $('#cont_permiso_nivel_dos').css('display','none');
     } else {
         tableUnoInputs.add(tableUnoSelects).attr('disabled', true);
-        $('#cont_permiso_nivel_uno').css('display','none');
-        $('#cont_permiso_nivel_dos').css('display','block');
     }
   });
   

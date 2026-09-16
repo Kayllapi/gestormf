@@ -49,13 +49,14 @@
                       function cambiar_estado(tipo){
                         let estado = $('#table-lista-credito > tbody > tr.selected').attr('estado');
                         let idcredito = $('#table-lista-credito > tbody > tr.selected').attr('idcredito');
-                        
+                        let idcredito_refinanciado = $('#table-lista-credito > tbody > tr.selected').attr('idcredito_refinanciado');
+
                         if(idcredito == "" || idcredito == undefined ){
                           var mensaje = "Debe de seleccionar un crédito.";
-                          modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });  
+                          modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
                           return false;
                         }
-                        
+
                         if(estado == "DESAPROBADO" && tipo != "APROBADO"){
                           var mensaje = "No puede eliminar un Crédito Desaprobado.";
                           modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
@@ -63,10 +64,15 @@
                         }
                         if(estado == "CANCELADO"){
                           var mensaje = "Es Crédito Cancelado, no se puede Pasar, Aprobar tampoco Eliminar.";
-                          modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });    
+                          modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
                           return false;
                         }
-                        
+                        if(tipo == "ELIMINAR" && (estado == "DESEMBOLSADO" || estado == "APROBADO") && idcredito_refinanciado != undefined && idcredito_refinanciado != "0"){
+                          var mensaje = "Para eliminar este crédito Refinanciado hacerlo desde el Módulo Historial de Pagos";
+                          modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
+                          return false;
+                        }
+
                         let url = "{{ url('backoffice/'.$tienda->id) }}/propuestacredito/"+idcredito+"/edit?view=cambiar_estado&tipo="+tipo+'&permiso=institucional';
                         modal({ route: url, size: 'modal-fullscreen' })
                       }

@@ -921,6 +921,12 @@ class RefinanciamientoController extends Controller
                     'total_garantia_aval' => $credito_cuantitativa_control_limites->total_garantia_aval,
                     'total_vinculo_deudor' => $credito_cuantitativa_control_limites->total_vinculo_deudor,
                     'comentarios' => $credito_cuantitativa_control_limites->comentarios,
+                    'cliente_saldo_vigente_cliente_det' => $credito_cuantitativa_control_limites->cliente_saldo_vigente_cliente_det,
+                    'cliente_saldo_vigente_aval_det' => $credito_cuantitativa_control_limites->cliente_saldo_vigente_aval_det,
+                    'credito_saldodeduda_cliente_propio_det' => $credito_cuantitativa_control_limites->credito_saldodeduda_cliente_propio_det,
+                    'credito_saldodeduda_cliente_aval_det' => $credito_cuantitativa_control_limites->credito_saldodeduda_cliente_aval_det,
+                    'credito_saldodeduda_aval_propio_det' => $credito_cuantitativa_control_limites->credito_saldodeduda_aval_propio_det,
+                    'credito_saldodeduda_aval_aval_det' => $credito_cuantitativa_control_limites->credito_saldodeduda_aval_aval_det,
 
                     'saldo_noprendario_cliente' => $credito_cuantitativa_control_limites->saldo_noprendario_cliente,
                     'propuesta_noprendario_cliente' => $credito_cuantitativa_control_limites->propuesta_noprendario_cliente,
@@ -1221,6 +1227,7 @@ class RefinanciamientoController extends Controller
                     'idcredito' => $idcreditorefinanciado,
                     'fecha' => Carbon::now(),
                     'monto_compra_deuda' => $credito_propuesta->monto_compra_deuda,
+                    'monto_compra_deuda_det' => $credito_propuesta->monto_compra_deuda_det,
 
                     'idclasificacion_cliente' => $credito_propuesta->idclasificacion_cliente,
                     'idclasificacion_cliente_pareja' => $credito_propuesta->idclasificacion_cliente_pareja,

@@ -34,12 +34,12 @@
                 <tr>
                   <th rowspan="2" style="width:200px; text-align: center;">NIVELES DE APROBACIÓN *</th>
                   <th colspan="2" rowspan="2" style="width:200px; text-align: center;">RIESGO CREDITICIO (S/.) *</th>
-                  <th colspan="5" style="text-align: center;">MODALIDAD</th>
+                  <th colspan="5" style="text-align: center;">MODALIDAD <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
                 </tr>
                 <tr>
-                  <th style="text-align: center;">COMITÉ DE APROBACIÓN <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
-                  <th style="text-align: center;">AUTONOMÍA DE ADMINITRACIÓN <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
-                  <th style="text-align: center;">AUTONOMÍA DE GERENCIA GENERAL <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
+                  <th style="text-align: center;">COMITÉ DE APROBACIÓN</th>
+                  <th style="text-align: center;">AUTONOMÍA DE ADMINITRACIÓN</th>
+                  <th style="text-align: center;">AUTONOMÍA DE GERENCIA GENERAL</th>
                   <th style="background-color: #b7b6b78a !important; text-align: center;">ESCALAMIENTO DE CRÉDITO</th>
                   <th><a href="javascript:;" class="btn btn-success" onclick="agregar_nivelaprobacion_prendario()">
                       <i class="fa-solid fa-plus"></i>
@@ -270,12 +270,12 @@
                 <tr>
                   <th rowspan="2" style="width:200px; text-align: center;">NIVELES DE APROBACIÓN *</th>
                   <th colspan="2" rowspan="2" style="width:200px; text-align: center;">RIESGO CREDITICIO (S/.) *</th>
-                  <th colspan="5" style="text-align: center;">MODALIDAD</th>
+                  <th colspan="5" style="text-align: center;">MODALIDAD <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
                 </tr>
                 <tr>
-                  <th style="text-align: center;">COMITÉ DE APROBACIÓN <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
-                  <th style="text-align: center;">AUTONOMÍA DE ADMINITRACIÓN <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
-                  <th style="text-align: center;">AUTONOMÍA DE GERENCIA GENERAL <br> <span style="color:#c40000 !important;">(Generar de > a < rango)</span></th>
+                  <th style="text-align: center;">COMITÉ DE APROBACIÓN</th>
+                  <th style="text-align: center;">AUTONOMÍA DE ADMINITRACIÓN</th>
+                  <th style="text-align: center;">AUTONOMÍA DE GERENCIA GENERAL</th>
                   <th style="background-color: #b7b6b78a !important; text-align: center;">ESCALAMIENTO DE CRÉDITO</th>
                   <th><a href="javascript:;" class="btn btn-success" onclick="agregar_nivelaprobacion_noprendario()">
                       <i class="fa-solid fa-plus"></i>

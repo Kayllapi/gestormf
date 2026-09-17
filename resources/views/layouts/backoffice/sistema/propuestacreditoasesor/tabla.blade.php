@@ -52,11 +52,11 @@
                           return false;
                         }
                         
-                        if(estado == "DESAPROBADO" && tipo != "APROBADO"){  
-                          var mensaje = "No puede eliminar un Crédito Desaprobado.";
-                          modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });  
-                          return false;
-                        }
+                        // if(estado == "DESAPROBADO" && tipo != "APROBADO"){  
+                        //   var mensaje = "No puede eliminar un Crédito Desaprobado.";
+                        //   modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });  
+                        //   return false;
+                        // }
                         if(estado == "CANCELADO"){
                           var mensaje = "Es Crédito Cancelado, no se puede Pasar, Aprobar tampoco Eliminar.";
                           modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });    

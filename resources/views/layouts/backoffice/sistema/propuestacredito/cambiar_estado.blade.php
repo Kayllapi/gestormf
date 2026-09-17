@@ -294,7 +294,7 @@
                                       border-radius: 5px;
                                       color: #93222c;
                                       text-align: center;
-                                      font-weight: bold;">ANULADO</div></td>
+                                      font-weight: bold;">DESAPROBADO</div></td>
                                   @endif
                               @else
                               <td id="resultado_cambiar_permiso{{ $num }}" style="width:242px">
@@ -794,7 +794,7 @@
                 $(target+' > tbody > tr #'+resultId).html('<div style="background-color: #9AD872;padding: 7px;border-radius: 5px;color: #000;text-align: center;font-weight: bold;">F. REGISTRADO</div>');
             }
             else if(estado==2){
-                $(target+' > tbody > tr #'+resultId).html('<div style="background-color: #dc3545;padding: 7px;border-radius: 5px;color: #fff;text-align: center;font-weight: bold;">ANULADO</div>');
+                $(target+' > tbody > tr #'+resultId).html('<div style="background-color: #dc3545;padding: 7px;border-radius: 5px;color: #fff;text-align: center;font-weight: bold;">DESAPROBADO</div>');
             }
 
             $(target+' > tbody > tr #'+prefix+'_usuario'+num).attr('disabled', true);

@@ -123,7 +123,7 @@
                           </label>
                         </div>
                       </div>
-                      <div class="col-sm-12 col-md-auto">
+                      <div class="col-sm-12 col-md-auto ms-md-auto">
                         <div class="row align-items-center">
                           <label for="fecha_inicio" class="col-auto col-form-label">DE</label>
                           <div class="col-auto">
@@ -140,7 +140,7 @@
                         </div>
                       </div>
                       <div class="col-sm-12 col-md-1">
-                          <button type="button" class="btn btn-primary" onclick="lista_credito();"> BUSCAR</button>
+                          <button type="button" style="width: 100%;" class="btn btn-primary" onclick="lista_credito();"> BUSCAR</button>
                       </div>
                     </div>
                   </div>

@@ -779,14 +779,26 @@ class PropuestaCreditoController extends Controller
                 $escalamiento_bloqueado = true;
                 $escalamiento_bloqueado_mensaje = 'El escalamiento de aprobación solo aplica para créditos No Prendarios (CNP). Este crédito no se puede aprobar por escalamiento.';
             } else {
-                $valid_aprobado_normal = DB::table('credito_aprobacion')
+                // Si el escalamiento ya se usó y algún usuario desaprobó, el rechazo queda
+                // en firme: no se vuelve a mostrar el formulario para reintentar.
+                $valid_desaprobado_escalamiento = DB::table('credito_aprobacion')
                     ->where('idcredito', $credito->id)
-                    ->where('posicion', 0)
-                    ->where('idestado', 1)
+                    ->where('posicion', 1)
+                    ->where('idestado', 2)
                     ->count();
-                if($valid_aprobado_normal == 0){
+                if($valid_desaprobado_escalamiento > 0){
                     $escalamiento_bloqueado = true;
-                    $escalamiento_bloqueado_mensaje = 'Este crédito no se puede aprobar por escalamiento porque fue rechazado por todo el comité. Se requiere al menos una aprobación en la ronda normal.';
+                    $escalamiento_bloqueado_mensaje = 'Este crédito ha sido desaprobado.';
+                } else {
+                    $valid_aprobado_normal = DB::table('credito_aprobacion')
+                        ->where('idcredito', $credito->id)
+                        ->where('posicion', 0)
+                        ->where('idestado', 1)
+                        ->count();
+                    if($valid_aprobado_normal == 0){
+                        $escalamiento_bloqueado = true;
+                        $escalamiento_bloqueado_mensaje = 'Este crédito no se puede aprobar por escalamiento porque fue rechazado por todo el comité. Se requiere al menos una aprobación en la ronda normal.';
+                    }
                 }
             }
         }
@@ -1097,6 +1109,17 @@ class PropuestaCreditoController extends Controller
                       return response()->json([
                           'resultado' => 'ERROR',
                           'mensaje' => 'El escalamiento de aprobación solo aplica para créditos No Prendarios (CNP).'
+                      ]);
+                  }
+                  $valid_desaprobado_escalamiento = DB::table('credito_aprobacion')
+                      ->where('idcredito', $id)
+                      ->where('posicion', 1)
+                      ->where('idestado', 2)
+                      ->count();
+                  if($valid_desaprobado_escalamiento > 0){
+                      return response()->json([
+                          'resultado' => 'ERROR',
+                          'mensaje' => 'Este crédito ha sido desaprobado.'
                       ]);
                   }
                   $valid_aprobado_normal = DB::table('credito_aprobacion')

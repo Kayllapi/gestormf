@@ -60,7 +60,16 @@
         </table>
       
       @else
-        @if($estado == 'APROBADO')
+        @if($estado == 'APROBADO' && isset($escalamiento_bloqueado) && $escalamiento_bloqueado)
+                        <p class="text-center"
+                           style="background-color: #ffc9ca;
+                                  border: 1px solid #ff6666 !important;
+                                  color: #93222c;
+                                  padding: 10px;
+                                  border-radius: 5px;
+                                  width: 100%;
+                                  margin: auto;">{{ $escalamiento_bloqueado_mensaje }}</p>
+        @elseif($estado == 'APROBADO')
           <?php
             $fecha_gate_asesor = $credito->estado == 'DESAPROBADO'
                 ? $credito->fecha_validacion_asesor_escalamiento

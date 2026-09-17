@@ -768,13 +768,34 @@ class PropuestaCreditoController extends Controller
             }
         }
 
-        // Escalamiento de Crédito: segunda ronda de aprobación, solo para créditos que ya
-        // fueron DESAPROBADOS una vez (de cualquier tipo, prendario o no prendario).
+        // Escalamiento de Crédito: segunda ronda de aprobación, solo para créditos No
+        // Prendarios (CNP) que ya fueron DESAPROBADOS una vez, y que al menos un miembro
+        // del comité de la ronda normal haya aprobado (si todos desaprobaron, no cabe
+        // escalamiento: el crédito queda desaprobado en firme).
+        $escalamiento_bloqueado = false;
+        $escalamiento_bloqueado_mensaje = '';
+        if($credito->estado == 'DESAPROBADO' && $request->input('tipo') == 'APROBADO'){
+            if($credito->idforma_credito != 2){
+                $escalamiento_bloqueado = true;
+                $escalamiento_bloqueado_mensaje = 'El escalamiento de aprobación solo aplica para créditos No Prendarios (CNP). Este crédito no se puede aprobar por escalamiento.';
+            } else {
+                $valid_aprobado_normal = DB::table('credito_aprobacion')
+                    ->where('idcredito', $credito->id)
+                    ->where('posicion', 0)
+                    ->where('idestado', 1)
+                    ->count();
+                if($valid_aprobado_normal == 0){
+                    $escalamiento_bloqueado = true;
+                    $escalamiento_bloqueado_mensaje = 'Este crédito no se puede aprobar por escalamiento porque fue rechazado por todo el comité. Se requiere al menos una aprobación en la ronda normal.';
+                }
+            }
+        }
+
         // Reutiliza la misma OPCIÓN 1/2 (aprobacion_nivel_validacion) ya elegida en la
         // ronda normal, y guarda sus firmas en credito_aprobacion con posicion=1
         // (independiente de la ronda normal).
         $credito_escalamiento = collect();
-        if($credito->estado == 'DESAPROBADO' && $request->input('tipo') == 'APROBADO' && $credito->aprobacion_nivel_validacion != 0){
+        if(!$escalamiento_bloqueado && $credito->estado == 'DESAPROBADO' && $request->input('tipo') == 'APROBADO' && $credito->aprobacion_nivel_validacion != 0){
             $nivel_aprobacion_escalamiento = DB::table('nivelaprobacion')
                 ->where('nivelaprobacion.idtipocredito', $credito->idforma_credito)
                 ->where('nivelaprobacion.riesgocredito1', '<', $credito->monto_solicitado)
@@ -855,6 +876,8 @@ class PropuestaCreditoController extends Controller
           'nivel_aprobacion' => $nivel_aprobacion,
           'credito_aprobacion' => $credito_aprobacion,
           'credito_escalamiento' => $credito_escalamiento,
+          'escalamiento_bloqueado' => $escalamiento_bloqueado,
+          'escalamiento_bloqueado_mensaje' => $escalamiento_bloqueado_mensaje,
           'estado' => $request->input('tipo'),
           'permiso' => $request->input('permiso'),
           'asesor' => $asesor,
@@ -1060,6 +1083,30 @@ class PropuestaCreditoController extends Controller
               // 'posicion' distingue la ronda: 0 = aprobación normal, 1 = escalamiento de crédito
               // (segunda ronda, solo créditos No Prendarios que ya fueron desaprobados una vez)
               $posicion = $request->input('ronda') == 'escalamiento' ? 1 : 0;
+
+              // Respaldo server-side de las mismas reglas ya validadas al abrir el modal:
+              // el escalamiento solo aplica a créditos No Prendarios (CNP) y solo si el
+              // comité de la ronda normal tuvo al menos una aprobación.
+              if($posicion == 1){
+                  $credito_escalamiento_check = DB::table('credito')->whereId($id)->first();
+                  if($credito_escalamiento_check->idforma_credito != 2){
+                      return response()->json([
+                          'resultado' => 'ERROR',
+                          'mensaje' => 'El escalamiento de aprobación solo aplica para créditos No Prendarios (CNP).'
+                      ]);
+                  }
+                  $valid_aprobado_normal = DB::table('credito_aprobacion')
+                      ->where('idcredito', $id)
+                      ->where('posicion', 0)
+                      ->where('idestado', 1)
+                      ->count();
+                  if($valid_aprobado_normal == 0){
+                      return response()->json([
+                          'resultado' => 'ERROR',
+                          'mensaje' => 'Este crédito no se puede aprobar por escalamiento porque fue rechazado por todo el comité.'
+                      ]);
+                  }
+              }
 
               // Verificar si ya existe una aprobación para este usuario en este crédito (misma ronda)
               $existeValidacion = DB::table('credito_aprobacion')

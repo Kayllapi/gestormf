@@ -146,7 +146,7 @@
                 </div>
               </div>
                 <div class="col-sm-12 col-md-12 mt-3" id="cont_escalamiento_tabla" style="display:none;">
-                    <div class="mt-2 bg-primary subtitulo text-center">ESCALAMIENTO DE CRÉDITO</div>
+                    <div class="mt-2 bg-primary subtitulo text-center">ESCALAMIENTO DE APROBACIÓN</div>
                     <table class="table" id="table-permisos-escalamiento">
                       <thead>
                         <tr>

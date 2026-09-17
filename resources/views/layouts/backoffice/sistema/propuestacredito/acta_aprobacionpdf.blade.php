@@ -455,10 +455,16 @@
               <tbody>
         @foreach($credito_aprobacion as $key => $value)
                 <tr>
-                  <td style="height:50px;"> 
+                  <td style="height:50px;">
                     {{ substr($value->nombre, 0, 1) }}{{ $value->apellidopaterno }}
                     <br>
                     {{ $value->nombre_usuario }}
+                    <br>
+                    @if($value->idestado == 1)
+                      (APROBÓ)
+                    @elseif($value->idestado == 2)
+                      (DESAPROBÓ)
+                    @endif
                   </td>
                   <td style="vertical-align:top;"><pre style="padding:3px;margin-top:0px;white-space: pre-wrap;">{{ $value->comentario }}</pre></td>
                   <td width="200px"></td>

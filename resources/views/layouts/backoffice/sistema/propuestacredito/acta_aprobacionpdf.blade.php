@@ -461,9 +461,9 @@
                     {{ $value->nombre_usuario }}
                     <br>
                     @if($value->idestado == 1)
-                      (APROBÓ)
+                      (APROBADO)
                     @elseif($value->idestado == 2)
-                      (DESAPROBÓ)
+                      (DESAPROBADO)
                     @endif
                   </td>
                   <td style="vertical-align:top;"><pre style="padding:3px;margin-top:0px;white-space: pre-wrap;">{{ $value->comentario }}</pre></td>

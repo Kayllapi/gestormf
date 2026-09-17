@@ -907,11 +907,28 @@ class PropuestaCreditoController extends Controller
         ]);
       }
       else if( $request->input('view') == 'acta_aprobacion' ){
-        
+
+        // Los botones de EVALUACIÓN (Excepciones, Riesgos, Comentario de Visitas) se
+        // muestran en PROCESO como siempre, y también en DESAPROBADO solo si es un
+        // crédito No Prendario (CNP) que todavía puede aprobarse por escalamiento (si
+        // el escalamiento ya lo desaprobó en firme, queda cerrado y no se muestran).
+        $mostrar_evaluacion = $credito->estado == 'PROCESO';
+        if($credito->estado == 'DESAPROBADO' && $credito->idforma_credito == 2){
+            $desaprobado_escalamiento_definitivo = DB::table('credito_aprobacion')
+                ->where('idcredito', $credito->id)
+                ->where('posicion', 1)
+                ->where('idestado', 2)
+                ->exists();
+            if(!$desaprobado_escalamiento_definitivo){
+                $mostrar_evaluacion = true;
+            }
+        }
+
         return view(sistema_view().'/propuestacredito/acta_aprobacion',[
           'users_prestamo'    => $users_prestamo,
           'tienda' => $tienda,
           'credito' => $credito,
+          'mostrar_evaluacion' => $mostrar_evaluacion,
         ]);
       }
       else if( $request->input('view') == 'acta_aprobacionpdf' ){

@@ -5,6 +5,7 @@
 
 
 <div class="modal-body">
+    @if($mostrar_evaluacion)
           <div class="col-sm-12">
             <div class="btn-group mb-1" id="formato_evaluacion">
                <button type="button" class="btn btn-success evaluacion" style="background-color: #f297ec;border-color: #212529;"
@@ -22,6 +23,7 @@
                   3.- COMENTARIO DE VISITAS Y/O VERIFICACIÓN</button>
               </div>
           </div>
+    @endif
     <iframe id="iframe_acta_aprobacion" src="{{ url('/backoffice/'.$tienda->id.'/propuestacredito/'.$credito->id.'/edit?view=acta_aprobacionpdf') }}#zoom=100" frameborder="0" width="100%"
         style="height: calc(100vh - 68px);"></iframe>
 </div>

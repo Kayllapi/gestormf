@@ -52,14 +52,19 @@
                           return false;
                         }
                         
-                        if(estado == "DESAPROBADO"){  
-                          var mensaje = "o puede eliminar un Crédito Desaprobado.";
+                        if(estado == "DESAPROBADO" && tipo != "APROBADO"){  
+                          var mensaje = "No puede eliminar un Crédito Desaprobado.";
                           modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });  
                           return false;
                         }
                         if(estado == "CANCELADO"){
                           var mensaje = "Es Crédito Cancelado, no se puede Pasar, Aprobar tampoco Eliminar.";
                           modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });    
+                          return false;
+                        }
+                        if(tipo == "ELIMINAR" && (estado == "DESEMBOLSADO" || estado == "APROBADO") && idcredito_refinanciado != undefined && idcredito_refinanciado != "0"){
+                          var mensaje = "Para eliminar este crédito Refinanciado hacerlo desde el Módulo Historial de Pagos";
+                          modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
                           return false;
                         }
                         

@@ -182,7 +182,7 @@
           //$propuesta_cuotas = $credito_cuantitativa_deudas->propuesta_cuotas;
           ?>
     <div class="mb-1 mt-2">
-      <span class="badge d-block" style="font-weight: bold;">SOLICITUD: <span style="border-bottom: 1px solid #000; font-weight: bold; font-size: 12px;">{{ $credito->estado == 'DESEMBOLSADO' ? ($credito->idestadocredito == 2 ? 'CANCELADO' : 'APROBADO') : $credito->estado }}</span> - En comité de créditos{{ $aprobado_por_escalamiento ? ' de escalamiento' : '' }} con las condiciones siguientes</span>
+      <span class="badge d-block" style="font-weight: bold;">SOLICITUD: <span style="border-bottom: 1px solid #000; font-weight: bold; font-size: 12px;">{{ $credito->estado == 'DESEMBOLSADO' ? ($credito->idestadocredito == 2 ? 'CANCELADO' : 'APROBADO') : $credito->estado }}</span> - En comité de créditos{{ $aprobado_por_escalamiento ? ' de ESCALAMIENTO' : '' }} con las condiciones siguientes</span>
     </div>
     <div class="row">
       <div class="col">

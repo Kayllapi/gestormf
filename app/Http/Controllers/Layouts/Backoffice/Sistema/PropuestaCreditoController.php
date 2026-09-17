@@ -997,7 +997,15 @@ class PropuestaCreditoController extends Controller
         $usuario_comentariovisita = DB::table('users')->where('users.id',$credito->idusuario_comentariovisita)->first();
         
         $users_prestamo_aval = DB::table('s_users_prestamo')->where('s_users_prestamo.id_s_users',$credito->idaval)->first();
-      
+
+        // El crédito se aprobó por escalamiento si tiene al menos una firma de la
+        // segunda ronda (posicion=1) con idestado=1 (aprobado).
+        $aprobado_por_escalamiento = DB::table('credito_aprobacion')
+                                      ->where('idcredito', $credito->id)
+                                      ->where('posicion', 1)
+                                      ->where('idestado', 1)
+                                      ->exists();
+
         $pdf = PDF::loadView(sistema_view().'/propuestacredito/acta_aprobacionpdf',[
             'users_prestamo'    => $users_prestamo,
             'tienda' => $tienda,
@@ -1016,7 +1024,8 @@ class PropuestaCreditoController extends Controller
             'usuario_areariesgos' => $usuario_areariesgos,
             'usuario_comentariovisita' => $usuario_comentariovisita,
             'users_prestamo_aval' => $users_prestamo_aval,
-        ]); 
+            'aprobado_por_escalamiento' => $aprobado_por_escalamiento,
+        ]);
         $pdf->setPaper('A4');
         return $pdf->stream('ACTA_APROBACION.pdf');
       }

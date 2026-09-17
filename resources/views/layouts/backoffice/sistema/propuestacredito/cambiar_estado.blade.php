@@ -62,7 +62,7 @@
               <div class="mt-2 bg-primary subtitulo text-center">VERIFICAR EL REGISTRO COMO ASESOR</div>
               <div class="row" style="padding:10px;">
                   <div class="col-md-4">
-                      <label>Asesor(a) / Ejecutivo(a) - Registro de firma</label>
+                      <label>Asesor(a) / Ejecutivo(a) Proponente - Registro de firma</label>
                       <input type="text" class="form-control" value="{{ $asesor->nombrecompleto ?? '' }}" disabled>
                   </div>
                   <div class="col-md-4">

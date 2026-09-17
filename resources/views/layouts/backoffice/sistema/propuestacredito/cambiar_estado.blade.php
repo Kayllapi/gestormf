@@ -208,7 +208,7 @@
                                       border-radius: 5px;
                                       color: #93222c;
                                       text-align: center;
-                                      font-weight: bold;">ANULADO</div></td>
+                                      font-weight: bold;">DESAPROBADO</div></td>
                                   @endif
                               @else
                               <td id="resultado_cambiar_permiso_esc{{ $num_esc }}" style="width:242px">

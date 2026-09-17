@@ -718,6 +718,7 @@ class PropuestaCreditoController extends Controller
 
         // Si ya hay tipo/nivel guardado, completar con los permisos faltantes del nivel
         $credito_aprobacion = $credito_aprobacion_db; // default
+        $permisos_normal_ids = []; // permisos ya exigidos/firmados en la ronda normal
         if($credito->aprobacion_tipo_validacion != '' && $credito->aprobacion_nivel_validacion != 0) {
             $nivel_aprobacion_data = DB::table('nivelaprobacion')
                 ->where('nivelaprobacion.idtipocredito', $credito->idforma_credito)
@@ -731,6 +732,7 @@ class PropuestaCreditoController extends Controller
                 
                 $json_campo = json_decode($nivel_aprobacion_data->$campo, true);
                 $permisos_requeridos = $json_campo[0][$nivel] ?? [];
+                $permisos_normal_ids = array_column($permisos_requeridos, 'valor');
 
                 $merged = collect();
                 $ids_usados = [];
@@ -799,6 +801,13 @@ class PropuestaCreditoController extends Controller
                 $nivel = $credito->aprobacion_nivel_validacion == 1 ? 'tipo_uno' : 'tipo_dos';
                 $json_asignacion = json_decode($nivel_aprobacion_escalamiento->asignacion, true);
                 $permisos_requeridos = $json_asignacion[0][$nivel] ?? [];
+
+                // Un permiso que ya participó (y firmó) en la ronda normal no debe volver a
+                // pedirse en el escalamiento: solo se piden los permisos adicionales de la
+                // ASIGNACIÓN que no estaban ya cubiertos por la ronda normal.
+                $permisos_requeridos = array_values(array_filter($permisos_requeridos, function($permiso_req) use ($permisos_normal_ids) {
+                    return !in_array($permiso_req['valor'], $permisos_normal_ids);
+                }));
 
                 $merged_escalamiento = collect();
                 $ids_usados_escalamiento = [];
@@ -1106,35 +1115,19 @@ class PropuestaCreditoController extends Controller
                     ]);
                 }
 
-                // ✅ Ahora evaluar el estado global del crédito
-                // basándonos en los registros que YA EXISTEN en BD (no en el JSON del frontend)
-                // Solo se cuentan los registros de la misma ronda (posicion) que se esta validando,
-                // para que Escalamiento de Credito se evalue de forma independiente a la ronda normal.
-                $credito_aprobacion = json_decode($request->input('credito_aprobacion'), true);
-                $total_requeridos = count($credito_aprobacion); // cuántos permisos necesita el nivel
-
-                $registros = DB::table('credito_aprobacion')
-                  ->where('idcredito', $id)
-                  ->where('posicion', $posicion)
-                  ->get();
-                
-                $valid_desaprobado = $registros->where('idestado', 2)->count();
-                $valid_aprobado    = $registros->where('idestado', 1)->count();
-                $valid_registrados = $valid_desaprobado + $valid_aprobado;
-
                 $credito_aprobado = 'NO';
 
-                if($valid_registrados >= $total_requeridos){
-                    // Se completaron todas las contraseñas del nivel: recien ahi se define el estado
-                    if($valid_desaprobado > 0){
-                        // Si entre todos hubo al menos una desaprobación, el credito queda desaprobado
+                if($posicion == 1){
+                    // Escalamiento de Crédito: no es obligatorio que firmen todos los
+                    // usuarios asignados — la primera firma (aprueba o desaprueba) decide
+                    // de inmediato el estado del crédito.
+                    if($request->idestado == 2){
                         DB::table('credito')->whereId($id)->update([
                             'idadministrador'    => Auth::user()->id,
                             'estado'             => 'DESAPROBADO',
                             'fecha_desaprobacion'=> Carbon::now(),
                         ]);
                     }else{
-                        // Todos aprobaron
                         DB::table('credito')->whereId($id)->update([
                             'idadministrador' => Auth::user()->id,
                             'estado'          => 'APROBADO',
@@ -1142,6 +1135,41 @@ class PropuestaCreditoController extends Controller
                         ]);
                     }
                     $credito_aprobado = 'CORRECTO';
+                }else{
+                    // ✅ Ronda normal: evaluar el estado global del crédito basándonos en los
+                    // registros que YA EXISTEN en BD (no en el JSON del frontend), solo de esta
+                    // ronda (posicion 0), y recién definir el estado cuando todos se pronunciaron.
+                    $credito_aprobacion = json_decode($request->input('credito_aprobacion'), true);
+                    $total_requeridos = count($credito_aprobacion); // cuántos permisos necesita el nivel
+
+                    $registros = DB::table('credito_aprobacion')
+                      ->where('idcredito', $id)
+                      ->where('posicion', $posicion)
+                      ->get();
+
+                    $valid_desaprobado = $registros->where('idestado', 2)->count();
+                    $valid_aprobado    = $registros->where('idestado', 1)->count();
+                    $valid_registrados = $valid_desaprobado + $valid_aprobado;
+
+                    if($valid_registrados >= $total_requeridos){
+                        // Se completaron todas las contraseñas del nivel: recien ahi se define el estado
+                        if($valid_desaprobado > 0){
+                            // Si entre todos hubo al menos una desaprobación, el credito queda desaprobado
+                            DB::table('credito')->whereId($id)->update([
+                                'idadministrador'    => Auth::user()->id,
+                                'estado'             => 'DESAPROBADO',
+                                'fecha_desaprobacion'=> Carbon::now(),
+                            ]);
+                        }else{
+                            // Todos aprobaron
+                            DB::table('credito')->whereId($id)->update([
+                                'idadministrador' => Auth::user()->id,
+                                'estado'          => 'APROBADO',
+                                'fecha_aprobacion'=> Carbon::now(),
+                            ]);
+                        }
+                        $credito_aprobado = 'CORRECTO';
+                    }
                 }
               
                /*$usuario_firma = DB::table('credito_aprobacion')

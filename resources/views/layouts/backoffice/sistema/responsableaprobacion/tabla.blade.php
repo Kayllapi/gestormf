@@ -40,7 +40,7 @@
                   <th style="text-align: center;">COMITÉ DE APROBACIÓN</th>
                   <th style="text-align: center;">AUTONOMÍA DE ADMINITRACIÓN</th>
                   <th style="text-align: center;">AUTONOMÍA DE GERENCIA GENERAL</th>
-                  <th style="background-color: #b7b6b78a !important; text-align: center;">ESCALAMIENTO DE CRÉDITO</th>
+                  <th style="background-color: #b7b6b78a !important; text-align: center;">ESCALAMIENTO DE APROBACIÓN <br> <span style="color:#c40000 !important;">(No aplica)</span></th>
                   <th><a href="javascript:;" class="btn btn-success" onclick="agregar_nivelaprobacion_prendario()">
                       <i class="fa-solid fa-plus"></i>
                     </a></th>
@@ -276,7 +276,7 @@
                   <th style="text-align: center;">COMITÉ DE APROBACIÓN</th>
                   <th style="text-align: center;">AUTONOMÍA DE ADMINITRACIÓN</th>
                   <th style="text-align: center;">AUTONOMÍA DE GERENCIA GENERAL</th>
-                  <th style="background-color: #b7b6b78a !important; text-align: center;">ESCALAMIENTO DE CRÉDITO</th>
+                  <th style="background-color: #b7b6b78a !important; text-align: center;">ESCALAMIENTO DE APROBACIÓN <br> <span style="color:#c40000 !important;">(Crear por opción 1 y 2)</span></th>
                   <th><a href="javascript:;" class="btn btn-success" onclick="agregar_nivelaprobacion_noprendario()">
                       <i class="fa-solid fa-plus"></i>
                     </a></th>

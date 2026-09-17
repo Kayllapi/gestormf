@@ -1052,6 +1052,10 @@ class PropuestaCreditoController extends Controller
                 'cuenta' => 0,
                 'aprobacion_tipo_validacion' => '',
                 'aprobacion_nivel_validacion' => 0,
+                // Limpiar también las firmas de "VERIFICAR EL REGISTRO COMO ASESOR" (ronda
+                // normal y escalamiento) para que se vuelvan a pedir en la próxima aprobación.
+                'fecha_validacion_asesor' => null,
+                'fecha_validacion_asesor_escalamiento' => null,
               ]);
               DB::table('credito_aprobacion')->where('idcredito',$id)->delete();
               DB::table('credito_formapago')->where('idcredito',$id)->delete();

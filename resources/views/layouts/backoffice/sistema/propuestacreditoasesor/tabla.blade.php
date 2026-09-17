@@ -38,7 +38,7 @@
                     <button type="button" class="btn btn-info" onclick="acta_aprobacion()" style="float: right;"> 
                     <b>ACTA DE APROBACIÓN</b><br>
                     <div style="float: right;margin-right:5px;font-size:13px;">
-                      <span class="badge bg-success">Excepciones</span><span class="badge bg-warning">Op. Riesgos</span><span class="badge bg-primary">Verificaciones</span></div>
+                      <span class="badge bg-success">Excepciones</span> <span class="badge bg-warning" style="border: 1px solid #212529 !important;">Op. Riesgos</span> <span class="badge bg-primary">Verificaciones</span></div>
                     </button>
                     
                     <script>

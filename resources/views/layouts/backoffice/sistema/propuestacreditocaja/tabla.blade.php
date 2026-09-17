@@ -89,24 +89,34 @@
                     <div class="row">
                       <div class="col-sm-12 col-md-7">
                         <div class="form-check form-check-inline">
-                          <input class="form-check-input" type="radio" name="estado_credito" id="estado_enproceso" value="PROCESO" onclick="lista_credito();" checked>
-                          <label class="form-check-label" for="estado_enproceso">EN PROCESO</label>
+                          <label class="radio-custom">
+                            <input type="radio" name="estado_credito" id="estado_enproceso" value="PROCESO" onclick="lista_credito();" checked>
+                            <span class="radio"></span> EN PROCESO
+                          </label>
                         </div>
                         <div class="form-check form-check-inline">
-                          <input class="form-check-input" type="radio" name="estado_credito" id="estado_aprobado" value="APROBADO" onclick="lista_credito();">
-                          <label class="form-check-label" for="estado_aprobado">APROBADOS</label>
+                          <label class="radio-custom">
+                            <input type="radio" name="estado_credito" id="estado_aprobado" value="APROBADO" onclick="lista_credito();">
+                            <span class="radio"></span> APROBADOS
+                          </label>
                         </div>
                         <div class="form-check form-check-inline">
-                          <input class="form-check-input" type="radio" name="estado_credito" id="estado_desaprobado" value="DESAPROBADO" onclick="lista_credito();">
-                          <label class="form-check-label" for="estado_desaprobado" style="color: #dc3545;">DESAPROBADOS</label>
+                          <label class="radio-custom" style="color: #dc3545;">
+                            <input type="radio" name="estado_credito" id="estado_desaprobado" value="DESAPROBADO" onclick="lista_credito();">
+                            <span class="radio"></span> DESAPROBADOS
+                          </label>
                         </div>
                         <div class="form-check form-check-inline">
-                          <input class="form-check-input" type="radio" name="estado_credito" id="estado_desembolso" value="DESEMBOLSADO" onclick="lista_credito();">
-                          <label class="form-check-label" for="estado_desembolso">DESEMBOLSADOS</label>
+                          <label class="radio-custom">
+                            <input type="radio" name="estado_credito" id="estado_desembolso" value="DESEMBOLSADO" onclick="lista_credito();">
+                            <span class="radio"></span> DESEMBOLSADOS
+                          </label>
                         </div>
                         <div class="form-check form-check-inline">
-                          <input class="form-check-input" type="radio" name="estado_credito" id="estado_cancelado" value="CANCELADO" onclick="lista_credito();">
-                          <label class="form-check-label" for="estado_cancelado">CANCELADOS</label>
+                          <label class="radio-custom">
+                            <input type="radio" name="estado_credito" id="estado_cancelado" value="CANCELADO" onclick="lista_credito();">
+                            <span class="radio"></span> CANCELADOS
+                          </label>
                         </div>
                       </div>
                       <div class="col-sm-12 col-md-2">

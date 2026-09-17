@@ -140,12 +140,12 @@
             },
             success: function (respuesta){
                 $('#idasesor').html(respuesta);  
-                sistema_select2({ input:'#idasesor' });
+                sistema_select2({ input:'#idasesor', val:'0' });
             }
         })
     }
   
-  // lista_credito();
+  lista_credito();
   function lista_credito(){
     //let estado_credito = $('input[name="estado_credito"]:checked').val();
     

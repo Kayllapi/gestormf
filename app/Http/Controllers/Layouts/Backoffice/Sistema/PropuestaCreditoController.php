@@ -124,6 +124,10 @@ class PropuestaCreditoController extends Controller
           $where[] = ['credito.idtienda',$request->input('idagencia')];
           $where[] = ['credito.estado','<>','ELIMINADO'];
           $orderBy = 'credito.id';
+
+          if($request->filled('idasesor')){
+              $where[] = ['credito.idasesor',$request->input('idasesor')];
+          }
           
           if($request->input('estado')=='PROCESO'){
               $where[] = ['credito.estado',$request->input('estado')];

@@ -178,6 +178,7 @@
       data: {
           estado : estado_credito,
           idagencia : $('#idagencia').val(),
+          idasesor : {{ Auth::user()->id }},
           inicio : $('#fecha_inicio').val(),
           fin : $('#fecha_fin').val(),
       },

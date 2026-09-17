@@ -91,7 +91,7 @@
                   </div>
                   <div class="col-sm-12 mt-2">
                     <div class="row">
-                      <div class="col-sm-12 col-md-7">
+                      <div class="col-sm-12 col-md-8">
                         <div class="form-check form-check-inline">
                           <label class="radio-custom">
                             <input type="radio" name="estado_credito" id="estado_enproceso" value="PROCESO" onclick="lista_credito();" checked>
@@ -123,19 +123,19 @@
                           </label>
                         </div>
                       </div>
-                      <div class="col-sm-12 col-md-2">
-                        <div class="row">
-                          <label for="fecha_inicio" class="col-sm-2 col-form-label">DE</label>
-                          <div class="col-sm-10">
-                            <input type="date" class="form-control" id="fecha_inicio" value="{{ date('Y-m-d') }}">
+                      <div class="col-sm-12 col-md-auto">
+                        <div class="row align-items-center">
+                          <label for="fecha_inicio" class="col-auto col-form-label">DE</label>
+                          <div class="col-auto">
+                            <input type="date" class="form-control" id="fecha_inicio" style="width: 100px;" value="{{ date('Y-m-d') }}">
                           </div>
                         </div>
                       </div>
-                      <div class="col-sm-12 col-md-2">
-                        <div class="row">
-                          <label for="fecha_fin" class="col-sm-2 col-form-label">AL</label>
-                          <div class="col-sm-10">
-                            <input type="date" class="form-control" id="fecha_fin" value="{{ date('Y-m-d') }}">
+                      <div class="col-sm-12 col-md-auto">
+                        <div class="row align-items-center">
+                          <label for="fecha_fin" class="col-auto col-form-label">AL</label>
+                          <div class="col-auto">
+                            <input type="date" class="form-control" id="fecha_fin" style="width: 100px;" value="{{ date('Y-m-d') }}">
                           </div>
                         </div>
                       </div>

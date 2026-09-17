@@ -373,7 +373,7 @@
       <div class="col">
         <table style="width:100%;">
           <tr>
-            <td>Asesor(a) / Ejecutivo(a):</td>
+            <td>Asesor(a) / Ejecutivo(a) Proponente que registra firma: {{ $asesor->nombrecompleto }}</td>
             <td class="border-td" width="100px">{{ substr($asesor->nombre, 0, 1) }}{{ $asesor->apellidopaterno }}</td>
           </tr>
         </table>

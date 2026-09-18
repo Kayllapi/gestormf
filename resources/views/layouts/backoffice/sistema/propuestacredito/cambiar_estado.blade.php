@@ -39,7 +39,7 @@
         <table class="table table-bordered">
           <thead>
             <tr>
-              <th colspan=4 class="text-center">Detalle de Aprobación</th>
+              <th colspan=4 class="text-center"><b>DETALLE DE APROBACIÓN</b></th>
             </tr>
             <tr>
               <th width="10px">#</th>
@@ -66,7 +66,7 @@
 
             @if(isset($credito_aprobacion_escalamiento) && count($credito_aprobacion_escalamiento) > 0)
             <tr>
-              <th colspan=4 class="text-center"><b>ESCALAMIENTO DE APROBACIÓN</b></th>
+              <th colspan=4 class="text-center bg-warning"><b>ESCALAMIENTO DE APROBACIÓN</b></th>
             </tr>
             @foreach($credito_aprobacion_escalamiento as $key => $value)
             <tr>

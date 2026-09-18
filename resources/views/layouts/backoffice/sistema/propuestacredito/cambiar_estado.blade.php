@@ -220,7 +220,7 @@
                               @if($value->idusers!=0)
                                   @if($value->idestado==1)
                                   <td id="resultado_cambiar_permiso_esc{{ $num_esc }}">
-                                    <div style="background-color: #9AD872;padding: 7px;border-radius: 5px;color: #000;text-align: center;font-weight: bold;">F. REGISTRADO</div></td>
+                                    <div style="background-color: #9AD872;padding: 7px;border-radius: 5px;color: #000;text-align: center;font-weight: bold;">APROBADO</div></td>
                                   @elseif($value->idestado==2)
                                   <td id="resultado_cambiar_permiso_esc{{ $num_esc }}">
                                     <div class="btn btn-danger" style="width: 100%; text-align: center;">DESAPROBADO</div></td>
@@ -299,7 +299,7 @@
                               @if($value->idusers!=0)
                                   @if($value->idestado==1)
                                   <td id="resultado_cambiar_permiso{{ $num }}">
-                                    <div style="background-color: #9AD872;padding: 7px;border-radius: 5px;color: #000;text-align: center;font-weight: bold;">F. REGISTRADO</div></td>
+                                    <div style="background-color: #9AD872;padding: 7px;border-radius: 5px;color: #000;text-align: center;font-weight: bold;">APROBADO</div></td>
                                   @elseif($value->idestado==2)
                                   <td id="resultado_cambiar_permiso{{ $num }}">
                                     <div class="btn btn-danger" style="width: 100%; text-align: center;">DESAPROBADO</div></td>
@@ -818,7 +818,7 @@
           },
           function(res){
             if(estado==1){
-                $(target+' > tbody > tr #'+resultId).html('<div style="background-color: #9AD872;padding: 7px;border-radius: 5px;color: #000;text-align: center;font-weight: bold;">F. REGISTRADO</div>');
+                $(target+' > tbody > tr #'+resultId).html('<div style="background-color: #9AD872;padding: 7px;border-radius: 5px;color: #000;text-align: center;font-weight: bold;">APROBADO</div>');
             }
             else if(estado==2){
                 $(target+' > tbody > tr #'+resultId).html('<div class="btn btn-danger" style="width: 100%; text-align: center;">DESAPROBADO</div>');

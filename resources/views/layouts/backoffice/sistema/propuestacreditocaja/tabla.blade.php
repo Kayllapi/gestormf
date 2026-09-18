@@ -35,7 +35,7 @@
                   <div class="col-sm-12">
                     <button type="button" class="btn btn-warning" onclick="cambiar_estado('PENDIENTE')" id="btn_pasargenerarcredito"> PASAR A GENERAR CRÉDITO</button>
                     <button type="button" class="btn btn-success" onclick="cambiar_estado('APROBADO')"> APROBAR CRÉDITO</button>
-                    <button type="button" class="btn btn-danger" onclick="cambiar_estado('ELIMINAR')"> ELIMINAR CRÉDITO</button>
+                    <!-- <button type="button" class="btn btn-danger" onclick="cambiar_estado('ELIMINAR')"> ELIMINAR CRÉDITO</button> -->
                     <button type="button" class="btn btn-info" onclick="acta_aprobacion()" style="float: right;"> 
                     <b>ACTA DE APROBACIÓN</b><br>
                     <div style="float: right;margin-right:5px;font-size:13px;">

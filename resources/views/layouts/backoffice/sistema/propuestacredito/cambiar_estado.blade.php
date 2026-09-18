@@ -66,7 +66,7 @@
 
             @if(isset($credito_aprobacion_escalamiento) && count($credito_aprobacion_escalamiento) > 0)
             <tr>
-              <td colspan=4 class="text-center bg-warning"><b>ESCALAMIENTO DE APROBACIÓN</b></td>
+              <th colspan=4 class="text-center"><b>ESCALAMIENTO DE APROBACIÓN</b></th>
             </tr>
             @foreach($credito_aprobacion_escalamiento as $key => $value)
             <tr>

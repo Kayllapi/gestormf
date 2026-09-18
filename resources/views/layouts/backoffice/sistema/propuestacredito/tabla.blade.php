@@ -59,7 +59,7 @@
                         }
 
                         if(estado == "DESAPROBADO" && desaprobado_definitivo == "1" && (tipo == "ELIMINAR" || tipo == "APROBADO" || tipo == "PENDIENTE")){
-                          var mensaje = "Crédito desaprobado completamente, no puede realizar ninguna acción.";
+                          var mensaje = "Solicitud de crédito desaprobado, no puede realizar ninguna acción.";
                           modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
                           return false;
                         }

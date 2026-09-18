@@ -748,6 +748,23 @@ class PropuestaCreditoController extends Controller
                               ->orderBy('permiso.rango','asc')
                               ->get();
 
+        // Firmas de la ronda de ESCALAMIENTO (posicion=1) ya registradas, para mostrarlas en el
+        // "Detalle de Aprobación" cuando el crédito terminó aprobado/desaprobado por esa vía.
+        $credito_aprobacion_escalamiento = DB::table('credito_aprobacion')
+                              ->join('permiso','permiso.id','credito_aprobacion.idpermiso')
+                              ->join('users','users.id','credito_aprobacion.idusers')
+                              ->where('credito_aprobacion.idcredito', $credito->id)
+                              ->where('credito_aprobacion.posicion', 1)
+                              ->select(
+                                  'credito_aprobacion.*',
+                                  'permiso.nombre as nombre_permiso',
+                                  'users.nombrecompleto as nombre_usuario',
+                                  'users.nombre as nombre',
+                                  'users.apellidopaterno as apellidopaterno',
+                              )
+                              ->orderBy('permiso.rango','asc')
+                              ->get();
+
         // Si ya hay tipo/nivel guardado, completar con los permisos faltantes del nivel
         $credito_aprobacion = $credito_aprobacion_db; // default
         $permisos_normal_ids = []; // permisos ya exigidos/firmados en la ronda normal
@@ -947,6 +964,7 @@ class PropuestaCreditoController extends Controller
           'usuarios' => $usuarios,
           'nivel_aprobacion' => $nivel_aprobacion,
           'credito_aprobacion' => $credito_aprobacion,
+          'credito_aprobacion_escalamiento' => $credito_aprobacion_escalamiento,
           'credito_escalamiento' => $credito_escalamiento,
           'escalamiento_bloqueado' => $escalamiento_bloqueado,
           'escalamiento_bloqueado_mensaje' => $escalamiento_bloqueado_mensaje,

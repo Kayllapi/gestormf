@@ -39,12 +39,13 @@
         <table class="table table-bordered">
           <thead>
             <tr>
-              <th colspan=3 class="text-center">Detalle de Aprobación</th>
+              <th colspan=4 class="text-center">Detalle de Aprobación</th>
             </tr>
             <tr>
               <th width="10px">#</th>
               <th>Cargo</th>
               <th>Personal</th>
+              <th width="120px">Resultado</th>
             </tr>
           </thead>
           <tbody>
@@ -53,9 +54,35 @@
               <td>{{ ($key+1) }}</td>
               <td>{{ $value->nombre_permiso }}</td>
               <td>{{ $value->nombre_usuario }}</td>
+              <td class="text-center">
+                @if($value->idestado==1)
+                  <span class="badge bg-success">APROBÓ</span>
+                @elseif($value->idestado==2)
+                  <span class="badge bg-danger">DESAPROBÓ</span>
+                @endif
+              </td>
             </tr>
             @endforeach
-            
+
+            @if(isset($credito_aprobacion_escalamiento) && count($credito_aprobacion_escalamiento) > 0)
+            <tr>
+              <td colspan=4 class="text-center bg-warning"><b>ESCALAMIENTO DE APROBACIÓN</b></td>
+            </tr>
+            @foreach($credito_aprobacion_escalamiento as $key => $value)
+            <tr>
+              <td>{{ ($key+1) }}</td>
+              <td>{{ $value->nombre_permiso }}</td>
+              <td>{{ $value->nombre_usuario }}</td>
+              <td class="text-center">
+                @if($value->idestado==1)
+                  <span class="badge bg-success">APROBÓ</span>
+                @elseif($value->idestado==2)
+                  <span class="badge bg-danger">DESAPROBÓ</span>
+                @endif
+              </td>
+            </tr>
+            @endforeach
+            @endif
           </tbody>
         </table>
       

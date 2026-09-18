@@ -388,7 +388,7 @@
                                   padding: 10px;
                                   border-radius: 5px;
                                   width: 100%;
-                                  margin: auto;">Este crédito ha sido desaprobado en su totalidad, no puede realizar ninguna acción.</p>
+                                  margin: auto;">Crédito desaprobado completamente, no puede realizar ninguna acción.</p>
           @elseif($fecha!=$ultimafecha)
                         <p class="text-center"
                            style="background-color: #ffc9ca;
@@ -463,7 +463,7 @@
                                   padding: 10px;
                                   border-radius: 5px;
                                   width: 100%;
-                                  margin: auto;">Este crédito ha sido desaprobado en su totalidad, no puede realizar ninguna acción.</p>
+                                  margin: auto;">Crédito desaprobado completamente, no puede realizar ninguna acción.</p>
           @elseif($credito->estado=='DESEMBOLSADO')
                         <p class="text-center"
                            style="background-color: #ffc9ca;

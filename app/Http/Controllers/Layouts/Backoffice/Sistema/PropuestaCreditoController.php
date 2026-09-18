@@ -820,7 +820,7 @@ class PropuestaCreditoController extends Controller
                     ->count();
                 if($valid_desaprobado_escalamiento > 0){
                     $escalamiento_bloqueado = true;
-                    $escalamiento_bloqueado_mensaje = 'Este crédito ha sido desaprobado en su totalidad, no puede realizar ninguna acción.';
+                    $escalamiento_bloqueado_mensaje = 'Crédito desaprobado completamente, no puede realizar ninguna acción.';
                 } else {
                     $valid_aprobado_normal = DB::table('credito_aprobacion')
                         ->where('idcredito', $credito->id)
@@ -829,7 +829,7 @@ class PropuestaCreditoController extends Controller
                         ->count();
                     if($valid_aprobado_normal == 0){
                         $escalamiento_bloqueado = true;
-                        $escalamiento_bloqueado_mensaje = 'Este crédito ha sido desaprobado en su totalidad, no puede realizar ninguna acción.';
+                        $escalamiento_bloqueado_mensaje = 'Crédito desaprobado completamente, no puede realizar ninguna acción.';
                     }
                 }
             }

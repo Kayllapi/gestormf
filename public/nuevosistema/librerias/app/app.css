@@ -34,6 +34,14 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+/* Estado disabled: mismo feedback visual que un input nativo deshabilitado */
+.radio-custom:has(input:disabled) {
+  cursor: not-allowed;
+}
+.radio-custom input:disabled + .radio {
+  opacity: 0.5;
+}
 /* SELECT 2 */
 select+.select2-container--bootstrap-5 {
     width: 100% !important;

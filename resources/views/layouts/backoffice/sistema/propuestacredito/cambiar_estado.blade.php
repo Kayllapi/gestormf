@@ -117,18 +117,20 @@
                 <div class="mb-1">
                     <div class="mt-2 bg-primary subtitulo">Opciones</div>
                         <div class="form-check">
-                          <input class="form-check-input" type="radio" name="exampleRadios" id="check_uno_table" 
-                                 value="table_uno" {{ $credito->aprobacion_nivel_validacion==1 && count($credito_aprobacion)>0?'checked':'' }} {{ $credito->aprobacion_nivel_validacion!=0 && count($credito_aprobacion)>0?'disabled':'' }}>
-                          <label class="form-check-label" for="check_uno_table">
-                            OPCIÓN 1
+                          <label class="radio-custom form-check-label">
+                            <input type="radio" name="exampleRadios" id="check_uno_table" value="table_uno"
+                              {{ $credito->aprobacion_nivel_validacion==1 && count($credito_aprobacion)>0?'checked':'' }} {{ $credito->aprobacion_nivel_validacion!=0 && count($credito_aprobacion)>0?'disabled':'' }}
+                              >
+                            <span class="radio"></span> OPCIÓN 1
                           </label>
                         </div>
                   
                         <div class="form-check">
-                          <input class="form-check-input" type="radio" name="exampleRadios" id="check_dos_table" 
-                                 value="table_dos" {{ $credito->aprobacion_nivel_validacion==2 && count($credito_aprobacion)>0?'checked':'' }} {{ $credito->aprobacion_nivel_validacion!=0 && count($credito_aprobacion)>0?'disabled':'' }}>
-                          <label class="form-check-label" for="check_dos_table">
-                            OPCIÓN 2
+                          <label class="radio-custom form-check-label">
+                            <input type="radio" name="exampleRadios" id="check_dos_table" value="table_dos"
+                              {{ $credito->aprobacion_nivel_validacion==2 && count($credito_aprobacion)>0?'checked':'' }} {{ $credito->aprobacion_nivel_validacion!=0 && count($credito_aprobacion)>0?'disabled':'' }}
+                              >
+                            <span class="radio"></span> OPCIÓN 2
                           </label>
                         </div>
                 </div>

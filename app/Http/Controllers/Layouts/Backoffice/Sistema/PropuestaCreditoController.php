@@ -195,6 +195,12 @@ class PropuestaCreditoController extends Controller
                             </ul>
                           </div>";
               $fecha = '';
+              // Un DESAPROBADO es definitivo (ya no cabe escalamiento) en dos casos: (1) es un
+              // crédito No Prendario (CNP) que fue desaprobado en escalamiento (posicion=1), o
+              // (2) fue desaprobado por todo el comité en la ronda normal (0 aprobaciones en
+              // posicion=0), lo que bloquea el escalamiento desde el inicio. Los CP (idforma_credito=1)
+              // nunca escalan, así que un CP desaprobado también es definitivo.
+              $desaprobado_definitivo = 0;
               if($value->estado=='PROCESO'){
                   $fecha = $value->fecha_proceso!=''?date_format(date_create($value->fecha_proceso),"d-m-Y h:i A"):'';
               }
@@ -203,6 +209,28 @@ class PropuestaCreditoController extends Controller
               }
               elseif($value->estado=='DESAPROBADO'){
                   $fecha = $value->fecha_desaprobacion!=''?date_format(date_create($value->fecha_desaprobacion),"d-m-Y h:i A"):'';
+
+                  if($value->idforma_credito != 2){
+                      $desaprobado_definitivo = 1;
+                  } else {
+                      $valid_desaprobado_escalamiento = DB::table('credito_aprobacion')
+                          ->where('idcredito', $value->id)
+                          ->where('posicion', 1)
+                          ->where('idestado', 2)
+                          ->count();
+                      if($valid_desaprobado_escalamiento > 0){
+                          $desaprobado_definitivo = 1;
+                      } else {
+                          $valid_aprobado_normal = DB::table('credito_aprobacion')
+                              ->where('idcredito', $value->id)
+                              ->where('posicion', 0)
+                              ->where('idestado', 1)
+                              ->count();
+                          if($valid_aprobado_normal == 0){
+                              $desaprobado_definitivo = 1;
+                          }
+                      }
+                  }
               }
               elseif($value->estado=='DESEMBOLSADO'){
                   if($value->idestadocredito==2){
@@ -214,7 +242,7 @@ class PropuestaCreditoController extends Controller
                   $opcion = "";
               }
               $formacredito = $value->idforma_credito == 1 ? 'CP' : ($value->idforma_credito == 2 ? 'CNP' : '');
-              $html .= "<tr id='show_data_select' idcredito='{$value->id}' estado='{$value->estado}' idcredito_refinanciado='{$value->idcredito_refinanciado}'>
+              $html .= "<tr id='show_data_select' idcredito='{$value->id}' estado='{$value->estado}' idcredito_refinanciado='{$value->idcredito_refinanciado}' desaprobado_definitivo='{$desaprobado_definitivo}'>
                             <td>".($key+1)."</td>
                             <td>{$value->nombrecliente}</td>
                             <td>{$value->nombreaval}</td>
@@ -792,7 +820,7 @@ class PropuestaCreditoController extends Controller
                     ->count();
                 if($valid_desaprobado_escalamiento > 0){
                     $escalamiento_bloqueado = true;
-                    $escalamiento_bloqueado_mensaje = 'Este crédito ha sido desaprobado.';
+                    $escalamiento_bloqueado_mensaje = 'Este crédito ha sido desaprobado en su totalidad, no puede realizar ninguna acción.';
                 } else {
                     $valid_aprobado_normal = DB::table('credito_aprobacion')
                         ->where('idcredito', $credito->id)
@@ -801,7 +829,35 @@ class PropuestaCreditoController extends Controller
                         ->count();
                     if($valid_aprobado_normal == 0){
                         $escalamiento_bloqueado = true;
-                        $escalamiento_bloqueado_mensaje = 'Este crédito no se puede aprobar por escalamiento porque fue rechazado por todo el comité. Se requiere al menos una aprobación en la ronda normal.';
+                        $escalamiento_bloqueado_mensaje = 'Este crédito ha sido desaprobado en su totalidad, no puede realizar ninguna acción.';
+                    }
+                }
+            }
+        }
+
+        // Igual que $escalamiento_bloqueado, pero evaluado siempre (no solo cuando tipo=='APROBADO')
+        // para poder bloquear también ELIMINAR y PASAR A GENERAR CRÉDITO sobre un DESAPROBADO
+        // que ya quedó en firme (sin escalamiento posible).
+        $desaprobado_definitivo = false;
+        if($credito->estado == 'DESAPROBADO'){
+            if($credito->idforma_credito != 2){
+                $desaprobado_definitivo = true;
+            } else {
+                $valid_desaprobado_escalamiento_def = DB::table('credito_aprobacion')
+                    ->where('idcredito', $credito->id)
+                    ->where('posicion', 1)
+                    ->where('idestado', 2)
+                    ->count();
+                if($valid_desaprobado_escalamiento_def > 0){
+                    $desaprobado_definitivo = true;
+                } else {
+                    $valid_aprobado_normal_def = DB::table('credito_aprobacion')
+                        ->where('idcredito', $credito->id)
+                        ->where('posicion', 0)
+                        ->where('idestado', 1)
+                        ->count();
+                    if($valid_aprobado_normal_def == 0){
+                        $desaprobado_definitivo = true;
                     }
                 }
             }
@@ -894,6 +950,7 @@ class PropuestaCreditoController extends Controller
           'credito_escalamiento' => $credito_escalamiento,
           'escalamiento_bloqueado' => $escalamiento_bloqueado,
           'escalamiento_bloqueado_mensaje' => $escalamiento_bloqueado_mensaje,
+          'desaprobado_definitivo' => $desaprobado_definitivo,
           'estado' => $request->input('tipo'),
           'permiso' => $request->input('permiso'),
           'asesor' => $asesor,

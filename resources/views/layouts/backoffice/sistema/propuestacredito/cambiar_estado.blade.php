@@ -380,8 +380,17 @@
             $fecha = Carbon\Carbon::now()->format('Y-m-d');
             $ultimafecha = date_format(date_create($credito->fecha_desembolso),"Y-m-d");
           ?>
-          @if($fecha!=$ultimafecha)
-                        <p class="text-center" 
+          @if(isset($desaprobado_definitivo) && $desaprobado_definitivo)
+                        <p class="text-center"
+                           style="background-color: #ffc9ca;
+                                  border: 1px solid #ff6666 !important;
+                                  color: #93222c;
+                                  padding: 10px;
+                                  border-radius: 5px;
+                                  width: 100%;
+                                  margin: auto;">Este crédito ha sido desaprobado en su totalidad, no puede realizar ninguna acción.</p>
+          @elseif($fecha!=$ultimafecha)
+                        <p class="text-center"
                            style="background-color: #ffc9ca;
                                   border: 1px solid #ff6666 !important;
                                   color: #93222c;
@@ -445,9 +454,18 @@
           @endif
              
         @else
-          
-          @if($credito->estado=='DESEMBOLSADO')
-                        <p class="text-center" 
+
+          @if(isset($desaprobado_definitivo) && $desaprobado_definitivo)
+                        <p class="text-center"
+                           style="background-color: #ffc9ca;
+                                  border: 1px solid #ff6666 !important;
+                                  color: #93222c;
+                                  padding: 10px;
+                                  border-radius: 5px;
+                                  width: 100%;
+                                  margin: auto;">Este crédito ha sido desaprobado en su totalidad, no puede realizar ninguna acción.</p>
+          @elseif($credito->estado=='DESEMBOLSADO')
+                        <p class="text-center"
                            style="background-color: #ffc9ca;
                                   border: 1px solid #ff6666 !important;
                                   color: #93222c;

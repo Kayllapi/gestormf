@@ -50,6 +50,7 @@
                         let estado = $('#table-lista-credito > tbody > tr.selected').attr('estado');
                         let idcredito = $('#table-lista-credito > tbody > tr.selected').attr('idcredito');
                         let idcredito_refinanciado = $('#table-lista-credito > tbody > tr.selected').attr('idcredito_refinanciado');
+                        let desaprobado_definitivo = $('#table-lista-credito > tbody > tr.selected').attr('desaprobado_definitivo');
 
                         if(idcredito == "" || idcredito == undefined ){
                           var mensaje = "Debe de seleccionar un crédito.";
@@ -57,11 +58,11 @@
                           return false;
                         }
 
-                        // if(estado == "DESAPROBADO" && tipo != "APROBADO"){
-                        //   var mensaje = "No puede eliminar un Crédito Desaprobado.";
-                        //   modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
-                        //   return false;
-                        // }
+                        if(estado == "DESAPROBADO" && desaprobado_definitivo == "1" && (tipo == "ELIMINAR" || tipo == "APROBADO" || tipo == "PENDIENTE")){
+                          var mensaje = "Este crédito ha sido desaprobado en su totalidad, no puede realizar ninguna acción.";
+                          modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
+                          return false;
+                        }
                         if(estado == "CANCELADO"){
                           var mensaje = "Crédito Cancelado, no puede realizar ninguna acción.";
                           modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });

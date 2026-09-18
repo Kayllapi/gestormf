@@ -75,21 +75,24 @@
                 ? $credito->fecha_validacion_asesor_escalamiento
                 : $credito->fecha_validacion_asesor;
           ?>
-          <div class="col-sm-12 col-md-12" id="cont_escalamiento_gate" @if($fecha_gate_asesor) style="display:none;" @endif>
-              <div class="mt-2 bg-primary subtitulo text-center">VERIFICAR EL REGISTRO COMO ASESOR</div>
-              <div class="row" style="padding:10px;">
-                  <div class="col-md-4">
-                      <label>Asesor(a) / Ejecutivo(a) Proponente - Registro de firma</label>
-                      <input type="text" class="form-control" value="{{ $asesor->nombrecompleto ?? '' }}" disabled>
-                  </div>
-                  <div class="col-md-4">
-                      <label>Contraseña *</label>
-                      <input type="password" class="form-control" id="escalamiento_asesor_clave">
-                  </div>
-                  <div class="col-md-4 d-flex align-items-end">
-                      <button type="button" class="btn btn-primary" id="btn_registrar_escalamiento" onclick="validarasesorescalamiento()"><i class="fa-solid fa-check"></i> REGISTRAR</button>
-                  </div>
+          <div id="cont_escalamiento_gate" @if($fecha_gate_asesor) style="display:none;" @endif>
+            <div class="row">
+                <div class="col-sm-4"> </div>
+                <div class="col-sm-4 mt-2"> 
+              <div class="mt-2 bg-primary subtitulo">VERIFICAR EL REGISTRO COMO ASESOR</div>
+                      <div class="mb-1">
+                          <label>Asesor(a) / Ejecutivo(a) Proponente - Registro de firma</label>
+                          <input type="text" class="form-control" value="{{ $asesor->nombrecompleto ?? '' }}" disabled>
+                      </div>
+                      <div class="mb-1">
+                          <label>Contraseña *</label>
+                          <input type="password" class="form-control" id="escalamiento_asesor_clave">
+                      </div>
+                </div>
               </div>
+            <div class="col-sm-12 mt-2 text-center">
+              <button type="button" class="btn btn-primary" id="btn_registrar_escalamiento" onclick="validarasesorescalamiento()"><i class="fa-solid fa-check"></i> REGISTRAR</button>
+            </div>
           </div>
           @if($fecha_gate_asesor)
           <div class="col-sm-12 col-md-12" id="cont_escalamiento_gate_registrado">

@@ -384,6 +384,7 @@
             $credito_cobranzacuota = DB::table('credito_cobranzacuota')
               ->where('credito_cobranzacuota.idcredito',$credito->id)
               ->where('credito_cobranzacuota.idestadocredito_cobranzacuota',1)
+              ->where('credito_cobranzacuota.idestadoextorno','<>',2)
               ->count();
             $fecha = Carbon\Carbon::now()->format('Y-m-d');
             $ultimafecha = date_format(date_create($credito->fecha_desembolso),"Y-m-d");

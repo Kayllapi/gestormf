@@ -196,7 +196,7 @@
                                         ->get();
                           ?>
                             <tr id="{{ $num_esc }}" idpermiso="{{ $value->idpermiso }}" idestado="{{ $value->idestado }}" idregistro="{{ $value->id }}">
-                              <td><span class="badge bg-warning">{{ $value->nombre_permiso }}</span></td>
+                              <td><span class="badge bg-warning" style="border: 1px solid #8e8875;">{{ $value->nombre_permiso }}</span></td>
                               <td>
                               @if($value->idusers!=0)
                                 <select class="form-control" id="esc_usuario{{ $num_esc }}" usuario {{$disabled}}>
@@ -221,19 +221,12 @@
                                     <div style="background-color: #9AD872;padding: 7px;border-radius: 5px;color: #000;text-align: center;font-weight: bold;">F. REGISTRADO</div></td>
                                   @elseif($value->idestado==2)
                                   <td id="resultado_cambiar_permiso_esc{{ $num_esc }}">
-                                    <div style="
-                                      background-color: #ffc9ca;
-                                      padding: 7px;
-                                      border: 1px solid #ff6666 !important;
-                                      border-radius: 5px;
-                                      color: #93222c;
-                                      text-align: center;
-                                      font-weight: bold;">DESAPROBADO</div></td>
+                                    <div class="btn btn-danger">DESAPROBADO</div></td>
                                   @endif
                               @else
                               <td id="resultado_cambiar_permiso_esc{{ $num_esc }}" style="width:242px">
                                 <button type="button" class="btn btn-warning" onclick="validarclave({{ $num_esc }},1,'#table-permisos-escalamiento','esc','escalamiento')"><i class="fa-solid fa-check"></i> APROBAR</button>
-                                <button type="button" class="btn btn-danger" onclick="validarclave({{ $num_esc }},2,'#table-permisos-escalamiento','esc','escalamiento')"><i class="fa-solid fa-ban"></i> DESAPROBAR</button>
+                                <button type="button" class="btn btn-danger" onclick="validarclave({{ $num_esc }},2,'#table-permisos-escalamiento','esc','escalamiento')"><i class="fa-solid fa-close"></i> DESAPROBAR</button>
                               </td>
                               @endif
                               <td><input type="text" comentario_users id="esc_comentario{{ $num_esc }}" value="{{ $value->comentario }}" class="form-control {{$color_cajatexto}}" {{$disabled}}></td>
@@ -282,7 +275,7 @@
                                         ->get();
                           ?>
                             <tr id="{{ $num }}" idpermiso="{{ $value->idpermiso }}" idestado="{{ $value->idestado }}" idregistro="{{ $value->id }}">
-                              <td><span class="badge bg-warning">{{ $value->nombre_permiso }}</span></td>
+                              <td><span class="badge bg-warning" style="border: 1px solid #8e8875;">{{ $value->nombre_permiso }}</span></td>
                               <td>
                               @if($value->idusers!=0)
                                 <select class="form-control" id="per_usuario{{ $num }}" usuario {{$disabled}}>
@@ -307,19 +300,12 @@
                                     <div style="background-color: #9AD872;padding: 7px;border-radius: 5px;color: #000;text-align: center;font-weight: bold;">F. REGISTRADO</div></td>
                                   @elseif($value->idestado==2)
                                   <td id="resultado_cambiar_permiso{{ $num }}">
-                                    <div style="
-                                      background-color: #ffc9ca;
-                                      padding: 7px;
-                                      border: 1px solid #ff6666 !important;
-                                      border-radius: 5px;
-                                      color: #93222c;
-                                      text-align: center;
-                                      font-weight: bold;">DESAPROBADO</div></td>
+                                    <div class="btn btn-danger">DESAPROBADO</div></td>
                                   @endif
                               @else
                               <td id="resultado_cambiar_permiso{{ $num }}" style="width:242px">
                                 <button type="button" class="btn btn-warning" onclick="validarclave({{ $num }},1,'#table-permisos-nivel-uno')"><i class="fa-solid fa-check"></i> APROBAR</button>
-                                <button type="button" class="btn btn-danger" onclick="validarclave({{ $num }},2,'#table-permisos-nivel-uno')"><i class="fa-solid fa-ban"></i> DESAPROBAR</button>
+                                <button type="button" class="btn btn-danger" onclick="validarclave({{ $num }},2,'#table-permisos-nivel-uno')"><i class="fa-solid fa-close"></i> DESAPROBAR</button>
                               </td>
                               @endif
                               <td><input type="text" comentario_users id="per_comentario{{ $num }}" value="{{ $value->comentario }}" class="form-control {{$color_cajatexto}}" {{$disabled}}></td>
@@ -647,7 +633,7 @@
                             <button type="button" class="btn btn-warning" onclick="validarclave(0,1,'${target}')">
                             <i class="fa-solid fa-check"></i> APROBAR</button>
                             <button type="button" class="btn btn-danger" onclick="validarclave(0,2,'${target}')">
-                            <i class="fa-solid fa-ban"></i> DESAPROBAR</button></td>
+                            <i class="fa-solid fa-close"></i> DESAPROBAR</button></td>
                           <td><input type="text" comentario_users id="per_comentario0" class="form-control color_cajatexto"></td>
                         </tr>`;*/
     let tr_body = '';
@@ -670,7 +656,7 @@
                             <button type="button" class="btn btn-warning" onclick="validarclave(${num},1)">
                             <i class="fa-solid fa-check"></i> APROBAR</button>
                             <button type="button" class="btn btn-danger" onclick="validarclave(${num},2)">
-                            <i class="fa-solid fa-ban"></i> ANULAR</button></td>`;*/
+                            <i class="fa-solid fa-close"></i> ANULAR</button></td>`;*/
         /*if(valid_estado=='OK'){
             disabled = 'disabled';
             
@@ -685,14 +671,14 @@
         }*/
 
         tr_body += `<tr id="${num}" idpermiso="${valor.idpermiso}" idestado="0" idregistro="0">
-                          <td><span class="badge bg-warning" style="color:#000">${valor.permiso}</span></td>
+                          <td><span class="badge bg-warning" style="border: 1px solid #8e8875; color: #000">${valor.permiso}</span></td>
                           <td><select class="form-control" id="per_usuario${num}" usuario>${option_usuario}</select></td>
                           <td><input type="password" password_users id="per_clave${num}" class="form-control text-center"></td>
                           <td id="resultado_cambiar_permiso${num}" style="width:242px">
                             <button type="button" class="btn btn-warning" onclick="validarclave(${num},1,'${target}')">
                             <i class="fa-solid fa-check"></i> APROBAR</button>
                             <button type="button" class="btn btn-danger" onclick="validarclave(${num},2,'${target}')">
-                            <i class="fa-solid fa-ban"></i> DESAPROBAR</button></td>
+                            <i class="fa-solid fa-close"></i> DESAPROBAR</button></td>
                           <td><input type="text" comentario_users id="per_comentario${num}" class="form-control color_cajatexto"></td>
                         </tr>`;
         num++;
@@ -815,7 +801,7 @@
                 $(target+' > tbody > tr #'+resultId).html('<div style="background-color: #9AD872;padding: 7px;border-radius: 5px;color: #000;text-align: center;font-weight: bold;">F. REGISTRADO</div>');
             }
             else if(estado==2){
-                $(target+' > tbody > tr #'+resultId).html('<div style="background-color: #dc3545;padding: 7px;border-radius: 5px;color: #fff;text-align: center;font-weight: bold;">DESAPROBADO</div>');
+                $(target+' > tbody > tr #'+resultId).html('<div class"btn btn-danger">DESAPROBADO</div>');
             }
 
             $(target+' > tbody > tr #'+prefix+'_usuario'+num).attr('disabled', true);

@@ -223,7 +223,7 @@
                                     <div style="background-color: #9AD872;padding: 7px;border-radius: 5px;color: #000;text-align: center;font-weight: bold;">F. REGISTRADO</div></td>
                                   @elseif($value->idestado==2)
                                   <td id="resultado_cambiar_permiso_esc{{ $num_esc }}">
-                                    <div class="btn btn-danger">DESAPROBADO</div></td>
+                                    <div class="btn btn-danger" style="width: 100%; text-align: center;">DESAPROBADO</div></td>
                                   @endif
                               @else
                               <td id="resultado_cambiar_permiso_esc{{ $num_esc }}" style="width:242px">
@@ -302,7 +302,7 @@
                                     <div style="background-color: #9AD872;padding: 7px;border-radius: 5px;color: #000;text-align: center;font-weight: bold;">F. REGISTRADO</div></td>
                                   @elseif($value->idestado==2)
                                   <td id="resultado_cambiar_permiso{{ $num }}">
-                                    <div class="btn btn-danger">DESAPROBADO</div></td>
+                                    <div class="btn btn-danger" style="width: 100%; text-align: center;">DESAPROBADO</div></td>
                                   @endif
                               @else
                               <td id="resultado_cambiar_permiso{{ $num }}" style="width:242px">
@@ -803,7 +803,7 @@
                 $(target+' > tbody > tr #'+resultId).html('<div style="background-color: #9AD872;padding: 7px;border-radius: 5px;color: #000;text-align: center;font-weight: bold;">F. REGISTRADO</div>');
             }
             else if(estado==2){
-                $(target+' > tbody > tr #'+resultId).html('<div class"btn btn-danger">DESAPROBADO</div>');
+                $(target+' > tbody > tr #'+resultId).html('<div class="btn btn-danger" style="width: 100%; text-align: center;">DESAPROBADO</div>');
             }
 
             $(target+' > tbody > tr #'+prefix+'_usuario'+num).attr('disabled', true);

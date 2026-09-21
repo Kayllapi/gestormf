@@ -46,6 +46,7 @@
                       function cambiar_estado(tipo){
                         let estado = $('#table-lista-credito > tbody > tr.selected').attr('estado');
                         let idcredito = $('#table-lista-credito > tbody > tr.selected').attr('idcredito');
+                        let idcredito_refinanciado = $('#table-lista-credito > tbody > tr.selected').attr('idcredito_refinanciado');
                         let desaprobado_definitivo = $('#table-lista-credito > tbody > tr.selected').attr('desaprobado_definitivo');
 
                         if(idcredito == "" || idcredito == undefined ){

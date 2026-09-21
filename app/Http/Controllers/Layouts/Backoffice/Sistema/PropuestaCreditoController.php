@@ -201,13 +201,17 @@ class PropuestaCreditoController extends Controller
               // posicion=0), lo que bloquea el escalamiento desde el inicio. Los CP (idforma_credito=1)
               // nunca escalan, así que un CP desaprobado también es definitivo.
               $desaprobado_definitivo = 0;
+              $fecha_raw = '';
               if($value->estado=='PROCESO'){
+                  $fecha_raw = $value->fecha_proceso;
                   $fecha = $value->fecha_proceso!=''?date_format(date_create($value->fecha_proceso),"d-m-Y h:i A"):'';
               }
               elseif($value->estado=='APROBADO'){
+                  $fecha_raw = $value->fecha_aprobacion;
                   $fecha = $value->fecha_aprobacion!=''?date_format(date_create($value->fecha_aprobacion),"d-m-Y h:i A"):'';
               }
               elseif($value->estado=='DESAPROBADO'){
+                  $fecha_raw = $value->fecha_desaprobacion;
                   $fecha = $value->fecha_desaprobacion!=''?date_format(date_create($value->fecha_desaprobacion),"d-m-Y h:i A"):'';
 
                   if($value->idforma_credito != 2){
@@ -235,14 +239,17 @@ class PropuestaCreditoController extends Controller
               elseif($value->estado=='DESEMBOLSADO'){
                   if($value->idestadocredito==2){
                       $value->estado = 'CANCELADO';
+                      $fecha_raw = $value->fecha_cancelado;
                       $fecha = $value->fecha_cancelado!=''?date_format(date_create($value->fecha_cancelado),"d-m-Y h:i A"):'';
                   }else{
+                      $fecha_raw = $value->fecha_desembolso;
                       $fecha = $value->fecha_desembolso!=''?date_format(date_create($value->fecha_desembolso),"d-m-Y h:i A"):'';
                   }
                   $opcion = "";
               }
               $formacredito = $value->idforma_credito == 1 ? 'CP' : ($value->idforma_credito == 2 ? 'CNP' : '');
-              $html .= "<tr id='show_data_select' idcredito='{$value->id}' estado='{$value->estado}' idcredito_refinanciado='{$value->idcredito_refinanciado}' desaprobado_definitivo='{$desaprobado_definitivo}'>
+              $fecha_estado = $fecha_raw!='' ? date('Y-m-d', strtotime($fecha_raw)) : '';
+              $html .= "<tr id='show_data_select' idcredito='{$value->id}' estado='{$value->estado}' fecha_estado='{$fecha_estado}' idcredito_refinanciado='{$value->idcredito_refinanciado}' desaprobado_definitivo='{$desaprobado_definitivo}'>
                             <td>".($key+1)."</td>
                             <td>{$value->nombrecliente}</td>
                             <td>{$value->nombreaval}</td>
@@ -721,7 +728,7 @@ class PropuestaCreditoController extends Controller
                 ->join('users_permiso','users_permiso.idusers','users.id')
                 ->join('permiso','permiso.id','users_permiso.idpermiso')
                 ->join('tienda','tienda.id','users_permiso.idtienda')
-                ->where('users_permiso.idpermiso',2)
+                ->where('users_permiso.idpermiso',$request->input('permiso')=='administrador'?1:2)
                 ->where('users_permiso.idtienda',$idtienda)
                 ->select('users.*','permiso.nombre as nombrepermiso','tienda.nombreagencia as nombretienda')
                 ->get();
@@ -1426,8 +1433,10 @@ class PropuestaCreditoController extends Controller
               ]);
               $credito_aprobado = 'CORRECTO';
             }
-            if($request->input('estado')=='ELIMINAR' && $request->input('permiso')=='administrador'){
-              
+            // Bloque antiguo deshabilitado: el permiso 'administrador' ahora se procesa en el bloque
+            // de abajo (con validación de contraseña del Administrador).
+            if(false && $request->input('estado')=='ELIMINAR' && $request->input('permiso')=='administrador'){
+
               dd(123);
               //---------- restaurar pago
               
@@ -1642,7 +1651,7 @@ class PropuestaCreditoController extends Controller
               
               $credito_aprobado = 'CORRECTO';
             }
-            if($request->input('estado')=='ELIMINAR' && $request->input('permiso')=='institucional'){
+            if($request->input('estado')=='ELIMINAR' && in_array($request->input('permiso'),['institucional','administrador'])){
               $rules = [       
                   'idresponsable' => 'required',          
                   'responsableclave' => 'required',                        
@@ -1666,12 +1675,28 @@ class PropuestaCreditoController extends Controller
                       'mensaje'   => 'El usuario y/o la contraseña es incorrecta!!.'
                   ]);
               }
-              
+
+              if($request->input('permiso')=='administrador'){
+                  // Solo un Administrador (permiso 1) de la agencia puede autorizar, y solo créditos EN PROCESO / APROBADO
+                  $es_administrador = DB::table('users_permiso')
+                      ->where('idusers',$idresponsable)
+                      ->where('idpermiso',1)
+                      ->where('idtienda',$idtienda)
+                      ->count();
+                  $credito_estado = DB::table('credito')->whereId($id)->value('estado');
+                  if($es_administrador==0 || !in_array($credito_estado,['PROCESO','APROBADO'])){
+                      return response()->json([
+                          'resultado' => 'ERROR',
+                          'mensaje'   => 'Solo el Gerente puede eliminar este crédito.'
+                      ]);
+                  }
+              }
+
               //---------- restaurar pago
               $ultimocredito = DB::table('credito')
                   ->whereId($id)
                   ->first();
-        
+
               if($ultimocredito->idcredito_refinanciado!=0){
                   if($ultimocredito->estado == 'DESEMBOLSADO'){
                       $credito = DB::table('credito')

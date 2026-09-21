@@ -437,13 +437,13 @@
 
           @else
       
-              @if($permiso=='institucional')
+              @if($permiso=='institucional' || $permiso=='administrador')
               <div class="row">
                   <div class="col-sm-4"> </div>
-                  <div class="col-sm-4 mt-2"> 
+                  <div class="col-sm-4 mt-2">
                 <div class="mt-2 bg-primary subtitulo">Aprobación</div>
                         <div class="mb-1">
-                            <label>Responsable (Gerencia General) *</label>
+                            <label>Responsable ({{ $permiso=='administrador' ? 'Administrador' : 'Gerencia General' }}) *</label>
                             <select class="form-select" id="idresponsable">
                                 <option value=""></option>
                                 @foreach($usuarios as $value)
@@ -461,22 +461,6 @@
               <div class="col-sm-12 mt-2 text-center">
                 <button type="submit" class="btn btn-danger"  onclick="cambiarestado()"><i class="fa-solid fa-check"></i> ELIMINAR CRÉDITO</button>
               </div>
-              @elseif($permiso=='administrador')
-              @if($credito->estado=='DESEMBOLSADO')
-                        <p class="text-center" 
-                           style="background-color: #ffc9ca;
-                                  border: 1px solid #ff6666 !important;
-                                  color: #93222c;
-                                  padding: 10px;
-                                  border-radius: 5px;
-                                  width: 100%;
-                                  margin: auto;">Usted no tiene permiso para ELIMINAR.</p>
-              @else
-              <p class="text-center">¿Seguro que desea eliminar el crédito?</p>
-              <div class="col-sm-12 mt-2 text-center">
-                <button type="submit" class="btn btn-danger"  onclick="cambiarestado()"><i class="fa-solid fa-check"></i> ELIMINAR CRÉDITO</button>
-              </div>
-              @endif
               @endif
           @endif
              

@@ -51,6 +51,7 @@
                         let idcredito = $('#table-lista-credito > tbody > tr.selected').attr('idcredito');
                         let idcredito_refinanciado = $('#table-lista-credito > tbody > tr.selected').attr('idcredito_refinanciado');
                         let desaprobado_definitivo = $('#table-lista-credito > tbody > tr.selected').attr('desaprobado_definitivo');
+                        let fecha_estado = $('#table-lista-credito > tbody > tr.selected').attr('fecha_estado');
 
                         if(idcredito == "" || idcredito == undefined ){
                           var mensaje = "Debe de seleccionar un crédito.";
@@ -70,6 +71,12 @@
                         }
                         if(tipo == "ELIMINAR" && (estado == "DESEMBOLSADO" || estado == "APROBADO") && idcredito_refinanciado != undefined && idcredito_refinanciado != "0"){
                           var mensaje = "Para eliminar este crédito Refinanciado hacerlo desde el Módulo Historial de Pagos";
+                          modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
+                          return false;
+                        }
+
+                        if(tipo == "ELIMINAR" && fecha_estado != undefined && fecha_estado != "" && fecha_estado != "{{ date('Y-m-d') }}"){
+                          var mensaje = "No puede eliminar créditos de fechas anteriores.";
                           modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
                           return false;
                         }

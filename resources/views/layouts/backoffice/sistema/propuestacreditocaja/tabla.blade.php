@@ -35,7 +35,7 @@
                   <div class="col-sm-12">
                     <button type="button" class="btn btn-warning" onclick="cambiar_estado('PENDIENTE')" id="btn_pasargenerarcredito"> PASAR A GENERAR CRÉDITO</button>
                     <button type="button" class="btn btn-success" onclick="cambiar_estado('APROBADO')"> APROBAR CRÉDITO</button>
-                    <!-- <button type="button" class="btn btn-danger" onclick="cambiar_estado('ELIMINAR')"> ELIMINAR CRÉDITO</button> -->
+                    <button type="button" class="btn btn-danger" onclick="cambiar_estado('ELIMINAR')"> ELIMINAR CRÉDITO</button>
                     <button type="button" class="btn btn-info" onclick="acta_aprobacion()" style="float: right;"> 
                     <b>ACTA DE APROBACIÓN</b><br>
                     <div style="float: right;margin-right:5px;font-size:13px;">
@@ -59,6 +59,11 @@
                           modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
                           return false;
                         }
+                        if(tipo == "ELIMINAR" && (estado == "DESAPROBADO" || estado == "DESEMBOLSADO" || estado == "CANCELADO")){
+                          var mensaje = "Solo el Gerente puede eliminar créditos Desaprobados, Desembolsados o Cancelados.";
+                          modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
+                          return false;
+                        }
                         if(estado == "CANCELADO"){
                           var mensaje = "Crédito Cancelado, no puede realizar ninguna acción.";
                           modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });    
@@ -70,7 +75,7 @@
                           return false;
                         }
                         
-                        let url = "{{ url('backoffice/'.$tienda->id) }}/propuestacredito/"+idcredito+"/edit?view=cambiar_estado&tipo="+tipo+'&permiso=institucional';
+                        let url = "{{ url('backoffice/'.$tienda->id) }}/propuestacredito/"+idcredito+"/edit?view=cambiar_estado&tipo="+tipo+'&permiso='+(tipo == "ELIMINAR" ? 'administrador' : 'institucional');
                         modal({ route: url, size: 'modal-fullscreen' })
                       }
                       function acta_aprobacion(){

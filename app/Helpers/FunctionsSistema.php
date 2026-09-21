@@ -1287,7 +1287,8 @@ function calculos_en_pagoacuenta($idtienda=0, $idcredito=0, $numerocuota=0, $dat
         $saldo_capital = $credito_cronograma->amortizacion - $ca_capital;
         $saldo_interes = $credito_cronograma->interes - $ca_interes;
         $saldo_cargo = $credito_cronograma->cargo - $ca_cargo;
-        $saldo_recau = $credito_cronograma->comision_cargo - $ca_comision;
+        // comision_cargo = comision + cargo; el cargo ya se descuenta en $saldo_cargo, aqui solo la comision (recaudo)
+        $saldo_recau = $credito_cronograma->comision - $ca_comision;
         // $ca_tenencia/$ca_penalidad/$ca_compensatorio ya son la suma de lo que cada pago a cuenta
         // calculo, en su momento, con el saldo real que existia ese dia (calculo "escalonado").
         // Antes aqui se volvia a calcular "de un solo tramo" (todo el atraso desde el vencimiento de
@@ -1691,7 +1692,8 @@ function calculos_en_pagoacuenta_saldos($idtienda=0, $idcredito=0, $numerocuota=
         $capital = (float) $credito_cronograma->amortizacion - (float) $ca_sumas->capital;
         $interes = (float) $credito_cronograma->interes - (float) $ca_sumas->interes;
         $cargo = (float) $credito_cronograma->cargo - (float) $ca_sumas->cargo;
-        $recaudo = (float) $credito_cronograma->comision_cargo - (float) $ca_sumas->comision;
+        // comision_cargo = comision + cargo; el cargo ya se descuenta en $cargo, aqui solo la comision (recaudo)
+        $recaudo = (float) $credito_cronograma->comision - (float) $ca_sumas->comision;
         $custodia = (float) $ca_sumas->tenencia + (float) $data_calculo_diario['tenencia_pagoacuenta'];
         $compensatorio = (float) $ca_sumas->penalidad + (float) $data_calculo_diario['penalidad_pagoacuenta'];
         $moratorio = (float) $ca_sumas->compensatorio + (float) $data_calculo_diario['compensatorio_pagoacuenta'];

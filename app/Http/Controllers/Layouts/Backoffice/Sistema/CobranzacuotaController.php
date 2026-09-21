@@ -2741,6 +2741,21 @@ class CobranzacuotaController extends Controller
                 ->whereIn('credito_adelanto.idestadocredito_adelanto',[1,2])
                 ->sum('credito_adelanto.total');
 
+            // Igual que show_cobranzacuota_cronograma (tabla principal): el pago a cuenta primero
+            // cubre la mora (compensatorio, penalidad, tenencia) y solo el resto se descuenta de la
+            // cuota. Antes se restaba el total (incluida la mora ya pagada) de la cuota completa, lo
+            // que dejaba el "Total a Pagar" de Cobrar por debajo del de la tabla (135.60 vs 214.66).
+            $saldo_total_adelantos = (float) $total_adelantos;
+            foreach (['select_compensatorio', 'select_penalidad', 'select_tenencia'] as $campo_mora) {
+                if ($saldo_total_adelantos >= $cronograma[$campo_mora]) {
+                    $saldo_total_adelantos -= $cronograma[$campo_mora];
+                    $cronograma[$campo_mora] = 0;
+                } else {
+                    $cronograma[$campo_mora] -= $saldo_total_adelantos;
+                    $saldo_total_adelantos = 0;
+                }
+            }
+
             $calculos_en_pagoacuenta = calculos_en_pagoacuenta(
                 $idtienda,
                 $credito->id,
@@ -2784,7 +2799,7 @@ class CobranzacuotaController extends Controller
             
             // ====== Calcular Total a Pagar ======
             $totalapagar = $monto_apagar != 0
-                ? ($monto_apagar + $tenencia_penalidad_mora - $pagoacuenta_acuenta + $descuento_porcobrar - $descuentocuotas)
+                ? (($monto_apagar - $saldo_total_adelantos) + $tenencia_penalidad_mora + $descuento_porcobrar - $descuentocuotas)
                 : 0.00;
             // ====== Fin ======
 

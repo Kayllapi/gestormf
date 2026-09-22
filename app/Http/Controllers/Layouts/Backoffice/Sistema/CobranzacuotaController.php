@@ -2087,9 +2087,19 @@ class CobranzacuotaController extends Controller
             //     ? ($monto_apagar + $tenencia_penalidad_mora - $pagoacuenta_acuenta + $descuento_porcobrar - $descuentocuotas)
             //     : 0.00;
 
-            $monto_apagar = $monto_apagar != 0
-                ? $monto_apagar - $saldo_total_adelantos
-                : $monto_apagar;
+            $pagoacuenta_escalonado = (float) $total_adelantos > 0
+                ? $this->_montoConPagoacuentaEscalonado($cronograma, $primera_cuota_pendiente, $calculos_en_pagoacuenta)
+                : null;
+            if ($pagoacuenta_escalonado !== null && $monto_apagar != 0) {
+                // Misma cifra que "Ver pago a cuenta" (saldo + diferencia): la mora corre sobre el
+                // capital que queda desde la fecha del pago, no sobre el capital original.
+                $monto_apagar = $pagoacuenta_escalonado['monto'];
+                $tenencia_penalidad_mora = (float) number_format($tenencia + $penalidad + $compensatorio + $pagoacuenta_escalonado['mora'], 2, '.', '');
+            } else {
+                $monto_apagar = $monto_apagar != 0
+                    ? $monto_apagar - $saldo_total_adelantos
+                    : $monto_apagar;
+            }
             $totalapagar = $monto_apagar != 0
                 ? ($monto_apagar + $tenencia_penalidad_mora /*- $pagoacuenta_acuenta*/ + $descuento_porcobrar - $descuentocuotas)
                 : 0.00;
@@ -2578,6 +2588,41 @@ class CobranzacuotaController extends Controller
     // atrasadas: todavia hay algo futuro sobre lo cual reprogramar fechas o recalcular montos.
     // Solo cuando ya no queda ninguna cuota futura se bloquean esos dos casos y solo se permite
     // el caso 3 (Cancelacion Total).
+    // Total de la 1ra cuota pendiente cuando ya tiene pago(s) a cuenta, con el mismo criterio que la
+    // fila "Ver pago a cuenta" (calculos_en_pagoacuenta): saldo por cobrar (capital + interes + cargo +
+    // recaudo) mas la mora que corre desde la fecha del pago sobre el capital que queda
+    // (calculo_diario_*). La mora ya cobrada no vuelve a pedirse. Las demas cuotas seleccionadas
+    // conservan su monto normal ('monto' = solo la parte sin mora; su mora la suma el llamador).
+    // Devuelve null si la 1ra cuota pendiente no esta dentro de la seleccion.
+    private function _montoConPagoacuentaEscalonado($cronograma, $primera_cuota_pendiente, $calculos)
+    {
+        $cuota_primera = null;
+        foreach ($cronograma['cronograma'] as $vc) {
+            if ($vc['numerocuota'] == $primera_cuota_pendiente) {
+                if ($vc['selected'] !== 'selected') {
+                    return null;
+                }
+                $cuota_primera = (float) $vc['cuota'];
+                break;
+            }
+        }
+        if ($cuota_primera === null) {
+            return null;
+        }
+
+        $otras_cuotas = (float) $cronograma['select_cuota'] - $cuota_primera;
+        $saldo_primera = (float) $calculos['saldo_capital'] + (float) $calculos['saldo_interes']
+            + (float) $calculos['saldo_cargo'] + (float) $calculos['saldo_recau'];
+        $mora_primera = (float) $calculos['calculo_diario_saldo_custodia']
+            + (float) $calculos['calculo_diario_saldo_compensatorio']
+            + (float) $calculos['calculo_diario_saldo_moratorio'];
+
+        return [
+            'monto' => (float) number_format($otras_cuotas + $saldo_primera, 2, '.', ''),
+            'mora'  => (float) number_format($mora_primera, 2, '.', ''),
+        ];
+    }
+
     private function _creditoVencido($idcredito)
     {
         $fecha_hoy = Carbon::now()->format('Y-m-d');
@@ -2798,9 +2843,19 @@ class CobranzacuotaController extends Controller
             // ====== Fin ======
             
             // ====== Calcular Total a Pagar ======
-            $totalapagar = $monto_apagar != 0
-                ? (($monto_apagar - $saldo_total_adelantos) + $tenencia_penalidad_mora + $descuento_porcobrar - $descuentocuotas)
-                : 0.00;
+            $pagoacuenta_escalonado = (float) $total_adelantos > 0
+                ? $this->_montoConPagoacuentaEscalonado($cronograma, $primera_cuota_pendiente, $calculos_en_pagoacuenta)
+                : null;
+            if ($pagoacuenta_escalonado !== null && $monto_apagar != 0) {
+                // Igual que la tabla principal y "Ver pago a cuenta" (ver _montoConPagoacuentaEscalonado)
+                $totalapagar = $pagoacuenta_escalonado['monto']
+                    + (float) number_format($tenencia + $penalidad + $compensatorio + $pagoacuenta_escalonado['mora'], 2, '.', '')
+                    + $descuento_porcobrar - $descuentocuotas;
+            } else {
+                $totalapagar = $monto_apagar != 0
+                    ? (($monto_apagar - $saldo_total_adelantos) + $tenencia_penalidad_mora + $descuento_porcobrar - $descuentocuotas)
+                    : 0.00;
+            }
             // ====== Fin ======
 
             // anterior => number_format($cronograma['select_pagar_totalcuota']-$total_adelantos,2,'.','')

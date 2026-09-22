@@ -395,13 +395,22 @@ function select_cronograma(
                 $total_penalidad_real = $com_interes_diario_real*$value->amortizacion;
             }
           
-            $atraso_dias_tenencia_real = $atraso_dias_real;
-            if($atraso_dias_tenencia_real>$dias_maximo_penalidad){
-              $atraso_dias_tenencia_real = $dias_maximo_penalidad;
-            }
-          
-            if($atraso_dias_tenencia_real>$dias_tolerancia_garantia && $atraso_dias_tenencia_real<=$dias_maximo_penalidad){
-                $total_tenencia_real = number_format($tenencia_descuento*$atraso_dias_tenencia_real, 2, '.', '');
+            // La tenencia (custodia) solo se cobra en la ULTIMA cuota del credito, igual que el
+            // calculo que se muestra en pantalla (mas abajo, variable $tenencia) y el de mora
+            // diaria (calculos_en_pagoacuenta_aumento_diario). Sin este mismo resguardo aqui,
+            // el umbral real de cierre de cualquier cuota atrasada que no sea la ultima incluia
+            // una custodia fantasma que no aparece en ningun campo guardado (ni cuota, ni mora),
+            // cobrando de mas y cerrando esa cuota con menos plata de la que en realidad se
+            // necesitaba, restando ese sobrante a lo que debia pasar a la siguiente cuota.
+            if($value->numerocuota == $credito_cronograma->max('numerocuota')){
+                $atraso_dias_tenencia_real = $atraso_dias_real;
+                if($atraso_dias_tenencia_real>$dias_maximo_penalidad){
+                  $atraso_dias_tenencia_real = $dias_maximo_penalidad;
+                }
+
+                if($atraso_dias_tenencia_real>$dias_tolerancia_garantia && $atraso_dias_tenencia_real<=$dias_maximo_penalidad){
+                    $total_tenencia_real = number_format($tenencia_descuento*$atraso_dias_tenencia_real, 2, '.', '');
+                }
             }
           
         }else{

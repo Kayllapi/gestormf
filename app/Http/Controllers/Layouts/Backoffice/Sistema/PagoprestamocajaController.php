@@ -312,7 +312,7 @@ class PagoprestamocajaController extends Controller
           //dd('...');
         
               
-            if($credito_cobranzacuota->opcion_pago=='PAGO_CUOTA' or $credito_cobranzacuota->opcion_pago=='PAGO_TOTAL' or $credito_cobranzacuota->opcion_pago=='PAGO_ANTICIPADO'){
+            if($credito_cobranzacuota->opcion_pago!='PAGO_ACUENTA'){
 
                 // restaurar pago
                 DB::table('credito_descuentocuota')
@@ -373,38 +373,34 @@ class PagoprestamocajaController extends Controller
                     
                 
             }
-            elseif($credito_cobranzacuota->opcion_pago=='PAGO_ACUENTA'){
-                
+            else{
+
                 $credito_cronograma = DB::table('credito_cronograma')
-                            ->where('credito_cronograma.idcredito',$credito_cobranzacuota->idcredito)
-                            ->where('credito_cronograma.idestadocronograma_pago',2)
-                            ->orderBy('credito_cronograma.numerocuota','desc')
-                            ->get();
-                $cuentaanterior = $credito_cobranzacuota->total_pagoacuenta;
-              
-                //dd($cuentaanterior);
+                    ->where('credito_cronograma.idcredito',$credito_cobranzacuota->idcredito)
+                    ->where('credito_cronograma.idestadocronograma_pago',2)
+                    ->orderBy('credito_cronograma.numerocuota','desc')
+                    ->get();
+
                 foreach($credito_cronograma as $value){
-                    if($cuentaanterior>0){
+                    $total_adelanto = DB::table('credito_adelanto')
+                        ->where('credito_adelanto.idestadocredito_adelanto',1)
+                        ->where('credito_adelanto.numerocuota',$value->numerocuota)
+                        ->where('credito_adelanto.idcredito_cobranzacuota',$credito_cobranzacuota->id)
+                        ->sum('credito_adelanto.total');
+                    if($total_adelanto>0){
                         $acuenta = 0;
                         $idestadocredito_cronograma = 0;
                         $idestadocronograma_pago = 0;
-                        if($value->acuenta>0 && $value->acuenta<=$cuentaanterior){
-                            $cuentaanterior = $cuentaanterior-$value->acuenta; // 20.00-2.67 = 17.33 -- 10-10=0
+                        if($value->acuenta>0 && $value->acuenta<=$total_adelanto){
+                            $acuenta = $total_adelanto-$value->acuenta;
                             $idestadocredito_cronograma = 1;
                             $idestadocronograma_pago = 0;
                         }else{
-                            if($value->totalcuota<$cuentaanterior){ 
-                                $cuentaanterior = $cuentaanterior-$value->totalcuota; // 17.33-13.55 = 3.78 
-                                $idestadocredito_cronograma = 1;
-                                $idestadocronograma_pago = 0;
-                            }else{
-                                $acuenta = $value->totalcuota-$cuentaanterior; // 13.78-3.78=10
-                                $cuentaanterior = 0; 
-                                $idestadocredito_cronograma = 1;
-                                $idestadocronograma_pago = 2;
-                            }
+                            $acuenta = $value->acuenta-$total_adelanto;
+                            $idestadocredito_cronograma = 1;
+                            $idestadocronograma_pago = 2;
                         }
-                        if($credito_cobranzacuota->idestado_congelarcredito==2){ // credito congeladp
+                        if($credito_cobranzacuota->idestado_congelarcredito==2){ // credito congelado
                             DB::table('credito_cronograma')
                                 ->whereId($value->id)
                                 ->update([
@@ -419,7 +415,6 @@ class PagoprestamocajaController extends Controller
                                   'acuenta' => $acuenta,
                                   'idestadocredito_cronograma' => $idestadocredito_cronograma,
                                   'idestadocronograma_pago' => $idestadocronograma_pago,
-
 
                                   'tenencia'             => 0,
                                   'penalidad'            => 0,
@@ -448,36 +443,59 @@ class PagoprestamocajaController extends Controller
                                   'idcredito_cobranzacuota'    => 0,
                             ]);
                         }
-                            
-                      
                     }else{
                         break;
                     }
                 }
-              
-                    
-              
-               /* DB::table('credito_cronograma')
-                    ->where('credito_cronograma.acuenta','>',0)
-                    ->where('credito_cronograma.idestadocredito_cronograma',1)
-                    ->where('credito_cronograma.idcredito_cobranzacuota',$id)
-                    ->update([
-                      'acuenta' => $credito_cobranzacuota->,
-                ]);
-                
-                $credito_cronograma = DB::table('credito_cronograma')
-                            ->whereId($value['id'])
-                            ->first();
-                    
-                    if($credito_cronograma){
-                      DB::table('credito_cronograma')
-                          ->whereId($value['id'])
-                          ->update([
-                            'acuenta' => $credito_cronograma->acuenta+$value['acuenta'],
-                      ]);
-                    }*/
 
+            }
 
+            // PAGO_CUOTA / PAGO_TOTAL con adelantos: la cascada de select_cronograma() puede dejar
+            // (a) un sobrante como adelanto parcial en la cuota siguiente (esa cuota NO queda con
+            // idcredito_cobranzacuota = este pago, por eso el reset de arriba no la toca y se quedaba
+            // con 'acuenta' y estado parcial) y (b) cuotas que este pago cerro pero que ya tenian
+            // adelantos de pagos a cuenta anteriores (deben volver a "pago parcial", no a "sin pago").
+            if($credito_cobranzacuota->opcion_pago!='PAGO_ACUENTA'){
+                $adelantos_por_cuota = DB::table('credito_adelanto')
+                    ->where('credito_adelanto.idcredito_cobranzacuota',$credito_cobranzacuota->id)
+                    ->whereIn('credito_adelanto.idestadocredito_adelanto',[1,2])
+                    ->select('credito_adelanto.numerocuota', DB::raw('SUM(credito_adelanto.total) as total'))
+                    ->groupBy('credito_adelanto.numerocuota')
+                    ->get();
+                foreach($adelantos_por_cuota as $adelanto_cuota){
+                    $cuota_cronograma = DB::table('credito_cronograma')
+                        ->where('credito_cronograma.idcredito',$credito_cobranzacuota->idcredito)
+                        ->where('credito_cronograma.numerocuota',$adelanto_cuota->numerocuota)
+                        ->first();
+                    if(!$cuota_cronograma){
+                        continue;
+                    }
+                    // adelantos vigentes de OTROS pagos (los de este pago se marcan como extornados mas abajo)
+                    $adelantos_restantes = DB::table('credito_adelanto')
+                        ->where('credito_adelanto.idcredito',$credito_cobranzacuota->idcredito)
+                        ->where('credito_adelanto.numerocuota',$adelanto_cuota->numerocuota)
+                        ->where('credito_adelanto.idcredito_cobranzacuota','<>',$credito_cobranzacuota->id)
+                        ->whereIn('credito_adelanto.idestadocredito_adelanto',[1,2])
+                        ->sum('credito_adelanto.total');
+
+                    if($cuota_cronograma->idcredito_cobranzacuota == $credito_cobranzacuota->id){
+                        // cuota cerrada por este pago (ya reseteada arriba): recupera su estado parcial previo
+                        if($adelantos_restantes>0){
+                            DB::table('credito_cronograma')
+                                ->whereId($cuota_cronograma->id)
+                                ->update(['idestadocronograma_pago' => 2]);
+                        }
+                    }else{
+                        // cuota que solo recibio un adelanto parcial de este pago: se le quita
+                        $acuenta = max(0, (float) $cuota_cronograma->acuenta - (float) $adelanto_cuota->total);
+                        DB::table('credito_cronograma')
+                            ->whereId($cuota_cronograma->id)
+                            ->update([
+                              'acuenta' => $acuenta,
+                              'idestadocronograma_pago' => ($adelantos_restantes>0 || $acuenta>0) ? 2 : 0,
+                        ]);
+                    }
+                }
             }
 
             // Pago Anticipado (reduccion_cuota / reduccion_plazo): ademas de lo de arriba (que ya
@@ -486,6 +504,22 @@ class PagoprestamocajaController extends Controller
             if($credito_cobranzacuota->opcion_pago=='PAGO_ANTICIPADO'){
                 revertir_pagoanticipado($credito_cobranzacuota->idcredito, $id);
             }
+
+            // eliminar las fotos de saldo (credito_adelanto_saldo) del/los adelanto(s) que se estan extornando,
+            // sino "show_descuentodecuotas" sigue mostrando el saldo del pago ya revertido (toma la ultima por id)
+            DB::table('credito_adelanto_saldo')
+                ->whereIn('idcredito_adelanto', function($query) use ($credito_cobranzacuota) {
+                    $query->select('id')
+                        ->from('credito_adelanto')
+                        ->where('idcredito_cobranzacuota', $credito_cobranzacuota->id);
+                })
+                ->delete();
+
+            DB::table('credito_adelanto')
+                ->where('credito_adelanto.idcredito_cobranzacuota',$credito_cobranzacuota->id)
+                ->update([
+                  'credito_adelanto.idestadocredito_adelanto' => 3,
+            ]);
 
             DB::table('credito_cobranzacuota')
               ->whereId($id)

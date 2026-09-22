@@ -573,13 +573,13 @@ function select_cronograma(
                 // (ver el mismo calculo mas abajo, en el bloque que arma $totalcuota para mostrar).
                 // Si no coinciden, la cuota se cancela con un monto distinto al que el usuario ve,
                 // y el excedente que se pasa a la siguiente cuota queda mal calculado.
-                // 'total_pagoacuenta_*' ya incluye el interes generado desde el ultimo pago a cuenta hasta hoy;
-                // no se suma 'calculo_diario_saldo_*' aparte porque es ese mismo interes calculado otra vez
-                // (ver la nota junto al bloque que arma $totalcuota para mostrar, mas abajo).
-                $tenencia_umbral = (float) $calculos_en_pagoacuenta['total_pagoacuenta_custodia'] + (float) $calculos_en_pagoacuenta['saldo_custodia'];
-                $penalidad_umbral = (float) $calculos_en_pagoacuenta['total_pagoacuenta_compensatorio'] + (float) $calculos_en_pagoacuenta['saldo_compensatorio'];
-                $compensatorio_umbral = (float) $calculos_en_pagoacuenta['total_pagoacuenta_moratorio'] + (float) $calculos_en_pagoacuenta['saldo_moratorio'];
-                $total_totalcuotareal = (float) $value->cuota_real + $tenencia_umbral + $penalidad_umbral + $compensatorio_umbral;
+                // Umbral = lo ya adelantado + lo que falta hoy (saldo capital/interes/cargo/recaudo +
+                // mora generada desde el ultimo pago, 'calculo_diario_saldo_*'). Es exactamente el mismo
+                // numero que se le pide al cajero en "Total a Pagar" (adelantos + saldo + diferencia),
+                // asi la cuota se cierra con ese monto y no queda sobrante/faltante hacia la cuota siguiente.
+                // (Antes se usaba cuota_real + total_pagoacuenta_*, que con la tolerancia de dias dejaba
+                // fuera la mora diaria y cerraba la cuota con menos de lo mostrado.)
+                $total_totalcuotareal = pagoacuenta_total_cierre($calculos_en_pagoacuenta, $total_adelanto_numcuota);
             } else {
                 $total_totalcuotareal = $value->cuota_real+$total_penalidad_real+$total_tenencia_real+$total_compensatorio_real;
             }
@@ -922,16 +922,24 @@ function select_cronograma(
 
             // mostrando el total al seleccionar el cronograma
             if ($primera_cuota_pendiente?->numerocuota == $value->numerocuota) {
-                // OJO: 'total_pagoacuenta_custodia/compensatorio/moratorio' YA incluyen el interes generado
-                // desde el ultimo pago a cuenta hasta hoy (calculos_en_pagoacuenta lo calcula internamente,
-                // con la misma formula que 'calculo_diario_saldo_*'). Sumar 'calculo_diario_saldo_*' aqui
-                // otra vez duplicaba ese interes (se contaba dos veces en el total mostrado).
-                $tenencia = $calculos_en_pagoacuenta['total_pagoacuenta_custodia'] + $calculos_en_pagoacuenta['saldo_custodia'];
-                $penalidad = $calculos_en_pagoacuenta['total_pagoacuenta_compensatorio'] + $calculos_en_pagoacuenta['saldo_compensatorio'];
-                $compensatorio = $calculos_en_pagoacuenta['total_pagoacuenta_moratorio'] + $calculos_en_pagoacuenta['saldo_moratorio'];
+                // Mora ya cobrada en los pagos a cuenta + mora generada desde el ultimo pago hasta hoy
+                // ('calculo_diario_saldo_*', la misma que muestra "Ver pago a cuenta"). Se arma con
+                // pagoacuenta_mora_pagada() en vez de 'total_pagoacuenta_*' porque este ultimo omite la
+                // mora diaria mientras no se supere la tolerancia de dias.
+                $mora_pagada = pagoacuenta_mora_pagada($calculos_en_pagoacuenta);
+                $mora_pendiente_hoy = pagoacuenta_mora_pendiente_hoy($calculos_en_pagoacuenta);
+                $tenencia = $mora_pagada['tenencia'] + $mora_pendiente_hoy['tenencia'];
+                $penalidad = $mora_pagada['penalidad'] + $mora_pendiente_hoy['penalidad'];
+                $compensatorio = $mora_pagada['compensatorio'] + $mora_pendiente_hoy['compensatorio'];
             }
 
             $totalcuota = (float) $cuota + (float) $tenencia + (float) $penalidad + (float) $compensatorio;
+            if ($primera_cuota_pendiente?->numerocuota == $value->numerocuota) {
+                // El total de la cuota es exactamente el umbral con el que la cascada la cierra
+                // (adelantos + saldo + mora de hoy): difiere de cuota+mora solo por los centimos de
+                // redondeo de la cuota (cuota_real vs la suma de sus componentes).
+                $totalcuota = pagoacuenta_total_cierre($calculos_en_pagoacuenta, $total_adelanto_numcuota);
+            }
         }
         // Fin
 
@@ -1653,6 +1661,36 @@ function calculos_en_pagoacuenta_aumento_diario($idtienda=0, $idcredito=0, $nume
     } else {
         return "Ingresa el idcredito como parámetro";
     }
+}
+// Mora (por concepto) que ya se cobro en los pagos a cuenta de la 1ra cuota pendiente.
+// Claves: tenencia (P. Cust.), penalidad (Int. Comp.), compensatorio (Int. Morat.).
+function pagoacuenta_mora_pagada($calc){
+    return [
+        'tenencia' => (float) $calc['total_pagoacuenta_custodia'] - (float) $calc['tenencia_pagoacuenta'],
+        'penalidad' => (float) $calc['total_pagoacuenta_compensatorio'] - (float) $calc['penalidad_pagoacuenta'],
+        'compensatorio' => (float) $calc['total_pagoacuenta_moratorio'] - (float) $calc['compensatorio_pagoacuenta'],
+    ];
+}
+// Mora que falta cobrar hoy de la 1ra cuota pendiente: la generada desde el ultimo pago a cuenta
+// (calculo_diario_saldo_*, sin tolerancia de dias, igual que "Ver pago a cuenta") + saldo_*.
+function pagoacuenta_mora_pendiente_hoy($calc){
+    return [
+        'tenencia' => (float) $calc['calculo_diario_saldo_custodia'] + (float) $calc['saldo_custodia'],
+        'penalidad' => (float) $calc['calculo_diario_saldo_compensatorio'] + (float) $calc['saldo_compensatorio'],
+        'compensatorio' => (float) $calc['calculo_diario_saldo_moratorio'] + (float) $calc['saldo_moratorio'],
+    ];
+}
+// Monto acumulado con el que se cierra la 1ra cuota pendiente que ya tiene pagos a cuenta:
+// lo ya adelantado + saldo (capital, interes, cargo, recaudo) + mora de hoy. Es el mismo numero
+// que se le pide al cajero (adelantos + "Total a Pagar").
+function pagoacuenta_total_cierre($calc, $total_adelantado){
+    $mora = pagoacuenta_mora_pendiente_hoy($calc);
+    return (float) number_format(
+        (float) $total_adelantado
+        + (float) $calc['saldo_capital'] + (float) $calc['saldo_interes']
+        + (float) $calc['saldo_cargo'] + (float) $calc['saldo_recau']
+        + $mora['tenencia'] + $mora['penalidad'] + $mora['compensatorio'],
+        2, '.', '');
 }
 function calculos_en_pagoacuenta_saldos($idtienda=0, $idcredito=0, $numerocuota=0){
     $datos = $datos ?? _datos_base_pagoacuenta($idtienda, $idcredito);

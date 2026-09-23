@@ -1234,6 +1234,7 @@ function calculos_en_pagoacuenta($idtienda=0, $idcredito=0, $numerocuota=0, $dat
                 'saldo_interes' => '0.00',
                 'saldo_cargo' => '0.00',
                 'saldo_recau' => '0.00',
+                'saldo_cuota' => '0.00',
                 'saldo_custodia' => '0.00',
                 'saldo_compensatorio' => '0.00',
                 'saldo_moratorio' => '0.00',
@@ -1306,6 +1307,12 @@ function calculos_en_pagoacuenta($idtienda=0, $idcredito=0, $numerocuota=0, $dat
         $saldo_cargo = $credito_cronograma->cargo - $ca_cargo;
         // comision_cargo = comision + cargo; el cargo ya se descuenta en $saldo_cargo, aqui solo la comision (recaudo)
         $saldo_recau = $credito_cronograma->comision - $ca_comision;
+        // Saldo de la cuota tomado desde cuota_real (no desde la suma de componentes): el cronograma
+        // redondea cada cuota_real y la ultima cuota absorbe la diferencia acumulada (p.ej. 16.10 vs
+        // 16.18 por cuota y +2.00 en la ultima). Si aqui se usara la suma de componentes, la cuota
+        // con pago a cuenta se cobraria por componentes y la ultima igual con su compensacion,
+        // cobrando de mas esos centimos en "Pago Total" / cierre de cuota.
+        $saldo_cuota = $credito_cronograma->cuota_real - ($ca_capital + $ca_interes + $ca_cargo + $ca_comision);
         // $ca_tenencia/$ca_penalidad/$ca_compensatorio ya son la suma de lo que cada pago a cuenta
         // calculo, en su momento, con el saldo real que existia ese dia (calculo "escalonado").
         // Antes aqui se volvia a calcular "de un solo tramo" (todo el atraso desde el vencimiento de
@@ -1407,6 +1414,7 @@ function calculos_en_pagoacuenta($idtienda=0, $idcredito=0, $numerocuota=0, $dat
             'saldo_interes' => number_format($saldo_interes, 2, '.', ''),
             'saldo_cargo' => number_format($saldo_cargo, 2, '.', ''),
             'saldo_recau' => number_format($saldo_recau, 2, '.', ''),
+            'saldo_cuota' => number_format($saldo_cuota, 2, '.', ''),
             'saldo_custodia' => number_format($saldo_custodia, 2, '.', ''),
             'saldo_compensatorio' => number_format($saldo_compensatorio, 2, '.', ''),
             'saldo_moratorio' => number_format($saldo_moratorio, 2, '.', ''),
@@ -1690,14 +1698,13 @@ function pagoacuenta_mora_pendiente_hoy($calc){
     ];
 }
 // Monto acumulado con el que se cierra la 1ra cuota pendiente que ya tiene pagos a cuenta:
-// lo ya adelantado + saldo (capital, interes, cargo, recaudo) + mora de hoy. Es el mismo numero
-// que se le pide al cajero (adelantos + "Total a Pagar").
+// lo ya adelantado + saldo de la cuota (cuota_real - capital/interes/cargo/recaudo adelantados)
+// + mora de hoy. Es el mismo numero que se le pide al cajero (adelantos + "Total a Pagar").
 function pagoacuenta_total_cierre($calc, $total_adelantado){
     $mora = pagoacuenta_mora_pendiente_hoy($calc);
     return (float) number_format(
         (float) $total_adelantado
-        + (float) $calc['saldo_capital'] + (float) $calc['saldo_interes']
-        + (float) $calc['saldo_cargo'] + (float) $calc['saldo_recau']
+        + (float) $calc['saldo_cuota']
         + $mora['tenencia'] + $mora['penalidad'] + $mora['compensatorio'],
         2, '.', '');
 }

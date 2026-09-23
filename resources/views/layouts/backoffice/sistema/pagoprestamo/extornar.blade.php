@@ -53,7 +53,7 @@
     </div>
     @if($extorno_permitido)
     <div class="modal-footer">
-        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-ban"></i> Extornar</button>
+        <button type="submit" class="btn btn-danger"><i class="fa-solid fa-ban"></i> Extornar</button>
     </div>
     @endif
 </form>   

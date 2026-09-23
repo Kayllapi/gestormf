@@ -2649,8 +2649,9 @@ class CobranzacuotaController extends Controller
         }
 
         $otras_cuotas = (float) $cronograma['select_cuota'] - $cuota_primera;
-        $saldo_primera = (float) $calculos['saldo_capital'] + (float) $calculos['saldo_interes']
-            + (float) $calculos['saldo_cargo'] + (float) $calculos['saldo_recau'];
+        // Desde cuota_real (no la suma de componentes), igual que "Pendientes" y el resto de cuotas:
+        // la ultima cuota ya absorbe el redondeo del cronograma y no debe cobrarse dos veces.
+        $saldo_primera = (float) $calculos['saldo_cuota'];
         $mora_primera = (float) $calculos['calculo_diario_saldo_custodia']
             + (float) $calculos['calculo_diario_saldo_compensatorio']
             + (float) $calculos['calculo_diario_saldo_moratorio'];

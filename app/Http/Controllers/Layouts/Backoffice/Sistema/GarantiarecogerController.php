@@ -84,7 +84,7 @@ class GarantiarecogerController extends Controller
                   <th style="text-align:center">SERIE</th>
                   <th style="text-align:center">PLACA</th>
                   <th style="text-align:center">MODELO</th>
-                  <th style="text-align:center">VALOR COMERCIAL</th>
+                  <th style="text-align:center">V. COMERCIAL</th>
                 </tr>
               </thead>
               <tbody>';

@@ -235,7 +235,7 @@
           @if($count_credito_cronograma==0 && $count_creditopendiente>0 && $credito->idforma_credito==1)
           <table class="tabla_informativa">
               <tr>
-                  <td><b>GARANTÍA PENDIENTE DE ENTREGA</b></td>
+                  <td><b>GARANTÍA(S) PENDIENTE DE ENTREGA</b></td>
               </tr>
           </table>  
           @endif

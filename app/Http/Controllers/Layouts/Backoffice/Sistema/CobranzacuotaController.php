@@ -474,6 +474,21 @@ class CobranzacuotaController extends Controller
                     pago_anticipado: $request->opcion_pago=='PAGO_ANTICIPADO'
                 );
 
+                // Pago de Cuota / Pago Total: las cuotas se cierran por numero de cuota (hasta
+                // $request->numerocuota), no por el monto. El umbral de cierre de la cascada usa los
+                // importes sin redondear y el monto cobrado se arma con los componentes redondeados
+                // a centavos, asi que puede sobrar 1 centimo que la cascada dejaba como pago a cuenta
+                // (credito_adelanto) de la cuota siguiente sin que el cajero haya hecho un pago a cuenta.
+                if($request->opcion_pago=='PAGO_CUOTA' or $request->opcion_pago=='PAGO_TOTAL'){
+                    foreach ($cronograma['cronograma'] as $k => $value) {
+                        $adelanto_residual = (float) ($value['adelanto'] ?? 0);
+                        if ($value['selected'] != 'selected' && $adelanto_residual > 0) {
+                            $cronograma['cronograma'][$k]['acuenta'] = number_format(max(0, (float) $value['acuenta'] - $adelanto_residual), 2, '.', '');
+                            $cronograma['cronograma'][$k]['adelanto'] = '0.00';
+                        }
+                    }
+                }
+
                 // Cancelacion Total: el monto ya fue validado como el saldo oficial (redondeado
                 // hacia abajo al multiplo de S/.0.10 mas cercano, ver _totalesCancelacionTotal()).
                 // Ese redondeo puede dejar la cascada real a centimos de cerrar la ULTIMA cuota por
@@ -1006,19 +1021,38 @@ class CobranzacuotaController extends Controller
                 1,
                 'detalle_cobranza'
             );
-          
+
+            // "Saldo Pend. de Pago" = mismo calculo que "Pendientes" de la pantalla de cobranza:
+            // select_cronograma suma las cuotas pendientes completas, sin restar el pago a cuenta
+            // que ya tiene la primera cuota pendiente; se netea aqui igual que alla.
+            $primera_cuota_pendiente = 0;
+            foreach($cronograma['cronograma'] as $value){
+                if($value['idestadocredito_cronograma']==1 && $primera_cuota_pendiente==0){
+                    $primera_cuota_pendiente = $value['numerocuota'];
+                }
+            }
+            $total_adelantos = DB::table('credito_adelanto')
+                ->where('credito_adelanto.numerocuota',$primera_cuota_pendiente)
+                ->where('credito_adelanto.idcredito',$request->idcredito)
+                ->whereIn('credito_adelanto.idestadocredito_adelanto',[1,2])
+                ->sum('credito_adelanto.total');
+            $total_pendientepago = number_format(
+                (float) number_format($cronograma['cuota_pendiente'], 2, '.', '') - (float) number_format($total_adelantos, 2, '.', ''),
+                2, '.', ''
+            );
+
             DB::table('credito')
               ->whereId($request->idcredito)
               ->update([
                     'saldo_pendientepago' => $cronograma['saldo_capital'],
-                    'total_pendientepago' => $cronograma['cuota_pendiente'],
+                    'total_pendientepago' => $total_pendientepago,
             ]);
-          
+
             DB::table('credito_cobranzacuota')
               ->whereId($idcredito_cobranzacuota)
               ->update([
                     'saldo_pendientepago' => $cronograma['saldo_capital'],
-                    'total_pendientepago' => $cronograma['cuota_pendiente'],
+                    'total_pendientepago' => $total_pendientepago,
             ]);
 
             $count_creditopendiente = DB::table('credito_garantia')

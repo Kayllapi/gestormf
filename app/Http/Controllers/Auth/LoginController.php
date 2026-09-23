@@ -24,6 +24,8 @@ class LoginController extends Controller
 
     use AuthenticatesUsers;
 
+    const MENSAJE_DESHABILITADO = 'Usuario deshabilitado, comuníquese con el administrador.';
+
     /**
      * Where to redirect users after login.
      *
@@ -92,7 +94,18 @@ class LoginController extends Controller
             throw ValidationException::withMessages([
                 $this->username() => $restantes > 0
                     ? 'Usuario o contraseña incorrectos. Le quedan '.$restantes.' intento(s).'
-                    : 'El usuario ha sido deshabilitado por superar el número de intentos permitidos. Comuníquese con el administrador.',
+                    : self::MENSAJE_DESHABILITADO,
+            ]);
+        }
+
+        $deshabilitado = !$usuario && DB::table('users')
+            ->where('usuario', $request->{$this->username()})
+            ->where('idestadousuario', 2)
+            ->exists();
+
+        if ($deshabilitado) {
+            throw ValidationException::withMessages([
+                $this->username() => self::MENSAJE_DESHABILITADO,
             ]);
         }
 

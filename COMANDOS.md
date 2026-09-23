@@ -2,7 +2,7 @@
 
 ```bash
 # migrar una base de datos
-mysql -u sgm_user -p sgm < database/sql/11082026150000create_credito_pagoanticipado_historial.sql
+mysql -u sgm_user -p sgm < database/sql/23092026120000alter_users_add_intentos_login.sql
 mysql -u sgm_user -p sgm < database/sql/21082026120000alter_credito_pagoanticipado_historial_add_modalidad.sql
 
 # verificar si se subio la base de datos

@@ -416,7 +416,11 @@ class CobranzacuotaController extends Controller
                 $total_pagar = 0;
                 $total_recibido = 0;
                 if($request->opcion_pago=='PAGO_CUOTA' or $request->opcion_pago=='PAGO_TOTAL'){
-                    $total_cuota = $request->cobrar_cuota_pagar;
+                    // "Cuota a Pagar" del modal de cobro siempre trae sumada la Cuenta x Cobrar
+                    // (este o no marcada), y la CxC no es parte del cronograma: repartirla en
+                    // select_cronograma la dejaba como pago a cuenta (credito_adelanto) de la
+                    // siguiente cuota.
+                    $total_cuota = number_format((float) $request->cobrar_cuota_pagar - (float) $request->cobrar_cargo, 2, '.', '');
                     $total_pagar = $request->cobrar_total_pagar;
                     $total_recibido = $request->cobrar_total_recibido;
                 }elseif($request->opcion_pago=='PAGO_ACUENTA' or $request->opcion_pago=='PAGO_ANTICIPADO'){

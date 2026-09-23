@@ -24,7 +24,7 @@ class LoginController extends Controller
 
     use AuthenticatesUsers;
 
-    const MENSAJE_DESHABILITADO = 'Usuario deshabilitado, comuníquese con el administrador.';
+    const MENSAJE_DESHABILITADO = 'Usuario deshabilitado, comuníquese con el Administrador.';
 
     /**
      * Where to redirect users after login.

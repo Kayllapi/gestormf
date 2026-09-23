@@ -137,31 +137,14 @@ class PagoprestamoController extends Controller
 
           foreach($credito_cobranzacuotas as $key => $value){
 
-              // Importes ya consolidados en credito_cobranzacuota (Camino A), no el desglose
-              // de credito_adelanto (que puede venir con la mora duplicada).
-              $es_acuenta    = ($value->opcion_pago == 'PAGO_ACUENTA');
-              $es_anticipado = ($value->opcion_pago == 'PAGO_ANTICIPADO');
+              // Mismo desglose que el voucher de pago (cobranzacuota/pdf_pago).
+              $desglose = desglose_pago_cobranzacuota($value);
 
-              $t_tenencia      = (float) $value->total_tenencia;       // P. CUST.
-              $t_penalidad     = (float) $value->total_penalidad;      // INT. COMP.
-              $t_compensatorio = (float) $value->total_compensatorio;  // INT. MORAT.
-
-              // "C. PAGADO" = la(s) cuota(s) sin recargos (= columna "cuota" del cronograma).
-              $t_cuotapagado = $es_acuenta
-                  ? 0
-                  : ((float) $value->total_totalcuota - $t_tenencia - $t_penalidad - $t_compensatorio);
-
-              // "ACUENTA": monto recibido en un pago a cuenta; en pago anticipado, el sobrante
-              // aplicado a capital.
-              $t_acuenta = $es_acuenta
-                  ? (float) $value->total_pagar
-                  : ($es_anticipado ? (float) $value->total_adelanto : 0);
-
-              $t_cuotapagado   = number_format($t_cuotapagado, 2, '.', '');
-              $t_acuenta       = number_format($t_acuenta, 2, '.', '');
-              $t_penalidad     = number_format($t_penalidad, 2, '.', '');
-              $t_tenencia      = number_format($t_tenencia, 2, '.', '');
-              $t_compensatorio = number_format($t_compensatorio, 2, '.', '');
+              $t_cuotapagado   = number_format($desglose['cuotapagado'], 2, '.', '');    // C. PAGADO
+              $t_acuenta       = number_format($desglose['acuenta'], 2, '.', '');        // ACUENTA
+              $t_tenencia      = number_format($desglose['tenencia'], 2, '.', '');       // P. CUST.
+              $t_penalidad     = number_format($desglose['penalidad'], 2, '.', '');      // INT. COMP.
+              $t_compensatorio = number_format($desglose['compensatorio'], 2, '.', '');  // INT. MORAT.
 
               $operacionen1 = '';
               if($value->idformapago==0){ $operacionen1 = 'TRANSITORIO'; }

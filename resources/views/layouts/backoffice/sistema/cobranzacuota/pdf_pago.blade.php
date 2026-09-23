@@ -131,61 +131,14 @@
      
                     <?php
                     $es_acuenta    = ($credito_cobranzacuota->opcion_pago == 'PAGO_ACUENTA');
-                    $es_anticipado = ($credito_cobranzacuota->opcion_pago == 'PAGO_ANTICIPADO');
 
-                    if ($es_anticipado) {
-                        // Pago Anticipado: se sigue mostrando desde los totales ya consolidados en
-                        // credito_cobranzacuota (sin tocar, tiene su propio manejo especial de
-                        // reduccion_cuota/reduccion_plazo que no pasa por credito_adelanto igual que
-                        // el resto de opciones).
-                        $t_tenencia      = (float) $credito_cobranzacuota->total_tenencia;
-                        $t_penalidad     = (float) $credito_cobranzacuota->total_penalidad;
-                        $t_compensatorio = (float) $credito_cobranzacuota->total_compensatorio;
-                        $t_cuotapagado   = (float) $credito_cobranzacuota->total_totalcuota - $t_tenencia - $t_penalidad - $t_compensatorio;
-                        $t_acuenta       = (float) $credito_cobranzacuota->total_adelanto;
-                    } else {
-                        // PAGO_CUOTA / PAGO_TOTAL / PAGO_ACUENTA: se reconstruye desde el desglose de
-                        // credito_adelanto que quedo grabado con ESTA transaccion (idcredito_cobranzacuota
-                        // = este pago), que nunca cambia despues aunque se reimprima el voucher mas tarde.
-                        // Ese desglose ya viene neto de cualquier pago a cuenta anterior sobre la misma
-                        // cuota (select_cronograma reparte sobre el saldo que quedaba, no sobre el
-                        // importe integro), asi que sumandolo aqui se obtiene: lo realmente pendiente de
-                        // la(s) cuota(s) que este pago cerro, y la mora generada desde el ultimo abono
-                        // (no la mora acumulada historica, que ya se cobro en pagos anteriores).
-                        // Las cuotas que este pago SI cerro estan en pago_cuota (fijo desde el momento
-                        // del pago); cualquier otra cuota en el desglose sigue abierta y lo que se le
-                        // aplico es un pago a cuenta que se traslada a la siguiente cobranza.
-                        $cuotas_cerradas = array_filter(
-                            array_map('trim', explode(',', (string) $credito_cobranzacuota->pago_cuota)),
-                            fn($v) => $v !== ''
-                        );
-
-                        $credito_adelanto_pago = DB::table('credito_adelanto')
-                            ->where('credito_adelanto.idcredito_cobranzacuota', $credito_cobranzacuota->id)
-                            ->get();
-
-                        $t_cuotapagado   = 0;
-                        $t_acuenta       = 0;
-                        $t_penalidad     = 0;
-                        $t_tenencia      = 0;
-                        $t_compensatorio = 0;
-                        foreach ($credito_adelanto_pago as $valueadelanto) {
-                            if (in_array((string) $valueadelanto->numerocuota, $cuotas_cerradas)) {
-                                // Cuota cerrada por este pago: se desglosa en sus dos lineas
-                                // (cuota / mora). Sumarlas por separado no pierde nada, ambas
-                                // vienen de este mismo registro.
-                                $t_cuotapagado   += (float) $valueadelanto->capital + (float) $valueadelanto->interes + (float) $valueadelanto->comision + (float) $valueadelanto->cargo;
-                                $t_penalidad     += (float) $valueadelanto->penalidad;
-                                $t_tenencia      += (float) $valueadelanto->tenencia;
-                                $t_compensatorio += (float) $valueadelanto->compensatorio;
-                            } else {
-                                // Cuota que sigue abierta: su "total" (cuota+mora) va integro a
-                                // "Pago a Cuenta". Sumar su mora tambien en la linea de mora
-                                // la duplicaria, ya va incluida dentro de este total.
-                                $t_acuenta += (float) $valueadelanto->total;
-                            }
-                        }
-                    }
+                    // Mismo desglose que el historial de pagos (pagoprestamo/showtable) y su reporte.
+                    $desglose        = desglose_pago_cobranzacuota($credito_cobranzacuota);
+                    $t_cuotapagado   = $desglose['cuotapagado'];
+                    $t_acuenta       = $desglose['acuenta'];
+                    $t_penalidad     = $desglose['penalidad'];
+                    $t_tenencia      = $desglose['tenencia'];
+                    $t_compensatorio = $desglose['compensatorio'];
                     ?>
           <table style="width:100%;">
             <tr>

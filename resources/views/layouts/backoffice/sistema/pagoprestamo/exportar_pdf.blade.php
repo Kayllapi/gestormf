@@ -158,46 +158,14 @@
           
           foreach($credito_cobranzacuotas as $key => $value){
             
-              $credito_adelanto = DB::table('credito_adelanto')->where('credito_adelanto.idcredito_cobranzacuota',$value->id)->get();
-              
-              $t_cuotapagado = 0;
-              $t_acuenta = 0;
-              $t_penalidad = 0;
-              $t_tenencia = 0;
-              $t_compensatorio = 0;
-              $t_cuentaxcobrar = 0;
-              //$t_total = 0;
-            
-              foreach($credito_adelanto as $valueadelanto){
-                  $credito_cronograma = DB::table('credito_cronograma')->where('credito_cronograma.id',$valueadelanto->idcredito_cronograma)->first();
-                  if($credito_cronograma){
-                      if($credito_cronograma->idestadocredito_cronograma==2){
-                          // "C. PAGADO" = solo la cuota (capital+interes+comision+cargo); la
-                          // penalidad/custodia/compensatorio del adelanto van en sus propias columnas.
-                          $t_cuotapagado = $t_cuotapagado
-                              + $valueadelanto->total
-                              - $valueadelanto->penalidad
-                              - $valueadelanto->tenencia
-                              - $valueadelanto->compensatorio;
-                      }else{
-                          if($t_cuotapagado>0){
-                              $t_acuenta = $t_acuenta+$valueadelanto->total;
-                          }else{
-                              $t_acuenta = $t_acuenta+$valueadelanto->capital+$valueadelanto->comision+$valueadelanto->cargo+$valueadelanto->interes;
-                          }
-                      }
-                  }
-                  $t_penalidad = $t_penalidad+$valueadelanto->penalidad;
-                  $t_tenencia = $t_tenencia+$valueadelanto->tenencia;
-                  $t_compensatorio = $t_compensatorio+$valueadelanto->compensatorio;
-                  //$t_total = $t_total+$valueadelanto->total;
-              }
-            
-              $t_cuotapagado = number_format($t_cuotapagado, 2, '.', '');
-              $t_acuenta = number_format($t_acuenta, 2, '.', '');
-              $t_penalidad = number_format($t_penalidad, 2, '.', '');
-              $t_tenencia = number_format($t_tenencia, 2, '.', '');
-              $t_compensatorio = number_format($t_compensatorio, 2, '.', '');
+              // Mismo desglose que el voucher de pago y el historial (pagoprestamo/showtable).
+              $desglose = desglose_pago_cobranzacuota($value);
+
+              $t_cuotapagado = number_format($desglose['cuotapagado'], 2, '.', '');
+              $t_acuenta = number_format($desglose['acuenta'], 2, '.', '');
+              $t_penalidad = number_format($desglose['penalidad'], 2, '.', '');
+              $t_tenencia = number_format($desglose['tenencia'], 2, '.', '');
+              $t_compensatorio = number_format($desglose['compensatorio'], 2, '.', '');
               $t_cuentaxcobrar = number_format($value->cobrar_cargo, 2, '.', '');
               $t_total = number_format($value->total_pagar+$t_cuentaxcobrar, 2, '.', '');
             

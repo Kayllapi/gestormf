@@ -3424,3 +3424,57 @@ function createTokenSunat($id_token, $clave_token){
       return $dias_pasados;
   }
   
+  /**
+   * Desglose de un pago (credito_cobranzacuota) en las lineas que muestran el voucher de pago,
+   * el historial de pagos y su reporte, para que los tres cuadren siempre.
+   *
+   * PAGO_ANTICIPADO: desde los totales consolidados en credito_cobranzacuota (tiene su propio
+   * manejo de reduccion_cuota/reduccion_plazo que no pasa por credito_adelanto).
+   *
+   * PAGO_CUOTA / PAGO_TOTAL / PAGO_ACUENTA: desde el desglose de credito_adelanto grabado con
+   * ESTE pago. Las cuotas que este pago cerro (pago_cuota) se separan en cuota y mora; cualquier
+   * otra cuota del desglose sigue abierta y su total (cuota+mora) va integro a "Pago a Cuenta".
+   */
+  function desglose_pago_cobranzacuota($credito_cobranzacuota) {
+      if ($credito_cobranzacuota->opcion_pago == 'PAGO_ANTICIPADO') {
+          $tenencia      = (float) $credito_cobranzacuota->total_tenencia;
+          $penalidad     = (float) $credito_cobranzacuota->total_penalidad;
+          $compensatorio = (float) $credito_cobranzacuota->total_compensatorio;
+          return [
+              'cuotapagado'   => (float) $credito_cobranzacuota->total_totalcuota - $tenencia - $penalidad - $compensatorio,
+              'acuenta'       => (float) $credito_cobranzacuota->total_adelanto,
+              'penalidad'     => $penalidad,
+              'tenencia'      => $tenencia,
+              'compensatorio' => $compensatorio,
+          ];
+      }
+
+      $cuotas_cerradas = array_filter(
+          array_map('trim', explode(',', (string) $credito_cobranzacuota->pago_cuota)),
+          fn($v) => $v !== ''
+      );
+
+      $credito_adelanto_pago = DB::table('credito_adelanto')
+          ->where('credito_adelanto.idcredito_cobranzacuota', $credito_cobranzacuota->id)
+          ->get();
+
+      $desglose = [
+          'cuotapagado'   => 0,
+          'acuenta'       => 0,
+          'penalidad'     => 0,
+          'tenencia'      => 0,
+          'compensatorio' => 0,
+      ];
+      foreach ($credito_adelanto_pago as $valueadelanto) {
+          if (in_array((string) $valueadelanto->numerocuota, $cuotas_cerradas)) {
+              $desglose['cuotapagado']   += (float) $valueadelanto->capital + (float) $valueadelanto->interes + (float) $valueadelanto->comision + (float) $valueadelanto->cargo;
+              $desglose['penalidad']     += (float) $valueadelanto->penalidad;
+              $desglose['tenencia']      += (float) $valueadelanto->tenencia;
+              $desglose['compensatorio'] += (float) $valueadelanto->compensatorio;
+          } else {
+              // Sumar su mora tambien en la linea de mora la duplicaria, ya va dentro de este total.
+              $desglose['acuenta'] += (float) $valueadelanto->total;
+          }
+      }
+      return $desglose;
+  }

@@ -65,6 +65,7 @@ class GarantiarecogerController extends Controller
                   'credito.clienteidentificacion as clienteidentificacion',
                   'credito.fecha_cancelado as fecha_cancelado',
                   'credito.monto_solicitado as monto_solicitado',
+                  'credito.cuenta as cuenta',
               )
               ->orderBy('credito.fecha_cancelado','asc')
              ->get();
@@ -76,6 +77,7 @@ class GarantiarecogerController extends Controller
                   <th style="text-align:center">FECHA</th>
                   <th style="text-align:center">CLIENTE</th>
                   <th style="text-align:center">RUC/DNI/CE</th>
+                  <th style="text-align:center">CUENTA</th>
                   <th style="text-align:center">GARANTIA</th>
                   <th style="text-align:center">MONTO</th>
                   <th style="text-align:center">TIPO DE GARANTIA</th>
@@ -94,6 +96,7 @@ class GarantiarecogerController extends Controller
                             <td>{$fecha_cancelado}</td>
                             <td>{$value->clientenombrecompleto}</td>
                             <td>{$value->clienteidentificacion}</td>
+                            <td>C{$value->cuenta}</td>
                             <td>{$value->descripcion}</td>
                             <td style='text-align:right'>{$value->monto_solicitado}</td>
                             <td>{$value->garantias_tipogarantia}</td>

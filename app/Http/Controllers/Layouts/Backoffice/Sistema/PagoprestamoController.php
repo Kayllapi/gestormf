@@ -332,6 +332,12 @@ class PagoprestamoController extends Controller
             return $pdf->stream('VOUCHER_PAGO.pdf');
         }   
         else if($request->input('view') == 'ticket_garantia') {
+            // Cuotas pendientes/vencidas: si hay alguna, el credito sigue vigente (mismo criterio
+            // que el voucher de pago para "GARANTÍA PENDIENTE DE ENTREGA").
+            $count_credito_cronograma = DB::table('credito_cronograma')
+                  ->where('credito_cronograma.idcredito',$credito_cobranzacuota->idcredito)
+                  ->whereIn('credito_cronograma.idestadocredito_cronograma',[1,3])
+                  ->count();
             $count_creditopendiente = DB::table('credito_garantia')
                   ->where('credito_garantia.idcredito',$credito_cobranzacuota->idcredito)
                   ->where('credito_garantia.idestadoentrega',1)
@@ -339,6 +345,7 @@ class PagoprestamoController extends Controller
             return view(sistema_view().'/pagoprestamo/ticket_garantia',[
                 'tienda' => $tienda,
                 'credito_cobranzacuota' => $credito_cobranzacuota,
+                'count_credito_cronograma' => $count_credito_cronograma,
                 'count_creditopendiente' => $count_creditopendiente,
             ]);
         }

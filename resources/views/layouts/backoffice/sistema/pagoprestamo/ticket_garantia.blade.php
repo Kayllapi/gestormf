@@ -11,7 +11,15 @@
         <button type="button" class="btn-close" id="modal-close-cambiar-estado" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <div class="modal-body">
-          @if($count_creditopendiente>0)
+          @if($count_credito_cronograma>0)
+              <p class="text-center"
+                 style="background-color: #0d6efd;
+                        padding: 10px;
+                        border-radius: 5px;
+                        color: #fff;
+                        width: 100%;
+                        margin: auto;">Crédito vigente</p>
+          @elseif($count_creditopendiente>0)
               <p class="text-center" 
                  style="background-color: #dc3545;
                         padding: 10px;

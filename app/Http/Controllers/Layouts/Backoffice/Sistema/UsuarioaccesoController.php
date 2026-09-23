@@ -665,12 +665,15 @@ class UsuarioaccesoController extends Controller
                 'celular' => 'required',
                 'idestadodivil' => 'required',
                 'profesion' => 'required',
+                'intentos_maximo' => 'required|integer|min:0',
             ];
             $messages = [
                 // 'idusuario.required' => 'El "Usuario" es Obligatorio.',
                 'usuario.required' => 'El "Usuario (Login)" es Obligatorio.',
-                
-                
+                'intentos_maximo.required' => 'Los "Intentos de Acceso Permitidos" es Obligatorio.',
+                'intentos_maximo.integer' => 'Los "Intentos de Acceso Permitidos" debe ser un número entero.',
+                'intentos_maximo.min' => 'Los "Intentos de Acceso Permitidos" no puede ser negativo.',
+
                 // 'cargo.required' => 'El "Cargo" es Obligatorio.',
                 'idestadousuario.required' => 'El "Estado" es Obligatorio.',
                 'apellido_parterno.required' => 'El es Obligatorio.',
@@ -732,7 +735,13 @@ class UsuarioaccesoController extends Controller
                 'idestadocivil'       => $request->idestadodivil != null ? $request->idestadodivil : 0 ,
                 'estadocreditonoprendario'  => $request->estadocreditonoprendario != null ? $request->estadocreditonoprendario : '' ,
                 'estadocreditoprendario'    => $request->estadocreditoprendario != null ? $request->estadocreditoprendario : '' ,
+                'intentos_maximo'     => $request->intentos_maximo,
             ]);
+
+            // al (re)activar el acceso se reinicia el contador de intentos fallidos
+            if($request->idestadousuario == 1){
+                DB::table('users')->whereId($id)->update(['intentos_fallidos' => 0]);
+            }
 
             if($request->input('password')!=''){
                  DB::table('users')->whereId($id)->update([

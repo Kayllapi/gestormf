@@ -93,6 +93,10 @@
                             <option value="2">DESACTIVADO</option>
                         </select>
                     </div>
+                    <div class="col-sm-12">
+                        <label>Intentos de Acceso Permitidos: <span class="text-danger">(*)</span> <small class="text-muted">(0 = sin límite)</small></label>
+                        <input type="number" min="0" step="1" id="intentos_maximo" class="form-control" value="{{ $usuario->intentos_maximo }}">
+                    </div>
                 </div>
             </div>
             <div class="col-sm-12 col-md-7">

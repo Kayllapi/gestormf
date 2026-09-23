@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
 {
@@ -66,6 +68,39 @@ class LoginController extends Controller
         ];
     }
     
+    protected function authenticated(Request $request, $user)
+    {
+        DB::table('users')->whereId($user->id)->update(['intentos_fallidos' => 0]);
+    }
+
+    protected function sendFailedLoginResponse(Request $request)
+    {
+        $usuario = DB::table('users')
+            ->where('usuario', $request->{$this->username()})
+            ->where('idestadousuario', 1)
+            ->first();
+
+        // intentos_maximo = 0 significa sin límite
+        if ($usuario && $usuario->intentos_maximo > 0) {
+            DB::table('users')->whereId($usuario->id)->increment('intentos_fallidos');
+            DB::table('users')->whereId($usuario->id)
+                ->whereColumn('intentos_fallidos', '>=', 'intentos_maximo')
+                ->update(['idestadousuario' => 2]);
+
+            $restantes = $usuario->intentos_maximo - DB::table('users')->whereId($usuario->id)->value('intentos_fallidos');
+
+            throw ValidationException::withMessages([
+                $this->username() => $restantes > 0
+                    ? 'Usuario o contraseña incorrectos. Le quedan '.$restantes.' intento(s).'
+                    : 'El usuario ha sido deshabilitado por superar el número de intentos permitidos. Comuníquese con el administrador.',
+            ]);
+        }
+
+        throw ValidationException::withMessages([
+            $this->username() => [trans('auth.failed')],
+        ]);
+    }
+
     public function logout(Request $request)
     {
         $this->guard()->logout();

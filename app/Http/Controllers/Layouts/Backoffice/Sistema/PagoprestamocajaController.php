@@ -284,6 +284,14 @@ class PagoprestamocajaController extends Controller
               ->where('credito_cobranzacuota.id_credito_ampliado',$credito_cobranzacuota->idcredito)
               ->first();*/
         
+          // Solo se puede extornar un pago el mismo dia en que se registro.
+          if(Carbon::parse($credito_cobranzacuota->fecharegistro)->toDateString() != Carbon::now()->toDateString()){
+              return response()->json([
+                  'resultado' => 'ERROR',
+                  'mensaje'   => 'Solo se puede extornar un pago el mismo día en que se registró.',
+              ]);
+          }
+
           if($credito_cobranzacuota->id_credito_ampliado!=0){
               return response()->json([
                   'resultado' => 'ERROR',

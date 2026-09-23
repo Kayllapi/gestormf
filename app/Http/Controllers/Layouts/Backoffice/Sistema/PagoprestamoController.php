@@ -87,7 +87,6 @@ class PagoprestamoController extends Controller
               ->where($where2)
               ->select(
                   'credito_cobranzacuota.*',
-            
                   'credito.cuenta as cuentacredito',
                   'credito.idmodalidad_credito as idmodalidad_credito',
                   'cliente.id as idcliente',
@@ -483,6 +482,8 @@ class PagoprestamoController extends Controller
               'tienda' => $tienda,
               'credito_cobranzacuota' => $credito_cobranzacuota,
               'usuarios' => $usuarios,
+              // Solo se puede extornar un pago el mismo dia en que se registro (se valida tambien en update).
+              'extorno_permitido' => Carbon::parse($credito_cobranzacuota->fecharegistro)->toDateString() == Carbon::now()->toDateString(),
             ]);
         }
         
@@ -549,6 +550,14 @@ class PagoprestamoController extends Controller
               ->where('credito_cobranzacuota.id_credito_ampliado',$credito_cobranzacuota->idcredito)
               ->first();*/
         
+          // Solo se puede extornar un pago el mismo dia en que se registro.
+          if(Carbon::parse($credito_cobranzacuota->fecharegistro)->toDateString() != Carbon::now()->toDateString()){
+              return response()->json([
+                  'resultado' => 'ERROR',
+                  'mensaje'   => 'Solo se puede extornar un pago el mismo día en que se registró.',
+              ]);
+          }
+
           if($credito_cobranzacuota->id_credito_ampliado!=0){
               return response()->json([
                   'resultado' => 'ERROR',

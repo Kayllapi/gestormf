@@ -1,3 +1,4 @@
+@php($extorno_permitido = $extorno_permitido ?? true)
 <div id="carga_cambiar_estado">
 <form action="javascript:;" 
       onsubmit="callback({
@@ -22,6 +23,12 @@
         <button type="button" class="btn-close" id="modal-close-pagoprestamo-extornar" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <div class="modal-body">
+        @if(!$extorno_permitido)
+        <div class="alert alert-danger">
+          <i class="fa-solid fa-triangle-exclamation"></i> Solo se puede extornar un pago el mismo día en que se registró.<br>
+          Este pago se registró el <b>{{ \Carbon\Carbon::parse($credito_cobranzacuota->fecharegistro)->format('d-m-Y h:i A') }}</b>.
+        </div>
+        @else
         <div class="alert alert-danger">
           <i class="fa-solid fa-triangle-exclamation"></i> ¿Esta seguro de extornar el pago?<br>
           <b>"{{$credito_cobranzacuota->nombrecliente}}"</b>
@@ -42,12 +49,17 @@
                 <input type="password" class="form-control" id="responsableclave">
             </div>
         </div>
+        @endif
     </div>
+    @if($extorno_permitido)
     <div class="modal-footer">
         <button type="submit" class="btn btn-primary"><i class="fa-solid fa-ban"></i> Extornar</button>
     </div>
+    @endif
 </form>   
 </div>
+@if($extorno_permitido)
 <script>
     sistema_select2({ input:'#idresponsable' });
 </script>
+@endif

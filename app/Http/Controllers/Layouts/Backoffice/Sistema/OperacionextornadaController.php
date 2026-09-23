@@ -83,10 +83,11 @@ class OperacionextornadaController extends Controller
                   'ingresoextraordinario.monto as total_pagar',
                   'ingresoextraordinario.banco as banco',
                   'ingresoextraordinario.numerooperacion as numerooperacion',
+                    'ingresoextraordinario.codigo as codigo',
                   'ingresoextraordinario.descripcion as nombrecliente',
                   //DB::raw('CONCAT("--") as nombrecliente'),
                   'responsable.codigo as codigoresponsable',
-                  'tienda.nombre as tiendanombre',
+                  'tienda.nombreagencia as tiendanombre',
                    'responsableeliminado.codigo as codigoresponsableeliminado',
               )
               ->orderBy('fechaextorno','asc');
@@ -104,10 +105,11 @@ class OperacionextornadaController extends Controller
                   'gastoadministrativooperativo.monto as total_pagar',
                   'gastoadministrativooperativo.banco as banco',
                   'gastoadministrativooperativo.numerooperacion as numerooperacion',
+                  'gastoadministrativooperativo.codigo as codigo',
                   'gastoadministrativooperativo.descripcion as nombrecliente',
                   //DB::raw('CONCAT("--") as nombrecliente'),
                   'responsable.codigo as codigoresponsable',
-                  'tienda.nombre as tiendanombre',
+                  'tienda.nombreagencia as tiendanombre',
                   'responsableeliminado.codigo as codigoresponsableeliminado',
               )
               ->orderBy('fechaextorno','asc');
@@ -127,9 +129,10 @@ class OperacionextornadaController extends Controller
                   'credito.monto_solicitado as total_pagar',
                   'credito_formapago.banco as banco',
                   'credito_formapago.numerooperacion as numerooperacion',
+                  'credito_formapago.codigo as codigo',
                   'cliente.nombrecompleto as nombrecliente',
                   'responsable.codigo as codigoresponsable',
-                  'tienda.nombre as tiendanombre',
+                  'tienda.nombreagencia as tiendanombre',
                   DB::raw('CONCAT("") as codigoresponsableeliminado')
               )
               ->orderBy('fechaextorno','asc');
@@ -153,9 +156,10 @@ class OperacionextornadaController extends Controller
                   'credito_cobranzacuota.total_pagar as total_pagar',
                   'credito_cobranzacuota.banco as banco',
                   'credito_cobranzacuota.numerooperacion as numerooperacion',
+                  'credito_cobranzacuota.codigo as codigo',
                   'cliente.nombrecompleto as nombrecliente',
                   'responsable.codigo as codigoresponsable',
-                  'tienda.nombre as tiendanombre',
+                  'tienda.nombreagencia as tiendanombre',
                   DB::raw('CONCAT("") as codigoresponsableeliminado')
               )
               ->orderBy('fechaextorno','asc')

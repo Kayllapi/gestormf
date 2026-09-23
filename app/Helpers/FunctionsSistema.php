@@ -820,6 +820,19 @@ function select_cronograma(
                 $tot_tenencia      = $value->tenencia+$tenencia;
                 $tot_compensatorio = $value->compensatorio+$compensatorio;
             }
+            // La cascada trabaja en centimos: cada concepto se guarda redondeado (number_format), asi
+            // que tambien hay que restar el monto redondeado. Antes se restaba la mora sin redondear
+            // (p.ej. 0.433125 + 0.12375) pero se guardaba 0.43 + 0.12, y la fraccion perdida hacia
+            // que capital+interes+...+mora sumara 14.99 con un total de 15.00: ese centimo quedaba
+            // "pagado" en Pendientes pero no descontado del saldo en Pago Total.
+            $adelanto_pagar_acuenta = round((float) $adelanto_pagar_acuenta, 2);
+            $tot_amortizacion  = round((float) $tot_amortizacion, 2);
+            $tot_interes       = round((float) $tot_interes, 2);
+            $tot_comision      = round((float) $tot_comision, 2);
+            $tot_cargo         = round((float) $tot_cargo, 2);
+            $tot_penalidad     = round((float) $tot_penalidad, 2);
+            $tot_tenencia      = round((float) $tot_tenencia, 2);
+            $tot_compensatorio = round((float) $tot_compensatorio, 2);
             /*if($credito_adelanto!=''){
                 $tot_amortizacion  = $amortizacion_delanto;
                 $tot_interes       = $interes_delanto;

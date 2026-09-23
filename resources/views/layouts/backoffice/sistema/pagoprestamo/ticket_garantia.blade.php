@@ -12,7 +12,7 @@
     </div>
     <div class="modal-body">
           @if($count_credito_cronograma>0)
-              <p class="text-center alert alert-info">Crédito vigente</p>
+              <p class="text-center alert alert-danger">Crédito vigente</p>
           @elseif($count_creditopendiente>0)
               <p class="text-center alert alert-danger">Está pendiente a recojo de garantia!!.</p>
           @else

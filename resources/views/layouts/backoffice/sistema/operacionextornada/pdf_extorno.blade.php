@@ -125,7 +125,7 @@
                 <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">CUENTA.</th>
                 <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">COD/OPER.</th>
                 <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">N° CUOTA.</th>
-                <!-- <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">TIPO/OPERACION.</th> -->
+                <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">TIPO/OPER.</th>
                 <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">DESCRIPCIÓN/CLIENTE</th>
                 <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">BANCO(OPER.)</th>
                 <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">MONTO</th>
@@ -151,6 +151,7 @@
                 <td>{{str_pad($value->cuenta, 8, "0", STR_PAD_LEFT)}}</td>
                 <td>{{$num_operacion}}</td>
                 <td>{{$value->operacion=='ELIM. CRÉDITO'?'':$coutas}}</td>
+                <td>{{$value->operacion}}</td>
                 <td>{{$value->nombrecliente}}</td>
                 <td>{{$cuenta}}</td>
                 <td style="text-align: right;">S/. {{$value->total_pagar}}</td>

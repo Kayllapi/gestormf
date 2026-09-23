@@ -139,6 +139,7 @@
                     $t_penalidad     = $desglose['penalidad'];
                     $t_tenencia      = $desglose['tenencia'];
                     $t_compensatorio = $desglose['compensatorio'];
+                    $montos_cxc      = montos_cxc_cobranzacuota($credito_cobranzacuota);
                     ?>
           <table style="width:100%;">
             <tr>
@@ -149,7 +150,7 @@
                     <b>S/.:</b>
                 </td>
                 <td width="60px" style="padding-top:5px;padding-bottom:5px;text-align:right;">
-                    {{ number_format($credito_cobranzacuota->total_recibido+$credito_cobranzacuota->cobrar_cargo, 2, '.', '') }}
+                    {{ number_format($montos_cxc['recibido'], 2, '.', '') }}
                 </td>
             </tr>
             <tr>
@@ -182,7 +183,7 @@
                     {{ number_format($t_cuotapagado, 2, '.', '') }}<br>
                     {{ number_format($t_acuenta, 2, '.', '') }}<br>
                     {{ number_format($t_penalidad+$t_tenencia+$t_compensatorio, 2, '.', '') }}<br>
-                    {{ $credito_cobranzacuota->cobrar_cargo }}<br>
+                    {{ number_format($montos_cxc['cxc'], 2, '.', '') }}<br>
                 </td>
             </tr>
             <tr>
@@ -193,7 +194,7 @@
                     <b>S/.:</b>
                 </td>
               <td style="border-bottom: 0.8px dashed #000;border-top: 0.8px dashed #000;padding-top:5px;padding-bottom:5px;text-align:right;">
-                    {{ number_format($credito_cobranzacuota->total_pagar+$credito_cobranzacuota->cobrar_cargo, 2, '.', '') }}
+                    {{ number_format($montos_cxc['total'], 2, '.', '') }}
               </td>
             </tr>
             <tr>

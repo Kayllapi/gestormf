@@ -166,8 +166,9 @@
               $t_penalidad = number_format($desglose['penalidad'], 2, '.', '');
               $t_tenencia = number_format($desglose['tenencia'], 2, '.', '');
               $t_compensatorio = number_format($desglose['compensatorio'], 2, '.', '');
-              $t_cuentaxcobrar = number_format($value->cobrar_cargo, 2, '.', '');
-              $t_total = number_format($value->total_pagar+$t_cuentaxcobrar, 2, '.', '');
+              $montos_cxc = montos_cxc_cobranzacuota($value);
+              $t_cuentaxcobrar = number_format($montos_cxc['cxc'], 2, '.', '');
+              $t_total = number_format($montos_cxc['total'], 2, '.', '');
             
               $operacionen1 = '';
               $operacionen2 = '';

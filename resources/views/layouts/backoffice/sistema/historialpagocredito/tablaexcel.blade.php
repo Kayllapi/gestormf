@@ -86,7 +86,9 @@
               $fecharegistro = date_format(date_create($value->fecharegistro),"d-m-Y H:i:s A");
               // "Total (S/.)" = lo realmente cobrado/recibido (igual que pagoprestamo y el voucher),
               // no total_totalcuota (suma aritmetica de conceptos, antes de redondeo de caja).
-              $total_operacion_num = (float) $value->total_pagar + (float) $value->cobrar_cargo;
+              $montos_cxc = montos_cxc_cobranzacuota($value);
+              $t_cuentaxcobrar = number_format($montos_cxc['cxc'], 2, '.', '');
+              $total_operacion_num = $montos_cxc['total'];
               $total_operacion = number_format($total_operacion_num, 2, '.', '');
               $html .= "<tr>
                             <td></td>
@@ -101,7 +103,7 @@
                             <td>{$value->total_interes}</td>
                             <td>{$value->total_cargo}</td>
                             <td>{$value->total_comision}</td>
-                            <td>{$value->cobrar_cargo}</td>
+                            <td>{$t_cuentaxcobrar}</td>
                             <td>{$value->total_tenencia}</td>
                             <td>{$value->total_penalidad}</td>
                             <td>{$value->total_compensatorio}</td>
@@ -114,7 +116,7 @@
               $total_interes += $value->total_interes;
               $total_cargo += $value->total_comision;
               $total_comision += $value->total_cargo;
-              $cobrar_cargo += $value->cobrar_cargo;
+              $cobrar_cargo += (float) $t_cuentaxcobrar;
               $total_tenencia += $value->total_tenencia;
               $total_penalidad += $value->total_penalidad;
               $total_compensatorio += $value->total_compensatorio;

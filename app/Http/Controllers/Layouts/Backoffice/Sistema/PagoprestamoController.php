@@ -165,7 +165,9 @@ class PagoprestamoController extends Controller
 
               $fechaFormateado = Carbon::parse($value->fecharegistro)->format('d-m-Y h:i A');
 
-              $total_num = (float) $value->total_pagar + (float) $value->cobrar_cargo;
+              $montos_cxc = montos_cxc_cobranzacuota($value);
+              $t_cxc = number_format($montos_cxc['cxc'], 2, '.', '');
+              $total_num = $montos_cxc['total'];
               $total = number_format($total_num, 2, '.', '');
 
               $html .= "<tr id='show_data_select' idcredito_cobranzacuota='{$value->id}'>
@@ -177,7 +179,7 @@ class PagoprestamoController extends Controller
                             <td style='text-align:right;height: 20px;'>{$t_tenencia}</td>
                             <td style='text-align:right;height: 20px;'>{$t_penalidad}</td>
                             <td style='text-align:right;height: 20px;'>{$t_compensatorio}</td>
-                            <td style='text-align:right;height: 20px;'>{$value->cobrar_cargo}</td>
+                            <td style='text-align:right;height: 20px;'>{$t_cxc}</td>
                             <td style='text-align:right;height: 20px;'>{$total}</td>
                             <td style='text-align:center;height: 20px;width: 125px;'>{$fechaFormateado}</td>
                             <td style='height: 20px;'>{$operacionen1}</td>
@@ -193,7 +195,7 @@ class PagoprestamoController extends Controller
               $total_penalidad     += (float) $t_penalidad;
               $total_compensatorio += (float) $t_compensatorio;
               $total_tenencia      += (float) $t_tenencia;
-              $cobrar_cargo        += (float) $value->cobrar_cargo;
+              $cobrar_cargo        += (float) $t_cxc;
               $total_totalcuota    += $total_num;
 
               // Resumen de efectivo por forma de pago (antes acumulaba el total corrido).

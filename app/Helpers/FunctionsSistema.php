@@ -3478,3 +3478,36 @@ function createTokenSunat($id_token, $clave_token){
       }
       return $desglose;
   }
+
+  /**
+   * Cuenta x Cobrar, total de la operacion y monto recibido de un pago (credito_cobranzacuota).
+   *
+   * En PAGO_CUOTA / PAGO_TOTAL el "Total a Pagar" del modal de cobro ya incluye la Cuenta x Cobrar
+   * (cuando esta marcada), y ese es el total_pagar/total_recibido que se guarda; sumarle otra vez
+   * cobrar_cargo la cobraba dos veces en el voucher y los reportes. Ademas cobrar_cargo se guarda
+   * aunque se haya desmarcado la CxC en PAGO_CUOTA (estadocargo vacio), y ahi no se cobro.
+   * En el cobro de solo CxC (opcion_pago vacio) total_pagar/total_recibido quedan en 0 y el
+   * monto esta solo en cobrar_cargo.
+   */
+  function montos_cxc_cobranzacuota($credito_cobranzacuota) {
+      $cobrar_cargo   = (float) $credito_cobranzacuota->cobrar_cargo;
+      $total_pagar    = (float) $credito_cobranzacuota->total_pagar;
+      $total_recibido = (float) $credito_cobranzacuota->total_recibido;
+
+      if ($credito_cobranzacuota->opcion_pago == 'PAGO_CUOTA' || $credito_cobranzacuota->opcion_pago == 'PAGO_TOTAL') {
+          $cxc = ($credito_cobranzacuota->opcion_pago == 'PAGO_TOTAL' || $credito_cobranzacuota->estadocargo == 'on')
+              ? $cobrar_cargo
+              : 0;
+          return [
+              'cxc'      => $cxc,
+              'total'    => $total_pagar,
+              'recibido' => $total_recibido,
+          ];
+      }
+
+      return [
+          'cxc'      => $cobrar_cargo,
+          'total'    => $total_pagar + $cobrar_cargo,
+          'recibido' => $total_recibido + $cobrar_cargo,
+      ];
+  }

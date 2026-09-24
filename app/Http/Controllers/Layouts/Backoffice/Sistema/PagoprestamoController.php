@@ -807,6 +807,7 @@ class PagoprestamoController extends Controller
                 'fechaextorno' => Carbon::now(),
                 'idestadoextorno'  => 2,
                 'idresponsableextorno'  => $idresponsable,
+                'idusuarioextorno'  => Auth::user()->id,
           ]);
           // restaurar estado de credito
           // (si el pago extornado habia dejado el credito marcado como cancelado,

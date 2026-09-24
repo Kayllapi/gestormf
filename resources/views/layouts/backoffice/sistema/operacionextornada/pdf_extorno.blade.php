@@ -144,12 +144,12 @@
                 $coutas = str_replace(',',', ',$value->pago_cuota);
                 $totalpago += $value->total_pagar;
                 $cuenta = $value->banco!=''?$value->banco.' - ***'.substr($value->cuenta, -5).' ('.$value->numerooperacion.')':'';
-                $num_operacion =  'OP'.str_pad($value->codigo, 10, "0", STR_PAD_LEFT);
+                // $num_operacion =  'OP'.str_pad($value->codigo, 10, "0", STR_PAD_LEFT);
               ?>
               <tr>
                 <td>{{$value->fechaextorno}}</td>
                 <td>{{str_pad($value->cuenta, 8, "0", STR_PAD_LEFT)}}</td>
-                <td>{{$num_operacion}}</td>
+                <td>{{$value->codigo}}</td>
                 <td>{{$value->operacion=='ELIM. CRÉDITO'?'':$coutas}}</td>
                 <td>{{$value->operacion}}</td>
                 <td>{{$value->nombrecliente}}</td>

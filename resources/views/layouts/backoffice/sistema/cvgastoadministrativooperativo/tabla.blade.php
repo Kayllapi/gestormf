@@ -100,7 +100,7 @@
                         </tr>
                         <tr>
                             <td >Comprobante</td>
-                            <td >N° y Detalle de Comp.</td>
+                            <td >N° o Detalle de Comp.</td>
                         </tr>
                     </thead>
                     <tbody>

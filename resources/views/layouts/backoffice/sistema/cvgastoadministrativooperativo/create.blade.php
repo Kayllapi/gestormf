@@ -20,12 +20,6 @@
                 </div>
               </div>
               <div class="row">
-                <label class="col-sm-4 col-form-label" style="text-align: right;">Descripción:</label>
-                <div class="col-sm-8">
-                  <input type="text" class="form-control" id="descripcion">
-                </div>
-              </div>
-              <div class="row">
                 <label class="col-sm-4 col-form-label" style="text-align: right;">Comprobante:</label>
                 <div class="col-sm-4">
                   <select class="form-control" id="sustento_comprobante">
@@ -37,9 +31,15 @@
                 </div>
               </div>
               <div class="row">
-                <label class="col-sm-4 col-form-label" style="text-align: right;">N° y Detalle de Comp.:</label>
+                <label class="col-sm-4 col-form-label" style="text-align: right;">N° o Detalle de Comprobante.:</label>
                 <div class="col-sm-8">
                   <input type="text" class="form-control" id="sustento_descripcion">
+                </div>
+              </div>
+              <div class="row">
+                <label class="col-sm-4 col-form-label" style="text-align: right;">Descripción:</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" id="descripcion">
                 </div>
               </div>
           </div>

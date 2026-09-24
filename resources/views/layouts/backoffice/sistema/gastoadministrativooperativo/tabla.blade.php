@@ -60,7 +60,7 @@
                 </tr>
                 <tr>
                   <th>Comprobante</th>
-                  <th>N° y Detalle de Comp.</th>
+                  <th>N° o Detalle de Comp.</th>
                 </tr>
               </thead>
               <tbody>

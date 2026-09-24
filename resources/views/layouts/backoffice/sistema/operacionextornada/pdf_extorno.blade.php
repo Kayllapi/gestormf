@@ -124,6 +124,7 @@
                 <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">FECHA Y HORA</th>
                 <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">CUENTA.</th>
                 <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">COD. OPER.</th>
+                <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">F.C.</th>
                 <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">N° CUOTA.</th>
                 <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">TIPO OPER.</th>
                 <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">DESCRIPCIÓN/CLIENTE</th>
@@ -150,6 +151,7 @@
                 <td>{{$value->fechaextorno}}</td>
                 <td>{{$value->cuenta != '--' ? str_pad($value->cuenta, 8, "0", STR_PAD_LEFT) : '--'}}</td>
                 <td>{{$value->codigo}}</td>
+                <td>{{$value->fc ?? ''}}</td>
                 <td>{{$value->operacion=='ELIM. CRÉDITO'?'':$coutas}}</td>
                 <td>{{$value->operacion}}</td>
                 <td>{{$value->nombrecliente}}</td>
@@ -161,7 +163,7 @@
               </tr>
               @endforeach
               <tr>
-                <th style="border-top: 2px solid #000;" colspan="10"></th>
+                <th style="border-top: 2px solid #000;" colspan="12"></th>
               </tr>
               <!--tr>
                 <th style="border-top: 2px solid #000;"></th>

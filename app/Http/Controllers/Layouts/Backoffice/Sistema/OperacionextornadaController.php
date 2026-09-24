@@ -90,6 +90,7 @@ class OperacionextornadaController extends Controller
                   'responsable.codigo as codigoresponsable',
                   'tienda.nombreagencia as tiendanombre',
                    'responsableeliminado.codigo as codigoresponsableeliminado',
+                  DB::raw('CONCAT("") as fc')
               )
               ->orderBy('fechaextorno','asc');
           
@@ -114,6 +115,7 @@ class OperacionextornadaController extends Controller
                   'responsable.codigo as codigoresponsable',
                   'tienda.nombreagencia as tiendanombre',
                   'responsableeliminado.codigo as codigoresponsableeliminado',
+                  DB::raw('CONCAT("") as fc')
               )
               ->orderBy('fechaextorno','asc');
           
@@ -136,7 +138,13 @@ class OperacionextornadaController extends Controller
                   'cliente.nombrecompleto as nombrecliente',
                   'responsable.codigo as codigoresponsable',
                   'tienda.nombreagencia as tiendanombre',
-                  DB::raw('CONCAT("") as codigoresponsableeliminado')
+                  DB::raw('CONCAT("") as codigoresponsableeliminado'),
+                  DB::raw("CASE
+                      WHEN credito.idforma_credito = 1 THEN 'CP'
+                      WHEN credito.idforma_credito = 2 THEN 'CNP'
+                      WHEN credito.idforma_credito = 3 THEN 'CC'
+                      ELSE ''
+                  END as fc")
               )
               ->orderBy('fechaextorno','asc');
           
@@ -165,6 +173,12 @@ class OperacionextornadaController extends Controller
                   'responsable.codigo as codigoresponsable',
                   'tienda.nombreagencia as tiendanombre',
                   'responsableeliminado.codigo as codigoresponsableeliminado',
+                  DB::raw("CASE
+                      WHEN credito.idforma_credito = 1 THEN 'CP'
+                      WHEN credito.idforma_credito = 2 THEN 'CNP'
+                      WHEN credito.idforma_credito = 3 THEN 'CC'
+                      ELSE ''
+                  END as fc")
               )
               ->orderBy('fechaextorno','asc')
               ->get();

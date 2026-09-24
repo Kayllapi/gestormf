@@ -109,7 +109,7 @@ class OperacionextornadaController extends Controller
                   'gastoadministrativooperativo.banco as banco',
                   'gastoadministrativooperativo.numerooperacion as numerooperacion',
                   DB::raw('CONCAT(gastoadministrativooperativo.codigoprefijo,gastoadministrativooperativo.codigo) as codigo'),
-                  DB::raw('CONCAT(gastoadministrativooperativo.descripcion,"/",s_sustento_comprobante.nombre,"-",gastoadministrativooperativo.sustento_descripcion) as nombrecliente'),
+                  DB::raw('CONCAT(gastoadministrativooperativo.descripcion," / ",s_sustento_comprobante.nombre," / ",gastoadministrativooperativo.sustento_descripcion) as nombrecliente'),
                   //DB::raw('CONCAT("--") as nombrecliente'),
                   'responsable.codigo as codigoresponsable',
                   'tienda.nombreagencia as tiendanombre',

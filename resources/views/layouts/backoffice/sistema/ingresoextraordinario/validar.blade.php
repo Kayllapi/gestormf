@@ -15,12 +15,8 @@
         <button type="button" class="btn-close" id="modal-close-ingresoextraordinario-valid" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <div class="modal-body">
-        <label class="mt-1" style="background-color: #636363;
-          color: #fff;
-          width: 100%;
-          border-radius: 5px;
-          padding: 0px 5px;
-          margin-bottom: 5px;">Aprobación</label>
+        <div class="row">
+            <label class="mt-2 bg-primary subtitulo">Aprobación</label>
               <div class="mb-1">
                   <label>Responsable *</label>
                   <select class="form-select" id="idresponsable">
@@ -35,6 +31,7 @@
                   <label>Contraseña *</label>
                   <input type="password" class="form-control" id="responsableclave">
               </div>
+        </div>
     </div>
     <div class="modal-footer">
         <button type="submit" class="btn btn-primary"><i class="fa-solid fa-check"></i> Validar</button>

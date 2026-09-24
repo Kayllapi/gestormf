@@ -2,7 +2,8 @@
 
 ```bash
 # migrar una base de datos
-mysql -u sgm_user -p sgm < database/sql/23092026120000alter_users_add_intentos_login.sql
+mysql -u sgm_user -p sgm < database/sql/23092026130000update_gasto_ingreso_fechapago.sql
+mysql -u sgm_user -p sgm < database/sql/23092026140000alter_credito_cobranzacuota_add_idusuarioextorno.sql
 mysql -u sgm_user -p sgm < database/sql/21082026120000alter_credito_pagoanticipado_historial_add_modalidad.sql
 
 # verificar si se subio la base de datos

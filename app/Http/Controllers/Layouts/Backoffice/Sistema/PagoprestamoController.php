@@ -89,6 +89,7 @@ class PagoprestamoController extends Controller
                   'credito_cobranzacuota.*',
                   'credito.cuenta as cuentacredito',
                   'credito.idmodalidad_credito as idmodalidad_credito',
+                  'credito.idforma_credito as idforma_credito',
                   'cliente.id as idcliente',
                   'cliente.nombrecompleto as nombrecliente',
                   'cliente.direccion as clientedireccion',
@@ -103,6 +104,7 @@ class PagoprestamoController extends Controller
                 <tr>
                   <th style="text-align:center">N°</th>
                   <th style="text-align:center">CLIENTE</th>
+                  <th style="text-align:center">F.C</th>
                   <th style="text-align:center">CUOTAS</th>
                   <th style="text-align:center">C. PAGADO</th>
                   <th style="text-align:center">ACUENTA</th>
@@ -169,9 +171,21 @@ class PagoprestamoController extends Controller
               $total_num = $montos_cxc['total'];
               $total = number_format($total_num, 2, '.', '');
 
+              $cp = '';
+              if($value->idforma_credito==1){
+                  $cp = 'CP';
+              }
+              elseif($value->idforma_credito==2){
+                  $cp = 'CNP';
+              }
+              elseif($value->idforma_credito==3){
+                  $cp = 'CC';
+              }
+
               $html .= "<tr id='show_data_select' idcredito_cobranzacuota='{$value->id}'>
                             <td style='height: 20px;'>".($key+1)."</td>
                             <td style='height: 20px;'>{$value->nombrecliente}</td>
+                            <td style='height: 20px;'>{$cp}</td>
                             <td style='height: 20px;'>{$cuotas}</td>
                             <td style='text-align:right;height: 20px;'>{$t_cuotapagado}</td>
                             <td style='text-align:right;height: 20px;'>{$t_acuenta}</td>
@@ -215,7 +229,7 @@ class PagoprestamoController extends Controller
                   <th style="text-align:right">'.number_format($total_compensatorio, 2, '.', '').'</th>
                   <th style="text-align:right">'.number_format($cobrar_cargo, 2, '.', '').'</th>
                   <th style="text-align:right">'.number_format($total_totalcuota, 2, '.', '').'</th>
-                  <th colspan="6"></th>
+                  <th colspan="7"></th>
                 </tr>
                 <tr>
                   <th style="background-color: #9d9d9d !important;width:200px;text-align:center;" colspan="19">RESUMEN: &nbsp;&nbsp;&nbsp CAJA (S/.): '.number_format($total_caja, 2, '.', '').' &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 

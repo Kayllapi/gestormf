@@ -123,7 +123,7 @@
               <tr>
                 <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">FECHA Y HORA</th>
                 <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">CUENTA.</th>
-                <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">COD OPER.</th>
+                <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">COD. OPER.</th>
                 <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">N° CUOTA.</th>
                 <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">TIPO OPER.</th>
                 <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">DESCRIPCIÓN/CLIENTE</th>

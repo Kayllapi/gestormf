@@ -93,12 +93,13 @@
                                     ->orderBy('modulo.orden', 'asc')
                                     ->distinct()
                                     ->get();
+                                    $bgColorSistema = $loop->iteration % 2 == 0 ? '#e1e1e1' : '#ffffff';
                                 ?>
                                 <div class="table-responsive">
                                     <table class="table" id="tabla-usuarioacceso-permisos">
                                         <tr>
-                                            <td width="10px"><i data-feather="check"></i></td>
-                                            <td colspan='2'>
+                                            <td width="10px" style="background-color: {{ $bgColorSistema }} !important;"><i data-feather="check"></i></td>
+                                            <td colspan='2' style="background-color: {{ $bgColorSistema }} !important;">
                                                 <label class="chk" style="justify-content: space-between;width:100%;">
                                                     {{$sistemavalue->nombre}}
                                                     <input class="idpermiso MasterCheckboxSistema{{$sistemavalue->id}} checkboxlistitem{{$subsubvalue->id}}" 
@@ -115,14 +116,15 @@
 
                                                         $permiso_acceso_sub = DB::table('permisoacceso')
                                                             ->where('permisoacceso.idmodulo',$sistemavalue2->id)
-                                                            ->where('permisoacceso.idpermiso',$permiso->id) 
-                                                            ->first(); 
+                                                            ->where('permisoacceso.idpermiso',$permiso->id)
+                                                            ->first();
+                                                        $bgColorSistema2 = $loop->iteration % 2 == 0 ? '#e1e1e1' : '#ffffff';
                                                     ?>
                                                     <div class="table-responsive">
                                                         <table class="table">
                                                             <tr>
-                                                                <td width="10px" style="background-color: #e1e1e1 !important;"><i data-feather="check"></i></td>
-                                                                <td colspan='2' style="background-color: #e1e1e1 !important;">
+                                                                <td width="10px" style="background-color: {{ $bgColorSistema2 }} !important;"><i data-feather="check"></i></td>
+                                                                <td colspan='2' style="background-color: {{ $bgColorSistema2 }} !important;">
                                                                     
                                                                     <label class="chk" style="justify-content: space-between;width:100%;">
                                                                         {{$sistemavalue2->nombre}}

@@ -97,6 +97,7 @@ class IngresoextraordinarioController extends Controller
           
             DB::table('ingresoextraordinario')->insert([
                 'fecharegistro' => now(),
+                'fechapago' => now(),
                 'codigoprefijo' => 'OI',
                 'codigo' => $codigo,
                 'monto' => $request->input('monto'),

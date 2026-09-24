@@ -144,6 +144,7 @@ class OperacionextornadaController extends Controller
               ->join('credito','credito.id','credito_cobranzacuota.idcredito')
               ->join('users as cliente','cliente.id','credito.idcliente')
               ->leftJoin('users as responsable','responsable.id','credito_cobranzacuota.idresponsableextorno')
+              ->leftJoin('users as responsableeliminado','responsableeliminado.id','credito_cobranzacuota.idusuarioextorno')
               ->leftJoin('tienda','tienda.id','credito_cobranzacuota.idtienda')
               ->where('credito_cobranzacuota.idestadocredito_cobranzacuota',1)
               ->where('credito_cobranzacuota.idestadoextorno',2)
@@ -163,7 +164,7 @@ class OperacionextornadaController extends Controller
                   'cliente.nombrecompleto as nombrecliente',
                   'responsable.codigo as codigoresponsable',
                   'tienda.nombreagencia as tiendanombre',
-                  DB::raw('CONCAT("") as codigoresponsableeliminado')
+                  'responsableeliminado.codigo as codigoresponsableeliminado',
               )
               ->orderBy('fechaextorno','asc')
               ->get();

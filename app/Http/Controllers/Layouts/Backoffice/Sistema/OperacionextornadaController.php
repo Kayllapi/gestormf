@@ -151,7 +151,7 @@ class OperacionextornadaController extends Controller
           $creditos_extornados = DB::table('credito_cobranzacuota')
               ->join('credito','credito.id','credito_cobranzacuota.idcredito')
               ->join('users as cliente','cliente.id','credito.idcliente')
-              ->leftJoin('users as responsable','responsable.id','credito_cobranzacuota.idresponsable')
+              ->leftJoin('users as responsable','responsable.id','credito_cobranzacuota.validar_responsable')
               ->leftJoin('users as responsableeliminado','responsableeliminado.id','credito_cobranzacuota.idresponsableextorno')
               ->leftJoin('tienda','tienda.id','credito_cobranzacuota.idtienda')
               ->where('credito_cobranzacuota.idestadocredito_cobranzacuota',1)

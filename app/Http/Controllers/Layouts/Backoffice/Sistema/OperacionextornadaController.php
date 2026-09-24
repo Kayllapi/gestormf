@@ -94,6 +94,7 @@ class OperacionextornadaController extends Controller
               ->orderBy('fechaextorno','asc');
           
           $gastoadministrativooperativos = DB::table('gastoadministrativooperativo')
+              ->join('s_sustento_comprobante','s_sustento_comprobante.id','gastoadministrativooperativo.s_idsustento_comprobante')
               ->leftJoin('users as responsable','responsable.id','gastoadministrativooperativo.idresponsable')
               ->leftJoin('tienda','tienda.id','gastoadministrativooperativo.idtienda')
               ->leftJoin('users as responsableeliminado','responsableeliminado.id','gastoadministrativooperativo.idresponsble_eliminado')
@@ -108,7 +109,7 @@ class OperacionextornadaController extends Controller
                   'gastoadministrativooperativo.banco as banco',
                   'gastoadministrativooperativo.numerooperacion as numerooperacion',
                   DB::raw('CONCAT(gastoadministrativooperativo.codigoprefijo,gastoadministrativooperativo.codigo) as codigo'),
-                  'gastoadministrativooperativo.descripcion as nombrecliente',
+                  DB::raw('CONCAT(gastoadministrativooperativo.descripcion,"/",s_sustento_comprobante.nombre,"-",gastoadministrativooperativo.sustento_descripcion) as nombrecliente'),
                   //DB::raw('CONCAT("--") as nombrecliente'),
                   'responsable.codigo as codigoresponsable',
                   'tienda.nombreagencia as tiendanombre',

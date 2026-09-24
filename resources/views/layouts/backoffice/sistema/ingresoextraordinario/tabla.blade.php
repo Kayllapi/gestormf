@@ -1,6 +1,6 @@
 <div class="modal-header">
     <h5 class="modal-title">
-     Ingresos Extraordianrios
+     Ingresos Extraordinarios
       <a href="javascript:;" 
          class="btn btn-primary" 
          onclick="load_nuevo_ingresoextraordinario()">

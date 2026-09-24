@@ -70,6 +70,7 @@ class OperacionextornadaController extends Controller
           }
           
           $ingresoextraordinarios = DB::table('ingresoextraordinario')
+              ->join('s_sustento_comprobante','s_sustento_comprobante.id','ingresoextraordinario.s_idsustento_comprobante')
               ->leftJoin('users as responsable','responsable.id','ingresoextraordinario.idresponsable')
               ->leftJoin('tienda','tienda.id','ingresoextraordinario.idtienda')
               ->leftJoin('users as responsableeliminado','responsableeliminado.id','ingresoextraordinario.idresponsble_eliminado')
@@ -85,7 +86,7 @@ class OperacionextornadaController extends Controller
                   'ingresoextraordinario.banco as banco',
                   'ingresoextraordinario.numerooperacion as numerooperacion',
                   DB::raw('CONCAT(ingresoextraordinario.codigoprefijo,ingresoextraordinario.codigo) as codigo'),
-                  'ingresoextraordinario.descripcion as nombrecliente',
+                  DB::raw('CONCAT(ingresoextraordinario.descripcion," / ",s_sustento_comprobante.nombre) as nombrecliente'),
                   //DB::raw('CONCAT("--") as nombrecliente'),
                   'responsable.codigo as codigoresponsable',
                   'tienda.nombreagencia as tiendanombre',

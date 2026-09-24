@@ -123,8 +123,8 @@
 
               <tr>
                 <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;">FECHA Y HORA</th>
-                <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;">COD/OPER.</th>
-                <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;">TIPO/OPER.</th>
+                <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;">COD. OPER.</th>
+                <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;">TIPO OPER.</th>
                 <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;">N° DETALLE COMPRO.</th>
                 <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;">DESCRIPCIÓN/CLIENTES</th>
                 <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;">BANCO(OPER.)</th>

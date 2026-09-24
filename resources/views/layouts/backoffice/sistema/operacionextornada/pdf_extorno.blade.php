@@ -148,7 +148,7 @@
               ?>
               <tr>
                 <td>{{$value->fechaextorno}}</td>
-                <td>{{str_pad($value->cuenta, 8, "0", STR_PAD_LEFT)}}</td>
+                <td>{{$value->cuenta != '--' ? str_pad($value->cuenta, 8, "0", STR_PAD_LEFT) : '--'}}</td>
                 <td>{{$value->codigo}}</td>
                 <td>{{$value->operacion=='ELIM. CRÉDITO'?'':$coutas}}</td>
                 <td>{{$value->operacion}}</td>

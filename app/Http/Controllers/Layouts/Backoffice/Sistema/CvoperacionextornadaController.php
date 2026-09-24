@@ -196,6 +196,7 @@ class CvoperacionextornadaController extends Controller
                 ->orderBy('fechaextorno','asc');
             
             $gastoadministrativooperativos = DB::table('cvgastoadministrativooperativo')
+                ->join('s_sustento_comprobante','s_sustento_comprobante.id','cvgastoadministrativooperativo.s_idsustento_comprobante')
                 ->leftJoin('users as responsable','responsable.id','cvgastoadministrativooperativo.idresponsable')
                 ->leftJoin('users as responsableeliminado','responsableeliminado.id','cvgastoadministrativooperativo.idresponsble_eliminado')
                 ->leftJoin('tienda','tienda.id','cvgastoadministrativooperativo.idtienda')
@@ -213,7 +214,7 @@ class CvoperacionextornadaController extends Controller
                     'cvgastoadministrativooperativo.fecha_eliminado as fechaextorno',
                     DB::raw('CONCAT("--") as pago_cuota'),
                     'cvgastoadministrativooperativo.sustento_descripcion as detalleoperacion',
-                    'cvgastoadministrativooperativo.descripcion as descripcion',
+                    DB::raw('CONCAT(cvgastoadministrativooperativo.descripcion," / ",s_sustento_comprobante.nombre," / ",cvgastoadministrativooperativo.sustento_descripcion) as descripcion'),
                     'cvgastoadministrativooperativo.monto as total_pagar',
                     'cvgastoadministrativooperativo.banco as banco',
                     'cvgastoadministrativooperativo.numerooperacion as numerooperacion',

@@ -412,7 +412,7 @@ class IngresoextraordinarioController extends Controller
             DB::table('ingresoextraordinario')->whereId($id)->update([
                'fecha_eliminado' => now(),
                'idestadoeliminado' => 2,
-               'idresponsble_eliminado' => Auth::user()->id,
+               'idresponsble_eliminado' => $idresponsable,
             ]);
         
             //DB::table('ingresoextraordinario')->whereId($id)->delete();

@@ -441,7 +441,7 @@ class GastoadministrativooperativoController extends Controller
             DB::table('gastoadministrativooperativo')->whereId($id)->update([
                'fecha_eliminado' => now(),
                'idestadoeliminado' => 2,
-               'idresponsble_eliminado' => Auth::user()->id,
+               'idresponsble_eliminado' => $idresponsable,
             ]);
         
             //DB::table('gastoadministrativooperativo')->whereId($id)->delete();

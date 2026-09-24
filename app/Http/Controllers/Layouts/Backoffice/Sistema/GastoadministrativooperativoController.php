@@ -126,7 +126,7 @@ class GastoadministrativooperativoController extends Controller
                 'fecharegistro' => now(),
                 'codigoprefijo' => 'OG',
                 'codigo' => $codigo,
-                //'fechapago' => now(),
+                'fechapago' => now(),
                 'monto' => $request->input('monto'),
                 'descripcion' => $request->input('descripcion'),
                 's_idsustento_comprobante' => $request->input('sustento_comprobante'),

@@ -132,40 +132,28 @@
   </div>
 </div>
 <script>
-  // $('#idclientesearch').select2({
-  //     ajax: {
-  //         url:"{{url('backoffice/'.$tienda->id.'/cargo/show_credito')}}",
-  //         dataType: 'json',
-  //         delay: 250,
-  //         data: function (params) {
-  //             return {
-  //                   buscar: params.term
-  //             };
-  //         },
-  //         processResults: function (data) {
-  //             return {
-  //                 results: data
-  //             };
-  //         },
-  //         cache: true
-  //     },
-  //     placeholder: '-- Seleccionar --',
-  //     minimumInputLength: 2,
-  //     theme: 'bootstrap-5',
-  //     dropdownParent: $('#idclientesearch').parent().parent()
-  // });
-  
-  // $("#idclientesearch").on("change", function(e) {
-  //   lista_credito_cliente(e.currentTarget.value);
-  // });
-  
-  // function buscarcliente(){
-  //     setTimeout(function () { 
-  //       $('#idclientesearch').select2('open');
-  //     }, 500);
-  // }
-  
-  sistema_select2({ idtienda:{{$tienda->id}}, json:'tienda:usuario', input:'#idcliente' });
+  $('#idcliente').select2({
+      ajax: {
+          url:"{{url('backoffice/'.$tienda->id.'/cargo/show_credito_asesor')}}",
+          dataType: 'json',
+          delay: 250,
+          data: function (params) {
+              return {
+                    buscar: params.term
+              };
+          },
+          processResults: function (data) {
+              return {
+                  results: data
+              };
+          },
+          cache: true
+      },
+      placeholder: '-- Seleccionar --',
+      minimumInputLength: 2,
+      theme: 'bootstrap-5',
+      dropdownParent: $('#idcliente').parent()
+  });
   function lista_credito_cliente(id){
     $.ajax({
       url:"{{url('backoffice/0/cargo/showlistacreditos')}}",

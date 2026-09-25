@@ -137,7 +137,7 @@
             },
             success: function (respuesta){
                 $('#idasesor').html(respuesta);  
-                sistema_select2({ input:'#idasesor' });
+                sistema_select2({ input:'#idasesor', val:'0'  });
             }
         })
     }

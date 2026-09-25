@@ -35,7 +35,14 @@
                         </div>
                         <div class="row">
                           <div class="col-sm-6 col-md-6" style="text-align: left;">
-                              <button type="button" class="btn btn-success" onclick="lista_credito()"><i class="fa-solid fa-search"></i> FILTRAR</button>
+                              <div class="row">
+                                <div class="col-sm-4">
+                                  <button type="button" class="btn btn-success" onclick="lista_credito()"><i class="fa-solid fa-search"></i> FILTRAR</button>
+                                </div>
+                                <div class="col-sm-8">
+                                    <input type="text" disabled value="" class="form-control" id="data-fuente-ingreso" style="background-color: white;">
+                                </div>
+                              </div>
                           </div>
                            <div class="col-sm-6 col-md-6">
                               <div class="row">
@@ -147,6 +154,7 @@
       success: function (res){
         $('#data-direccion-domicilio').val(res.direcciondomicilio);
         $('#data-direccion-negocio').val(res.direccionnegocio);
+        $('#data-fuente-ingreso').val(res.fuenteingreso);
       }
     })
   }

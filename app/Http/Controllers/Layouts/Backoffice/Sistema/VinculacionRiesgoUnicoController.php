@@ -241,14 +241,26 @@ class VinculacionRiesgoUnicoController extends Controller
       
         else if($id == 'showcliente'){
             $cliente = DB::table('users')
+            ->leftJoin('s_users_prestamo','s_users_prestamo.id_s_users','users.id')
+              ->leftJoin('f_fuenteingreso','f_fuenteingreso.id','s_users_prestamo.idfuenteingreso')
               ->where('users.id',$request->idcliente)
-              ->select('users.id','users.direccion as direcciondomicilio','db_idubigeo')->first();
+              ->select(
+                'users.id',
+                'users.direccion as direcciondomicilio',
+                'users.db_idubigeo',
+                's_users_prestamo.idfuenteingreso',
+                's_users_prestamo.db_idfuenteingreso',
+                'f_fuenteingreso.nombre as fuente_ingreso'
+                )
+              ->first();
             $s_users_prestamo = DB::table('s_users_prestamo')
               ->where('id_s_users',$request->idcliente)
               ->select('s_users_prestamo.direccion_ac_economica as direccionnegocio','db_idubigeo_ac_economica')->first();
+            $fuenteingreso = $cliente ? ($cliente->fuente_ingreso != null && $cliente->fuente_ingreso != '' ? $cliente->fuente_ingreso : $cliente->db_idfuenteingreso) : '';
             return response()->json([
                 'direcciondomicilio' => $cliente->direcciondomicilio.', '.$cliente->db_idubigeo,
                 'direccionnegocio'   => $s_users_prestamo->direccionnegocio.', '.$s_users_prestamo->db_idubigeo_ac_economica,
+                'fuenteingreso' => $fuenteingreso,
             ]);
         }
         

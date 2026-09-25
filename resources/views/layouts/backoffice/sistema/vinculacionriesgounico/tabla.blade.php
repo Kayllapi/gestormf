@@ -39,7 +39,7 @@
                                 <div class="col-sm-4">
                                   <button type="button" class="btn btn-success" onclick="lista_credito()"><i class="fa-solid fa-search"></i> FILTRAR</button>
                                 </div>
-                                <div class="col-sm-8">
+                                <div class="col-sm-4">
                                     <input type="text" disabled value="" class="form-control" id="data-fuente-ingreso" style="background-color: white;">
                                 </div>
                               </div>

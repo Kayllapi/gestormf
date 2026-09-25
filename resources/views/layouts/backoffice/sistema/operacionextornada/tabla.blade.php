@@ -27,15 +27,15 @@
                                 </div>
                               </div>
                             </div>
-                            <div class="col-sm-12 col-md-3">
+                            <div class="col-sm-12 col-md-2">
                               <div class="row">
-                                <label for="fecha_inicio" class="col-sm-2 col-form-label">DEL</label>
+                                <label for="fecha_inicio" class="col-sm-2 col-form-label" style="padding: 5px 0px;">DEL</label>
                                 <div class="col-sm-10">
                                   <input type="date" class="form-control" id="fecha_inicio" value="{{ date('Y-m-d') }}">
                                 </div>
                               </div>
                             </div>
-                            <div class="col-sm-12 col-md-3">
+                            <div class="col-sm-12 col-md-2">
                               <div class="row">
                                 <label for="fecha_fin" class="col-sm-2 col-form-label">AL</label>
                                 <div class="col-sm-10">
@@ -46,6 +46,7 @@
                             <div class="col-sm-12 col-md-1">
                                 <button type="button" class="btn btn-success" onclick="verpdf()"><i class="fa-solid fa-search"></i> FILTRAR</button>
                             </div>
+                            <div class="col-md-2"></div>
                         </div>
                     </div>
                             

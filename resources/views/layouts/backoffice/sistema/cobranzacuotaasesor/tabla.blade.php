@@ -515,7 +515,7 @@
     
     
     function ver_opciones(idcobranzacuota,idestadocredito,entregargarantia){
-        modal({ route:'{{url('backoffice/'.$tienda->id.'/cobranzacuota')}}/'+$('#idcredito').val()+'/edit?view=opcion&idcobranzacuota='+idcobranzacuota+'&idestadocredito='+idestadocredito+'&entregargarantia='+entregargarantia, size: 'modal-sm' })
+        // En este módulo el pago no debe abrir el modal de TICKETS (voucher/compartir).
     }
     
    function vistapreliminar(){

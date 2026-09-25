@@ -30,8 +30,8 @@
             <i class="fa-solid fa-share-nodes" style="width: 30px; font-size: 20px;"></i>
         </button>
         <div class="col-sm-12 mt-2">
-            <iframe id="iframe_acta_aprobacion" 
-            src="{{ url('/backoffice/'.$tienda->id.'/cobranzacuota/'.$credito->id.'/edit?view=pdf_pago&idcobranzacuota='.$idcobranzacuota) }}#zoom=100" 
+            <iframe id="iframe_acta_aprobacion"
+            src="{{ url('/backoffice/'.$tienda->id.'/cobranzacuota/'.$credito->id.'/edit?view=pdf_pago&idcobranzacuota='.$idcobranzacuota) }}#zoom=100"
             frameborder="0" width="100%" height="600px"></iframe>
         </div>
     </div>

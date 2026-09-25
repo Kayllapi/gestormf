@@ -90,15 +90,15 @@
                                 
                     </div>
                       <div class="col-sm-12 col-md-3" style="text-align: right;">
-                          <div>
-                          <button type="button" class="btn btn-primary mb-1" onclick="ticketpago()">
-                            <i class="fa-solid fa-check" style="font-weight: bold;"></i> VOUCHER DE PAGO</button>
-                          </div>
-                          <div>
-                          <button type="button" class="btn btn-warning mb-1" onclick="ticketgarantia()">
-                            <i class="fa-solid fa-check" style="font-weight: bold;"></i> V. ENTREGA DE GARANTÍA</button>
-                          </div>
-                          <div>
+                          <!-- <div>
+                            <button type="button" class="btn btn-primary mb-1" onclick="ticketpago()">
+                              <i class="fa-solid fa-check" style="font-weight: bold;"></i> VOUCHER DE PAGO</button>
+                            </div>
+                            <div>
+                            <button type="button" class="btn btn-warning mb-1" onclick="ticketgarantia()">
+                              <i class="fa-solid fa-check" style="font-weight: bold;"></i> V. ENTREGA DE GARANTÍA</button>
+                            </div>
+                          <div> -->
                       </div>
                 </div>
               

@@ -217,7 +217,7 @@ class PagoprestamoController extends Controller
               if($value->idformapago==2){ $total_banco   += $total_num; }
           }
           if(count($credito_cobranzacuotas)==0){
-              $html.= '<tr><td colspan="14" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
+              $html.= '<tr><td colspan="19" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
           }
               $html .= '</tbody><tfoot class="table-dark" style="position: sticky;bottom: -1px;z-index:1;">
                 <tr>

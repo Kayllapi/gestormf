@@ -515,7 +515,19 @@
     
     
     function ver_opciones(idcobranzacuota,idestadocredito,entregargarantia){
-        // En este módulo el pago no debe abrir el modal de TICKETS (voucher/compartir).
+        // En este módulo no se abre el modal de TICKETS: se imprime el voucher
+        // automáticamente en un iframe oculto, sin mostrar nada al usuario.
+        let iframe = document.createElement('iframe');
+        iframe.style.position = 'fixed';
+        iframe.style.width = '0';
+        iframe.style.height = '0';
+        iframe.style.border = '0';
+        iframe.src = '{{url('backoffice/'.$tienda->id.'/cobranzacuota')}}/'+$('#idcredito').val()+'/edit?view=pdf_pago&idcobranzacuota='+idcobranzacuota;
+        iframe.onload = function () {
+            iframe.contentWindow.focus();
+            iframe.contentWindow.print();
+        };
+        document.body.appendChild(iframe);
     }
     
    function vistapreliminar(){

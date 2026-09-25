@@ -148,7 +148,7 @@
                 // $num_operacion =  'OP'.str_pad($value->codigo, 10, "0", STR_PAD_LEFT);
               ?>
               <tr>
-                <td>{{$value->fechaextorno}}</td>
+                <td>{{ \Carbon\Carbon::parse($value->fechaextorno)->format('d/m/Y h:i A') }}</td>
                 <td>{{$value->cuenta != '--' ? str_pad($value->cuenta, 8, "0", STR_PAD_LEFT) : '--'}}</td>
                 <td>{{$value->codigo}}</td>
                 <td>{{$value->fc ?? ''}}</td>

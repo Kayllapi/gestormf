@@ -78,20 +78,20 @@
                 <tr>
                   <th style="text-align: center; border:0.1px solid #5a5a5a;" colspan="4">POR PROPIEDAD Y AVAL</th>
                   <th style="text-align: center; border:0.1px solid #5a5a5a;" colspan="2">POR NEGOCIO</th>
-                  <th style="text-align: center; border:0.1px solid #5a5a5a;" colspan="2">FAMILIARES EN LA EMPRESA</th>
+                  <th style="text-align: center; border:0.1px solid #7a7a7a;" colspan="2">FAMILIARES EN LA EMPRESA</th>
                 </tr>
                 <tr>
-                  <th style="text-align: center; border:0.1px solid #5a5a5a;">N°</th>
-                  <th style="text-align: center; border:0.1px solid #5a5a5a;">RUC/DNI/CE</th>
-                  <th style="text-align: center; border:0.1px solid #5a5a5a;">Nombres y Apellidos</th>
-                  <th style="text-align: center; border:0.1px solid #5a5a5a;">Cnta</th>
-                  <th style="text-align: center; border:0.1px solid #5a5a5a;">Avalados por Cliente al Vinculado con  MISMO DOMICILIO</th>
-                  <th style="text-align: center; border:0.1px solid #5a5a5a;">Cnta</th>
-                  <th style="text-align: center; border:0.1px solid #5a5a5a;">Avalados por Vinculado al Cliente  con MISMO DOMICILIO </th>
-                  <th style="text-align: center; border:0.1px solid #5a5a5a;">Cnta</th>
-                  <th style="text-align: center; border:0.1px solid #5a5a5a;">Misma dirección de negocio del vinculado</th>
-                  <th style="text-align: center; border:0.1px solid #5a5a5a;">Cnta</th>
-                  <th style="text-align: center; border:0.1px solid #5a5a5a;">Usuario Vinculado con mismo domicilio del Cliente</th>
+                  <th style="text-align: center; border:0.1px solid #7a7a7a;">N°</th>
+                  <th style="text-align: center; border:0.1px solid #7a7a7a;">RUC/DNI/CE</th>
+                  <th style="text-align: center; border:0.1px solid #7a7a7a;">Nombres y Apellidos</th>
+                  <th style="text-align: center; border:0.1px solid #7a7a7a;">Cnta</th>
+                  <th style="text-align: center; border:0.1px solid #7a7a7a;">Avalados por Cliente al Vinculado con  MISMO DOMICILIO</th>
+                  <th style="text-align: center; border:0.1px solid #7a7a7a;">Cnta</th>
+                  <th style="text-align: center; border:0.1px solid #7a7a7a;">Avalados por Vinculado al Cliente  con MISMO DOMICILIO </th>
+                  <th style="text-align: center; border:0.1px solid #7a7a7a;">Cnta</th>
+                  <th style="text-align: center; border:0.1px solid #7a7a7a;">Misma dirección de negocio del vinculado</th>
+                  <th style="text-align: center; border:0.1px solid #7a7a7a;">Cnta</th>
+                  <th style="text-align: center; border:0.1px solid #7a7a7a;">Usuario Vinculado con mismo domicilio del Cliente</th>
                 </tr>
               </thead>
               <tbody>

@@ -69,7 +69,7 @@
           <div class="card-body">
             <div class="modal-body p-0" style="overflow-y: scroll;height: calc(-271px + 100vh);">
             <table class="table table-striped table-hover" id="table-lista-credito">
-              <thead class="table-dark" style="position: sticky;top: 0;"> 
+              <thead class="table-dark">
                 <tr>
                   <th style="text-align: center; border:1px solid #5a5a5a;" rowspan="2" colspan="3">VINCULADOS</th>
                   <th style="text-align: center; border:1px solid #5a5a5a;" colspan="8">RIESGO Saldo de Créd.(S/.)</th>
@@ -113,8 +113,39 @@
 .table-dark {
     border-color: #afafaf;
 }
+/* Cabecera fija.
+   El sticky va en cada <th> y no en el <thead> porque esta cabecera tiene
+   varias filas con rowspan/colspan: en Chrome el sticky a nivel de <thead>
+   no mantiene las 3 filas pegadas al hacer scroll.
+   El offset (top) de cada fila lo calcula fijar_cabecera(). */
+#table-lista-credito{
+    /* collapse oculta los bordes de las celdas sticky */
+    border-collapse: separate;
+    border-spacing: 0;
+}
+#table-lista-credito thead th{
+    position: sticky;
+    background-color: #212529;
+    color: #fff;
+    vertical-align: middle;
+    z-index: 3;
+}
+/* Fila del TOTAL, fija abajo del area scroll */
+#table-lista-credito tbody tr.tabla-total th{
+    position: sticky;
+    bottom: 0;
+    background-color: #c2c0c2;
+    color: #000;
+    z-index: 2;
+}
 </style>
 <script>
+
+  $(function(){
+    fijar_cabecera();
+  });
+
+  $(window).on('resize', fijar_cabecera);
 
 
   $('#idcliente').select2({
@@ -160,6 +191,16 @@
   }
   
   //lista_credito();
+  // Calcula el offset (top) de cada fila de la cabecera para que las 3 filas
+  // queden fijas una debajo de otra al hacer scroll.
+  function fijar_cabecera(){
+    var alto = 0;
+    $('#table-lista-credito thead tr').each(function(){
+      $(this).children('th').css('top', alto + 'px');
+      alto += $(this).outerHeight();
+    });
+  }
+
   function lista_credito(){
     //let estado_credito = $('input[name="estado_credito"]:checked').val();
     
@@ -175,6 +216,7 @@
             $('tr.selected').removeClass('selected');
             $(this).addClass('selected');
         });
+        fijar_cabecera();
       }
     })
   }

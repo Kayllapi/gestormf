@@ -226,7 +226,7 @@ class VinculacionRiesgoUnicoController extends Controller
           }
    
               $html .= '
-                <tr style="position: sticky;bottom: 0;">
+                <tr class="tabla-total">
                   <th colspan="11" class="text-end">TOTAL S/.</th>
                   <th class="text-end">'.number_format($total, 2, '.', '').'</th>
                 </tr>';

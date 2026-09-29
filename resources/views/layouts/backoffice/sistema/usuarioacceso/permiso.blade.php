@@ -145,7 +145,7 @@
     #mx-modal-permisos .accordion-button{ font-size: 1rem; font-weight: normal; padding: .5rem 1rem; }
     #mx-modal-permisos .accordion-body{ padding: .5rem 1rem; }
     #mx-modal-permisos .table{ font-size: 1rem; }
-    .btnhover:hover{ background-color: #919191 !important; }
+    .btnhover:hover{ background-color: #b1b1b1 !important; }
 </style>
 
 <script>

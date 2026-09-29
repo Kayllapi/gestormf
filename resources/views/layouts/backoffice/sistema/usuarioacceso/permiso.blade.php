@@ -261,7 +261,7 @@
                       '<td><select class="form-control" id="idtienda'+num+'">'+option_tienda+'</select></td>'+
                       '<td><select class="form-control" id="idpermiso'+num+'">'+option_permiso+'</select></td>'+
                       '<td><select class="form-control" id="idestado'+num+'">'+option_estado+'</select></td>'+
-                      '<td><button type="button" class="btn btn-sm btn-outline-primary" onclick="abrir_permisos('+num+')"><i class="fa fa-key"></i> Permisos</button></td>'+
+                      '<td><button type="button" class="btn btn-primary" onclick="abrir_permisos('+num+')"><i class="fa fa-key"></i> Permisos</button></td>'+
                       tdeliminar+
                   '</tr>';
 

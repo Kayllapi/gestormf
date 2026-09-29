@@ -368,10 +368,10 @@
                         '</div>'+
                         '<div class="modal-body">'+
                             '<div class="alert alert-info py-2" id="permisos-usuario-detalle"></div>'+
-                            '<div class="mb-3 d-flex flex-wrap gap-2">'+
+                            '<div class="mb-3 d-flex flex-wrap gap-2 mt-2">'+
                                 '<button type="button" class="btn btn-success" onclick="marcar_todos_permisos(1)"><i class="fa fa-check"></i> Habilitar todo</button>'+
                                 '<button type="button" class="btn btn-primary" onclick="marcar_todos_permisos(2)"><i class="fa fa-ban"></i> Deshabilitar todo</button>'+
-                                '<button type="button" class="btn btn-warning" onclick="restablecer_permisos()"><i class="fa-solid fa-rotate-left"></i> Volver a los del Cargo</button>'+
+                                '<button type="button" class="btn btn-warning" onclick="restablecer_permisos()"><i class="fa-solid fa-rotate-left"></i> Restablecer Permisos en Cargo</button>'+
                             '</div>'+
                             '<div class="accordion" id="accordion_permisos_usuario"></div>'+
                         '</div>'+

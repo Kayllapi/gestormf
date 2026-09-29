@@ -91,6 +91,4 @@
     @include('app.nuevosistema.select2',['json'=>'tienda:usuario','input'=>'#idusuario'])
     @include('app.nuevosistema.select2',['json'=>'estado','input'=>'#idestadousuario','val'=>$usuario->idestadousuario])
     @include('app.nuevosistema.select2',['json'=>'tienda:sucursal','input'=>'#idsucursal','val'=>Auth::user()->idsucursal])
-
-
 </script>

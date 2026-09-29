@@ -359,11 +359,12 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
             <?php
 
 
-            $modulos = DB::table('permisoacceso')
-                        ->join('modulo','modulo.id','permisoacceso.idmodulo')
-                        ->where('permisoacceso.idpermiso',user_permiso()->idpermiso)
+            $modulos_acceso = modulos_acceso(user_permiso()->idpermiso);
+
+            $modulos = DB::table('modulo')
                         ->where('modulo.idestado',1)
                         ->where('modulo.idmodulo',7)
+                        ->whereIn('modulo.id',$modulos_acceso)
                         ->select('modulo.*')
                         ->get();
 
@@ -371,21 +372,24 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
             ?>
             <?php $i = 1  ; ?>
             @foreach($modulos as $value)
+               <?php
+                    $submodulos = DB::table('modulo')
+                                ->where('modulo.idestado',1)
+                                ->where('modulo.vista','<>','SOLO-ACCESO')
+                                ->where('modulo.idmodulo',$value->id)
+                                ->whereIn('modulo.id',$modulos_acceso)
+                                ->select('modulo.*')
+                                ->orderBy('modulo.orden','asc')
+                                ->get();
+               ?>
+               {{-- si al usuario no le queda ningun item visible, el menu no se muestra --}}
+               @if($submodulos->isNotEmpty())
                <li  class="nav-item dropdown menu_click_li m_click{{ $value->id }}" style="font-weight: normal;font-size: 13px;" >
                     <a href="javascript:;" class="nav-link dropdown-toggle menu_click" 
                     id="menu_click{{ $value->id }}" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                       <i class="{{ $value->icono }}"></i> {{ $value->nombre }}</a>
                     <ul class="dropdown-menu">
                     <?php
-                        $submodulos = DB::table('permisoacceso')
-                                    ->join('modulo','modulo.id','permisoacceso.idmodulo')
-                                    ->where('permisoacceso.idpermiso',user_permiso()->idpermiso)
-                                    ->where('modulo.idestado',1)
-                                    ->where('modulo.vista','<>','SOLO-ACCESO')
-                                    ->where('modulo.idmodulo',$value->id)
-                                    ->select('modulo.*')
-                                    ->orderBy('modulo.orden','asc')
-                                    ->get();
                         $grupoActual = null;
                     ?>
                     @foreach($submodulos as $subvalue)
@@ -409,6 +413,7 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
                     @endforeach
                     </ul>
                 </li>    
+               @endif
                 <?php $i++; ?>  
             @endforeach
         <li class="nav-item">

@@ -1814,13 +1814,59 @@ function generarTabla($fechaInicio) {
     echo '</tr>';
     echo '</thead>';
 }
+/**
+ * Modulos a los que tiene acceso un usuario en un cargo/agencia.
+ *
+ * Parte de lo configurado en el cargo (permisoacceso) y encima aplica lo que el
+ * usuario tenga guardado en userspermisoacceso como excepcion:
+ *   - idestado 1 => el usuario tiene el modulo aunque el cargo no lo tenga.
+ *   - idestado 2 => se le quita el modulo aunque el cargo lo tenga.
+ * Si el usuario no tiene excepciones guardadas se respeta el cargo tal cual.
+ */
+function modulos_acceso($idpermiso = 0, $idusers = 0, $idtienda = 0){
+    if($idusers == 0){
+        $idusers = Auth::user()->id;
+    }
+    if($idtienda == 0){
+        $idtienda = Auth::user()->idtienda;
+    }
+    if($idpermiso == 0){
+        $idpermiso = user_permiso()->idpermiso;
+    }
+    if($idpermiso == 0){
+        return [];
+    }
+
+    $modulos_cargo = DB::table('permisoacceso')
+        ->where('permisoacceso.idpermiso',$idpermiso)
+        ->pluck('permisoacceso.idmodulo')
+        ->all();
+
+    $excepciones = DB::table('userspermisoacceso')
+        ->where('userspermisoacceso.idusers',$idusers)
+        ->where('userspermisoacceso.idtienda',$idtienda)
+        ->where('userspermisoacceso.idpermiso',$idpermiso)
+        ->get();
+
+    if($excepciones->isEmpty()){
+        return $modulos_cargo;
+    }
+
+    $anular   = $excepciones->where('idestado',2)->pluck('idmodulo')->all();
+    $agregar  = $excepciones->where('idestado',1)->pluck('idmodulo')->all();
+
+    return array_values(array_unique(array_merge(array_diff($modulos_cargo,$anular),$agregar)));
+}
+
+/**
+ * true si el usuario tiene acceso al modulo de un controlador de tipo SOLO-ACCESO.
+ */
 function val_acceso_especial($accesos_especial){
-  $submodulos = DB::table('permisoacceso')
-                                  ->join('modulo','modulo.id','permisoacceso.idmodulo')
-                                  ->where('permisoacceso.idpermiso',user_permiso()->idpermiso)
+  $submodulos = DB::table('modulo')
                                   ->where('modulo.idestado',1)
                                   ->where('modulo.vista','SOLO-ACCESO')
                                   ->where('modulo.controlador',$accesos_especial)
+                                  ->whereIn('modulo.id',modulos_acceso())
                                   ->first();
 
   return $submodulos ? true : false;

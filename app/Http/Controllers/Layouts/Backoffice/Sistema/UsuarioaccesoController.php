@@ -31,8 +31,9 @@ class UsuarioaccesoController extends Controller
       
         if($request->view == 'registrar') {
             $permisos = DB::table('permiso')
-                        ->where('permiso.idtienda',$idtienda)
-                        ->get();
+                ->where('permiso.idtienda',$idtienda)
+                ->orderBy('permiso.rango','asc')
+                ->get();
 
             $tiendas = DB::table('tienda')->get();
             return view(sistema_view().'/usuarioacceso/create',[
@@ -519,10 +520,151 @@ class UsuarioaccesoController extends Controller
                 'user_permiso'  => $user_permiso,
                 'estadocivil'   => $estadocivil,
                 'usuario'       => $usuario,
+                'arbol_modulos' => $this->arbol_modulos(),
+                'modulos_cargo' => $this->modulos_cargo(),
+                'usuario_modulos' => $this->usuario_modulos($id),
             ]); 
         } 
         
         
+    }
+
+    /**
+     * Guarda los permisos por usuario (habilitar/deshabilitar modulos del cargo).
+     *
+     * $accesos: filas de Cargo/Agencia/Estado que se guardaron.
+     * $modulos: JSON con las excepciones marcadas por el usuario, en el formato
+     *           {"idtienda_idpermiso": {"idmodulo": idestado}}
+     *
+     * Solo se guardan las diferencias con respecto al cargo: si el usuario deja un
+     * modulo igual que el cargo, no se registra nada y se sigue heredando de
+     * permisoacceso. Si un Cargo/Agencia desaparece de la lista, sus excepciones
+     * se limpian.
+     */
+    private function guardar_permisos_usuario($idusuario, $accesos, $modulos)
+    {
+        $excepciones = [];
+        if($modulos != null && $modulos != ''){
+            $excepciones = json_decode($modulos, true);
+            if(!is_array($excepciones)){
+                $excepciones = [];
+            }
+        }
+
+        // con que modulo viene el cargo por defecto
+        $modulos_cargo = [];
+        $filas = DB::table('permisoacceso')->select('idpermiso','idmodulo')->get();
+        foreach($filas as $fila){
+            $modulos_cargo[$fila->idpermiso][] = $fila->idmodulo;
+        }
+
+        $vigentes = [];
+        DB::table('userspermisoacceso')->where('idusers',$idusuario)->delete();
+
+        foreach($accesos as $value){
+            if($value['idpermiso']==null || $value['idpermiso']==''){
+                continue;
+            }
+            $clave = $value['idtienda'].'_'.$value['idpermiso'];
+            $vigentes[$clave] = true;
+
+            $del_cargo = $modulos_cargo[$value['idpermiso']] ?? [];
+            if(!isset($excepciones[$clave])){
+                continue;
+            }
+            foreach($excepciones[$clave] as $idmodulo => $idestado){
+                $idestado = (int) $idestado;
+                if($idestado != 1 && $idestado != 2){
+                    continue;
+                }
+                // si queda igual que el cargo no hace falta guardarlo
+                if(($idestado == 1 && in_array((int)$idmodulo,$del_cargo)) ||
+                   ($idestado == 2 && !in_array((int)$idmodulo,$del_cargo))){
+                    continue;
+                }
+                DB::table('userspermisoacceso')->insert([
+                    'idusers'   => $idusuario,
+                    'idtienda'  => $value['idtienda'],
+                    'idpermiso' => $value['idpermiso'],
+                    'idmodulo'  => (int) $idmodulo,
+                    'idestado'  => $idestado,
+                ]);
+            }
+        }
+
+        return count($vigentes);
+    }
+
+    /**
+     * Arbol de modulos del sistema en 3 niveles (menu > item > subitem).
+     * Se usa en la pantalla de permisos del usuario, replicando el mismo
+     * esquema que la pantalla de Cargos/Permisos.
+     */
+    private function arbol_modulos()
+    {
+        $modulos = DB::table('modulo')
+            ->where('modulo.idestado',1)
+            ->select('modulo.id','modulo.nombre','modulo.vista','modulo.idmodulo','modulo.orden')
+            ->orderBy('modulo.orden','asc')
+            ->get();
+
+        $hijos = [];
+        foreach($modulos as $modulo){
+            if($modulo->idmodulo != 0){
+                $hijos[$modulo->idmodulo][] = $modulo;
+            }
+        }
+
+        $armar = function($idmodulo) use (&$armar, $hijos){
+            $lista = [];
+            foreach($hijos[$idmodulo] ?? [] as $hijo){
+                $lista[] = [
+                    'id'     => $hijo->id,
+                    'nombre' => $hijo->nombre,
+                    'vista'  => $hijo->vista,
+                    'hijos'  => $armar($hijo->id),
+                ];
+            }
+            return $lista;
+        };
+
+        return $armar(7);
+    }
+
+    /**
+     * Modulos que tiene configurados cada cargo (permisoacceso).
+     * Devuelve: [idpermiso => [idmodulo, idmodulo, ...]]
+     */
+    private function modulos_cargo()
+    {
+        $modulos_cargo = DB::table('permisoacceso')
+            ->select('permisoacceso.idpermiso','permisoacceso.idmodulo')
+            ->get()
+            ->groupBy('idpermiso');
+
+        $lista = [];
+        foreach($modulos_cargo as $idpermiso => $filas){
+            $lista[(string)$idpermiso] = $filas->pluck('idmodulo')->all();
+        }
+        return $lista;
+    }
+
+    /**
+     * Excepciones de permisos del usuario sobre su cargo.
+     * Devuelve: [idtienda => [idpermiso => [idmodulo => idestado]]]
+     */
+    private function usuario_modulos($idusuario)
+    {
+        $excepciones = DB::table('userspermisoacceso')
+            ->where('userspermisoacceso.idusers',$idusuario)
+            ->select('userspermisoacceso.idtienda','userspermisoacceso.idpermiso','userspermisoacceso.idmodulo','userspermisoacceso.idestado')
+            ->get();
+
+        $lista = [];
+        foreach($excepciones as $fila){
+            $lista[(string)$fila->idtienda][(string)$fila->idpermiso][(string)$fila->idmodulo] = $fila->idestado;
+        }
+        return $lista;
     }
 
     public function update(Request $request, $idtienda, $id)
@@ -774,6 +916,8 @@ class UsuarioaccesoController extends Controller
                 ]);
             }
 
+            $this->guardar_permisos_usuario($id,$accesos,$request->input('modulos'));
+
             //json_usuarioacceso($idtienda);
           
             return response()->json([
@@ -905,6 +1049,14 @@ class UsuarioaccesoController extends Controller
           
             DB::table('usersrolesmodulo')
                 ->where('idtienda',$idtienda)
+                ->where('idusers',$id)
+                ->delete();
+
+            DB::table('users_permiso')
+                ->where('idusers',$id)
+                ->delete();
+
+            DB::table('userspermisoacceso')
                 ->where('idusers',$id)
                 ->delete();
             

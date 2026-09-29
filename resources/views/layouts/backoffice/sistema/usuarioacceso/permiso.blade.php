@@ -417,8 +417,7 @@
 
         $('#permisos-usuario-detalle').html(
             'Agencia: <b>'+texto_seguro(agencia)+'</b> &nbsp;|&nbsp; '+
-            'Cargo: <b>'+texto_seguro(cargo)+'</b> &nbsp;|&nbsp; '+
-            'Ajustes propios del usuario: <b>'+ajustes+'</b>'
+            'Cargo: <b>'+texto_seguro(cargo)+'</b>'
         );
 
         pintar_arbol(num);

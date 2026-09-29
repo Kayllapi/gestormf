@@ -107,7 +107,7 @@
                             <th>Agencia</th>
                             <th>Cargo</th>
                             <th>Estado de <span style="background-color: #ffce39;padding-left: 5px;padding-right: 5px;">Cargos y Permisos</span></th>
-                            <th>Permisos</th>
+                            <th>Permisos Específicos por Usuario</th>
                             <th width="10px"><button type="button" class="btn btn-success" onclick="agregar_permiso()"><i class="fa fa-plus"></i></button></th>
                         </tr>
                     </thead>

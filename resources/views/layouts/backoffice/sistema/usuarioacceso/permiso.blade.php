@@ -416,9 +416,9 @@
 
         $('#permisos-usuario-detalle').html(
             'Agencia: <b>'+texto_seguro(agencia)+'</b> &nbsp;|&nbsp; '+
-            'Cargo: <b>'+texto_seguro(cargo)+'</b> &nbsp;|&nbsp; '+
-            'Usuario: <b>'+texto_seguro(@json(trim($usuario->apellidopaterno.' '.$usuario->apellidomaterno.' '.$usuario->nombre)))+
-            ' ('+texto_seguro(@json($usuario->usuario))+')</b>'
+            'Cargo: <b>'+texto_seguro(cargo)+'</b> <br>'+
+            'Apellidos y Nombres: <b>'+texto_seguro(@json(trim($usuario->apellidopaterno.' '.$usuario->apellidomaterno.', '.$usuario->nombre)))+'</b> &nbsp;|&nbsp;'+
+            'Usuario: <b>'+texto_seguro(@json($usuario->usuario))+'</b>'
         );
 
         pintar_arbol(num);

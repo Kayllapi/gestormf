@@ -413,11 +413,12 @@
 
         var cargo   = $('#idpermiso'+num+' option:selected').text();
         var agencia = $('#idtienda'+num+' option:selected').text();
-        var ajustes = Object.keys(estado_modulos[num]).length;
 
         $('#permisos-usuario-detalle').html(
             'Agencia: <b>'+texto_seguro(agencia)+'</b> &nbsp;|&nbsp; '+
-            'Cargo: <b>'+texto_seguro(cargo)+'</b>'
+            'Cargo: <b>'+texto_seguro(cargo)+'</b> &nbsp;|&nbsp; '+
+            'Usuario: <b>'+texto_seguro(@json(trim($usuario->apellidopaterno.' '.$usuario->apellidomaterno.' '.$usuario->nombre)))+
+            ' ('+texto_seguro(@json($usuario->usuario))+')</b>'
         );
 
         pintar_arbol(num);

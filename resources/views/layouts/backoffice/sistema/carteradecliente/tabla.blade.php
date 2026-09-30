@@ -156,7 +156,7 @@
 }
 </style>
 <script>
-    sistema_select2({ input:'#idagencia' });
+    sistema_select2({ input:'#idagencia', val:'{{$tienda->id}}' });
     sistema_select2({ input:'#idasesor' });
     sistema_select2({ input:'#idformacredito' });
 

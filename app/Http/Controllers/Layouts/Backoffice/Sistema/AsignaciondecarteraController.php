@@ -165,7 +165,7 @@ class AsignaciondecarteraController extends Controller
             $usuarios = DB::table('users')
                 ->join('users_permiso','users_permiso.idusers','users.id')
                 ->join('permiso','permiso.id','users_permiso.idpermiso')
-                ->whereIn('users_permiso.idpermiso',[3,4,7])
+                ->whereIn('users_permiso.idpermiso',[3,4,7,11])
                 ->where('users_permiso.idtienda',$request->idtienda)
                 ->where('users_permiso.id','<>',$request->idusers_permiso)
                 ->select('users.*','users_permiso.idpermiso as idpermiso','permiso.nombre as nombrepermiso')

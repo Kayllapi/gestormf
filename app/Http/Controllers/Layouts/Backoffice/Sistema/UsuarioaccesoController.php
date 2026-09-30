@@ -473,7 +473,8 @@ class UsuarioaccesoController extends Controller
                         [
                             'nombre'  => 'Editar',
                             'onclick' => '/'.$idtienda.'/usuarioacceso/'.$value->id.'/edit?view=permiso',
-                            'icono'   => 'edit'
+                            'icono'   => 'edit',
+                            'size'    => 'modal-xl'
                         ],
                         // [
                         //     'nombre'  => 'Eliminar',

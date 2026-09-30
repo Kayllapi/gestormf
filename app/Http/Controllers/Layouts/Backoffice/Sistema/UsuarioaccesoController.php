@@ -509,8 +509,9 @@ class UsuarioaccesoController extends Controller
         if($request->input('view') == 'permiso') {
             $estadocivil = DB::table('f_estadocivil')->get();
             $permisos = DB::table('permiso')
-                        ->where('permiso.idtienda',$idtienda)
-                        ->get();
+                ->where('permiso.idtienda',$idtienda)
+                ->orderBy('permiso.rango','asc')
+                ->get();
             $user_permiso = DB::table('users_permiso')->where('users_permiso.idusers',$id)->get();
             $tiendas = DB::table('tienda')->get();
             return view(sistema_view().'/usuarioacceso/permiso',[

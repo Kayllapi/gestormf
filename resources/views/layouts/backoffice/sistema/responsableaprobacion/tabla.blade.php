@@ -91,6 +91,10 @@
                               <input type="radio" name="nivelaprobacion{{ $key }}" value="2">
                               <span class="radio"></span> 2
                           </label>
+                          <label class="radio-custom">
+                              <input type="radio" name="nivelaprobacion{{ $key }}" value="3">
+                              <span class="radio"></span> 3
+                          </label>
                         </div>
                       </div>
                       <div id="container_permiso_nivelaprobacion{{ $key }}" data_nivelaprobacion >
@@ -98,6 +102,7 @@
                           $data_nivelaprobacion = json_decode($value->nivelaprobacion);
                           $data_nivelaprobacion_uno = $data_nivelaprobacion[0]->tipo_uno;
                           $data_nivelaprobacion_dos = $data_nivelaprobacion[0]->tipo_dos;
+                          $data_nivelaprobacion_tres = $data_nivelaprobacion[0]->tipo_tres ?? [];
                         ?>
                         <span class="tipo_uno">
                           @foreach($data_nivelaprobacion_uno as $permiso_val)
@@ -109,6 +114,13 @@
                         <span class="tipo_dos">
                           @foreach($data_nivelaprobacion_dos as $permiso_val)
                             <button type="button" class="btn btn-info m-1" valor_option="{{ $permiso_val->valor }}" text_option="{{ $permiso_val->texto }}">
+                              {{ $permiso_val->texto }} <span class="badge text-bg-danger" onclick="removePermiso(this)"><i class="fa-solid fa-xmark"></i></span>
+                            </button>
+                          @endforeach
+                        </span>
+                        <span class="tipo_tres">
+                          @foreach($data_nivelaprobacion_tres as $permiso_val)
+                            <button type="button" class="btn btn-success m-1" valor_option="{{ $permiso_val->valor }}" text_option="{{ $permiso_val->texto }}">
                               {{ $permiso_val->texto }} <span class="badge text-bg-danger" onclick="removePermiso(this)"><i class="fa-solid fa-xmark"></i></span>
                             </button>
                           @endforeach
@@ -138,6 +150,10 @@
                               <input type="radio" name="autonomiaadministracion{{ $key }}" value="2">
                               <span class="radio"></span> 2
                           </label>
+                          <label class="radio-custom">
+                              <input type="radio" name="autonomiaadministracion{{ $key }}" value="3">
+                              <span class="radio"></span> 3
+                          </label>
                         </div>
                       </div>
                       <div id="container_permiso_autonomiaadministracion{{ $key }}" data_autonomiaadministracion >
@@ -145,6 +161,7 @@
                           $data_autonomiaadministracion = json_decode($value->autonomiaadministracion);
                           $data_autonomiaadministracion_uno = $data_autonomiaadministracion[0]->tipo_uno;
                           $data_autonomiaadministracion_dos = $data_autonomiaadministracion[0]->tipo_dos;
+                          $data_autonomiaadministracion_tres = $data_autonomiaadministracion[0]->tipo_tres ?? [];
                         ?>
                         <span class="tipo_uno">
                           @foreach($data_autonomiaadministracion_uno as $permiso_val)
@@ -156,6 +173,13 @@
                         <span class="tipo_dos">
                           @foreach($data_autonomiaadministracion_dos as $permiso_val)
                             <button type="button" class="btn btn-info m-1" valor_option="{{ $permiso_val->valor }}" text_option="{{ $permiso_val->texto }}">
+                              {{ $permiso_val->texto }} <span class="badge text-bg-danger" onclick="removePermiso(this)"><i class="fa-solid fa-xmark"></i></span>
+                            </button>
+                          @endforeach
+                        </span>
+                        <span class="tipo_tres">
+                          @foreach($data_autonomiaadministracion_tres as $permiso_val)
+                            <button type="button" class="btn btn-success m-1" valor_option="{{ $permiso_val->valor }}" text_option="{{ $permiso_val->texto }}">
                               {{ $permiso_val->texto }} <span class="badge text-bg-danger" onclick="removePermiso(this)"><i class="fa-solid fa-xmark"></i></span>
                             </button>
                           @endforeach
@@ -185,6 +209,10 @@
                               <input type="radio" name="autonomiagerencia{{ $key }}" value="2">
                               <span class="radio"></span> 2
                           </label>
+                          <label class="radio-custom">
+                              <input type="radio" name="autonomiagerencia{{ $key }}" value="3">
+                              <span class="radio"></span> 3
+                          </label>
                         </div>
                       </div>
                       <div id="container_permiso_autonomiagerencia{{ $key }}" data_autonomiagerencia >
@@ -192,6 +220,7 @@
                           $data_autonomiagerencia = json_decode($value->autonomiagerencia);
                           $data_autonomiagerencia_uno = $data_autonomiagerencia[0]->tipo_uno;
                           $data_autonomiagerencia_dos = $data_autonomiagerencia[0]->tipo_dos;
+                          $data_autonomiagerencia_tres = $data_autonomiagerencia[0]->tipo_tres ?? [];
                         ?>
                         <span class="tipo_uno">
                           @foreach($data_autonomiagerencia_uno as $permiso_val)
@@ -203,6 +232,13 @@
                         <span class="tipo_dos">
                           @foreach($data_autonomiagerencia_dos as $permiso_val)
                             <button type="button" class="btn btn-info m-1" valor_option="{{ $permiso_val->valor }}" text_option="{{ $permiso_val->texto }}">
+                              {{ $permiso_val->texto }} <span class="badge text-bg-danger" onclick="removePermiso(this)"><i class="fa-solid fa-xmark"></i></span>
+                            </button>
+                          @endforeach
+                        </span>
+                        <span class="tipo_tres">
+                          @foreach($data_autonomiagerencia_tres as $permiso_val)
+                            <button type="button" class="btn btn-success m-1" valor_option="{{ $permiso_val->valor }}" text_option="{{ $permiso_val->texto }}">
                               {{ $permiso_val->texto }} <span class="badge text-bg-danger" onclick="removePermiso(this)"><i class="fa-solid fa-xmark"></i></span>
                             </button>
                           @endforeach
@@ -231,6 +267,10 @@
                               <input type="radio" name="asignacion{{ $key }}" value="2">
                               <span class="radio"></span> 2
                           </label>
+                          <label class="radio-custom">
+                              <input type="radio" name="asignacion{{ $key }}" value="3">
+                              <span class="radio"></span> 3
+                          </label>
                         </div>
                       </div>
                       <div id="container_permiso_asignacion{{ $key }}" data_asignacion >
@@ -238,6 +278,7 @@
                           $data_asignacion = json_decode($value->asignacion);
                           $data_asignacion_uno = $data_asignacion[0]->tipo_uno;
                           $data_asignacion_dos = $data_asignacion[0]->tipo_dos;
+                          $data_asignacion_tres = $data_asignacion[0]->tipo_tres ?? [];
                         ?>
                         <span class="tipo_uno">
                           @foreach($data_asignacion_uno as $permiso_val)
@@ -249,6 +290,13 @@
                         <span class="tipo_dos">
                           @foreach($data_asignacion_dos as $permiso_val)
                             <button type="button" class="btn btn-info m-1" valor_option="{{ $permiso_val->valor }}" text_option="{{ $permiso_val->texto }}">
+                              {{ $permiso_val->texto }} <span class="badge text-bg-danger" onclick="removePermiso(this)"><i class="fa-solid fa-xmark"></i></span>
+                            </button>
+                          @endforeach
+                        </span>
+                        <span class="tipo_tres">
+                          @foreach($data_asignacion_tres as $permiso_val)
+                            <button type="button" class="btn btn-success m-1" valor_option="{{ $permiso_val->valor }}" text_option="{{ $permiso_val->texto }}">
                               {{ $permiso_val->texto }} <span class="badge text-bg-danger" onclick="removePermiso(this)"><i class="fa-solid fa-xmark"></i></span>
                             </button>
                           @endforeach
@@ -327,6 +375,10 @@
                               <input type="radio" name="nivelaprobacion_noprendario{{ $key }}" value="2">
                               <span class="radio"></span> 2
                           </label>
+                          <label class="radio-custom">
+                              <input type="radio" name="nivelaprobacion_noprendario{{ $key }}" value="3">
+                              <span class="radio"></span> 3
+                          </label>
                         </div>
                       </div>
                       <div id="container_permiso_nivelaprobacion_noprendario{{ $key }}" data_nivelaprobacion >
@@ -334,6 +386,7 @@
                           $data_nivelaprobacion_noprendario = json_decode($value->nivelaprobacion);
                           $data_nivelaprobacion_noprendario_uno = $data_nivelaprobacion_noprendario[0]->tipo_uno;
                           $data_nivelaprobacion_noprendario_dos = $data_nivelaprobacion_noprendario[0]->tipo_dos;
+                          $data_nivelaprobacion_noprendario_tres = $data_nivelaprobacion_noprendario[0]->tipo_tres ?? [];
                         ?>
                         <span class="tipo_uno">
                           @foreach($data_nivelaprobacion_noprendario_uno as $permiso_val)
@@ -345,6 +398,13 @@
                         <span class="tipo_dos">
                           @foreach($data_nivelaprobacion_noprendario_dos as $permiso_val)
                             <button type="button" class="btn btn-info m-1" valor_option="{{ $permiso_val->valor }}" text_option="{{ $permiso_val->texto }}">
+                              {{ $permiso_val->texto }} <span class="badge text-bg-danger" onclick="removePermiso(this)"><i class="fa-solid fa-xmark"></i></span>
+                            </button>
+                          @endforeach
+                        </span>
+                        <span class="tipo_tres">
+                          @foreach($data_nivelaprobacion_noprendario_tres as $permiso_val)
+                            <button type="button" class="btn btn-success m-1" valor_option="{{ $permiso_val->valor }}" text_option="{{ $permiso_val->texto }}">
                               {{ $permiso_val->texto }} <span class="badge text-bg-danger" onclick="removePermiso(this)"><i class="fa-solid fa-xmark"></i></span>
                             </button>
                           @endforeach
@@ -373,6 +433,10 @@
                               <input type="radio" name="autonomiaadministracion_noprendario{{ $key }}" value="2">
                               <span class="radio"></span> 2
                           </label>
+                          <label class="radio-custom">
+                              <input type="radio" name="autonomiaadministracion_noprendario{{ $key }}" value="3">
+                              <span class="radio"></span> 3
+                          </label>
                         </div>
                       </div>
                       <div id="container_permiso_autonomiaadministracion_noprendario{{ $key }}" data_autonomiaadministracion >
@@ -380,6 +444,7 @@
                           $data_autonomiaadministracion_noprendario = json_decode($value->autonomiaadministracion);
                           $data_autonomiaadministracion_noprendario_uno = $data_autonomiaadministracion_noprendario[0]->tipo_uno;
                           $data_autonomiaadministracion_noprendario_dos = $data_autonomiaadministracion_noprendario[0]->tipo_dos;
+                          $data_autonomiaadministracion_noprendario_tres = $data_autonomiaadministracion_noprendario[0]->tipo_tres ?? [];
                         ?>
                         <span class="tipo_uno">
                           @foreach($data_autonomiaadministracion_noprendario_uno as $permiso_val)
@@ -391,6 +456,13 @@
                         <span class="tipo_dos">
                           @foreach($data_autonomiaadministracion_noprendario_dos as $permiso_val)
                             <button type="button" class="btn btn-info m-1" valor_option="{{ $permiso_val->valor }}" text_option="{{ $permiso_val->texto }}">
+                              {{ $permiso_val->texto }} <span class="badge text-bg-danger" onclick="removePermiso(this)"><i class="fa-solid fa-xmark"></i></span>
+                            </button>
+                          @endforeach
+                        </span>
+                        <span class="tipo_tres">
+                          @foreach($data_autonomiaadministracion_noprendario_tres as $permiso_val)
+                            <button type="button" class="btn btn-success m-1" valor_option="{{ $permiso_val->valor }}" text_option="{{ $permiso_val->texto }}">
                               {{ $permiso_val->texto }} <span class="badge text-bg-danger" onclick="removePermiso(this)"><i class="fa-solid fa-xmark"></i></span>
                             </button>
                           @endforeach
@@ -419,6 +491,10 @@
                               <input type="radio" name="autonomiagerencia_noprendario{{ $key }}" value="2">
                               <span class="radio"></span> 2
                           </label>
+                          <label class="radio-custom">
+                              <input type="radio" name="autonomiagerencia_noprendario{{ $key }}" value="3">
+                              <span class="radio"></span> 3
+                          </label>
                         </div>
                       </div>
                       <div id="container_permiso_autonomiagerencia_noprendario{{ $key }}" data_autonomiagerencia >
@@ -426,6 +502,7 @@
                           $data_autonomiagerencia_noprendario = json_decode($value->autonomiagerencia);
                           $data_autonomiagerencia_noprendario_uno = $data_autonomiagerencia_noprendario[0]->tipo_uno;
                           $data_autonomiagerencia_noprendario_dos = $data_autonomiagerencia_noprendario[0]->tipo_dos;
+                          $data_autonomiagerencia_noprendario_tres = $data_autonomiagerencia_noprendario[0]->tipo_tres ?? [];
                         ?>
                         <span class="tipo_uno">
                           @foreach($data_autonomiagerencia_noprendario_uno as $permiso_val)
@@ -437,6 +514,13 @@
                         <span class="tipo_dos">
                           @foreach($data_autonomiagerencia_noprendario_dos as $permiso_val)
                             <button type="button" class="btn btn-info m-1" valor_option="{{ $permiso_val->valor }}" text_option="{{ $permiso_val->texto }}">
+                              {{ $permiso_val->texto }} <span class="badge text-bg-danger" onclick="removePermiso(this)"><i class="fa-solid fa-xmark"></i></span>
+                            </button>
+                          @endforeach
+                        </span>
+                        <span class="tipo_tres">
+                          @foreach($data_autonomiagerencia_noprendario_tres as $permiso_val)
+                            <button type="button" class="btn btn-success m-1" valor_option="{{ $permiso_val->valor }}" text_option="{{ $permiso_val->texto }}">
                               {{ $permiso_val->texto }} <span class="badge text-bg-danger" onclick="removePermiso(this)"><i class="fa-solid fa-xmark"></i></span>
                             </button>
                           @endforeach
@@ -465,6 +549,10 @@
                               <input type="radio" name="asignacion_noprendario{{ $key }}" value="2">
                               <span class="radio"></span> 2
                           </label>
+                          <label class="radio-custom">
+                              <input type="radio" name="asignacion_noprendario{{ $key }}" value="3">
+                              <span class="radio"></span> 3
+                          </label>
                         </div>
                       </div>
                       <div id="container_permiso_asignacion_noprendario{{ $key }}" data_asignacion >
@@ -472,6 +560,7 @@
                           $data_asignacion_noprendario = json_decode($value->asignacion);
                           $data_asignacion_noprendario_uno = $data_asignacion_noprendario[0]->tipo_uno;
                           $data_asignacion_noprendario_dos = $data_asignacion_noprendario[0]->tipo_dos;
+                          $data_asignacion_noprendario_tres = $data_asignacion_noprendario[0]->tipo_tres ?? [];
                         ?>
                         <span class="tipo_uno">
                           @foreach($data_asignacion_noprendario_uno as $permiso_val)
@@ -483,6 +572,13 @@
                         <span class="tipo_dos">
                           @foreach($data_asignacion_noprendario_dos as $permiso_val)
                             <button type="button" class="btn btn-info m-1" valor_option="{{ $permiso_val->valor }}" text_option="{{ $permiso_val->texto }}">
+                              {{ $permiso_val->texto }} <span class="badge text-bg-danger" onclick="removePermiso(this)"><i class="fa-solid fa-xmark"></i></span>
+                            </button>
+                          @endforeach
+                        </span>
+                        <span class="tipo_tres">
+                          @foreach($data_asignacion_noprendario_tres as $permiso_val)
+                            <button type="button" class="btn btn-success m-1" valor_option="{{ $permiso_val->valor }}" text_option="{{ $permiso_val->texto }}">
                               {{ $permiso_val->texto }} <span class="badge text-bg-danger" onclick="removePermiso(this)"><i class="fa-solid fa-xmark"></i></span>
                             </button>
                           @endforeach
@@ -631,11 +727,16 @@ function agregar_nivelaprobacion_prendario(nivelaprobacionnombre='',riesgocredit
                               <input type="radio" name="nivelaprobacion${num}" value="2">
                               <span class="radio"></span> 2
                           </label>
+                          <label class="radio-custom">
+                              <input type="radio" name="nivelaprobacion${num}" value="3">
+                              <span class="radio"></span> 3
+                          </label>
                       </div>
                     </div>
                     <div id="container_permiso_nivelaprobacion${num}" data_nivelaprobacion >
                       <span class="tipo_uno"></span>
                       <span class="tipo_dos"></span>
+                      <span class="tipo_tres"></span>
                     </div>                    
 
                     <select class="form-select d-none" id="nivelaprobacion${num}" multiple="multiple">
@@ -660,11 +761,16 @@ function agregar_nivelaprobacion_prendario(nivelaprobacionnombre='',riesgocredit
                               <input type="radio" name="autonomiaadministracion${num}" value="2">
                               <span class="radio"></span> 2
                           </label>
+                          <label class="radio-custom">
+                              <input type="radio" name="autonomiaadministracion${num}" value="3">
+                              <span class="radio"></span> 3
+                          </label>
                       </div>
                     </div>
                     <div id="container_permiso_autonomiaadministracion${num}" data_autonomiaadministracion >
                       <span class="tipo_uno"></span>
                       <span class="tipo_dos"></span>
+                      <span class="tipo_tres"></span>
                     </div>  
 
                     <select class="form-select d-none" id="autonomiaadministracion${num}" multiple="multiple">
@@ -689,11 +795,16 @@ function agregar_nivelaprobacion_prendario(nivelaprobacionnombre='',riesgocredit
                               <input type="radio" name="autonomiagerencia${num}" value="2">
                               <span class="radio"></span> 2
                           </label>
+                          <label class="radio-custom">
+                              <input type="radio" name="autonomiagerencia${num}" value="3">
+                              <span class="radio"></span> 3
+                          </label>
                       </div>
                     </div>
                     <div id="container_permiso_autonomiagerencia${num}" data_autonomiagerencia >
                       <span class="tipo_uno"></span>
                       <span class="tipo_dos"></span>
+                      <span class="tipo_tres"></span>
                     </div> 
                     <select class="form-select d-none" id="autonomiagerencia${num}" multiple="multiple">
                       ${option_autonomiagerencia}
@@ -717,11 +828,16 @@ function agregar_nivelaprobacion_prendario(nivelaprobacionnombre='',riesgocredit
                               <input type="radio" name="asignacion${num}" value="2">
                               <span class="radio"></span> 2
                           </label>
+                          <label class="radio-custom">
+                              <input type="radio" name="asignacion${num}" value="3">
+                              <span class="radio"></span> 3
+                          </label>
                       </div>
                     </div>
                     <div id="container_permiso_asignacion${num}" data_asignacion >
                       <span class="tipo_uno"></span>
                       <span class="tipo_dos"></span>
+                      <span class="tipo_tres"></span>
                     </div>
                     <select class="form-select d-none" id="asignacion${num}" multiple="multiple">
                       ${option_asignacion}
@@ -741,8 +857,8 @@ function agregar_nivelaprobacion_prendario(nivelaprobacionnombre='',riesgocredit
 }
 function addPermisoTable(e,container,tipo){
   
-  let target_container = tipo == 1 ? 'tipo_uno' : 'tipo_dos';
-  let color_badge = tipo == 2 ? 'info' : 'warning';
+  let target_container = tipo == 1 ? 'tipo_uno' : (tipo == 2 ? 'tipo_dos' : 'tipo_tres');
+  let color_badge = tipo == 1 ? 'warning' : (tipo == 2 ? 'info' : 'success');
   let valOption = e.value;
   let textOption = e.options[e.selectedIndex].text;
   //console.log(textOption)
@@ -798,10 +914,22 @@ function getJsonPermiso(table){
             texto: texto,
         });
     });
+
+    let data_nivelaprobacion_three = [];
+    $(this).find('div[data_nivelaprobacion] > span.tipo_tres > button').each(function() {
+      let valor = $(this).attr('valor_option');
+      let texto = $(this).attr('text_option');
+      data_nivelaprobacion_three.push({ 
+            valor: valor,
+            texto: texto,
+        });
+    });
     
     data_nivelaprobacion.push({
       tipo_uno: data_nivelaprobacion_one,
       tipo_dos: data_nivelaprobacion_two,
+
+      tipo_tres: data_nivelaprobacion_three,
     });
     // TWO TD
     
@@ -825,10 +953,22 @@ function getJsonPermiso(table){
             texto: texto,
         });
     });
+
+    let data_autonomiaadministracion_three = [];
+    $(this).find('div[data_autonomiaadministracion] > span.tipo_tres > button').each(function() {
+      let valor = $(this).attr('valor_option');
+      let texto = $(this).attr('text_option');
+      data_autonomiaadministracion_three.push({ 
+            valor: valor,
+            texto: texto,
+        });
+    });
     
     data_autonomiaadministracion.push({
       tipo_uno: data_autonomiaadministracion_one,
       tipo_dos: data_autonomiaadministracion_two,
+
+      tipo_tres: data_autonomiaadministracion_three,
     });
     // THREE TD
     let data_autonomiagerencia = [];
@@ -851,10 +991,22 @@ function getJsonPermiso(table){
             texto: texto,
         });
     });
+
+    let data_autonomiagerencia_three = [];
+    $(this).find('div[data_autonomiagerencia] > span.tipo_tres > button').each(function() {
+      let valor = $(this).attr('valor_option');
+      let texto = $(this).attr('text_option');
+      data_autonomiagerencia_three.push({ 
+            valor: valor,
+            texto: texto,
+        });
+    });
     
     data_autonomiagerencia.push({
       tipo_uno: data_autonomiagerencia_one,
       tipo_dos: data_autonomiagerencia_two,
+
+      tipo_tres: data_autonomiagerencia_three,
     });
     // FOUR TD
     let data_asignacion = [];
@@ -878,9 +1030,21 @@ function getJsonPermiso(table){
         });
     });
 
+    let data_asignacion_three = [];
+    $(this).find('div[data_asignacion] > span.tipo_tres > button').each(function() {
+      let valor = $(this).attr('valor_option');
+      let texto = $(this).attr('text_option');
+      data_asignacion_three.push({
+            valor: valor,
+            texto: texto,
+        });
+    });
+
     data_asignacion.push({
       tipo_uno: data_asignacion_one,
       tipo_dos: data_asignacion_two,
+
+      tipo_tres: data_asignacion_three,
     });
 
 
@@ -990,11 +1154,16 @@ function agregar_nivelaprobacion_noprendario(nivelaprobacionnombre='',riesgocred
                               <input type="radio" name="nivelaprobacion_noprendario${num}" value="2">
                               <span class="radio"></span> 2
                           </label>
+                          <label class="radio-custom">
+                              <input type="radio" name="nivelaprobacion_noprendario${num}" value="3">
+                              <span class="radio"></span> 3
+                          </label>
                       </div>
                     </div>
                     <div id="container_permiso_nivelaprobacion_noprendario${num}" data_nivelaprobacion >
                       <span class="tipo_uno"></span>
                       <span class="tipo_dos"></span>
+                      <span class="tipo_tres"></span>
                     </div>                    
 
                     <select class="form-select d-none" id="nivelaprobacion_noprendario${num}" multiple="multiple">
@@ -1019,11 +1188,16 @@ function agregar_nivelaprobacion_noprendario(nivelaprobacionnombre='',riesgocred
                               <input type="radio" name="autonomiaadministracion_noprendario${num}" value="2">
                               <span class="radio"></span> 2
                           </label>
+                          <label class="radio-custom">
+                              <input type="radio" name="autonomiaadministracion_noprendario${num}" value="3">
+                              <span class="radio"></span> 3
+                          </label>
                       </div>
                     </div>
                     <div id="container_permiso_autonomiaadministracion_noprendario${num}" data_autonomiaadministracion >
                       <span class="tipo_uno"></span>
                       <span class="tipo_dos"></span>
+                      <span class="tipo_tres"></span>
                     </div>  
 
                     <select class="form-select d-none" id="autonomiaadministracion_noprendario${num}" multiple="multiple">
@@ -1048,11 +1222,16 @@ function agregar_nivelaprobacion_noprendario(nivelaprobacionnombre='',riesgocred
                               <input type="radio" name="autonomiagerencia_noprendario${num}" value="2">
                               <span class="radio"></span> 2
                           </label>
+                          <label class="radio-custom">
+                              <input type="radio" name="autonomiagerencia_noprendario${num}" value="3">
+                              <span class="radio"></span> 3
+                          </label>
                       </div>
                     </div>
                     <div id="container_permiso_autonomiagerencia_noprendario${num}" data_autonomiagerencia >
                       <span class="tipo_uno"></span>
                       <span class="tipo_dos"></span>
+                      <span class="tipo_tres"></span>
                     </div> 
                     <select class="form-select d-none" id="autonomiagerencia_noprendario${num}" multiple="multiple">
                       ${option_autonomiagerencia}
@@ -1076,11 +1255,16 @@ function agregar_nivelaprobacion_noprendario(nivelaprobacionnombre='',riesgocred
                               <input type="radio" name="asignacion_noprendario${num}" value="2">
                               <span class="radio"></span> 2
                           </label>
+                          <label class="radio-custom">
+                              <input type="radio" name="asignacion_noprendario${num}" value="3">
+                              <span class="radio"></span> 3
+                          </label>
                       </div>
                     </div>
                     <div id="container_permiso_asignacion_noprendario${num}" data_asignacion >
                       <span class="tipo_uno"></span>
                       <span class="tipo_dos"></span>
+                      <span class="tipo_tres"></span>
                     </div>
                     <select class="form-select d-none" id="asignacion_noprendario${num}" multiple="multiple">
                       ${option_asignacion}

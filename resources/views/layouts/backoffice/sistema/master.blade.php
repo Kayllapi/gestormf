@@ -365,6 +365,7 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
                         ->where('modulo.idestado',1)
                         ->where('modulo.idmodulo',7)
                         ->whereIn('modulo.id',$modulos_acceso)
+                        ->orderBy('modulo.orden','asc')
                         ->select('modulo.*')
                         ->get();
 

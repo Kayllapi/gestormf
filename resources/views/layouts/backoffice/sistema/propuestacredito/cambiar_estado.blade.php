@@ -160,6 +160,15 @@
                             <span class="radio"></span> OPCIÓN 2
                           </label>
                         </div>
+
+                        <div class="form-check">
+                          <label class="radio-custom form-check-label">
+                            <input type="radio" name="exampleRadios" id="check_tres_table" value="table_tres"
+                              {{ $credito->aprobacion_nivel_validacion==3 && count($credito_aprobacion)>0?'checked':'' }} {{ $credito->aprobacion_nivel_validacion!=0 && count($credito_aprobacion)>0?'disabled':'' }}
+                              >
+                            <span class="radio"></span> OPCIÓN 3
+                          </label>
+                        </div>
                 </div>
               
               </div>
@@ -363,6 +372,21 @@
                     </div>
                     <div id="cont_permiso_nivel_dos" style="display:none;">
                     <table class="table" id="table-permisos-nivel-dos">
+                      <thead>
+                        <tr>
+                          <th>Cargos con Permiso</th>
+                          <th>Usuario</th>
+                          <th width="150px">Contraseña</th>
+                          <th width="220px"></th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      </tbody>
+                    </table>
+                    </div>
+                    <div id="cont_permiso_nivel_tres" style="display:none;">
+                    <table class="table" id="table-permisos-nivel-tres">
                       <thead>
                         <tr>
                           <th>Cargos con Permiso</th>
@@ -583,6 +607,8 @@
       $('#cont_permiso_nivel_uno').show();
     } else if($('#check_dos_table').is(':checked')){
       $('#cont_permiso_nivel_dos').show();
+    } else if($('#check_tres_table').is(':checked')){
+      $('#cont_permiso_nivel_tres').show();
     }
     @endif
   }
@@ -593,10 +619,13 @@
   $('#check_dos_table').change(function() {
     mostrar_permisos($('#tipo_validacion').val(), 2);
   });
+  $('#check_tres_table').change(function() {
+    mostrar_permisos($('#tipo_validacion').val(), 3);
+  });
   // Si ya estaba validado y la Opción ya venia elegida de antes (caso DESAPROBADO, o
   // una aprobación inicial donde ya se habia elegido Opción en una visita anterior),
   // se muestra la tabla de una vez, sin esperar un cambio de radio.
-  if(gateYaValidado && ($('#check_uno_table').is(':checked') || $('#check_dos_table').is(':checked'))){
+  if(gateYaValidado && ($('#check_uno_table').is(':checked') || $('#check_dos_table').is(':checked') || $('#check_tres_table').is(':checked'))){
     mostrarTablaSegunOpcion();
   }
   function mostrar_permisos(valor,numData){
@@ -611,27 +640,34 @@
       success: function (res){
         let tr_data_uno = ``;
         let tr_data_dos = ``;
+        let tr_data_tres = ``;
         let data_uno = [];
         let data_dos = [];
+        let data_tres = [];
         if( valor == 'nivelaprobacion'){
           data_uno = res.option_nivelaprobacion_user_uno;
           data_dos = res.option_nivelaprobacion_user_dos;
+          data_tres = res.option_nivelaprobacion_user_tres;
         }
         else if( valor == 'autonomiaadministracion'){
           data_uno = res.option_autonomiaadministracion_user_uno;
           data_dos = res.option_autonomiaadministracion_user_dos;
+          data_tres = res.option_autonomiaadministracion_user_tres;
         }
         else if( valor == 'autonomiagerencia'){
           data_uno = res.option_autonomiagerencia_user_uno;
           data_dos = res.option_autonomiagerencia_user_dos;
+          data_tres = res.option_autonomiagerencia_user_tres;
         }
-       
+
         
         $('#table-permisos-nivel-uno > tbody').html('');
         $('#table-permisos-nivel-dos > tbody').html('');
+        $('#table-permisos-nivel-tres > tbody').html('');
         if (numData==undefined) {
           let nivel_uno = $('#check_uno_table:checked').val();
           let nivel_dos = $('#check_dos_table:checked').val();
+          let nivel_tres = $('#check_tres_table:checked').val();
       
           if(nivel_uno=='table_uno'){
             creaTablaPermisos(data_uno,'#table-permisos-nivel-uno',res);
@@ -639,12 +675,18 @@
           if(nivel_dos=='table_dos'){
             creaTablaPermisos(data_dos,'#table-permisos-nivel-dos',res);
           }
+          if(nivel_tres=='table_tres'){
+            creaTablaPermisos(data_tres,'#table-permisos-nivel-tres',res);
+          }
         }
         if (numData==1) {
             creaTablaPermisos(data_uno,'#table-permisos-nivel-uno',res);
         }
         if (numData==2) {
           creaTablaPermisos(data_dos,'#table-permisos-nivel-dos',res);
+        }
+        if (numData==3) {
+          creaTablaPermisos(data_tres,'#table-permisos-nivel-tres',res);
         }
       }
     });
@@ -798,6 +840,7 @@
         let comentario = $(target+' > tbody > tr #'+prefix+'_comentario'+num).val();
         let nivel_uno = $('#check_uno_table:checked').val();
         let nivel_dos = $('#check_dos_table:checked').val();
+        let nivel_tres = $('#check_tres_table:checked').val();
 
         let nivel_a = '';
         if(nivel_uno=='table_uno'){
@@ -805,6 +848,9 @@
         }
         if(nivel_dos=='table_dos'){
             nivel_a = '2';
+        }
+        if(nivel_tres=='table_tres'){
+            nivel_a = '3';
         }
 
         callback({
@@ -842,6 +888,7 @@
 
             $('#check_uno_table').off('change').attr('disabled', true);
             $('#check_dos_table').off('change').attr('disabled', true);
+            $('#check_tres_table').off('change').attr('disabled', true);
             $('#tipo_validacion').attr('disabled', true)
 
             if(res['credito_aprobado'] != 'CORRECTO'){
@@ -850,6 +897,9 @@
                 });
                 $('#check_dos_table').on('change', function() {
                     mostrar_permisos($('#tipo_validacion').val(), 2);
+                });
+                $('#check_tres_table').on('change', function() {
+                    mostrar_permisos($('#tipo_validacion').val(), 3);
                 });
             }
 
@@ -878,6 +928,7 @@
     // validarasesorescalamiento()). Aca solo se deja preparada la tabla que corresponda.
     $('#cont_permiso_nivel_uno').css('display','none');
     $('#cont_permiso_nivel_dos').css('display','none');
+    $('#cont_permiso_nivel_tres').css('display','none');
     if (valCheck === 'table_uno') {
         tableDosInputs.add(tableDosSelects).attr('disabled', true);
     } else {
@@ -891,6 +942,9 @@
     let table = '#table-permisos-nivel-uno > tbody > tr';
     if(checkTable == 'table_dos'){
        table = '#table-permisos-nivel-dos > tbody > tr';
+    }
+    if(checkTable == 'table_tres'){
+       table = '#table-permisos-nivel-tres > tbody > tr';
     }
     
     let data = [];

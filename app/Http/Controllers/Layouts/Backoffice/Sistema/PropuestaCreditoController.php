@@ -275,342 +275,30 @@ class PropuestaCreditoController extends Controller
 
           $option_nivel_filtro = '<option disabled selected> -- Seleccione tipo filtro -- </option>';
 
-          $option_nivelaprobacion_user_uno = [];
-          $option_nivelaprobacion_user_dos = [];
-
-          $option_autonomiaadministracion_user_uno = [];
-          $option_autonomiaadministracion_user_dos = [];
-
-          $option_autonomiagerencia_user_uno = [];
-          $option_autonomiagerencia_user_dos = [];
-          
-          if($nivel_aprobacion!=''){
-              $nivelaprobacion = json_decode($nivel_aprobacion->nivelaprobacion, true);
-              $autonomiaadministracion = json_decode($nivel_aprobacion->autonomiaadministracion, true);
-              $autonomiagerencia = json_decode($nivel_aprobacion->autonomiagerencia, true);
-          
-              if($request->input('campo') == 'nivelaprobacion'){
-                if(count($nivelaprobacion[0]['tipo_uno']) > 0){
-                  $option_nivel_filtro .= '<option value="tipo_uno">NIVEL 1</option>';
-                  foreach($nivelaprobacion[0]['tipo_uno'] as $value){
-
-                    $usuario_permiso = DB::table('users_permiso')
-                                        ->join('users','users.id','users_permiso.idusers')
-                                        ->join('permiso','permiso.id','users_permiso.idpermiso')
-                                        ->where('users_permiso.idpermiso',$value['valor'])
-                                        ->where('users_permiso.idtienda',$idtienda)
-                                        ->select(
-                                          'users_permiso.*',
-                                          DB::raw('CONCAT(users.nombrecompleto," (",permiso.nombre,")") as nombre_personal')
-                                        )
-                                        ->get();
-                    $usuarios = [];
-                    $estado_validar_master = 0;
-                    $array_existe = [];
-                    foreach($usuario_permiso as $valueusers){
-                          $credito_aprobacion = DB::table('credito_aprobacion')
-                                  ->where('credito_aprobacion.idpermiso',$valueusers->idpermiso)
-                                  ->where('credito_aprobacion.idusers',$valueusers->idusers)
-                                  ->where('credito_aprobacion.idcredito',$request->idcredito)
-                                  ->first();
-                          $estado_validar = 'NO';
-                          $aprobacion_idestado = 0;
-                          if($credito_aprobacion!=''){
-                              $estado_validar = 'OK';
-                              $estado_validar_master = $estado_validar_master+1;
-                              $array_existe[] = $credito_aprobacion->id;
-                              $aprobacion_idestado = $credito_aprobacion->idestado;
-                          }
-
-                        $usuarios[] = [
-                            'idusers' => $valueusers->idusers,
-                            'idpermiso' => $valueusers->idpermiso,
-                            'nombre_personal' => $valueusers->nombre_personal,
-                            'estado_validar' => $estado_validar,
-                            'idestado' => $aprobacion_idestado,
-                            'array_existe' => $array_existe,
-                        ];
-                    }
-
-
-                    $option_nivelaprobacion_user_uno[] = [
-                      'usuarios' => $usuarios,
-                      'permiso' => $value['texto'],
-                      'idpermiso' => $value['valor'],
-                      'estado_validar_master' => $estado_validar_master
-                    ];
-
-                  }
-
-                }
-                if(count($nivelaprobacion[0]['tipo_dos']) > 0){
-                  $option_nivel_filtro .= '<option value="tipo_dos">NIVEL 2</option>';
-                  foreach($nivelaprobacion[0]['tipo_dos'] as $value){
-
-                    $usuario_permiso = DB::table('users_permiso')
-                                        ->join('users','users.id','users_permiso.idusers')
-                                        ->join('permiso','permiso.id','users_permiso.idpermiso')
-                                        ->where('users_permiso.idpermiso',$value['valor'])
-                                        ->where('users_permiso.idtienda',$idtienda)
-                                        ->select(
-                                          'users_permiso.*',
-                                          DB::raw('CONCAT(users.nombrecompleto," (",permiso.nombre,")") as nombre_personal')
-                                        )
-                                        ->get();
-                    $usuarios = [];
-                    $estado_validar_master = 0;
-                    $array_existe = [];
-                    foreach($usuario_permiso as $valueusers){
-                          $credito_aprobacion = DB::table('credito_aprobacion')
-                                  ->where('credito_aprobacion.idpermiso',$valueusers->idpermiso)
-                                  ->where('credito_aprobacion.idusers',$valueusers->idusers)
-                                  ->where('credito_aprobacion.idcredito',$request->idcredito)
-                                  ->first();
-                          $estado_validar = 'NO';
-                          $aprobacion_idestado = 0;
-                          if($credito_aprobacion!=''){
-                              $estado_validar = 'OK';
-                              $estado_validar_master = $estado_validar_master+1;
-                              $array_existe[] = $credito_aprobacion->id;
-                              $aprobacion_idestado = $credito_aprobacion->idestado;
-                          }
-
-                        $usuarios[] = [
-                            'idusers' => $valueusers->idusers,
-                            'idpermiso' => $valueusers->idpermiso,
-                            'nombre_personal' => $valueusers->nombre_personal,
-                            'estado_validar' => $estado_validar,
-                            'idestado' => $aprobacion_idestado,
-                            'array_existe' => $array_existe,
-                        ];
-                    }
-
-
-                    $option_nivelaprobacion_user_dos[] = [
-                      'usuarios' => $usuarios,
-                      'permiso' => $value['texto'],
-                      'idpermiso' => $value['valor'],
-                      'estado_validar_master' => $estado_validar_master
-                    ];
-
-
-                  }
-                }
+          // una entrada por (campo, opcion): el bloque de armado de usuarios esta
+          // centralizado en permisos_por_nivel() para no repetirlo 9 veces.
+          $campos = ['nivelaprobacion','autonomiaadministracion','autonomiagerencia'];
+          $respuesta = [];
+          foreach($campos as $campo){
+              foreach(['uno','dos','tres'] as $opcion){
+                  $respuesta['option_'.$campo.'_user_'.$opcion] = [];
               }
-              else if($request->input('campo') == 'autonomiaadministracion'){
-                if(count($autonomiaadministracion[0]['tipo_uno']) > 0){
-                  $option_nivel_filtro .= '<option value="tipo_uno">NIVEL 1</option>';
-                  foreach($autonomiaadministracion[0]['tipo_uno'] as $value){
-
-                    $usuario_permiso = DB::table('users_permiso')
-                                        ->join('users','users.id','users_permiso.idusers')
-                                        ->join('permiso','permiso.id','users_permiso.idpermiso')
-                                        ->where('users_permiso.idpermiso',$value['valor'])
-                                        ->where('users_permiso.idtienda',$idtienda)
-                                        ->select(
-                                          'users_permiso.*',
-                                          DB::raw('CONCAT(users.nombrecompleto," (",permiso.nombre,")") as nombre_personal')
-                                        )
-                                        ->get();
-                    $usuarios = [];
-                    $estado_validar_master = 0;
-                    $array_existe = [];
-                    foreach($usuario_permiso as $valueusers){
-                          $credito_aprobacion = DB::table('credito_aprobacion')
-                                  ->where('credito_aprobacion.idpermiso',$valueusers->idpermiso)
-                                  ->where('credito_aprobacion.idusers',$valueusers->idusers)
-                                  ->where('credito_aprobacion.idcredito',$request->idcredito)
-                                  ->first();
-                          $estado_validar = 'NO';
-                          $aprobacion_idestado = 0;
-                          if($credito_aprobacion!=''){
-                              $estado_validar = 'OK';
-                              $estado_validar_master = $estado_validar_master+1;
-                              $array_existe[] = $credito_aprobacion->id;
-                              $aprobacion_idestado = $credito_aprobacion->idestado;
-                          }
-
-                        $usuarios[] = [
-                            'idusers' => $valueusers->idusers,
-                            'idpermiso' => $valueusers->idpermiso,
-                            'nombre_personal' => $valueusers->nombre_personal,
-                            'estado_validar' => $estado_validar,
-                            'idestado' => $aprobacion_idestado,
-                            'array_existe' => $array_existe,
-                        ];
-                    }
-
-
-                    $option_autonomiaadministracion_user_uno[] = [
-                      'usuarios' => $usuarios,
-                      'permiso' => $value['texto'],
-                      'idpermiso' => $value['valor'],
-                      'estado_validar_master' => $estado_validar_master
-                    ];
-
-                  }
-                }
-                if(count($autonomiaadministracion[0]['tipo_dos']) > 0){
-                  $option_nivel_filtro .= '<option value="tipo_dos">NIVEL 2</option>';
-                  foreach($autonomiaadministracion[0]['tipo_dos'] as $value){
-
-                    $usuario_permiso = DB::table('users_permiso')
-                                        ->join('users','users.id','users_permiso.idusers')
-                                        ->join('permiso','permiso.id','users_permiso.idpermiso')
-                                        ->where('users_permiso.idpermiso',$value['valor'])
-                                        ->where('users_permiso.idtienda',$idtienda)
-                                        ->select(
-                                          'users_permiso.*',
-                                          DB::raw('CONCAT(users.nombrecompleto," (",permiso.nombre,")") as nombre_personal')
-                                        )
-                                        ->get();
-                    $usuarios = [];
-                    $estado_validar_master = 0;
-                    $array_existe = [];
-                    foreach($usuario_permiso as $valueusers){
-                          $credito_aprobacion = DB::table('credito_aprobacion')
-                                  ->where('credito_aprobacion.idpermiso',$valueusers->idpermiso)
-                                  ->where('credito_aprobacion.idusers',$valueusers->idusers)
-                                  ->where('credito_aprobacion.idcredito',$request->idcredito)
-                                  ->first();
-                          $estado_validar = 'NO';
-                          $aprobacion_idestado = 0;
-                          if($credito_aprobacion!=''){
-                              $estado_validar = 'OK';
-                              $estado_validar_master = $estado_validar_master+1;
-                              $array_existe[] = $credito_aprobacion->id;
-                              $aprobacion_idestado = $credito_aprobacion->idestado;
-                          }
-
-                        $usuarios[] = [
-                            'idusers' => $valueusers->idusers,
-                            'idpermiso' => $valueusers->idpermiso,
-                            'nombre_personal' => $valueusers->nombre_personal,
-                            'estado_validar' => $estado_validar,
-                            'idestado' => $aprobacion_idestado,
-                            'array_existe' => $array_existe,
-                        ];
-                    }
-
-
-                    $option_autonomiaadministracion_user_dos[] = [
-                      'usuarios' => $usuarios,
-                      'permiso' => $value['texto'],
-                      'idpermiso' => $value['valor'],
-                      'estado_validar_master' => $estado_validar_master
-                    ];
-
-                  }
-                }
-              }
-              else if($request->input('campo') == 'autonomiagerencia'){
-            if(count($autonomiagerencia[0]['tipo_uno']) > 0){
-              $option_nivel_filtro .= '<option value="tipo_uno">NIVEL 1</option>';
-               foreach($autonomiagerencia[0]['tipo_uno'] as $value){
-                 
-                $usuario_permiso = DB::table('users_permiso')
-                                    ->join('users','users.id','users_permiso.idusers')
-                                        ->join('permiso','permiso.id','users_permiso.idpermiso')
-                                    ->where('users_permiso.idpermiso',$value['valor'])
-                                    ->where('users_permiso.idtienda',$idtienda)
-                                    ->select(
-                                      'users_permiso.*',
-                                      DB::raw('CONCAT(users.nombrecompleto," (",permiso.nombre,")") as nombre_personal')
-                                    )
-                                    ->get();
-                $usuarios = [];
-                $estado_validar_master = 0;
-                $array_existe = [];
-                foreach($usuario_permiso as $valueusers){
-                      $credito_aprobacion = DB::table('credito_aprobacion')
-                              ->where('credito_aprobacion.idpermiso',$valueusers->idpermiso)
-                              ->where('credito_aprobacion.idusers',$valueusers->idusers)
-                              ->where('credito_aprobacion.idcredito',$request->idcredito)
-                              ->first();
-                      $estado_validar = 'NO';
-                      $aprobacion_idestado = 0;
-                      if($credito_aprobacion!=''){
-                          $estado_validar = 'OK';
-                          $estado_validar_master = $estado_validar_master+1;
-                          $array_existe[] = $credito_aprobacion->id;
-                          $aprobacion_idestado = $credito_aprobacion->idestado;
-                      }
-                  
-                    $usuarios[] = [
-                        'idusers' => $valueusers->idusers,
-                        'idpermiso' => $valueusers->idpermiso,
-                        'nombre_personal' => $valueusers->nombre_personal,
-                        'estado_validar' => $estado_validar,
-                        'idestado' => $aprobacion_idestado,
-                        'array_existe' => $array_existe,
-                    ];
-                }
-                
-              
-                $option_autonomiagerencia_user_uno[] = [
-                  'usuarios' => $usuarios,
-                  'permiso' => $value['texto'],
-                  'idpermiso' => $value['valor'],
-                  'estado_validar_master' => $estado_validar_master
-                ];
-                 
-              }
-            }
-            if(count($autonomiagerencia[0]['tipo_dos']) > 0){
-              $option_nivel_filtro .= '<option value="tipo_dos">NIVEL 2</option>';
-              foreach($autonomiagerencia[0]['tipo_dos'] as $value){
-                
-                
-                $usuario_permiso = DB::table('users_permiso')
-                                    ->join('users','users.id','users_permiso.idusers')
-                                        ->join('permiso','permiso.id','users_permiso.idpermiso')
-                                    ->where('users_permiso.idpermiso',$value['valor'])
-                                    ->where('users_permiso.idtienda',$idtienda)
-                                    ->select(
-                                      'users_permiso.*',
-                                      DB::raw('CONCAT(users.nombrecompleto," (",permiso.nombre,")") as nombre_personal')
-                                    )
-                                    ->get();
-                $usuarios = [];
-                $estado_validar_master = 0;
-                $array_existe = [];
-                foreach($usuario_permiso as $valueusers){
-                      $credito_aprobacion = DB::table('credito_aprobacion')
-                              ->where('credito_aprobacion.idpermiso',$valueusers->idpermiso)
-                              ->where('credito_aprobacion.idusers',$valueusers->idusers)
-                              ->where('credito_aprobacion.idcredito',$request->idcredito)
-                              ->first();
-                      $estado_validar = 'NO';
-                      $aprobacion_idestado = 0;
-                      if($credito_aprobacion!=''){
-                          $estado_validar = 'OK';
-                          $estado_validar_master = $estado_validar_master+1;
-                          $array_existe[] = $credito_aprobacion->id;
-                          $aprobacion_idestado = $credito_aprobacion->idestado;
-                      }
-                  
-                    $usuarios[] = [
-                        'idusers' => $valueusers->idusers,
-                        'idpermiso' => $valueusers->idpermiso,
-                        'nombre_personal' => $valueusers->nombre_personal,
-                        'estado_validar' => $estado_validar,
-                        'idestado' => $aprobacion_idestado,
-                        'array_existe' => $array_existe,
-                    ];
-                }
-                
-              
-                $option_autonomiagerencia_user_dos[] = [
-                  'usuarios' => $usuarios,
-                  'permiso' => $value['texto'],
-                  'idpermiso' => $value['valor'],
-                  'estado_validar_master' => $estado_validar_master
-                ];
-              }
-            }
           }
+
+          $campo = $request->input('campo');
+          if($nivel_aprobacion!='' && in_array($campo,$campos)){
+              $grupos = $this->permisos_por_nivel(
+                  $nivel_aprobacion->{$campo} ?? '',
+                  $idtienda,
+                  $request->idcredito
+              );
+              $option_nivel_filtro = $grupos['filtro'];
+              $sufijo = ['tipo_uno'=>'uno','tipo_dos'=>'dos','tipo_tres'=>'tres'];
+              foreach($grupos['grupos'] as $tipo => $lista){
+                  $respuesta['option_'.$campo.'_user_'.$sufijo[$tipo]] = $lista;
+              }
           }
-          
+
           $usuario = DB::table('users')
             ->join('users_permiso','users_permiso.idusers','users.id')
             ->join('permiso','permiso.id','users_permiso.idpermiso')
@@ -618,17 +306,11 @@ class PropuestaCreditoController extends Controller
             ->select('users.*','permiso.nombre as permiso','permiso.id as idpermiso')
             ->limit(1)
             ->first();
-          
-          return array(
+
+          return array_merge([
             'usuario' => $usuario,
             'nivel_filtro' => $option_nivel_filtro,
-            'option_nivelaprobacion_user_uno' => $option_nivelaprobacion_user_uno,
-            'option_nivelaprobacion_user_dos' => $option_nivelaprobacion_user_dos,
-            'option_autonomiaadministracion_user_uno' => $option_autonomiaadministracion_user_uno,
-            'option_autonomiaadministracion_user_dos' => $option_autonomiaadministracion_user_dos,
-            'option_autonomiagerencia_user_uno' => $option_autonomiagerencia_user_uno,
-            'option_autonomiagerencia_user_dos' => $option_autonomiagerencia_user_dos,
-          );
+          ],$respuesta);
           
           
         }
@@ -658,6 +340,98 @@ class PropuestaCreditoController extends Controller
                 ];
             }
         }
+    }
+
+    /**
+     * Descompone un campo del nivel de aprobacion (nivelaprobacion,
+     * autonomiaadministracion, autonomiagerencia) en sus OPCIONES 1/2/3 y, por cada
+     * cargo configurado en esa opcion, arma la lista de usuarios que deben aprobar.
+     *
+     * Antes este bloque vivia copiado 6 veces (3 campos x 2 opciones); con la tercera
+     * opcion serian 9 copias, asi que quedo centralizado aqui.
+     */
+    private function permisos_por_nivel($json_campo, $idtienda, $idcredito)
+    {
+        $etiquetas = [
+            'tipo_uno'  => 'NIVEL 1',
+            'tipo_dos'  => 'NIVEL 2',
+            'tipo_tres' => 'NIVEL 3',
+        ];
+
+        $filtro = '<option disabled selected> -- Seleccione tipo filtro -- </option>';
+        $grupos = [];
+
+        $data = json_decode($json_campo ?? '', true);
+        if(!is_array($data) || !isset($data[0])){
+            return ['filtro'=>$filtro, 'grupos'=>$grupos];
+        }
+
+        foreach($etiquetas as $tipo => $etiqueta){
+            $permisos = $data[0][$tipo] ?? [];
+            if(count($permisos) == 0){
+                continue;
+            }
+            $filtro .= '<option value="'.$tipo.'">'.$etiqueta.'</option>';
+
+            foreach($permisos as $permiso){
+                $usuario_permiso = DB::table('users_permiso')
+                                    ->join('users','users.id','users_permiso.idusers')
+                                    ->join('permiso','permiso.id','users_permiso.idpermiso')
+                                    ->where('users_permiso.idpermiso',$permiso['valor'])
+                                    ->where('users_permiso.idtienda',$idtienda)
+                                    ->select(
+                                      'users_permiso.*',
+                                      DB::raw('CONCAT(users.nombrecompleto," (",permiso.nombre,")") as nombre_personal')
+                                    )
+                                    ->get();
+
+                $usuarios = [];
+                $estado_validar_master = 0;
+                $array_existe = [];
+                foreach($usuario_permiso as $valueusers){
+                    $credito_aprobacion = DB::table('credito_aprobacion')
+                            ->where('credito_aprobacion.idpermiso',$valueusers->idpermiso)
+                            ->where('credito_aprobacion.idusers',$valueusers->idusers)
+                            ->where('credito_aprobacion.idcredito',$idcredito)
+                            ->first();
+                    $estado_validar = 'NO';
+                    $aprobacion_idestado = 0;
+                    if($credito_aprobacion!=''){
+                        $estado_validar = 'OK';
+                        $estado_validar_master = $estado_validar_master+1;
+                        $array_existe[] = $credito_aprobacion->id;
+                        $aprobacion_idestado = $credito_aprobacion->idestado;
+                    }
+
+                    $usuarios[] = [
+                        'idusers'         => $valueusers->idusers,
+                        'idpermiso'       => $valueusers->idpermiso,
+                        'nombre_personal' => $valueusers->nombre_personal,
+                        'estado_validar'  => $estado_validar,
+                        'idestado'        => $aprobacion_idestado,
+                        'array_existe'    => $array_existe,
+                    ];
+                }
+
+                $grupos[$tipo][] = [
+                  'usuarios' => $usuarios,
+                  'permiso' => $permiso['texto'],
+                  'idpermiso' => $permiso['valor'],
+                  'estado_validar_master' => $estado_validar_master
+                ];
+            }
+        }
+
+        return ['filtro'=>$filtro, 'grupos'=>$grupos];
+    }
+
+    /**
+     * Traduce la OPCION guardada en credito.aprobacion_nivel_validacion (1/2/3)
+     * a la clave del JSON del nivel de aprobacion (tipo_uno/tipo_dos/tipo_tres).
+     */
+    private function tipo_nivel($opcion)
+    {
+        return [1=>'tipo_uno', 2=>'tipo_dos', 3=>'tipo_tres'][$opcion] ?? 'tipo_uno';
     }
 
     public function edit(Request $request, $idtienda, $id)
@@ -784,7 +558,7 @@ class PropuestaCreditoController extends Controller
 
             if($nivel_aprobacion_data) {
                 $campo = $credito->aprobacion_tipo_validacion; // nivelaprobacion, autonomiaadministracion, autonomiagerencia
-                $nivel  = $credito->aprobacion_nivel_validacion == 1 ? 'tipo_uno' : 'tipo_dos';
+                $nivel  = $this->tipo_nivel($credito->aprobacion_nivel_validacion);
                 
                 $json_campo = json_decode($nivel_aprobacion_data->$campo, true);
                 $permisos_requeridos = $json_campo[0][$nivel] ?? [];
@@ -915,7 +689,7 @@ class PropuestaCreditoController extends Controller
                     ->orderBy('permiso.rango','asc')
                     ->get();
 
-                $nivel = $credito->aprobacion_nivel_validacion == 1 ? 'tipo_uno' : 'tipo_dos';
+                $nivel = $this->tipo_nivel($credito->aprobacion_nivel_validacion);
                 $json_asignacion = json_decode($nivel_aprobacion_escalamiento->asignacion, true);
                 $permisos_requeridos = $json_asignacion[0][$nivel] ?? [];
 

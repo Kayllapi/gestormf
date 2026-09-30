@@ -10,6 +10,31 @@ use Carbon\Carbon;
 
 class PenalidadComisionController extends Controller
 {
+    /**
+     * Parametros que administra esta pantalla y que si existen POR AGENCIA.
+     *
+     * Todo lo configurable por agencia vive en s_config (s_config.idtienda). Los campos
+     * tipo_garantia.penalidad y subtipo_garantia_noprendaria_ii.penalidad NO tienen
+     * idtienda: son un unico valor compartido por todas las agencias, por eso no se
+     * editan ni se copian aqui (se muestran solo como referencia).
+     */
+    const PARAMETROS = [
+        'dias_maximo_penalidad',
+        'cargo_custodia_garantia',
+        'penalidad_couta_simple',
+        'penalidad_couta_compuesto',
+        'dias_tolerancia',
+        'penalidad_couta_simple_noprendaria',
+        'penalidad_couta_compuesto_noprendaria',
+        'dias_tolerancia_garantia',
+        'tasa_moratoria',
+        'tipo_cambio_dolar',
+        'comision_gestion_garantia_cargo',
+        'comision_gestion_garantia_convenio',
+        'porcentaje_descuento_liquidacion',
+        'porcentaje_precio_liquidacion',
+    ];
+
     public function __construct()
     {
         $this->tipo_credito = DB::table('tipo_credito')->get();
@@ -19,11 +44,88 @@ class PenalidadComisionController extends Controller
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
       
         if($request->input('view') == 'tabla'){
+            $agencias = $this->agencias_permitidas();
+
+            // Por defecto se muestra la agencia activa del usuario; si no esta entre las
+            // suyas se cae a la de la ruta. Si tampoco, a la primera disponible.
+            $idtienda_seleccionada = $this->idtienda_activa();
+
+            if(!$agencias->firstWhere('id',$idtienda_seleccionada)){
+                $idtienda_seleccionada = (int) $tienda->id;
+            }
+            if(!$agencias->firstWhere('id',$idtienda_seleccionada)){
+                $idtienda_seleccionada = (int) ($agencias->first()->id ?? 0);
+            }
+
             return view(sistema_view().'/penalidadcomision/tabla',[
               'tienda' => $tienda,
+              'agencias' => $agencias,
+              'idtienda_seleccionada' => $idtienda_seleccionada,
             ]);
         }
             
+    }
+
+    /**
+     * Agencias sobre las que el usuario puede ver y editar esta configuracion.
+     *
+     * La fuente de verdad es users_permiso: el usuario accede a una agencia si tiene ahi
+     * un permiso activo (idestado=1), que es el mismo criterio con el que el sistema arma
+     * el menu y el selector de agencia del MasterController. Un usuario puede tener permiso
+     * en varias agencias a la vez (users_permiso.idsession solo marca cual esta activa),
+     * por eso se toman todas y no solo la de la sesion.
+     *
+     * Un usuario sin ningun permiso registrado (tipicamente el admin del sistema, que no
+     * tiene filas en users_permiso) ve todas las agencias.
+     */
+    protected function agencias_permitidas()
+    {
+        $idtiendas = DB::table('users_permiso')
+            ->where('idusers',Auth::id())
+            ->where('idestado',1)
+            ->distinct()
+            ->pluck('idtienda');
+
+        $query = DB::table('tienda')->where('idestado',1);
+
+        if($idtiendas->isNotEmpty()){
+            $query->whereIn('id',$idtiendas);
+        }
+
+        return $query->orderBy('nombreagencia')->get();
+    }
+
+    /**
+     * Agencia activa del usuario (users_permiso.idsession=2): la que el sistema tiene
+     * seleccionada. Es la que debe verse por defecto en el filtro.
+     */
+    protected function idtienda_activa()
+    {
+        $permiso = user_permiso();
+
+        return $permiso ? (int) $permiso->idtienda : 0;
+    }
+
+    /**
+     * Agencia objetivo de la operacion: la que se envio en idagencia o, si no se
+     * envio, la activa. Una agencia enviada explicitamente que el usuario no tiene
+     * permiso se rechaza en lugar de cair silenciosamente en la suya.
+     */
+    protected function agencia_seleccionada(Request $request,$idtienda)
+    {
+        $agencias = $this->agencias_permitidas();
+        $idagencia = (int) $request->input('idagencia');
+
+        if($idagencia>0){
+            $agencia = $agencias->firstWhere('id',$idagencia);
+            abort_unless($agencia,403,'No tiene permisos sobre la agencia seleccionada.');
+            return $agencia;
+        }
+
+        $agencia = $agencias->firstWhere('id',$this->idtienda_activa())
+                ?: $agencias->firstWhere('id',(int) $idtienda);
+
+        return $agencia ?: $agencias->first();
     }
   
     public function create(Request $request,$idtienda)
@@ -58,6 +160,14 @@ class PenalidadComisionController extends Controller
       
       
       if($request->input('view') == 'editar') {
+        $agencia = $this->agencia_seleccionada($request,$idtienda);
+        abort_unless($agencia,403,'No tiene permisos sobre la agencia seleccionada.');
+
+        // No se llama authorizeRoles() a proposito: en esta base de datos el modelo de
+        // roles esta roto (role_user apunta a un rol inexistente y rolesmodulo solo tiene
+        // filas del rol 4), por lo que hasRole() da false para todos y la pantalla
+        // quedaria con 401 siempre. El control de agencia lo hace agencias_permitidas().
+
         $tipo_garantia = DB::table('tipo_garantia')->get();
         $tipo_garantia_noprendaria = DB::table('subtipo_garantia_noprendaria_ii')
             ->join('subtipo_garantia_noprendaria','subtipo_garantia_noprendaria.id','subtipo_garantia_noprendaria_ii.idsubtipo_garantia_noprendaria')
@@ -71,8 +181,22 @@ class PenalidadComisionController extends Controller
         
         return view(sistema_view().'/penalidadcomision/edit',[
           'tienda' => $tienda,
+          'agencia' => $agencia,
           'tipo_garantia' => $tipo_garantia,
           'tipo_garantia_noprendaria' => $tipo_garantia_noprendaria,
+        ]);
+      }
+
+      if($request->input('view') == 'copiar') {
+        $agencias = $this->agencias_permitidas();
+
+        if($agencias->count()<2){
+            abort(403,'Se necesitan al menos dos agencias administrables para copiar la configuración.');
+        }
+
+        return view(sistema_view().'/penalidadcomision/copiar',[
+          'tienda' => $tienda,
+          'agencias' => $agencias,
         ]);
       }
        
@@ -83,41 +207,134 @@ class PenalidadComisionController extends Controller
         
         if($request->input('view') == 'editar') {
   
-            $garantia_prendario = json_decode($request->input('prendario'), true);
-            $garantia_noprendario = json_decode($request->input('noprendario'), true);
-            foreach($garantia_prendario as $value){
-              DB::table('tipo_garantia')->whereId($value['id'])->update([
-                'penalidad' => $value['penalidad'],
-              ]);
-            }
-            foreach($garantia_noprendario as $value){
-              DB::table('subtipo_garantia_noprendaria_ii')->whereId($value['id'])->update([
-                'penalidad' => $value['penalidad'],
-              ]);
-            }
+            $agencia = $this->agencia_seleccionada($request,$idtienda);
+            abort_unless($agencia,403,'No tiene permisos sobre la agencia seleccionada.');
+
+            // A partir de aqui la configuracion se guarda sobre la agencia seleccionada
+            // y no sobre la agencia de la ruta.
+            $idtienda_config = $agencia->id;
+
+            // tipo_garantia.penalidad y subtipo_garantia_noprendaria_ii.penalidad ya no se
+            // modifican desde aqui: son valores unicos compartidos por TODAS las agencias
+            // (esas tablas no tienen idtienda), asi que guardarlos cambiaba el dato de
+            // todas las agencias a la vez sin que se notase en el filtro por agencia.
 
             $cargo_custodia_garantia = $request->cargo_custodia_garantia ? 1 : 0;
 
-            configuracion_update($idtienda,'dias_maximo_penalidad',$request->dias_maximo_penalidad);
-            configuracion_update($idtienda,'cargo_custodia_garantia',$cargo_custodia_garantia);
-            configuracion_update($idtienda,'penalidad_couta_simple',$request->penalidad_couta_simple);
-            configuracion_update($idtienda,'penalidad_couta_compuesto',$request->penalidad_couta_compuesto);
-            configuracion_update($idtienda,'dias_tolerancia',$request->dias_tolerancia);
-            configuracion_update($idtienda,'penalidad_couta_simple_noprendaria',$request->penalidad_couta_simple_noprendaria);
-            configuracion_update($idtienda,'penalidad_couta_compuesto_noprendaria',$request->penalidad_couta_compuesto_noprendaria);
-            configuracion_update($idtienda,'dias_tolerancia_garantia',$request->dias_tolerancia_garantia);
-            configuracion_update($idtienda,'tasa_moratoria',$request->tasa_moratoria);
-            configuracion_update($idtienda,'tipo_cambio_dolar',$request->tipo_cambio_dolar);
-            configuracion_update($idtienda,'comision_gestion_garantia_cargo',$request->comision_gestion_garantia_cargo);
-            configuracion_update($idtienda,'comision_gestion_garantia_convenio',$request->comision_gestion_garantia_convenio);
-            configuracion_update($idtienda,'porcentaje_descuento_liquidacion',$request->porcentaje_descuento_liquidacion);
-            configuracion_update($idtienda,'porcentaje_precio_liquidacion',$request->porcentaje_precio_liquidacion);
+            configuracion_update($idtienda_config,'dias_maximo_penalidad',$request->dias_maximo_penalidad);
+            configuracion_update($idtienda_config,'cargo_custodia_garantia',$cargo_custodia_garantia);
+            configuracion_update($idtienda_config,'penalidad_couta_simple',$request->penalidad_couta_simple);
+            configuracion_update($idtienda_config,'penalidad_couta_compuesto',$request->penalidad_couta_compuesto);
+            configuracion_update($idtienda_config,'dias_tolerancia',$request->dias_tolerancia);
+            configuracion_update($idtienda_config,'penalidad_couta_simple_noprendaria',$request->penalidad_couta_simple_noprendaria);
+            configuracion_update($idtienda_config,'penalidad_couta_compuesto_noprendaria',$request->penalidad_couta_compuesto_noprendaria);
+            configuracion_update($idtienda_config,'dias_tolerancia_garantia',$request->dias_tolerancia_garantia);
+            configuracion_update($idtienda_config,'tasa_moratoria',$request->tasa_moratoria);
+            configuracion_update($idtienda_config,'tipo_cambio_dolar',$request->tipo_cambio_dolar);
+            configuracion_update($idtienda_config,'comision_gestion_garantia_cargo',$request->comision_gestion_garantia_cargo);
+            configuracion_update($idtienda_config,'comision_gestion_garantia_convenio',$request->comision_gestion_garantia_convenio);
+            configuracion_update($idtienda_config,'porcentaje_descuento_liquidacion',$request->porcentaje_descuento_liquidacion);
+            configuracion_update($idtienda_config,'porcentaje_precio_liquidacion',$request->porcentaje_precio_liquidacion);
             return response()->json([
                 'resultado' => 'CORRECTO',
-                'mensaje'   => 'Se ha actualizado correctamente.'
+                'mensaje'   => 'Se ha actualizado correctamente la configuración de '.$agencia->nombreagencia.'.'
             ]);
         }
+
+        if($request->input('view') == 'copiar') {
+            return $this->copiar_configuracion($request);
+        }
     
+    }
+
+    /**
+     * Copia la configuracion (s_config) de una agencia a otra.
+     *
+     * Por cada parametro: si la agencia destino ya lo tiene lo actualiza, si no lo tiene
+     * lo registra. Los parametros que la agencia origen no tenga configurado se omiten,
+     * para no crear filas vacias en el destino.
+     *
+     * s_config no tiene indice unico en (nombre, idtienda), asi que la busqueda del
+     * destino y el insert se hacen dentro de la misma transaccion.
+     */
+    protected function copiar_configuracion(Request $request)
+    {
+        $agencias = $this->agencias_permitidas();
+
+        $idorigen  = (int) $request->input('idorigen');
+        $iddestino = (int) $request->input('iddestino');
+
+        if($idorigen<=0 || $iddestino<=0){
+            return response()->json([
+                'resultado' => 'ERROR',
+                'mensaje'   => 'Debe seleccionar la agencia origen y la agencia destino.'
+            ]);
+        }
+
+        if($idorigen==$iddestino){
+            return response()->json([
+                'resultado' => 'ERROR',
+                'mensaje'   => 'La agencia origen y la agencia destino deben ser distintas.'
+            ]);
+        }
+
+        $origen  = $agencias->firstWhere('id',$idorigen);
+        $destino = $agencias->firstWhere('id',$iddestino);
+
+        if(!$origen || !$destino){
+            abort(403,'No tiene permisos sobre alguna de las agencias seleccionadas.');
+        }
+
+        // Origen y destino ya se validé contra agencias_permitidas() arriba, asi que un
+        // usuario sin el rol 1 no puede copiar hacia o desde una agencia ajena.
+
+        $valores_origen = DB::table('s_config')
+            ->where('idtienda',$idorigen)
+            ->whereNull('idusers')
+            ->whereIn('nombre',self::PARAMETROS)
+            ->pluck('valor','nombre');
+
+        $insertados   = 0;
+        $actualizados = 0;
+        $omitidos     = 0;
+
+        DB::transaction(function () use ($valores_origen,$iddestino,&$insertados,&$actualizados,&$omitidos) {
+
+            foreach(self::PARAMETROS as $nombre){
+
+                $valor = $valores_origen->get($nombre);
+
+                if($valor===null || $valor===''){
+                    $omitidos++;
+                    continue;
+                }
+
+                $existe = DB::table('s_config')
+                    ->where('idtienda',$iddestino)
+                    ->where('nombre',$nombre)
+                    ->whereNull('idusers')
+                    ->first();
+
+                if($existe){
+                    DB::table('s_config')->whereId($existe->id)->update(['valor'=>$valor]);
+                    $actualizados++;
+                }else{
+                    DB::table('s_config')->insert([
+                        'nombre'   => $nombre,
+                        'valor'    => $valor,
+                        'idusers'  => null,
+                        'idtienda' => $iddestino,
+                    ]);
+                    $insertados++;
+                }
+            }
+        });
+
+        return response()->json([
+            'resultado' => 'CORRECTO',
+            'mensaje'   => 'Se copiaron '.$insertados.' parametro(s) nuevos y se actualizaron '.$actualizados.' en '
+                            .$destino->nombreagencia.'.'
+        ]);
     }
 
 

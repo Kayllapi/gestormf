@@ -1681,6 +1681,7 @@ class CobranzacuotaController extends Controller
               ->join('tipo_destino_credito','tipo_destino_credito.id','credito.idtipo_destino_credito')
               ->join('tipo_operacion_credito','tipo_operacion_credito.id','credito.idtipo_operacion_credito')
               ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
+              ->leftjoin('tienda','tienda.id','credito.idtienda')
               ->where('credito.id',$request->idcredito)
               ->where('credito.idestadocredito',1)
               ->select(
@@ -1698,6 +1699,7 @@ class CobranzacuotaController extends Controller
                   'credito_prendatario.nombre as nombreproductocredito',
                   'credito_prendatario.modalidad as modalidad_calculo',
                   'credito_prendatario.conevaluacion as conevaluacion',
+                  'tienda.nombreagencia as agencia_desembolso',
               )
               ->orderBy('credito.id','desc')
               ->first();
@@ -1781,6 +1783,8 @@ class CobranzacuotaController extends Controller
           return array(
               'idcredito' => $idcredito,
               'datosprestamos' => $datosprestamos,
+              // Agencia donde se desbordo el credito (credito.idtienda -> tienda.nombreagencia)
+              'agencia_desembolso' => $credito?($credito->agencia_desembolso?:''):'',
               'descuento_capital' => $credito_descuentocuotas?$credito_descuentocuotas->capital:'0.00',
               'descuento_interes' => $credito_descuentocuotas?$credito_descuentocuotas->interes:'0.00',
               'descuento_comision' => $credito_descuentocuotas?$credito_descuentocuotas->comision:'0.00',

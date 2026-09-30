@@ -21,6 +21,6 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-trash"></i> Eliminar</button>
+        <button type="submit" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Eliminar</button>
     </div>
 </form>   

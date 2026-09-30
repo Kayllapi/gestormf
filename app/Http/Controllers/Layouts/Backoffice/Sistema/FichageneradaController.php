@@ -228,7 +228,16 @@ class FichageneradaController extends Controller
                 'idliquidaciongarantia' => 0,
                 'idliquidaciongarantiaresponsable' => 0,
             ]);
-          
+
+            // al eliminar la ficha se limpian los precios de liquidación de las garantías
+            // del crédito, para que la columna quede vacía y se puedan registrar de nuevo
+            DB::table('credito_garantia')
+                ->where('credito_garantia.idcredito',$credito_garantia->idcredito)
+                ->update([
+                    'precioliquidacion' => 0,
+                    'fechaprecioliquidacion' => null,
+                ]);
+
             return response()->json([
               'resultado' => 'CORRECTO',
               'mensaje'   => 'Se ha eliminado correctamente.',

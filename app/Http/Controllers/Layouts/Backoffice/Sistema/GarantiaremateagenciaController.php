@@ -451,6 +451,19 @@ class GarantiaremateagenciaController extends Controller
             ]);
         }
         elseif($request->input('view') == 'ver_liquidacion_garantia'){
+            // los precios de liquidación registrados en días anteriores y que no llegaron
+            // a generar su ficha se limpian, para que el precio y la ficha se registren el mismo día
+            DB::table('credito_garantia')
+              ->where('credito_garantia.precioliquidacion','>',0)
+              ->where(function($query){
+                  $query->whereNull('credito_garantia.fechaprecioliquidacion')
+                        ->orWhere('credito_garantia.fechaprecioliquidacion','<',date('Y-m-d 00:00:00'));
+              })
+              ->update([
+                  'precioliquidacion' => 0,
+                  'fechaprecioliquidacion' => null,
+              ]);
+
             // $credito = DB::table('credito')->whereId($request->idcredito)->first();
             $credito = DB::table('credito')
               ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
@@ -778,6 +791,7 @@ class GarantiaremateagenciaController extends Controller
 
             DB::table('credito_garantia')->whereId($id)->update([
                 'precioliquidacion'=>$request->input('precioliquidacion'),
+                'fechaprecioliquidacion'=>now(),
             ]);
           
             return response()->json([

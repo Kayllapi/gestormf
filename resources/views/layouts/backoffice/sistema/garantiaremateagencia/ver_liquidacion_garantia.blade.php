@@ -92,7 +92,7 @@
                                     <td style="text-align: right">{{$value->valor_comercial}}</td>
                                     <td style="text-align: right">{{ number_format($value->valor_comercial - ($value->valor_comercial * configuracion($tienda->id,'porcentaje_descuento_liquidacion')['valor'] / 100), 2) }}</td>
                                     <td style="text-align: right">{{$value->valor_realizacion}}</td>
-                                    <td style="background-color: #c1f5b5; text-align: right">{{$value->precioliquidacion}}</td>
+                                    <td style="background-color: #c1f5b5; text-align: right">{{ $value->precioliquidacion > 0 ? $value->precioliquidacion : '' }}</td>
                                     <td>{{$value->garantias_otros}}</td>
                                     <td>{{$value->garantias_accesorio_doc}}</td>
                                     <td>{{$value->garantias_color}}</td>

@@ -677,6 +677,26 @@ function select_cronograma(
             
             //---
             $numero_cuota_pendiente++;
+            // Mora que realmente se le suma a esta cuota en "Pendientes"/"Vencidos".
+            // Si es la 1ra cuota pendiente Y ya tiene pagos a cuenta, la mora NO es la que sale del
+            // atraso sobre el saldo original: parte ya se cobro en los adelantos
+            // (pagoacuenta_mora_pagada) y el resto se genera desde el ultimo pago sobre el saldo que
+            // quedo (pagoacuenta_mora_pendiente_hoy). Antes se usaba la mora cruda del atraso y
+            // ademas se le sumaba otra vez el calculo diario, con lo que esa mora se contaba doble y
+            // "Pendientes" salia mas caro que el "TOTAL A PAGAR" que se le pide al cajero
+            // (p.ej. 402.81 vs 402.45). Son los mismos valores que se usan mas abajo para pintar la
+            // fila de esa cuota, asi que los tres numeros de la pantalla quedan consistentes.
+            $mora_tenencia      = (float) $tenencia;
+            $mora_penalidad     = (float) $penalidad;
+            $mora_compensatorio = (float) $compensatorio;
+            if ($credito_adelanto != '' && $calculos_en_pagoacuenta
+                && $primera_cuota_pendiente?->numerocuota == $value->numerocuota) {
+                $mora_pagada = pagoacuenta_mora_pagada($calculos_en_pagoacuenta);
+                $mora_pendiente_hoy = pagoacuenta_mora_pendiente_hoy($calculos_en_pagoacuenta);
+                $mora_tenencia      = (float) $mora_pagada['tenencia']      + (float) $mora_pendiente_hoy['tenencia'];
+                $mora_penalidad     = (float) $mora_pagada['penalidad']     + (float) $mora_pendiente_hoy['penalidad'];
+                $mora_compensatorio = (float) $mora_pagada['compensatorio'] + (float) $mora_pendiente_hoy['compensatorio'];
+            }
             // "cuota_pendiente" se arma sumando cada componente (cuota/penalidad/tenencia/
             // compensatorio) redondeado a centavos POR SEPARADO, igual que "select_cuota" +
             // "select_penalidad" + "select_tenencia" + "select_compensatorio" (usados para el
@@ -686,9 +706,9 @@ function select_cronograma(
             // diferir en 1 centimo entre "Pendientes" y "Pago Total".
             $cuota_pendiente = $cuota_pendiente
                 + (float) number_format($cuota, 2, '.', '')
-                + (float) number_format($penalidad, 2, '.', '')
-                + (float) number_format($tenencia, 2, '.', '')
-                + (float) number_format($compensatorio, 2, '.', '');
+                + (float) number_format($mora_penalidad, 2, '.', '')
+                + (float) number_format($mora_tenencia, 2, '.', '')
+                + (float) number_format($mora_compensatorio, 2, '.', '');
             $saldo_capital = $saldo_capital+$amortizacion; //($value->acuenta>0?($totalcuota-$value->acuenta-$value->acuenta):0)
 
             if($atraso_dias>=0){
@@ -703,27 +723,9 @@ function select_cronograma(
                 // hace en el controlador (restando $pagoacuenta_acuenta), igual que para "Pendientes".
                 $cuota_vencida = $cuota_vencida
                     + (float) number_format($cuota, 2, '.', '')
-                    + (float) number_format($penalidad, 2, '.', '')
-                    + (float) number_format($tenencia, 2, '.', '')
-                    + (float) number_format($compensatorio, 2, '.', '');
-
-                // Solo si la cuota tiene un pago a cuenta
-                if ($credito_adelanto != '') {
-                    if ($primera_cuota_pendiente?->numerocuota == $value->numerocuota) {
-                        $tenencia = $calculos_en_pagoacuenta['calculo_diario_saldo_custodia'];
-                        $penalidad = $calculos_en_pagoacuenta['calculo_diario_saldo_compensatorio'];
-                        $compensatorio = $calculos_en_pagoacuenta['calculo_diario_saldo_moratorio'];
-
-                        $cuota_pendiente = (float) $cuota_pendiente
-                            + (float) number_format($tenencia, 2, '.', '')
-                            + (float) number_format($penalidad, 2, '.', '')
-                            + (float) number_format($compensatorio, 2, '.', '');
-                        $cuota_vencida = (float) $cuota_vencida
-                            + (float) number_format($tenencia, 2, '.', '')
-                            + (float) number_format($penalidad, 2, '.', '')
-                            + (float) number_format($compensatorio, 2, '.', '');
-                    }
-                }
+                    + (float) number_format($mora_penalidad, 2, '.', '')
+                    + (float) number_format($mora_tenencia, 2, '.', '')
+                    + (float) number_format($mora_compensatorio, 2, '.', '');
             }
             //$saldo_pendientepago = $saldo_pendientepago+$totalcuota;
         }

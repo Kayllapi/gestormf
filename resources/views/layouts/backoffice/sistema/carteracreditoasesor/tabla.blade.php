@@ -145,13 +145,6 @@
   
   lista_credito();
   function lista_credito(){
-    // sin ejecutivo la consulta traeria la cartera completa, asi que se obliga a elegir uno
-    if($('#idasesor').val()==''){
-      var mensaje = "Debe de seleccionar un ejecutivo.";
-      modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
-      return false;
-    }
-
     $.ajax({
       url:"{{url('backoffice/0/carteracredito/showtable')}}",
       type:'GET',

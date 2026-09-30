@@ -8,8 +8,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <meta name="robots" content="index, follow"/>
         <!--=============== Tienda  ===============-->	
-        <title>{{ config('app.name', 'Kayllapi') }}</title>
+        <title>{{ config('app.name', '') }}</title>
+        @section('favicon')
         <link rel="shortcut icon" href="{{ url('public/backoffice/sistema/favicon.ico') }}">
+        @show
         <meta name="description" content="Somos una plataforma de búsqueda, con la finalidad de ayudar a todo los usuarios a encontrar el producto y/o servicio adecuado que tu negocio brinda, así mismo buscamos ser la mejor plataforma de búsqueda de negocios online"/>
         <meta name="twitter:card" value="summary">
         <meta property="og:title" content="Kayllapi" />
@@ -81,6 +83,7 @@
         <div id="main">
 
             <!-- header-->
+            @section('header')
             <header class="main-header dark-header fs-header sticky">
               <div class="container">
                 <div class="header-inner">
@@ -219,6 +222,7 @@
                 </div>
               </div>
             </header>
+            @show
             <!--  header end -->
 
             <!--  wrapper  -->

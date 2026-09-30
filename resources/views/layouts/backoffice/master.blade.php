@@ -1,4 +1,40 @@
 @extends('layouts.master')
+
+@section('favicon')
+<link rel="shortcut icon" href="{{ url('/public/backoffice/sistema/logo_gestormf_icono1.png') }}">
+@endsection
+
+{{-- el backoffice no usa la cabecera pública de Kayllapi, solo una barra mínima
+     con el usuario y el cierre de sesión --}}
+@section('header')
+<header class="main-header dark-header fs-header">
+  <div class="container">
+    <div class="header-inner" style="display: flex;align-items: center;justify-content: space-between;">
+      <div class="logo-holder">
+        <a href="{{ url('backoffice/inicio') }}">
+          <img src="{{ url('public/backoffice/sistema/logo_gestormf_icono1.png') }}" alt="GestorMF" style="height: 32px;">
+        </a>
+      </div>
+      @if(Auth::user())
+      <div style="display: flex;align-items: center;gap: 15px;">
+        <span style="color: #fff;">{{ Auth::user()->nombrecompleto }}</span>
+        <a href="{{ url('backoffice/'.Auth::user()->idtienda.'/inicio') }}" class="add-list"><span><i class="fa fa-cloud"></i></span> Ir a Sistema</a>
+        <a href="javascript:;" class="add-list" onclick="document.getElementById('logout-form').submit()"><span><i class="fa fa-power-off"></i></span> Cerrar Sesión</a>
+        <form method="POST" id="logout-form" action="{{ route('logout') }}">
+          @csrf
+          <input type="hidden" value="{{ Auth::user()->idtienda }}" name="logoutidtienda">
+          <input type="hidden" value="{{ Auth::user()->idtipousuario }}" name="logoutidtipousuario">
+          <input type="hidden" value="" name="logoutlink">
+        </form>
+      </div>
+      @else
+      <a href="javascript:;" class="add-list" id="modal-iniciarsesion-master"><span><i class="fa fa-sign-in"></i></span> BackOffice</a>
+      @endif
+    </div>
+  </div>
+</header>
+@endsection
+
 @section('cuerpo')
 <?php 
 $usuario = DB::table('users')

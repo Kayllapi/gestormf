@@ -313,7 +313,7 @@
         modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });  
           return false;
       }
-      modal({ route:"{{url('backoffice/'.$tienda->id.'/garantiaremateagencia/0/edit?view=autorizar')}}&idpermiso=3,4,7",  size: 'modal-sm' }); 
+      modal({ route:"{{url('backoffice/'.$tienda->id.'/garantiaremateagencia/0/edit?view=autorizar')}}&idpermiso=3,4,7&solo_usuario=1",  size: 'modal-sm' }); 
   }
   
   function quitar_garantia(){

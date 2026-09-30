@@ -31,7 +31,7 @@
                   <select class="form-select" id="idresponsable">
                       <option value=""></option>
                       @foreach($usuarios as $value)
-                      <option value="{{$value->id}}">{{$value->nombrecompleto}} ({{$value->nombrepermiso}})</option>
+                      <option value="{{$value->id}}" @selected($value->id==$idresponsable)>{{$value->nombrecompleto}} ({{$value->nombrepermiso}})</option>
                       @endforeach
                   </select>
               </div>
@@ -45,5 +45,5 @@
     </div>
 </form>   
 <script>
-    sistema_select2({ input:'#idresponsable' });
+    sistema_select2({ input:'#idresponsable',val:'{{$idresponsable}}' });
 </script>

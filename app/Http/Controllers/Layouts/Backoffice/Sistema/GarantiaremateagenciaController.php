@@ -407,16 +407,23 @@ class GarantiaremateagenciaController extends Controller
       
         if($request->input('view') == 'autorizar'){
             $idpermisos = array_filter(explode(',', $request->input('idpermiso', '')));
-            $usuarios = DB::table('users')
+            $consulta = DB::table('users')
                   ->join('users_permiso','users_permiso.idusers','users.id')
                   ->join('permiso','permiso.id','users_permiso.idpermiso')
                   ->whereIn('users_permiso.idpermiso',$idpermisos)
                   ->where('users_permiso.idtienda',$idtienda)
-                  ->select('users.*','permiso.nombre as nombrepermiso')
-                  ->get();
+                  ->select('users.*','permiso.nombre as nombrepermiso');
+            // el agente/asesor se autoriza a si mismo, no puede elegir a otro responsable
+            $idresponsable = 0;
+            if($request->input('solo_usuario') == 1){
+                $idresponsable = Auth::user()->id;
+                $consulta->where('users.id',$idresponsable);
+            }
+            $usuarios = $consulta->get();
             return view(sistema_view().'/garantiaremateagencia/autorizar',[
               'tienda' => $tienda,
               'usuarios' => $usuarios,
+              'idresponsable' => $idresponsable,
             ]);
         }
         elseif($request->input('view') == 'quitar'){

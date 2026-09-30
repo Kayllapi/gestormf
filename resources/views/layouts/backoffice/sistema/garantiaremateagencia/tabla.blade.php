@@ -53,7 +53,7 @@
                     <div class="col-sm-12 col-md-1" style="text-align: left;">
                         <button type="button"
                             class="btn btn-success"
-                            onclick="actualizar_tabla_origen(),actualizar_tabla_destino()"
+                            onclick="filtrar()"
                             id="btn-filtrar">
                             <i class="fa-solid fa-search"></i> FILTRAR
                         </button>
@@ -317,6 +317,16 @@
       modal({ route:"{{url('backoffice/'.$tienda->id.'/garantiaremateagencia/0/edit?view=quitar')}}&idpermiso=2",  size: 'modal-sm' }); 
   }
   
+  function filtrar(){
+    if($('#idasesor').val()==''){
+      var mensaje = "Debe de seleccionar un ejecutivo.";
+      modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
+      return false;
+    }
+    actualizar_tabla_origen();
+    actualizar_tabla_destino();
+  }
+
   function actualizar_tabla_origen(){
     load('#cont_loading_1');
     $('#cont-origendes').addClass('d-none');

@@ -251,6 +251,12 @@ table .dropdown {
   
   // lista_credito();
   function lista_credito(){
+    if($('#idasesor').val()==''){
+      var mensaje = "Debe de seleccionar un ejecutivo.";
+      modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
+      return false;
+    }
+
     $.ajax({
       url:"{{url('backoffice/0/gestioncobranza/showtable')}}",
       type:'GET',

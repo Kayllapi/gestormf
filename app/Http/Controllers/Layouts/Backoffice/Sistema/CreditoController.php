@@ -1371,7 +1371,10 @@ class CreditoController extends Controller
           );
         }
         else if($id == 'showgiroeconomico'){
+          // el catalogo de giros es por agencia: aqui no hay selector, asi que se
+          // usa la agencia activa del usuario (la del cargo con idsession=2).
           $giros = DB::table('giro_economico_evaluacion')
+                          ->where('giro_economico_evaluacion.idtienda',idtienda_actual())
                           ->where('giro_economico_evaluacion.idtipo_giro_economico',$request->input('tipogiro'))
                           ->where('giro_economico_evaluacion.estado','HABILITADO')
                           ->select(
@@ -1383,6 +1386,7 @@ class CreditoController extends Controller
         }
         else if($id == 'showgiroeconomico_giro'){
           $giros = DB::table('giro_economico_evaluacion')
+                          ->where('giro_economico_evaluacion.idtienda',idtienda_actual())
                           ->where('giro_economico_evaluacion.id',$request->input('giro'))
                           ->where('giro_economico_evaluacion.estado','HABILITADO')
                           ->first();

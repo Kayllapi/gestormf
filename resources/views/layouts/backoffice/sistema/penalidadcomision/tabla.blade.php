@@ -1,7 +1,6 @@
 <div class="modal-header">
     <h5 class="modal-title">
       Penalidades y Comisiones
-      {{-- La copia entre agencias solo tiene sentido si hay mas de una administrable --}}
       @if($agencias->count()>1)
       <button type="button" class="btn btn-primary mb-1" onclick="copiar_configuracion()">
         <i class="fa fa-copy"></i> Copiar Configuración
@@ -26,7 +25,7 @@
               </div>
               <div class="col-sm-5" style="text-align: right;">
                 <span class="badge" style="background-color: #bcbcbc;color: #000;">
-                  La configuración se visualiza y se guarda sobre la agencia seleccionada
+                  La configuración se visualiza y guarda sobre la agencia seleccionada
                 </span>
               </div>
             </div>

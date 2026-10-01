@@ -3,7 +3,8 @@
         route: '{{ url('backoffice/'.$tienda->id.'/giroeconomico') }}',
         method: 'POST',
         data:{
-            view: 'registrar'
+            view: 'registrar',
+            idagencia: {{ (int) $agencia->id }}
         }
     },
     function(resultado){
@@ -41,7 +42,7 @@
              <div class="col-sm-12 mt-2">
                 <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Guardar Cambios</button>
                <button type="button" class="btn btn-danger" 
-                    onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/giroeconomico/0/edit?view=container')}}', size: 'modal-fullscreen' })">
+                    onclick="modal({ route:'{{url('backoffice/'.$tienda->id.'/giroeconomico/0/edit?view=container&idagencia='.$agencia->id)}}', size: 'modal-fullscreen' })">
               <i class="fa-solid fa-file-pdf"></i></button>
              </div>
             </div>
@@ -52,10 +53,15 @@
 <script>
 @include('app.nuevosistema.select2',['input'=>'#idtipo_giro_economico'])
 @include('app.nuevosistema.select2',['input'=>'#estado', 'val' => 'HABILITADO' ])
+// Al cambiar el Tipo o el Estado se actualiza el filtro de la tabla. Se escribe
+// en FILTRO_LISTA_GIRO (definido en tabla.blade.php) en vez de releer el
+// formulario en lista_giro(), para que el formulario de edicion no la filtre.
 $("#idtipo_giro_economico").on("change", function(e) {
+  FILTRO_LISTA_GIRO.idtipo_giro_economico = $(this).val();
   lista_giro();
 });
 $("#estado").on("change", function(e) {
+  FILTRO_LISTA_GIRO.estado = $(this).val();
   lista_giro();
 });
 </script>

@@ -2,7 +2,6 @@
   <h5 class="modal-title">
     Tasas Activas
     <button type="button" class="btn btn-success" id="btn-create-cliente" onclick="load_nuevo_tarifario()"><i class="fa-solid fa-plus"></i> Nuevo</button>
-    {{-- La copia entre agencias solo tiene sentido si hay mas de una administrable --}}
     @if($agencias->count()>1)
     <button type="button" class="btn btn-primary" onclick="copiar_tarifario()">
       <i class="fa fa-copy"></i> Copiar Configuración
@@ -28,7 +27,7 @@
               </div>
               <div class="col-sm-5" style="text-align: right;">
                 <span class="badge" style="background-color: #bcbcbc;color: #000;">
-                  El tarifario se visualiza, se registra y se guarda sobre la agencia seleccionada
+                  El tarifario se visualiza, registra y guarda sobre la agencia seleccionada
                 </span>
               </div>
             </div>

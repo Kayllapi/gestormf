@@ -4,7 +4,7 @@
           method: 'PUT',
           data:{
               view: 'editar',
-              idtienda: {{$tienda->id}}
+              idagencia: {{ (int) $agencia->id }}
           }
       },
       function(resultado){
@@ -57,6 +57,6 @@
   @include('app.nuevosistema.select2',['input'=>'#estado', 'val' => $giro->estado ])
   
   function eliminar_giro(){
-    modal({ route:"{{url('backoffice/'.$tienda->id.'/giroeconomico/'.$giro->id.'/edit?view=eliminar')}}" });  
+    modal({ route:"{{url('backoffice/'.$tienda->id.'/giroeconomico/'.$giro->id.'/edit?view=eliminar&idagencia='.$agencia->id)}}" });  
   }
 </script>

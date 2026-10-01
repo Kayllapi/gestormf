@@ -560,6 +560,10 @@ class UsuarioaccesoController extends Controller
             $modulos_cargo[$fila->idpermiso][] = $fila->idmodulo;
         }
 
+        // modulos que siguen existiendo: si se elimino o desactivo un modulo, su
+        // excepcion guardada ya no aplica y no debe volver a guardarse.
+        $modulos_vigentes = array_flip(array_map('intval',DB::table('modulo')->pluck('id')->all()));
+
         $vigentes = [];
         DB::table('userspermisoacceso')->where('idusers',$idusuario)->delete();
 
@@ -575,20 +579,24 @@ class UsuarioaccesoController extends Controller
                 continue;
             }
             foreach($excepciones[$clave] as $idmodulo => $idestado){
+                $idmodulo = (int) $idmodulo;
                 $idestado = (int) $idestado;
                 if($idestado != 1 && $idestado != 2){
                     continue;
                 }
+                if(!isset($modulos_vigentes[$idmodulo])){
+                    continue;
+                }
                 // si queda igual que el cargo no hace falta guardarlo
-                if(($idestado == 1 && in_array((int)$idmodulo,$del_cargo)) ||
-                   ($idestado == 2 && !in_array((int)$idmodulo,$del_cargo))){
+                if(($idestado == 1 && in_array($idmodulo,$del_cargo)) ||
+                   ($idestado == 2 && !in_array($idmodulo,$del_cargo))){
                     continue;
                 }
                 DB::table('userspermisoacceso')->insert([
                     'idusers'   => $idusuario,
                     'idtienda'  => $value['idtienda'],
                     'idpermiso' => $value['idpermiso'],
-                    'idmodulo'  => (int) $idmodulo,
+                    'idmodulo'  => $idmodulo,
                     'idestado'  => $idestado,
                 ]);
             }
@@ -653,7 +661,11 @@ class UsuarioaccesoController extends Controller
 
     /**
      * Excepciones de permisos del usuario sobre su cargo.
-     * Devuelve: [idtienda => [idpermiso => [idmodulo => idestado]]]
+     *
+     * Devuelve: ["idtienda_idpermiso" => ["idmodulo" => idestado]]
+     *
+     * La clave es plana a proposito: es la misma que arma el JS en clave_fila()
+     * para leer y guardar los permisos por usuario.
      */
     private function usuario_modulos($idusuario)
     {
@@ -664,7 +676,7 @@ class UsuarioaccesoController extends Controller
 
         $lista = [];
         foreach($excepciones as $fila){
-            $lista[(string)$fila->idtienda][(string)$fila->idpermiso][(string)$fila->idmodulo] = $fila->idestado;
+            $lista[$fila->idtienda.'_'.$fila->idpermiso][(string)$fila->idmodulo] = $fila->idestado;
         }
         return $lista;
     }

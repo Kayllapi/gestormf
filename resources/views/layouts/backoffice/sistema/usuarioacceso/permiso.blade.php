@@ -204,13 +204,37 @@
         return idtienda+'_'+idpermiso;
     }
 
-    // carga en la fila las excepciones ya guardadas para (agencia, cargo)
+    // carga en la fila las excepciones ya guardadas para (agencia, cargo).
+    // se descartan las que ya no aplican: modulos que se eliminaron/desactivaron
+    // del arbol, o estados que el cargo ya tiene igual. asi lo que quedo marcado
+    // se mantiene y lo que se quito se queda quitado.
     function cargar_permisos_fila(num, idpermiso, idtienda){
-        var clave = idtienda+'_'+idpermiso;
-        estado_modulos[num] = {};
-        if(USUARIO_MODULOS[clave] != undefined){
-            estado_modulos[num] = Object.assign({}, USUARIO_MODULOS[clave]);
+        estado_modulos[num] = excepciones_vigentes(idtienda+'_'+idpermiso, idpermiso);
+    }
+
+    function excepciones_vigentes(clave, idpermiso){
+        var guardadas = USUARIO_MODULOS[clave];
+        var limpias   = {};
+        if(guardadas == undefined){
+            return limpias;
         }
+        var del_cargo = MODULOS_CARGO[idpermiso] || [];
+        Object.keys(guardadas).forEach(function(idmodulo){
+            var id = parseInt(idmodulo);
+            if(MAPA_MODULOS[id] === undefined){
+                return; // el modulo ya no existe en el arbol
+            }
+            var estado = parseInt(guardadas[idmodulo]);
+            if(estado != 1 && estado != 2){
+                return;
+            }
+            if((estado == 1 && del_cargo.indexOf(id) >= 0) ||
+               (estado == 2 && del_cargo.indexOf(id) <  0)){
+                return; // ya coincide con el cargo, no hace falta excepcion
+            }
+            limpias[id] = estado;
+        });
+        return limpias;
     }
 
     // si el usuario cambia de agencia o de cargo, la excepcion anterior ya no aplica
@@ -218,8 +242,7 @@
         var num = $(this).attr('id').replace(/[^0-9]/g, '');
         var idpermiso = $('#idpermiso'+num+' option:selected').val();
         var idtienda  = $('#idtienda'+num+' option:selected').val();
-        var clave = idtienda+'_'+idpermiso;
-        estado_modulos[num] = (USUARIO_MODULOS[clave] != undefined) ? Object.assign({}, USUARIO_MODULOS[clave]) : {};
+        estado_modulos[num] = excepciones_vigentes(idtienda+'_'+idpermiso, idpermiso);
     });
 
     // estado efectivo de un modulo: 1 habilitado, 2 deshabilitado
@@ -434,8 +457,10 @@
     }
 
     function sincronizar_padres(id, num){
+        // el recorrido termina en el modulo raiz (id 7), que no se dibuja en el
+        // arbol: hay que cortarlo o se guardaria una excepcion para ese id.
         var padre = MAPA_MODULOS[id].padre;
-        while(padre){
+        while(padre && MAPA_MODULOS[padre] !== undefined){
             var alguno = (MAPA_MODULOS[padre].hijos || []).some(function(hijo){
                 return $('#mx-modal-permisos .chk-modulo[data-modulo="'+hijo+'"]').is(':checked');
             });

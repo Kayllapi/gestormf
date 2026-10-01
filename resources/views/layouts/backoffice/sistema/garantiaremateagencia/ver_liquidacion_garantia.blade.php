@@ -12,7 +12,7 @@
                 </div>
                 <label for="saldo" class="col-sm-6 col-form-label">Saldo de D. Programada (C+I+Cargo x Custodia G.+Ss.Recaudo): S/.</label>
                 <div class="col-sm-1">
-                    <input type="number" class="form-control" id="saldo_deudaprogramada" value="{{ $cronograma['select_cuota'] }}" disabled>
+                    <input type="number" class="form-control" id="saldo_deudaprogramada" value="{{ $saldo_deudaprogramada }}" disabled>
                 </div>
             </div>
             <div class="row">
@@ -22,7 +22,7 @@
                 </div>
                 <label for="saldo" class="col-sm-6 col-form-label">Saldo de D. Total (C+I+Cargo x Custodia G.+Ss.Recaudo+IC+IM+P.Cus.): S/.</label>
                 <div class="col-sm-1">
-                    <input type="number" class="form-control" id="saldo" value="{{ $cronograma['cuota_pendiente'] }}" disabled>
+                    <input type="number" class="form-control" id="saldo" value="{{ $saldo_deudatotal }}" disabled>
                 </div>
             </div>
             <div class="row">
@@ -157,8 +157,8 @@
 
     function generarfichaLiquidacion() {
         var idcredito = {{ $credito->id }};
-        if({{$credito_garantias->sum('precioliquidacion')}}<{{ $cronograma['select_cuota'] }}){
-            var mensaje = "El precio liquidación total (S/. {{number_format($credito_garantias->sum('precioliquidacion'), 2)}}) debe ser >= a la deuda programada (S/. {{$cronograma['select_cuota']}})";
+        if({{$credito_garantias->sum('precioliquidacion')}}<{{ $saldo_deudaprogramada }}){
+            var mensaje = "El precio liquidación total (S/. {{number_format($credito_garantias->sum('precioliquidacion'), 2)}}) debe ser >= a la deuda programada (S/. {{$saldo_deudaprogramada}})";
             modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });  
             return false;
         }
@@ -174,6 +174,6 @@
             return false;
         }
         var idcreditogarantia = selectedRow.data('idcreditogarantia');
-        modal({ route:"{{url('backoffice/'.$tienda->id.'/garantiaremateagencia/0/edit?view=ver_registrarprecio_liquidacion')}}&saldo_deudaprogramada={{ $cronograma['select_cuota'] }}&idcreditogarantia="+idcreditogarantia,  size: 'modal-sm' });
+        modal({ route:"{{url('backoffice/'.$tienda->id.'/garantiaremateagencia/0/edit?view=ver_registrarprecio_liquidacion')}}&saldo_deudaprogramada={{ $saldo_deudaprogramada }}&idcreditogarantia="+idcreditogarantia,  size: 'modal-sm' });
     }
 </script>

@@ -536,11 +536,31 @@ class GarantiaremateagenciaController extends Controller
                 1,
                 'detalle_cobranza'
             );
+
+            // "Saldo de D. Programada" y "Saldo de D. Total" tienen que ser los MISMOS montos que
+            // el cajero ve en cobranzacuota cuando elige la opcion "Total", porque el remate
+            // liquida la DEUDA COMPLETA del credito, no una cuota:
+            //
+            //   Saldo de D. Programada -> "Monto a P."    (monto_apagar)
+            //   Saldo de D. Total      -> "TOTAL A PAGAR" (totalapagar)
+            //
+            // Antes se usaba $cronograma['select_cuota'] y $cronograma['cuota_pendiente'], que no
+            // son lo mismo: el "TOTAL A PAGAR" de cobranzacuota suma la mora (P. Custodia, Int.
+            // Compensatorio e Int. Moratorio) sobre la deuda programada y descuenta el descuento
+            // de cuota, mientras que cuota_pendiente solo suma cuota + mora, sin cargos por
+            // cobrar ni descuentos. Los dos numeros quedaban distintos de los que el cajero
+            // cobraba, y el precio de liquidacion se comparaba contra un monto que no era el
+            // total a pagar. Se toman de totales_pago_total(), que corre la MISMA cascada de
+            // calculo de cobranzacuota, para que no puedan desincronizarse.
+            $totales_pago_total = (new CobranzacuotaController())->totales_pago_total($idtienda,$request->idcredito);
+
             return view(sistema_view().'/garantiaremateagencia/ver_liquidacion_garantia',[
                 'tienda' => $tienda,
                 'credito' => $credito,
                 'credito_garantias' => $credito_garantias,
                 'cronograma' => $cronograma,
+                'saldo_deudaprogramada' => $totales_pago_total['monto_apagar'],
+                'saldo_deudatotal'      => $totales_pago_total['totalapagar'],
             ]);
         }
         elseif($request->input('view') == 'ver_generarficha_liquidacion'){

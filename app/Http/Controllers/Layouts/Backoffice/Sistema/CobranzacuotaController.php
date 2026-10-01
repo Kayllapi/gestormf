@@ -2487,6 +2487,37 @@ class CobranzacuotaController extends Controller
         }
     }
 
+    /**
+     * Montos de la opcion "Total" (PAGO_TOTAL) de esta pantalla.
+     *
+     * Es show_cobranzacuota_cronograma() con numerocuota = 1000, que es EXACTAMENTE lo que corre
+     * la tabla cuando el cajero elige el radio "Total" (ver pagototal() en
+     * resources/views/.../cobranzacuota/tabla.blade.php). Devuelve el mismo array que consume esa
+     * pantalla, del que aqui interesan:
+     *
+     *   - monto_apagar  -> "Monto a P."      (Capital + Interes + Cargo x Cust. G. + Ss. Recau.)
+     *   - totalapagar   -> "TOTAL A PAGAR"   (lo anterior + P. Cust. + Int. Comp. + Int. Morat.
+     *                                           + cargos por cobrar - descuentos)
+     *
+     * Se expone como metodo (y no se reimplementa la formula) porque otras pantallas necesitan el
+     * mismo dato y tienen que salir de la MISMA fuente: la liquidacion de garantias por remate
+     * muestra estos dos montos como "Saldo de D. Programada" y "Saldo de D. Total", y si se
+     * calcularan aparte se desincronizarian de lo que el cajero ve al cobrar.
+     */
+    public function totales_pago_total($idtienda,$idcredito)
+    {
+        $request = new Request();
+        $request->merge([
+            'idcredito'     => $idcredito,
+            'numerocuota'   => 1000,
+            'tipo'          => 'pagototal',
+            'acuenta'       => 0,
+            'cobrar_cargo'  => 0,
+        ]);
+
+        return $this->show($request,$idtienda,'show_cobranzacuota_cronograma');
+    }
+
     // Totales de referencia para el "Pago Anticipado - Cancelacion Total": el "total de deuda"
     // se calcula EXACTAMENTE igual que el "TOTAL A PAGAR" de la tabla principal de
     // cobranzacuota (mismo calculo que usa "Pago Total": todas las cuotas pendientes, sin el
@@ -2499,16 +2530,7 @@ class CobranzacuotaController extends Controller
     // realmente hacia falta. El "descuento" es solo informativo: la diferencia entre ambos.
     private function _totalesCancelacionTotal($idtienda, $idcredito)
     {
-        $totalDeudaRequest = new Request();
-        $totalDeudaRequest->merge([
-            'idcredito' => $idcredito,
-            'numerocuota' => 1000,
-            'tipo' => 'pagototal',
-            'acuenta' => 0,
-            'cobrar_cargo' => 0,
-        ]);
-        $totalDeudaResultado = $this->show($totalDeudaRequest, $idtienda, 'show_cobranzacuota_cronograma');
-        $total_deuda = (float) $totalDeudaResultado['totalapagar'];
+        $total_deuda = (float) $this->totales_pago_total($idtienda,$idcredito)['totalapagar'];
 
         // El descuento de Pago Anticipado es, cuota por cuota, exactamente su interes+cargo+comision
         // cuando su fecha aun no vence (fecha > hoy) — asi lo aplica select_cronograma() de forma

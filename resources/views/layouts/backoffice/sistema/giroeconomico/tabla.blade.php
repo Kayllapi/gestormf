@@ -69,8 +69,10 @@
 </div>
 <script>
   // Cambiar de agencia recarga el formulario de alta y la lista: las dos leen
-  // la agencia del selector.
+  // la agencia del selector. El filtro se reinicia porque un tipo de giro puede
+  // no tener giros en la agencia nueva.
   $("#idagencia").on("change", function () {
+    reiniciar_filtro_giro();
     load_nuevo_giro();
     lista_giro();
   });
@@ -89,6 +91,10 @@
   // la asignacion no, asi que si se llamara antes de esta linea la variable
   // todavia seria undefined.
   var FILTRO_LISTA_GIRO = { idtipo_giro_economico: '', estado: '' };
+
+  function reiniciar_filtro_giro(){
+    FILTRO_LISTA_GIRO = { idtipo_giro_economico: '', estado: '' };
+  }
 
   lista_giro();
   function lista_giro(id){

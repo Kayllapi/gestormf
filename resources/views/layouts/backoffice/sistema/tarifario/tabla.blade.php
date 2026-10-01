@@ -70,8 +70,10 @@
   sistema_select2({ idtienda:{{$tienda->id}}, json:'tienda:usuario', input:'#idclientesearch' });
 
   // Cambiar de agencia recarga el formulario de alta y la lista: las dos leen
-  // la agencia del selector.
+  // la agencia del selector. El filtro se reinicia porque un producto de la
+  // agencia anterior no existe en la nueva y dejaria la tabla vacia.
   $("#idagencia").on("change", function () {
+    reiniciar_filtro_tarifario();
     load_nuevo_tarifario();
     lista_tarifario();
   });
@@ -80,23 +82,35 @@
     modal({ route:"{{url('backoffice')}}/{{$tienda->id}}/tarifario/0/edit?view=copiar&idagencia="+$('#idagencia').val(), size: 'modal-sm' })
   }
 
+  // El filtro de la tabla se guarda APARTE del formulario, a proposito.
+  // Al editar una tasa, el formulario de edicion trae su propio Producto, Tipo de
+  // Credito y Forma de Pago, y si lista_tarifario() los leyera la tabla se
+  // quedaria mostrando solo las tasas de ese producto: tras guardar, la lista
+  // parecia vacia o con una sola fila y no se veia el resto del tarifario.
+  //
+  // El filtro lo cambia SOLO el formulario de alta (elegir un producto y ver sus
+  // tasas es un flujo util), y se reinicia con reiniciar_filtro_tarifario()
+  // cuando el formulario vuelve a estar en blanco.
+  //
+  // Se declara ANTES del primer lista_tarifario() de mas abajo: el var se izla
+  // pero la asignacion no, asi que llamada antes seria undefined.
+  var FILTRO_LISTA_TARIFARIO = { tipo:'', idcredito_prendatario:'', idforma_pago_credito:'' };
+
+  function reiniciar_filtro_tarifario(){
+    FILTRO_LISTA_TARIFARIO = { tipo:'', idcredito_prendatario:'', idforma_pago_credito:'' };
+  }
+
   lista_tarifario();
   function lista_tarifario(id){
-    let tipo_producto_credito = $('#tipo_producto_credito').val();
-    let idcredito_prendatario = $('#idcredito_prendatario').val();
-    let idforma_pago_credito = $('#idforma_pago_credito').val();
-
-    let tipo = $("#idforma_credito").find('option:selected').val();
-
     $.ajax({
       url:"{{url('backoffice/0/tarifario/showtarifario')}}",
       type:'GET',
       data: {
           idcliente : id,
-          tipo_producto_credito : tipo_producto_credito,
-          idcredito_prendatario : idcredito_prendatario,
-          idforma_pago_credito : idforma_pago_credito,
-          tipo : tipo,
+          tipo_producto_credito : '',
+          idcredito_prendatario : FILTRO_LISTA_TARIFARIO.idcredito_prendatario,
+          idforma_pago_credito : FILTRO_LISTA_TARIFARIO.idforma_pago_credito,
+          tipo : FILTRO_LISTA_TARIFARIO.tipo,
           idagencia : $('#idagencia').val(),
 
       },

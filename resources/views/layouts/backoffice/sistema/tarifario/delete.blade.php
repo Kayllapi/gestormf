@@ -8,6 +8,7 @@
           }
       },
       function(resultado){
+        reiniciar_filtro_tarifario();
         lista_tarifario();
         load_nuevo_tarifario();
         $('#modal-close-credito-eliminar').click(); 

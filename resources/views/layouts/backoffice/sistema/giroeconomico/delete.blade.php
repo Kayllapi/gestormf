@@ -8,6 +8,7 @@
           }
       },
       function(resultado){
+          reiniciar_filtro_giro();
           lista_giro();
           load_nuevo_giro();
           $('#modal-close-giroeconomico-eliminar').click();

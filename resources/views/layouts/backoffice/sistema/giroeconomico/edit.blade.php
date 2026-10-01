@@ -8,6 +8,9 @@
           }
       },
       function(resultado){
+        // ver create.blade.php: el filtro se reinicia antes de listar para que la
+        // tabla no salga filtrada por el giro recien guardado.
+        reiniciar_filtro_giro();
         lista_giro();
         load_nuevo_giro();
       },this)">

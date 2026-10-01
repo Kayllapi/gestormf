@@ -8,6 +8,10 @@
         }
     },
     function(resultado){
+        // El formulario vuelve a estar en blanco, asi que el filtro tambien: si se
+        // listara antes de reiniciarlo, la tabla saldria filtrada por el giro recien
+        // guardado y no se veria el resto del catalogo de la agencia.
+        reiniciar_filtro_giro();
         lista_giro();
         load_nuevo_giro();
     },this)"> 

@@ -226,6 +226,71 @@ class TarifarioCopiaAgenciaTest extends TestCase
     }
 
     // ---------------------------------------------------------------
+    // El listado de la tabla
+    // ---------------------------------------------------------------
+
+    /**
+     * Regresion: la tabla tomaba sus filtros del formulario. Al editar una tasa,
+     * el formulario de edicion traia su propio Producto, Tipo de Credito y Forma
+     * de Pago, y al guardar la tabla se recargaba filtrada por esa tasa: solo
+     * aparecia esa fila y el resto del tarifario de la agencia quedaba
+     * invisible. El filtro ahora vive en FILTRO_LISTA_TARIFARIO y el listado sin
+     * filtro debe traer el tarifario completo de la agencia.
+     */
+    public function test_el_listado_sin_filtro_devuelve_el_tarifario_completo_de_la_agencia(): void
+    {
+        $u = $this->usuarioMultiagencia();
+        $this->actingAs($u);
+
+        foreach ($this->agenciasPermitidas($u) as $agencia) {
+            $r = $this->get("/backoffice/0/tarifario/showtarifario?idagencia={$agencia}");
+            $r->assertOk();
+
+            preg_match_all("/data-valor-columna='(\d+)'/", $r->getContent(), $m);
+            $ids = array_map('intval', $m[1]);
+
+            $this->assertCount(
+                DB::table('tarifario')->where('idtienda', $agencia)->count(),
+                $ids,
+                "la agencia {$agencia} deberia ver su tarifario completo sin filtros"
+            );
+        }
+    }
+
+    public function test_filtrar_por_producto_trae_solo_las_tasas_de_ese_producto(): void
+    {
+        $u = $this->usuarioMultiagencia();
+        $this->actingAs($u);
+
+        $agencia = $this->agenciasPermitidas($u)[0];
+
+        // un producto que tenga varias tasas, para que el filtro se note
+        $producto = DB::table('tarifario')
+            ->where('idtienda', $agencia)
+            ->select('idcredito_prendatario', DB::raw('count(*) c'))
+            ->groupBy('idcredito_prendatario')
+            ->orderByDesc('c')
+            ->first();
+        $this->assertNotNull($producto);
+
+        $r = $this->get("/backoffice/0/tarifario/showtarifario?idagencia={$agencia}&idcredito_prendatario={$producto->idcredito_prendatario}");
+        $r->assertOk();
+
+        preg_match_all("/data-valor-columna='(\d+)'/", $r->getContent(), $m);
+        $ids = array_map('intval', $m[1]);
+
+        $this->assertCount((int) $producto->c, $ids, 'el filtro por producto devolvio otra cantidad');
+
+        foreach ($ids as $id) {
+            $this->assertSame(
+                (int) $producto->idcredito_prendatario,
+                (int) DB::table('tarifario')->where('id', $id)->value('idcredito_prendatario'),
+                'el filtro por producto trajo una tasa de otro producto'
+            );
+        }
+    }
+
+    // ---------------------------------------------------------------
     // Copia entre agencias
     // ---------------------------------------------------------------
 

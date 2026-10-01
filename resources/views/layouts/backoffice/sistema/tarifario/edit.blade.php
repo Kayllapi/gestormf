@@ -8,6 +8,9 @@
           }
       },
       function(resultado){
+          // ver create.blade.php: el filtro se reinicia antes de listar para que la
+          // tabla no salga filtrada por la tasa recien guardada.
+          reiniciar_filtro_tarifario();
           lista_tarifario();
           load_nuevo_tarifario();
       },this)"> 

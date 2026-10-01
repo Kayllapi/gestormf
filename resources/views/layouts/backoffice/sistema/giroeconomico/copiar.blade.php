@@ -10,9 +10,10 @@
       },
       function(resultado){
           $('#close_copiar').click();
+          reiniciar_filtro_giro();
           load_nuevo_giro();
           lista_giro();
-      },this)"> 
+      },this)">  
 
     <div class="modal-header">
         <h5 class="modal-title">Copiar Giro Económico entre Agencias</h5>

@@ -8,6 +8,10 @@
         }
     },
     function(resultado){
+        // El formulario vuelve a estar en blanco, asi que el filtro tambien: si se
+        // listara antes de reiniciarlo, la tabla saldria filtrada por la tasa recien
+        // guardada y no se veria el resto del tarifario de la agencia.
+        reiniciar_filtro_tarifario();
         lista_tarifario();
         load_nuevo_tarifario();
     },this)"> 
@@ -83,16 +87,26 @@
   @include('app.nuevosistema.select2',['input'=>'#idcredito_prendatario'])
   @include('app.nuevosistema.select2',['input'=>'#idforma_pago_credito'])
   
+  // El formulario de ALTA es el que filtra la tabla: elegir un producto y ver sus
+  // tasas es el flujo de trabajo. Se escribe en FILTRO_LISTA_TARIFARIO (definido en
+  // tabla.blade.php) en vez de releer el formulario en lista_tarifario(), para que
+  // el formulario de EDICION no deje la tabla filtrada por su propia tasa.
   $("#idforma_credito").on("change", function(e) {
     carga_producto_credito();
     actualizar_nombre_tasa();
+    FILTRO_LISTA_TARIFARIO.tipo = $(this).val();
+    // el catalogo de productos se recarga con el tipo: el producto anterior ya no
+    // pertenece a esta lista, asi que el filtro se limpia.
+    FILTRO_LISTA_TARIFARIO.idcredito_prendatario = '';
     lista_tarifario();
   });
   $("#idcredito_prendatario").on("change", function(e) {
     actualizar_nombre_tasa();
+    FILTRO_LISTA_TARIFARIO.idcredito_prendatario = $(this).val();
     lista_tarifario();
   });
   $("#idforma_pago_credito").on("change", function(e) {
+    FILTRO_LISTA_TARIFARIO.idforma_pago_credito = $(this).val();
     lista_tarifario();
   });
   function carga_producto_credito(){

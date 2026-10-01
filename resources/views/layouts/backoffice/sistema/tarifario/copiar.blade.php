@@ -10,6 +10,7 @@
       },
       function(resultado){
           $('#close_copiar').click();
+          reiniciar_filtro_tarifario();
           load_nuevo_tarifario();
           lista_tarifario();
       },this)"> 

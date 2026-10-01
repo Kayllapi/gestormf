@@ -20,7 +20,7 @@
     </div>
     <div class="modal-body">
         <div class="alert alert-warning p-1">
-          Se copiarán las <b>Tasas Activas</b> conforme a los productos prexistentes.
+          Se copiarán las <b>Tasas Activas</b> conforme a los productos preexistentes.
           Podiendo modificar las condiciones dentro de la agencia.
         </div>
         <div class="row mt-1">

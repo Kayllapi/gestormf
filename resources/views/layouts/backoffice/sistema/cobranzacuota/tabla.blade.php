@@ -188,7 +188,7 @@
               <div style="width:60%;">
                     <div class="mb-1 d-flex justify-content-between align-items-center" style="background-color: #bcbcbc !important;color: #000 !important;font-weight: bold;">
                       <span class="badge" style="background-color: #bcbcbc;color: #000;">DATOS DE PRÉSTAMO</span>
-                      <span class="badge" style="background-color: #bcbcbc;color: #000; font-weight: normal;" id="agencia_desembolso">DESEMBOLSADO EN AGENCIA: -</span>
+                      <span class="badge" style="background-color: #bcbcbc;color: #000;" id="agencia_desembolso">DESEMBOLSADO EN AGENCIA: -</span>
                     </div>
                     <div id="table-datosprestamos" class="modal-body"></div>
                     <div id="table-datosprestamos_cronograma" class="modal-body" style="overflow-y: scroll;height: calc(-323px + 100vh);padding-top: 0px;padding-bottom: 0px;"></div>
@@ -438,7 +438,7 @@
             success: function (respuesta){
                 $('#idcredito').val(respuesta.idcredito);
                 $('#table-datosprestamos').html(respuesta.datosprestamos);
-                $('#agencia_desembolso').html('DESEMBOLSADO EN AGENCIA: '+(respuesta.agencia_desembolso || '-'));
+                $('#agencia_desembolso').html('DESEMBOLSADO EN AGENCIA: <span style="font-weight: normal;">'+ (respuesta.agencia_desembolso || '-') +'</span>');
               
                 $('#numero_cuotas').html(respuesta.numero_cuotas);
       

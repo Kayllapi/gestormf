@@ -3,7 +3,8 @@
           route: '{{ url('backoffice/'.$tienda->id.'/tarifario/'.$tarifario->id) }}',
           method: 'DELETE',
           data:{
-              view: 'eliminar'
+              view: 'eliminar',
+              idagencia: {{ (int) $agencia->id }}
           }
       },
       function(resultado){
@@ -18,7 +19,8 @@
     <div class="modal-body">
         <div class="alert alert-danger">
           <i class="fa-solid fa-triangle-exclamation"></i> ¿Esta seguro de eliminar tarifario?<br>
-          <b>"{{$tarifario->nombrecredito}}"</b>
+          <b>"{{$tarifario->nombrecredito}}"</b><br>
+          <small>De la agencia <b>{{$agencia->nombreagencia}}</b>. Esta accion no se puede deshacer.</small>
         </div>
     </div>
     <div class="modal-footer">

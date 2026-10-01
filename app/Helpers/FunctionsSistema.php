@@ -1886,12 +1886,17 @@ function val_acceso_especial($accesos_especial){
  * que la consulta no devuelva filas en vez de traer las de otra agencia.
  */
 function idtienda_actual(){
-    static $cache = null;
-    if($cache === null){
+    // La cache va indexada por usuario: si en el mismo proceso se cambia de
+    // usuario autenticado (por ejemplo en una suite de pruebas) hay que devolver
+    // la agencia del que esta ahora, no la del anterior.
+    $idusers = Auth::id();
+
+    if(!isset($GLOBALS['__idtienda_actual_cache'][$idusers])){
         $permiso = user_permiso();
-        $cache = $permiso ? (int) $permiso->idtienda : 0;
+        $GLOBALS['__idtienda_actual_cache'][$idusers] = $permiso ? (int) $permiso->idtienda : 0;
     }
-    return $cache;
+
+    return $GLOBALS['__idtienda_actual_cache'][$idusers];
 }
 
 function user_permiso(){

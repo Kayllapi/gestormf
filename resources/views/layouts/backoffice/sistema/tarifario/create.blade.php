@@ -3,7 +3,8 @@
         route: '{{ url('backoffice/'.$tienda->id.'/tarifario') }}',
         method: 'POST',
         data:{
-            view: 'registrar'
+            view: 'registrar',
+            idagencia: {{ (int) $agencia->id }}
         }
     },
     function(resultado){
@@ -101,6 +102,7 @@
       type:'GET',
       data: {
           tipo : tipo,
+          idagencia : {{ (int) $agencia->id }},
       },
       success: function (res){
         let option_select = `<option></option>`;

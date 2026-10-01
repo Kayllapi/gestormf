@@ -4,6 +4,7 @@
         method: 'PUT',
           data:{
               view: 'editar',
+              idagencia: {{ (int) $agencia->id }},
           }
       },
       function(resultado){
@@ -95,6 +96,7 @@
       type:'GET',
       data: {
           tipo : tipo,
+          idagencia : {{ (int) $agencia->id }},
       },
       success: function (res){
         let option_select = `<option></option>`;
@@ -110,6 +112,6 @@
     })
   }
   function eliminar_tarifario(){
-    modal({ route:"{{url('backoffice/'.$tienda->id.'/tarifario/'.$tarifario->id.'/edit?view=eliminar')}}" });  
+    modal({ route:"{{url('backoffice/'.$tienda->id.'/tarifario/'.$tarifario->id.'/edit?view=eliminar&idagencia='.$agencia->id)}}" });  
   }
 </script>    

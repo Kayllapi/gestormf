@@ -21,7 +21,7 @@
     <div class="modal-body">
         <div class="alert alert-warning p-1">
           Se copiarán las <b>Tasas Activas</b> conforme a los productos preexistentes.
-          Podiendo modificar las condiciones dentro de la agencia.
+          Podiendo modificar el tarifario dentro de la agencia.
         </div>
         <div class="row mt-1">
             <label class="col-sm-4 col-form-label" style="text-align: right;">Agencia ORIGEN:</label>

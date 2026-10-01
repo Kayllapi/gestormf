@@ -296,8 +296,9 @@ class DesembolsoController extends Controller
         else if( $request->input('view') == 'pdf_resumen' ){
 
             $aval = DB::table('users')->where('users.id',$credito->idaval)->first();
-            $tipo_garantia1 = DB::table('tipo_garantia')->offset(0)->limit(4)->get();
-            $tipo_garantia2 = DB::table('tipo_garantia')->offset(4)->limit(4)->get();
+            // Penalidad por tipo de garantia segun la AGENCIA DEL CREDITO, no el valor comun.
+            $tipo_garantia1 = tipos_garantia_penalidad_agencia($credito->idtienda,0,4);
+            $tipo_garantia2 = tipos_garantia_penalidad_agencia($credito->idtienda,4,4);
             $garantias = DB::table('credito_garantia')
             ->where('credito_garantia.tipo', 'CLIENTE')
             ->where('credito_garantia.idcredito', $credito->id)
@@ -354,9 +355,9 @@ class DesembolsoController extends Controller
         else if( $request->input('view') == 'pdf_pagare' ){
 
             $aval = DB::table('users')->where('users.id',$credito->idaval)->first();
-            $tipo_garantia1 = DB::table('tipo_garantia')->offset(0)->limit(3)->get();
-            $tipo_garantia2 = DB::table('tipo_garantia')->offset(3)->limit(3)->get();
-            $tipo_garantia3 = DB::table('tipo_garantia')->offset(6)->limit(3)->get();
+            $tipo_garantia1 = tipos_garantia_penalidad_agencia($credito->idtienda,0,3);
+            $tipo_garantia2 = tipos_garantia_penalidad_agencia($credito->idtienda,3,3);
+            $tipo_garantia3 = tipos_garantia_penalidad_agencia($credito->idtienda,6,3);
             $garantias = DB::table('credito_garantia')
             ->where('credito_garantia.tipo', 'CLIENTE')
             ->where('credito_garantia.idcredito', $credito->id)
@@ -1331,8 +1332,8 @@ class DesembolsoController extends Controller
         if($request->pdf == 'pdf_resumen') {
 
             $aval           = DB::table('users')->whereId($credito->idaval)->first();
-            $tipo_garantia1 = DB::table('tipo_garantia')->offset(0)->limit(4)->get();
-            $tipo_garantia2 = DB::table('tipo_garantia')->offset(4)->limit(4)->get();
+            $tipo_garantia1 = tipos_garantia_penalidad_agencia($credito->idtienda,0,4);
+            $tipo_garantia2 = tipos_garantia_penalidad_agencia($credito->idtienda,4,4);
             $garantias      = DB::table('credito_garantia')
                 ->where('tipo', 'CLIENTE')
                 ->where('idcredito', $credito->id)

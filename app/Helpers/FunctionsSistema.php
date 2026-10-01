@@ -60,6 +60,8 @@ function select_cronograma(
             $penalidad_descuento = configuracion($idtienda,'penalidad_couta_compuesto')['valor'];
         }
 
+        // La penalidad de tenencia es la del TIPO DE GARANTIA segun la agencia del credito
+        // (tipo_garantia_penalidad), no el valor comun de tipo_garantia.penalidad.
         $garantias = DB::table('credito_garantia')
             ->leftJoin('garantias','garantias.id','credito_garantia.idgarantias')
             ->where('credito_garantia.idcredito', $idcredito)
@@ -69,15 +71,10 @@ function select_cronograma(
               'garantias.idtipogarantia as idtipogarantia'
             )
             ->get();
+        $penalidades_tipo_garantia = tipo_garantia_penalidad($idtienda,true);
         foreach($garantias as $value){
-            $tipo_garantia = DB::table('tipo_garantia')
-            ->where('tipo_garantia.estado', 'ACTIVO')
-              ->get();
-            foreach($tipo_garantia as $valuetipogarantia){
-                if($value->idtipogarantia==$valuetipogarantia->id){
-                    $tenencia_descuento = $tenencia_descuento+$valuetipogarantia->penalidad;
-                }
-            }
+            $tenencia_descuento = $tenencia_descuento
+                +(float)($penalidades_tipo_garantia[$value->idtipogarantia]??0);
         }
 
     }
@@ -1192,15 +1189,21 @@ function _datos_base_pagoacuenta($idtienda, $idcredito){
         ->first();
 
     // ====== Garantias / tenencia_descuento (antes: N+1, una query de tipo_garantia por cada garantia) ======
+    // LEFT JOIN con la penalidad de la agencia: si la agencia no tiene fila propia en
+    // tipo_garantia_penalidad se usa el valor comun de tipo_garantia.penalidad (COALESCE).
     $tenencia_descuento = 0;
     if ($credito->idforma_credito == 1) { // Prendaria
         $tenencia_descuento = (float) DB::table('credito_garantia')
             ->join('garantias','garantias.id','credito_garantia.idgarantias')
             ->join('tipo_garantia','tipo_garantia.id','garantias.idtipogarantia')
+            ->leftJoin('tipo_garantia_penalidad', function($join) use ($idtienda) {
+                $join->on('tipo_garantia_penalidad.idtipo_garantia','=','tipo_garantia.id')
+                     ->where('tipo_garantia_penalidad.idtienda','=',$idtienda);
+            })
             ->where('credito_garantia.idcredito', $credito->id)
             ->where('credito_garantia.tipo', 'CLIENTE')
             ->where('tipo_garantia.estado', 'ACTIVO')
-            ->sum('tipo_garantia.penalidad');
+            ->sum(DB::raw('COALESCE(tipo_garantia_penalidad.penalidad, tipo_garantia.penalidad)'));
     }
 
     $dias_maximo_penalidad = configuracion($idtienda, 'dias_maximo_penalidad')['valor'];
@@ -1996,6 +1999,197 @@ function configuracion_delete($idtienda,$nombre,$idusers=''){
     }
     unset($GLOBALS['__configuracion_cache'][$idtienda.'|'.$nombre.'|'.$idusers]);
 }
+
+/**
+ * Penalidad por tipo de garantia, POR AGENCIA.
+ *
+ * tipo_garantia.penalidad es el valor COMUN a todas las agencias. El valor propio de cada
+ * agencia, cuando se configuro, esta en tipo_garantia_penalidad (ver
+ * database/sql/01102026120000create_tipo_garantia_penalidad.sql): si la agencia no tiene fila
+ * se usa el valor comun, de modo que las agencias que nunca se configuraron siguen
+ * calculando exactamente igual que antes.
+ *
+ * $solo_activo filtra por tipo_garantia.estado = 'ACTIVO', que es como suma la tenencia del
+ * cronograma (las garantias de un tipo inactivo no generan penalidad).
+ *
+ * Devuelve [idtipo_garantia => penalidad] con TODOS los tipos, para que el consumidor no
+ * tenga que preguntar dos veces. Se cachea por agencia en memoria durante el request.
+ */
+function tipo_garantia_penalidad($idtienda,$solo_activo=false){
+    $cacheKey = $idtienda.'|'.($solo_activo?'1':'0');
+
+    if(!isset($GLOBALS['__tipo_garantia_penalidad_cache'][$cacheKey])){
+
+        $query = DB::table('tipo_garantia');
+        if($solo_activo){
+            $query->where('tipo_garantia.estado','ACTIVO');
+        }
+        $penalidades = $query->pluck('penalidad','id')->all();
+
+        // foreach en vez de array_merge: las claves son ids numericos y array_merge las
+        // reindexaria, rompiendo el lookup por idtipo_garantia.
+        foreach(tipo_garantia_penalidad_overrides($idtienda) as $idtipo_garantia=>$penalidad){
+            $penalidades[$idtipo_garantia] = $penalidad;
+        }
+
+        $GLOBALS['__tipo_garantia_penalidad_cache'][$cacheKey] = $penalidades;
+    }
+
+    return $GLOBALS['__tipo_garantia_penalidad_cache'][$cacheKey];
+}
+
+/**
+ * Penalidad de un solo tipo de garantia para una agencia (0 si el tipo no existe).
+ */
+function penalidad_tipo_garantia($idtienda,$idtipo_garantia){
+    $penalidades = tipo_garantia_penalidad($idtienda);
+    return $penalidades[$idtipo_garantia]??0;
+}
+
+/**
+ * Rows de tipo_garantia_penalidad de una agencia: SOLO lo que esa agencia tiene por encima
+ * del valor comun, como [idtipo_garantia => penalidad]. La usa la pantalla de Penalidades y
+ * Comisiones para saber que fila existe (y por tanto que valor se puede borrar para volver al
+ * comun) y la copia entre agencias.
+ */
+function tipo_garantia_penalidad_overrides($idtienda){
+    if(!isset($GLOBALS['__tipo_garantia_penalidad_overrides_cache'][$idtienda])){
+        $GLOBALS['__tipo_garantia_penalidad_overrides_cache'][$idtienda] = DB::table('tipo_garantia_penalidad')
+            ->where('idtienda',$idtienda)
+            ->orderBy('idtipo_garantia')
+            ->pluck('penalidad','idtipo_garantia')
+            ->all();
+    }
+
+    return $GLOBALS['__tipo_garantia_penalidad_overrides_cache'][$idtienda];
+}
+
+/**
+ * Guarda la penalidad de un tipo de garantia para UNA agencia. $penalidad vacio borra el
+ * override y la agencia vuelve al valor comun (tipo_garantia.penalidad).
+ */
+function tipo_garantia_penalidad_update($idtienda,$idtipo_garantia,$penalidad){
+    $config = DB::table('tipo_garantia_penalidad')
+        ->where('idtienda',$idtienda)
+        ->where('idtipo_garantia',$idtipo_garantia)
+        ->first();
+
+    if($penalidad===null || $penalidad===''){
+        if($config){
+            DB::table('tipo_garantia_penalidad')->whereId($config->id)->delete();
+        }
+    }elseif($config){
+        DB::table('tipo_garantia_penalidad')->whereId($config->id)->update(['penalidad'=>$penalidad]);
+    }else{
+        DB::table('tipo_garantia_penalidad')->insert([
+            'idtienda'         => $idtienda,
+            'idtipo_garantia'  => $idtipo_garantia,
+            'penalidad'        => $penalidad,
+        ]);
+    }
+
+    unset($GLOBALS['__tipo_garantia_penalidad_cache']);
+    unset($GLOBALS['__tipo_garantia_penalidad_overrides_cache']);
+}
+
+/**
+ * Igual que tipo_garantia_penalidad() pero para los Sub Tipo II de garantia no prendiaria
+ * (Penalidad por tenencia x dia). Mismo criterio: override por agencia con el valor comun
+ * como default.
+ */
+function subtipo_garantia_noprendaria_ii_penalidad($idtienda){
+    if(!isset($GLOBALS['__subtipo_garantia_noprendaria_ii_penalidad_cache'][$idtienda])){
+
+        $penalidades = DB::table('subtipo_garantia_noprendaria_ii')->pluck('penalidad','id')->all();
+
+        $overrides = subtipo_garantia_noprendaria_ii_penalidad_overrides($idtienda);
+
+        foreach($overrides as $idsubtipo=>$penalidad){
+            $penalidades[$idsubtipo] = $penalidad;
+        }
+
+        $GLOBALS['__subtipo_garantia_noprendaria_ii_penalidad_cache'][$idtienda] = $penalidades;
+    }
+
+    return $GLOBALS['__subtipo_garantia_noprendaria_ii_penalidad_cache'][$idtienda];
+}
+
+/**
+ * Rows de subtipo_garantia_noprendaria_ii_penalidad de una agencia, como
+ * [idsubtipo_garantia_noprendaria_ii => penalidad] (solo los valores propios de la agencia).
+ */
+function subtipo_garantia_noprendaria_ii_penalidad_overrides($idtienda){
+    if(!isset($GLOBALS['__subtipo_garantia_noprendaria_ii_penalidad_overrides_cache'][$idtienda])){
+        $GLOBALS['__subtipo_garantia_noprendaria_ii_penalidad_overrides_cache'][$idtienda] = DB::table('subtipo_garantia_noprendaria_ii_penalidad')
+            ->where('idtienda',$idtienda)
+            ->orderBy('idsubtipo_garantia_noprendaria_ii')
+            ->pluck('penalidad','idsubtipo_garantia_noprendaria_ii')
+            ->all();
+    }
+
+    return $GLOBALS['__subtipo_garantia_noprendaria_ii_penalidad_overrides_cache'][$idtienda];
+}
+
+function subtipo_garantia_noprendaria_ii_penalidad_update($idtienda,$idsubtipo,$penalidad){
+    $config = DB::table('subtipo_garantia_noprendaria_ii_penalidad')
+        ->where('idtienda',$idtienda)
+        ->where('idsubtipo_garantia_noprendaria_ii',$idsubtipo)
+        ->first();
+
+    if($penalidad===null || $penalidad===''){
+        if($config){
+            DB::table('subtipo_garantia_noprendaria_ii_penalidad')->whereId($config->id)->delete();
+        }
+    }elseif($config){
+        DB::table('subtipo_garantia_noprendaria_ii_penalidad')->whereId($config->id)->update(['penalidad'=>$penalidad]);
+    }else{
+        DB::table('subtipo_garantia_noprendaria_ii_penalidad')->insert([
+            'idtienda'                             => $idtienda,
+            'idsubtipo_garantia_noprendaria_ii'    => $idsubtipo,
+            'penalidad'                            => $penalidad,
+        ]);
+    }
+
+    unset($GLOBALS['__subtipo_garantia_noprendaria_ii_penalidad_cache'][$idtienda]);
+    unset($GLOBALS['__subtipo_garantia_noprendaria_ii_penalidad_overrides_cache'][$idtienda]);
+}
+
+/**
+ * Tipos de garantia para los PDF de hoja resumen / estado de cuenta, con la penalidad ya
+ * sustituida por la de la agencia del credito.
+ *
+ * $offset/$limit recortan el catalogo en filas de 3 o 4 columnas como hace cada plantilla;
+ * el recorte se hace sobre el catalogo y despues se aplican las penalidades, para que el
+ * orden de las tablas del PDF no cambie respecto a lo que se venia imprimiendo.
+ *
+ * Ademas de penalidad (el valor de la agencia) cada fila trae:
+ *   - penalidad_comun: el valor de tipo_garantia.penalidad (default cuando la agencia no
+ *     configuro ese tipo).
+ *   - propio_agencia: 1 si la agencia tiene valor propio en tipo_garantia_penalidad, 0 si
+ *     esta usando el valor comun.
+ */
+function tipos_garantia_penalidad_agencia($idtienda,$offset=null,$limit=null){
+    $query = DB::table('tipo_garantia');
+    if($offset!==null){
+        $query->offset($offset);
+    }
+    if($limit!==null){
+        $query->limit($limit);
+    }
+
+    $tipos_garantia = $query->get();
+    $penalidades = tipo_garantia_penalidad($idtienda);
+    $overrides   = tipo_garantia_penalidad_overrides($idtienda);
+
+    foreach($tipos_garantia as $tipo_garantia){
+        $tipo_garantia->penalidad_comun = $tipo_garantia->penalidad;
+        $tipo_garantia->propio_agencia  = isset($overrides[$tipo_garantia->id]) ? 1 : 0;
+        $tipo_garantia->penalidad       = $penalidades[$tipo_garantia->id]??$tipo_garantia->penalidad;
+    }
+
+    return $tipos_garantia;
+}
+
 function sistema_view($idtienda=0){
     if($idtienda==0){
         $idtienda = Auth::user()->idtienda;

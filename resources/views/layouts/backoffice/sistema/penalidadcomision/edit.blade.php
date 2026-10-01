@@ -22,17 +22,15 @@
           <div class="mb-1">
             <span class="badge d-block">Penalidad por custodia x día (al vencimiento del período crédito)</span>
           </div>
-          {{-- tipo_garantia.penalidad es un valor unico para TODAS las agencias (esa tabla no tiene
-               idtienda), por eso aqui solo se muestra y no se edita. --}}
-          <div class="alert alert-info p-1 mb-1">
-            <i class="fa fa-info-circle"></i> Estas penalidades son <b>comunes a todas las agencias</b>: se muestran solo como referencia.
-          </div>
-          <table class="table" id="table-penalidad">
+          {{-- El id es lo que viaja al request: forminput() (public/libraries/app/js/app.js)
+               arma el FormData con $(this).attr('id') como clave, no con name. Por eso cada
+               fila necesita un id propio y el controlador lee 'penalidad_tipogarantia'.$id. --}}
+          <table class="table table-sm" id="table-penalidad">
             <tbody>
               @foreach($tipo_garantia as $value)
                 <tr id="{{ $value->id }}">
                   <td>{{ $value->nombre }} S/.</td>
-                  <td penalidad><input type="number" step="any" class="form-control" value="{{ $value->penalidad }}" disabled></td>
+                  <td penalidad><input type="number" step="any" class="form-control" id="penalidad_tipogarantia{{ $value->id }}" value="{{ $value->penalidad }}" placeholder="{{ $value->penalidad_comun }}"></td>
                 </tr>
               @endforeach
             </tbody>
@@ -141,16 +139,27 @@
           
          
         </div>
+        {{-- d-none: esta seccion sigue oculta (no la usa ningun calculo todavia), pero sus
+             valores ya son por agencia y editables, igual que los de garantia prendaria. --}}
         <div class="col-sm-12 col-md-4 d-none">
           <div class="mb-1">
-            <span class="badge d-block">Penalidad por tenencia x día</span>
+            <span class="badge d-block">Penalidad por tenencia x día (garantía no prendaria)</span>
           </div>
-          <table class="table" id="table-noprendatario">
+          <div class="alert alert-info p-1 mb-1">
+            <i class="fa fa-info-circle"></i> Igual que arriba: sin marcar, la agencia usa el
+            valor común de <b>subtipo_garantia_noprendaria_ii</b>.
+          </div>
+          <table class="table table-sm" id="table-noprendatario">
             <tbody>
               @foreach($tipo_garantia_noprendaria as $value)
                 <tr id="{{ $value->id }}">
-                  <td>{{ $value->nombre }}</td>
-                  <td penalidad><input type="number" step="any" class="form-control" value="{{ $value->penalidad }}"></td>
+                  <td>{{ $value->tipo_garantia_nombre }} / {{ $value->subtipo_garantia_nombre }} / {{ $value->nombre }}
+                    @if(!$value->propio_agencia)
+                      <span class="badge bg-secondary" title="Valor común para todas las agencias">común</span>
+                      <span class="text-muted">(común: {{ $value->penalidad_comun }})</span>
+                    @endif
+                  </td>
+                  <td penalidad><input type="number" step="any" class="form-control" id="penalidad_subtipogarantia{{ $value->id }}" value="{{ $value->penalidad }}" placeholder="{{ $value->penalidad_comun }}"></td>
                 </tr>
               @endforeach
             </tbody>

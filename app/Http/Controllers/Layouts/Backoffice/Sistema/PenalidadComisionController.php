@@ -11,12 +11,17 @@ use Carbon\Carbon;
 class PenalidadComisionController extends Controller
 {
     /**
-     * Parametros que administra esta pantalla y que si existen POR AGENCIA.
+     * Parametros (s_config) que administra esta pantalla y que si existen POR AGENCIA.
      *
-     * Todo lo configurable por agencia vive en s_config (s_config.idtienda). Los campos
-     * tipo_garantia.penalidad y subtipo_garantia_noprendaria_ii.penalidad NO tienen
-     * idtienda: son un unico valor compartido por todas las agencias, por eso no se
-     * editan ni se copian aqui (se muestran solo como referencia).
+     * Todo lo configurable por agencia vive en s_config (s_config.idtienda).
+     *
+     * Las penalidades por tipo de garantia (tipo_garantia.penalidad y
+     * subtipo_garantia_noprendaria_ii.penalidad) ya NO son un unico valor global: esas dos
+     * tablas siguen guardando el valor COMUN y la diferencia por agencia esta en
+     * tipo_garantia_penalidad / subtipo_garantia_noprendaria_ii_penalidad (ver
+     * database/sql/01102026120000create_tipo_garantia_penalidad.sql). Si la agencia no tiene
+     * fila propia se usa el valor comun, asi que las agencias que nunca se configuraron
+     * siguen viendo exactamente los mismos numeros que antes del cambio.
      */
     const PARAMETROS = [
         'dias_maximo_penalidad',
@@ -178,7 +183,28 @@ class PenalidadComisionController extends Controller
               'tipo_garantia_noprendaria.nombre as tipo_garantia_nombre',
             )
             ->get();
-        
+
+        // Cada tipo de garantia lleva dos campos para la vista:
+        //   - penalidad:       el valor que se usa para esta agencia (propio, o el comun si no tiene fila propia)
+        //   - penalidad_comun: el valor comun (tipo_garantia.penalidad), que se muestra como
+        //                       referencia para saber que valor se esta sobrescribiendo.
+        // propio_agencia = 1 si la agencia tiene fila en tipo_garantia_penalidad.
+        $penalidades    = tipo_garantia_penalidad($agencia->id);
+        $overrides      = tipo_garantia_penalidad_overrides($agencia->id);
+        foreach($tipo_garantia as $value){
+            $value->penalidad_comun = $value->penalidad;
+            $value->propio_agencia  = isset($overrides[$value->id]) ? 1 : 0;
+            $value->penalidad       = $penalidades[$value->id]??$value->penalidad;
+        }
+
+        $penalidades_noprendaria   = subtipo_garantia_noprendaria_ii_penalidad($agencia->id);
+        $overrides_noprendaria     = subtipo_garantia_noprendaria_ii_penalidad_overrides($agencia->id);
+        foreach($tipo_garantia_noprendaria as $value){
+            $value->penalidad_comun = $value->penalidad;
+            $value->propio_agencia  = isset($overrides_noprendaria[$value->id]) ? 1 : 0;
+            $value->penalidad       = $penalidades_noprendaria[$value->id]??$value->penalidad;
+        }
+
         return view(sistema_view().'/penalidadcomision/edit',[
           'tienda' => $tienda,
           'agencia' => $agencia,
@@ -214,11 +240,6 @@ class PenalidadComisionController extends Controller
             // y no sobre la agencia de la ruta.
             $idtienda_config = $agencia->id;
 
-            // tipo_garantia.penalidad y subtipo_garantia_noprendaria_ii.penalidad ya no se
-            // modifican desde aqui: son valores unicos compartidos por TODAS las agencias
-            // (esas tablas no tienen idtienda), asi que guardarlos cambiaba el dato de
-            // todas las agencias a la vez sin que se notase en el filtro por agencia.
-
             $cargo_custodia_garantia = $request->cargo_custodia_garantia ? 1 : 0;
 
             configuracion_update($idtienda_config,'dias_maximo_penalidad',$request->dias_maximo_penalidad);
@@ -235,6 +256,33 @@ class PenalidadComisionController extends Controller
             configuracion_update($idtienda_config,'comision_gestion_garantia_convenio',$request->comision_gestion_garantia_convenio);
             configuracion_update($idtienda_config,'porcentaje_descuento_liquidacion',$request->porcentaje_descuento_liquidacion);
             configuracion_update($idtienda_config,'porcentaje_precio_liquidacion',$request->porcentaje_precio_liquidacion);
+
+            // Penalidad por tipo de garantia: se guarda como override de la agencia
+            // (tipo_garantia_penalidad). Un input vacio borra el override y la agencia vuelve
+            // al valor comun de tipo_garantia.penalidad. Se recorre el catalogo y no el
+            // request para no crear filas de tipos que la agencia no tiene.
+            //
+            // Cada input viaja con la clave 'penalidad_tipogarantia'.$id del CATALOGO porque
+            // forminput() (public/libraries/app/js/app.js) arma el FormData usando el atributo
+            // id de cada input como nombre del campo, no el name. El id no lleva el idtienda
+            // adentro a proposito: el idtienda sale de la agencia ya validada arriba.
+            foreach(DB::table('tipo_garantia')->get() as $value){
+                tipo_garantia_penalidad_update(
+                    $idtienda_config,
+                    $value->id,
+                    $request->input('penalidad_tipogarantia'.$value->id)
+                );
+            }
+
+            // Sub Tipo II de garantia no prendaria (mismo criterio, otra tabla).
+            foreach(DB::table('subtipo_garantia_noprendaria_ii')->get() as $value){
+                subtipo_garantia_noprendaria_ii_penalidad_update(
+                    $idtienda_config,
+                    $value->id,
+                    $request->input('penalidad_subtipogarantia'.$value->id)
+                );
+            }
+
             return response()->json([
                 'resultado' => 'CORRECTO',
                 'mensaje'   => 'Se ha actualizado correctamente la configuración de '.$agencia->nombreagencia.'.'
@@ -248,11 +296,16 @@ class PenalidadComisionController extends Controller
     }
 
     /**
-     * Copia la configuracion (s_config) de una agencia a otra.
+     * Copia la configuracion (s_config) de una agencia a otra, y tambien las penalidades por
+     * tipo de garantia (tipo_garantia_penalidad / subtipo_garantia_noprendaria_ii_penalidad).
      *
      * Por cada parametro: si la agencia destino ya lo tiene lo actualiza, si no lo tiene
      * lo registra. Los parametros que la agencia origen no tenga configurado se omiten,
      * para no crear filas vacias en el destino.
+     *
+     * Igual con las penalidades por tipo de garantia: se copian solo las que la agencia
+     * origen tenga como valor PROPIO, porque las demas ya valen el valor comun en destino.
+     * Los overrides que solo existen en destino no se tocan.
      *
      * s_config no tiene indice unico en (nombre, idtienda), asi que la busqueda del
      * destino y el insert se hacen dentro de la misma transaccion.
@@ -298,7 +351,7 @@ class PenalidadComisionController extends Controller
         $actualizados = 0;
         $omitidos     = 0;
 
-        DB::transaction(function () use ($valores_origen,$iddestino,&$insertados,&$actualizados,&$omitidos) {
+        DB::transaction(function () use ($valores_origen,$idorigen,$iddestino,&$insertados,&$actualizados,&$omitidos) {
 
             foreach(self::PARAMETROS as $nombre){
 
@@ -326,6 +379,37 @@ class PenalidadComisionController extends Controller
                         'idtienda' => $iddestino,
                     ]);
                     $insertados++;
+                }
+            }
+
+            // Penalidades por tipo de garantia: se replican los overrides de la agencia
+            // origen. Ambas tablas tienen indice unico en (idtienda, id<tipo>), asi que el
+            // insert del destino no puede duplicar fila.
+            foreach([
+                ['tabla'=>'tipo_garantia_penalidad','columna'=>'idtipo_garantia'],
+                ['tabla'=>'subtipo_garantia_noprendaria_ii_penalidad','columna'=>'idsubtipo_garantia_noprendaria_ii'],
+            ] as $penalidades_tipo_garantia){
+
+                $overrides_origen = DB::table($penalidades_tipo_garantia['tabla'])
+                    ->where('idtienda',$idorigen)
+                    ->pluck('penalidad',$penalidades_tipo_garantia['columna']);
+
+                foreach($overrides_origen as $idtipo=>$penalidad){
+
+                    $existe = DB::table($penalidades_tipo_garantia['tabla'])
+                        ->where('idtienda',$iddestino)
+                        ->where($penalidades_tipo_garantia['columna'],$idtipo)
+                        ->first();
+
+                    if($existe){
+                        DB::table($penalidades_tipo_garantia['tabla'])->whereId($existe->id)->update(['penalidad'=>$penalidad]);
+                    }else{
+                        DB::table($penalidades_tipo_garantia['tabla'])->insert([
+                            'idtienda'                          => $iddestino,
+                            $penalidades_tipo_garantia['columna'] => $idtipo,
+                            'penalidad'                         => $penalidad,
+                        ]);
+                    }
                 }
             }
         });

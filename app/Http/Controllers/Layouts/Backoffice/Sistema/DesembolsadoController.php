@@ -429,9 +429,9 @@ class DesembolsadoController extends Controller
       }
       else if( $request->input('view') == 'pdf_resumen' ){
 
-        $tipo_garantia1 = DB::table('tipo_garantia')->offset(0)->limit(3)->get();
-        $tipo_garantia2 = DB::table('tipo_garantia')->offset(3)->limit(3)->get();
-        $tipo_garantia3 = DB::table('tipo_garantia')->offset(6)->limit(3)->get();
+        $tipo_garantia1 = tipos_garantia_penalidad_agencia($credito->idtienda,0,3);
+        $tipo_garantia2 = tipos_garantia_penalidad_agencia($credito->idtienda,3,3);
+        $tipo_garantia3 = tipos_garantia_penalidad_agencia($credito->idtienda,6,3);
         $garantias = DB::table('credito_garantia')->where('idcredito', $credito->id)->get();
         $pdf = PDF::loadView(sistema_view().'/desembolsado/pdf_resumen',[
             'users_prestamo'    => $users_prestamo,

@@ -702,9 +702,9 @@ class EstadocuentaController extends Controller
         $users_prestamo = DB::table('s_users_prestamo')->where('s_users_prestamo.id_s_users',$credito->idcliente)->first();
         $users_prestamo_aval = DB::table('s_users_prestamo')->where('s_users_prestamo.id_s_users',$credito->idaval)->first();
 
-        $tipo_garantia1 = DB::table('tipo_garantia')->offset(0)->limit(3)->get();
-        $tipo_garantia2 = DB::table('tipo_garantia')->offset(3)->limit(3)->get();
-        $tipo_garantia3 = DB::table('tipo_garantia')->offset(6)->limit(3)->get();
+        $tipo_garantia1 = tipos_garantia_penalidad_agencia($credito->idtienda,0,3);
+        $tipo_garantia2 = tipos_garantia_penalidad_agencia($credito->idtienda,3,3);
+        $tipo_garantia3 = tipos_garantia_penalidad_agencia($credito->idtienda,6,3);
         $garantias = DB::table('credito_garantia')
           ->where('credito_garantia.tipo', 'CLIENTE')
           ->where('credito_garantia.idcredito', $credito->id)

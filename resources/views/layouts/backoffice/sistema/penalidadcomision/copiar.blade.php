@@ -27,7 +27,8 @@
           <li>Si la agencia destino <b>no tiene</b> el parámetro, se registra.</li>
           <li>Si la agencia destino <b>ya tiene</b> el parámetro, se <b>actualiza</b> (se sobrescribe).</li>
           <li>Los parámetros que la agencia <b>origen no tenga</b> configurados se omiten.</li>
-          <li>No se copian las penalidades por tipo de garantía: son un valor común a todas las agencias.</li>
+          <li>Las penalidades por tipo de garantía que la agencia <b>origen tenga como valor propio</b>
+              también se copian; las que use el valor común no se copian (el destino ya usa ese mismo valor común).</li>
         </ul>
 
         <div class="row mt-1">

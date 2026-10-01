@@ -15,7 +15,7 @@
       <div class="row justify-content-center">
         <div class="col-sm-12 col-md-6">
           
-          <div class="alert alert-warning p-1 mb-2">
+          <div class="alert alert-warning p-1 mb-2" style="color: #000;">
             <b>AGENCIA:</b> {{ $agencia->nombreagencia }} &mdash; los cambios se guardan solo sobre esta agencia.
           </div>
 

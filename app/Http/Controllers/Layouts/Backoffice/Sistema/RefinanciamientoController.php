@@ -292,6 +292,7 @@ class RefinanciamientoController extends Controller
         
       
       $tarifario_producto = DB::table('tarifario')
+                            ->where('tarifario.idtienda',idtienda_actual())
                             ->join('forma_pago_credito','forma_pago_credito.id','tarifario.idforma_pago_credito')
                             ->where('tarifario.idcredito_prendatario',$credito->idcredito_prendatario)
                             ->select(
@@ -415,6 +416,7 @@ class RefinanciamientoController extends Controller
             //------- validar cronograma
 
             /*$montomaximo = DB::table('tarifario')
+                  ->where('tarifario.idtienda',idtienda_actual())
                   ->where('tarifario.idcredito_prendatario',$credito->idcredito_prendatario)
                   ->where('tarifario.idforma_pago_credito',$request->input('idforma_pago_credito'))
                   ->orderBy('tarifario.monto','desc')
@@ -431,6 +433,7 @@ class RefinanciamientoController extends Controller
             }
 
             $cuotamaximo = DB::table('tarifario')
+                  ->where('tarifario.idtienda',idtienda_actual())
                   ->where('tarifario.idcredito_prendatario',$credito->idcredito_prendatario)
                   ->where('tarifario.idforma_pago_credito',$request->input('idforma_pago_credito'))
                   ->orderBy('tarifario.cuotas','desc')
@@ -456,6 +459,7 @@ class RefinanciamientoController extends Controller
 
 
             $tasatarifario = DB::table('tarifario')
+                  ->where('tarifario.idtienda',idtienda_actual())
                   ->where('tarifario.idcredito_prendatario',$credito->idcredito_prendatario)
                   ->where('tarifario.idforma_pago_credito',$request->input('idforma_pago_credito'))
                   ->where('tarifario.monto','>=',$request->input('monto_solicitado'))
@@ -481,6 +485,7 @@ class RefinanciamientoController extends Controller
                     'mensaje'   => 'No se asignado ningún tarifario para esta frecuencia de pago!!.',
                 ]);*/
                 $tasatarifario_db = DB::table('tarifario')
+                  ->where('tarifario.idtienda',idtienda_actual())
                   ->where('tarifario.idcredito_prendatario',$credito->idcredito_prendatario)
                   ->where('tarifario.idforma_pago_credito',$credito->idforma_pago_credito)
                   ->where('tarifario.monto','>=',$credito->monto_solicitado)
@@ -1300,6 +1305,7 @@ class RefinanciamientoController extends Controller
                   ->first();
               
             $tasatarifario = DB::table('tarifario')
+                  ->where('tarifario.idtienda',idtienda_actual())
                   ->where('tarifario.idcredito_prendatario',$creditorefinanciado->idcredito_prendatario)
                   ->where('tarifario.idforma_pago_credito',$creditorefinanciado->idforma_pago_credito)
                   ->where('tarifario.monto','>=',$creditorefinanciado->monto_solicitado)

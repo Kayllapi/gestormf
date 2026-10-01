@@ -58,6 +58,7 @@ class CreditoPrendatarioController extends Controller
             $this->validate($request,$rules,$messages);
               
             $idcredito = DB::table('credito_prendatario')->insertGetId([
+                'idtienda'      => idtienda_actual(),
                 'nombre'        => $request->input('nombre'),
                 'idforma_credito' => 1, // 1 = PRENDARIO | 2 = NO PRENDARIO
                 'idtipo_credito'          => 0,
@@ -80,6 +81,7 @@ class CreditoPrendatarioController extends Controller
 
         if($id == 'showcreditos'){
           $creditos = DB::table('credito_prendatario')
+                            ->where('credito_prendatario.idtienda',idtienda_actual())
                             ->where('credito_prendatario.idforma_credito',1)
                             ->select(
                                 'credito_prendatario.*'
@@ -114,6 +116,7 @@ class CreditoPrendatarioController extends Controller
       $tienda = DB::table('tienda')->whereId($idtienda)->first();
       
       $credito = DB::table('credito_prendatario')
+                            ->where('credito_prendatario.idtienda',idtienda_actual())
                             ->where('credito_prendatario.id',$id)
                             ->select(
                                 'credito_prendatario.*'
@@ -165,7 +168,15 @@ class CreditoPrendatarioController extends Controller
             ];
             $this->validate($request,$rules,$messages);
               
-            DB::table('credito_prendatario')->whereId($id)->update([
+            // no se puede editar un producto de otra agencia
+            if(!DB::table('credito_prendatario')->where('id',$id)->where('idtienda',idtienda_actual())->exists()){
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'El producto no pertenece a su agencia.'
+                ]);
+            }
+
+            DB::table('credito_prendatario')->where('id',$id)->where('idtienda',idtienda_actual())->update([
                 'nombre'        => $request->input('nombre'),
                 'idforma_credito'          => 1,
                 'idtipo_credito'          => 0,
@@ -206,7 +217,8 @@ class CreditoPrendatarioController extends Controller
     {
       
       if( $request->input('view') == 'eliminar' ){
-        DB::table('credito_prendatario')->whereId($id)->delete();
+        // no se puede borrar un producto de otra agencia
+        DB::table('credito_prendatario')->where('id',$id)->where('idtienda',idtienda_actual())->delete();
         return response()->json([
           'resultado' => 'CORRECTO',
           'mensaje'   => 'Se ha elimino correctamente.'

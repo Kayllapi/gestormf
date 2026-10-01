@@ -1876,6 +1876,24 @@ function val_acceso_especial($accesos_especial){
 
   return $submodulos ? true : false;
 }
+
+/**
+ * Agencia (tienda) sobre la que se esta trabajando: la del cargo activo del
+ * usuario, con la misma precedencia que usa user_permiso().
+ *
+ * Es la que filtra las tablas que son por agencia (tarifario,
+ * credito_prendatario). Devuelve 0 si el usuario no tiene ningun cargo, para
+ * que la consulta no devuelva filas en vez de traer las de otra agencia.
+ */
+function idtienda_actual(){
+    static $cache = null;
+    if($cache === null){
+        $permiso = user_permiso();
+        $cache = $permiso ? (int) $permiso->idtienda : 0;
+    }
+    return $cache;
+}
+
 function user_permiso(){
     $tienda_permiso = DB::table('users_permiso')
                                   ->join('permiso','permiso.id','users_permiso.idpermiso')

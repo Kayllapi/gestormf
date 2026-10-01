@@ -43,7 +43,9 @@ class TarifarioController extends Controller
   
     public function store(Request $request, $idtienda)
     {
-      
+        // el tarifario es por agencia: cada una edita el suyo
+        $idtienda = idtienda_actual();
+
         if($request->input('view') == 'registrar') {
             
             $rules = [                
@@ -68,6 +70,7 @@ class TarifarioController extends Controller
             $this->validate($request,$rules,$messages);
               
             $idtarifario = DB::table('tarifario')->insertGetId([
+              'idtienda'              => $idtienda,
               'idforma_credito'       => $request->input('idforma_credito'),
               'idcredito_prendatario' => $request->input('idcredito_prendatario'),
               'idforma_pago_credito'  => $request->input('idforma_pago_credito'),
@@ -105,6 +108,7 @@ class TarifarioController extends Controller
                             ->join('forma_pago_credito','forma_pago_credito.id','tarifario.idforma_pago_credito')
                             ->join('forma_credito','forma_credito.id','tarifario.idforma_credito')
                             ->join('credito_prendatario','credito_prendatario.id','tarifario.idcredito_prendatario')
+                            ->where('tarifario.idtienda',idtienda_actual())
                             ->where($where)
                             ->select(
                                 'tarifario.*',
@@ -138,6 +142,7 @@ class TarifarioController extends Controller
         else if($id == 'showproductocredito'){
           
           $producto_credito = DB::table('credito_prendatario')
+                              ->where('credito_prendatario.idtienda',idtienda_actual())
                               ->where('credito_prendatario.idforma_credito',$request->input('tipo'))
                               ->select('credito_prendatario.*')
                               ->orderBy('credito_prendatario.id', 'asc')
@@ -157,6 +162,7 @@ class TarifarioController extends Controller
       $tarifario = DB::table('tarifario')
                             ->join('forma_pago_credito','forma_pago_credito.id','tarifario.idforma_pago_credito')
                             ->join('credito_prendatario','credito_prendatario.id','tarifario.idcredito_prendatario')
+                            ->where('tarifario.idtienda',idtienda_actual())
                             ->where('tarifario.id',$id)
                             ->select(
                                 'tarifario.*',
@@ -211,7 +217,16 @@ class TarifarioController extends Controller
             ];
             $this->validate($request,$rules,$messages);
               
-            $idtarifario = DB::table('tarifario')->whereId($id)->update([
+            // no se puede editar un tarifario de otra agencia
+            $agencia = (int) idtienda_actual();
+            if(!DB::table('tarifario')->where('id',$id)->where('idtienda',$agencia)->exists()){
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'El tarifario no pertenece a su agencia.'
+                ]);
+            }
+
+            $idtarifario = DB::table('tarifario')->where('id',$id)->update([
               'idforma_credito'       => $request->input('idforma_credito'),
               'idcredito_prendatario' => $request->input('idcredito_prendatario'),
               'idforma_pago_credito'  => $request->input('idforma_pago_credito'),
@@ -235,7 +250,8 @@ class TarifarioController extends Controller
     {
       
       if( $request->input('view') == 'eliminar' ){
-        DB::table('tarifario')->whereId($id)->delete();
+        // no se puede borrar un tarifario de otra agencia
+        DB::table('tarifario')->where('id',$id)->where('idtienda',idtienda_actual())->delete();
         return response()->json([
           'resultado' => 'CORRECTO',
           'mensaje'   => 'Se ha elimino correctamente.'

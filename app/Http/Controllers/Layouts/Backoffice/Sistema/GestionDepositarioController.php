@@ -166,7 +166,9 @@ class GestionDepositarioController extends Controller
     {
       
       if( $request->input('view') == 'eliminar' ){
-        DB::table('credito_prendatario')->whereId($id)->delete();
+        // acotado a la agencia: desde esta pantalla no se deben tocar los
+        // productos de otras agencias
+        DB::table('credito_prendatario')->where('id',$id)->where('idtienda',idtienda_actual())->delete();
         return response()->json([
           'resultado' => 'CORRECTO',
           'mensaje'   => 'Se ha elimino correctamente.'

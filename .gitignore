@@ -10,3 +10,5 @@
 .env
 .env.example
 composer.phar
+.phpunit.result.cache
+/.phpunit.cache

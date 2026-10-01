@@ -61,6 +61,7 @@ class CalculoSimpleController extends Controller
         if($id == 'show_producto_credito'){
           
           $producto_credito = DB::table('credito_prendatario')
+                              ->where('credito_prendatario.idtienda',idtienda_actual())
                               ->where('credito_prendatario.modalidad',$request->input('modalidad'))
                               ->where('credito_prendatario.estado','ACTIVO')
                               ->select('credito_prendatario.*')
@@ -74,6 +75,7 @@ class CalculoSimpleController extends Controller
           $monto = $request->input('monto');
           $cuota = $request->input('numerocuota');
           $tasaCercana = DB::table('tarifario')
+            ->where('tarifario.idtienda',idtienda_actual())
             ->where('tarifario.idcredito_prendatario',$request->input('producto'))
             ->where('tarifario.idforma_pago_credito',$request->input('frecuencia'))
             ->select('tarifario.*')
@@ -94,6 +96,7 @@ class CalculoSimpleController extends Controller
                   ->first();
           
           $montomaximo = DB::table('tarifario')
+                ->where('tarifario.idtienda',idtienda_actual())
                 ->where('tarifario.idcredito_prendatario',$request->input('producto'))
                 ->where('tarifario.idforma_pago_credito',$request->input('frecuencia'))
                 ->orderBy('tarifario.monto','desc')
@@ -111,6 +114,7 @@ class CalculoSimpleController extends Controller
           
           
           $cuotamaximo = DB::table('tarifario')
+                ->where('tarifario.idtienda',idtienda_actual())
                 ->where('tarifario.idcredito_prendatario',$request->input('producto'))
                 ->where('tarifario.idforma_pago_credito',$request->input('frecuencia'))
                 ->orderBy('tarifario.cuotas','desc')
@@ -127,6 +131,7 @@ class CalculoSimpleController extends Controller
           
           
           $tasatarifario = DB::table('tarifario')
+                ->where('tarifario.idtienda',idtienda_actual())
                 ->where('tarifario.idcredito_prendatario',$request->input('producto'))
                 ->where('tarifario.idforma_pago_credito',$request->input('frecuencia'))
                 ->where('tarifario.monto','>=',$request->input('monto'))
@@ -244,6 +249,7 @@ class CalculoSimpleController extends Controller
         else if($id="showtarifarioproducto"){
             $credito_prendatario = DB::table('credito_prendatario')->whereId($request->idproducto)->first();
            $tarifario_producto = DB::table('tarifario')
+                            ->where('tarifario.idtienda',idtienda_actual())
                             ->join('forma_pago_credito','forma_pago_credito.id','tarifario.idforma_pago_credito')
                             ->join('credito_prendatario','credito_prendatario.id','tarifario.idcredito_prendatario')
                             ->where('tarifario.idcredito_prendatario',$request->idproducto)

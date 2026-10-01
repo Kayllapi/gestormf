@@ -19,18 +19,9 @@
     </div>
     <div class="modal-body">
         <div class="alert alert-warning p-1">
-          Se copiarán los parámetros de <b>Penalidades y Comisiones</b> (días de tolerancia, tasa
-          moratoria, tipo de cambio, costos de gestión de garantía, etc.) de la agencia origen a la
-          agencia destino.
+          Se copiarán los parámetros de <b>Penalidades y Comisiones</b>.
+          Podiendo modificar los valores dentro de la agencia.
         </div>
-        <ul class="mb-1" style="font-size: 13px;">
-          <li>Si la agencia destino <b>no tiene</b> el parámetro, se registra.</li>
-          <li>Si la agencia destino <b>ya tiene</b> el parámetro, se <b>actualiza</b> (se sobrescribe).</li>
-          <li>Los parámetros que la agencia <b>origen no tenga</b> configurados se omiten.</li>
-          <li>Las penalidades por tipo de garantía que la agencia <b>origen tenga como valor propio</b>
-              también se copian; las que use el valor común no se copian (el destino ya usa ese mismo valor común).</li>
-        </ul>
-
         <div class="row mt-1">
             <label class="col-sm-4 col-form-label" style="text-align: right;">Agencia ORIGEN:</label>
             <div class="col-sm-8">

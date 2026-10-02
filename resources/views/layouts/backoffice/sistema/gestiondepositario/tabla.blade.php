@@ -44,6 +44,9 @@
           </div>
         </div>
       </div>
+      <div class="alert alert-warning p-1 mb-2" style="color: #000;">
+        <b>AGENCIA:</b> {{ $agencia->nombreagencia }} &mdash; al realizar los cambios se guardan solo sobre esta agencia.
+      </div>
       <div class="mb-1 mt-2">
         <span class="badge d-block">Constitución de la Garantía Mobiliaria: <span style="background-color: #d9e211;
     color: #000;

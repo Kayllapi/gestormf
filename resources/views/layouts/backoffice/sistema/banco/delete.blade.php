@@ -3,12 +3,13 @@
           route: '{{ url('backoffice/'.$tienda->id.'/banco/'.$feriado->id) }}',
           method: 'DELETE',
           data:{
-              view: 'eliminar'
+              view: 'eliminar',
+              idagencia: {{ (int) $agencia->id }}
           }
       },
       function(resultado){
-        lista_feriado();
-        load_nuevo_feriado();
+        lista_banco();
+        load_nuevo_banco();
         $('#modal-close-credito-eliminar').click(); 
       },this)">
     <div class="modal-header">
@@ -18,7 +19,9 @@
     <div class="modal-body">
         <div class="alert alert-danger">
           <i class="fa-solid fa-triangle-exclamation"></i> ¿Esta seguro de eliminar el banco?<br>
-          <b>"{{$feriado->nombre}} {{$feriado->cuenta}}"</b>
+          <b>"{{$feriado->nombre}} {{$feriado->cuenta}}"</b><br>
+          <small>De la agencia <b>{{$agencia->nombreagencia}}</b>. Si tiene movimientos de caja
+          asociados no se podra eliminar.</small>
         </div>
     </div>
     <div class="modal-footer">

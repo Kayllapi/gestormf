@@ -3,12 +3,13 @@
         route: '{{ url('backoffice/'.$tienda->id.'/banco') }}',
         method: 'POST',
         data:{
-            view: 'registrar'
+            view: 'registrar',
+            idagencia: {{ (int) $agencia->id }}
         }
     },
     function(resultado){
-        lista_feriado();
-        load_nuevo_feriado();
+        lista_banco();
+        load_nuevo_banco();
     },this)"> 
     <div class="modal-body">
       <div class="row justify-content-center">

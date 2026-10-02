@@ -1,6 +1,11 @@
 <div class="modal-header">
     <h5 class="modal-title">
       Gestion de Depositario y Rep. Común
+      @if($agencias->count()>1)
+      <button type="button" class="btn btn-primary" onclick="copiar_depositario()">
+        <i class="fa fa-copy"></i> Copiar Configuración
+      </button>
+      @endif
     </h5>
     <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>
@@ -11,14 +16,34 @@
         method: 'PUT',
           data:{
               view: 'editar',
+              idagencia: {{ (int) $agencia->id }},
               seleccionar_conentregaposesion : seleccionar_conentregaposesion(),
               seleccionar_sinentregaposesion : seleccionar_sinentregaposesion(),
               seleccionar_representantecomun : seleccionar_representantecomun(),
           }
       },
       function(resultado){
-          
+          // Se recarga la MISMA pantalla, no ir_inicio(): las tres tablas se dibujan
+          // en el servidor, asi que hay que volver a pedirlas para ver lo guardado.
+          recargar_depositario();
       },this)"> 
+      <div class="mb-1">
+        <div class="row">
+          <label for="idagencia" class="col-sm-2 col-form-label" style="text-align: right;">AGENCIA</label>
+          <div class="col-sm-5">
+            <select class="form-control" id="idagencia">
+              @foreach($agencias as $value)
+                <option value="{{ $value->id }}" {{ (int) $value->id == (int) $idtienda_seleccionada ? 'selected' : '' }}>{{ $value->nombreagencia }}</option>
+              @endforeach
+            </select>
+          </div>
+          <div class="col-sm-5" style="text-align: right;">
+            <span class="badge" style="background-color: #bcbcbc;color: #000;">
+              Se visualiza y se guarda sobre la agencia seleccionada
+            </span>
+          </div>
+        </div>
+      </div>
       <div class="mb-1 mt-2">
         <span class="badge d-block">Constitución de la Garantía Mobiliaria: <span style="background-color: #d9e211;
     color: #000;
@@ -106,6 +131,28 @@
 </div>
 
 <script>
+  // Vuelve a pedir la pantalla para una agencia. Se usa al cambiar el selector,
+  // tras guardar y tras copiar.
+  //
+  // Se recarga la pantalla completa y no solo las tablas porque estas se dibujan en
+  // el servidor: un .html() sobre los tbody dejaria las filas vieja.
+  function recargar_depositario(idagencia){
+    let ag = idagencia ? idagencia : $('#idagencia').val();
+    if(ag){
+      $('#idagencia').val(ag);
+    }
+    pagina({ route:"{{url('backoffice/'.$tienda->id.'/gestiondepositario')}}?view=tabla&idagencia="+$('#idagencia').val(), result:'#cuerposistema' });
+  }
+
+  // Cambiar de agencia recarga la pantalla: las tres tablas se dibujan en el
+  // servidor, asi que hay que volver a pedir la vista de la agencia nueva.
+  $("#idagencia").on("change", function () {
+    recargar_depositario();
+  });
+
+  function copiar_depositario(){
+    modal({ route:"{{url('backoffice')}}/{{$tienda->id}}/gestiondepositario/0/edit?view=copiar&idagencia="+$('#idagencia').val(), size: 'modal-sm' })
+  }
   
   @foreach($credito_gestiondepositario1 as $value)
       agrega_conentregaposesion('{{$value->custodiagarantia_id}}',

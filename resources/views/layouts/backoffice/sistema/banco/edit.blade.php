@@ -4,11 +4,12 @@
         method: 'PUT',
           data:{
               view: 'editar',
+              idagencia: {{ (int) $agencia->id }}
           }
       },
       function(resultado){
-          lista_feriado();
-          load_nuevo_feriado();
+          lista_banco();
+          load_nuevo_banco();
       },this)"> 
 
     <div class="modal-body">
@@ -51,7 +52,7 @@
 <script>
   @include('app.nuevosistema.select2',['input'=>'#estado', 'val' => $feriado->estado])
 
-  function eliminar_feriado(){
-    modal({ route:"{{url('backoffice/'.$tienda->id.'/feriados/'.$feriado->id.'/edit?view=eliminar')}}" });  
+  function eliminar_banco(){
+    modal({ route:"{{url('backoffice/'.$tienda->id.'/banco/'.$feriado->id.'/edit?view=eliminar&idagencia='.$agencia->id)}}" });
   }
 </script>    

@@ -2,7 +2,7 @@
 
 ```bash
 # migrar una base de datos
-mysql -u sgm_user -p sgm < database/sql/01102027120000alter_giro_economico_agencia.sql
+mysql -u sgm_user -p sgm < database/sql/01102027150000alter_banco_depositario_agencia.sql
 
 # verificar si se subio la base de datos
 mysql -u sgm_user -p sgm -e "DESCRIBE tipo_garantia_penalidad; DESCRIBE subtipo_garantia_noprendaria_ii_penalidad;"

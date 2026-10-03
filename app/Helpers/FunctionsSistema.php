@@ -245,6 +245,19 @@ function select_cronograma(
         ->groupBy('numerocuota')
         ->pluck('total', 'numerocuota');
 
+    // Capital ya cobrado por adelanto (pago a cuenta), por cuota. El "Saldo capital de deuda"
+    // tiene que ser el capital NETO de lo adelantado: antes sumaba el amortizacion integro de
+    // cada cuota pendiente, asi que un credito con pago a cuenta mostraba el capital completo
+    // (p.ej. 500.00 en vez de 500.00 - 7.27 = 492.73). Se agrupa por numerocuota, igual que
+    // $adelanto_total_por_cuota, porque un pago a cuenta puede dejar adelanto parcial en mas de
+    // una cuota (cuando cancela una completa y el sobrante cae en la siguiente).
+    $adelanto_capital_por_cuota = DB::table('credito_adelanto')
+        ->whereIn('credito_adelanto.idestadocredito_adelanto',[1,2])
+        ->where('credito_adelanto.idcredito',$idcredito)
+        ->select('numerocuota', DB::raw('SUM(capital) as capital'))
+        ->groupBy('numerocuota')
+        ->pluck('capital', 'numerocuota');
+
     foreach($credito_cronograma as $value){
 
         $amortizacion_delanto_pagado  = 0;
@@ -706,7 +719,12 @@ function select_cronograma(
                 + (float) number_format($mora_penalidad, 2, '.', '')
                 + (float) number_format($mora_tenencia, 2, '.', '')
                 + (float) number_format($mora_compensatorio, 2, '.', '');
-            $saldo_capital = $saldo_capital+$amortizacion; //($value->acuenta>0?($totalcuota-$value->acuenta-$value->acuenta):0)
+            // Capital pendiente = amortizacion de la cuota MENOS lo que ya se le cobro por
+            // adelanto (pago a cuenta). Las cuotas ya canceladas (estado 2) no llegan aqui, asi
+            // que solo resta el capital que sigue adeudado de verdad.
+            $saldo_capital = $saldo_capital
+                + $amortizacion
+                - (float) $adelanto_capital_por_cuota->get($value->numerocuota, 0);
 
             if($atraso_dias>=0){
                 //$style = 'box-shadow: inset 0 0 0 9999px rgb(244 172 172) !important;';

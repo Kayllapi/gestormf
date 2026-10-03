@@ -1022,9 +1022,14 @@ class CobranzacuotaController extends Controller
                 'detalle_cobranza'
             );
 
-            // "Saldo Pend. de Pago" = mismo calculo que "Pendientes" de la pantalla de cobranza:
-            // select_cronograma suma las cuotas pendientes completas, sin restar el pago a cuenta
-            // que ya tiene la primera cuota pendiente; se netea aqui igual que alla.
+            // "Saldo Pend. de Pago" (total_pendientepago) = mismo calculo que "Pendientes" de la
+            // pantalla de cobranza: select_cronograma suma las cuotas pendientes completas, sin
+            // restar el pago a cuenta que ya tiene la primera cuota pendiente; se netea aqui igual
+            // que alla.
+            // OJO con "saldo_pendientepago" (capital): ese NO se netea aqui, porque select_cronograma
+            // ya devuelve 'saldo_capital' neto del capital pagado por adelantado. Si tambien se le
+            // restara $total_adelantos (que incluye interes/mora, no solo capital) quedaria doble
+            // descontado.
             $primera_cuota_pendiente = 0;
             foreach($cronograma['cronograma'] as $value){
                 if($value['idestadocredito_cronograma']==1 && $primera_cuota_pendiente==0){
@@ -2438,6 +2443,27 @@ class CobranzacuotaController extends Controller
             // parcial en curso del cual quede un remanente.
             $hay_pagoacuenta = count($credito_adelantos) > 0;
 
+            // Capital de la fila "SALDOS".
+            // El cronograma redondea cada cuota hacia ABAJO a 0.10 y acumula la diferencia en la
+            // ultima cuota (ver FunctionsPrestamo::cronograma), asi que la suma de los conceptos de
+            // una cuota no siempre es igual a su cuota_real: p.ej. en el credito C00000203 la cuota 1
+            // vale 26.80 facturados pero sus conceptos suman 26.88 (25.00 capital + 1.68 interes +
+            // 0.20 recaudo); esos 0.08 NO se cobran en esta cuota, se cobran en la ultima (28.35).
+            // Ese redondeo no pertenece a ningun concepto en concreto, asi que se descuenta del
+            // capital para que esta fila sea coherente con el "Monto a P." / "Total a Pagar" de la
+            // pantalla de cobranza, que si parten de cuota_real ('saldo_cuota'). Antes se veia
+            // 17.73 aqui y 17.65 alla.
+            $saldo_capital_mostrar = 0;
+            if ($hay_pagoacuenta) {
+                $saldo_capital_mostrar = (float) number_format(
+                    (float) $calculos_en_pagoacuenta['saldo_cuota']
+                    - (float) $calculos_en_pagoacuenta['saldo_interes']
+                    - (float) $calculos_en_pagoacuenta['saldo_cargo']
+                    - (float) $calculos_en_pagoacuenta['saldo_recau'],
+                    2, '.', ''
+                );
+            }
+
             // Fecha hasta la que se calcula el atraso (interes comp./morat./custodia): siempre "hoy",
             // igual que calculos_en_pagoacuenta*(): $fecha_hoy = Carbon::now()->format('Y-m-d').
             $fecha_calculo = Carbon::now()->format('d-m-Y');
@@ -2460,14 +2486,14 @@ class CobranzacuotaController extends Controller
                     <tr>
                         <th style="text-align:left">Fecha</th>
                         <th style="text-align:right" colspan="2">SALDOS</th>
-                        <th style="text-align:right">'.($hay_pagoacuenta ? $calculos_en_pagoacuenta['saldo_capital'] : '0.00').'</th>
+                        <th style="text-align:right">'.($hay_pagoacuenta ? number_format($saldo_capital_mostrar, 2, '.', '') : '0.00').'</th>
                         <th style="text-align:right">'.($hay_pagoacuenta ? $calculos_en_pagoacuenta['saldo_interes'] : '0.00').'</th>
                         <th style="text-align:right">'.($hay_pagoacuenta ? $calculos_en_pagoacuenta['saldo_cargo'] : '0.00').'</th>
                         <th style="text-align:right">'.($hay_pagoacuenta ? $calculos_en_pagoacuenta['saldo_recau'] : '0.00').'</th>
                         <th style="text-align:right">'.($hay_pagoacuenta ? $calculo_diario_saldo_custodia : '0.00').'</th>
                         <th style="text-align:right">'.($hay_pagoacuenta ? $calculo_diario_saldo_compensatorio : '0.00').'</th>
                         <th style="text-align:right">'.($hay_pagoacuenta ? $calculo_diario_saldo_moratorio : '0.00').'</th>
-                        <th style="text-align:right"></th>
+                        <th style="text-align:right">'.($hay_pagoacuenta ? $calculos_en_pagoacuenta['saldo_cuota'] : '0.00').'</th>
                     </tr>
                     <tr>
                         <td style="text-align:left">'.$fecha_calculo.'</td>

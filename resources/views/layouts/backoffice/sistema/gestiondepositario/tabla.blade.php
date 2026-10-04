@@ -134,6 +134,7 @@
 </div>
 
 <script>
+  sistema_select2({ input:'#idagencia' });
   // Vuelve a pedir la pantalla para una agencia. Se usa al cambiar el selector,
   // tras guardar y tras copiar.
   //

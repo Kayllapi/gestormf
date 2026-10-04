@@ -67,6 +67,7 @@
   </div>
 </div>
 <script>
+  sistema_select2({ input:'#idagencia' });
   sistema_select2({ idtienda:{{$tienda->id}}, json:'tienda:usuario', input:'#idclientesearch' });
 
   // Cambiar de agencia recarga el formulario de alta y la lista: las dos leen

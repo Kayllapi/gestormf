@@ -68,6 +68,7 @@
   </div>
 </div>
 <script>
+  sistema_select2({ input:'#idagencia' });
   // Cambiar de agencia recarga el formulario de alta y la lista: las dos leen
   // la agencia del selector. El filtro se reinicia porque un tipo de giro puede
   // no tener giros en la agencia nueva.

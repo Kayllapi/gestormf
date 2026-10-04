@@ -36,6 +36,7 @@
   </div>
 </div>
 <script>
+  sistema_select2({ input:'#idagencia' });
   editar_select();
   $("#idagencia").on("change", function () {
     editar_select();

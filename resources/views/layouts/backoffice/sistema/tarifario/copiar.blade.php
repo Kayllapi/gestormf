@@ -20,7 +20,7 @@
         <button type="button" class="btn-close" id="close_copiar" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <div class="modal-body">
-        <div class="alert alert-warning p-1">
+        <div class="alert alert-warning p-1" style="color: #000;">
           Se copiarán las <b>Tasas Activas</b> conforme a los productos preexistentes.
           Podiendo modificar el tarifario dentro de la agencia.
         </div>

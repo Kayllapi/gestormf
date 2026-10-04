@@ -56,6 +56,7 @@
   </div>
 </div>
 <script>
+  sistema_select2({ input:'#idagencia' });
 
   function copiar_banco(){
     modal({ route:"{{url('backoffice')}}/{{$tienda->id}}/banco/0/edit?view=copiar&idagencia="+$('#idagencia').val(), size: 'modal-sm' })

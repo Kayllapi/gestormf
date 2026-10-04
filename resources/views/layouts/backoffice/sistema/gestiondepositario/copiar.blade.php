@@ -25,8 +25,8 @@
           Se copiarán los <b>Depositarios y Representante Común</b>.
           Podiendo modificar el tarifario dentro de la agencia.
         </div>
-        <div class="alert alert-success p-1" style="color: #000; margin-top: 5px;">
-            <b>Nota:</b> Los datos modificados/registrados en agencia destino se reemplazarán por completo.
+        <div class="alert alert-info p-1" style="color: #000; margin-top: 5px;">
+            <b>Nota:</b> Los datos modificados/registrados en agencia destino se mantendrán.
         </div>
         <div class="row mt-1">
             <label class="col-sm-4 col-form-label" style="text-align: right;">Agencia ORIGEN:</label>

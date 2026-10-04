@@ -55,6 +55,8 @@
 </form>  
 
 <script>
+  sistema_select2({ input:'#idorigen' });
+  sistema_select2({ input:'#iddestino' });
   (function(){
       var origen  = $('#idorigen').val();
       var destino = $('#iddestino').val();

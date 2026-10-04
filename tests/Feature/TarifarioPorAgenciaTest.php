@@ -267,6 +267,45 @@ class TarifarioPorAgenciaTest extends TestCase
         );
     }
 
+    /**
+     * Regresion: el formulario de alta pide el catalogo de productos con la
+     * agencia COCIDA en el HTML (la que se uso al renderizarlo), no con la que
+     * hay seleccionada en el momento.
+     *
+     * Como el formulario se vuelve a pedir en cada cambio de agencia y las
+     * peticiones no se cancelan entre si, el formulario de la agencia anterior
+     * puede pintarse despues del nuevo: sus productos quedaban en pantalla
+     * mientras la tabla consultaba la agencia nueva, y al elegir un producto
+     * la tabla salia vacia (idagencia 198 con un producto de la 194).
+     *
+     * La agencia tiene que leerse de #idagencia en el momento de la peticion.
+     */
+    public function test_el_formulario_de_alta_consulta_la_agencia_del_selector(): void
+    {
+        $usuario = $this->usuarioDeAgenciaActiva();
+        $agencia = idtienda_actual();
+
+        $r = $this->actingAs($usuario)
+            ->get("/backoffice/{$agencia}/tarifario/create?view=registrar&idagencia={$agencia}");
+        $r->assertOk();
+
+        $html = $r->getContent();
+
+        $this->assertStringContainsString(
+            'idagencia_tarifario()',
+            $html,
+            'el catalogo de productos debe pedir la agencia al selector, no al formulario'
+        );
+
+        // el valor cocido queda solo como respaldo: no debe ir en la peticion
+        // del catalogo de productos ni en el alta de la tasa
+        $this->assertDoesNotMatchRegularExpression(
+            '/idagencia\s*:\s*'.$agencia.'\s*,/',
+            $html,
+            'el formulario sigue mandando la agencia cocida en vez de la del selector'
+        );
+    }
+
     /** primer usuario activo con cargo, para las pruebas que no dependen del id concreto */
     private function usuarioDeAgenciaActiva(): User
     {

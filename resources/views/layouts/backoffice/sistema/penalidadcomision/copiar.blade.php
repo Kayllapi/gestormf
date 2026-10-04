@@ -22,6 +22,9 @@
           Se copiarán los parámetros de <b>Penalidades y Comisiones</b>.
           Podiendo modificar los valores dentro de la agencia.
         </div>
+        <div class="alert alert-success p-1" style="color: #000; margin-top: 5px;">
+            <b>Nota:</b> Los datos modificados/registrados en agencia destino se reemplazarán por completo.
+        </div>
         <div class="row mt-1">
             <label class="col-sm-4 col-form-label" style="text-align: right;">Agencia ORIGEN:</label>
             <div class="col-sm-8">

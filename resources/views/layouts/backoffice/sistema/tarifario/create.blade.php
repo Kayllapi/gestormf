@@ -4,7 +4,7 @@
         method: 'POST',
         data:{
             view: 'registrar',
-            idagencia: {{ (int) $agencia->id }}
+            idagencia: idagencia_tarifario()
         }
     },
     function(resultado){
@@ -86,6 +86,23 @@
   @include('app.nuevosistema.select2',['input'=>'#idforma_credito'])
   @include('app.nuevosistema.select2',['input'=>'#idcredito_prendatario'])
   @include('app.nuevosistema.select2',['input'=>'#idforma_pago_credito'])
+
+  // La agencia se lee SIEMPRE del selector #idagencia, nunca del valor con el
+  // que se renderizo este formulario ({{ (int) $agencia->id }}).
+  //
+  // El formulario se vuelve a pedir cada vez que se cambia de agencia y las
+  // peticiones no se cancelan entre si, asi que dos formularios pueden cruzarse:
+  // el de la agencia nueva se dibuja primero y luego llega el de la anterior y
+  // lo pisa. Con la agencia cocida, el catalogo de productos quedaba el de la
+  // agencia anterior mientras la tabla consultaba la nueva, y al elegir un
+  // producto la tabla salia vacia (idagencia 198 con un producto de la 194).
+  // Leyendo el selector, el catalogo siempre es el de la agencia en pantalla.
+  // El valor renderizado queda solo como respaldo si el formulario se pintara
+  // fuera de la pantalla de tarifario, donde no existe #idagencia.
+  function idagencia_tarifario(){
+    let seleccionada = ($('#idagencia').length) ? $('#idagencia').val() : '';
+    return (seleccionada) ? seleccionada : {{ (int) $agencia->id }};
+  }
   
   // El formulario de ALTA es el que filtra la tabla: elegir un producto y ver sus
   // tasas es el flujo de trabajo. Se escribe en FILTRO_LISTA_TARIFARIO (definido en
@@ -116,7 +133,7 @@
       type:'GET',
       data: {
           tipo : tipo,
-          idagencia : {{ (int) $agencia->id }},
+          idagencia : idagencia_tarifario(),
       },
       success: function (res){
         let option_select = `<option></option>`;

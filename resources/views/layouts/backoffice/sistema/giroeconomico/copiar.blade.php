@@ -24,7 +24,7 @@
           Se copiarán los <b>Giros Económicos</b>.
           Podiendo modificar los valores dentro de la agencia.
         </div>
-        <div class="alert alert-info p-1" style="color: #000; margin-top: 5px;">
+        <div class="alert alert-success p-1" style="color: #000; margin-top: 5px;">
             <b>Nota:</b> Los datos modificados/registrados en agencia destino se reemplazarán por completo.
         </div>
         <div class="row mt-1">

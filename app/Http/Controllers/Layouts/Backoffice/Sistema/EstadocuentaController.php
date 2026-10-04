@@ -794,25 +794,46 @@ class EstadocuentaController extends Controller
             
               
               //  adelanto
+              // Select explicito con alias: la consulta hace JOIN con
+              // credito_cobranzacuota y las dos tablas tienen "total_pagar" y
+              // "fecharegistro". Sin el select, ->total_pagar devolvia el total de
+              // la COBRANZA y no el acumulado del adelanto de la cuota (30.00 en
+              // vez de 30.02 en el credito 218), con lo que la comparacion contra
+              // totalcuota nunca se cumplia y NINGUNA cuota salia como "Canc." ni
+              // con su fecha, aunque estuviera pagada.
               $credito_adelanto = DB::table('credito_adelanto')
                   ->join('credito_cobranzacuota','credito_cobranzacuota.id','credito_adelanto.idcredito_cobranzacuota')
                   ->where('credito_adelanto.idcredito_cronograma',$value['id'])
                   ->where('credito_adelanto.idestadocredito_adelanto',1)
+                  ->select(
+                      'credito_adelanto.id as id',
+                      'credito_adelanto.total as total_adelanto',
+                      'credito_adelanto.fecharegistro as fecharegistro_adelanto'
+                  )
                   ->get();
             
+              // Suma de TODOS los pagos a cuenta de la cuota, no solo el ultimo:
+              // una cuota cubierta por varios pagos a cuenta quedaba como pendiente.
               $totaladelanto = 0;
               $ultimafechaadelanto = '';
               foreach($credito_adelanto as $valueade){
-                  $totaladelanto = $valueade->total_pagar;
-                  $ultimafechaadelanto = $valueade->fecharegistro;
+                  $totaladelanto += (float) $valueade->total_adelanto;
+                  $ultimafechaadelanto = $valueade->fecharegistro_adelanto;
               }
               
               $fechacobranza_fecharegistro = '';
+              // El estado sale del cronograma (idestadocredito_cronograma = 2 es la
+              // cuota pagada), que es el estado real de la cuota. El adelanto solo
+              // aporta la FECHA con que se cancelo, y tambien cubre el caso de una
+              // cuota liquidada enteramente por pagos a cuenta que el cronograma
+              // aun tenga como pendiente.
               $estado = 'Pend.';
-              if($totaladelanto>=$value['totalcuota']){
-                  $fechacobranza_fecharegistro = date_format(date_create($ultimafechaadelanto),'d-m-Y h:i:s A');
-              
+              if($value['idestadocredito_cronograma']==2
+                  || ($ultimafechaadelanto!='' && $totaladelanto>=$value['totalcuota'])){
                   $estado = 'Canc.';
+              }
+              if($estado=='Canc.' && $ultimafechaadelanto!=''){
+                  $fechacobranza_fecharegistro = date_format(date_create($ultimafechaadelanto),'d-m-Y h:i:s A');
               }
               // fin adelanto
             
@@ -854,6 +875,25 @@ class EstadocuentaController extends Controller
               ->where('credito_cargo.idestadocredito_cargo',1)
               ->where('credito_cargo.idcredito',$credito->id)
               ->sum('credito_cargo.importe');
+
+          // "Pendientes" y "Cumplido y Vencidos" se netean por el pago a cuenta
+          // igual que en la pantalla de cobranza (show_cobranzacuota_cronograma):
+          // select_cronograma() sigue contando dentro de su suma el adelanto de la
+          // primera cuota pendiente, que ya se cobro. Sin restarlo, el PDF mostraba
+          // 946.00 donde la pantalla mostraba 936.00 (credito 218: 10.00 de pago a
+          // cuenta sobre la cuota 2). $primera_cuota_pendiente sale del cronograma
+          // de arriba.
+          $total_adelantos = 0;
+          if($primera_cuota_pendiente>0){
+              $total_adelantos = DB::table('credito_adelanto')
+                  ->where('credito_adelanto.numerocuota',$primera_cuota_pendiente)
+                  ->where('credito_adelanto.idcredito',$credito->id)
+                  ->whereIn('credito_adelanto.idestadocredito_adelanto',[1,2])
+                  ->sum('credito_adelanto.total');
+          }
+
+          $cuota_pendiente = (float) number_format($cronograma['cuota_pendiente'],2,'.','') - $total_adelantos;
+          $saldo_vencido   = (float) number_format($cronograma['cuota_vencida'],2,'.','')   - $total_adelantos;
         
           $pdf = PDF::loadView(sistema_view().'/estadocuenta/pdf_credito',[
               'tienda' => $tienda,
@@ -875,8 +915,8 @@ class EstadocuentaController extends Controller
               'pagocuota_vencido' => $cronograma['pagocuota_vencido'],
               'pagocuota_puntual' => $cronograma['pagocuota_puntual'],
               'cuota_pagada' => $cronograma['cuota_pagada'],
-              'cuota_pendiente' => $cronograma['cuota_pendiente'],
-              'saldo_vencido' => $cronograma['cuota_vencida'],
+              'cuota_pendiente' => number_format($cuota_pendiente, 2, '.', ''),
+              'saldo_vencido' => number_format($saldo_vencido, 2, '.', ''),
               'saldo_capital' => $cronograma['saldo_capital'],
               'descuento_porcobrar' => number_format($total_cargo,2,'.',''),
           ]); 

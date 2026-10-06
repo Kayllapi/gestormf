@@ -360,6 +360,8 @@ class GarantiasController extends Controller
                 ->join('tipopersona','tipopersona.id','=','users.idtipopersona')
                 ->leftJoin('ubigeo','ubigeo.id','=','users.idubigeo')
                 ->leftJoin('s_users_prestamo','s_users_prestamo.id_s_users','users.id')
+                ->leftJoin('tienda','tienda.id','=','users.idtienda')
+                ->leftJoin('users as asesor','asesor.id','=','users.idasesor')
                 ->where('users.idestado',1)
                 ->where('users.idtipousuario',2)
                 ->where(function ($q) use ($request) {
@@ -372,6 +374,8 @@ class GarantiasController extends Controller
                     'tipopersona.nombre as tipopersonanombre',
                     'ubigeo.codigo as ubigeocodigo',
                     'ubigeo.nombre as ubigeonombre',
+                    'tienda.nombreagencia as agencia_nombre',
+                    'asesor.nombrecompleto as asesor_nombre',
                 )
                 ->orderBy('users.id','desc')
                 ->get();
@@ -390,7 +394,11 @@ class GarantiasController extends Controller
                     'telefono'        => $value->numerotelefono,
                     'direccion'       => $value->direccion,
                     'idubigeo'        => $value->idubigeo,
-                    'ubigeo'          => $value->ubigeocodigo!=''?$value->ubigeocodigo.' - '.$value->ubigeonombre:''
+                    'ubigeo'          => $value->ubigeocodigo!=''?$value->ubigeocodigo.' - '.$value->ubigeonombre:'',
+                    'idtienda'        => $value->idtienda,
+                    'agencia_nombre'  => $value->agencia_nombre,
+                    'idasesor'        => $value->idasesor,
+                    'asesor_nombre'   => $value->asesor_nombre,
                 ];
             }
                    
@@ -404,6 +412,8 @@ class GarantiasController extends Controller
                 ->join('tipopersona','tipopersona.id','=','users.idtipopersona')
                 ->leftJoin('ubigeo','ubigeo.id','=','users.idubigeo')
                 ->leftJoin('s_users_prestamo','s_users_prestamo.id_s_users','users.id')
+                ->leftJoin('tienda','tienda.id','=','users.idtienda')
+                ->leftJoin('users as asesor','asesor.id','=','users.idasesor')
                 ->where('users.idestado',1)
                 ->where('users.idtipousuario',2)
                 ->where('users.idtienda', $idtienda)
@@ -417,6 +427,8 @@ class GarantiasController extends Controller
                     'tipopersona.nombre as tipopersonanombre',
                     'ubigeo.codigo as ubigeocodigo',
                     'ubigeo.nombre as ubigeonombre',
+                    'tienda.nombreagencia as agencia_nombre',
+                    'asesor.nombrecompleto as asesor_nombre',
                 )
                 ->orderBy('users.id','desc')
                 ->get();
@@ -435,7 +447,11 @@ class GarantiasController extends Controller
                     'telefono'        => $value->numerotelefono,
                     'direccion'       => $value->direccion,
                     'idubigeo'        => $value->idubigeo,
-                    'ubigeo'          => $value->ubigeocodigo!=''?$value->ubigeocodigo.' - '.$value->ubigeonombre:''
+                    'ubigeo'          => $value->ubigeocodigo!=''?$value->ubigeocodigo.' - '.$value->ubigeonombre:'',
+                    'idtienda'        => $value->idtienda,
+                    'agencia_nombre'  => $value->agencia_nombre,
+                    'idasesor'        => $value->idasesor,
+                    'asesor_nombre'   => $value->asesor_nombre,
                 ];
             }
                    
@@ -449,6 +465,8 @@ class GarantiasController extends Controller
                 ->join('tipopersona','tipopersona.id','=','users.idtipopersona')
                 ->leftJoin('ubigeo','ubigeo.id','=','users.idubigeo')
                 ->leftJoin('s_users_prestamo','s_users_prestamo.id_s_users','users.id')
+                ->leftJoin('tienda','tienda.id','=','users.idtienda')
+                ->leftJoin('users as asesor','asesor.id','=','users.idasesor')
                 ->where('users.idestado',1)
                 ->where('users.idtipousuario',2)
                 ->where('users.idtienda', $idtienda)
@@ -463,6 +481,8 @@ class GarantiasController extends Controller
                     'tipopersona.nombre as tipopersonanombre',
                     'ubigeo.codigo as ubigeocodigo',
                     'ubigeo.nombre as ubigeonombre',
+                    'tienda.nombreagencia as agencia_nombre',
+                    'asesor.nombrecompleto as asesor_nombre',
                 )
                 ->orderBy('users.id','desc')
                 ->get();
@@ -481,7 +501,11 @@ class GarantiasController extends Controller
                     'telefono'        => $value->numerotelefono,
                     'direccion'       => $value->direccion,
                     'idubigeo'        => $value->idubigeo,
-                    'ubigeo'          => $value->ubigeocodigo!=''?$value->ubigeocodigo.' - '.$value->ubigeonombre:''
+                    'ubigeo'          => $value->ubigeocodigo!=''?$value->ubigeocodigo.' - '.$value->ubigeonombre:'',
+                    'idtienda'        => $value->idtienda,
+                    'agencia_nombre'  => $value->agencia_nombre,
+                    'idasesor'        => $value->idasesor,
+                    'asesor_nombre'   => $value->asesor_nombre,
                 ];
             }
                    

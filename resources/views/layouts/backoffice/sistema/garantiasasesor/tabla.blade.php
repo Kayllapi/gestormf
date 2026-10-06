@@ -93,6 +93,14 @@
     </div>
     <div class="col-sm-12 col-md-8">
       <div class="card">
+        <div class="card-body p-2">
+          <div class="modal-header">
+            <h5 class="modal-title">
+              <b>Agencia:</b> <span id="data-cliente-agencia"></span>
+              <b>Asesor/Ejecutivo:</b> <span id="data-cliente-asesor"></span>
+            </h5>
+          </div>
+        </div>
         <div class="card-body p-2" id="form-garantias-result">
         </div>
       </div>
@@ -146,6 +154,8 @@
         $('#data-cliente-id').val(res.cliente.id);
         $('#data-cliente-nombre').val(res.cliente.nombrecompleto);
         $('#data-cliente-documento').val(res.cliente.identificacion);
+        $('#data-cliente-agencia').val(res.cliente.agencia_nombre || '');
+        $('#data-cliente-asesor').val(res.cliente.asesor_nombre || '');
         $('#table-detalle-garantia > tbody').html(res.html);
         $("#exampleModal").modal('hide');
         load_create_garantia(res.cliente.id);

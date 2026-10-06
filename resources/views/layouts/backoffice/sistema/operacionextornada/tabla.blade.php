@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h5 class="modal-title">Historial de Operaciones Extornadas</h5>
+  <h5 class="modal-title">Historial de Operaciones Extornadas Institucional</h5>
   
   <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>

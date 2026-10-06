@@ -1,6 +1,6 @@
 <div class="modal-header">
     <h5 class="modal-title">
-      Estado de Cuenta / Historial Institucional
+      Estado de Cuenta / Historial Asesor/Ejecutivo
       <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="buscarcliente()">
         <i class="fa fa-search"></i> Buscar Cliente
       </button>
@@ -103,7 +103,7 @@
 <script>
   $('#idclientesearch').select2({
       ajax: {
-          url:"{{url('backoffice/'.$tienda->id.'/estadocuenta/show_credito_todos')}}",
+          url:"{{url('backoffice/'.$tienda->id.'/estadocuenta/show_credito_asesor')}}",
           dataType: 'json',
           delay: 250,
           data: function (params) {

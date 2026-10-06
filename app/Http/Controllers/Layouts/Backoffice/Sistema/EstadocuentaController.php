@@ -611,6 +611,82 @@ class EstadocuentaController extends Controller
             'html' => $html
           );
           
+
+        }
+        else if($id == 'show_credito_todos'){
+            // Buscar clientes de todas las agencias y asesores
+            $buscar = $request->buscar;
+            $creditos = DB::table('users')
+                ->where(function($query) use($buscar){
+                    $query->where('users.identificacion','LIKE','%'.$buscar.'%')
+                        ->orWhere('users.nombrecompleto','LIKE','%'.$buscar.'%');
+                })
+                ->select(
+                    'users.id as idcliente',
+                    'users.identificacion as identificacion',
+                    'users.nombrecompleto as nombrecliente',
+                )
+                ->get();
+      
+            $data = [];
+            foreach($creditos as $value){
+                $data[] = [
+                    'id' => $value->idcliente,
+                    'text' => $value->identificacion.' - '.$value->nombrecliente,
+                ];
+            }
+          return $data;
+        }
+        else if($id == 'show_credito_tienda'){
+            // Buscar clientes solo de la agencia actual
+            $buscar = $request->buscar;
+            $creditos = DB::table('users')
+                ->where('users.idtienda', $idtienda)
+                ->where(function($query) use($buscar){
+                    $query->where('users.identificacion','LIKE','%'.$buscar.'%')
+                        ->orWhere('users.nombrecompleto','LIKE','%'.$buscar.'%');
+                })
+                ->select(
+                    'users.id as idcliente',
+                    'users.identificacion as identificacion',
+                    'users.nombrecompleto as nombrecliente',
+                )
+                ->get();
+      
+            $data = [];
+            foreach($creditos as $value){
+                $data[] = [
+                    'id' => $value->idcliente,
+                    'text' => $value->identificacion.' - '.$value->nombrecliente,
+                ];
+            }
+          return $data;
+        }
+        else if($id == 'show_credito_asesor'){
+            // Buscar clientes solo del asesor actual
+            $buscar = $request->buscar;
+            $creditos = DB::table('users')
+                ->where('users.idtienda', $idtienda)
+                ->where('users.idasesor', Auth::id())
+                ->where(function($query) use($buscar){
+                    $query->where('users.identificacion','LIKE','%'.$buscar.'%')
+                        ->orWhere('users.nombrecompleto','LIKE','%'.$buscar.'%');
+                })
+                ->select(
+                    'users.id as idcliente',
+                    'users.identificacion as identificacion',
+                    'users.nombrecompleto as nombrecliente',
+                )
+                ->get();
+      
+            $data = [];
+            foreach($creditos as $value){
+                $data[] = [
+                    'id' => $value->idcliente,
+                    'text' => $value->identificacion.' - '.$value->nombrecliente,
+                ];
+            }
+          return $data;
         }
     }
 

@@ -1,6 +1,6 @@
 <div class="modal-header">
     <h5 class="modal-title">
-      Garantía Prendaria Institucional
+      Garantía Prendaria Administración
       
 <!--       <a href="javascript:;" 
          class="btn btn-primary" 
@@ -102,7 +102,7 @@
 <script>
   $('#idclientesearch').select2({
       ajax: {
-          url:"{{url('backoffice/'.$tienda->id.'/garantias/show_cliente_todos')}}",
+          url:"{{url('backoffice/'.$tienda->id.'/garantias/show_cliente_tienda')}}",
           dataType: 'json',
           delay: 250,
           data: function (params) {

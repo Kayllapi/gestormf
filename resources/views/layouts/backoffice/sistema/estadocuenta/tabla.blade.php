@@ -21,7 +21,25 @@
             </div>
             <div class="modal-body">
               <div class="row">
+                <div class="col-sm-12 col-md-6">
+                  <label for="idagencia">AGENCIA</label>
+                  <select class="form-control" id="idagencia">
+                    <option value="0" selected>TODO</option>
+                    @foreach($agencias as $value)
+                        <option value="{{$value->id}}">{{$value->nombreagencia}}</option>
+                    @endforeach
+                  </select>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                  <label for="idasesor">ASESOR</label>
+                  <select class="form-control" id="idasesor">
+                    <option value="0">TODO</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row">
                 <div class="col-sm-12">
+                  <label for="idclientesearch">CLIENTE</label>
                   <select class="form-control" id="idclientesearch">
                      <option></option>
                   </select>
@@ -102,6 +120,11 @@
 </div>
 <script>
 
+  sistema_select2({ input:'#idagencia' });
+  sistema_select2({ input:'#idasesor' });
+
+  cargar_asesores($('#idagencia').val());
+
   $('#idclientesearch').select2({
       ajax: {
           url:"{{url('backoffice/'.$tienda->id.'/estadocuenta/show_credito')}}",
@@ -109,7 +132,9 @@
           delay: 250,
           data: function (params) {
               return {
-                    buscar: params.term
+                    buscar: params.term,
+                    idagencia: $('#idagencia').val(),
+                    idasesor: $('#idasesor').val()
               };
           },
           processResults: function (data) {
@@ -123,6 +148,43 @@
       minimumInputLength: 2,
       theme: 'bootstrap-5',
       dropdownParent: $('#idclientesearch').parent().parent()
+  });
+
+  // El asesor depende de la agencia: al cambiarla se recargan los asesores de esa
+  // agencia y se limpia el cliente, porque el que estaba elegido puede no
+  // pertenecer ya a la nueva agencia.
+  function cargar_asesores(idagencia){
+      limpiar_cliente_buscado();
+
+      $.ajax({
+          url:"{{url('backoffice/'.$tienda->id.'/inicio/show_asesor')}}",
+          type:'GET',
+          data: {
+              idtienda : idagencia
+          },
+          success: function (respuesta){
+              // Se reemplaza el <select> completo, hay que rehacer el select2.
+              if($('#idasesor').data('select2')){
+                  $('#idasesor').select2('destroy');
+              }
+              $('#idasesor').html(respuesta);
+              sistema_select2({ input:'#idasesor' });
+          }
+      })
+  }
+
+  // "change.select2" solo dispara los handlers internos del select2, por lo que
+  // no dispara el onchange de arriba (que recarga la ficha del cliente).
+  function limpiar_cliente_buscado(){
+      $('#idclientesearch').val(null).trigger('change.select2');
+  }
+
+  $('#idagencia').on("change", function(e) {
+      cargar_asesores($('#idagencia').val());
+  });
+
+  $('#idasesor').on("change", function(e) {
+      limpiar_cliente_buscado();
   });
   
   $("#idclientesearch").on("change", function(e) {
@@ -171,6 +233,9 @@
   }
 
   function buscarcliente(){
+      // Se conservan los filtros de agencia/asesor, solo se limpia el texto
+      // de busqueda para que el usuario escriba con el filtro ya aplicado.
+      limpiar_cliente_buscado();
       setTimeout(function () { 
         $('#idclientesearch').select2('open');
       }, 500);

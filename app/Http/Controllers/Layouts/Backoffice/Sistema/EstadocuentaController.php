@@ -17,8 +17,10 @@ class EstadocuentaController extends Controller
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
       
         if($request->input('view') == 'tabla'){
+            $agencias = DB::table('tienda')->get();
             return view(sistema_view().'/estadocuenta/tabla',[
               'tienda' => $tienda,
+              'agencias' => $agencias,
             ]);
         }
             
@@ -271,30 +273,30 @@ class EstadocuentaController extends Controller
     {
 
         if($id == 'show_credito'){
-          /*$creditos = DB::table('credito')
-                            ->join('users as cliente','cliente.id','credito.idcliente')
-                            ->where('credito.estado','DESEMBOLSADO')
-                            ->where('cliente.identificacion','LIKE','%'.$request->buscar.'%')
-                            ->orWhere('credito.estado','DESEMBOLSADO')
-                            ->where('cliente.nombrecompleto','LIKE','%'.$request->buscar.'%')
-                            ->select(
-                                'cliente.id as idcliente',
-                                'cliente.identificacion as identificacion',
-                                'cliente.nombrecompleto as nombrecliente',
-                            )
-                            ->distinct()
-                            ->orderBy('credito.fecha_desembolso','asc')
-                            ->get();*/
-          
+          // Filtros de la ventana "Buscar Cliente": la agencia y el asesor son
+          // opcionales (vacio o 0 = TODO). Se aplican con where(array) para no
+          // mezclarse con el grupo de OR del buscador.
+          $where = [];
+          if($request->idagencia!='' && $request->idagencia!=0){
+              $where[] = ['users.idtienda',$request->idagencia];
+          }
+          if($request->idasesor!='' && $request->idasesor!=0){
+              $where[] = ['users.idasesor',$request->idasesor];
+          }
+
+          $buscar = $request->buscar;
           $creditos = DB::table('users')
-                            ->where('users.identificacion','LIKE','%'.$request->buscar.'%')
-                            ->orWhere('users.nombrecompleto','LIKE','%'.$request->buscar.'%')
-                            ->select(
-                                'users.id as idcliente',
-                                'users.identificacion as identificacion',
-                                'users.nombrecompleto as nombrecliente',
-                            )
-                            ->get();
+              ->where($where)
+              ->where(function($query) use($buscar){
+                  $query->where('users.identificacion','LIKE','%'.$buscar.'%')
+                      ->orWhere('users.nombrecompleto','LIKE','%'.$buscar.'%');
+              })
+              ->select(
+                  'users.id as idcliente',
+                  'users.identificacion as identificacion',
+                  'users.nombrecompleto as nombrecliente',
+              )
+              ->get();
      
             $data = [];
             foreach($creditos as $value){

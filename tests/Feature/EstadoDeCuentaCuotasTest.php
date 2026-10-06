@@ -168,7 +168,7 @@ class EstadoDeCuentaCuotasTest extends TestCase
 
     /**
      * El caso exacto de la regresion: una cuota pagada y cubierta por su pago a
-     * cuenta, donde el importe de la COBRANza (credito_cobranzacuota.total_pagar,
+     * cuenta, donde el importe de la COBRANZA (credito_cobranzacuota.total_pagar,
      * la columna que se colaba por el JOIN) es MENOR que el total de la cuota.
      * Leyendo esa columna en vez de credito_adelanto.total, la cuota saldia
      * "Pend." y sin fecha de cancelacion.

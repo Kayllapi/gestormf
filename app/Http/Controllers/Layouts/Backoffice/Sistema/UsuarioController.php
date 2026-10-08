@@ -1061,7 +1061,7 @@ class UsuarioController extends Controller
             if($cliente->idasesor==null || $cliente->idasesor==0){
                 return response()->json([
                     'existe'  => true,
-                    'mensaje' => 'Cliente existe pero esta en el módulo global, solicitar que te asignen',
+                    'mensaje' => 'Cliente pertenece a la Agencia '.$cliente->agencianombre.' del módulo global, solicitar que te asignen',
                 ]);
             }
 

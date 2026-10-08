@@ -973,6 +973,9 @@
         return JSON.stringify(data);
     }
 
+    // ultimo documento ya validado, evita repetir la alerta
+    var identificacion_validada = '';
+
     function buscar_dni(){
         limpiarcampos();
         $('#resultado-dni').html('');
@@ -1000,11 +1003,43 @@
                     }  
                 }
             })
-        }else if(identificacion!='' && identificacion==0){
-            $('#resultado-dni').html('');
-            $('#cont-natural-apellidopaterno').html('Apellido Paterno');
-            $('#cont-natural-apellidomaterno').html('Apellido Materno');
+            valida_identificacion(identificacion);
+        }else{
+            // documento incompleto: se rearma la validacion para cuando vuelva a tener 8 digitos
+            identificacion_validada = '';
+            if(identificacion!='' && identificacion==0){
+                $('#resultado-dni').html('');
+                $('#cont-natural-apellidopaterno').html('Apellido Paterno');
+                $('#cont-natural-apellidomaterno').html('Apellido Materno');
+            }
         }
+    }
+
+    function valida_identificacion(identificacion){
+        // este documento ya fue validado y avisado, no repetir la alerta
+        if(identificacion == identificacion_validada){
+            return;
+        }
+        // documento de relleno (00000000) no se valida
+        if(/^0+$/.test(identificacion)){
+            return;
+        }
+
+        identificacion_validada = identificacion;
+
+        $.ajax({
+            url:"{{url('backoffice/'.$tienda->id.'/usuario/show_valida_identificacion')}}",
+            type:'GET',
+            data: {
+                identificacion : identificacion
+            },
+            success: function (respuesta){
+                if(respuesta.existe){
+                    var mensaje = respuesta.mensaje;
+                    modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+encodeURIComponent(mensaje), size: 'modal-sm' });
+                }
+            }
+        });
     }
     function buscar_ruc(){
         limpiarcampos();

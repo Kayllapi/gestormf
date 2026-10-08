@@ -1,6 +1,6 @@
 <div class="modal-header">
     <h5 class="modal-title">
-      Clientes/Garantes Inactivos Global Total
+      Clientes/Garantes Inactivos Global Agencia
       <a href="javascript:;" 
          class="btn btn-primary" 
          onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/usuario/create?view=registrar&modulo=usuario')}}'})">
@@ -15,13 +15,8 @@
             <div class="row">
                 <label for="fecha_inicio" class="col-sm-3 col-form-label">AGENCIA</label>
                 <div class="col-sm-9">
-                    <select class="form-control" id="idagencia">
-                        <option></option>
-                        <option value="0" selected>TODA LAS AGENCIAS</option>
-                        @foreach($agencias as $value)
-                            <option value="{{$value->id}}">{{$value->nombreagencia}}</option>
-                        @endforeach
-                    </select>
+                    <input type="text" class="form-control" value="{{$tienda->nombreagencia}}" disabled>
+                    <input type="hidden" id="idagencia" value="{{$tienda->id}}">
                 </div>
             </div>
         </div>
@@ -32,8 +27,8 @@
     <div id="cont-usuario">
         @include('app.nuevosistema.tabla',[
             'tabla' => '#tabla-usuario',
-            // 'route' => url('backoffice/'.$tienda->id.'/usuarioglobal/show_table'),
-            'route' => url('backoffice/'.$tienda->id.'/usuarioglobal/show_table'),
+            // 'route' => url('backoffice/'.$tienda->id.'/usuarioglobalagencia/show_table'),
+            'route' => url('backoffice/'.$tienda->id.'/usuarioglobalagencia/show_table'),
             'type' => 'GET',
             'scrollY' => 'calc(-196px + 100vh)',
             'thead' => [
@@ -101,18 +96,12 @@
     </div>
 </div>
 <script>
-    sistema_select2({ input:'#idagencia',val:'{{$tienda->id}}' });
-
-    $("#idagencia").on("change", function(e) {
-        filtro();
-    });
-
     filtro();
     function filtro(){
         load('#cont_loading');
         $('#cont-usuario').addClass('d-none');
 
-        var root = '{{url('backoffice/'.$tienda->id.'/usuarioglobal/show_table')}}?idagencia='+$('#idagencia').val();
+        var root = '{{url('backoffice/'.$tienda->id.'/usuarioglobalagencia/show_table')}}?idagencia='+$('#idagencia').val();
         $('#tabla-usuario').DataTable().ajax.url(root).load();
 
         $('#tabla-usuario').on('xhr.dt', function(e, settings, json, xhr){

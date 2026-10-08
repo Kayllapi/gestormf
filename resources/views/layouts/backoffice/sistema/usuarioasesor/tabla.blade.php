@@ -13,7 +13,7 @@
     <div class="row">
         <div class="col-6">
             <div class="row">
-                <label for="fecha_fin" class="col-sm-3 col-form-label">EJECUTIVO</label>
+                <label for="fecha_fin" class="col-sm-3 col-form-label">ASESOR/EJECUTIVO</label>
                 <div class="col-sm-9">
                     @php
                         $usuario = DB::table('users')

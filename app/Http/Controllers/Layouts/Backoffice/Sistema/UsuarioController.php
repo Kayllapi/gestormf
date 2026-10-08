@@ -1037,6 +1037,7 @@ class UsuarioController extends Controller
 
             $cliente = DB::table('users')
                 ->leftJoin('users as asesor','asesor.id','=','users.idasesor')
+                ->leftJoin('tienda','tienda.id','=','users.idtienda')
                 ->where('users.identificacion',$identificacion)
                 ->where('users.idtipousuario',2)
                 ->where('users.idestado',1)
@@ -1044,7 +1045,8 @@ class UsuarioController extends Controller
                     'users.id',
                     'users.nombrecompleto',
                     'users.idasesor',
-                    'asesor.nombrecompleto as asesor'
+                    'asesor.nombrecompleto as asesor',
+                    'tienda.nombreagencia as agencianombre'
                 )
                 ->first();
 
@@ -1065,7 +1067,7 @@ class UsuarioController extends Controller
 
             return response()->json([
                 'existe'  => true,
-                'mensaje' => 'Cliente existe y pertenece a '.$cliente->asesor,
+                'mensaje'  => 'Cliente asignado a Asesor/Ejecutivo '.$cliente->asesor.' - Ag. '.$cliente->agencianombre,
             ]);
         }
     }
@@ -1913,56 +1915,5 @@ class UsuarioController extends Controller
                 'mensaje'   => 'Se ha eliminado correctamente.'
             ]);
         }
-       
-    }
-
-    /**
-     * Valida si el documento ingresado ya pertenece a un cliente registrado.
-     * Si tiene asesor asignado avisa a quien pertenece, si no indica que esta en el modulo global.
-     */
-    public function validaIdentificacion(Request $request)
-    {
-        $identificacion = trim((string) $request->input('dni'));
-
-        // documento vacio o de relleno (00000000) no se valida
-        if($identificacion=='' || !preg_match('/[0-9]/',$identificacion) || preg_match('/^0+$/',$identificacion)){
-            return response()->json([
-                'existe'   => false,
-                'mensaje'  => '',
-            ]);
-        }
-
-        $cliente = DB::table('users')
-            ->leftJoin('users as asesor','asesor.id','=','users.idasesor')
-            ->where('users.identificacion',$identificacion)
-            ->where('users.idtipousuario',2)
-            ->where('users.idestado',1)
-            ->select(
-                'users.id',
-                'users.nombrecompleto',
-                'users.idasesor',
-                'asesor.nombrecompleto as asesor'
-            )
-            ->first();
-
-        if($cliente==null){
-            return response()->json([
-                'existe'   => false,
-                'mensaje'  => '',
-            ]);
-        }
-
-        // sin asesor asignado: esta en el modulo global
-        if($cliente->idasesor==null || $cliente->idasesor==0){
-            return response()->json([
-                'existe'   => true,
-                'mensaje'  => 'Cliente existe pero esta en el módulo global, solicitar que te asignen',
-            ]);
-        }
-
-        return response()->json([
-            'existe'   => true,
-            'mensaje'  => 'Cliente existe y pertenece al Asesor/Ejecutivo '.$cliente->asesor,
-        ]);
     }
 }

@@ -77,7 +77,7 @@
                     </div>
                     <div id="cont_datosdelcliente_ce" style="display:none;">
                         <label>Carnet Extranjería <span class="text-danger">(*)</span></label>
-                        <input type="number" class="form-control" id="carnetextranjeria">
+                        <input type="number" class="form-control" id="carnetextranjeria" onkeyup="buscar_ce()">
                     </div>
                 </div>
             </div>
@@ -1014,33 +1014,6 @@
             }
         }
     }
-
-    function valida_identificacion(identificacion){
-        // este documento ya fue validado y avisado, no repetir la alerta
-        if(identificacion == identificacion_validada){
-            return;
-        }
-        // documento de relleno (00000000) no se valida
-        if(/^0+$/.test(identificacion)){
-            return;
-        }
-
-        identificacion_validada = identificacion;
-
-        $.ajax({
-            url:"{{url('backoffice/'.$tienda->id.'/usuario/show_valida_identificacion')}}",
-            type:'GET',
-            data: {
-                identificacion : identificacion
-            },
-            success: function (respuesta){
-                if(respuesta.existe){
-                    var mensaje = respuesta.mensaje;
-                    modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+encodeURIComponent(mensaje), size: 'modal-sm' });
-                }
-            }
-        });
-    }
     function buscar_ruc(){
         limpiarcampos();
         $('#resultado-ruc').html('');
@@ -1073,9 +1046,42 @@
                     }  
                 }
             })
+            valida_identificacion(identificacion);
         }else if(identificacion!='' && identificacion==0){
             $('#resultado-ruc').html('');
         }
+    }
+    function buscar_ce(){
+        limpiarcampos();
+        $('#resultado-ce').html('');
+        var identificacion = $('#ce').val();
+        valida_identificacion(identificacion);
+    }
+    function valida_identificacion(identificacion){
+        // este documento ya fue validado y avisado, no repetir la alerta
+        if(identificacion == identificacion_validada){
+            return;
+        }
+        // documento de relleno (00000000) no se valida
+        if(/^0+$/.test(identificacion)){
+            return;
+        }
+
+        identificacion_validada = identificacion;
+
+        $.ajax({
+            url:"{{url('backoffice/'.$tienda->id.'/usuario/show_valida_identificacion')}}",
+            type:'GET',
+            data: {
+                identificacion : identificacion
+            },
+            success: function (respuesta){
+                if(respuesta.existe){
+                    var mensaje = respuesta.mensaje;
+                    modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+encodeURIComponent(mensaje), size: 'modal-sm' });
+                }
+            }
+        });
     }
     function limpiarcampos(){
         $('#nombre').val('');

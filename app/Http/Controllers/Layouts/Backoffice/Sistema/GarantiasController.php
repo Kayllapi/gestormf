@@ -222,40 +222,51 @@ class GarantiasController extends Controller
             ]);
         }
         else if($id == 'showlistagarantias'){
-          $cliente = DB::table('users')->whereId($request->idcliente)->select('users.id','users.nombrecompleto','users.identificacion')->first();
-          $garantias = DB::table('garantias')
-                            ->where('garantias.idestadoeliminado',1)
-                            ->where('garantias.idcliente', $request->idcliente)
-                            ->select(
-                                'garantias.*'
-                            )
-                            ->orderBy('garantias.id','asc')
-                            ->get();
-          $html = '';
-          foreach($garantias as $value){
-              $garantia_credito = DB::table('credito_garantia')
-                  ->join('credito','credito.id','credito_garantia.idcredito')
-                  ->where('credito_garantia.idgarantias',$value->id)
-                  ->where('credito.idestadocredito',1)
-                  ->whereIn('credito.estado',['PENDIENTE','PROCESO','APROBADO','DESEMBOLSADO'])
-                  ->first();
-              $color_garantia = $garantia_credito ? 'style="background-color:#3cd48d;"' : '';
-              if($garantia_credito==''){
+            $cliente = DB::table('users')
+                ->leftJoin('users as asesor','asesor.id','=','users.idasesor')
+                ->leftJoin('tienda','tienda.id','=','users.idtienda')
+                ->where('users.id', $request->idcliente)
+                ->select(
+                    'users.id',
+                    'users.nombrecompleto',
+                    'users.identificacion',
+                    'asesor.nombrecompleto as asesor_nombre',
+                    'tienda.nombreagencia as agencia_nombre'
+                )
+                ->first();
+            $garantias = DB::table('garantias')
+                ->where('garantias.idestadoeliminado',1)
+                ->where('garantias.idcliente', $request->idcliente)
+                ->select(
+                    'garantias.*'
+                )
+                ->orderBy('garantias.id','asc')
+                ->get();
+            $html = '';
+            foreach($garantias as $value){
                 $garantia_credito = DB::table('credito_garantia')
                     ->join('credito','credito.id','credito_garantia.idcredito')
                     ->where('credito_garantia.idgarantias',$value->id)
-                    ->where('credito.idestadocredito',2)
-                    ->where('credito_garantia.idestadoentrega',1)
+                    ->where('credito.idestadocredito',1)
                     ->whereIn('credito.estado',['PENDIENTE','PROCESO','APROBADO','DESEMBOLSADO'])
                     ->first();
-                $color_garantia = $garantia_credito ? 'style="background-color:#6bc5ff;"' : '';
-              }
-            
-              $html .= "<tr {$color_garantia} data-valor-columna='{$value->id}' onclick='show_data(this)'>
-                            <td>{$value->descripcion}</td>
-                            <td>S/ {$value->cobertura}</td>
-                        </tr>";
-          }
+                $color_garantia = $garantia_credito ? 'style="background-color:#3cd48d;"' : '';
+                if($garantia_credito==''){
+                    $garantia_credito = DB::table('credito_garantia')
+                        ->join('credito','credito.id','credito_garantia.idcredito')
+                        ->where('credito_garantia.idgarantias',$value->id)
+                        ->where('credito.idestadocredito',2)
+                        ->where('credito_garantia.idestadoentrega',1)
+                        ->whereIn('credito.estado',['PENDIENTE','PROCESO','APROBADO','DESEMBOLSADO'])
+                        ->first();
+                    $color_garantia = $garantia_credito ? 'style="background-color:#6bc5ff;"' : '';
+                }
+                
+                $html .= "<tr {$color_garantia} data-valor-columna='{$value->id}' onclick='show_data(this)'>
+                                <td>{$value->descripcion}</td>
+                                <td>S/ {$value->cobertura}</td>
+                            </tr>";
+            }
           
             $credito_polizaseguro = DB::table('credito_polizaseguro')->where('id_cliente',$request->idcliente)->get();
           
@@ -266,14 +277,12 @@ class GarantiasController extends Controller
                 }
             }
             $html_1 .= '</div>';
-            
               
-          return array(
-            'cliente' => $cliente,
-            'html' => $html,
-            'credito_polizaseguro' => $html_1
-          );
-          
+            return array(
+                'cliente' => $cliente,
+                'html' => $html,
+                'credito_polizaseguro' => $html_1
+            );
         }
         else if($id == 'showtipogarantia'){
 //           $valorizacion = DB::table('tipo_garantia_detalle')

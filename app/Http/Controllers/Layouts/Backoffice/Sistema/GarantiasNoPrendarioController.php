@@ -125,54 +125,65 @@ class GarantiasNoPrendarioController extends Controller
     {
 
         if($id == 'showlistagarantiasnopredanrio'){
-          $cliente = DB::table('users')->whereId($request->idcliente)->select('users.id','users.nombrecompleto','users.identificacion')->first();
           
-          $garantias = DB::table('garantias_noprendarias')
-                            ->where('garantias_noprendarias.idestadoeliminado',1)
-                            ->join('tipo_garantia_noprendaria','tipo_garantia_noprendaria.id','garantias_noprendarias.idtipo_garantia_noprendaria')
-                            ->where('garantias_noprendarias.idcliente', $request->idcliente)
-                            ->select(
-                                'garantias_noprendarias.*',
-                                'tipo_garantia_noprendaria.nombre as nombretipogarantia'
-                            )
-                            ->orderBy('garantias_noprendarias.id','asc')
-                            ->get();
-          $html = '';
-          foreach($garantias as $value){
-            
-              $garantia_credito = DB::table('credito_garantia')
-                  ->join('credito','credito.id','credito_garantia.idcredito')
-                  ->where('credito_garantia.idgarantias_noprendarias',$value->id)
-                  ->where('credito.idestadocredito',1)
-                  ->whereIn('credito.estado',['PENDIENTE','PROCESO','APROBADO','DESEMBOLSADO'])
-                  ->first();
-            
-            
-              $color_garantia = $garantia_credito ? 'style="background-color:#3cd48d;"' : '';
-              /*if($garantia_credito==''){
+            $cliente = DB::table('users')
+                ->leftJoin('users as asesor','asesor.id','=','users.idasesor')
+                ->leftJoin('tienda','tienda.id','=','users.idtienda')
+                ->where('users.id', $request->idcliente)
+                ->select(
+                    'users.id',
+                    'users.nombrecompleto',
+                    'users.identificacion',
+                    'asesor.nombrecompleto as asesor_nombre',
+                    'tienda.nombreagencia as agencia_nombre'
+                )
+                ->first();
+          
+            $garantias = DB::table('garantias_noprendarias')
+                ->where('garantias_noprendarias.idestadoeliminado',1)
+                ->join('tipo_garantia_noprendaria','tipo_garantia_noprendaria.id','garantias_noprendarias.idtipo_garantia_noprendaria')
+                ->where('garantias_noprendarias.idcliente', $request->idcliente)
+                ->select(
+                    'garantias_noprendarias.*',
+                    'tipo_garantia_noprendaria.nombre as nombretipogarantia'
+                )
+                ->orderBy('garantias_noprendarias.id','asc')
+                ->get();
+            $html = '';
+            foreach($garantias as $value){
+                
                 $garantia_credito = DB::table('credito_garantia')
                     ->join('credito','credito.id','credito_garantia.idcredito')
                     ->where('credito_garantia.idgarantias_noprendarias',$value->id)
-                    ->where('credito.idestadocredito',2)
-                    ->where('credito_garantia.idestadoentrega',1)
+                    ->where('credito.idestadocredito',1)
                     ->whereIn('credito.estado',['PENDIENTE','PROCESO','APROBADO','DESEMBOLSADO'])
                     ->first();
-                $color_garantia = $garantia_credito ? 'style="background-color:#40a7e9;"' : '';
-              }*/
-              $valormercado = $value->valor_mercado;
-              if($value->idtipo_garantia_noprendaria==1){ // 1= A. Garantías Preferidas (G. Real), 2=B. Garantías No Preferidas (G. Personales)
-                  $valormercado = $value->valor_realizacion;
-              }
-              $html .= "<tr {$color_garantia} data-valor-columna='{$value->id}' onclick='show_data(this)'>
-                            <td><b>{$value->nombretipogarantia}:</b> {$value->descripcion}</td>
-                            <td>S/ {$valormercado}</td>
-                        </tr>";
-          }
-          return array(
-            'cliente' => $cliente,
-            'html' => $html
-          );
-          
+                
+                
+                $color_garantia = $garantia_credito ? 'style="background-color:#3cd48d;"' : '';
+                /*if($garantia_credito==''){
+                    $garantia_credito = DB::table('credito_garantia')
+                        ->join('credito','credito.id','credito_garantia.idcredito')
+                        ->where('credito_garantia.idgarantias_noprendarias',$value->id)
+                        ->where('credito.idestadocredito',2)
+                        ->where('credito_garantia.idestadoentrega',1)
+                        ->whereIn('credito.estado',['PENDIENTE','PROCESO','APROBADO','DESEMBOLSADO'])
+                        ->first();
+                    $color_garantia = $garantia_credito ? 'style="background-color:#40a7e9;"' : '';
+                }*/
+                $valormercado = $value->valor_mercado;
+                if($value->idtipo_garantia_noprendaria==1){ // 1= A. Garantías Preferidas (G. Real), 2=B. Garantías No Preferidas (G. Personales)
+                    $valormercado = $value->valor_realizacion;
+                }
+                $html .= "<tr {$color_garantia} data-valor-columna='{$value->id}' onclick='show_data(this)'>
+                                <td><b>{$value->nombretipogarantia}:</b> {$value->descripcion}</td>
+                                <td>S/ {$valormercado}</td>
+                            </tr>";
+            }
+            return array(
+                'cliente' => $cliente,
+                'html' => $html
+            );
         }
         else if($id == 'show_subtipo_garantia_noprendaria'){          
 

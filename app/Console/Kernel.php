@@ -12,7 +12,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        // Desasigna a los clientes sin credito generado en los ultimos 90 dias
+        $schedule->command('clientes:desasignar-asesor --dias=90 --incluir-sin-credito')
+            ->dailyAt('01:00')
+            ->withoutOverlapping();
     }
 
     /**

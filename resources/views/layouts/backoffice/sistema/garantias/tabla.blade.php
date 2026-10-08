@@ -95,7 +95,7 @@
       <div class="card">
         <div class="card-body p-2">
           <div class="modal-header" style="background-color: #f1f190;">
-            <h5 class="modal-title" style="width: 100%; display: flex; justify-content: space-between;">
+            <h5 class="modal-title" style="font-size: 14px !important; width: 100%; display: flex; justify-content: space-between;">
               <span>
                 Agencia: <span id="data-cliente-agencia" style="font-weight: normal;"></span>
               </span>

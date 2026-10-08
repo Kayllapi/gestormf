@@ -18,10 +18,11 @@ class UsuarioController extends Controller
     {
         // $request->user()->authorizeRoles($request->path(),$idtienda);
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
-      
-        if($request->input('view') == 'tabla'){
+        if($request->input('view') == 'tabla') {
+            $agencias = DB::table('tienda')->get();
             return view(sistema_view().'/usuario/tabla',[
                 'tienda' => $tienda,
+                'agencias' => $agencias,
             ]);
         }
             
@@ -890,8 +891,11 @@ class UsuarioController extends Controller
     public function show(Request $request, $idtienda, $id)
     {
         if($id=='show_table'){
-            $tienda = DB::table('tienda')->whereId($idtienda)->first(); 
-          
+            $tienda = DB::table('tienda')->whereId($idtienda)->first();
+
+            $idagencia = request('idagencia') ?? 0;
+            $idasesor = request('idasesor') ?? 0;
+
             $where = [];
             if($request->input('columns')[4]['search']['value']!=''){
                 $where[] = ['tipopersona.id',$request->input('columns')[4]['search']['value']];
@@ -899,13 +903,20 @@ class UsuarioController extends Controller
             if($request->input('columns')[5]['search']['value']!=''){
                 $where[] = ['s_users_prestamo.idtipodocumento',$request->input('columns')[5]['search']['value']];
             }
+
+            if ($idagencia!=0) {
+                $where[] = ['users.idtienda',$idagencia];
+            }
+            if ($idasesor!=0) {
+                $where[] = ['users.idasesor',$idasesor];
+            }
+
             $usuarios = DB::table('users')
                 ->join('tipopersona','tipopersona.id','=','users.idtipopersona')
                 ->leftJoin('ubigeo','ubigeo.id','=','users.idubigeo')
                 ->leftJoin('s_users_prestamo','s_users_prestamo.id_s_users','users.id')
                 ->where('users.idestado',1)
                 ->where('users.idtipousuario',2)
-                ->where('users.idtienda',$idtienda)
                 ->where('users.codigo','LIKE','%'.$request->input('columns')[0]['search']['value'].'%')
                 ->where('users.identificacion','LIKE','%'.$request->input('columns')[1]['search']['value'].'%')
                 ->where('users.nombrecompleto','LIKE','%'.$request->input('columns')[2]['search']['value'].'%')

@@ -859,9 +859,14 @@ class CreditoController extends Controller
               $result = 'EN LISTA NEGRA';
               $motivo = $s_listanegra->motivo;
           }
+
+          $cliente = DB::table('users')->where('id',$request->input('idcliente'))->first();
+          $identificacion = $cliente->identificacion ?? '';
+
           return [
               'resultado' => $result,
               'motivo' => $motivo,
+              'identificacion' => $identificacion,
           ];
 
         }

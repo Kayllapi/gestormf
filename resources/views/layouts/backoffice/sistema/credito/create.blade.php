@@ -146,10 +146,31 @@
               modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
               $('#idcliente').val(null).trigger("change");
           }
-
+          
+          valida_identificacion(res['identificacion'])
         }
       })
   });
+  function valida_identificacion(identificacion){
+      // documento de relleno (00000000) no se valida
+      if(/^0+$/.test(identificacion)){
+          return;
+      }
+
+      $.ajax({
+          url:"{{url('backoffice/'.$tienda->id.'/usuario/show_valida_identificacion')}}",
+          type:'GET',
+          data: {
+              identificacion : identificacion
+          },
+          success: function (respuesta){
+              if(respuesta.existe){
+                  var mensaje = respuesta.mensaje;
+                  modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+encodeURIComponent(mensaje), size: 'modal-sm' });
+              }
+          }
+      });
+  }
   
   $("#idforma_credito").on("change", function(e) {
       let idforma_credito = $("#idforma_credito").find('option:selected').val();

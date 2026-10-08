@@ -1049,6 +1049,10 @@ class UsuarioController extends Controller
                     'tienda.nombreagencia as agencianombre'
                 )
                 ->first();
+            
+            if($cliente->idasesor==Auth::user()->id){
+                $cliente = null;
+            }
 
             if($cliente==null){
                 return response()->json([

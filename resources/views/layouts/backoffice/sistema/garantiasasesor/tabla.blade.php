@@ -93,10 +93,9 @@
     </div>
     <div class="col-sm-12 col-md-8">
       <div class="card">
-        <div class="card-body p-2">
+        <div class="card-body p-2" style="padding-bottom: 0px !important;">
           <div class="modal-header" style="
-            background-color: #cfecc59e;
-            border: 1px solid #326222;
+            background-color: #efefef;
             border-radius: 4px;">
             <h5 class="modal-title" style="font-size: 14px !important; width: 100%; display: flex; justify-content: space-between;">
               <span>

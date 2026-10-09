@@ -120,7 +120,7 @@
                         </span>
                         <span class="tipo_tres">
                           @foreach($data_nivelaprobacion_tres as $permiso_val)
-                            <button type="button" class="btn btn-success m-1" valor_option="{{ $permiso_val->valor }}" text_option="{{ $permiso_val->texto }}">
+                            <button type="button" class="btn btn-success m-1" valor_option="{{ $permiso_val->valor }}" text_option="{{ $permiso_val->texto }}" style="background-color: #ace798 !important;">
                               {{ $permiso_val->texto }} <span class="badge text-bg-danger" onclick="removePermiso(this)"><i class="fa-solid fa-xmark"></i></span>
                             </button>
                           @endforeach
@@ -179,7 +179,7 @@
                         </span>
                         <span class="tipo_tres">
                           @foreach($data_autonomiaadministracion_tres as $permiso_val)
-                            <button type="button" class="btn btn-success m-1" valor_option="{{ $permiso_val->valor }}" text_option="{{ $permiso_val->texto }}">
+                            <button type="button" class="btn btn-success m-1" valor_option="{{ $permiso_val->valor }}" text_option="{{ $permiso_val->texto }}" style="background-color: #ace798 !important;">
                               {{ $permiso_val->texto }} <span class="badge text-bg-danger" onclick="removePermiso(this)"><i class="fa-solid fa-xmark"></i></span>
                             </button>
                           @endforeach
@@ -238,7 +238,7 @@
                         </span>
                         <span class="tipo_tres">
                           @foreach($data_autonomiagerencia_tres as $permiso_val)
-                            <button type="button" class="btn btn-success m-1" valor_option="{{ $permiso_val->valor }}" text_option="{{ $permiso_val->texto }}">
+                            <button type="button" class="btn btn-success m-1" valor_option="{{ $permiso_val->valor }}" text_option="{{ $permiso_val->texto }}" style="background-color: #ace798 !important;">
                               {{ $permiso_val->texto }} <span class="badge text-bg-danger" onclick="removePermiso(this)"><i class="fa-solid fa-xmark"></i></span>
                             </button>
                           @endforeach
@@ -296,7 +296,7 @@
                         </span>
                         <span class="tipo_tres">
                           @foreach($data_asignacion_tres as $permiso_val)
-                            <button type="button" class="btn btn-success m-1" valor_option="{{ $permiso_val->valor }}" text_option="{{ $permiso_val->texto }}">
+                            <button type="button" class="btn btn-success m-1" valor_option="{{ $permiso_val->valor }}" text_option="{{ $permiso_val->texto }}" style="background-color: #ace798 !important;">
                               {{ $permiso_val->texto }} <span class="badge text-bg-danger" onclick="removePermiso(this)"><i class="fa-solid fa-xmark"></i></span>
                             </button>
                           @endforeach
@@ -404,7 +404,7 @@
                         </span>
                         <span class="tipo_tres">
                           @foreach($data_nivelaprobacion_noprendario_tres as $permiso_val)
-                            <button type="button" class="btn btn-success m-1" valor_option="{{ $permiso_val->valor }}" text_option="{{ $permiso_val->texto }}">
+                            <button type="button" class="btn btn-success m-1" valor_option="{{ $permiso_val->valor }}" text_option="{{ $permiso_val->texto }}" style="background-color: #ace798 !important;">
                               {{ $permiso_val->texto }} <span class="badge text-bg-danger" onclick="removePermiso(this)"><i class="fa-solid fa-xmark"></i></span>
                             </button>
                           @endforeach
@@ -462,7 +462,7 @@
                         </span>
                         <span class="tipo_tres">
                           @foreach($data_autonomiaadministracion_noprendario_tres as $permiso_val)
-                            <button type="button" class="btn btn-success m-1" valor_option="{{ $permiso_val->valor }}" text_option="{{ $permiso_val->texto }}">
+                            <button type="button" class="btn btn-success m-1" valor_option="{{ $permiso_val->valor }}" text_option="{{ $permiso_val->texto }}" style="background-color: #ace798 !important;">
                               {{ $permiso_val->texto }} <span class="badge text-bg-danger" onclick="removePermiso(this)"><i class="fa-solid fa-xmark"></i></span>
                             </button>
                           @endforeach
@@ -520,7 +520,7 @@
                         </span>
                         <span class="tipo_tres">
                           @foreach($data_autonomiagerencia_noprendario_tres as $permiso_val)
-                            <button type="button" class="btn btn-success m-1" valor_option="{{ $permiso_val->valor }}" text_option="{{ $permiso_val->texto }}">
+                            <button type="button" class="btn btn-success m-1" valor_option="{{ $permiso_val->valor }}" text_option="{{ $permiso_val->texto }}" style="background-color: #ace798 !important;">
                               {{ $permiso_val->texto }} <span class="badge text-bg-danger" onclick="removePermiso(this)"><i class="fa-solid fa-xmark"></i></span>
                             </button>
                           @endforeach
@@ -578,7 +578,7 @@
                         </span>
                         <span class="tipo_tres">
                           @foreach($data_asignacion_noprendario_tres as $permiso_val)
-                            <button type="button" class="btn btn-success m-1" valor_option="{{ $permiso_val->valor }}" text_option="{{ $permiso_val->texto }}">
+                            <button type="button" class="btn btn-success m-1" valor_option="{{ $permiso_val->valor }}" text_option="{{ $permiso_val->texto }}" style="background-color: #ace798 !important;">
                               {{ $permiso_val->texto }} <span class="badge text-bg-danger" onclick="removePermiso(this)"><i class="fa-solid fa-xmark"></i></span>
                             </button>
                           @endforeach

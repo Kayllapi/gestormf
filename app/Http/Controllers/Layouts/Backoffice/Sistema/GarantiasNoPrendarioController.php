@@ -134,7 +134,7 @@ class GarantiasNoPrendarioController extends Controller
                     'users.id',
                     'users.nombrecompleto',
                     'users.identificacion',
-                    'asesor.nombrecompleto as asesor_nombre',
+                    DB::raw("COALESCE(asesor.nombrecompleto, 'DATA INACTIVA GLOBAL') as asesor_nombre"),
                     'tienda.nombreagencia as agencia_nombre'
                 )
                 ->first();

@@ -175,7 +175,5 @@
     }
     pagina({ route:"{{url('backoffice/'.$tienda->id.'/garantiasnoprendario/create?view=registrar')}}&idcliente="+idcliente, result:'#form-garantias-noprendario-result'});
   }
-//   load_create_garantianoprendaria();
-
 </script>  
 

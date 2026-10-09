@@ -129,6 +129,7 @@
   });
   
   $("#idclientesearch").on("change", function(e) {
+    console.log(e.currentTarget.value);
     lista_garantias_cliente(e.currentTarget.value);
   });
 
@@ -141,7 +142,7 @@
   function lista_garantias_cliente(id){
     
     $.ajax({
-      url:"{{url('backoffice/0/garantiasnoprendario/showlistagarantiasnopredanrioadmin')}}",
+      url:"{{url('backoffice/0/garantiasnoprendario/showlistagarantiasnopredanrio')}}",
       type:'GET',
       data: {
           idcliente : id

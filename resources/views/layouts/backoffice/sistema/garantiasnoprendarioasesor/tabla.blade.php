@@ -141,7 +141,7 @@
   function lista_garantias_cliente(id){
     
     $.ajax({
-      url:"{{url('backoffice/0/garantiasnoprendario/showlistagarantiasnopredanrioasesor')}}",
+      url:"{{url('backoffice/0/garantiasnoprendario/showlistagarantiasnopredanrio')}}",
       type:'GET',
       data: {
           idcliente : id

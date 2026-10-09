@@ -89,10 +89,10 @@
             border-radius: 4px;">
             <h5 class="modal-title" style="font-size: 14px !important; width: 100%; display: flex; justify-content: space-between;">
               <span>
-                Agencia: <span id="data-cliente-agencia" style="font-weight: normal;"></span>
+                Agencia: <span id="data-cliente-agencia" style="font-weight: normal; background-color: #E8E585;"></span>
               </span>
               <span>
-                Asesor/Ejecutivo: <span id="data-cliente-asesor" style="font-weight: normal;"></span>
+                Asesor/Ejecutivo: <span id="data-cliente-asesor" style="font-weight: normal; background-color: #E8E585;"></span>
               </span>
             </h5>
           </div>

@@ -1,6 +1,6 @@
 <div class="modal-header">
     <h5 class="modal-title">
-      Garantía Regular Institucional
+      Garantía Regular Asesor/Ejecutivo
       <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="buscarcliente()">
         <i class="fa fa-user"></i> Buscar Cliente
       </button>
@@ -107,7 +107,7 @@
   // sistema_select2({ idtienda:{{$tienda->id}}, json:'tienda:usuario', input:'#idclientesearch' });
   $('#idclientesearch').select2({
       ajax: {
-          url:"{{url('backoffice/'.$tienda->id.'/garantiasnoprendario/show_cliente_todos')}}",
+          url:"{{url('backoffice/'.$tienda->id.'/garantiasnoprendario/show_cliente_asesor')}}",
           dataType: 'json',
           delay: 250,
           data: function (params) {
@@ -141,7 +141,7 @@
   function lista_garantias_cliente(id){
     
     $.ajax({
-      url:"{{url('backoffice/0/garantiasnoprendario/showlistagarantiasnopredanrio')}}",
+      url:"{{url('backoffice/0/garantiasnoprendario/showlistagarantiasnopredanrioasesor')}}",
       type:'GET',
       data: {
           idcliente : id
@@ -175,7 +175,5 @@
     }
     pagina({ route:"{{url('backoffice/'.$tienda->id.'/garantiasnoprendario/create?view=registrar')}}&idcliente="+idcliente, result:'#form-garantias-noprendario-result'});
   }
-//   load_create_garantianoprendaria();
-
 </script>  
 

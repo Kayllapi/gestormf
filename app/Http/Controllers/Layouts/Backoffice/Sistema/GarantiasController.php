@@ -198,18 +198,6 @@ class GarantiasController extends Controller
                   'descripcion' => $value->descripcion,
                   'cobertura'   => $value->cobertura,
                   'click' => true,
-//                   'opcion' => [
-//                      [
-//                       'nombre' => 'Editar',
-//                       'onclick' => '/'.$idtienda.'/garantias/'.$value->id.'/edit?view=editar',
-//                       'icono' => 'edit',
-//                     ],
-//                     [
-//                       'nombre' => 'Eliminar',
-//                       'onclick' => '/'.$idtienda.'/garantias/'.$value->id.'/edit?view=eliminar',
-//                       'icono' => 'trash',
-//                     ]
-//                   ],
               ];
             }
             
@@ -285,16 +273,6 @@ class GarantiasController extends Controller
             );
         }
         else if($id == 'showtipogarantia'){
-//           $valorizacion = DB::table('tipo_garantia_detalle')
-//                             ->join('metodo_valorizacion','metodo_valorizacion.id','tipo_garantia_detalle.idmetodo_valorizacion')
-//                             ->where('tipo_garantia_detalle.idtipo_garantia',$request->idtipogarantia)
-//                             ->select(
-//                               'tipo_garantia_detalle.*',
-//                               'metodo_valorizacion.nombre as nombremetodo'
-//                             )
-//                             ->orderBy('tipo_garantia_detalle.id','desc')
-//                             ->get();
-          
 
           $valorizacion = DB::table('tipo_garantia_detalle')
                             ->join('metodo_valorizacion','metodo_valorizacion.id','tipo_garantia_detalle.idmetodo_valorizacion')

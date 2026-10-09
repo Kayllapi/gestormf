@@ -217,6 +217,165 @@ class GarantiasNoPrendarioController extends Controller
                             ->get();
            return $tarifario;
         }
+        else if($id == 'show_cliente_todos'){
+            // Buscar clientes de todas las agencias y asesores
+            $clientes = DB::table('users')
+                ->join('tipopersona','tipopersona.id','=','users.idtipopersona')
+                ->leftJoin('ubigeo','ubigeo.id','=','users.idubigeo')
+                ->leftJoin('s_users_prestamo','s_users_prestamo.id_s_users','users.id')
+                ->leftJoin('tienda','tienda.id','=','users.idtienda')
+                ->leftJoin('users as asesor','asesor.id','=','users.idasesor')
+                ->where('users.idestado',1)
+                ->where('users.idtipousuario',2)
+                ->where(function ($q) use ($request) {
+                    $q->where('users.identificacion', 'LIKE', '%' . $request->buscar . '%')
+                    ->orWhere('users.nombrecompleto', 'LIKE', '%' . $request->buscar . '%');
+                })
+                ->select(
+                    'users.*',
+                    's_users_prestamo.db_idtipodocumento as tipodocumento_persona',
+                    'tipopersona.nombre as tipopersonanombre',
+                    'ubigeo.codigo as ubigeocodigo',
+                    'ubigeo.nombre as ubigeonombre',
+                    'tienda.nombreagencia as agencia_nombre',
+                    'asesor.nombrecompleto as asesor_nombre',
+                )
+                ->orderBy('users.id','desc')
+                ->get();
+
+            $data = [];
+            foreach($clientes as $value){
+                $data[] = [
+                    'id'              => $value->id,
+                    'text'            => ($value->identificacion!=0?$value->identificacion.' - ':'').$value->nombrecompleto,
+                    'codigo'          => $value->codigo,
+                    'idtipopersona'   => $value->idtipopersona,
+                    'tipodocumento'   => $value->tipodocumento_persona,
+                    'persona'         => $value->tipopersonanombre,
+                    'identificacion'  => $value->identificacion!=0?$value->identificacion:'',
+                    'cliente'         => $value->nombrecompleto,
+                    'telefono'        => $value->numerotelefono,
+                    'direccion'       => $value->direccion,
+                    'idubigeo'        => $value->idubigeo,
+                    'ubigeo'          => $value->ubigeocodigo!=''?$value->ubigeocodigo.' - '.$value->ubigeonombre:'',
+                    'idtienda'        => $value->idtienda,
+                    'agencia_nombre'  => $value->agencia_nombre,
+                    'idasesor'        => $value->idasesor,
+                    'asesor_nombre'   => $value->asesor_nombre,
+                ];
+            }
+                   
+            return response()->json([
+                'data' => $data
+            ]);
+        }
+        else if($id == 'show_cliente_tienda'){
+            // Buscar clientes solo de la agencia actual
+            $clientes = DB::table('users')
+                ->join('tipopersona','tipopersona.id','=','users.idtipopersona')
+                ->leftJoin('ubigeo','ubigeo.id','=','users.idubigeo')
+                ->leftJoin('s_users_prestamo','s_users_prestamo.id_s_users','users.id')
+                ->leftJoin('tienda','tienda.id','=','users.idtienda')
+                ->leftJoin('users as asesor','asesor.id','=','users.idasesor')
+                ->where('users.idestado',1)
+                ->where('users.idtipousuario',2)
+                ->where('users.idtienda', $idtienda)
+                ->where(function ($q) use ($request) {
+                    $q->where('users.identificacion', 'LIKE', '%' . $request->buscar . '%')
+                    ->orWhere('users.nombrecompleto', 'LIKE', '%' . $request->buscar . '%');
+                })
+                ->select(
+                    'users.*',
+                    's_users_prestamo.db_idtipodocumento as tipodocumento_persona',
+                    'tipopersona.nombre as tipopersonanombre',
+                    'ubigeo.codigo as ubigeocodigo',
+                    'ubigeo.nombre as ubigeonombre',
+                    'tienda.nombreagencia as agencia_nombre',
+                    'asesor.nombrecompleto as asesor_nombre',
+                )
+                ->orderBy('users.id','desc')
+                ->get();
+
+            $data = [];
+            foreach($clientes as $value){
+                $data[] = [
+                    'id'              => $value->id,
+                    'text'            => ($value->identificacion!=0?$value->identificacion.' - ':'').$value->nombrecompleto,
+                    'codigo'          => $value->codigo,
+                    'idtipopersona'   => $value->idtipopersona,
+                    'tipodocumento'   => $value->tipodocumento_persona,
+                    'persona'         => $value->tipopersonanombre,
+                    'identificacion'  => $value->identificacion!=0?$value->identificacion:'',
+                    'cliente'         => $value->nombrecompleto,
+                    'telefono'        => $value->numerotelefono,
+                    'direccion'       => $value->direccion,
+                    'idubigeo'        => $value->idubigeo,
+                    'ubigeo'          => $value->ubigeocodigo!=''?$value->ubigeocodigo.' - '.$value->ubigeonombre:'',
+                    'idtienda'        => $value->idtienda,
+                    'agencia_nombre'  => $value->agencia_nombre,
+                    'idasesor'        => $value->idasesor,
+                    'asesor_nombre'   => $value->asesor_nombre,
+                ];
+            }
+                   
+            return response()->json([
+                'data' => $data
+            ]);
+        }
+        else if($id == 'show_cliente_asesor'){
+            // Buscar clientes solo del asesor actual
+            $clientes = DB::table('users')
+                ->join('tipopersona','tipopersona.id','=','users.idtipopersona')
+                ->leftJoin('ubigeo','ubigeo.id','=','users.idubigeo')
+                ->leftJoin('s_users_prestamo','s_users_prestamo.id_s_users','users.id')
+                ->leftJoin('tienda','tienda.id','=','users.idtienda')
+                ->leftJoin('users as asesor','asesor.id','=','users.idasesor')
+                ->where('users.idestado',1)
+                ->where('users.idtipousuario',2)
+                ->where('users.idtienda', $idtienda)
+                ->where('users.idasesor', Auth::id())
+                ->where(function ($q) use ($request) {
+                    $q->where('users.identificacion', 'LIKE', '%' . $request->buscar . '%')
+                    ->orWhere('users.nombrecompleto', 'LIKE', '%' . $request->buscar . '%');
+                })
+                ->select(
+                    'users.*',
+                    's_users_prestamo.db_idtipodocumento as tipodocumento_persona',
+                    'tipopersona.nombre as tipopersonanombre',
+                    'ubigeo.codigo as ubigeocodigo',
+                    'ubigeo.nombre as ubigeonombre',
+                    'tienda.nombreagencia as agencia_nombre',
+                    'asesor.nombrecompleto as asesor_nombre',
+                )
+                ->orderBy('users.id','desc')
+                ->get();
+
+            $data = [];
+            foreach($clientes as $value){
+                $data[] = [
+                    'id'              => $value->id,
+                    'text'            => ($value->identificacion!=0?$value->identificacion.' - ':'').$value->nombrecompleto,
+                    'codigo'          => $value->codigo,
+                    'idtipopersona'   => $value->idtipopersona,
+                    'tipodocumento'   => $value->tipodocumento_persona,
+                    'persona'         => $value->tipopersonanombre,
+                    'identificacion'  => $value->identificacion!=0?$value->identificacion:'',
+                    'cliente'         => $value->nombrecompleto,
+                    'telefono'        => $value->numerotelefono,
+                    'direccion'       => $value->direccion,
+                    'idubigeo'        => $value->idubigeo,
+                    'ubigeo'          => $value->ubigeocodigo!=''?$value->ubigeocodigo.' - '.$value->ubigeonombre:'',
+                    'idtienda'        => $value->idtienda,
+                    'agencia_nombre'  => $value->agencia_nombre,
+                    'idasesor'        => $value->idasesor,
+                    'asesor_nombre'   => $value->asesor_nombre,
+                ];
+            }
+                   
+            return response()->json([
+                'data' => $data
+            ]);
+        }
     }
 
     public function edit(Request $request, $idtienda, $id)

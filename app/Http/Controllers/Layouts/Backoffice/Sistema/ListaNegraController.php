@@ -121,6 +121,7 @@ class ListaNegraController extends Controller
             $listanegra = DB::table('s_listanegra')
                     ->join('users', 'users.id','s_listanegra.idcliente')
                     ->join('users as usuario', 'usuario.id','s_listanegra.idresponsable')
+                    ->join('tienda', 'tienda.id','s_listanegra.idtienda')
                     ->where('users.identificacion','LIKE','%'.$request->input('columns')[0]['search']['value'].'%')
                     ->where('users.nombrecompleto','LIKE','%'.$request->input('columns')[1]['search']['value'].'%')
                     ->where('s_listanegra.motivo','LIKE','%'.$request->input('columns')[2]['search']['value'].'%')
@@ -130,7 +131,8 @@ class ListaNegraController extends Controller
                     ->select(
                         's_listanegra.*',
                         'users.identificacion',
-                        'usuario.codigo as usuariocodigo'
+                        'usuario.codigo as usuariocodigo',
+                        'tienda.nombreagencia as agencia'
                     )
                     ->orderBy('s_listanegra.id','desc')
                     ->paginate($request->length,'*',null,($request->start/$request->length)+1);
@@ -148,7 +150,6 @@ class ListaNegraController extends Controller
                             break;
                 }
             
-              
               $tabla[]=[
                   'id'              => $value->id,
                   'identificacion'  => $value->identificacion,
@@ -157,6 +158,7 @@ class ListaNegraController extends Controller
                   'fecha'           => date_format(date_create($value->fecharegistro),'d-m-Y'),
                   'estado'          => $estado,
                   'usuariocodigo'          => $value->usuariocodigo,
+                  'agencia'          => $value->agencia,
                   'opcion' => [
                      [
                       'nombre' => 'Retirar de Lista Negra',

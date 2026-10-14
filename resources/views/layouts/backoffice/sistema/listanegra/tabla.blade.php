@@ -28,6 +28,7 @@
             ['data' => 'Motivo'],
             ['data' => 'Registrado por'],
             ['data' => 'Fecha'],
+            ['data' => 'Agencia'],
             ['data' => ''],
         ],
         'tbody' => [
@@ -36,9 +37,11 @@
             ['data' => 'motivo','type'=>'text'],
             ['data' => 'usuariocodigo','type'=>'text'],
             ['data' => 'fecha','type'=>'date'],
+            ['data' => 'agencia','type'=>'text'],
             ['data' => 'opcion','type'=>'btn'],
         ],
         'tfoot' => [
+            ['type' => 'text'],
             ['type' => 'text'],
             ['type' => 'text'],
             ['type' => 'text'],

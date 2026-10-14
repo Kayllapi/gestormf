@@ -33,9 +33,16 @@ class ListaNegraController extends Controller
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
       
         if($request->view == 'registrar') {
-
+            $usuarios = DB::table('users')
+                ->join('users_permiso','users_permiso.idusers','users.id')
+                ->join('permiso','permiso.id','users_permiso.idpermiso')
+                ->whereIn('users_permiso.idpermiso',[5])
+                ->where('users_permiso.idtienda',$idtienda)
+                ->select('users.*','permiso.nombre as nombrepermiso')
+                ->get();
             return view(sistema_view().'/listanegra/create',[
                 'tienda' => $tienda,
+                'usuarios' => $usuarios,
             ]);
         }
         else if($request->view == 'reporte'){
@@ -54,10 +61,28 @@ class ListaNegraController extends Controller
             
             $rules['idcliente']     =  'required';
             $rules['motivo']        =  'required';
+            $rules['idresponsable']        =  'required';
+            $rules['responsableclave']        =  'required';
             $messages['idcliente.required'] = 'El campo "Cliente" es obligatorio.';
             $messages['motivo.required']    = 'El campo "Motivo" es obligatorio.';
+            $messages['idresponsable.required']    = 'El campo "Responsable" es obligatorio.';
+            $messages['responsableclave.required']    = 'El campo "Contraseña" es obligatorio.';
 
             $this->validate($request,$rules,$messages);
+
+            $usuario = DB::table('users')
+                ->where('users.id',$request->idresponsable)
+                ->where('users.clave',$request->responsableclave)
+                ->first();
+            $idresponsable = 0;
+            if($usuario==''){
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'El usuario y/o la contraseña es incorrecta!!.'
+                ]);
+                $idresponsable = $usuario->id;
+            }
+
             $cliente = DB::table('users')->whereId($request->input('idcliente'))->first();
             DB::table('s_listanegra')->insert([
                 'idcliente'         => $request->input('idcliente'),
@@ -157,14 +182,12 @@ class ListaNegraController extends Controller
         //$request->user()->authorizeRoles($request->path(),$idtienda);
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
 
-        
-
         if($request->input('view') == 'editar') {
             
             $usuarios = DB::table('users')
                 ->join('users_permiso','users_permiso.idusers','users.id')
                 ->join('permiso','permiso.id','users_permiso.idpermiso')
-                ->whereIn('users_permiso.idpermiso',[1,2])
+                ->whereIn('users_permiso.idpermiso',[5])
                 ->where('users_permiso.idtienda',$idtienda)
                 ->select('users.*','permiso.nombre as nombrepermiso')
                 ->get();

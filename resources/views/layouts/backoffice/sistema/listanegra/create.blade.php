@@ -26,6 +26,22 @@
                 <label>Motivo</label>
                 <input type="text" id="motivo" class="form-control">
             </div>
+            <div class="col-sm-12">
+                <div class="mt-2 bg-primary subtitulo">Aprobación</div>
+                <div class="mb-1">
+                    <label>Responsable *</label>
+                    <select class="form-select" id="idresponsable">
+                        <option value=""></option>
+                        @foreach($usuarios as $value)
+                        <option value="{{$value->id}}">{{$value->nombrecompleto}} ({{$value->nombrepermiso}})</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="mb-1">
+                    <label>Contraseña *</label>
+                    <input type="password" class="form-control" id="responsableclave">
+                </div>
+            </div>
         </div>
     </div>
     <div class="modal-footer">
@@ -33,5 +49,6 @@
     </div>
 </form>                      
 <script>
+    sistema_select2({ input:'#idresponsable' });
     sistema_select2({ idtienda:{{$tienda->id}}, json:'tienda:usuario', input:'#idcliente' });
 </script>

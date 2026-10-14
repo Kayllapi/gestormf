@@ -216,11 +216,13 @@ class ListaNegraController extends Controller
         else if( $request->input('view') == 'reportepdf'){
             $listanegra = DB::table('s_listanegra')
                     ->join('users', 'users.id','s_listanegra.idresponsable')
+                    ->join('tienda', 'tienda.id','s_listanegra.idtienda')
                     ->where('s_listanegra.idtienda', $idtienda)
                     ->select(
                         's_listanegra.*',
                         'users.identificacion',
-                        'users.codigo'
+                        'users.codigo',
+                    'tienda.nombreagencia as agencia'
                     )
                     ->orderBy('s_listanegra.id','desc')
                     ->get();

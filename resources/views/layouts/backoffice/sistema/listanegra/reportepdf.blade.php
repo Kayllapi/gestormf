@@ -45,6 +45,7 @@
                     <th style="border-top: 1px solid #000;border-bottom: 1px solid #000;text-align:center">MOTIVO</th>
                     <th style="border-top: 1px solid #000;border-bottom: 1px solid #000;text-align:center" width="100px">REG. POR</th>
                     <th style="border-top: 1px solid #000;border-bottom: 1px solid #000;text-align:center" width="120px">F. REGISTRO</th>
+                    <th style="border-top: 1px solid #000;border-bottom: 1px solid #000;text-align:center" width="120px">AGENCIA</th>
                 </tr>
             </thead>
             <tbody>
@@ -56,10 +57,11 @@
                     <td>{{ $value->motivo }}</td>
                     <td>{{ $value->codigo }}</td>
                     <td>{{ date_format(date_create($value->fecharegistro),'d-m-Y') }}</td>
+                    <td>{{ $value->agencia }}</td>
                 </tr>
                 @endforeach
                 <tr>
-                    <td style="border-top: 1px solid #000;text-align:center" colspan="6"></td>
+                    <td style="border-top: 1px solid #000;text-align:center" colspan="7"></td>
                 </tr>
             </tbody>
         </table>

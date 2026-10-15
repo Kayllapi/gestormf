@@ -80,10 +80,22 @@ class ListaNegraController extends Controller
                     'resultado' => 'ERROR',
                     'mensaje'   => 'El usuario y/o la contraseña es incorrecta!!.'
                 ]);
+            } else {
                 $idresponsable = $usuario->id;
             }
 
+            $clienteExistente = DB::table('s_listanegra')
+                ->where('idcliente',$request->input('idcliente'))
+                ->first();
+            if($clienteExistente){
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'El cliente ya se encuentra registrado en lista negra.'
+                ]);
+            }
+
             $cliente = DB::table('users')->whereId($request->input('idcliente'))->first();
+
             DB::table('s_listanegra')->insert([
                 'idcliente'         => $request->input('idcliente'),
                 'motivo'            => $request->input('motivo'),
@@ -127,6 +139,7 @@ class ListaNegraController extends Controller
                     ->where('s_listanegra.motivo','LIKE','%'.$request->input('columns')[2]['search']['value'].'%')
                     ->where('s_listanegra.fecharegistro','LIKE','%'.$request->input('columns')[4]['search']['value'].'%')
                     ->where('usuario.codigo','LIKE','%'.$request->input('columns')[3]['search']['value'].'%')
+                    ->where('tienda.nombreagencia','LIKE','%'.$request->input('columns')[5]['search']['value'].'%')
                     //->where($where)
                     ->select(
                         's_listanegra.*',
@@ -134,7 +147,7 @@ class ListaNegraController extends Controller
                         'usuario.codigo as usuariocodigo',
                         'tienda.nombreagencia as agencia'
                     )
-                    ->orderBy('s_listanegra.id','asc')
+                    ->orderBy('s_listanegra.id','desc')
                     ->paginate($request->length,'*',null,($request->start/$request->length)+1);
 
             $tabla = [];

@@ -19,7 +19,6 @@ class ListaNegraController extends Controller
         // $request->user()->authorizeRoles($request->path(),$idtienda);
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
       
-        DB::table('s_listanegra')->delete();
         if($request->input('view') == 'tabla'){
             return view(sistema_view().'/listanegra/tabla',[
                 'tienda' => $tienda,

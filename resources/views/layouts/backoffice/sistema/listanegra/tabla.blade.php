@@ -8,11 +8,10 @@
         </a>
         <a href="javascript:;" 
             class="btn btn-info" 
-            style="margin-left: 30%;"
+            style="margin-left: 70%;"
             onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/listanegra/create?view=reporte')}}',size:'modal-fullscreen'})">
             <i class="fa-solid fa-file-pdf"></i> Reporte
         </a>
-        
     </h5>
     <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>

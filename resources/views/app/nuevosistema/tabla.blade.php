@@ -18,7 +18,7 @@ if(!isset($check_id)){
       <tr>
         @foreach($thead as $value)
         @if(isset($value['data']))
-        <th <?php echo isset($value['width']) ? 'width="'.$value['width'].'"':'' ?> style="<?php echo isset($value['style']) ? $value['style']:'' ?>" class="<?php echo isset($value['class']) ? $value['class']:'' ?>"><span>{{$value['data']}}</span></th>
+        <th <?php echo isset($value['width']) ? 'width="'.$value['width'].'"':'' ?> style="<?php echo isset($value['style']) ? $value['style']:'' ?>" class="<?php echo isset($value['class']) ? $value['class']:'' ?>"><span>@if(!empty($value['html'])){!! $value['data'] !!}@else{{$value['data']}}@endif</span></th>
         @endif
         @endforeach
       </tr>

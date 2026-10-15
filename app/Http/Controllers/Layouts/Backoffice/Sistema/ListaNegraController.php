@@ -46,8 +46,10 @@ class ListaNegraController extends Controller
             ]);
         }
         else if($request->view == 'reporte'){
+            $agencias = DB::table('tienda')->get();
             return view(sistema_view().'/listanegra/reporte',[
                 'tienda' => $tienda,
+                'agencias' => $agencias,
             ]);
         }
     }
@@ -229,8 +231,8 @@ class ListaNegraController extends Controller
         else if( $request->input('view') == 'reportepdf'){
             $listanegra = DB::table('s_listanegra')
                     ->join('users', 'users.id','s_listanegra.idresponsable')
-                    ->join('tienda', 'tienda.id','s_listanegra.idtienda')
-                    ->where('s_listanegra.idtienda', $idtienda)
+                    ->join('tienda', 'tienda.id','users.idtienda')
+                    ->where('users.idtienda', request('idagencia'))
                     ->select(
                         's_listanegra.*',
                         'users.identificacion',

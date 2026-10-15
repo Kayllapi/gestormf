@@ -24,7 +24,7 @@
         'thead' => [
             ['data' => 'RUC/DNI/CE'],
             ['data' => 'Cliente'],
-            ['data' => 'Motivo <span style="color: #c40000 !important; text-decoration: underline;font-weight: bold;">(Si es Fraude o Lavado de Activos, no indicar al cliente)</span>', 'html' => true],
+            ['data' => 'Motivo <span style="background-color: #ffc9ca !important; color: #93222c !important; font-weight: bold;">(Si es Fraude o Lavado de Activos, no indicar al cliente)</span>', 'html' => true],
             ['data' => 'Registrado por'],
             ['data' => 'Fecha'],
             ['data' => 'Agencia'],

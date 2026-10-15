@@ -133,7 +133,7 @@ class ListaNegraController extends Controller
             $listanegra = DB::table('s_listanegra')
                     ->join('users', 'users.id','s_listanegra.idcliente')
                     ->join('users as usuario', 'usuario.id','s_listanegra.idresponsable')
-                    ->join('tienda', 'tienda.id','s_listanegra.idtienda')
+                    ->join('tienda', 'tienda.id','users.idtienda')
                     ->where('users.identificacion','LIKE','%'.$request->input('columns')[0]['search']['value'].'%')
                     ->where('users.nombrecompleto','LIKE','%'.$request->input('columns')[1]['search']['value'].'%')
                     ->where('s_listanegra.motivo','LIKE','%'.$request->input('columns')[2]['search']['value'].'%')

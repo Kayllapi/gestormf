@@ -87,7 +87,7 @@ class ListaNegraController extends Controller
             DB::table('s_listanegra')->insert([
                 'idcliente'         => $request->input('idcliente'),
                 'motivo'            => $request->input('motivo'),
-                'idresponsable'     => Auth::user()->id,
+                'idresponsable'     => $idresponsable,
                 'fecharegistro'     => Carbon::now(),
                 'idtienda'          => $idtienda,
                 'idestado'          => '1',

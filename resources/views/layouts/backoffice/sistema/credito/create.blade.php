@@ -142,7 +142,7 @@
         success: function (res){
           
           if(res['resultado']=='EN LISTA NEGRA'){
-              mensaje = 'El usuario esta en lista negra por "'+res['motivo']+'".';
+              mensaje = 'Cliente Observado';
               modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
               $('#idcliente').val(null).trigger("change");
           }

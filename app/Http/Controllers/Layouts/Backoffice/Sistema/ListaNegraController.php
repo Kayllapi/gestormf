@@ -134,7 +134,7 @@ class ListaNegraController extends Controller
                         'usuario.codigo as usuariocodigo',
                         'tienda.nombreagencia as agencia'
                     )
-                    ->orderBy('s_listanegra.id','desc')
+                    ->orderBy('s_listanegra.id','asc')
                     ->paginate($request->length,'*',null,($request->start/$request->length)+1);
 
             $tabla = [];

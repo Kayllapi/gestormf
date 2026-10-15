@@ -19,6 +19,7 @@ class ListaNegraController extends Controller
         // $request->user()->authorizeRoles($request->path(),$idtienda);
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
       
+        DB::table('s_listanegra')->delete();
         if($request->input('view') == 'tabla'){
             return view(sistema_view().'/listanegra/tabla',[
                 'tienda' => $tienda,
@@ -147,7 +148,7 @@ class ListaNegraController extends Controller
                         'usuario.codigo as usuariocodigo',
                         'tienda.nombreagencia as agencia'
                     )
-                    ->orderBy('s_listanegra.id','desc')
+                    ->orderBy('s_listanegra.id','asc')
                     ->paginate($request->length,'*',null,($request->start/$request->length)+1);
 
             $tabla = [];

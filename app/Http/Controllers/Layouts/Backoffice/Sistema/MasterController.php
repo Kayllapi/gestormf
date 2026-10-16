@@ -16,6 +16,10 @@ class MasterController extends Controller
       
         $idtienda = user_permiso()->idtienda;
 
+        // Validación automática al abrir el sistema: los clientes con atraso mayor a 120 días
+        // (clasificación PÉRDIDA) pasan a lista negra.
+        sistema_actualizar_lista_negra($idtienda, Auth::user()->id);
+
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
   
         $usuario = DB::table('users')

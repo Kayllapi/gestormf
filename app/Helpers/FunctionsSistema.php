@@ -3814,3 +3814,85 @@ function createTokenSunat($id_token, $clave_token){
           'recibido' => $total_recibido + $cobrar_cargo,
       ];
   }
+
+  /**
+   * Revisa los créditos desembolsados de una tienda y envía automáticamente a lista negra
+   * a los clientes cuyo último atraso supera los 120 días (clasificación PÉRDIDA).
+   *
+   * Se ejecuta al abrir el sistema (MasterController::index) para no depender de que el
+   * usuario abra la cartera de crédito. No duplica registros: si el cliente ya está en
+   * lista negra, no se inserta de nuevo.
+   *
+   * @param  int  $idtienda       Tienda sobre la que se valida (0 = todas).
+   * @param  int  $idresponsable  Usuario que dispara la validación (el que abre el sistema).
+   * @return int  Cantidad de clientes enviados a lista negra en esta ejecución.
+   */
+  function sistema_actualizar_lista_negra($idtienda = 0, $idresponsable = 0)
+  {
+      $where = [];
+      if ($idtienda != 0) {
+          $where[] = ['credito.idtienda', $idtienda];
+      }
+
+      $creditos = DB::table('credito')
+          ->join('users as cliente', 'cliente.id', 'credito.idcliente')
+          ->join('credito_prendatario', 'credito_prendatario.id', 'credito.idcredito_prendatario')
+          ->where('credito.estado', 'DESEMBOLSADO')
+          ->where('credito.idestadocredito', 1)
+          ->where($where)
+          ->select(
+              'credito.id',
+              'credito.idcliente',
+              'credito.idtienda',
+              'credito.idforma_credito',
+              'credito.cuotas',
+              'credito_prendatario.modalidad as modalidadproductocredito',
+              'cliente.nombrecompleto as nombrecliente'
+          )
+          ->get();
+
+      $enviados = 0;
+      foreach ($creditos as $value) {
+          $cronograma = select_cronograma(
+              $value->idtienda,
+              $value->id,
+              $value->idforma_credito,
+              $value->modalidadproductocredito,
+              $value->cuotas,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              'detalle_cobranza'
+          );
+
+          if ($cronograma['ultimo_atraso'] <= 120) {
+              continue;
+          }
+
+          $cliente_en_lista = DB::table('s_listanegra')
+              ->where('idcliente', $value->idcliente)
+              ->first();
+          if ($cliente_en_lista) {
+              continue;
+          }
+
+          DB::table('s_listanegra')->insert([
+              'idcliente'     => $value->idcliente,
+              'motivo'        => 'CLASIFICACIÓN PÉRDIDA: Atraso de '.$cronograma['ultimo_atraso'].' días.',
+              'idresponsable' => $idresponsable,
+              'fecharegistro' => Carbon\Carbon::now(),
+              'idtienda'      => $value->idtienda,
+              'idestado'      => '1',
+              'db_cliente'    => $value->nombrecliente,
+          ]);
+          $enviados++;
+      }
+
+      return $enviados;
+  }

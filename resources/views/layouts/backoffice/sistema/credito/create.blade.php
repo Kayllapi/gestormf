@@ -132,8 +132,8 @@
   
   // Mora del titular (días de atraso más alto entre sus créditos desembolsados).
   // Si supera 8 días, no se puede generar un crédito No Prendario (CNP); solo Prendario (CP).
-  let mora_titular = 0;
-  let titular_bloquea_cnp = false;
+  var mora_titular = 0;
+  var titular_bloquea_cnp = false;
 
   function validar_cnp_por_mora(){
       let idforma_credito = $("#idforma_credito").find('option:selected').val();

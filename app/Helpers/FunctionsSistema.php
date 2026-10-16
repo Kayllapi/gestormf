@@ -3839,6 +3839,7 @@ function createTokenSunat($id_token, $clave_token){
           ->join('credito_prendatario', 'credito_prendatario.id', 'credito.idcredito_prendatario')
           ->where('credito.estado', 'DESEMBOLSADO')
           ->where('credito.idestadocredito', 1)
+          ->where('credito.idforma_credito', 2) // CNP
           ->where($where)
           ->select(
               'credito.id',

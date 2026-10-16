@@ -3897,3 +3897,61 @@ function createTokenSunat($id_token, $clave_token){
 
       return $enviados;
   }
+
+  /**
+   * Devuelve la mora (días de atraso) más alta entre todos los créditos desembolsados
+   * de un cliente, calculada con la misma lógica del cronograma ("Días Vencido" = ultimo_atraso).
+   *
+   * Se usa para la validación de generación de créditos: si la mora supera los 8 días,
+   * el cliente no puede generar un crédito No Prendario (CNP), solo Prendario (CP).
+   *
+   * @param  int  $idcliente
+   * @return int  Días de atraso (0 si no tiene créditos desembolsados o está al día).
+   */
+  function sistema_mora_cliente($idcliente)
+  {
+      $mora = 0;
+      if ($idcliente == '' || $idcliente == null) {
+          return $mora;
+      }
+
+      $creditos = DB::table('credito')
+          ->join('credito_prendatario', 'credito_prendatario.id', 'credito.idcredito_prendatario')
+          ->where('credito.idcliente', $idcliente)
+          ->where('credito.estado', 'DESEMBOLSADO')
+          ->where('credito.idestadocredito', 1)
+          ->select(
+              'credito.id',
+              'credito.idtienda',
+              'credito.idforma_credito',
+              'credito.cuotas',
+              'credito_prendatario.modalidad as modalidadproductocredito'
+          )
+          ->get();
+
+      foreach ($creditos as $value) {
+          $cronograma = select_cronograma(
+              $value->idtienda,
+              $value->id,
+              $value->idforma_credito,
+              $value->modalidadproductocredito,
+              $value->cuotas,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              'detalle_cobranza'
+          );
+
+          if ($cronograma['ultimo_atraso'] > $mora) {
+              $mora = $cronograma['ultimo_atraso'];
+          }
+      }
+
+      return $mora;
+  }

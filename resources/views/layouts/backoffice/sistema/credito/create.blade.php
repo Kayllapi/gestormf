@@ -130,6 +130,20 @@
   sistema_select2({ input:'#idtipo_operacion_credito' });
   sistema_select2({ input:'#idmodalidad_credito' });
   
+  // Mora del titular (días de atraso más alto entre sus créditos desembolsados).
+  // Si supera 8 días, no se puede generar un crédito No Prendario (CNP); solo Prendario (CP).
+  let mora_titular = 0;
+  let titular_bloquea_cnp = false;
+
+  function validar_cnp_por_mora(){
+      let idforma_credito = $("#idforma_credito").find('option:selected').val();
+      if(idforma_credito == 2 && titular_bloquea_cnp){
+          let mensaje = 'El cliente tiene un crédito con '+mora_titular+' días de atraso (mayor a 8). No puede generar un crédito No Prendario (CNP); solo Prendario (CP).';
+          modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
+          $('#idforma_credito').val(null).trigger("change");
+      }
+  }
+
   $("#idcliente").on("change", function(e) {
       let idcliente = $("#idcliente").find('option:selected').val();
       verificar_credito_refinanciado();
@@ -147,7 +161,11 @@
               $('#idcliente').val(null).trigger("change");
           }
           
+          mora_titular = parseInt(res['mora']) || 0;
+          titular_bloquea_cnp = (res['bloquea_cnp'] == true || res['bloquea_cnp'] == 1);
+
           valida_identificacion(res['identificacion'])
+          validar_cnp_por_mora();
         }
       })
   });
@@ -188,6 +206,8 @@
       }
                            
       $('#idmodalidad_credito').html(html_idmodalidad_credito);
+
+      validar_cnp_por_mora();
   });
    function verificar_credito_refinanciado(){
      let idcliente = $("#idcliente").find('option:selected').val();

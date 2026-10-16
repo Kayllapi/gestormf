@@ -152,6 +152,15 @@ class CreditoController extends Controller
                         'mensaje'   => 'El cliente no puede registrar un crédito No Prendario porque ya cuenta con un crédito No Prendario refinanciado (N° de cuenta: C'.str_pad($credito_norefinanciable->cuenta, 8, "0", STR_PAD_LEFT).').'
                     ]);
                 }
+
+                // ---- VALIDACION: cliente con mora mayor a 8 días no puede generar un crédito No Prendario (CNP)
+                $mora_cliente = sistema_mora_cliente($request->input('idcliente'));
+                if($mora_cliente > 8){
+                    return response()->json([
+                        'resultado' => 'ERROR',
+                        'mensaje'   => 'El cliente no puede registrar un crédito No Prendario (CNP) porque tiene un crédito con '.$mora_cliente.' días de atraso (mayor a 8). Solo puede registrar un crédito Prendario (CP).'
+                    ]);
+                }
             }
             // ---- FIN VALIDACION
 
@@ -863,10 +872,17 @@ class CreditoController extends Controller
           $cliente = DB::table('users')->where('id',$request->input('idcliente'))->first();
           $identificacion = $cliente->identificacion ?? '';
 
+          // Mora del cliente (días de atraso más alto entre sus créditos desembolsados).
+          // Si supera 8 días, no se puede generar un crédito No Prendario (CNP); solo Prendario (CP).
+          $mora = sistema_mora_cliente($request->input('idcliente'));
+          $bloquea_cnp = $mora > 8;
+
           return [
               'resultado' => $result,
               'motivo' => $motivo,
               'identificacion' => $identificacion,
+              'mora' => $mora,
+              'bloquea_cnp' => $bloquea_cnp,
           ];
 
         }

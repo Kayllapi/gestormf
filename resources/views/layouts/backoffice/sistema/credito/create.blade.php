@@ -138,7 +138,7 @@
   function validar_cnp_por_mora(){
       let idforma_credito = $("#idforma_credito").find('option:selected').val();
       if(idforma_credito == 2 && titular_bloquea_cnp){
-          let mensaje = 'El cliente tiene un crédito con '+mora_titular+' días de atraso (mayor a 8). No puede generar un crédito No Prendario (CNP); solo Prendario (CP).';
+          let mensaje = 'El cliente tiene un crédito con '+mora_titular+' días de atraso. No puede generar un crédito No Prendario (CNP); solo Prendario (CP).';
           modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
           $('#idforma_credito').val(null).trigger("change");
       }

@@ -509,9 +509,11 @@ class UsuarioaccesoController extends Controller
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
 
         $usuario = DB::table('users')
+            ->leftJoin('users as usermodificacion','usermodificacion.id','users.iduser_modificacion')
             ->where('users.id', $id)
             ->select(
                 'users.*',
+                'usermodificacion.nombrecompleto as nombremodificacion',
             )
             ->first();
 

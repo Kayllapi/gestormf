@@ -8,10 +8,12 @@
             <i class="fa-solid fa-plus"></i> Registrar
         </a>
     </h5>
-    <div class="row" style="font-weight: normal;">
+    <div class="row" style="font-weight: normal; margin-left: -500px;">
         <label class="col-sm-3 col-form-label" style="font-weight: bold;">AGENCIA:</label>
         <div class="col-sm-9">
-            <input type="text" class="form-control" value="{{$tienda->nombreagencia}}" disabled>
+            <input type="text" class="form-control"
+                style="background-color: #d1d1d1 !important;"
+                value="{{$tienda->nombreagencia}}" disabled>
         </div>
     </div>
     <button type="button" class="btn-close" onclick="ir_inicio()"></button>

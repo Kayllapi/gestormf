@@ -28,12 +28,12 @@
         <button type="button" class="btn-close" id="modal-close-usuarioacceso-permiso" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <div class="modal-body"> 
-        {{-- @if(!$puede_editar)
+        @if(!$puede_editar)
         <div class="alert alert-warning py-2 mb-2">
             <i class="fa-solid fa-lock"></i>
             Solo puede editar usuarios con un rango inferior al suyo. No es posible editar ni modificar a este usuario.
         </div>
-        @endif --}}
+        @endif
         <div class="row">
             <div class="col-sm-12 col-md-5">
                 <div class="row">

@@ -1,4 +1,13 @@
-<form action="javascript:;" 
+@php
+    /*
+     * Solo se puede editar a un usuario si el cargo activo del usuario
+     * autenticado tiene mayor jerarquia (rango menor). El Gerente General
+     * (rango 1) puede editar a todos, incluido su propio usuario.
+     */
+    $puede_editar = $puede_editar ?? true;
+    $d = $puede_editar ? '' : 'disabled';
+@endphp
+<form action="javascript:;" id="form-usuarioacceso-permiso"
       onsubmit="callback({
           route: '{{ url('backoffice/'.$tienda->id.'/usuarioacceso/'.$usuario->id) }}',
           method: 'PUT',
@@ -19,6 +28,12 @@
         <button type="button" class="btn-close" id="modal-close-usuarioacceso-permiso" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <div class="modal-body"> 
+        {{-- @if(!$puede_editar)
+        <div class="alert alert-warning py-2 mb-2">
+            <i class="fa-solid fa-lock"></i>
+            Solo puede editar usuarios con un rango inferior al suyo. No es posible editar ni modificar a este usuario.
+        </div>
+        @endif --}}
         <div class="row">
             <div class="col-sm-12 col-md-5">
                 <div class="row">
@@ -26,7 +41,7 @@
                     <h6>Datos Generales</h6>
                     </div>
                     <div class="col-md-6 d-md-flex justify-content-md-end">
-                        <button type="button" 
+                        <button type="button" {{ $d }}
                                 onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/usuarioacceso/create?view=autorizacion&idusuario='.$usuario->id)}}',  size: 'modal-sm'})" class="btn btn-success"><i class="fa fa-pencil"></i> Editar</button></button>
                     </div>
                     <div class="col-sm-12 col-md-6">
@@ -47,36 +62,36 @@
                     </div>
                     <div class="col-sm-12">
                         <label>Dirección: <span class="text-danger">(*)</span></label>
-                        <input type="text" id="direccion" class="form-control"  value="{{ $usuario->direccion }}">
+                        <input type="text" id="direccion" class="form-control"  value="{{ $usuario->direccion }}" {{ $d }}>
                     </div>
                     <div class="col-sm-12">
                         <div class="mb-1">
                         <label id="cont-ubigeo">Distrito – Provincia – Departamento <span class="text-danger">(*)</span></label>
-                        <select class="form-control" id="idubigeo">
+                        <select class="form-control" id="idubigeo" {{ $d }}>
                             <option></option>
                         </select>
                         </div>
                     </div>
                     <div class="col-sm-12">
                         <label>Fecha de Nacimiento: <span class="text-danger">(*)</span></label>
-                        <input type="date" value="{{ $usuario->fechanacimiento }}" id="fecha_nacimiento" class="form-control">
+                        <input type="date" value="{{ $usuario->fechanacimiento }}" id="fecha_nacimiento" class="form-control" {{ $d }}>
                     </div>
                     <div class="col-sm-12 col-md-12">
                         <label>Número de Celular: <span class="text-danger">(*)</span></label>
-                        <input type="number" id="celular" class="form-control" value="{{ $usuario->numerotelefono }}">
+                        <input type="number" id="celular" class="form-control" value="{{ $usuario->numerotelefono }}" {{ $d }}>
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <label>Usuario (Login) <span class="text-danger">(*)</span></label>
-                        <input type="text" class="form-control" id="usuario" value="{{ $usuario->usuario }}" >
+                        <input type="text" class="form-control" id="usuario" value="{{ $usuario->usuario }}" {{ $d }} >
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <label>Contraseña <span class="text-danger">(*)</span></label>
-                        <input type="password" class="form-control" id="password"> 
+                        <input type="password" class="form-control" id="password" {{ $d }}> 
                     </div>
 
                     <div class="col-sm-12">
                         <label>Estado civil: <span class="text-danger">(*)</span></label>
-                        <select class="form-control" id="idestadodivil">
+                        <select class="form-control" id="idestadodivil" {{ $d }}>
                             <option value=""></option>
                             @foreach($estadocivil as $value)
                                 <option value="{{ $value->id }}">{{ $value->nombre }}</option>
@@ -85,18 +100,18 @@
                     </div>
                     <div class="col-sm-12">
                         <label>Profesión: <span class="text-danger">(*)</span></label>
-                        <input type="text" id="profesion" class="form-control"  value="{{ $usuario->profesion }}">
+                        <input type="text" id="profesion" class="form-control"  value="{{ $usuario->profesion }}" {{ $d }}>
                     </div>
                     <div class="col-sm-12">
                         <label>Estado de <span style="background-color: #ffce39;padding-left: 5px;padding-right: 5px;">Acceso</span> de Usuario: <span class="text-danger">(*)</span></label>
-                        <select class="form-control" id="idestadousuario">
+                        <select class="form-control" id="idestadousuario" {{ $d }}>
                             <option value="1">ACTIVADO</option>
                             <option value="2">DESACTIVADO</option>
                         </select>
                     </div>
                     <div class="col-sm-12">
                         <label>Intentos de Acceso Permitidos: <span class="text-danger">(*)</span> <small class="text-muted">(0 = sin límite)</small></label>
-                        <input type="number" min="0" step="1" id="intentos_maximo" class="form-control" value="{{ $usuario->intentos_maximo }}">
+                        <input type="number" min="0" step="1" id="intentos_maximo" class="form-control" value="{{ $usuario->intentos_maximo }}" {{ $d }}>
                     </div>
                 </div>
             </div>
@@ -108,7 +123,7 @@
                             <th>Cargo</th>
                             <th>Estado de <span style="background-color: #ffce39;padding-left: 5px;padding-right: 5px;">Permisos y Cargos</span></th>
                             <th>Permisos Específicos por Usuario</th>
-                            <th width="10px"><button type="button" class="btn btn-success" onclick="agregar_permiso()"><i class="fa fa-plus"></i></button></th>
+                            <th width="10px"><button type="button" class="btn btn-success" onclick="agregar_permiso()" {{ $d }}><i class="fa fa-plus"></i></button></th>
                         </tr>
                     </thead>
                     <tbody num="0">
@@ -136,7 +151,7 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Guardar Cambios</button>
+        <button type="submit" class="btn btn-primary" {{ $d }}><i class="fa-solid fa-floppy-disk"></i> Guardar Cambios</button>
     </div>
 </form>
 
@@ -149,7 +164,12 @@
 </style>
 
 <script>
+    // Si es false, el usuario no puede editar a este usuario: todos los
+    // controles quedan deshabilitados y se bloquean las acciones por JS.
+    var PUEDE_EDITAR = @json($puede_editar);
+
     function autorizar_edicion(){
+        if(!PUEDE_EDITAR){ return; }
         $('#apellido_parterno').removeAttr('disabled');
         $('#apellido_marterno').removeAttr('disabled');
         $('#nombres').removeAttr('disabled');
@@ -267,9 +287,10 @@
         
         var num   = $("#tabla-permisoacceso > tbody").attr('num');
         var cant  = $("#tabla-permisoacceso > tbody > tr").length;
+        var dis   = PUEDE_EDITAR ? '' : ' disabled';
       
         var tdeliminar = '<td></td>';
-        if(idestado==0){
+        if(idestado==0 && PUEDE_EDITAR){
             tdeliminar = '<td><a href="javascript:;" onclick="eliminar_permiso('+num+')" class="btn btn-danger "><i class="fa-solid fa-trash"></i></td>';
         }
         let option_permiso = '<option></option>';
@@ -282,10 +303,10 @@
         @endforeach
         let option_estado = '<option></option><option value="1">Act.</option><option value="2">Desact.</option>';
         var tabla='<tr id="'+num+'">'+
-                      '<td><select class="form-control" id="idtienda'+num+'">'+option_tienda+'</select></td>'+
-                      '<td><select class="form-control" id="idpermiso'+num+'">'+option_permiso+'</select></td>'+
-                      '<td><select class="form-control" id="idestado'+num+'">'+option_estado+'</select></td>'+
-                      '<td><button type="button" class="btn btn-primary btnhover" onclick="abrir_permisos('+num+')"><i class="fa fa-key"></i> Permisos</button></td>'+
+                      '<td><select class="form-control" id="idtienda'+num+'"'+dis+'>'+option_tienda+'</select></td>'+
+                      '<td><select class="form-control" id="idpermiso'+num+'"'+dis+'>'+option_permiso+'</select></td>'+
+                      '<td><select class="form-control" id="idestado'+num+'"'+dis+'>'+option_estado+'</select></td>'+
+                      '<td><button type="button" class="btn btn-primary btnhover"'+dis+' onclick="abrir_permisos('+num+')"><i class="fa fa-key"></i> Permisos</button></td>'+
                       tdeliminar+
                   '</tr>';
 
@@ -302,6 +323,7 @@
         cargar_permisos_fila(num,idpermiso,idtienda);
     }
     function eliminar_permiso(num){
+        if(!PUEDE_EDITAR){ return; }
         $("#tabla-permisoacceso > tbody > tr#"+num).remove();
         delete estado_modulos[num];
     }
@@ -421,6 +443,7 @@
     }
 
     function abrir_permisos(num){
+        if(!PUEDE_EDITAR){ return; }
         var idpermiso = $('#idpermiso'+num+' option:selected').val();
         var idtienda  = $('#idtienda'+num+' option:selected').val();
         if(!idpermiso || !idtienda){
@@ -471,7 +494,7 @@
     }
 
     $(document).on('change', '#mx-modal-permisos .chk-modulo', function(){
-        if(fila_modulos === null){ return; }
+        if(!PUEDE_EDITAR || fila_modulos === null){ return; }
         var id = parseInt($(this).data('modulo'));
         var marcado = $(this).is(':checked');
         estado_modulos[fila_modulos][id] = marcado ? 1 : 2;
@@ -482,7 +505,7 @@
     });
 
     function marcar_todos_permisos(idestado){
-        if(fila_modulos === null){ return; }
+        if(!PUEDE_EDITAR || fila_modulos === null){ return; }
         Object.keys(MAPA_MODULOS).forEach(function(id){
             estado_modulos[fila_modulos][id] = idestado;
         });
@@ -490,7 +513,7 @@
     }
 
     function restablecer_permisos(){
-        if(fila_modulos === null){ return; }
+        if(!PUEDE_EDITAR || fila_modulos === null){ return; }
         estado_modulos[fila_modulos] = {};
         pintar_arbol(fila_modulos);
     }
@@ -507,6 +530,14 @@
             }
         });
         return JSON.stringify(data);
+    }
+
+    // Refuerzo: si no puede editar, deshabilita cualquier control que haya
+    // quedado activo (menos el boton de cerrar, para poder salir del modal).
+    if(!PUEDE_EDITAR){
+        var $form = $('#form-usuarioacceso-permiso');
+        $form.find('input, select, textarea').prop('disabled', true);
+        $form.find('button:not(.btn-close)').prop('disabled', true);
     }
 
 </script>

@@ -522,6 +522,7 @@ class UsuarioaccesoController extends Controller
                 'user_permiso'  => $user_permiso,
                 'estadocivil'   => $estadocivil,
                 'usuario'       => $usuario,
+                'puede_editar'  => $this->puede_editar_usuario(Auth::user()->id, $id, $idtienda),
                 'arbol_modulos' => $this->arbol_modulos(),
                 'modulos_cargo' => $this->modulos_cargo(),
                 'usuario_modulos' => $this->usuario_modulos($id),
@@ -529,6 +530,63 @@ class UsuarioaccesoController extends Controller
         } 
         
         
+    }
+
+    /**
+     * Rango (permiso.rango) de un usuario en una agencia. Menor numero = mayor
+     * jerarquia. Devuelve el cargo activo (users_permiso.idsession=2) y, si no
+     * tiene, el de mayor jerarquia. null si el usuario no tiene ningun cargo.
+     */
+    private function rango_activo_usuario($idusuario, $idtienda)
+    {
+        $rango = DB::table('users_permiso')
+            ->join('permiso','permiso.id','users_permiso.idpermiso')
+            ->where('users_permiso.idusers',$idusuario)
+            ->where('users_permiso.idtienda',$idtienda)
+            ->where('users_permiso.idsession',2)
+            ->min('permiso.rango');
+
+        if($rango === null){
+            $rango = $this->rango_usuario($idusuario, $idtienda);
+        }
+
+        return $rango;
+    }
+
+    /**
+     * Mayor jerarquia (rango mas bajo) que tiene un usuario en una agencia.
+     */
+    private function rango_usuario($idusuario, $idtienda)
+    {
+        return DB::table('users_permiso')
+            ->join('permiso','permiso.id','users_permiso.idpermiso')
+            ->where('users_permiso.idusers',$idusuario)
+            ->where('users_permiso.idtienda',$idtienda)
+            ->min('permiso.rango');
+    }
+
+    /**
+     * Reglas de edicion de usuarios:
+     *  - Gerente General (rango 1) o usuario sin cargo (superadmin): edita a
+     *    todos, incluido su propio usuario.
+     *  - Cualquier otro cargo: no puede editar su propio usuario y solo puede
+     *    editar usuarios con un rango inferior (numero mayor).
+     */
+    private function puede_editar_usuario($idautenticado, $idusuario, $idtienda)
+    {
+        $mi_rango = $this->rango_activo_usuario($idautenticado, $idtienda);
+
+        if($mi_rango === null || (int) $mi_rango === 1){
+            return true;
+        }
+
+        if((int) $idautenticado === (int) $idusuario){
+            return false;
+        }
+
+        $rango = $this->rango_usuario($idusuario, $idtienda);
+
+        return $rango === null || (int) $rango > (int) $mi_rango;
     }
 
     /**
@@ -775,6 +833,13 @@ class UsuarioaccesoController extends Controller
 
         } 
         elseif($request->input('view') == 'permiso') {
+
+            if(!$this->puede_editar_usuario(Auth::user()->id, $id, $idtienda)){
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'No tiene permisos para editar este usuario.'
+                ]);
+            }
 
             // $rules = [
             //     'idsucursal' => 'required',

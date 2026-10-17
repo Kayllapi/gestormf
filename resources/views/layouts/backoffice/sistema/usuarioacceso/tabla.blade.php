@@ -2,11 +2,13 @@
 <div class="modal-header">
     <h5 class="modal-title">
         Usuarios
+        @if($puede_registrar ?? false)
         <a href="javascript:;" 
             class="btn btn-primary" 
             onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/usuarioacceso/create?view=registrar&modulo=usuarioacceso')}}'})">
             <i class="fa-solid fa-plus"></i> Registrar
         </a>
+        @endif
     </h5>
     <div class="row" style="font-weight: normal; margin-left: -500px;">
         <label class="col-sm-3 col-form-label" style="font-weight: bold;">AGENCIA:</label>

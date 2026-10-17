@@ -18,7 +18,8 @@ class UsuarioaccesoController extends Controller
       
         if($request->input('view') == 'tabla'){
             return view(sistema_view().'/usuarioacceso/tabla',[
-                'tienda' => $tienda,
+                'tienda'           => $tienda,
+                'puede_registrar'  => $this->es_rango_uno(Auth::user()->id, $idtienda),
             ]);
         }
     }
@@ -67,6 +68,13 @@ class UsuarioaccesoController extends Controller
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
       
         if ($request->input('view') == 'registrar') {
+
+            if(!$this->es_rango_uno(Auth::user()->id, $idtienda)){
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje'   => 'Solo un usuario de rango 1 (Gerente General) puede registrar usuarios.'
+                ]);
+            }
 
             $rules = [
                     // 'idusuario' => 'required',
@@ -515,6 +523,7 @@ class UsuarioaccesoController extends Controller
                 ->get();
             $user_permiso = DB::table('users_permiso')->where('users_permiso.idusers',$id)->get();
             $tiendas = DB::table('tienda')->get();
+            $puede_editar = $this->puede_editar_usuario(Auth::user()->id, $id, $idtienda);
             return view(sistema_view().'/usuarioacceso/permiso',[
                 'tienda'        => $tienda,
                 'tiendas'       => $tiendas,
@@ -522,7 +531,10 @@ class UsuarioaccesoController extends Controller
                 'user_permiso'  => $user_permiso,
                 'estadocivil'   => $estadocivil,
                 'usuario'       => $usuario,
-                'puede_editar'  => $this->puede_editar_usuario(Auth::user()->id, $id, $idtienda),
+                'puede_editar'  => $puede_editar,
+                // Agencia y Cargo (reasignar el cargo) solo lo puede cambiar el
+                // Gerente General (rango 1).
+                'puede_editar_cargo' => $puede_editar && $this->es_rango_uno(Auth::user()->id, $idtienda),
                 'arbol_modulos' => $this->arbol_modulos(),
                 'modulos_cargo' => $this->modulos_cargo(),
                 'usuario_modulos' => $this->usuario_modulos($id),
@@ -530,6 +542,14 @@ class UsuarioaccesoController extends Controller
         } 
         
         
+    }
+
+    /**
+     * true si el cargo activo del usuario tiene rango 1 (Gerente General).
+     */
+    private function es_rango_uno($idusuario, $idtienda)
+    {
+        return (int) $this->rango_activo_usuario($idusuario, $idtienda) === 1;
     }
 
     /**
@@ -923,6 +943,30 @@ class UsuarioaccesoController extends Controller
                     return response()->json([
                         'resultado' => 'ERROR',
                         'mensaje'   => 'El cargo por agencia ya existe!!.'
+                    ]);
+                }
+            }
+
+            // La Agencia y el Cargo (asignar o quitar cargos) solo los puede
+            // modificar el Gerente General (rango 1). El resto edita al usuario
+            // pero no puede reasignar sus cargos.
+            if(!$this->es_rango_uno(Auth::user()->id, $idtienda)){
+                $enviados = [];
+                foreach($accesos as $value){
+                    if($value['idpermiso'] == null || $value['idpermiso'] == ''){
+                        continue;
+                    }
+                    $enviados[$value['idtienda'].'_'.$value['idpermiso']] = true;
+                }
+                $actuales = [];
+                $filas = DB::table('users_permiso')->where('users_permiso.idusers',$id)->get();
+                foreach($filas as $fila){
+                    $actuales[$fila->idtienda.'_'.$fila->idpermiso] = true;
+                }
+                if(array_diff_key($enviados,$actuales) || array_diff_key($actuales,$enviados)){
+                    return response()->json([
+                        'resultado' => 'ERROR',
+                        'mensaje'   => 'Solo un usuario de rango 1 (Gerente General) puede modificar la Agencia y el Cargo.'
                     ]);
                 }
             }

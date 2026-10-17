@@ -3,9 +3,15 @@
      * Solo se puede editar a un usuario si el cargo activo del usuario
      * autenticado tiene mayor jerarquia (rango menor). El Gerente General
      * (rango 1) puede editar a todos, incluido su propio usuario.
+     *
+     * La agencia y el cargo (reasignar el cargo del usuario) solo los puede
+     * cambiar el Gerente General (rango 1); cualquier otro cargo los ve
+     * deshabilitados aunque pueda editar al usuario.
      */
     $puede_editar = $puede_editar ?? true;
-    $d = $puede_editar ? '' : 'disabled';
+    $puede_editar_cargo = $puede_editar_cargo ?? $puede_editar;
+    $d  = $puede_editar ? '' : 'disabled';
+    $dc = $puede_editar_cargo ? '' : 'disabled';
 @endphp
 <form action="javascript:;" id="form-usuarioacceso-permiso"
       onsubmit="callback({
@@ -123,7 +129,7 @@
                             <th>Cargo</th>
                             <th>Estado de <span style="background-color: #ffce39;padding-left: 5px;padding-right: 5px;">Permisos y Cargos</span></th>
                             <th>Permisos Específicos por Usuario</th>
-                            <th width="10px"><button type="button" class="btn btn-success" onclick="agregar_permiso()" {{ $d }}><i class="fa fa-plus"></i></button></th>
+                            <th width="10px"><button type="button" class="btn btn-success" onclick="agregar_permiso()" {{ $dc }}><i class="fa fa-plus"></i></button></th>
                         </tr>
                     </thead>
                     <tbody num="0">
@@ -167,6 +173,9 @@
     // Si es false, el usuario no puede editar a este usuario: todos los
     // controles quedan deshabilitados y se bloquean las acciones por JS.
     var PUEDE_EDITAR = @json($puede_editar);
+    // Si es false, la Agencia y el Cargo de cada fila quedan deshabilitados
+    // (solo el Gerente General puede reasignar el cargo).
+    var PUEDE_EDITAR_CARGO = @json($puede_editar_cargo);
 
     function autorizar_edicion(){
         if(!PUEDE_EDITAR){ return; }
@@ -288,9 +297,10 @@
         var num   = $("#tabla-permisoacceso > tbody").attr('num');
         var cant  = $("#tabla-permisoacceso > tbody > tr").length;
         var dis   = PUEDE_EDITAR ? '' : ' disabled';
+        var disCargo = PUEDE_EDITAR_CARGO ? '' : ' disabled';
       
         var tdeliminar = '<td></td>';
-        if(idestado==0 && PUEDE_EDITAR){
+        if(idestado==0 && PUEDE_EDITAR_CARGO){
             tdeliminar = '<td><a href="javascript:;" onclick="eliminar_permiso('+num+')" class="btn btn-danger "><i class="fa-solid fa-trash"></i></td>';
         }
         let option_permiso = '<option></option>';
@@ -303,8 +313,8 @@
         @endforeach
         let option_estado = '<option></option><option value="1">Act.</option><option value="2">Desact.</option>';
         var tabla='<tr id="'+num+'">'+
-                      '<td><select class="form-control" id="idtienda'+num+'"'+dis+'>'+option_tienda+'</select></td>'+
-                      '<td><select class="form-control" id="idpermiso'+num+'"'+dis+'>'+option_permiso+'</select></td>'+
+                      '<td><select class="form-control" id="idtienda'+num+'"'+disCargo+'>'+option_tienda+'</select></td>'+
+                      '<td><select class="form-control" id="idpermiso'+num+'"'+disCargo+'>'+option_permiso+'</select></td>'+
                       '<td><select class="form-control" id="idestado'+num+'"'+dis+'>'+option_estado+'</select></td>'+
                       '<td><button type="button" class="btn btn-primary btnhover"'+dis+' onclick="abrir_permisos('+num+')"><i class="fa fa-key"></i> Permisos</button></td>'+
                       tdeliminar+
@@ -323,7 +333,7 @@
         cargar_permisos_fila(num,idpermiso,idtienda);
     }
     function eliminar_permiso(num){
-        if(!PUEDE_EDITAR){ return; }
+        if(!PUEDE_EDITAR_CARGO){ return; }
         $("#tabla-permisoacceso > tbody > tr#"+num).remove();
         delete estado_modulos[num];
     }

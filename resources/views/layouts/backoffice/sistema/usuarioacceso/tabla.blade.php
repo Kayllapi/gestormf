@@ -8,6 +8,7 @@
             <i class="fa-solid fa-plus"></i> Registrar
         </a>
     </h5>
+    <span style="font-weight: normal;"><b>Agencia:</b> {{ $tienda->nombreagencia }}</span>
     <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>
 <div class="modal-body">

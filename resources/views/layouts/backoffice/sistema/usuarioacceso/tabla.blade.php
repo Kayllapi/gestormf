@@ -8,7 +8,12 @@
             <i class="fa-solid fa-plus"></i> Registrar
         </a>
     </h5>
-    <span style="font-weight: normal;"><b>Agencia:</b> {{ $tienda->nombreagencia }}</span>
+    <div class="row" style="font-weight: normal;">
+        <label class="col-sm-3 col-form-label" style="font-weight: bold;">AGENCIA:</label>
+        <div class="col-sm-9">
+            <input type="text" class="form-control" value="{{$tienda->nombreagencia}}" disabled>
+        </div>
+    </div>
     <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>
 <div class="modal-body">

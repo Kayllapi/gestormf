@@ -16,6 +16,17 @@
     <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>
 <div class="modal-body">
+    <div class="row">
+        <div class="col-6">
+            <div class="row">
+                <div class="col-sm-12">
+                    <span style="background-color: #E8E585;">Clientes con atraso mayor a 120 días</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-body">
     @include('app.nuevosistema.tabla',[
         'tabla' => '#tabla-listanegra',
         'route' => url('backoffice/'.$tienda->id.'/listanegra/show_table'),

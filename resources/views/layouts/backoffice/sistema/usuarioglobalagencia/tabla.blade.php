@@ -24,7 +24,7 @@
             <div class="row">
                 <label for="fecha_inicio" class="col-sm-2 col-form-label"></label>
                 <div class="col-sm-10">
-                    <span style="background-color: #E8E585;">Clientes con créditos cancelados sin renovación mayores a 90 dias</span>
+                    <span style="background-color: #E8E585; font-weight: normal;">Clientes con créditos cancelados sin renovación mayores a 90 dias</span>
                 </div>
             </div>
         </div>

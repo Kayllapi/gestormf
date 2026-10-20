@@ -524,6 +524,11 @@ class UsuarioaccesoController extends Controller
                 ->orderBy('permiso.rango','asc')
                 ->get();
             $user_permiso = DB::table('users_permiso')->where('users_permiso.idusers',$id)->get();
+            $mi_rango = $this->rango_activo_usuario(Auth::user()->id, $idtienda);
+            if($mi_rango !== null && (int) $mi_rango !== 1){
+                $permisos = $permisos->filter(fn ($cargo) => (int) $cargo->rango > (int) $mi_rango
+                    || $user_permiso->contains('idpermiso', $cargo->id));
+            }
             $tiendas = DB::table('tienda')->get();
             $puede_editar = $this->puede_editar_usuario(Auth::user()->id, $id, $idtienda);
             return view(sistema_view().'/usuarioacceso/permiso',[
@@ -534,9 +539,9 @@ class UsuarioaccesoController extends Controller
                 'estadocivil'   => $estadocivil,
                 'usuario'       => $usuario,
                 'puede_editar'  => $puede_editar,
-                // Agencia y Cargo (reasignar el cargo) solo lo puede cambiar el
-                // Gerente General (rango 1).
-                'puede_editar_cargo' => $puede_editar && $this->es_rango_uno(Auth::user()->id, $idtienda),
+                'puede_editar_cargo' => true,
+                'rangos_cargos' => DB::table('permiso')->pluck('rango', 'id'),
+                'mi_rango' => $mi_rango,
                 'arbol_modulos' => $this->arbol_modulos(),
                 'modulos_cargo' => $this->modulos_cargo(),
                 'usuario_modulos' => $this->usuario_modulos($id),
@@ -623,7 +628,7 @@ class UsuarioaccesoController extends Controller
      * permisoacceso. Si un Cargo/Agencia desaparece de la lista, sus excepciones
      * se limpian.
      */
-    private function guardar_permisos_usuario($idusuario, $accesos, $modulos)
+    private function guardar_permisos_usuario($idusuario, $accesos, $modulos, $protegidas = [])
     {
         $excepciones = [];
         if($modulos != null && $modulos != ''){
@@ -645,13 +650,18 @@ class UsuarioaccesoController extends Controller
         $modulos_vigentes = array_flip(array_map('intval',DB::table('modulo')->pluck('id')->all()));
 
         $vigentes = [];
-        DB::table('userspermisoacceso')->where('idusers',$idusuario)->delete();
+        $consulta = DB::table('userspermisoacceso')->where('idusers',$idusuario);
+        foreach($protegidas as $fila){
+            $consulta->where(fn ($q) => $q->where('idtienda', '<>', $fila->idtienda)->orWhere('idpermiso', '<>', $fila->idpermiso));
+        }
+        $consulta->delete();
 
         foreach($accesos as $value){
             if($value['idpermiso']==null || $value['idpermiso']==''){
                 continue;
             }
             $clave = $value['idtienda'].'_'.$value['idpermiso'];
+            if(isset($protegidas[$clave])){ continue; }
             $vigentes[$clave] = true;
 
             $del_cargo = $modulos_cargo[$value['idpermiso']] ?? [];
@@ -856,12 +866,9 @@ class UsuarioaccesoController extends Controller
         } 
         elseif($request->input('view') == 'permiso') {
 
-            if(!$this->puede_editar_usuario(Auth::user()->id, $id, $idtienda)){
-                return response()->json([
-                    'resultado' => 'ERROR',
-                    'mensaje'   => 'No tiene permisos para editar este usuario.'
-                ]);
-            }
+            return DB::transaction(function () use ($request, $idtienda, $id) {
+            $actuales = DB::table('users_permiso')->where('idusers', $id)->orderBy('id')->lockForUpdate()->get();
+            $puede_editar_datos = $this->puede_editar_usuario(Auth::user()->id, $id, $idtienda);
 
             // $rules = [
             //     'idsucursal' => 'required',
@@ -869,7 +876,7 @@ class UsuarioaccesoController extends Controller
             // $messages = [
             //     'idsucursal.required' => 'La "Sucursal" es Obligatorio.',
             // ];
-            // $this->validate($request,$rules,$messages);
+            // if($puede_editar_datos){ $this->validate($request,$rules,$messages); }
           
             // actualizar modulos
             // DB::table('usersrolesmodulo')
@@ -930,10 +937,16 @@ class UsuarioaccesoController extends Controller
                 'idestadodivil.required' => 'El es Obligatorio.',
                 'profesion.required' => 'El es Obligatorio.',
             ];
-            $this->validate($request,$rules,$messages);
+            if($puede_editar_datos){ $this->validate($request,$rules,$messages); }
 
             
             $accesos = json_decode($request->input('accesos'),true);
+            validator(['accesos' => $accesos], [
+                'accesos' => 'required|array|min:1',
+                'accesos.*.idpermiso' => 'required|integer|exists:permiso,id',
+                'accesos.*.idtienda' => 'required|integer|min:1',
+                'accesos.*.idestado' => 'required|integer|in:1,2',
+            ])->validate();
             $guardados = [];
             foreach($accesos as $value){
 
@@ -949,86 +962,99 @@ class UsuarioaccesoController extends Controller
                 }
             }
 
-            // La Agencia y el Cargo (asignar o quitar cargos) solo los puede
-            // modificar el Gerente General (rango 1). El resto edita al usuario
-            // pero no puede reasignar sus cargos.
-            if(!$this->es_rango_uno(Auth::user()->id, $idtienda)){
-                $enviados = [];
+            // No se puede asignar un cargo de igual o mayor jerarquia,
+            // aunque se envie una peticion directamente al servidor.
+            $mi_rango = $this->rango_activo_usuario(Auth::user()->id, $idtienda);
+            $cargos = DB::table('permiso')->pluck('rango', 'id');
+            $protegidas = [];
+            foreach($actuales as $fila){
+                $rango = $cargos->get($fila->idpermiso);
+                if($mi_rango !== null && (int) $mi_rango !== 1 && ($rango === null || (int) $rango <= (int) $mi_rango)){
+                    $protegidas[$fila->idtienda.'_'.$fila->idpermiso] = $fila;
+                }
+            }
+            foreach($protegidas as $clave => $fila){
+                $enviada = collect($accesos)->first(fn ($acceso) => $acceso['idtienda'].'_'.$acceso['idpermiso'] === $clave);
+                if(!$enviada || (int) $enviada['idestado'] !== (int) $fila->idestado){
+                    return response()->json(['resultado' => 'ERROR', 'mensaje' => 'No puede modificar ni quitar una fila de rango igual o menor al suyo.']);
+                }
+            }
+            if($mi_rango !== null && (int) $mi_rango !== 1){
                 foreach($accesos as $value){
-                    if($value['idpermiso'] == null || $value['idpermiso'] == ''){
-                        continue;
+                    if(isset($protegidas[$value['idtienda'].'_'.$value['idpermiso']])){ continue; }
+                    $rango = $cargos->get($value['idpermiso']);
+                    if($rango === null || (int) $rango <= (int) $mi_rango){
+                        return response()->json([
+                            'resultado' => 'ERROR',
+                            'mensaje' => 'Solo puede asignar cargos con un numero de rango mayor al suyo.'
+                        ]);
                     }
-                    $enviados[$value['idtienda'].'_'.$value['idpermiso']] = true;
                 }
-                $actuales = [];
-                $filas = DB::table('users_permiso')->where('users_permiso.idusers',$id)->get();
-                foreach($filas as $fila){
-                    $actuales[$fila->idtienda.'_'.$fila->idpermiso] = true;
-                }
-                if(array_diff_key($enviados,$actuales) || array_diff_key($actuales,$enviados)){
+            }
+
+            if($puede_editar_datos){
+                $newusuario = $request->input('usuario');
+                $users = DB::table('users')->where('idtienda',$idtienda)->where('id','<>',$id)->where('usuario',$newusuario)->first();
+                if($users!=''){
                     return response()->json([
                         'resultado' => 'ERROR',
-                        'mensaje'   => 'Solo un usuario de rango 1 (Gerente General) puede modificar la Agencia y el Cargo.'
+                        'mensaje'   => 'El "Usuario" ya existe, ingreso otro.'
+                    ]);
+                }
+                DB::table('users')->whereId($id)->update([
+                    'fechamodificacion' => Carbon::now(),
+                    'iduser_modificacion' => $request->iduser_modificacion,
+
+                    'codigo'              => 'U'.str_pad($id, 8, "0", STR_PAD_LEFT),
+                    'nombre'              => $request->input('nombres'),
+                    'apellidopaterno'     => $request->input('apellido_parterno'),
+                    'apellidomaterno'     => $request->input('apellido_marterno'),
+                    'nombrecompleto'      => $request->input('apellido_parterno').' '.$request->input('apellido_marterno').', '.$request->input('nombres'),
+                    'identificacion'      => $request->input('identificacion'),
+                    'numerotelefono'      => $request->celular!='' ? $request->celular : '',
+                    'direccion'           => $request->direccion!='' ? $request->direccion : '',
+                    'idubigeo'            => $request->idubigeo != null ? $request->idubigeo : 0,
+                    'idtienda'            => $idtienda,
+                    'fechanacimiento'     => $request->fecha_nacimiento,
+                    'profesion'           => $request->input('profesion'),
+                    'nivelcredito'        => '',
+                    'ecaja'               => '',
+                    'idestadocivil'       => $request->idestadodivil != null ? $request->idestadodivil : 0 ,
+                    'estadocreditonoprendario'  => $request->estadocreditonoprendario != null ? $request->estadocreditonoprendario : '' ,
+                    'estadocreditoprendario'    => $request->estadocreditoprendario != null ? $request->estadocreditoprendario : '' ,
+                    'intentos_maximo'     => $request->intentos_maximo,
+                ]);
+
+                // al (re)activar el acceso se reinicia el contador de intentos fallidos
+                if($request->idestadousuario == 1){
+                    DB::table('users')->whereId($id)->update(['intentos_fallidos' => 0]);
+                }
+
+                if($request->input('password')!=''){
+                     DB::table('users')->whereId($id)->update([
+                        'usuario' => $newusuario,
+                        'clave' => $request->password,
+                        'password' => Hash::make($request->password),
+                        'idestadousuario' => $request->idestadousuario,
+                    ]);
+                }else{
+                    DB::table('users')->whereId($id)->update([
+                        'usuario' => $newusuario,
+                        'idestadousuario' => $request->idestadousuario,
                     ]);
                 }
             }
-
-            $newusuario = $request->input('usuario');
-            $users = DB::table('users')->where('idtienda',$idtienda)->where('id','<>',$id)->where('usuario',$newusuario)->first();
-            if($users!=''){
-                return response()->json([
-                    'resultado' => 'ERROR',
-                    'mensaje'   => 'El "Usuario" ya existe, ingreso otro.'
-                ]);
-            }
-            DB::table('users')->whereId($id)->update([
-                'fechamodificacion' => Carbon::now(),
-                'iduser_modificacion' => $request->iduser_modificacion,
-              
-                'codigo'              => 'U'.str_pad($id, 8, "0", STR_PAD_LEFT),
-                'nombre'              => $request->input('nombres'),
-                'apellidopaterno'     => $request->input('apellido_parterno'),
-                'apellidomaterno'     => $request->input('apellido_marterno'),
-                'nombrecompleto'      => $request->input('apellido_parterno').' '.$request->input('apellido_marterno').', '.$request->input('nombres'),
-                'identificacion'      => $request->input('identificacion'),
-                'numerotelefono'      => $request->celular!='' ? $request->celular : '',
-                'direccion'           => $request->direccion!='' ? $request->direccion : '',
-                'idubigeo'            => $request->idubigeo != null ? $request->idubigeo : 0,
-                'idtienda'            => $idtienda,
-                'fechanacimiento'     => $request->fecha_nacimiento,
-                'profesion'           => $request->input('profesion'),
-                'nivelcredito'        => '',
-                'ecaja'               => '',
-                'idestadocivil'       => $request->idestadodivil != null ? $request->idestadodivil : 0 ,
-                'estadocreditonoprendario'  => $request->estadocreditonoprendario != null ? $request->estadocreditonoprendario : '' ,
-                'estadocreditoprendario'    => $request->estadocreditoprendario != null ? $request->estadocreditoprendario : '' ,
-                'intentos_maximo'     => $request->intentos_maximo,
-            ]);
-
-            // al (re)activar el acceso se reinicia el contador de intentos fallidos
-            if($request->idestadousuario == 1){
-                DB::table('users')->whereId($id)->update(['intentos_fallidos' => 0]);
-            }
-
-            if($request->input('password')!=''){
-                 DB::table('users')->whereId($id)->update([
-                    'usuario' => $newusuario,
-                    'clave' => $request->password,
-                    'password' => Hash::make($request->password),
-                    'idestadousuario' => $request->idestadousuario,
-                ]);
-            }else{
-                DB::table('users')->whereId($id)->update([
-                    'usuario' => $newusuario,
-                    'idestadousuario' => $request->idestadousuario,
-                ]);
-            }
             $accesos = json_decode($request->input('accesos'),true);
-            DB::table('users_permiso')->where('users_permiso.idusers',$id)->delete();
+            $consulta = DB::table('users_permiso')->where('users_permiso.idusers',$id);
+            foreach($protegidas as $fila){
+                $consulta->where(fn ($q) => $q->where('idtienda', '<>', $fila->idtienda)->orWhere('idpermiso', '<>', $fila->idpermiso));
+            }
+            $consulta->delete();
             $i = 0;
             foreach($accesos as $value){
+                if(isset($protegidas[$value['idtienda'].'_'.$value['idpermiso']])){ continue; }
                 $idsession = 1;
-                if($i==0 && $value['idestado']==1){
+                if($i==0 && $value['idestado']==1 && !$actuales->contains(fn ($fila) => isset($protegidas[$fila->idtienda.'_'.$fila->idpermiso]) && (int) $fila->idsession === 2)){
                     $idsession = 2;
                 }
                 $i++;
@@ -1041,7 +1067,7 @@ class UsuarioaccesoController extends Controller
                 ]);
             }
 
-            $this->guardar_permisos_usuario($id,$accesos,$request->input('modulos'));
+            $this->guardar_permisos_usuario($id,$accesos,$request->input('modulos'), $protegidas);
 
             //json_usuarioacceso($idtienda);
           
@@ -1049,6 +1075,7 @@ class UsuarioaccesoController extends Controller
                 'resultado' => 'CORRECTO',
                 'mensaje'   => 'Se ha actualizado correctamente.'
             ]);
+            });
 
         } 
         elseif($request->input('view') == 'horario') {

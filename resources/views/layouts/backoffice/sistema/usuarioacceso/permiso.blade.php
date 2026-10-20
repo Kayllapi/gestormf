@@ -1,12 +1,7 @@
 @php
     /*
-     * Solo se puede editar a un usuario si el cargo activo del usuario
-     * autenticado tiene mayor jerarquia (rango menor). El Gerente General
-     * (rango 1) puede editar a todos, incluido su propio usuario.
-     *
-     * La agencia y el cargo (reasignar el cargo del usuario) solo los puede
-     * cambiar el Gerente General (rango 1); cualquier otro cargo los ve
-     * deshabilitados aunque pueda editar al usuario.
+     * Los datos generales conservan su bloqueo por usuario. La tabla evalua
+     * cada fila segun el rango del cargo activo del usuario autenticado.
      */
     $puede_editar = $puede_editar ?? true;
     $puede_editar_cargo = $puede_editar_cargo ?? $puede_editar;
@@ -37,11 +32,11 @@
         @if(!$puede_editar)
         <div class="alert alert-warning py-2 mb-2">
             <i class="fa-solid fa-lock"></i>
-            Solo puede editar usuarios con un rango inferior al suyo. No es posible editar ni modificar a este usuario.
+            Los datos generales estan bloqueados. En la tabla puede editar las filas con un numero de rango mayor al suyo.
         </div>
         @endif
         <div class="row">
-            <div class="col-sm-12 col-md-5">
+            <div class="col-sm-12 col-md-5" id="datos-usuarioacceso">
                 <div class="row">
                     <div class="col-md-6">
                     <h6>Datos Generales</h6>
@@ -161,7 +156,7 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="submit" class="btn btn-primary" {{ $d }}><i class="fa-solid fa-floppy-disk"></i> Guardar Cambios</button>
+        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Guardar Cambios</button>
     </div>
 </form>
 
@@ -174,12 +169,17 @@
 </style>
 
 <script>
-    // Si es false, el usuario no puede editar a este usuario: todos los
-    // controles quedan deshabilitados y se bloquean las acciones por JS.
+    // Permiso para modificar los datos generales del usuario.
     var PUEDE_EDITAR = @json($puede_editar);
-    // Si es false, la Agencia y el Cargo de cada fila quedan deshabilitados
-    // (solo el Gerente General puede reasignar el cargo).
+    // Los controles de la tabla se autorizan por fila.
     var PUEDE_EDITAR_CARGO = @json($puede_editar_cargo);
+    var RANGOS_CARGOS = @json($rangos_cargos);
+    var MI_RANGO = @json($mi_rango);
+    var FILAS_EDITABLES = {};
+    function cargo_editable(id){
+        return MI_RANGO === null || Number(MI_RANGO) === 1 ||
+            (RANGOS_CARGOS[id] !== undefined && Number(RANGOS_CARGOS[id]) > Number(MI_RANGO));
+    }
 
     function autorizar_edicion(){
         if(!PUEDE_EDITAR){ return; }
@@ -300,8 +300,9 @@
         
         var num   = $("#tabla-permisoacceso > tbody").attr('num');
         var cant  = $("#tabla-permisoacceso > tbody > tr").length;
-        var dis   = PUEDE_EDITAR ? '' : ' disabled';
-        var disCargo = PUEDE_EDITAR_CARGO ? '' : ' disabled';
+        FILAS_EDITABLES[num] = idpermiso == 0 || cargo_editable(idpermiso);
+        var dis = FILAS_EDITABLES[num] ? '' : ' disabled';
+        var disCargo = dis;
       
         var tdeliminar = '<td></td>';
         if(idestado==0 && PUEDE_EDITAR_CARGO){
@@ -309,7 +310,7 @@
         }
         let option_permiso = '<option></option>';
         @foreach($permisos as $value)
-            option_permiso += '<option value="{{ $value->id }}">{{ $value->nombre }}</option>';
+            if(cargo_editable('{{ $value->id }}') || String(idpermiso) === '{{ $value->id }}'){ option_permiso += '<option value="{{ $value->id }}">{{ $value->nombre }}</option>'; }
         @endforeach
         let option_tienda = '<option></option>';
         @foreach($tiendas as $value_tienda)
@@ -337,7 +338,7 @@
         cargar_permisos_fila(num,idpermiso,idtienda);
     }
     function eliminar_permiso(num){
-        if(!PUEDE_EDITAR_CARGO){ return; }
+        if(!FILAS_EDITABLES[num]){ return; }
         $("#tabla-permisoacceso > tbody > tr#"+num).remove();
         delete estado_modulos[num];
     }
@@ -457,7 +458,7 @@
     }
 
     function abrir_permisos(num){
-        if(!PUEDE_EDITAR){ return; }
+        if(!FILAS_EDITABLES[num]){ return; }
         var idpermiso = $('#idpermiso'+num+' option:selected').val();
         var idtienda  = $('#idtienda'+num+' option:selected').val();
         if(!idpermiso || !idtienda){
@@ -508,7 +509,7 @@
     }
 
     $(document).on('change', '#mx-modal-permisos .chk-modulo', function(){
-        if(!PUEDE_EDITAR || fila_modulos === null){ return; }
+        if(fila_modulos === null || !FILAS_EDITABLES[fila_modulos]){ return; }
         var id = parseInt($(this).data('modulo'));
         var marcado = $(this).is(':checked');
         estado_modulos[fila_modulos][id] = marcado ? 1 : 2;
@@ -519,7 +520,7 @@
     });
 
     function marcar_todos_permisos(idestado){
-        if(!PUEDE_EDITAR || fila_modulos === null){ return; }
+        if(fila_modulos === null || !FILAS_EDITABLES[fila_modulos]){ return; }
         Object.keys(MAPA_MODULOS).forEach(function(id){
             estado_modulos[fila_modulos][id] = idestado;
         });
@@ -527,7 +528,7 @@
     }
 
     function restablecer_permisos(){
-        if(!PUEDE_EDITAR || fila_modulos === null){ return; }
+        if(fila_modulos === null || !FILAS_EDITABLES[fila_modulos]){ return; }
         estado_modulos[fila_modulos] = {};
         pintar_arbol(fila_modulos);
     }
@@ -546,10 +547,9 @@
         return JSON.stringify(data);
     }
 
-    // Refuerzo: si no puede editar, deshabilita cualquier control que haya
-    // quedado activo (menos el boton de cerrar, para poder salir del modal).
+    // El bloqueo de datos generales no debe bloquear las filas editables.
     if(!PUEDE_EDITAR){
-        var $form = $('#form-usuarioacceso-permiso');
+        var $form = $('#datos-usuarioacceso');
         $form.find('input, select, textarea').prop('disabled', true);
         $form.find('button:not(.btn-close)').prop('disabled', true);
     }

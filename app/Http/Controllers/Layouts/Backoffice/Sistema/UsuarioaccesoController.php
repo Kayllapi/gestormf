@@ -396,28 +396,22 @@ class UsuarioaccesoController extends Controller
         if($id=='show_table'){
           
             $where = [];
-            if($request->input('columns')[4]['search']['value']!=''){
-                $where[] = ['tienda.nombre','LIKE','%'.$request->input('columns')[4]['search']['value'].'%'];
-            }
-            if($request->input('columns')[5]['search']['value']!=''){
-                $where[] = ['tienda.nombreagencia','LIKE','%'.$request->input('columns')[5]['search']['value'].'%'];
-            }
-            if($request->input('columns')[6]['search']['value']!=''){
-                $where[] = ['permiso.nombre','LIKE','%'.$request->input('columns')[6]['search']['value'].'%'];
-            }
             if($request->input('columns')[7]['search']['value']!=''){
                 $where[] = ['users.idestadousuario',$request->input('columns')[7]['search']['value']];
             }
           
             $usuarios = DB::table('users')
-                ->leftJoin('users_permiso','users_permiso.idusers','users.id')
-                ->leftJoin('permiso','permiso.id','users_permiso.idpermiso')
-                ->leftJoin('tienda','tienda.id','users_permiso.idtienda')
+                ->whereExists(function ($query) use ($idtienda) {
+                    $query->selectRaw('1')
+                        ->from('users_permiso as acceso_actual')
+                        ->join('tienda as tienda_actual', 'tienda_actual.id', '=', 'acceso_actual.idtienda')
+                        ->whereColumn('acceso_actual.idusers', 'users.id')
+                        ->where('tienda_actual.id', $idtienda);
+                })
                 ->where('users.idestado',1)
                 ->where('users.idtipousuario',1)
                 ->where('users.id','<>',1)
                 ->where('users.idtipousuario',1)
-                ->where('tienda.id',$idtienda)
                 ->where('users.codigo','LIKE','%'.$request->input('columns')[0]['search']['value'].'%')
                 ->where('users.identificacion','LIKE','%'.$request->input('columns')[1]['search']['value'].'%')
                 ->where('users.nombrecompleto','LIKE','%'.$request->input('columns')[2]['search']['value'].'%')
@@ -427,8 +421,25 @@ class UsuarioaccesoController extends Controller
                 ->where($where)
                 ->select(
                     'users.*',
-                )
-                ->distinct()
+                );
+
+            // La agencia actual limita el listado. Los buscadores consultan
+            // todas las asignaciones que se muestran en las columnas.
+            foreach([4 => 'tienda_filtro.nombre', 5 => 'tienda_filtro.nombreagencia', 6 => 'permiso_filtro.nombre'] as $columna => $campo){
+                $busqueda = $request->input('columns.'.$columna.'.search.value', '');
+                if($busqueda !== null && $busqueda !== ''){
+                    $usuarios->whereExists(function ($query) use ($campo, $busqueda) {
+                        $query->selectRaw('1')
+                            ->from('users_permiso as acceso_filtro')
+                            ->join('tienda as tienda_filtro', 'tienda_filtro.id', '=', 'acceso_filtro.idtienda')
+                            ->join('permiso as permiso_filtro', 'permiso_filtro.id', '=', 'acceso_filtro.idpermiso')
+                            ->whereColumn('acceso_filtro.idusers', 'users.id')
+                            ->where($campo, 'LIKE', '%'.$busqueda.'%');
+                    });
+                }
+            }
+
+            $usuarios = $usuarios
                 ->orderBy('users.id','desc')
                 ->paginate($request->length,'*',null,($request->start/$request->length)+1);
 

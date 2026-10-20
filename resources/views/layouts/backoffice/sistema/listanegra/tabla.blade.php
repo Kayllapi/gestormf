@@ -20,7 +20,7 @@
         <div class="col-6">
             <div class="row">
                 <div class="col-sm-12">
-                    <span style="background-color: #E8E585; font-weight: normal;">Clientes con atraso mayor a 120 días</span>
+                    <span style="background-color: #E8E585; font-weight: normal;">"Clientes con cuentas vencidas de créditos (CNP) mayor a 120 días, se registran por defecto".</span>
                 </div>
             </div>
         </div>

@@ -21,6 +21,16 @@
     <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>
 <div class="modal-body">
+    <script>
+        $(document).off('init.dt.usuarioacceso', '#tabla-usuarioacceso')
+            .one('init.dt.usuarioacceso', '#tabla-usuarioacceso', function (event, settings) {
+                var tabla = new $.fn.dataTable.Api(settings);
+                $(tabla.column(7).footer()).find('select[buscador="true"]')
+                    .attr('id', 'filtro-estado-usuarioacceso')
+                    .find('option[value=""]').val('TODO').text('TODO');
+                sistema_select2({ input: '#filtro-estado-usuarioacceso', val: 'TODO' });
+            });
+    </script>
     @include('app.nuevosistema.tabla',[
         'tabla' => '#tabla-usuarioacceso',
         'route' => url('backoffice/'.$tienda->id.'/usuarioacceso/show_table'),

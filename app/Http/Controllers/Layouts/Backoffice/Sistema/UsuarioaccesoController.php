@@ -396,7 +396,7 @@ class UsuarioaccesoController extends Controller
         if($id=='show_table'){
           
             $where = [];
-            if($request->input('columns')[7]['search']['value']!=''){
+            if($request->input('columns')[7]['search']['value']!='' && $request->input('columns')[7]['search']['value']!='TODO'){
                 $where[] = ['users.idestadousuario',$request->input('columns')[7]['search']['value']];
             }
           

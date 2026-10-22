@@ -1,6 +1,6 @@
 <div class="modal-header">
     <h5 class="modal-title">
-      Clientes/Garantes
+      Clientes/Garantes Institucional
       <a href="javascript:;" 
          class="btn btn-primary" 
          onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/usuario/create?view=registrar&modulo=usuario')}}'})">

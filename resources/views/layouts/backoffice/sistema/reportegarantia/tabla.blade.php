@@ -105,6 +105,12 @@
         let idasesor = $('#idasesor').val();
         let idagencia = $('#idagencia').val();
 
+        if(idasesor==''){
+            var mensaje = "Debe de seleccionar un ejecutivo.";
+            modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
+            return false;
+        }
+
         load('#cont_loading');
         $('#iframe_acta_aprobacion').addClass('d-none');
 

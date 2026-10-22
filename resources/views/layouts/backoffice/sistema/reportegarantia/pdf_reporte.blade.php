@@ -202,7 +202,7 @@
               }
             
               if (!isset($cronogramas_por_credito[$value->idcredito])) {
-                  $cronogramas_por_credito[$value->idcredito] = select_cronograma(
+                  $cronogramas_por_credito[$value->idcredito] = $value->tiene_cuotas_pendientes ? select_cronograma(
                       $value->idtienda,
                       $value->idcredito,
                       $value->idforma_credito,
@@ -219,7 +219,7 @@
                       1,
                       'detalle_cobranza',
                       true // solo_totales: este reporte solo lee cuota_pendiente, no necesita el detalle por cuota
-                  );
+                  ) : ['cuota_pendiente' => '0.00'];
               }
               $cronograma = $cronogramas_por_credito[$value->idcredito];
             

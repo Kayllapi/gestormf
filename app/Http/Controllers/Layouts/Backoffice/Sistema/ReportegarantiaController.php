@@ -81,13 +81,32 @@ class ReporteGarantiaController extends Controller
           $credito_garantias = DB::table('credito_garantia')
               ->join('credito','credito.id','credito_garantia.idcredito')
               ->leftJoin('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
+              // Obtener los creditos pendientes en una sola lectura del cronograma.
+              ->leftJoinSub(DB::table('credito_cronograma')
+                  ->select('idcredito')
+                  ->whereIn('idestadocredito_cronograma', [1, 3])
+                  ->distinct(), 'creditos_pendientes', function ($join) {
+                      $join->on('creditos_pendientes.idcredito', '=', 'credito.id');
+                  })
               ->where($where)
               ->where('credito.estado','DESEMBOLSADO')
               //->whereIn('credito_garantia.idestadoentrega',[1,2])
               //->where('credito.idestadocredito',2)
               //->where('credito.idforma_credito',1)
               ->select(
-                  'credito_garantia.*',
+                  'credito_garantia.id',
+                  'credito_garantia.idcredito',
+                  'credito_garantia.tipo',
+                  'credito_garantia.idestadoentrega',
+                  'credito_garantia.garantias_idestado_garantia',
+                  'credito_garantia.garantias_codigo',
+                  'credito_garantia.descripcion',
+                  'credito_garantia.garantias_serie_motor_partida',
+                  'credito_garantia.garantias_placa',
+                  'credito_garantia.garantias_accesorio_doc',
+                  'credito_garantia.garantias_detalle_garantia',
+                  'credito_garantia.garantias_cobertura',
+                  'credito_garantia.garantias_valorcomercial',
                   'credito.clientenombrecompleto as clientenombrecompleto',
                   'credito.clienteidentificacion as clienteidentificacion',
                   'credito.avalnombrecompleto as avalnombrecompleto',
@@ -100,6 +119,8 @@ class ReporteGarantiaController extends Controller
                   'credito.total_pendientepago as total_pendientepago',
                   'credito.idtienda as idtienda',
                   'credito_prendatario.modalidad as modalidadproductocredito',
+                  // Sin cuotas de estado 1 o 3, select_cronograma devuelve deuda cero.
+                  'creditos_pendientes.idcredito as tiene_cuotas_pendientes',
               )
              ->get();
           

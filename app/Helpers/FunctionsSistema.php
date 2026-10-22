@@ -32,22 +32,16 @@ function select_cronograma(
   
     $pago_acuenta = $pago_acuenta+$total_adelantos;*/
   
-    $total_cronogramaultimo = DB::table('credito_cronograma')
-              ->where('credito_cronograma.idcredito',$idcredito)
-              ->where('credito_cronograma.idestadocredito_cronograma',1)
-              ->orderBy('credito_cronograma.numerocuota','asc')
-              ->limit(1)
-              ->first();
-            
-    $numerocuota_ultimo = 0;
-    if($total_cronogramaultimo!=''){
-        $numerocuota_ultimo = $total_cronogramaultimo->numerocuota;
-    }
-  
     $credito_cronograma = DB::table('credito_cronograma')
         ->where('credito_cronograma.idcredito',$idcredito)
         ->orderBy('credito_cronograma.numerocuota','asc')
         ->get();
+
+    // El cronograma ya esta ordenado: reutilizarlo para evitar dos consultas
+    // adicionales de la misma primera cuota pendiente y un max por cada cuota.
+    $primera_cuota_pendiente = $credito_cronograma->firstWhere('idestadocredito_cronograma', 1);
+    $numerocuota_ultimo = $primera_cuota_pendiente?->numerocuota ?? 0;
+    $ultimaCuota = $credito_cronograma->max('numerocuota');
     
     $penalidad_descuento = 0;
     $tenencia_descuento = 0;
@@ -216,11 +210,6 @@ function select_cronograma(
 
     // El pago a cuenta solo puede afectar a la primera cuota pendiente (al cancelarse pasa a la siguiente),
     // por eso se calcula una sola vez aquí afuera y no en cada vuelta del foreach.
-    $primera_cuota_pendiente = DB::table('credito_cronograma')
-        ->where('idcredito', $idcredito)
-        ->where('idestadocredito_cronograma', 1)
-        ->orderBy('numerocuota', 'asc')
-        ->first();
     $credito_adelanto = DB::table('credito_adelanto')
         ->whereIn('credito_adelanto.idestadocredito_adelanto',[1,2])
         ->where('credito_adelanto.numerocuota',$primera_cuota_pendiente?->numerocuota)
@@ -238,12 +227,13 @@ function select_cronograma(
 
     // Antes: 1 query SUM por cada cuota del cronograma. Ahora: 1 sola query para todo el crédito,
     // agrupada por numerocuota, y se busca en memoria dentro del foreach.
-    $adelanto_total_por_cuota = DB::table('credito_adelanto')
+    $adelantos_por_cuota = DB::table('credito_adelanto')
         ->whereIn('credito_adelanto.idestadocredito_adelanto',[1,2])
         ->where('credito_adelanto.idcredito',$idcredito)
-        ->select('numerocuota', DB::raw('SUM(total) as total'))
+        ->select('numerocuota', DB::raw('SUM(total) as total'), DB::raw('SUM(capital) as capital'))
         ->groupBy('numerocuota')
-        ->pluck('total', 'numerocuota');
+        ->get();
+    $adelanto_total_por_cuota = $adelantos_por_cuota->pluck('total', 'numerocuota');
 
     // Capital ya cobrado por adelanto (pago a cuenta), por cuota. El "Saldo capital de deuda"
     // tiene que ser el capital NETO de lo adelantado: antes sumaba el amortizacion integro de
@@ -251,12 +241,7 @@ function select_cronograma(
     // (p.ej. 500.00 en vez de 500.00 - 7.27 = 492.73). Se agrupa por numerocuota, igual que
     // $adelanto_total_por_cuota, porque un pago a cuenta puede dejar adelanto parcial en mas de
     // una cuota (cuando cancela una completa y el sobrante cae en la siguiente).
-    $adelanto_capital_por_cuota = DB::table('credito_adelanto')
-        ->whereIn('credito_adelanto.idestadocredito_adelanto',[1,2])
-        ->where('credito_adelanto.idcredito',$idcredito)
-        ->select('numerocuota', DB::raw('SUM(capital) as capital'))
-        ->groupBy('numerocuota')
-        ->pluck('capital', 'numerocuota');
+    $adelanto_capital_por_cuota = $adelantos_por_cuota->pluck('capital', 'numerocuota');
 
     foreach($credito_cronograma as $value){
 
@@ -484,13 +469,10 @@ function select_cronograma(
             $descontar_interes = $descuento_interes;
         }
 
-        $ultimaCuota = $credito_cronograma->max('numerocuota');
         if($value->numerocuota == $ultimaCuota){
             if (configuracion($idtienda,'cargo_custodia_garantia')['valor'] == '1' && $atraso_dias_tenencia>$dias_tolerancia_garantia && $atraso_dias_tenencia<=$dias_maximo_penalidad) {
                 // Sumar cargo a tenencia 
-                $credito_dt = DB::table('credito')->where('id', $credito->id)
-                    ->select('forma_pago_credito', 'cuotas')
-                    ->first();
+                $credito_dt = $credito;
                 $cargoComision = 0;
                 $totalCargoTemporal = $total_cargo+number_format($cargo, 2, '.', '');
                 if($credito_dt->forma_pago_credito == 'Diario'){

@@ -87,7 +87,11 @@ class AsignaciondecarteraController extends Controller
         if($id == 'showcliente_origen'){
           $where = [];
           $where[] = ['users.idtienda',$request->idagencia];
-          $where[] = ['users.idasesor',$request->idasesororigen];
+          if ($request->idasesororigen == '99') {
+              $where[] = ['users.idasesor', 0];
+          } else {
+              $where[] = ['users.idasesor',$request->idasesororigen];
+          }
           //$where[] = ['users.nombre',$request->input('columns[2][search][value]')];
           //dd($request->input('columns[2][search][value]'));
           $users = DB::table('users')
@@ -165,7 +169,7 @@ class AsignaciondecarteraController extends Controller
             $usuarios = DB::table('users')
                 ->join('users_permiso','users_permiso.idusers','users.id')
                 ->join('permiso','permiso.id','users_permiso.idpermiso')
-                ->whereIn('users_permiso.idpermiso',[3,4,7,11])
+                ->whereIn('users_permiso.idpermiso',[3,4,7,11,12])
                 ->where('users_permiso.idtienda',$request->idtienda)
                 ->where('users_permiso.id','<>',$request->idusers_permiso)
                 ->select('users.*','users_permiso.idpermiso as idpermiso','permiso.nombre as nombrepermiso')

@@ -85,13 +85,10 @@
                                         ->where('permisoacceso.idpermiso',$permiso->id) 
                                         ->first(); 
                                     $sistemamodulos2 = DB::table('modulo')
-                                    ->join('rolesmodulo','rolesmodulo.idmodulo','modulo.id')
-                                    ->join('roles','roles.id','rolesmodulo.idroles')
                                     ->where('modulo.idmodulo', $sistemavalue->id)
                                     ->where('modulo.idestado', 1)
                                     ->select('modulo.id as id', 'modulo.nombre as nombre', 'modulo.vista as vista', 'modulo.orden') // ← agregar orden
                                     ->orderBy('modulo.orden', 'asc')
-                                    ->distinct()
                                     ->get();
                                     $bgColorSistema = $loop->iteration % 2 == 0 ? '#e1e1e1' : '#ffffff';
                                 ?>

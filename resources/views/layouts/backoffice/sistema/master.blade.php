@@ -386,36 +386,20 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
                {{-- si al usuario no le queda ningun item visible, el menu no se muestra --}}
                @if($submodulos->isNotEmpty())
                <li  class="nav-item dropdown menu_click_li m_click{{ $value->id }}" style="font-weight: normal;font-size: 13px;" >
-                    <a href="javascript:;" class="nav-link dropdown-toggle menu_click" 
-                    id="menu_click{{ $value->id }}" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a href="javascript:;" class="nav-link dropdown-toggle menu_click"
+                    id="menu_click{{ $value->id }}" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
                       <i class="{{ $value->icono }}"></i> {{ $value->nombre }}</a>
                     <ul class="dropdown-menu">
-                    <?php
-                        $grupoActual = null;
-                    ?>
-                    @foreach($submodulos as $subvalue)
-                        @php $grupo = floor($subvalue->orden / 100); @endphp
-                        @if($grupoActual !== null && $grupo != $grupoActual)
-                            <li><hr class="dropdown-divider my-0" style="opacity:1;"></li>
-                        @endif
-                        @php
-                            $grupoActual = $grupo;
-                            $href = str_replace('{idtienda}', $tienda->id, $subvalue->vista);
-                        @endphp
-                        <li>
-                            <a href="javascript:;"
-                                class="dropdown-item"
-                                style="font-size: 13px;"
-                                onclick="pagina({route:'{{url($href)}}?view=tabla',result:'#cuerposistema'}),
-                                menu_click({{ $value->id }})">
-                                <i class="{{ $subvalue->icono }}"></i> {{ $subvalue->nombre }}
-                            </a>
-                        </li>                  
-                    @endforeach
+                        @include('layouts.backoffice.sistema.partials.menu_items', [
+                            'items' => $submodulos,
+                            'tienda' => $tienda,
+                            'modulos_acceso' => $modulos_acceso,
+                            'idmenuraiz' => $value->id,
+                        ])
                     </ul>
-                </li>    
+                </li>
                @endif
-                <?php $i++; ?>  
+                <?php $i++; ?>
             @endforeach
         <li class="nav-item">
           <a class="nav-link disabled"><div id="aperturacaja"></div></a>
@@ -461,6 +445,27 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
         }
         .dropdown-item:hover {
             background-color:#e5e5e5;
+        }
+        /* multi-level dropdown */
+        .dropdown-submenu {
+            position: relative;
+        }
+        .dropdown-submenu > .dropdown-menu {
+            top: 0;
+            left: 100%;
+            margin-top: -1px;
+        }
+        .dropdown-submenu.dropdown-submenu-left > .dropdown-menu {
+            left: auto;
+            right: 100%;
+        }
+        .dropdown-submenu > a.dropdown-toggle::after {
+            float: right;
+            margin-top: 7px;
+            transform: rotate(-90deg);
+        }
+        .dropdown-submenu.dropdown-submenu-left > a.dropdown-toggle::after {
+            transform: rotate(90deg);
         }
       </style>
       <ul class="navbar-nav d-flex">
@@ -599,6 +604,31 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
         //$('.menu_click'+num).attr('style',`background-color: #fff;padding-bottom: 6px;border-bottom: 2px solid #fff;border-radius: 5px 5px 0px 0px;`);
         $('#menu_click'+num).attr('style','padding-bottom: 6px;border-bottom: 2px solid #fff;background-color: #fff;');
     }
+
+    // multi-level dropdown: abre/cierra el submenu del nivel clickeado sin cerrar el dropdown padre
+    $('.navbar-nav').on('click', '.dropdown-submenu > a.dropdown-toggle', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var $submenu = $(this).parent();
+        $submenu.siblings('.dropdown-submenu').removeClass('show').find('> .dropdown-menu').removeClass('show');
+        $submenu.toggleClass('show');
+        if ($submenu.hasClass('show')) {
+            var $menu = $submenu.children('.dropdown-menu');
+            $menu.addClass('show');
+            var rect = $menu[0].getBoundingClientRect();
+            $submenu.toggleClass('dropdown-submenu-left', rect.right > window.innerWidth);
+        }
+    });
+
+    // al elegir una opcion final (no un submenu), cierra todo el arbol de dropdowns abierto
+    $('.navbar-nav').on('click', '.dropdown-item:not(.dropdown-toggle)', function() {
+        var $rootLi = $(this).closest('li.nav-item.dropdown');
+        $rootLi.find('.dropdown-submenu').removeClass('show dropdown-submenu-left').find('> .dropdown-menu').removeClass('show');
+        var toggleEl = $rootLi.find('> a.dropdown-toggle')[0];
+        if (toggleEl) {
+            bootstrap.Dropdown.getOrCreateInstance(toggleEl).hide();
+        }
+    });
   </script>
 <style>
   .select2-container--bootstrap-5 .select2-dropdown {

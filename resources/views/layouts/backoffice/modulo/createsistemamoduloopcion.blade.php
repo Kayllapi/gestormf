@@ -40,6 +40,8 @@
                     <input type="text" id="orden" min="1">
                     <label>Vista</label>
                     <input type="text" id="vista"/>
+                    <label>Controlador</label>
+                    <input type="text" id="controlador"/>
                     <label>opcion *</label>
                     <input type="text" id="opcion"/>
                     <label>Estado *</label>

@@ -211,7 +211,7 @@ class ModuloController extends Controller
                 'imagen' => $imagen,
                 'opcion' => $request->input('opcion'),
                 'vista' => $request->input('vista'),
-                'controlador' => '',
+                'controlador' => $request->input('controlador')!=null?$request->input('controlador'):'',
                 'idmodulo' => $request->input('idmodulo'),
                 'idestado' => $request->input('idestado'),
             ]);
@@ -531,6 +531,7 @@ class ModuloController extends Controller
                 'imagen' => $imagen,
                 'vista' => $request->input('vista'),
                 'opcion' => $request->input('opcion'),
+                'controlador' => $request->input('controlador')!=null?$request->input('controlador'):'',
                 'idmodulo' => $request->input('idmodulo'),
                 'idestado' => $request->input('idestado'),
             ]);

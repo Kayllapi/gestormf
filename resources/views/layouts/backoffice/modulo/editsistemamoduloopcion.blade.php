@@ -71,6 +71,8 @@
                   <input type="text" id="orden" min="1" value="{{ $modulo->orden }}">
                   <label>Vista</label>
                   <input type="text" value="{{ $modulo->vista }}" id="vista"/>
+                  <label>Controlador</label>
+                  <input type="text" value="{{ $modulo->controlador }}" id="controlador"/>
                   <label>opcion *</label>
                   <input type="text" value="{{ $modulo->opcion }}" id="opcion"/>
                   <label>Estado *</label>

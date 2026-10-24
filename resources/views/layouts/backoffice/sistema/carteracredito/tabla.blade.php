@@ -151,7 +151,7 @@
   
   function cliente_tienda(idtienda){
       $.ajax({
-          url:"{{url('backoffice/'.$tienda->id.'/inicio/show_asesor')}}",
+          url:"{{url('backoffice/'.$tienda->id.'/carteracredito/show_asesor')}}",
           type:'GET',
           data: {
               idtienda : idtienda

@@ -98,10 +98,12 @@
         <div class="card">
           <div class="card-body p-2">
             <div class="modal-body p-0" style="overflow-y: scroll;height: calc(-305px + 100vh);">
+              @if($puedeConfirmarCastigo)<button type="button" class="btn btn-warning" onclick="abrir_confirmacion_castigo()">Confirmar castigo</button>@endif
               <div id="cont_loading"></div>
               <table class="table table-striped table-hover" id="table-lista-credito">
                 <thead class="table-dark" style="position: sticky;top: 0;"> 
                   <tr>
+                    <th><input type="checkbox" aria-label="Seleccionar todas las cuentas" onchange="$('.castigo-cuenta').prop('checked', this.checked)"></th>
                     <th>N°</th>
                     <th>CUENTA</th>
                     <th>RUC/DNI/CE</th>
@@ -138,6 +140,17 @@
       </div>
 </div>
 <script>
+  function cuentas_castigo() { return $('.castigo-cuenta:checked').map(function(){ return this.value; }).get(); }
+  function abrir_confirmacion_castigo() {
+    let ids = cuentas_castigo();
+    if (!ids.length) { 
+      var mensaje = "Seleccione al menos una cuenta pendiente.";
+      modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
+      return false;
+    }
+    modal({route: "{{url('backoffice/'.$tienda->id.'/carteracredito/0/edit')}}?view=confirmar_castigo&creditos="+ids.join(','), size: 'modal-sm'});
+  }
+
   sistema_select2({ input:'#idagencia',val:'{{$tienda->id}}' });
   sistema_select2({ input:'#idformacredito' });
   sistema_select2({ input:'#idasesor' });
@@ -182,6 +195,7 @@
           idasesor : $('#idasesor').val(),
           inicio : $('#fecha_inicio').val(),
           tipo : 'admin',
+          seleccion_castigo: 'gerente',
       },
       beforeSend: function () {
         load('#cont_loading');

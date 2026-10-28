@@ -89,6 +89,7 @@ class CreditoCastigadoController extends Controller
               ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
               ->where('credito.estado','DESEMBOLSADO')
               ->where('credito.idestadocredito',1)
+              ->where('credito.castigo_estado', 'CONFIRMADO')
               //->where('credito.saldo_pendientepago','>',0)
               ->where($where)
               ->select(
@@ -369,6 +370,7 @@ class CreditoCastigadoController extends Controller
               ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
               ->where('credito.estado','DESEMBOLSADO')
               ->where('credito.idestadocredito',1)
+              ->where('credito.castigo_estado', 'CONFIRMADO')
               ->where('credito.saldo_pendientepago','>',0)
               ->where($where)
               ->select(
@@ -447,6 +449,7 @@ class CreditoCastigadoController extends Controller
               ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
               ->where('credito.estado','DESEMBOLSADO')
               ->where('credito.idestadocredito',1)
+              ->where('credito.castigo_estado', 'CONFIRMADO')
               ->where('credito.saldo_pendientepago','>',0)
               ->where($where)
               ->select(

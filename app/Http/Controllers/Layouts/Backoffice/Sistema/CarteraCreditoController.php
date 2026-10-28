@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Layouts\Backoffice\Sistema;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DB;
+use App\Services\CastigoCredito;
 use Auth;
 use Carbon\Carbon;
 use PDF;
@@ -25,6 +26,7 @@ class CarteraCreditoController extends Controller
             return view(sistema_view().'/carteracredito/tabla',[
               'tienda' => $tienda,
               'agencias' => $agencias,
+              'puedeConfirmarCastigo' => CastigoCredito::puedeConfirmar((int) Auth::id(), (int) $idtienda),
             ]);
         }  
     }
@@ -39,6 +41,23 @@ class CarteraCreditoController extends Controller
     public function store(Request $request, $idtienda)
     {
       
+        if (in_array($request->input('view'), ['solicitar_castigo', 'confirmar_castigo'])) {
+            $request->validate(['creditos' => 'required|array|min:1|max:500', 'creditos.*' => 'required|integer|distinct']);
+            $confirmar = $request->input('view') === 'confirmar_castigo';
+            abort_unless(Auth::check(), 401);
+            if ($confirmar) {
+                abort_unless(CastigoCredito::puedeConfirmar((int) Auth::id(), (int) $idtienda), 403);
+                $request->validate(['idresponsable' => 'required|integer', 'responsableclave' => 'required|string']);
+                abort_unless(CastigoCredito::puedeConfirmar((int) $request->idresponsable, (int) $idtienda), 403);
+                $usuario = DB::table('users')->where('id', $request->idresponsable)->where('idestado', 1)->first();
+                // Usar la clave de autorización que utiliza usuarioacceso.
+                if (!$usuario || !hash_equals((string) $usuario->clave, (string) $request->responsableclave)) {
+                    throw \Illuminate\Validation\ValidationException::withMessages(['responsableclave' => 'La contraseña de autorización es incorrecta.']);
+                }
+            }
+            app(CastigoCredito::class)->procesar(array_map('intval', $request->creditos), $confirmar ? (int) $request->idresponsable : (int) Auth::id(), (int) $idtienda, $confirmar);
+            return response()->json(['resultado' => 'CORRECTO', 'mensaje' => $confirmar ? 'Castigo confirmado.' : 'Solicitud enviada para confirmación.']);
+        }
         if($request->input('view') == 'registrar') {
             return response()->json([
                 'resultado' => 'CORRECTO',
@@ -51,6 +70,11 @@ class CarteraCreditoController extends Controller
     {
 
         if($id == 'showtable'){
+          $seleccionCastigo = in_array($request->input('seleccion_castigo'), ['asesor', 'gerente']);
+          if ($request->input('seleccion_castigo') === 'asesor') {
+              abort_unless(Auth::check(), 401);
+              $request->merge(['idasesor' => Auth::id()]);
+          }
           $where = [];
           if($request->idagencia!='' && $request->idagencia!=0){
               $where[] = ['credito.idtienda',$request->idagencia];
@@ -79,6 +103,7 @@ class CarteraCreditoController extends Controller
           $creditos = DB::table('credito')
               ->join('forma_pago_credito','forma_pago_credito.id','credito.idforma_pago_credito')
               ->join('users as cliente','cliente.id','credito.idcliente')
+              ->leftJoin('users as solicitante', 'solicitante.id', 'credito.castigo_solicitante')
               ->join('ubigeo','ubigeo.id','cliente.idubigeo')
               ->leftjoin('users as cajero','cajero.id','credito.idcajero')
               ->leftjoin('users as asesor','asesor.id','credito.idasesor')
@@ -89,10 +114,12 @@ class CarteraCreditoController extends Controller
               ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
               ->where('credito.estado','DESEMBOLSADO')
               ->where('credito.idestadocredito',1)
+              ->where('credito.castigo_estado', '!=', 'CONFIRMADO')
               //->where('credito.saldo_pendientepago','>',0)
               ->where($where)
               ->select(
                   'credito.*',
+                  'solicitante.nombrecompleto as castigo_nombre_solicitante',
                   'cliente.identificacion as identificacioncliente',
                   'cliente.nombrecompleto as nombrecliente',
                   'cliente.numerotelefono as telefonocliente',
@@ -168,7 +195,15 @@ class CarteraCreditoController extends Controller
                   $clasificacion = 'PÉRDIDA';
               }
 
-              $html .= "<tr id='show_data_select' idcredito='{$value->id}'>
+              $seleccion = '';
+              if ($seleccionCastigo) {
+                  $seleccionable = $request->seleccion_castigo === 'asesor'
+                      ? $value->castigo_estado === 'NINGUNO'
+                      : ($value->castigo_estado === 'PENDIENTE' && CastigoCredito::puedeConfirmar((int) Auth::id(), (int) $value->idtienda));
+                  $seleccionable = $seleccionable && ($value->saldo_pendientepago > 0 || $value->total_pendientepago > 0);
+                  $seleccion = '<td>'.($seleccionable ? '<input type="checkbox" class="castigo-cuenta" aria-label="Seleccionar cuenta" value="'.(int) $value->id.'">' : '').'<small>'.e($value->castigo_estado === 'PENDIENTE' ? 'Pendiente: '.($value->castigo_nombre_solicitante ?? '').' / '.$value->castigo_solicitado_at : '').'</small></td>';
+              }
+              $html .= "<tr id='show_data_select' idcredito='{$value->id}'>".$seleccion."
                             <td>".($key+1)."</td>
                             <td>C{$value->cuenta}</td>
                             <td>{$value->identificacioncliente}</td>
@@ -193,12 +228,13 @@ class CarteraCreditoController extends Controller
               $total_saldo += $value->saldo_pendientepago;
               $total_deuda += $value->total_pendientepago;
           }
+          $columnaCastigo = $seleccionCastigo ? '<th></th>' : '';
           if(count($creditos)==0){
               $html.= '<tr><td colspan="17" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
           }
               $html .= '
                 <tr style="position: sticky;bottom: 0;">
-                  <th colspan="7">TOTAL S/.</th>
+                  '.$columnaCastigo.'<th colspan="7">TOTAL S/.</th>
                   <th style="text-align:right;">'.number_format($total_desembolsado, 2, '.', '').'</th>
                   <th style="text-align:right;">'.number_format($total_saldo, 2, '.', '').'</th>
                   <th style="text-align:right;">'.number_format($total_deuda, 2, '.', '').'</th>
@@ -236,7 +272,22 @@ class CarteraCreditoController extends Controller
     public function edit(Request $request, $idtienda, $id)
     {
       $tienda = DB::table('tienda')->whereId($idtienda)->first();
- 
+      if ($request->view === 'confirmar_castigo') {
+          abort_unless(CastigoCredito::puedeConfirmar((int) Auth::id(), (int) $idtienda), 403);
+          $ids = array_values(array_filter(explode(',', (string) $request->creditos), 'ctype_digit'));
+          abort_if(count($ids) === 0 || count($ids) > 500, 422);
+          $usuarios = DB::table('users')
+              ->join('users_permiso', 'users_permiso.idusers', 'users.id')
+              ->join('permiso', 'permiso.id', 'users_permiso.idpermiso')
+              ->where('users.idestado', 1)
+              ->where('users_permiso.idtienda', $idtienda)
+              ->where(fn ($query) => $query->where('permiso.rango', 1)->orWhere('permiso.id', 1))
+              ->select('users.id', 'users.nombrecompleto', 'permiso.nombre as nombrepermiso')
+              ->orderBy('users.nombrecompleto')->get()
+              ->filter(fn ($usuario) => CastigoCredito::puedeConfirmar((int) $usuario->id, (int) $idtienda))
+              ->unique('id');
+          return view(sistema_view().'/carteracredito/confirmar_castigo', ['tienda' => $tienda, 'creditos' => $ids, 'usuarios' => $usuarios]);
+      }
       $credito = DB::table('credito')
                     ->join('users as cliente','cliente.id','credito.idcliente')
                     ->leftjoin('users as asesor','asesor.id','credito.idasesor')
@@ -390,6 +441,7 @@ class CarteraCreditoController extends Controller
               ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
               ->where('credito.estado','DESEMBOLSADO')
               ->where('credito.idestadocredito',1)
+              ->where('credito.castigo_estado', '!=', 'CONFIRMADO')
               ->where('credito.saldo_pendientepago','>',0)
               ->where($where)
               ->select(
@@ -468,6 +520,7 @@ class CarteraCreditoController extends Controller
               ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
               ->where('credito.estado','DESEMBOLSADO')
               ->where('credito.idestadocredito',1)
+              ->where('credito.castigo_estado', '!=', 'CONFIRMADO')
               ->where('credito.saldo_pendientepago','>',0)
               ->where($where)
               ->select(

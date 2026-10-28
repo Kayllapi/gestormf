@@ -104,10 +104,12 @@
         <div class="card">
           <div class="card-body p-2">
             <div class="modal-body p-0" style="overflow-y: scroll;height: calc(-271px + 100vh);">
+              <button type="button" class="btn btn-warning" onclick="solicitar_castigo(this)">Solicitar castigo</button>
               <div id="cont_loading"></div>
               <table class="table table-striped table-hover" id="table-lista-credito">
                 <thead class="table-dark" style="position: sticky;top: -1px;z-index:1;"> 
                   <tr>
+                    <th><input type="checkbox" aria-label="Seleccionar todas las cuentas" onchange="$('.castigo-cuenta').prop('checked', this.checked)"></th>
                     <th>N°</th>
                     <th>CUENTA</th>
                     <th>RUC/DNI/CE</th>
@@ -139,6 +141,23 @@
       </div>
 </div>
 <script>
+  function cuentas_castigo() { return $('.castigo-cuenta:checked').map(function(){ return this.value; }).get(); }
+  function solicitar_castigo(boton) {
+    let ids = cuentas_castigo();
+    if (!ids.length) { alert('Seleccione al menos una cuenta.'); return; }
+    $(boton).prop('disabled', true);
+    $.ajax({url: "{{url('backoffice/'.$tienda->id.'/carteracredito')}}", type: 'POST',
+      data: {_token: '{{csrf_token()}}', view: 'solicitar_castigo', creditos: ids},
+      success: function(res){ 
+        modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+res.mensaje, size: 'modal-sm' });
+        lista_credito();
+        return false;
+      },
+      error: function(xhr){ alert(xhr.responseJSON?.message || 'No se pudo enviar la solicitud.'); },
+      complete: function(){ $(boton).prop('disabled', false); }
+    });
+  }
+
   // sistema_select2({ input:'#idagencia',val:'{{$tienda->id}}' });
   sistema_select2({ input:'#idformacredito' });
   // sistema_select2({ input:'#idasesor',val:'{{Auth::user()->id}}' });
@@ -155,6 +174,7 @@
           idasesor : $('#idasesor').val(),
           inicio : $('#fecha_inicio').val(),
           tipo : 'admin',
+          seleccion_castigo: 'asesor',
       },
       beforeSend: function () {
         load('#cont_loading');

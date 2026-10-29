@@ -132,7 +132,7 @@
         </div>
       </div>
       <div style="text-align: right;">
-        @if($puedeConfirmarCastigo)<button type="button" class="btn btn-warning" onclick="abrir_confirmacion_castigo()">CONFIRMAR CASTIGO</button>@endif
+        @if($puedeConfirmarCastigo)<button type="button" class="btn btn-warning" style="float: left;" onclick="abrir_confirmacion_castigo()">CONFIRMAR CASTIGO</button>@endif
         <button type="button" class="btn btn-info" onclick="exportar_pdf()">
           <i class="fa-solid fa-file-pdf" style="color:#000 !important;font-weight: bold;"></i> REPORTE PDF</button>
         <button type="button" class="btn btn-success" onclick="exportar_excel()">

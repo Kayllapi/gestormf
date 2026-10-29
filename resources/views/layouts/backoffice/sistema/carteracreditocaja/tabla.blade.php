@@ -132,7 +132,7 @@
       </div>
                               <div style="text-align: right;">
                                 @if(\App\Services\CastigoCredito::puedeSolicitar((int) Auth::id(), (int) $tienda->id))
-                                <button type="button" class="btn btn-warning" onclick="solicitar_castigo()">SOLICITAR CASTIGO</button>
+                                <button type="button" class="btn btn-warning" style="float: left;" onclick="solicitar_castigo()">SOLICITAR CASTIGO</button>
                                 @endif
                                 <button type="button" class="btn btn-info" onclick="exportar_pdf()">
                                   <i class="fa-solid fa-file-pdf" style="color:#000 !important;font-weight: bold;"></i> REPORTE PDF</button>

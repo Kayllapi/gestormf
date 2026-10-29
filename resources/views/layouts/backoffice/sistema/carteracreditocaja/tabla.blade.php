@@ -192,6 +192,7 @@
           inicio : $('#fecha_inicio').val(),
           tipo : 'admin',
           buscar_cartera: 1,
+          buscar_mora: 1,
           seleccion_castigo: @json(\App\Services\CastigoCredito::puedeSolicitar((int) Auth::id(), (int) $tienda->id) ? 'administrador' : ''),
       },
       beforeSend: function () {

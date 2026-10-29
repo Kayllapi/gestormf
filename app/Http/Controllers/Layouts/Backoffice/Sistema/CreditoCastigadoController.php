@@ -210,6 +210,28 @@ class CreditoCastigadoController extends Controller
           );
           
         }
+        if($id == 'show_asesor'){
+            $where = [];
+            if($request->idtienda!=0){
+                $where[] = ['users_permiso.idtienda', $request->idtienda];
+            }
+            $usuarios = DB::table('users')
+                ->join('users_permiso','users_permiso.idusers','users.id')
+                ->join('permiso','permiso.id','users_permiso.idpermiso')
+                ->whereIn('users_permiso.idpermiso',[12])
+                ->where($where)
+                ->select(
+                    'users.*',
+                    'users_permiso.id as idusers_permiso',
+                    'permiso.nombre as nombrepermiso'
+                )
+                ->get();
+            $html = '<option></option><option value="0">TODO</option>';
+            foreach($usuarios as $value){
+                $html .= '<option value="'.$value->id.'" idusers_permiso="'.$value->idusers_permiso.'">'.$value->nombrecompleto.' ('.$value->nombrepermiso.')</option>';
+            }
+            return $html;
+        }
         
     }
 

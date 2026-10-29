@@ -45,7 +45,7 @@
                 ['data' => 'Cliente'],
                 ['data' => 'Distrito - Provincia - Departamento	'],
                 ['data' => 'Tipo de Persona'],
-                ['data' => 'Tipo Documento'],
+                ['data' => 'T. Doc.'],
                 ['data' => 'Último Crédito'],
                 ['data' => 'Días sin crédito'],
                 ['data' => 'Motivo'],

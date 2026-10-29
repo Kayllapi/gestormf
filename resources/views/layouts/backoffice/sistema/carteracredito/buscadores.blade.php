@@ -1,4 +1,9 @@
 <style>
+  #table-lista-credito .fila-total input.form-control {
+    padding-top: 2px;
+    padding-bottom: 2px;
+  }
+
   #table-lista-credito .fila-total > th {
     background-color: #b7b6b7 !important;
     color: #000 !important;

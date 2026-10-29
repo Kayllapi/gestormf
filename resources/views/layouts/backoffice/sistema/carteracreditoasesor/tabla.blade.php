@@ -157,6 +157,7 @@
           inicio : $('#fecha_inicio').val(),
           tipo : 'admin',
           buscar_cartera: 1,
+          buscar_mora: 1,
       },
       beforeSend: function () {
         load('#cont_loading');

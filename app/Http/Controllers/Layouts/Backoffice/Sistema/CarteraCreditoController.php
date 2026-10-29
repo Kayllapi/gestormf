@@ -227,6 +227,15 @@ class CarteraCreditoController extends Controller
           }
           $columnaCastigo = $seleccionCastigo ? '<th></th>' : '';
           $inicioTotales = $columnaCastigo.'<th colspan="7">TOTAL S/.</th>';
+          $finTotales = '<th colspan="9"></th>';
+          if ($request->boolean('buscar_mora')) {
+              $columnaForma = $seleccionCastigo ? 13 : 12;
+              $columnaDias = $columnaForma + 1;
+              $finTotales = '<th colspan="2"></th>
+                  <th><input type="text" class="form-control" data-columna="'.$columnaForma.'" placeholder="Buscar..." aria-label="Buscar por F.C."></th>
+                  <th><input type="text" class="form-control" data-columna="'.$columnaDias.'" placeholder="Buscar..." aria-label="Buscar por días vencidos"></th>
+                  <th colspan="5"></th>';
+          }
           if ($request->seleccion_castigo === 'gerente' || $request->boolean('buscar_cartera')) {
               $columnaCuenta = $seleccionCastigo ? 2 : 1;
               $columnaDocumento = $columnaCuenta + 1;
@@ -246,7 +255,7 @@ class CarteraCreditoController extends Controller
                   <th style="text-align:right;">'.number_format($total_desembolsado, 2, '.', '').'</th>
                   <th style="text-align:right;">'.number_format($total_saldo, 2, '.', '').'</th>
                   <th style="text-align:right;">'.number_format($total_deuda, 2, '.', '').'</th>
-                  <th colspan="9"></th>
+                  '.$finTotales.'
                 </tr>';
           return array(
             'html' => $html

@@ -200,6 +200,7 @@
           inicio : $('#fecha_inicio').val(),
           tipo : 'admin',
           seleccion_castigo: 'gerente',
+          buscar_mora: 1,
       },
       beforeSend: function () {
         load('#cont_loading');

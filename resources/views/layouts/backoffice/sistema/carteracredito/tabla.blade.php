@@ -102,7 +102,10 @@
               <table class="table table-striped table-hover" id="table-lista-credito">
                 <thead class="table-dark" style="position: sticky;top: 0;"> 
                   <tr>
-                    <th><input type="checkbox" aria-label="Seleccionar todas las cuentas" onchange="$('.castigo-cuenta').prop('checked', this.checked)"></th>
+                    <th>
+                      <input type="checkbox" aria-label="Seleccionar todas las cuentas" onchange="$('.castigo-cuenta').prop('checked', this.checked)">
+                      P.Castigo
+                    </th>
                     <th>N°</th>
                     <th>CUENTA</th>
                     <th>RUC/DNI/CE</th>

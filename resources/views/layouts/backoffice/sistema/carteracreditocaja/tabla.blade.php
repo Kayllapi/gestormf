@@ -99,7 +99,7 @@
                   <tr>
                     @if(\App\Services\CastigoCredito::puedeSolicitar((int) Auth::id(), (int) $tienda->id))
                     <!-- <th><input type="checkbox" aria-label="Seleccionar todas las cuentas" onchange="$('.castigo-cuenta').prop('checked', this.checked)"></th> -->
-                    <th></th>
+                    <th>P.Castigo</th>
                     @endif
                     <th>N°</th>
                     <th>CUENTA</th>

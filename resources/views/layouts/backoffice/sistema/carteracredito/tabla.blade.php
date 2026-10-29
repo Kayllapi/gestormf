@@ -135,13 +135,14 @@
         </div>
       </div>
       <div style="text-align: right;">
-        @if($puedeConfirmarCastigo)<button type="button" class="btn btn-warning" style="float: left;" onclick="abrir_confirmacion_castigo()">CONFIRMAR CASTIGO</button>@endif
+        @if($puedeConfirmarCastigo)<button type="button" class="btn btn-warning" style="float: left;" onclick="abrir_confirmacion_castigo()">REALIZAR CASTIGO</button>@endif
         <button type="button" class="btn btn-info" onclick="exportar_pdf()">
           <i class="fa-solid fa-file-pdf" style="color:#000 !important;font-weight: bold;"></i> REPORTE PDF</button>
         <button type="button" class="btn btn-success" onclick="exportar_excel()">
           <i class="fa-solid fa-file-excel" style="color:#000 !important;font-weight: bold;"></i> REPORTE EXCEL</button>
       </div>
 </div>
+@include('layouts.backoffice.sistema.carteracredito.buscadores')
 <script>
   function cuentas_castigo() { return $('.castigo-cuenta:checked').map(function(){ return this.value; }).get(); }
   function abrir_confirmacion_castigo() {
@@ -205,7 +206,10 @@
         $('#table-lista-credito').addClass('d-none');
       },
       success: function (res){
+        let busquedas = $('#table-lista-credito .fila-total input').map(function() { return this.value; }).get();
         $('#table-lista-credito > tbody').html(res.html);
+        $('#table-lista-credito .fila-total input').each(function(indice) { this.value = busquedas[indice] || ''; });
+        filtrar_cartera_credito();
         $("tr#show_data_select").on("click", function() {
             $('tr.selected').removeClass('selected');
             $(this).addClass('selected');

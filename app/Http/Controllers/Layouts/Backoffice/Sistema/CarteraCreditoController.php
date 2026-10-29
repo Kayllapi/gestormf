@@ -226,12 +226,23 @@ class CarteraCreditoController extends Controller
               $total_deuda += $value->total_pendientepago;
           }
           $columnaCastigo = $seleccionCastigo ? '<th></th>' : '';
+          $inicioTotales = $columnaCastigo.'<th colspan="7">TOTAL S/.</th>';
+          if ($request->seleccion_castigo === 'gerente' || $request->boolean('buscar_cartera')) {
+              $columnaCuenta = $seleccionCastigo ? 2 : 1;
+              $columnaDocumento = $columnaCuenta + 1;
+              $columnaNombre = $columnaCuenta + 2;
+              $inicioTotales = $columnaCastigo.'<th></th>
+                  <th><input type="text" class="form-control" data-columna="'.$columnaCuenta.'" placeholder="Buscar..." aria-label="Buscar por número de cuenta"></th>
+                  <th><input type="text" class="form-control" data-columna="'.$columnaDocumento.'" placeholder="Buscar..." aria-label="Buscar por RUC, DNI o CE"></th>
+                  <th><input type="text" class="form-control" data-columna="'.$columnaNombre.'" placeholder="Buscar..." aria-label="Buscar por apellidos y nombres"></th>
+                  <th colspan="3" style="text-align:right;">TOTAL S/.</th>';
+          }
           if(count($creditos)==0){
               $html.= '<tr><td colspan="17" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
           }
               $html .= '
-                <tr style="position: sticky;bottom: 0;">
-                  '.$columnaCastigo.'<th colspan="7">TOTAL S/.</th>
+                <tr class="fila-total" style="position: sticky;bottom: -1px;">
+                  '.$inicioTotales.'
                   <th style="text-align:right;">'.number_format($total_desembolsado, 2, '.', '').'</th>
                   <th style="text-align:right;">'.number_format($total_saldo, 2, '.', '').'</th>
                   <th style="text-align:right;">'.number_format($total_deuda, 2, '.', '').'</th>

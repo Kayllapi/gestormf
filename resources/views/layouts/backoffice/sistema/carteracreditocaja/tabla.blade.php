@@ -140,6 +140,7 @@
                                   <i class="fa-solid fa-file-excel" style="color:#000 !important;font-weight: bold;"></i> REPORTE EXCEL</button>
                               </div>
 </div>
+@include('layouts.backoffice.sistema.carteracredito.buscadores')
 <script>
   function solicitar_castigo() {
     let ids = $('.castigo-cuenta:checked').map(function(){ return this.value; }).get();
@@ -190,6 +191,7 @@
           idasesor : $('#idasesor').val(),
           inicio : $('#fecha_inicio').val(),
           tipo : 'admin',
+          buscar_cartera: 1,
           seleccion_castigo: @json(\App\Services\CastigoCredito::puedeSolicitar((int) Auth::id(), (int) $tienda->id) ? 'administrador' : ''),
       },
       beforeSend: function () {
@@ -197,7 +199,10 @@
         $('#table-lista-credito').addClass('d-none');
       },
       success: function (res){
+        let busquedas = $('#table-lista-credito .fila-total input').map(function() { return this.value; }).get();
         $('#table-lista-credito > tbody').html(res.html);
+        $('#table-lista-credito .fila-total input').each(function(indice) { this.value = busquedas[indice] || ''; });
+        filtrar_cartera_credito();
         $("tr#show_data_select").on("click", function() {
             $('tr.selected').removeClass('selected');
             $(this).addClass('selected');

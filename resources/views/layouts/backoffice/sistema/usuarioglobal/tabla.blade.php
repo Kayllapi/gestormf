@@ -53,6 +53,7 @@
                 ['data' => 'Tipo Documento'],
                 ['data' => 'Último Crédito'],
                 ['data' => 'Días sin crédito'],
+                ['data' => 'Motivo'],
                 ['data' => ''],
             ],
             'tbody' => [
@@ -64,6 +65,7 @@
                 ['data' => 'tipodocumento','type'=>'text'],
                 ['data' => 'ultimacredito','type'=>'text'],
                 ['data' => 'dias','type'=>'num'],
+                ['data' => 'origen','type'=>'text'],
                 ['data' => 'opcion','type'=>'btn'],
             ],
             'tfoot' => [
@@ -101,6 +103,7 @@
                     ],
                     'type' => 'select',
                 ],
+                ['type' => ''],
                 ['type' => ''],
                 ['type' => ''],
                 ['type' => ''],

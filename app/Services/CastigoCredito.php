@@ -7,6 +7,13 @@ use Illuminate\Validation\ValidationException;
 
 class CastigoCredito
 {
+    public static function puedeSolicitar(int $usuario, int $agencia): bool
+    {
+        $cargos = DB::table('users_permiso')->where('idusers', $usuario)->where('idtienda', $agencia);
+        $activos = (clone $cargos)->where('idsession', 2);
+        return ((clone $activos)->exists() ? $activos : $cargos)->where('idpermiso', 1)->exists();
+    }
+
     public static function puedeConfirmar(int $usuario, int $agencia): bool
     {
         $cargos = DB::table('users_permiso')->join('permiso', 'permiso.id', 'users_permiso.idpermiso')
@@ -35,7 +42,8 @@ class CastigoCredito
                 if ($confirmar) {
                     abort_unless(self::puedeConfirmar($usuario, (int) $credito->idtienda), 403, 'Solo el gerente o administrador de la agencia puede confirmar.');
                 } else {
-                    $valido = $valido && (int) $credito->idasesor === $usuario && (int) $credito->idtienda === $agencia;
+                    abort_unless(self::puedeSolicitar($usuario, (int) $credito->idtienda), 403);
+                    $valido = $valido && (int) $credito->idtienda === $agencia;
                 }
                 if (!$valido) {
                     throw ValidationException::withMessages(['creditos' => 'La selección contiene créditos sin deuda, no disponibles o ajenos a su cartera. Actualice la tabla.']);
@@ -52,7 +60,7 @@ class CastigoCredito
                         ->where('idestadocredito', 1)->where('castigo_estado', '!=', 'CONFIRMADO')
                         ->where(fn ($q) => $q->where('saldo_pendientepago', '>', 0)->orWhere('total_pendientepago', '>', 0))->exists();
                     if (!$vigentes) {
-                        DB::table('users')->where('id', $cliente)->update(['idasesor' => 0]);
+                        DB::table('users')->where('id', $cliente)->update(['idasesor' => 0, 'origen_global' => 'CASTIGADO']);
                     }
                 }
             }

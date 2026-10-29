@@ -45,17 +45,15 @@ class CarteraCreditoController extends Controller
             $request->validate(['creditos' => 'required|array|min:1|max:500', 'creditos.*' => 'required|integer|distinct']);
             $confirmar = $request->input('view') === 'confirmar_castigo';
             abort_unless(Auth::check(), 401);
-            if ($confirmar) {
-                abort_unless(CastigoCredito::puedeConfirmar((int) Auth::id(), (int) $idtienda), 403);
-                $request->validate(['idresponsable' => 'required|integer', 'responsableclave' => 'required|string']);
-                abort_unless(CastigoCredito::puedeConfirmar((int) $request->idresponsable, (int) $idtienda), 403);
-                $usuario = DB::table('users')->where('id', $request->idresponsable)->where('idestado', 1)->first();
-                // Usar la clave de autorización que utiliza usuarioacceso.
-                if (!$usuario || !hash_equals((string) $usuario->clave, (string) $request->responsableclave)) {
-                    throw \Illuminate\Validation\ValidationException::withMessages(['responsableclave' => 'La contraseña de autorización es incorrecta.']);
-                }
+            abort_unless($confirmar ? CastigoCredito::puedeConfirmar((int) Auth::id(), (int) $idtienda) : CastigoCredito::puedeSolicitar((int) Auth::id(), (int) $idtienda), 403);
+            $request->validate(['idresponsable' => 'required|integer', 'responsableclave' => 'required|string']);
+            abort_unless($confirmar ? CastigoCredito::puedeConfirmar((int) $request->idresponsable, (int) $idtienda) : CastigoCredito::puedeSolicitar((int) $request->idresponsable, (int) $idtienda), 403);
+            $usuario = DB::table('users')->where('id', $request->idresponsable)->where('idestado', 1)->first();
+            // Usar la clave de autorización que utiliza usuarioacceso.
+            if (!$usuario || !hash_equals((string) $usuario->clave, (string) $request->responsableclave)) {
+                throw \Illuminate\Validation\ValidationException::withMessages(['responsableclave' => 'La contraseña de autorización es incorrecta.']);
             }
-            app(CastigoCredito::class)->procesar(array_map('intval', $request->creditos), $confirmar ? (int) $request->idresponsable : (int) Auth::id(), (int) $idtienda, $confirmar);
+            app(CastigoCredito::class)->procesar(array_map('intval', $request->creditos), (int) $request->idresponsable, (int) $idtienda, $confirmar);
             return response()->json(['resultado' => 'CORRECTO', 'mensaje' => $confirmar ? 'Castigo confirmado.' : 'Solicitud enviada para confirmación.']);
         }
         if($request->input('view') == 'registrar') {
@@ -70,10 +68,9 @@ class CarteraCreditoController extends Controller
     {
 
         if($id == 'showtable'){
-          $seleccionCastigo = in_array($request->input('seleccion_castigo'), ['asesor', 'gerente']);
-          if ($request->input('seleccion_castigo') === 'asesor') {
-              abort_unless(Auth::check(), 401);
-              $request->merge(['idasesor' => Auth::id()]);
+          $seleccionCastigo = in_array($request->input('seleccion_castigo'), ['administrador', 'gerente']);
+          if ($request->input('seleccion_castigo') === 'administrador') {
+              abort_unless(CastigoCredito::puedeSolicitar((int) Auth::id(), (int) $request->idagencia), 403);
           }
           $where = [];
           if($request->idagencia!='' && $request->idagencia!=0){
@@ -197,7 +194,7 @@ class CarteraCreditoController extends Controller
 
               $seleccion = '';
               if ($seleccionCastigo) {
-                  $seleccionable = $request->seleccion_castigo === 'asesor'
+                  $seleccionable = $request->seleccion_castigo === 'administrador'
                       ? $value->castigo_estado === 'NINGUNO'
                       : ($value->castigo_estado === 'PENDIENTE' && CastigoCredito::puedeConfirmar((int) Auth::id(), (int) $value->idtienda));
                   $seleccionable = $seleccionable && ($value->saldo_pendientepago > 0 || $value->total_pendientepago > 0);
@@ -272,8 +269,9 @@ class CarteraCreditoController extends Controller
     public function edit(Request $request, $idtienda, $id)
     {
       $tienda = DB::table('tienda')->whereId($idtienda)->first();
-      if ($request->view === 'confirmar_castigo') {
-          abort_unless(CastigoCredito::puedeConfirmar((int) Auth::id(), (int) $idtienda), 403);
+      if (in_array($request->view, ['confirmar_castigo', 'solicitar_castigo'])) {
+          $confirmar = $request->view === 'confirmar_castigo';
+          abort_unless($confirmar ? CastigoCredito::puedeConfirmar((int) Auth::id(), (int) $idtienda) : CastigoCredito::puedeSolicitar((int) Auth::id(), (int) $idtienda), 403);
           $ids = array_values(array_filter(explode(',', (string) $request->creditos), 'ctype_digit'));
           abort_if(count($ids) === 0 || count($ids) > 500, 422);
           $usuarios = DB::table('users')
@@ -284,9 +282,9 @@ class CarteraCreditoController extends Controller
               ->where(fn ($query) => $query->where('permiso.rango', 1)->orWhere('permiso.id', 1))
               ->select('users.id', 'users.nombrecompleto', 'permiso.nombre as nombrepermiso')
               ->orderBy('users.nombrecompleto')->get()
-              ->filter(fn ($usuario) => CastigoCredito::puedeConfirmar((int) $usuario->id, (int) $idtienda))
+              ->filter(fn ($usuario) => $confirmar ? CastigoCredito::puedeConfirmar((int) $usuario->id, (int) $idtienda) : CastigoCredito::puedeSolicitar((int) $usuario->id, (int) $idtienda))
               ->unique('id');
-          return view(sistema_view().'/carteracredito/confirmar_castigo', ['tienda' => $tienda, 'creditos' => $ids, 'usuarios' => $usuarios]);
+          return view(sistema_view().'/carteracredito/confirmar_castigo', ['tienda' => $tienda, 'creditos' => $ids, 'usuarios' => $usuarios, 'accionCastigo' => $request->view]);
       }
       $credito = DB::table('credito')
                     ->join('users as cliente','cliente.id','credito.idcliente')

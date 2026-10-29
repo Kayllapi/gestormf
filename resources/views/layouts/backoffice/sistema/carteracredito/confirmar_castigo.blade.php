@@ -35,7 +35,7 @@ function confirmar_castigo(form) {
     $('#castigo-error').text('');
     $.ajax({
         url: "{{url('backoffice/'.$tienda->id.'/carteracredito')}}", type: 'POST',
-        data: {_token: '{{csrf_token()}}', view: 'confirmar_castigo', creditos: @json($creditos), idresponsable: $('#idresponsable').val(), responsableclave: $('#responsableclave').val()},
+        data: {_token: '{{csrf_token()}}', view: @json($accionCastigo ?? 'confirmar_castigo'), creditos: @json($creditos), idresponsable: $('#idresponsable').val(), responsableclave: $('#responsableclave').val()},
         success: function(res) {
             $(form).find('[data-bs-dismiss=modal]').click();
             lista_credito();

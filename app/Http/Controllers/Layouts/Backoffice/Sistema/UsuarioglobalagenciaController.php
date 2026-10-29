@@ -101,6 +101,7 @@ class UsuarioglobalagenciaController extends Controller
                   'ubigeo'          => $value->ubigeocodigo!=''?$value->ubigeocodigo.' - '.$value->ubigeonombre:'',
                   'ultimacredito'   => $value->ultimacredito!=null?date_format(date_create($value->ultimacredito),'d/m/Y'):'',
                   'dias'            => $dias_sin_credito!==null?(int)round($dias_sin_credito):null,
+                  'origen'          => $value->origen_global ?: 'INACTIVIDAD',
                   'opcion'          => [
                       [
                           'nombre'  => 'Editar',

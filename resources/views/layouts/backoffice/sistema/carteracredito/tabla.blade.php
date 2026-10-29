@@ -98,7 +98,6 @@
         <div class="card">
           <div class="card-body p-2">
             <div class="modal-body p-0" style="overflow-y: scroll;height: calc(-305px + 100vh);">
-              @if($puedeConfirmarCastigo)<button type="button" class="btn btn-warning" onclick="abrir_confirmacion_castigo()">Confirmar castigo</button>@endif
               <div id="cont_loading"></div>
               <table class="table table-striped table-hover" id="table-lista-credito">
                 <thead class="table-dark" style="position: sticky;top: 0;"> 
@@ -133,6 +132,7 @@
         </div>
       </div>
       <div style="text-align: right;">
+        @if($puedeConfirmarCastigo)<button type="button" class="btn btn-warning" onclick="abrir_confirmacion_castigo()">CONFIRMAR CASTIGO</button>@endif
         <button type="button" class="btn btn-info" onclick="exportar_pdf()">
           <i class="fa-solid fa-file-pdf" style="color:#000 !important;font-weight: bold;"></i> REPORTE PDF</button>
         <button type="button" class="btn btn-success" onclick="exportar_excel()">

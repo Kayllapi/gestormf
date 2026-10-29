@@ -102,6 +102,7 @@ class UsuarioglobalController extends Controller
                   'idubigeo'        => $value->idubigeo,
                   'ubigeo'          => $value->ubigeocodigo!=''?$value->ubigeocodigo.' - '.$value->ubigeonombre:'',
                   'ultimacredito'   => $value->ultimacredito!=null?date_format(date_create($value->ultimacredito),'d/m/Y'):'',
+                  'origen'          => $value->origen_global ?: 'INACTIVIDAD',
                   'dias'            => $dias_sin_credito!==null?(int)round($dias_sin_credito):null,
                   'opcion'          => [
                       [

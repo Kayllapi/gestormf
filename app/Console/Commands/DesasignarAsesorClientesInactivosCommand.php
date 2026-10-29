@@ -56,7 +56,7 @@ class DesasignarAsesorClientesInactivosCommand extends Command
                     DB::table('users')
                         ->whereIn('users.id',$ids)
                         ->where('users.idasesor','>',0)
-                        ->update(['users.idasesor' => 0]);
+                        ->update(['users.idasesor' => 0, 'users.origen_global' => 'INACTIVIDAD']);
                 }
 
                 foreach($usuarios as $value){

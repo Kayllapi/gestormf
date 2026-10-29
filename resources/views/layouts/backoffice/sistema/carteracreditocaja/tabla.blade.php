@@ -97,6 +97,10 @@
               <table class="table table-striped table-hover" id="table-lista-credito">
                 <thead class="table-dark" style="position: sticky;top: 0;"> 
                   <tr>
+                    @if(\App\Services\CastigoCredito::puedeSolicitar((int) Auth::id(), (int) $tienda->id))
+                    <!-- <th><input type="checkbox" aria-label="Seleccionar todas las cuentas" onchange="$('.castigo-cuenta').prop('checked', this.checked)"></th> -->
+                    <th></th>
+                    @endif
                     <th>N°</th>
                     <th>CUENTA</th>
                     <th>RUC/DNI/CE</th>
@@ -127,6 +131,9 @@
         </div>
       </div>
                               <div style="text-align: right;">
+                                @if(\App\Services\CastigoCredito::puedeSolicitar((int) Auth::id(), (int) $tienda->id))
+                                <button type="button" class="btn btn-warning" onclick="solicitar_castigo()">SOLICITAR CASTIGO</button>
+                                @endif
                                 <button type="button" class="btn btn-info" onclick="exportar_pdf()">
                                   <i class="fa-solid fa-file-pdf" style="color:#000 !important;font-weight: bold;"></i> REPORTE PDF</button>
                                 <button type="button" class="btn btn-success" onclick="exportar_excel()">
@@ -134,6 +141,11 @@
                               </div>
 </div>
 <script>
+  function solicitar_castigo() {
+    let ids = $('.castigo-cuenta:checked').map(function(){ return this.value; }).get();
+    if (!ids.length) { alert('Seleccione al menos una cuenta.'); return; }
+    modal({route: "{{url('backoffice/'.$tienda->id.'/carteracredito/0/edit')}}?view=solicitar_castigo&creditos="+ids.join(','), size: 'modal-sm'});
+  }
   // sistema_select2({ input:'#idagencia',val:'{{$tienda->id}}' });
   sistema_select2({ input:'#idformacredito' });
   sistema_select2({ input:'#idasesor' });
@@ -178,6 +190,7 @@
           idasesor : $('#idasesor').val(),
           inicio : $('#fecha_inicio').val(),
           tipo : 'admin',
+          seleccion_castigo: @json(\App\Services\CastigoCredito::puedeSolicitar((int) Auth::id(), (int) $tienda->id) ? 'administrador' : ''),
       },
       beforeSend: function () {
         load('#cont_loading');

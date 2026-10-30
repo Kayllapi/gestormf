@@ -1,11 +1,11 @@
 <div class="modal-header">
     <h5 class="modal-title">
       Clientes/Garantes Administración
-      <a href="javascript:;" 
+      <!-- <a href="javascript:;" 
          class="btn btn-primary" 
          onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/usuario/create?view=registrar&modulo=usuario')}}'})">
         <i class="fa-solid fa-plus"></i> Registrar
-      </a>
+      </a> -->
     </h5>
     <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>
@@ -104,7 +104,7 @@
     cliente_tienda({{$tienda->id}});
     function cliente_tienda(idtienda){
         $.ajax({
-            url:"{{url('backoffice/'.$tienda->id.'/inicio/show_asesor')}}",
+            url:"{{url('backoffice/'.$tienda->id.'/inicio/show_asesor_v2')}}",
             type:'GET',
             data: {
                 idtienda : idtienda

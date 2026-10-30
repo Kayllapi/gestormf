@@ -201,7 +201,7 @@
         $('#btn-create-cliente').removeClass('d-none');
         $('#cont_listanegra').html('');
         if(res.estado_listanegra==2){
-          $('#cont_listanegra').html('<span style="background-color: #ffc9ca;padding-left: 5px;padding-right: 5px;border-radius: 5px;color: #93222c; float: right;cursor: pointer;" onclick="ver_motivo_listanegra()">Cliente en Lista Negra</span>');
+          $('#cont_listanegra').html('<span style="background-color: #ffc9ca;padding-left: 5px;padding-right: 5px;border-radius: 5px;color: #93222c; float: right;cursor: pointer;">Cliente Observado</span>'); // onclick="ver_motivo_listanegra()"
           $('#motivo_listanegra_texto').text(res.motivo_listanegra);
         }
         

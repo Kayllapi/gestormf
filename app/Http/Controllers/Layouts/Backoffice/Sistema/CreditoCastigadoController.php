@@ -56,9 +56,9 @@ class CreditoCastigadoController extends Controller
               $where[] = ['credito.idtienda',$request->idagencia];
           }
 
-          if($request->idasesor!='' && $request->idasesor!=0){
-              $where[] = ['credito.idasesor',$request->idasesor];
-          }
+        //   if($request->idasesor!='' && $request->idasesor!=0){
+        //       $where[] = ['credito.idasesor',$request->idasesor];
+        //   }
 
           if($request->inicio){
               $where[] = ['credito.fecha_desembolso','<=',$request->inicio.' 23:59:59'];
@@ -195,15 +195,22 @@ class CreditoCastigadoController extends Controller
               $total_deuda += $value->total_pendientepago;
           }
           if(count($creditos)==0){
-              $html.= '<tr><td colspan="17" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
+              $html.= '<tr><td colspan="19" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
           }
               $html .= '
-                <tr style="position: sticky;bottom: 0;">
-                  <th colspan="7">TOTAL S/.</th>
+                <tr class="fila-total" style="position: sticky;bottom: -1px;">
+                  <th></th>
+                  <th><input type="text" class="form-control" data-columna="1" placeholder="Buscar..." aria-label="Buscar por número de cuenta"></th>
+                  <th><input type="text" class="form-control" data-columna="2" placeholder="Buscar..." aria-label="Buscar por RUC, DNI o CE"></th>
+                  <th><input type="text" class="form-control" data-columna="3" placeholder="Buscar..." aria-label="Buscar por apellidos y nombres"></th>
+                  <th colspan="3" style="text-align:right;">TOTAL S/.</th>
                   <th style="text-align:right;">'.number_format($total_desembolsado, 2, '.', '').'</th>
                   <th style="text-align:right;">'.number_format($total_saldo, 2, '.', '').'</th>
                   <th style="text-align:right;">'.number_format($total_deuda, 2, '.', '').'</th>
-                  <th colspan="9"></th>
+                  <th colspan="2"></th>
+                  <th><input type="text" class="form-control" data-columna="12" placeholder="Buscar..." aria-label="Buscar por F.C."></th>
+                  <th><input type="text" class="form-control" data-columna="13" placeholder="Buscar..." aria-label="Buscar por días vencidos"></th>
+                  <th colspan="5"></th>
                 </tr>';
           return array(
             'html' => $html

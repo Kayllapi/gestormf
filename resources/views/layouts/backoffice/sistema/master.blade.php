@@ -461,8 +461,12 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
         }
         .dropdown-submenu > a.dropdown-toggle::after {
             float: right;
-            margin-top: 7px;
+            margin-top: 5px;
             transform: rotate(-90deg);
+            border-top-width: .45em;
+            border-right-width: .45em;
+            border-bottom-width: 0;
+            border-left-width: .45em;
         }
         .dropdown-submenu.dropdown-submenu-left > a.dropdown-toggle::after {
             transform: rotate(90deg);
@@ -628,6 +632,12 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
         if (toggleEl) {
             bootstrap.Dropdown.getOrCreateInstance(toggleEl).hide();
         }
+    });
+
+    // al cerrarse el menu raiz (click afuera, Escape, o se abrio otro menu raiz), colapsar los submenus
+    // que hayan quedado abiertos para que la proxima vez que se abra este menu empiece contraido
+    $('.navbar-nav').on('hidden.bs.dropdown', '.nav-item.dropdown', function() {
+        $(this).find('.dropdown-submenu').removeClass('show dropdown-submenu-left').find('> .dropdown-menu').removeClass('show');
     });
   </script>
 <style>

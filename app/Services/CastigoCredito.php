@@ -25,6 +25,30 @@ class CastigoCredito
         })->exists();
     }
 
+    private static function tieneCreditosVigentes(int $cliente): bool
+    {
+        return DB::table('credito')->where('idcliente', $cliente)->where('estado', 'DESEMBOLSADO')
+            ->where('idestadocredito', 1)->where('castigo_estado', '!=', 'CONFIRMADO')
+            ->where(fn ($q) => $q->where('saldo_pendientepago', '>', 0)->orWhere('total_pendientepago', '>', 0))
+            ->exists();
+    }
+
+    // Cuando un credito termina de pagarse fuera del flujo de castigo (ej. desde cobranzacuota),
+    // si el cliente ya no tiene creditos vigentes pero tiene al menos un credito castigado
+    // (CONFIRMADO), pasa al pool global, igual que cuando se confirma un castigo.
+    public static function pasarAGlobalSiSoloQuedanCastigados(int $cliente): void
+    {
+        if (self::tieneCreditosVigentes($cliente)) {
+            return;
+        }
+        $tieneCastigoActivo = DB::table('credito')->where('idcliente', $cliente)
+            ->where('castigo_estado', 'CONFIRMADO')->exists();
+        if (!$tieneCastigoActivo) {
+            return;
+        }
+        DB::table('users')->where('id', $cliente)->update(['idasesor' => 0, 'origen_global' => 'CASTIGADO']);
+    }
+
     public function procesar(array $ids, int $usuario, int $agencia, bool $confirmar, ?int $idusuariocobranza = null): void
     {
         DB::transaction(function () use ($ids, $usuario, $agencia, $confirmar, $idusuariocobranza) {
@@ -58,12 +82,10 @@ class CastigoCredito
             ]);
             if ($confirmar) {
                 foreach ($clientes as $cliente) {
-                    $vigentes = DB::table('credito')->where('idcliente', $cliente)->where('estado', 'DESEMBOLSADO')
-                        ->where('idestadocredito', 1)->where('castigo_estado', '!=', 'CONFIRMADO')
-                        ->where(fn ($q) => $q->where('saldo_pendientepago', '>', 0)->orWhere('total_pendientepago', '>', 0))->exists();
-                    if (!$vigentes) {
-                        // Antes el cliente quedaba en el pool global (idasesor=0); ahora pasa directo al ejecutivo de cobranza elegido.
-                        DB::table('users')->where('id', $cliente)->update(['idasesor' => $idusuariocobranza, 'origen_global' => 'CASTIGADO']);
+                    if (!self::tieneCreditosVigentes($cliente)) {
+                        // El ejecutivo de cobranza queda registrado en la cuenta (idusuariocobranza), no reemplaza
+                        // al asesor del cliente: si ya no tiene creditos vigentes pasa al pool global.
+                        DB::table('users')->where('id', $cliente)->update(['idasesor' => 0, 'origen_global' => 'CASTIGADO']);
                     }
                 }
             }

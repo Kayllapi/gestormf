@@ -9,6 +9,7 @@ use Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
+use App\Services\CastigoCredito;
 use PDF;
 
 class CobranzacuotaController extends Controller
@@ -965,8 +966,12 @@ class CobranzacuotaController extends Controller
                 DB::table('credito')->whereId($request->idcredito)->update([
                     'idliquidaciongarantia' => 2,
                 ]);
+
+                // Si el cliente ya no tiene creditos vigentes pero tiene otro credito castigado,
+                // pasa al pool global (igual que cuando se confirma un castigo).
+                CastigoCredito::pasarAGlobalSiSoloQuedanCastigados((int) $credito->idcliente);
             }
-            
+
             if($request->entregargarantia=='on'){
                 
                 DB::table('credito_garantia')

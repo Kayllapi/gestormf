@@ -63,7 +63,7 @@ class CastigoCreditoTest extends TestCase
         $s->procesar([1, 2], 40, 1, false);
         $this->assertEquals(10, DB::table('users')->where('id', 1)->value('idasesor'));
         $s->procesar([1, 2], 20, 1, true, 50);
-        $this->assertEquals(50, DB::table('users')->where('id', 1)->value('idasesor'));
+        $this->assertEquals(0, DB::table('users')->where('id', 1)->value('idasesor'));
         $this->assertEquals('CASTIGADO', DB::table('users')->where('id', 1)->value('origen_global'));
         $this->assertEquals(2, DB::table('credito')->where('castigo_estado', 'CONFIRMADO')->count());
         $this->assertEquals(240, DB::table('credito')->sum('total_pendientepago'));
@@ -128,7 +128,7 @@ class CastigoCreditoTest extends TestCase
         $this->cuenta(2, ['estado' => 'CANCELADO']);
         $this->cuenta(3, ['saldo_pendientepago' => 0, 'total_pendientepago' => 0]);
         (new CastigoCredito)->procesar([1], 20, 1, true, 50);
-        $this->assertEquals(50, DB::table('users')->where('id', 1)->value('idasesor'));
+        $this->assertEquals(0, DB::table('users')->where('id', 1)->value('idasesor'));
     }
     public function test_administrador_confirma_con_su_password(): void
     {
@@ -267,5 +267,32 @@ class CastigoCreditoTest extends TestCase
         $response = (new CarteraCreditoController)->store($request, 1);
         $this->assertEquals('CORRECTO', $response->getData(true)['resultado']);
         $this->assertEquals('NINGUNO', DB::table('credito')->value('castigo_estado'));
+    }
+
+    public function test_cancelar_otro_credito_pasa_a_global_si_solo_queda_el_castigado(): void
+    {
+        // credito 1 ya castigado y confirmado; credito 2 es el que recien se cancela (deja de ser vigente)
+        $this->cuenta(1, ['castigo_estado' => 'CONFIRMADO']);
+        $this->cuenta(2, ['estado' => 'CANCELADO']);
+        CastigoCredito::pasarAGlobalSiSoloQuedanCastigados(1);
+        $this->assertEquals(0, DB::table('users')->where('id', 1)->value('idasesor'));
+        $this->assertEquals('CASTIGADO', DB::table('users')->where('id', 1)->value('origen_global'));
+    }
+
+    public function test_cancelar_otro_credito_no_pasa_a_global_si_queda_otro_vigente(): void
+    {
+        $this->cuenta(1, ['castigo_estado' => 'CONFIRMADO']);
+        $this->cuenta(2); // sigue vigente
+        $this->cuenta(3, ['estado' => 'CANCELADO']);
+        CastigoCredito::pasarAGlobalSiSoloQuedanCastigados(1);
+        $this->assertEquals(10, DB::table('users')->where('id', 1)->value('idasesor'));
+    }
+
+    public function test_cancelar_credito_sin_castigo_no_afecta_al_cliente(): void
+    {
+        $this->cuenta(1, ['estado' => 'CANCELADO']);
+        CastigoCredito::pasarAGlobalSiSoloQuedanCastigados(1);
+        $this->assertEquals(10, DB::table('users')->where('id', 1)->value('idasesor'));
+        $this->assertNull(DB::table('users')->where('id', 1)->value('origen_global'));
     }
 }

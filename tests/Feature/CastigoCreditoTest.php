@@ -31,7 +31,7 @@ class CastigoCreditoTest extends TestCase
         });
         Schema::create('credito', function (Blueprint $t) {
             $t->integer('id')->primary(); $t->integer('idcliente'); $t->integer('idasesor'); $t->integer('idtienda');
-            $t->string('estado'); $t->integer('idestadocredito');
+            $t->string('estado'); $t->integer('idestadocredito'); $t->integer('idforma_credito')->default(2);
             $t->decimal('saldo_pendientepago', 12, 2); $t->decimal('total_pendientepago', 12, 2);
         });
         $migration = require database_path('migrations/2026_10_27_000001_add_castigo_to_credito.php');
@@ -95,6 +95,13 @@ class CastigoCreditoTest extends TestCase
         $this->cuenta(1, ['castigo_estado' => 'PENDIENTE']);
         $this->expectException(HttpException::class);
         (new CastigoCredito)->procesar([1], 10, 1, true);
+    }
+
+    public function test_solo_cnp_se_puede_castigar(): void
+    {
+        $this->cuenta(1, ['idforma_credito' => 1]); // CP
+        $this->expectException(ValidationException::class);
+        (new CastigoCredito)->procesar([1], 40, 1, false);
     }
 
     public function test_sin_deuda_no_se_solicita(): void
@@ -217,5 +224,48 @@ class CastigoCreditoTest extends TestCase
             $this->assertArrayHasKey('idusuariocobranza', $e->errors());
             $this->assertEquals('PENDIENTE', DB::table('credito')->value('castigo_estado'));
         }
+    }
+
+    public function test_cancelar_pendiente_libera_la_cuenta(): void
+    {
+        $this->cuenta(1, ['castigo_estado' => 'PENDIENTE', 'castigo_solicitante' => 40, 'castigo_solicitado_at' => now()]);
+        (new CastigoCredito)->cancelar([1], 40, 1);
+        $credito = DB::table('credito')->where('id', 1)->first();
+        $this->assertEquals('NINGUNO', $credito->castigo_estado);
+        $this->assertNull($credito->castigo_solicitante);
+        $this->assertNull($credito->castigo_solicitado_at);
+    }
+
+    public function test_cancelar_exige_que_este_pendiente(): void
+    {
+        $this->cuenta(1);
+        $this->expectException(ValidationException::class);
+        (new CastigoCredito)->cancelar([1], 40, 1);
+    }
+
+    public function test_cancelar_exige_permiso_de_solicitar(): void
+    {
+        $this->cuenta(1, ['castigo_estado' => 'PENDIENTE']);
+        $this->expectException(HttpException::class);
+        (new CastigoCredito)->cancelar([1], 20, 1);
+    }
+
+    public function test_cancelar_rechaza_cuenta_de_otra_agencia(): void
+    {
+        $this->cuenta(1, ['idtienda' => 2, 'castigo_estado' => 'PENDIENTE']);
+        DB::table('users_permiso')->insert(['idusers' => 40, 'idtienda' => 2, 'idpermiso' => 1, 'idsession' => 2]);
+        $this->expectException(ValidationException::class);
+        (new CastigoCredito)->cancelar([1], 40, 1);
+    }
+
+    public function test_cancelar_castigo_desde_controlador(): void
+    {
+        $this->cuenta(1, ['castigo_estado' => 'PENDIENTE', 'castigo_solicitante' => 40]);
+        Auth::shouldReceive('id')->andReturn(40);
+        Auth::shouldReceive('check')->andReturn(true);
+        $request = Request::create('/', 'POST', ['view' => 'cancelar_castigo', 'creditos' => [1], 'idresponsable' => 40, 'responsableclave' => 'secreto']);
+        $response = (new CarteraCreditoController)->store($request, 1);
+        $this->assertEquals('CORRECTO', $response->getData(true)['resultado']);
+        $this->assertEquals('NINGUNO', DB::table('credito')->value('castigo_estado'));
     }
 }

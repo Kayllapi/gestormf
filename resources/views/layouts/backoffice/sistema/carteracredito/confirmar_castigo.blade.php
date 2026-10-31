@@ -1,6 +1,6 @@
 <form action="javascript:;" onsubmit="confirmar_castigo(this)">
     <div class="modal-header">
-        <h5 class="modal-title">AUTORIZAR</h5>
+        <h5 class="modal-title">{{ $accionCastigo === 'cancelar_castigo' ? 'CANCELAR SOLICITUD' : 'AUTORIZAR' }}</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
     </div>
     <div class="modal-body">
@@ -35,7 +35,10 @@
         <div class="text-danger mt-2" role="alert" id="castigo-error"></div>
     </div>
     <div class="modal-footer">
-        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Autorizar</button>
+        <button type="submit" class="btn btn-primary">
+            <i class="fa-solid {{ $accionCastigo === 'cancelar_castigo' ? 'fa-rotate-left' : 'fa-floppy-disk' }}"></i>
+            {{ $accionCastigo === 'cancelar_castigo' ? 'Cancelar Solicitud' : 'Autorizar' }}
+        </button>
     </div>
 </form>
 <script>

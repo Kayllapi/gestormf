@@ -37,6 +37,7 @@ class CastigoCredito
             }
             foreach ($creditos as $credito) {
                 $valido = $credito->estado === 'DESEMBOLSADO' && (int) $credito->idestadocredito === 1
+                    && (int) $credito->idforma_credito === 2 // solo CNP se puede castigar
                     && ((float) $credito->saldo_pendientepago > 0 || (float) $credito->total_pendientepago > 0)
                     && $credito->castigo_estado === ($confirmar ? 'PENDIENTE' : 'NINGUNO');
                 if ($confirmar) {
@@ -66,6 +67,26 @@ class CastigoCredito
                     }
                 }
             }
+        }, 3);
+    }
+
+    public function cancelar(array $ids, int $usuario, int $agencia): void
+    {
+        DB::transaction(function () use ($ids, $usuario, $agencia) {
+            $creditos = DB::table('credito')->whereIn('id', $ids)->orderBy('id')->lockForUpdate()->get();
+            if ($creditos->count() !== count($ids)) {
+                throw ValidationException::withMessages(['creditos' => 'Hay créditos que ya no existen.']);
+            }
+            foreach ($creditos as $credito) {
+                abort_unless(self::puedeSolicitar($usuario, (int) $credito->idtienda), 403);
+                $valido = $credito->castigo_estado === 'PENDIENTE' && (int) $credito->idtienda === $agencia;
+                if (!$valido) {
+                    throw ValidationException::withMessages(['creditos' => 'La selección contiene cuentas que ya no están pendientes o son ajenas a su cartera. Actualice la tabla.']);
+                }
+            }
+            DB::table('credito')->whereIn('id', $ids)->update([
+                'castigo_estado' => 'NINGUNO', 'castigo_solicitante' => null, 'castigo_solicitado_at' => null,
+            ]);
         }, 3);
     }
 }

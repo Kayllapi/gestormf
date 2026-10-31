@@ -147,6 +147,9 @@
     if (!ids.length) { alert('Seleccione al menos una cuenta.'); return; }
     modal({route: "{{url('backoffice/'.$tienda->id.'/carteracredito/0/edit')}}?view=solicitar_castigo&creditos="+ids.join(','), size: 'modal-sm'});
   }
+  function cancelar_castigo(idcredito) {
+    modal({route: "{{url('backoffice/'.$tienda->id.'/carteracredito/0/edit')}}?view=cancelar_castigo&creditos="+idcredito, size: 'modal-sm'});
+  }
   // sistema_select2({ input:'#idagencia',val:'{{$tienda->id}}' });
   sistema_select2({ input:'#idformacredito' });
   sistema_select2({ input:'#idasesor' });

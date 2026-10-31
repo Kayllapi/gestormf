@@ -224,7 +224,7 @@ class CarteraCreditoController extends Controller
                       // Cancelar una solicitud de castigo solo lo puede hacer quien tiene permiso de solicitar,
                       // y solo en la pantalla donde se solicita (no en la de confirmar).
                       if ($request->seleccion_castigo === 'administrador' && CastigoCredito::puedeSolicitar((int) Auth::id(), (int) $value->idtienda)) {
-                          $pendienteHtml .= ' <a href="javascript:;" title="Cancelar solicitud de castigo" onclick="cancelar_castigo('.(int) $value->id.')" style="color:#c00;font-weight:bold;text-decoration:none;">&times;</a>';
+                          $pendienteHtml .= ' <a href="javascript:;" title="Cancelar solicitud de castigo" onclick="cancelar_castigo('.(int) $value->id.')" class="btn btn-danger btn-sm" style="padding: 4px 11px;"><i class="fa fa-close"></i></a>';
                       }
                   }
                   $seleccion = '<td>'.($seleccionable ? '<input type="checkbox" class="castigo-cuenta" aria-label="Seleccionar cuenta" value="'.(int) $value->id.'">' : '').'<small>'.$pendienteHtml.'</small></td>';

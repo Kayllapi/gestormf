@@ -227,7 +227,8 @@ class CarteraCreditoController extends Controller
                           $pendienteHtml .= ' <a href="javascript:;" title="Cancelar solicitud de castigo" onclick="cancelar_castigo('.(int) $value->id.')" class="btn btn-danger btn-sm" style="padding: 4px 11px;"><i class="fa fa-close"></i></a>';
                       }
                   }
-                  $seleccion = '<td>'.($seleccionable ? '<input type="checkbox" class="castigo-cuenta" aria-label="Seleccionar cuenta" value="'.(int) $value->id.'">' : '').'<small>'.$pendienteHtml.'</small></td>';
+                  $checkboxCastigo = $seleccionable ? '<label class="chk"><input type="checkbox" class="castigo-cuenta" aria-label="Seleccionar cuenta" value="'.(int) $value->id.'"><span class="checkmark"></span></label>' : '';
+                  $seleccion = '<td>'.$checkboxCastigo.'<small>'.$pendienteHtml.'</small></td>';
               }
               $html .= "<tr id='show_data_select' idcredito='{$value->id}'>".$seleccion."
                             <td>".($key+1)."</td>
@@ -335,10 +336,11 @@ class CarteraCreditoController extends Controller
               ->unique('id');
           $cobranza = $confirmar ? DB::table('users')
               ->join('users_permiso', 'users_permiso.idusers', 'users.id')
+              ->join('permiso', 'permiso.id', 'users_permiso.idpermiso')
               ->where('users.idestado', 1)
               ->where('users_permiso.idtienda', $idtienda)
               ->where('users_permiso.idpermiso', 12)
-              ->select('users.id', 'users.nombrecompleto')
+              ->select('users.id', 'users.nombrecompleto', 'permiso.nombre as nombrepermiso')
               ->orderBy('users.nombrecompleto')
               ->get()->unique('id') : collect();
           return view(sistema_view().'/carteracredito/confirmar_castigo', ['tienda' => $tienda, 'creditos' => $ids, 'usuarios' => $usuarios, 'cobranza' => $cobranza, 'accionCastigo' => $request->view]);

@@ -103,8 +103,11 @@
                 <thead class="table-dark" style="position: sticky;top: 0;"> 
                   <tr>
                     <th>
-                      <input type="checkbox" aria-label="Seleccionar todas las cuentas" onchange="$('.castigo-cuenta').prop('checked', this.checked)">
-                      P.Castigo
+                      <label class="chk">
+                        <input type="checkbox" aria-label="Seleccionar todas las cuentas" onchange="$('.castigo-cuenta').prop('checked', this.checked)">
+                        <span class="checkmark"></span>
+                        <span>P.Castigo</span>
+                      </label>
                     </th>
                     <th>N°</th>
                     <th>CUENTA</th>

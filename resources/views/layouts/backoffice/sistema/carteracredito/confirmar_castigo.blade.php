@@ -27,7 +27,7 @@
             <select class="form-select" id="idusuariocobranza" required>
                 <option value=""></option>
                 @foreach($cobranza as $value)
-                <option value="{{$value->id}}">{{$value->nombrecompleto}}</option>
+                <option value="{{$value->id}}">{{$value->nombrecompleto}} ({{$value->nombrepermiso}})</option>
                 @endforeach
             </select>
         </div>

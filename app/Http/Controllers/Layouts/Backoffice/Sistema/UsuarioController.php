@@ -599,9 +599,9 @@ class UsuarioController extends Controller
             $this->validate($request,$rules,$messages);
             // FIN NUEVAS VALIDACIONES
           
+            // El documento debe ser unico en todo el sistema, no solo dentro de la agencia actual.
             $usuario = DB::table('users')
                 ->where('identificacion',$identificacion)
-                ->where('idtienda',$idtienda)
                 ->where('idestado',1)
                 ->first();
 
@@ -1665,10 +1665,10 @@ class UsuarioController extends Controller
             $this->validate($request,$rules,$messages);
             // FIN NUEVAS VALIDACIONES
           
+            // El documento debe ser unico en todo el sistema, no solo dentro de la agencia actual.
             $usuario = DB::table('users')
                 ->where('id','<>',$idusuario)
                 ->where('identificacion',$identificacion)
-                ->where('idtienda',$idtienda)
                 ->where('idestado',1)
                 ->first();
 

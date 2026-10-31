@@ -665,11 +665,11 @@ class EstadocuentaController extends Controller
           return $data;
         }
         else if($id == 'show_credito_asesor'){
-            // Buscar clientes solo del asesor actual
+            // Buscar cualquier cliente de la agencia (propios, global o de otro asesor);
+            // al seleccionar uno que no es del asesor logueado se avisa con show_valida_cliente.
             $buscar = $request->buscar;
             $creditos = DB::table('users')
                 ->where('users.idtienda', $idtienda)
-                ->where('users.idasesor', Auth::id())
                 ->where('users.idtipousuario', 2)
                 ->where(function($query) use($buscar){
                     $query->where('users.identificacion','LIKE','%'.$buscar.'%')
@@ -681,7 +681,7 @@ class EstadocuentaController extends Controller
                     'users.nombrecompleto as nombrecliente',
                 )
                 ->get();
-      
+
             $data = [];
             foreach($creditos as $value){
                 $data[] = [
@@ -690,6 +690,41 @@ class EstadocuentaController extends Controller
                 ];
             }
           return $data;
+        }
+        else if($id == 'show_valida_cliente'){
+            // Mismos mensajes que UsuarioController::show_valida_identificacion, pero buscando
+            // por id (el cliente ya fue elegido en el buscador) en vez de por documento.
+            $cliente = DB::table('users')
+                ->leftJoin('users as asesor','asesor.id','=','users.idasesor')
+                ->leftJoin('tienda','tienda.id','=','users.idtienda')
+                ->where('users.id', $request->idcliente)
+                ->where('users.idtipousuario', 2)
+                ->select(
+                    'users.idasesor',
+                    'asesor.nombrecompleto as asesor',
+                    'tienda.nombreagencia as agencianombre'
+                )
+                ->first();
+
+            if(!$cliente || $cliente->idasesor==Auth::id()){
+                return response()->json([
+                    'existe'  => false,
+                    'mensaje' => '',
+                ]);
+            }
+
+            // sin asesor asignado: esta en el modulo global
+            if($cliente->idasesor==null || $cliente->idasesor==0){
+                return response()->json([
+                    'existe'  => true,
+                    'mensaje' => 'Cliente pertenece a la data de Inactivos Global - Agencia '.$cliente->agencianombre.'; solicitar que te asignen',
+                ]);
+            }
+
+            return response()->json([
+                'existe'  => true,
+                'mensaje' => 'Cliente asignado a Asesor/Ejecutivo '.$cliente->asesor.' - Ag. '.$cliente->agencianombre,
+            ]);
         }
     }
 

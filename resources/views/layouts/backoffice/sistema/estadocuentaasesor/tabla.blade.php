@@ -131,12 +131,41 @@
   }
 
   $("#idclientesearch").on("change", function(e) {
-      $('#idcliente_credito').val(e.currentTarget.value);
-      verpdf();
-      lista_credito_cliente(e.currentTarget.value);
-      $("#exampleModal").modal('hide');
-      
+      var idcliente = e.currentTarget.value;
+      if(!idcliente){ return; }
+      validar_cliente_antes_de_cargar(idcliente);
   });
+
+  // Antes de cargar al cliente, se valida que sea propio: si es global o de otro
+  // ejecutivo, se avisa y se limpia la busqueda para que elija otro cliente, sin
+  // llegar a cargar su informacion en la vista.
+  function validar_cliente_antes_de_cargar(idcliente){
+      $.ajax({
+          url:"{{url('backoffice/'.$tienda->id.'/estadocuenta/show_valida_cliente')}}",
+          type:'GET',
+          data: {
+              idcliente : idcliente
+          },
+          success: function (respuesta){
+              if(respuesta.existe){
+                  // se cierra el buscador antes de abrir la alerta: mostrar dos modales
+                  // encimados dejaba el fondo oscuro pegado al cerrar la alerta
+                  $("#exampleModal").modal('hide');
+                  modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+encodeURIComponent(respuesta.mensaje), size: 'modal-sm' });
+                  // al cerrar la alerta, se reabre el buscador para que elija otro cliente
+                  $('.modal').last().one('hidden.bs.modal', function(){
+                      $('#exampleModal').modal('show');
+                      buscarcliente();
+                  });
+                  return;
+              }
+              $('#idcliente_credito').val(idcliente);
+              verpdf();
+              lista_credito_cliente(idcliente);
+              $("#exampleModal").modal('hide');
+          }
+      });
+  }
   function verpdf(){
       //$('#cont_opcioncredito').css('display','none');
       $('#cont_irainicio').css('display','block');

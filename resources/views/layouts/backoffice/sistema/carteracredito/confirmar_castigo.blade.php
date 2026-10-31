@@ -21,6 +21,17 @@
             <label for="responsableclave">Contraseña *</label>
             <input type="password" class="form-control" id="responsableclave" required autocomplete="current-password">
         </div>
+        @if($accionCastigo === 'confirmar_castigo')
+        <div class="mb-1">
+            <label for="idusuariocobranza">Asignar a Ejecutivo Cobranza *</label>
+            <select class="form-select" id="idusuariocobranza" required>
+                <option value=""></option>
+                @foreach($cobranza as $value)
+                <option value="{{$value->id}}">{{$value->nombrecompleto}}</option>
+                @endforeach
+            </select>
+        </div>
+        @endif
         <div class="text-danger mt-2" role="alert" id="castigo-error"></div>
     </div>
     <div class="modal-footer">
@@ -29,13 +40,14 @@
 </form>
 <script>
     sistema_select2({ input:'#idresponsable' });
+    sistema_select2({ input:'#idusuariocobranza' });
 function confirmar_castigo(form) {
     let boton = $(form).find('[type=submit]');
     boton.prop('disabled', true);
     $('#castigo-error').text('');
     $.ajax({
         url: "{{url('backoffice/'.$tienda->id.'/carteracredito')}}", type: 'POST',
-        data: {_token: '{{csrf_token()}}', view: @json($accionCastigo ?? 'confirmar_castigo'), creditos: @json($creditos), idresponsable: $('#idresponsable').val(), responsableclave: $('#responsableclave').val()},
+        data: {_token: '{{csrf_token()}}', view: @json($accionCastigo ?? 'confirmar_castigo'), creditos: @json($creditos), idresponsable: $('#idresponsable').val(), responsableclave: $('#responsableclave').val(), idusuariocobranza: $('#idusuariocobranza').val()},
         success: function(res) {
             $(form).find('[data-bs-dismiss=modal]').click();
             lista_credito();

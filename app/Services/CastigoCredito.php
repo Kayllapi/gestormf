@@ -25,9 +25,9 @@ class CastigoCredito
         })->exists();
     }
 
-    public function procesar(array $ids, int $usuario, int $agencia, bool $confirmar): void
+    public function procesar(array $ids, int $usuario, int $agencia, bool $confirmar, ?int $idusuariocobranza = null): void
     {
-        DB::transaction(function () use ($ids, $usuario, $agencia, $confirmar) {
+        DB::transaction(function () use ($ids, $usuario, $agencia, $confirmar, $idusuariocobranza) {
             // Serializar solicitudes del mismo cliente antes de bloquear sus cuentas.
             $clientes = DB::table('credito')->whereIn('id', $ids)->pluck('idcliente')->unique()->sort()->values();
             DB::table('users')->whereIn('id', $clientes)->orderBy('id')->lockForUpdate()->get();
@@ -51,6 +51,7 @@ class CastigoCredito
             }
             DB::table('credito')->whereIn('id', $ids)->update($confirmar ? [
                 'castigo_estado' => 'CONFIRMADO', 'castigo_responsable' => $usuario, 'castigo_confirmado_at' => now(),
+                'idusuariocobranza' => $idusuariocobranza,
             ] : [
                 'castigo_estado' => 'PENDIENTE', 'castigo_solicitante' => $usuario, 'castigo_solicitado_at' => now(),
             ]);
@@ -60,7 +61,8 @@ class CastigoCredito
                         ->where('idestadocredito', 1)->where('castigo_estado', '!=', 'CONFIRMADO')
                         ->where(fn ($q) => $q->where('saldo_pendientepago', '>', 0)->orWhere('total_pendientepago', '>', 0))->exists();
                     if (!$vigentes) {
-                        DB::table('users')->where('id', $cliente)->update(['idasesor' => 0, 'origen_global' => 'CASTIGADO']);
+                        // Antes el cliente quedaba en el pool global (idasesor=0); ahora pasa directo al ejecutivo de cobranza elegido.
+                        DB::table('users')->where('id', $cliente)->update(['idasesor' => $idusuariocobranza, 'origen_global' => 'CASTIGADO']);
                     }
                 }
             }

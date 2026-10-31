@@ -56,9 +56,10 @@ class CreditoCastigadoController extends Controller
               $where[] = ['credito.idtienda',$request->idagencia];
           }
 
-        //   if($request->idasesor!='' && $request->idasesor!=0){
-        //       $where[] = ['credito.idasesor',$request->idasesor];
-        //   }
+          if($request->idasesor!='' && $request->idasesor!=0){
+              // El select "EJECUTIVO" aquí solo lista cobranza (permiso 12): se filtra por quién cobra la cuenta castigada, no por el asesor original del crédito.
+              $where[] = ['credito.idusuariocobranza',$request->idasesor];
+          }
 
           if($request->inicio){
               $where[] = ['credito.fecha_desembolso','<=',$request->inicio.' 23:59:59'];
@@ -366,9 +367,10 @@ class CreditoCastigadoController extends Controller
           }
 
           if($request->idasesor!='' && $request->idasesor!=0){
-              $where[] = ['credito.idasesor',$request->idasesor];
+              // El select "EJECUTIVO" aquí solo lista cobranza (permiso 12): se filtra por quién cobra la cuenta castigada, no por el asesor original del crédito.
+              $where[] = ['credito.idusuariocobranza',$request->idasesor];
           }
-          
+
           if($request->fecha_inicio){
               $where[] = ['credito.fecha_desembolso','<=',$request->fecha_inicio.' 23:59:59'];
           }
@@ -445,9 +447,10 @@ class CreditoCastigadoController extends Controller
           }
 
           if($request->idasesor!='' && $request->idasesor!=0){
-              $where[] = ['credito.idasesor',$request->idasesor];
+              // El select "EJECUTIVO" aquí solo lista cobranza (permiso 12): se filtra por quién cobra la cuenta castigada, no por el asesor original del crédito.
+              $where[] = ['credito.idusuariocobranza',$request->idasesor];
           }
-          
+
           if($request->fecha_inicio){
               $where[] = ['credito.fecha_desembolso','<=',$request->fecha_inicio.' 23:59:59'];
           }

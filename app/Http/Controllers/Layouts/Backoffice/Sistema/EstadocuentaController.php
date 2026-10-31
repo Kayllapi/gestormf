@@ -617,6 +617,7 @@ class EstadocuentaController extends Controller
             // Buscar clientes de todas las agencias y asesores
             $buscar = $request->buscar;
             $creditos = DB::table('users')
+                ->where('users.idtipousuario', 2)
                 ->where(function($query) use($buscar){
                     $query->where('users.identificacion','LIKE','%'.$buscar.'%')
                         ->orWhere('users.nombrecompleto','LIKE','%'.$buscar.'%');
@@ -642,6 +643,7 @@ class EstadocuentaController extends Controller
             $buscar = $request->buscar;
             $creditos = DB::table('users')
                 ->where('users.idtienda', $idtienda)
+                ->where('users.idtipousuario', 2)
                 ->where(function($query) use($buscar){
                     $query->where('users.identificacion','LIKE','%'.$buscar.'%')
                         ->orWhere('users.nombrecompleto','LIKE','%'.$buscar.'%');
@@ -668,6 +670,7 @@ class EstadocuentaController extends Controller
             $creditos = DB::table('users')
                 ->where('users.idtienda', $idtienda)
                 ->where('users.idasesor', Auth::id())
+                ->where('users.idtipousuario', 2)
                 ->where(function($query) use($buscar){
                     $query->where('users.identificacion','LIKE','%'.$buscar.'%')
                         ->orWhere('users.nombrecompleto','LIKE','%'.$buscar.'%');

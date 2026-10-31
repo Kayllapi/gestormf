@@ -36,11 +36,15 @@ class CastigoCreditoTest extends TestCase
         });
         $migration = require database_path('migrations/2026_10_27_000001_add_castigo_to_credito.php');
         $migration->up();
+        $migration = require database_path('migrations/2026_10_30_000001_add_idusuariocobranza_to_credito.php');
+        $migration->up();
         DB::table('users')->insert([['id' => 1, 'idasesor' => 10], ['id' => 20, 'idasesor' => 0]]);
         DB::table('permiso')->insert([['id' => 2, 'rango' => 1], ['id' => 1, 'rango' => 3]]);
         DB::table('users')->insert(['id' => 40, 'idasesor' => 0]);
         DB::table('users_permiso')->insert(['idusers' => 40, 'idtienda' => 1, 'idpermiso' => 1, 'idsession' => 2]);
         DB::table('users_permiso')->insert(['idusers' => 20, 'idtienda' => 1, 'idpermiso' => 2, 'idsession' => 2]);
+        DB::table('users')->insert(['id' => 50, 'idasesor' => 0]);
+        DB::table('users_permiso')->insert(['idusers' => 50, 'idtienda' => 1, 'idpermiso' => 12, 'idsession' => 2]);
     }
 
     private function cuenta(int $id, array $extra = []): void
@@ -58,21 +62,22 @@ class CastigoCreditoTest extends TestCase
         $s = new CastigoCredito;
         $s->procesar([1, 2], 40, 1, false);
         $this->assertEquals(10, DB::table('users')->where('id', 1)->value('idasesor'));
-        $s->procesar([1, 2], 20, 1, true);
-        $this->assertEquals(0, DB::table('users')->where('id', 1)->value('idasesor'));
+        $s->procesar([1, 2], 20, 1, true, 50);
+        $this->assertEquals(50, DB::table('users')->where('id', 1)->value('idasesor'));
         $this->assertEquals('CASTIGADO', DB::table('users')->where('id', 1)->value('origen_global'));
         $this->assertEquals(2, DB::table('credito')->where('castigo_estado', 'CONFIRMADO')->count());
         $this->assertEquals(240, DB::table('credito')->sum('total_pendientepago'));
         $this->assertEquals(20, DB::table('credito')->where('id', 1)->value('castigo_responsable'));
+        $this->assertEquals(50, DB::table('credito')->where('id', 1)->value('idusuariocobranza'));
         $this->expectException(ValidationException::class);
-        $s->procesar([1], 20, 1, true);
+        $s->procesar([1], 20, 1, true, 50);
     }
 
     public function test_otro_credito_con_deuda_en_otra_agencia_conserva_asesor(): void
     {
         $this->cuenta(1); $this->cuenta(2, ['idtienda' => 2, 'saldo_pendientepago' => 0, 'total_pendientepago' => 10]);
         $s = new CastigoCredito;
-        $s->procesar([1], 40, 1, false); $s->procesar([1], 20, 1, true);
+        $s->procesar([1], 40, 1, false); $s->procesar([1], 20, 1, true, 50);
         $this->assertEquals(10, DB::table('users')->where('id', 1)->value('idasesor'));
     }
 
@@ -104,7 +109,7 @@ class CastigoCreditoTest extends TestCase
         $this->cuenta(1, ['castigo_estado' => 'PENDIENTE']);
         Auth::shouldReceive('id')->andReturn(20);
         Auth::shouldReceive('check')->andReturn(true);
-        $request = Request::create('/', 'POST', ['view' => 'confirmar_castigo', 'creditos' => [1], 'idresponsable' => 20, 'responsableclave' => 'secreto']);
+        $request = Request::create('/', 'POST', ['view' => 'confirmar_castigo', 'creditos' => [1], 'idresponsable' => 20, 'responsableclave' => 'secreto', 'idusuariocobranza' => 50]);
         $response = (new CarteraCreditoController)->store($request, 1);
         $this->assertEquals('CORRECTO', $response->getData(true)['resultado']);
         $this->assertEquals('CONFIRMADO', DB::table('credito')->value('castigo_estado'));
@@ -115,8 +120,8 @@ class CastigoCreditoTest extends TestCase
         $this->cuenta(1, ['castigo_estado' => 'PENDIENTE']);
         $this->cuenta(2, ['estado' => 'CANCELADO']);
         $this->cuenta(3, ['saldo_pendientepago' => 0, 'total_pendientepago' => 0]);
-        (new CastigoCredito)->procesar([1], 20, 1, true);
-        $this->assertEquals(0, DB::table('users')->where('id', 1)->value('idasesor'));
+        (new CastigoCredito)->procesar([1], 20, 1, true, 50);
+        $this->assertEquals(50, DB::table('users')->where('id', 1)->value('idasesor'));
     }
     public function test_administrador_confirma_con_su_password(): void
     {
@@ -140,7 +145,7 @@ class CastigoCreditoTest extends TestCase
         $this->cuenta(1, ['castigo_estado' => 'PENDIENTE']);
         Auth::shouldReceive('id')->andReturn(20);
         Auth::shouldReceive('check')->andReturn(true);
-        $request = Request::create('/', 'POST', ['view' => 'confirmar_castigo', 'creditos' => [1], 'idresponsable' => 30, 'responsableclave' => 'clave-elegido']);
+        $request = Request::create('/', 'POST', ['view' => 'confirmar_castigo', 'creditos' => [1], 'idresponsable' => 30, 'responsableclave' => 'clave-elegido', 'idusuariocobranza' => 50]);
         $response = (new CarteraCreditoController)->store($request, 1);
         $this->assertEquals('CORRECTO', $response->getData(true)['resultado']);
         $this->assertEquals(30, DB::table('credito')->value('castigo_responsable'));
@@ -189,5 +194,28 @@ class CastigoCreditoTest extends TestCase
         (new CarteraCreditoController)->store($request, 1);
         $this->assertEquals('PENDIENTE', DB::table('credito')->value('castigo_estado'));
         $this->assertEquals(40, DB::table('credito')->value('castigo_solicitante'));
+    }
+
+    public function test_confirmar_exige_ejecutivo_cobranza(): void
+    {
+        $this->cuenta(1, ['castigo_estado' => 'PENDIENTE']);
+        Auth::shouldReceive('id')->andReturn(20);
+        Auth::shouldReceive('check')->andReturn(true);
+        $request = Request::create('/', 'POST', ['view' => 'confirmar_castigo', 'creditos' => [1], 'idresponsable' => 20, 'responsableclave' => 'secreto']);
+        $this->expectException(ValidationException::class);
+        (new CarteraCreditoController)->store($request, 1);
+    }
+
+    public function test_confirmar_rechaza_ejecutivo_sin_permiso_cobranza(): void
+    {
+        $this->cuenta(1, ['castigo_estado' => 'PENDIENTE']);
+        Auth::shouldReceive('id')->andReturn(20);
+        Auth::shouldReceive('check')->andReturn(true);
+        $request = Request::create('/', 'POST', ['view' => 'confirmar_castigo', 'creditos' => [1], 'idresponsable' => 20, 'responsableclave' => 'secreto', 'idusuariocobranza' => 10]);
+        try { (new CarteraCreditoController)->store($request, 1); $this->fail(); }
+        catch (ValidationException $e) {
+            $this->assertArrayHasKey('idusuariocobranza', $e->errors());
+            $this->assertEquals('PENDIENTE', DB::table('credito')->value('castigo_estado'));
+        }
     }
 }

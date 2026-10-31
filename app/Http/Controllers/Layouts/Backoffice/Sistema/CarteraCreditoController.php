@@ -53,7 +53,20 @@ class CarteraCreditoController extends Controller
             if (!$usuario || !hash_equals((string) $usuario->clave, (string) $request->responsableclave)) {
                 throw \Illuminate\Validation\ValidationException::withMessages(['responsableclave' => 'La contraseña de autorización es incorrecta.']);
             }
-            app(CastigoCredito::class)->procesar(array_map('intval', $request->creditos), (int) $request->idresponsable, (int) $idtienda, $confirmar);
+            $idusuariocobranza = null;
+            if ($confirmar) {
+                $request->validate(['idusuariocobranza' => 'required|integer']);
+                $esCobranza = DB::table('users_permiso')
+                    ->where('idusers', $request->idusuariocobranza)
+                    ->where('idtienda', $idtienda)
+                    ->where('idpermiso', 12)
+                    ->exists();
+                if (!$esCobranza) {
+                    throw \Illuminate\Validation\ValidationException::withMessages(['idusuariocobranza' => 'El ejecutivo de cobranza seleccionado no es válido para esta agencia.']);
+                }
+                $idusuariocobranza = (int) $request->idusuariocobranza;
+            }
+            app(CastigoCredito::class)->procesar(array_map('intval', $request->creditos), (int) $request->idresponsable, (int) $idtienda, $confirmar, $idusuariocobranza);
             return response()->json(['resultado' => 'CORRECTO', 'mensaje' => $confirmar ? 'Castigo confirmado.' : 'Solicitud enviada para confirmación.']);
         }
         if($request->input('view') == 'registrar') {
@@ -304,7 +317,15 @@ class CarteraCreditoController extends Controller
               ->orderBy('users.nombrecompleto')->get()
               ->filter(fn ($usuario) => $confirmar ? CastigoCredito::puedeConfirmar((int) $usuario->id, (int) $idtienda) : CastigoCredito::puedeSolicitar((int) $usuario->id, (int) $idtienda))
               ->unique('id');
-          return view(sistema_view().'/carteracredito/confirmar_castigo', ['tienda' => $tienda, 'creditos' => $ids, 'usuarios' => $usuarios, 'accionCastigo' => $request->view]);
+          $cobranza = $confirmar ? DB::table('users')
+              ->join('users_permiso', 'users_permiso.idusers', 'users.id')
+              ->where('users.idestado', 1)
+              ->where('users_permiso.idtienda', $idtienda)
+              ->where('users_permiso.idpermiso', 12)
+              ->select('users.id', 'users.nombrecompleto')
+              ->orderBy('users.nombrecompleto')
+              ->get()->unique('id') : collect();
+          return view(sistema_view().'/carteracredito/confirmar_castigo', ['tienda' => $tienda, 'creditos' => $ids, 'usuarios' => $usuarios, 'cobranza' => $cobranza, 'accionCastigo' => $request->view]);
       }
       $credito = DB::table('credito')
                     ->join('users as cliente','cliente.id','credito.idcliente')

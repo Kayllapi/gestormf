@@ -149,6 +149,7 @@
 </div>
 @endif
 @if ($usuario)
+@include('layouts.backoffice.sistema.carteracredito.buscadores')
 <script>
   sistema_select2({ input:'#idformacredito' });
 
@@ -172,7 +173,10 @@
         $('#table-lista-credito').addClass('d-none');
       },
       success: function (res){
+        let busquedas = $('#table-lista-credito .fila-total input').map(function() { return this.value; }).get();
         $('#table-lista-credito > tbody').html(res.html);
+        $('#table-lista-credito .fila-total input').each(function(indice) { this.value = busquedas[indice] || ''; });
+        filtrar_cartera_credito();
         $("tr#show_data_select").on("click", function() {
             $('tr.selected').removeClass('selected');
             $(this).addClass('selected');

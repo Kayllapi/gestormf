@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h5 class="modal-title">Gestión de Cobranza Castigados</h5>
+  <h5 class="modal-title">Gestión de Cobranza <span style="background-color: #E8E585;">Castigados</span></h5>
   
   <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>

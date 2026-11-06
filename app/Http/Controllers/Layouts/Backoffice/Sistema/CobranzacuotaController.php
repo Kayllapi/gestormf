@@ -2831,7 +2831,7 @@ class CobranzacuotaController extends Controller
         }
         elseif($request->input('view') == 'cobrar') {
 
-            $bancos = DB::table('banco')->where('estado','ACTIVO')->get();
+            $bancos = DB::table('banco')->where('estado','ACTIVO')->where('idtienda',$idtienda)->get();
             
             // Si llega selección desde "CTA X COBRAR", solo considerar esos cargos
             $cargoIds = $request->input('idcredito_cargo_ids', null);

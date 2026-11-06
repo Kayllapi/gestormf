@@ -47,6 +47,7 @@ class UsuarioController extends Controller
             $contratolaboral = DB::table('f_contratolaboral')->get();
             return view(sistema_view().'/usuario/create',[
                 'tienda' => $tienda,
+                'modulo'            => $request->input('modulo'),
                 'tipoinformacion'   => $tipoinformacion,
                 'fuenteingreso'     => $fuenteingreso,
                 'genero'            => $genero,
@@ -724,7 +725,7 @@ class UsuarioController extends Controller
                 'iduserspadre'        => 0,
                 'idtipousuario'       => 2, // 3=usuario sistema
                 'idtienda'            => $idtienda,
-                'idasesor'            => Auth::user()->id,
+                'idasesor'            => in_array($request->input('modulo'),['usuarioglobal','usuarioglobalagencia']) ? 0 : Auth::user()->id,
                 'idestadousuario'     => 2,
                 'idestado'            => 1,
                 'idgenero'            => $idgenero,

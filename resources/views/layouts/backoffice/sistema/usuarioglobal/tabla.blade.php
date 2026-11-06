@@ -3,7 +3,7 @@
       Clientes/Garantes Inactivos Global Total
       <a href="javascript:;" 
          class="btn btn-primary" 
-         onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/usuario/create?view=registrar&modulo=usuario')}}'})">
+         onclick="modal({route:'{{url('backoffice/'.$tienda->id.'/usuario/create?view=registrar&modulo=usuarioglobal')}}'})">
         <i class="fa-solid fa-plus"></i> Registrar
       </a>
     </h5>

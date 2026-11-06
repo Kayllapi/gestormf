@@ -4,6 +4,7 @@
           method: 'POST',
           data:{
               view: 'registrar',
+              modulo: '{{ $modulo }}',
               telefono_cliente: seleccionar_cliente_financiera(`celular-cliente`),
               telefono_pareja: seleccionar_cliente_financiera(`celular-pareja`),
               referencia_cliente: seleccionar_referencia(),
@@ -1081,10 +1082,8 @@
                     modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+encodeURIComponent(mensaje), size: 'modal-sm' });
                     $(document).off('click.modalCloseUsuarioAutorizacion', '#modal-close-usuario-autorizacion')
                         .on('click.modalCloseUsuarioAutorizacion', '#modal-close-usuario-autorizacion', function(){
-                            // console.log('Click en modal-close-usuario-autorizacion');
                             $('#modal-close-usuario-registrar').click(); 
                         });
-                    
                 }
             }
         });

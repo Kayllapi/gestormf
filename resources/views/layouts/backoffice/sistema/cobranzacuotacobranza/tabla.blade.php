@@ -106,7 +106,10 @@
                       </tr>
                   </tbody>
                 </table>
-                
+                <div style="text-align: right;">
+                  <span id="cont_listanegra"></span>
+                </div>
+
               </div>
               <div style="width:16%;">
                     <div style="background-color: #bcbcbc;font-weight: bold;" class="p-1">
@@ -184,7 +187,10 @@
               </div>
               <div style="width:60%;">
                     <div class="mb-1 d-flex justify-content-between align-items-center" style="background-color: #bcbcbc !important;color: #000 !important;font-weight: bold;">
-                      <span class="badge" style="background-color: #bcbcbc;color: #000;">DATOS DE PRÉSTAMO</span>
+                      <span>
+                        <span class="badge" style="background-color: #bcbcbc;color: #000;">DATOS DE PRÉSTAMO</span>
+                        <span class="badge" style="background-color: #dc3545;color: #fff;display:none;" id="badge_castigado">CRÉDITO CASTIGADO</span>
+                      </span>
                       <span class="badge" style="background-color: #bcbcbc;color: #000;" id="agencia_desembolso">DESEMBOLSADO EN AGENCIA: -</span>
                     </div>
                     <div id="table-datosprestamos" class="modal-body"></div>
@@ -251,13 +257,19 @@
         $("#exampleModal").modal('hide');
         //load_create_prestamo(res.cliente.id);
         $('#btn-create-cliente').removeClass('d-none');
-        
+
+        $('#cont_listanegra').html('');
+        if(res.estado_listanegra==2){
+          $('#cont_listanegra').html('<span style="background-color: #ffc9ca;padding-left: 5px;padding-right: 5px;border-radius: 5px;color: #93222c;">Cliente Observado</span>');
+        }
+
         // limpiar
         $('#cont_irainicio').css('display','block');
-        
-        
+
+
         $('#idcredito').val('0');
         $('#table-datosprestamos').html('');
+        $('#badge_castigado').css('display','none');
         $('#agencia_desembolso').html('DESEMBOLSADO EN AGENCIA: ');
         $('#numero_cuotas').html('0');
         $('#detalle_descuento_numerocuota').html('(0)');
@@ -412,6 +424,7 @@
             success: function (respuesta){
                 $('#idcredito').val(respuesta.idcredito);
                 $('#table-datosprestamos').html(respuesta.datosprestamos);
+                $('#badge_castigado').css('display', respuesta.es_castigado ? 'inline-block' : 'none');
                 $('#agencia_desembolso').html('DESEMBOLSADO EN AGENCIA: <span style="font-weight: normal; background-color: #E8E585;">'+ (respuesta.agencia_desembolso || '-') +'</span>');
               
                 $('#numero_cuotas').html(respuesta.numero_cuotas);

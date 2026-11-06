@@ -1795,6 +1795,7 @@ class CobranzacuotaController extends Controller
               'datosprestamos' => $datosprestamos,
               // Agencia donde se desbordo el credito (credito.idtienda -> tienda.nombreagencia)
               'agencia_desembolso' => $credito?($credito->agencia_desembolso?:''):'',
+              'es_castigado' => $credito ? ($credito->castigo_estado === 'CONFIRMADO') : false,
               'descuento_capital' => $credito_descuentocuotas?$credito_descuentocuotas->capital:'0.00',
               'descuento_interes' => $credito_descuentocuotas?$credito_descuentocuotas->interes:'0.00',
               'descuento_comision' => $credito_descuentocuotas?$credito_descuentocuotas->comision:'0.00',
@@ -2309,6 +2310,15 @@ class CobranzacuotaController extends Controller
         }
         else if($id == 'showlistacreditos'){
           $cliente = DB::table('users')->whereId($request->idcliente)->select('users.id','users.nombrecompleto','users.identificacion')->first();
+
+          $s_listanegra = DB::table('s_listanegra')->where('idcliente',$request->idcliente)->first();
+          $estado_listanegra = 1;
+          $motivo_listanegra = '';
+          if($s_listanegra){
+              $estado_listanegra = 2;
+              $motivo_listanegra = $s_listanegra->motivo;
+          }
+
           $creditos = DB::table('credito')
                             ->join('forma_pago_credito','forma_pago_credito.id','credito.idforma_pago_credito')
                             ->join('users as cliente','cliente.id','credito.idcliente')
@@ -2349,9 +2359,11 @@ class CobranzacuotaController extends Controller
           }
           return array(
             'cliente' => $cliente,
-            'html' => $html
+            'html' => $html,
+            'estado_listanegra' => $estado_listanegra,
+            'motivo_listanegra' => $motivo_listanegra,
           );
-          
+
         }
         else if($id == 'show_descuentodecuotas'){
           $total_cronograma = DB::table('credito_cronograma')

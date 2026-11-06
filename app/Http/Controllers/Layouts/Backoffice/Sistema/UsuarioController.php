@@ -1050,14 +1050,17 @@ class UsuarioController extends Controller
                 )
                 ->first();
             
-            if($cliente->idasesor==Auth::user()->id){
-                $cliente = null;
-            }
-
             if($cliente==null){
                 return response()->json([
                     'existe'  => false,
                     'mensaje' => '',
+                ]);
+            }
+
+            if($cliente->idasesor==Auth::user()->id){
+                return response()->json([
+                    'existe'  => true,
+                    'mensaje' => 'El cliente ya existe en tu propia cartera',
                 ]);
             }
 

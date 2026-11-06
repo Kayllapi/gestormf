@@ -411,7 +411,7 @@
             success: function (respuesta){
                 $('#idcredito').val(respuesta.idcredito);
                 $('#table-datosprestamos').html(respuesta.datosprestamos);
-                $('#agencia_desembolso').html('DESEMBOLSADO EN AGENCIA: <span style="font-weight: normal;">'+ (respuesta.agencia_desembolso || '-') +'</span>');
+                $('#agencia_desembolso').html('DESEMBOLSADO EN AGENCIA: <span style="font-weight: normal; background-color: #E8E585;">'+ (respuesta.agencia_desembolso || '-') +'</span>');
               
                 $('#numero_cuotas').html(respuesta.numero_cuotas);
       

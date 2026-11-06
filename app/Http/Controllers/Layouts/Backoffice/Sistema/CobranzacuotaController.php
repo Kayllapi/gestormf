@@ -2230,6 +2230,7 @@ class CobranzacuotaController extends Controller
                 ->join('users as cliente', 'cliente.id', '=', 'credito.idcliente')
                 ->where('credito.estado', 'DESEMBOLSADO')
                 ->where('credito.idestadocredito', 1)
+                ->where('credito.castigo_estado', '!=', 'CONFIRMADO')
                 ->where(function ($q) use ($request) {
                     $q->where('cliente.identificacion', 'LIKE', '%' . $request->buscar . '%')
                     ->orWhere('cliente.nombrecompleto', 'LIKE', '%' . $request->buscar . '%');
@@ -2265,6 +2266,8 @@ class CobranzacuotaController extends Controller
                 ->where('credito.idtienda', $idtienda)
                 ->when($request->boolean('solo_castigados'), function ($query) {
                     $query->where('credito.castigo_estado', 'CONFIRMADO');
+                }, function ($query) {
+                    $query->where('credito.castigo_estado', '!=', 'CONFIRMADO');
                 })
                 ->where(function ($q) use ($request) {
                     $q->where('cliente.identificacion', 'LIKE', '%' . $request->buscar . '%')

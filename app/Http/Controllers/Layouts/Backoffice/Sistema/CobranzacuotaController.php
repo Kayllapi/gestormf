@@ -685,6 +685,42 @@ class CobranzacuotaController extends Controller
                     'idestado' => 1,
                 ]);
 
+                // Pago de credito castigado: se recupera dinero de una deuda ya dada de baja,
+                // asi que se registra tambien como Ingreso Extraordinario (sustento "Credito Castigado").
+                if ($credito->castigo_estado === 'CONFIRMADO' && (float) $total_pagar > 0) {
+                    $ultimo_ingresoextraordinario = DB::table('ingresoextraordinario')
+                        ->orderBy('ingresoextraordinario.codigo', 'desc')
+                        ->limit(1)
+                        ->first();
+                    $codigo_ingresoextraordinario = $ultimo_ingresoextraordinario ? $ultimo_ingresoextraordinario->codigo + 1 : 1;
+
+                    $s_idsustento_creditocastigado = DB::table('s_sustento_comprobante')
+                        ->where('nombre', 'Credito Castigado')
+                        ->value('id');
+
+                    $cliente_castigado = DB::table('users')->whereId($credito->idcliente)->first();
+
+                    DB::table('ingresoextraordinario')->insert([
+                        'fecharegistro' => Carbon::now(),
+                        'fechapago' => Carbon::now(),
+                        'codigoprefijo' => 'OI',
+                        'codigo' => $codigo_ingresoextraordinario,
+                        'monto' => $total_pagar,
+                        'descripcion' => 'Pago de credito castigado N° cuenta C'.str_pad($credito->cuenta, 8, '0', STR_PAD_LEFT)
+                            .($cliente_castigado ? ' - '.$cliente_castigado->identificacion.' '.$cliente_castigado->nombrecompleto : ''),
+                        's_idsustento_comprobante' => $s_idsustento_creditocastigado,
+                        'numerooperacion' => $request->numerooperacion != '' ? $request->numerooperacion : '',
+                        'banco' => $banco,
+                        'cuenta' => $cuenta,
+                        'idbanco' => $request->idbanco != '' ? $request->idbanco : 0,
+                        'idformapago' => $request->idformapago,
+                        'idresponsable' => Auth::user()->id,
+                        'idtienda' => $idtienda,
+                        'idestadoeliminado' => 1,
+                        'idestado' => 1,
+                    ]);
+                }
+
                 // Foto historica - Cancelacion Total: se guarda aca (recien existe
                 // $idcredito_cobranzacuota) para que el extorno pueda encontrarla despues. No hay
                 // saldo/cuotas que trasladar (el credito queda cerrado), asi que esos campos van en 0.

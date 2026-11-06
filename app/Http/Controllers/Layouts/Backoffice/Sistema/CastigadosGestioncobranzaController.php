@@ -804,7 +804,7 @@ class CastigadosGestioncobranzaController extends Controller
           return $pdf->stream('ESTADO_DE_CUENTA.pdf');
       }
         else if($request->input('view') == 'exportar') {
-            return view(sistema_view().'/gestioncobranza/exportar',[
+            return view(sistema_view().'/castigadosgestioncobranza/exportar',[
                 'tienda' => $tienda,
                 'dias_retencion_desde' => $request->dias_retencion_desde,
                 'dias_retencion_hasta' => $request->dias_retencion_hasta,
@@ -813,12 +813,16 @@ class CastigadosGestioncobranzaController extends Controller
             ]);
         }
         else if( $request->input('view') == 'exportar_pdf' ){
-              
+
           $where = [];
           if($request->idagencia!=''){
               $where[] = ['credito.idtienda',$request->idagencia];
           }
-          
+          if($request->idasesor!=0){
+              // El select "EJECUTIVO" aquí solo lista cobranza (permiso 12): se filtra por quién cobra la cuenta castigada, no por el asesor original del crédito.
+              $where[] = ['credito.idusuariocobranza',$request->idasesor];
+          }
+
           $creditos = DB::table('credito')
               ->join('forma_pago_credito','forma_pago_credito.id','credito.idforma_pago_credito')
               ->join('users as cliente','cliente.id','credito.idcliente')

@@ -189,7 +189,7 @@
                     <div class="mb-1 d-flex justify-content-between align-items-center" style="background-color: #bcbcbc !important;color: #000 !important;font-weight: bold;">
                       <span>
                         <span class="badge" style="background-color: #bcbcbc;color: #000;">DATOS DE PRÉSTAMO</span>
-                        <span class="badge" style="background-color: #dc3545;color: #fff;display:none;" id="badge_castigado">CRÉDITO CASTIGADO</span>
+                        <span class="badge" style="background-color: #ffc9ca;color: #93222c;display:none;" id="badge_castigado">CRÉDITO CASTIGADO</span>
                       </span>
                       <span class="badge" style="background-color: #bcbcbc;color: #000;" id="agencia_desembolso">DESEMBOLSADO EN AGENCIA: -</span>
                     </div>

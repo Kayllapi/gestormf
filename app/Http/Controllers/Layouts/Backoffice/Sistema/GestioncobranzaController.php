@@ -58,7 +58,7 @@ class GestioncobranzaController extends Controller
           if($request->idasesor!=0){
               $where[] = ['credito.idasesor',$request->idasesor];
           }
-          
+
           $creditos = DB::table('credito')
               ->join('forma_pago_credito','forma_pago_credito.id','credito.idforma_pago_credito')
               ->join('users as cliente','cliente.id','credito.idcliente')
@@ -72,6 +72,7 @@ class GestioncobranzaController extends Controller
               ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
               ->where('credito.estado','DESEMBOLSADO')
               ->where('credito.idestadocredito',1)
+              ->where('credito.castigo_estado','!=','CONFIRMADO')
               ->where($where)
               ->select(
                   'credito.*',
@@ -373,7 +374,7 @@ class GestioncobranzaController extends Controller
           if($request->idasesor!=0){
               $where[] = ['credito.idasesor',$request->idasesor];
           }
-          
+
           $creditos = DB::table('credito')
               ->join('forma_pago_credito','forma_pago_credito.id','credito.idforma_pago_credito')
               ->join('users as cliente','cliente.id','credito.idcliente')
@@ -387,6 +388,7 @@ class GestioncobranzaController extends Controller
               ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
               ->where('credito.estado','DESEMBOLSADO')
               ->where('credito.idestadocredito',1)
+              ->where('credito.castigo_estado','!=','CONFIRMADO')
               ->where($where)
               ->select(
                   'credito.*',
@@ -828,6 +830,7 @@ class GestioncobranzaController extends Controller
               ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
               ->where('credito.estado','DESEMBOLSADO')
               ->where('credito.idestadocredito',1)
+              ->where('credito.castigo_estado','!=','CONFIRMADO')
               ->where($where)
               ->select(
                   'credito.*',

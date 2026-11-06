@@ -56,7 +56,8 @@ class CastigadosGestioncobranzaController extends Controller
               $where[] = ['credito.idtienda',$request->idagencia];
           }
           if($request->idasesor!=0){
-              $where[] = ['credito.idasesor',$request->idasesor];
+              // El select "EJECUTIVO" aquí solo lista cobranza (permiso 12): se filtra por quién cobra la cuenta castigada, no por el asesor original del crédito.
+              $where[] = ['credito.idusuariocobranza',$request->idasesor];
           }
           
           $creditos = DB::table('credito')
@@ -372,7 +373,8 @@ class CastigadosGestioncobranzaController extends Controller
               $where[] = ['credito.idtienda',$request->idagencia];
           }
           if($request->idasesor!=0){
-              $where[] = ['credito.idasesor',$request->idasesor];
+              // El select "EJECUTIVO" aquí solo lista cobranza (permiso 12): se filtra por quién cobra la cuenta castigada, no por el asesor original del crédito.
+              $where[] = ['credito.idusuariocobranza',$request->idasesor];
           }
           
           $creditos = DB::table('credito')
@@ -695,7 +697,7 @@ class CastigadosGestioncobranzaController extends Controller
             $usuarios = DB::table('users')
                 ->join('users_permiso','users_permiso.idusers','users.id')
                 ->join('permiso','permiso.id','users_permiso.idpermiso')
-                ->whereIn('users_permiso.idpermiso',[3,4,7,11]) // senior, junior, caja
+                ->whereIn('users_permiso.idpermiso',[12]) // cobranza
                 ->where($where)
                 ->select(
                     'users.*',

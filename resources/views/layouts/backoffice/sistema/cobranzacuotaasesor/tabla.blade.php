@@ -213,7 +213,8 @@
           delay: 250,
           data: function (params) {
               return {
-                    buscar: params.term
+                    buscar: params.term,
+                    por_asesor: 1
               };
           },
           processResults: function (data) {

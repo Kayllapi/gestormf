@@ -2259,12 +2259,23 @@ class CobranzacuotaController extends Controller
             return $data;
         }
         elseif($id == 'show_credito_tienda'){
+            $porAsesor = $request->boolean('por_asesor');
+            $soloCastigados = $request->boolean('solo_castigados');
+
             $creditos = DB::table('credito')
                 ->join('users as cliente', 'cliente.id', '=', 'credito.idcliente')
                 ->where('credito.estado', 'DESEMBOLSADO')
                 ->where('credito.idestadocredito', 1)
-                ->where('credito.idtienda', $idtienda)
-                ->when($request->boolean('solo_castigados'), function ($query) {
+                // asesor: solo sus propios creditos, de cualquier agencia
+                ->when($porAsesor, function ($query) {
+                    $query->where('credito.idasesor', Auth::id());
+                })
+                // agencia (sin por_asesor ni solo_castigados): solo la agencia actual
+                ->when(!$porAsesor && !$soloCastigados, function ($query) use ($idtienda) {
+                    $query->where('credito.idtienda', $idtienda);
+                })
+                // castigados: de todas las agencias, sin restringir por asesor
+                ->when($soloCastigados, function ($query) {
                     $query->where('credito.castigo_estado', 'CONFIRMADO');
                 }, function ($query) {
                     $query->where('credito.castigo_estado', '!=', 'CONFIRMADO');

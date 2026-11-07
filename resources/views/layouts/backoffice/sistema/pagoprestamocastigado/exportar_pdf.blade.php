@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HISTORIAL DE PAGOS DE PRÉSTAMOS</title>
+    <title>HISTORIAL DE PAGOS - CRÉDITOS CASTIGADOS</title>
     <style>
       *{
         font-family:helvetica;
@@ -116,7 +116,7 @@
   </footer>
   <main>
     <div class="container">
-      <h4 align="center">HISTORIAL DE PAGOS DE PRÉSTAMOS</h4>
+      <h4 align="center">HISTORIAL DE PAGOS - CRÉDITOS CASTIGADOS</h4>
            <b>De: {{$fecha_inicio}} Al: {{$fecha_fin}}</b>
           
               

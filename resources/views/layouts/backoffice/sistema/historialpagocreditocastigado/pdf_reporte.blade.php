@@ -116,7 +116,7 @@
   </footer>
   <main>
     <div class="container">
-      <h4 align="center">HISTORIAL DE PAGO DETALLADO DE CRÉDITOS</h4>
+      <h4 align="center">HISTORIAL DE PAGO DETALLADO - CRÉDITOS CASTIGADOS</h4>
             <div ><b>AGENCIA: </b>{{ $agencia->nombreagencia }}  </div>
             <div ><b>PERIODO: </b>{{ date_format(date_create($fechainicio),"d-m-Y") }} -  
               <b>AL: </b>{{date_format(date_create($fechafin),"d-m-Y")}}</div>

@@ -182,9 +182,11 @@
               identificacion : identificacion
           },
           success: function (respuesta){
-              if(respuesta.existe){
+              // si ya es cliente de la propia cartera no se alerta, continua con normalidad
+              if(respuesta.existe && !respuesta.propio){
                   var mensaje = respuesta.mensaje;
                   modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+encodeURIComponent(mensaje), size: 'modal-sm' });
+                  $('#idcliente').val(null).trigger("change");
               }
           }
       });

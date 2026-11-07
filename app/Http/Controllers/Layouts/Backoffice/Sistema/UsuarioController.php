@@ -1058,9 +1058,11 @@ class UsuarioController extends Controller
                 ]);
             }
 
+            // cliente propio: no es una alerta, puede continuar con normalidad
             if($cliente->idasesor==Auth::user()->id){
                 return response()->json([
                     'existe'  => true,
+                    'propio'  => true,
                     'mensaje' => 'El cliente ya existe en tu propia cartera',
                 ]);
             }
@@ -1069,12 +1071,14 @@ class UsuarioController extends Controller
             if($cliente->idasesor==null || $cliente->idasesor==0){
                 return response()->json([
                     'existe'  => true,
+                    'propio'  => false,
                     'mensaje' => 'Cliente pertenece a la data de Inactivos Global - Agencia '.$cliente->agencianombre.'; solicitar que te asignen',
                 ]);
             }
 
             return response()->json([
                 'existe'  => true,
+                'propio'  => false,
                 'mensaje'  => 'Cliente asignado a Asesor/Ejecutivo '.$cliente->asesor.' - Ag. '.$cliente->agencianombre,
             ]);
         }

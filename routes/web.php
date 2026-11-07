@@ -37,6 +37,17 @@ Route::group(['middleware' => ['auth','verified']], function () {
   
         Route::resource('/backoffice/{idtienda}/inicio', 'Layouts\Backoffice\Sistema\MasterController');
         foreach($modulos as $value) {
-            Route::resource($value->vista, $value->controlador);
+            // Route::resource usa el ultimo segmento de la vista como nombre del parametro
+            // ({ese_nombre}) en las rutas show/edit/update/destroy. Symfony no permite nombres
+            // de parametro de mas de 32 caracteres, asi que para vistas largas se usa "id" en
+            // su lugar (no afecta a los controladores: el binding de parametros es posicional,
+            // no por nombre, por eso todos siguen recibiendo $id igual).
+            $segmentos = explode('/', $value->vista);
+            $baseResource = end($segmentos);
+            $options = [];
+            if (strlen($baseResource) > 32) {
+                $options['parameters'] = [$baseResource => 'id'];
+            }
+            Route::resource($value->vista, $value->controlador, $options);
         }
 });

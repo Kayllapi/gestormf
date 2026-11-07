@@ -718,6 +718,7 @@ class CobranzacuotaController extends Controller
                         'idtienda' => $idtienda,
                         'idestadoeliminado' => 1,
                         'idestado' => 1,
+                        'idcredito_cobranzacuota' => $idcredito_cobranzacuota,
                     ]);
                 }
 

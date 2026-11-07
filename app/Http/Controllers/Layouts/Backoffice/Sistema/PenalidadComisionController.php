@@ -94,7 +94,7 @@ class PenalidadComisionController extends Controller
         $query = DB::table('tienda')->where('idestado',1);
 
         if($idtiendas->isNotEmpty()){
-            $query->whereIn('id',$idtiendas);
+            // $query->whereIn('id',$idtiendas);
         }
 
         return $query->orderBy('nombreagencia')->get();

@@ -48,6 +48,8 @@ class HistorialpagocreditoController extends Controller
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
         if($request->input('view') == 'pdf_reporte'){
           $where = [];
+          // Los pagos de creditos castigados se muestran en "Historial de Pagos Castigados" (HistorialpagocreditoCastigadoController), no aqui.
+          $where[] = ['credito.castigo_estado','!=','CONFIRMADO'];
           if($request->idagencia!=''){
               $where[] = ['credito.idtienda',$request->idagencia];
           }
@@ -95,6 +97,8 @@ class HistorialpagocreditoController extends Controller
               
             
           $where = [];
+          // Los pagos de creditos castigados se muestran en "Historial de Pagos Castigados" (HistorialpagocreditoCastigadoController), no aqui.
+          $where[] = ['credito.castigo_estado','!=','CONFIRMADO'];
           if($request->idagencia!=''){
               $where[] = ['credito.idtienda',$request->idagencia];
           }

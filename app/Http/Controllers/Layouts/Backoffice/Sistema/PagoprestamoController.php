@@ -57,6 +57,9 @@ class PagoprestamoController extends Controller
         if($id == 'showtable'){
           $where = [];
           $where2 = [];
+          // Los pagos de creditos castigados se muestran en "Prestamos Castigados" (PagoprestamoCastigadoController), no aqui.
+          $where[] = ['credito.castigo_estado','!=','CONFIRMADO'];
+          $where2[] = ['credito.castigo_estado','!=','CONFIRMADO'];
           if($request->idagencia!=''){
               $where[] = ['credito.idtienda',$request->idagencia];
               $where2[] = ['credito.idtienda',$request->idagencia];
@@ -419,6 +422,9 @@ class PagoprestamoController extends Controller
             
           $where = [];
           $where2 = [];
+          // Los pagos de creditos castigados se muestran en "Prestamos Castigados" (PagoprestamoCastigadoController), no aqui.
+          $where[] = ['credito.castigo_estado','!=','CONFIRMADO'];
+          $where2[] = ['credito.castigo_estado','!=','CONFIRMADO'];
           if($request->idagencia!=''){
               $where[] = ['credito.idtienda',$request->idagencia];
               $where2[] = ['credito.idtienda',$request->idagencia];

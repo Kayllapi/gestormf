@@ -24,8 +24,9 @@
           Se copiarán los <b>Giros Económicos</b>.
           Podiendo modificar los valores dentro de la agencia.
         </div>
-        <div class="alert alert-success p-1" style="color: #000; margin-top: 5px;">
-            <b>Nota:</b> Los datos modificados/registrados en agencia destino se reemplazarán por completo.
+        <div class="alert alert-danger p-1" style="color: #000; margin-top: 5px;">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <b>Nota:</b> Los datos modificados/registrados en agencia destino se reemplazarán por completo al momento de COPIAR CONFIGURACIÓN.
         </div>
         <div class="row mt-1">
             <label class="col-sm-4 col-form-label" style="text-align: right;">Agencia ORIGEN:</label>
@@ -56,18 +57,22 @@
 <script>
   sistema_select2({ input:'#idorigen' });
   sistema_select2({ input:'#iddestino' });
-  (function(){
-      var origen  = $('#idorigen').val();
-      var destino = $('#iddestino').val();
 
-      // Evita que el destino venga preseleccionado igual al origen.
-      $('#iddestino option').each(function(){
-          if($(this).val()==origen){
-              $(this).prop('disabled',true);
-          }
-      });
-      if(destino==origen){
-          $('#iddestino option:not([disabled])').first().prop('selected',true);
+  // Evita que destino quede igual a origen. Se reevalua cada vez que cambia el origen:
+  // antes solo se calculaba una vez al abrir el modal, por lo que la primera agencia de
+  // la lista quedaba inhabilitada como destino para siempre y elegir otro origen no
+  // actualizaba las opciones deshabilitadas de destino.
+  function giroeconomico_sync_destino(){
+      var origen = $('#idorigen').val();
+
+      $('#iddestino option').prop('disabled',false);
+      $('#iddestino option[value="'+origen+'"]').prop('disabled',true);
+
+      if($('#iddestino').val()==origen){
+          $('#iddestino').val($('#iddestino option:not([disabled])').first().val()).trigger('change');
       }
-  })();
+  }
+
+  $('#idorigen').on('change',giroeconomico_sync_destino);
+  giroeconomico_sync_destino();
 </script>

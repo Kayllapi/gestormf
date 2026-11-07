@@ -2,9 +2,9 @@
   <h5 class="modal-title">
     Bancos
     <button type="button" class="btn btn-success" id="btn-create-cliente" onclick="load_nuevo_banco()"><i class="fa-solid fa-plus"></i> Nuevo</button>
-    @if($agencias->count()>1)
+    {{-- @if($agencias->count()>1)
     <button type="button" class="btn btn-primary" onclick="copiar_banco()"><i class="fa fa-copy"></i> Copiar Configuración</button>
-    @endif
+    @endif --}}
   </h5>
   
   <button type="button" class="btn-close" onclick="ir_inicio()"></button>

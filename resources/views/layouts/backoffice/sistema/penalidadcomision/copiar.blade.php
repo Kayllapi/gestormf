@@ -23,6 +23,7 @@
           Podiendo modificar los valores dentro de la agencia.
         </div>
         <div class="alert alert-danger p-1" style="color: #000; margin-top: 5px;">
+            <i class="fa-solid fa-triangle-exclamation"></i>
             <b>Nota:</b> Los datos modificados/registrados en agencia destino se reemplazarán por completo al momento de COPIAR CONFIGURACIÓN.
         </div>
         <div class="row mt-1">

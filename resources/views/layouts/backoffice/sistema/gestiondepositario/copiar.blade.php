@@ -26,6 +26,7 @@
           Podiendo modificar el tarifario dentro de la agencia.
         </div>
         <div class="alert alert-info p-1" style="color: #000; margin-top: 5px;">
+            <i class="fa-solid fa-triangle-exclamation"></i>
             <b>Nota:</b> Los datos modificados/registrados en agencia destino se mantendrán.
         </div>
         <div class="row mt-1">
@@ -57,18 +58,22 @@
 <script>
   sistema_select2({ input:'#idorigen' });
   sistema_select2({ input:'#iddestino' });
-  (function(){
-      var origen  = $('#idorigen').val();
-      var destino = $('#iddestino').val();
 
-      // Evita que el destino venga preseleccionado igual al origen.
-      $('#iddestino option').each(function(){
-          if($(this).val()==origen){
-              $(this).prop('disabled',true);
-          }
-      });
-      if(destino==origen){
-          $('#iddestino option:not([disabled])').first().prop('selected',true);
+  // Evita que destino quede igual a origen. Se reevalua cada vez que cambia el origen:
+  // antes solo se calculaba una vez al abrir el modal, por lo que la primera agencia de
+  // la lista quedaba inhabilitada como destino para siempre y elegir otro origen no
+  // actualizaba las opciones deshabilitadas de destino.
+  function gestiondepositario_sync_destino(){
+      var origen = $('#idorigen').val();
+
+      $('#iddestino option').prop('disabled',false);
+      $('#iddestino option[value="'+origen+'"]').prop('disabled',true);
+
+      if($('#iddestino').val()==origen){
+          $('#iddestino').val($('#iddestino option:not([disabled])').first().val()).trigger('change');
       }
-  })();
+  }
+
+  $('#idorigen').on('change',gestiondepositario_sync_destino);
+  gestiondepositario_sync_destino();
 </script>

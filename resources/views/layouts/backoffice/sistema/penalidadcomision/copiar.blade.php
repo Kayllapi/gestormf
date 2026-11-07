@@ -23,7 +23,7 @@
           Podiendo modificar los valores dentro de la agencia.
         </div>
         <div class="alert alert-danger p-1" style="color: #000; margin-top: 5px;">
-            <b>Nota:</b> Los datos modificados/registrados en agencia destino se reemplazarán por completo al momento de copiar configuración.
+            <b>Nota:</b> Los datos modificados/registrados en agencia destino se reemplazarán por completo al momento de COPIAR CONFIGURACIÓN.
         </div>
         <div class="row mt-1">
             <label class="col-sm-4 col-form-label" style="text-align: right;">Agencia ORIGEN:</label>

@@ -1,11 +1,11 @@
 <div class="modal-header">
     <h5 class="modal-title">
       Gestion de Depositario y Rep. Común
-      @if($agencias->count()>1)
+      {{-- @if($agencias->count()>1)
       <button type="button" class="btn btn-primary" onclick="copiar_depositario()">
         <i class="fa fa-copy"></i> Copiar Configuración
       </button>
-      @endif
+      @endif --}}
     </h5>
     <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>

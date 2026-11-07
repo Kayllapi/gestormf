@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HISTORIAL DE PAGO DETALLADO DE CRÉDITOS</title>
+    <title>HISTORIAL DE PAGO DETALLADO - CRÉDITOS CASTIGADOS</title>
     <style>
       *{
         font-family:helvetica;

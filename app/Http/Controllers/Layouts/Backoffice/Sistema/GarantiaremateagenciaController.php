@@ -614,20 +614,29 @@ class GarantiaremateagenciaController extends Controller
             return $pdf->stream('GENERAR FICHA.pdf');
         }
         elseif($request->input('view') == 'ver_reporte_remates'){
-            $credito = DB::table('credito')->whereId($request->idcredito)->first();
             return view(sistema_view().'/garantiaremateagencia/ver_reporte_remates',[
                 'tienda' => $tienda,
-                'credito' => $credito,
+                'idagencia' => $request->idagencia,
+                'idasesor' => $request->idasesor,
             ]);
         }
         elseif (request('view') == 'ver_reporte_rematespdf') {
-            $credito = DB::table('credito')->whereId($request->idcredito)->first();
+            // mismo filtro de Agencia/Ejecutivo que showcliente_asignar y showcliente_destino
+            $where = [];
+            if($request->idagencia!='' && $request->idagencia!=0){
+                $where[] = ['credito.idtienda',$request->idagencia];
+            }
+            if($request->idasesor!='' && $request->idasesor!=0){
+                $where[] = ['credito.idasesor',$request->idasesor];
+            }
+
             $credito_garantias = DB::table('credito_garantia')
               ->join('credito','credito.id','credito_garantia.idcredito')
               ->join('users as cliente','cliente.id','credito_garantia.idcliente')
               ->where('credito_garantia.estado_listagarantia','<>',0)
               ->where('credito.idestadocredito',1)
               ->where('credito.estado','DESEMBOLSADO')
+              ->where($where)
               ->select(
                 'credito_garantia.*',
                 'credito.cuenta as creditocuenta',
@@ -636,11 +645,11 @@ class GarantiaremateagenciaController extends Controller
               )
               ->orderBy('credito_garantia.fecharegistro_listaremate','asc')
               ->get();
-         
+
             $tabla = [];
             $i = 1;
             foreach($credito_garantias as $value){
-                
+
               $tabla[]=[
                   'numero'      => $i,
                   'id'      => $value->idcredito,
@@ -658,8 +667,24 @@ class GarantiaremateagenciaController extends Controller
               ];
                 $i++;
             }
+
+            // nombre de agencia y ejecutivo seleccionados en el filtro, para el encabezado del pdf
+            $agencia_nombre = 'TODAS LAS AGENCIAS';
+            if($request->idagencia!='' && $request->idagencia!=0){
+                $agencia_filtro = DB::table('tienda')->whereId($request->idagencia)->first();
+                $agencia_nombre = $agencia_filtro->nombreagencia ?? $agencia_nombre;
+            }
+
+            $ejecutivo_nombre = 'TODOS';
+            if($request->idasesor!='' && $request->idasesor!=0){
+                $ejecutivo_filtro = DB::table('users')->whereId($request->idasesor)->first();
+                $ejecutivo_nombre = $ejecutivo_filtro->nombrecompleto ?? $ejecutivo_nombre;
+            }
+
             $pdf = PDF::loadView(sistema_view().'/garantiaremateagencia/ver_reporte_rematespdf',[
                 'tienda' => $tienda,
+                'agencia_nombre' => $agencia_nombre,
+                'ejecutivo_nombre' => $ejecutivo_nombre,
                 'credito_garantias' => $tabla,
             ]);
             $pdf->setPaper('A4', 'landscape');

@@ -362,7 +362,9 @@
   }
   
   function reporte_remates() {
-      modal({ route:"{{url('backoffice/'.$tienda->id.'/garantiaremateagencia/0/edit?view=ver_reporte_remates')}}",  size: 'modal-xl' }); 
+      let idagencia = $('#idagencia').val();
+      let idasesor = $('#idasesor').val();
+      modal({ route:"{{url('backoffice/'.$tienda->id.'/garantiaremateagencia/0/edit?view=ver_reporte_remates')}}&idagencia="+idagencia+"&idasesor="+idasesor,  size: 'modal-xl' });
   }
 </script>  
 

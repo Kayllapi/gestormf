@@ -8,7 +8,9 @@
         <div class="col-sm-12 mt-2 text-center">
             <div class="col-sm-12 mt-2">
                 @php
-                    $url = url('/backoffice/'.$tienda->id.'/garantiaremateagencia/0/edit?view=ver_reporte_rematespdf');
+                    $url = url('/backoffice/'.$tienda->id.'/garantiaremateagencia/0/edit?view=ver_reporte_rematespdf'
+                        .'&idagencia='.$idagencia
+                        .'&idasesor='.$idasesor);
                 @endphp
                 <iframe 
                     id="iframe_generarficha_liquidacion" 

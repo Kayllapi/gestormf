@@ -129,7 +129,7 @@
     <main>
         <div class="container">
             <h4 align="center" style="margin-bottom: 0px;">REPORTE DE REMATES</h4>
-            <b>AGENCIA: </b>{{ $tienda->nombreagencia }}<br>
+            <b>AGENCIA: </b>{{ $agencia_nombre }} &nbsp;&nbsp; <b>EJECUTIVO: </b>{{ $ejecutivo_nombre }}<br>
             <table style="width:100%;" style="border-bottom: 2px solid #000;border-bottom: 2px solid #000;">
                 <thead class="table-dark">
                     <tr>

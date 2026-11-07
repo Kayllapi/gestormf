@@ -119,10 +119,7 @@
       <div align="center"><b>Periodo:</b> {{$fecha_inicio}} Al: {{$fecha_fin}}</div>
         @foreach($creditos as $valuecredito)
           <br>
-          @php
-            $liquidaciongarantiaresponsable = DB::table('users')->whereId($valuecredito->idliquidaciongarantiaresponsable)->first();
-          @endphp
-          <b>Cuenta: C{{$valuecredito->cuenta}}</b> - <b>Responsable: {{$liquidaciongarantiaresponsable->nombrecompleto}}</b> - <b>Fecha: {{ $valuecredito->fechaliquidaciongarantia }}</b>
+          <b>Cuenta: C{{$valuecredito->cuenta}}</b> - <b>Responsable: {{$valuecredito->responsablenombre}}</b> - <b>Fecha: {{ $valuecredito->fechaliquidaciongarantia }}</b>
           <table style="width:100%;" style="border-bottom:2px solid #000">
             <thead class="table-dark">
               <tr>
@@ -145,25 +142,15 @@
             </thead>
             <tbody>
               @php
-                $credito_garantias = DB::table('credito_garantia')
-                    ->join('credito','credito.id','credito_garantia.idcredito')
-                    ->join('users as cliente','cliente.id','credito_garantia.idcliente')
-                    ->whereIn('credito.idliquidaciongarantia',[1,2])
-                    ->where('credito_garantia.idcredito',$valuecredito->id)
-                    ->select(
-                      'credito_garantia.*',
-                      'cliente.nombrecompleto as clientenombrecompleto',
-                      'cliente.identificacion as dni'
-                    )
-                    ->get();
-                      
+                $credito_garantias_credito = $credito_garantias[(int) $valuecredito->id] ?? [];
+
                 $porcentaje_descuento_liquidacion = configuracion($tienda->id,'porcentaje_descuento_liquidacion')['valor'];
                         $total_valorcomercial = 0;
                         $total_descuento = 0;
                         $total_cobertura = 0;
                         $total_precio = 0;
                 $html = '';
-                foreach($credito_garantias as $key => $value){
+                foreach($credito_garantias_credito as $key => $value){
                     $valor_comercial_descuento = number_format($value->valor_comercial - ($value->valor_comercial * $porcentaje_descuento_liquidacion / 100), 2, '.', '');
 
                     $html .= "<tr id='show_data_select' idcredito='{$value->id}'>
@@ -188,7 +175,7 @@
                             $total_cobertura += $value->valor_realizacion;
                             $total_precio += $value->precioliquidacion;
                 }
-                if(count($credito_garantias)==0){
+                if(count($credito_garantias_credito)==0){
                     $html.= '<tr><td colspan="15" style="border-bottom: 2px solid #000;text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
                 }else{
                     $html .= '

@@ -142,27 +142,54 @@ class FichageneradaController extends Controller
               $where[] = ['credito.fechaliquidaciongarantia','>=',$request->fecha_inicio.' 00:00:00'];
               $where[] = ['credito.fechaliquidaciongarantia','<=',$request->fecha_fin.' 23:59:59'];
           }
-          
+
+          // mismo alcance que la tabla (showtable): solo creditos con ficha de
+          // liquidacion de garantia (1) o castigados (2). Sin este filtro, si se
+          // borran las fechas en el formulario, se exportaban TODOS los creditos.
+          // El responsable se trae con join (antes se consultaba por credito,
+          // dentro del PDF, uno por uno).
           $creditos = DB::table('credito')
+              ->leftJoin('users as responsable','responsable.id','credito.idliquidaciongarantiaresponsable')
+              ->whereIn('credito.idliquidaciongarantia',[1,2])
               ->where($where)
               ->select(
                 'credito.*',
+                'responsable.nombrecompleto as responsablenombre'
               )
               ->orderBy('credito.id')
               ->get();
-          
+
+          // garantias de todos los creditos anteriores en una sola consulta (antes
+          // se consultaba por credito, dentro del PDF, una vez por cada uno).
+          $credito_garantias = [];
+          DB::table('credito_garantia')
+              ->join('credito','credito.id','credito_garantia.idcredito')
+              ->join('users as cliente','cliente.id','credito_garantia.idcliente')
+              ->whereIn('credito_garantia.idcredito',$creditos->pluck('id'))
+              ->select(
+                'credito_garantia.*',
+                'cliente.nombrecompleto as clientenombrecompleto',
+                'cliente.identificacion as dni'
+              )
+              ->orderBy('credito_garantia.id')
+              ->get()
+              ->each(function($value) use (&$credito_garantias){
+                  $credito_garantias[(int) $value->idcredito][] = $value;
+              });
+
             $agencia = DB::table('tienda')->whereId($request->idagencia)->first();
-        
+
             $pdf = PDF::loadView(sistema_view().'/fichagenerada/exportar_pdf',[
                 'tienda' => $tienda,
                 'agencia' => $agencia,
                 'fecha_inicio' => $request->fecha_inicio,
                 'fecha_fin' => $request->fecha_fin,
                 'creditos' => $creditos,
-            ]); 
+                'credito_garantias' => $credito_garantias,
+            ]);
             $pdf->setPaper('A4', 'landscape');
             return $pdf->stream('CREDITO_DESEMBOLSADO.pdf');
-        }  
+        }
         elseif($request->input('view') == 'eliminar') {
         
             $usuarios = DB::table('users')

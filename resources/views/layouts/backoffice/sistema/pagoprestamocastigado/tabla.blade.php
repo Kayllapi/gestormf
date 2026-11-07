@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h5 class="modal-title">Historial de Pagos de  Préstamos Institucional</h5>
+  <h5 class="modal-title">Historial de Pagos de Préstamos Castigados Institucional</h5>
   
   <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>

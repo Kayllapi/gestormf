@@ -164,7 +164,7 @@
   sistema_select2({ input:'#idformacredito' });
   sistema_select2({ input:'#idasesor' });
 
-  cliente_tienda(0);
+  cliente_tienda({{$tienda->id}});
   
   $("#idagencia").on("change", function(e) {
       var idtienda = $('#idagencia').val();

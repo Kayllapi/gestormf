@@ -129,7 +129,6 @@
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">DOC</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Nombre</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Ejec. Origen</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Motivo</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Saldo C. Ult. Desemb. (S/.)</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">F. Pago</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Cuotas</td>
@@ -139,6 +138,7 @@
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Telefóno</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Direc/Domicilio</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Direc/Negocio</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Motivo</td>
                 </tr>
               </thead>
               <tbody>
@@ -233,7 +233,6 @@
                                 <td>{$value->identificacion}</td>
                                 <td>{$value->nombrecompleto}</td>
                                 <td>{$codigoasesor}</td>
-                                <td>{$motivo}</td>
                                 <td>{$saldo_pendientepago}</td>
                                 <td>{$frecuencianombre}</td>
                                 <td>{$cuota}</td>
@@ -243,6 +242,7 @@
                                 <td>{$value->numerotelefono}</td>
                                 <td>{$value->direccion}</td>
                                 <td>{$direccionnegocio}</td>
+                                <td>{$motivo}</td>
                             </tr>";
                   $orden++;
               }

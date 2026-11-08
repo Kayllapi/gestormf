@@ -467,6 +467,29 @@ class MasterController extends Controller
             }
             return $html;
         }
+        elseif($id == 'show_asesor_v3'){
+            $where = [];
+            if($request->idtienda!=0){
+                $where[] = ['users_permiso.idtienda', $request->idtienda];
+            }
+            $usuarios = DB::table('users')
+                ->join('users_permiso','users_permiso.idusers','users.id')
+                ->join('permiso','permiso.id','users_permiso.idpermiso')
+                ->whereIn('users_permiso.idpermiso',[3,4,7,11]) // 3:senior, 4:caja, 7:junior, 11:junio1
+                ->where($where)
+                ->select(
+                    'users.*',
+                    'users_permiso.id as idusers_permiso',
+                    'permiso.nombre as nombrepermiso'
+                )
+                ->get();
+            $html = '<option></option><option value="0">TODO</option>';
+            $html .= '<option></option><option value="99">INACTIVOS GLOBAL AGENCIA</option>';
+            foreach($usuarios as $value){
+                $html .= '<option value="'.$value->id.'" idusers_permiso="'.$value->idusers_permiso.'">'.$value->nombrecompleto.' ('.$value->nombrepermiso.')</option>';
+            }
+            return $html;
+        }
         /*elseif($id == 'show_mostrarsucursales'){
      
             $sucursales = DB::table('s_sucursal')

@@ -119,7 +119,7 @@
       <div align="center"><b>Periodo:</b> {{$fecha_inicio}} Al: {{$fecha_fin}}</div>
         @foreach($creditos as $valuecredito)
           <br>
-          <b>Cuenta: C{{$valuecredito->cuenta}}</b> - <b>Responsable: {{$valuecredito->responsablenombre}}</b> - <b>Fecha: {{ $valuecredito->fechaliquidaciongarantia }}</b>
+          <b>Cuenta: C{{$valuecredito->cuenta}}</b> - <b>Responsable: {{$valuecredito->responsablenombre}}</b> - <b>Fecha: {{ $valuecredito->fechaliquidaciongarantia }}</b> - <b>Agencia: {{$valuecredito->agencianombre}}</b>
           <table style="width:100%;" style="border-bottom:2px solid #000">
             <thead class="table-dark">
               <tr>

@@ -148,12 +148,16 @@ class FichageneradaController extends Controller
           // borran las fechas en el formulario, se exportaban TODOS los creditos.
           // El responsable se trae con join (antes se consultaba por credito,
           // dentro del PDF, uno por uno).
+          // la agencia se trae por credito (no la del filtro): como el reporte es
+          // institucional, sin agencia seleccionada mezcla creditos de varias agencias.
           $creditos = DB::table('credito')
+              ->join('tienda','tienda.id','credito.idtienda')
               ->leftJoin('users as responsable','responsable.id','credito.idliquidaciongarantiaresponsable')
               ->whereIn('credito.idliquidaciongarantia',[1,2])
               ->where($where)
               ->select(
                 'credito.*',
+                'tienda.nombreagencia as agencianombre',
                 'responsable.nombrecompleto as responsablenombre'
               )
               ->orderBy('credito.id')

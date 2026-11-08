@@ -93,6 +93,17 @@ class ReporteGarantiaController extends Controller
               //->whereIn('credito_garantia.idestadoentrega',[1,2])
               //->where('credito.idestadocredito',2)
               //->where('credito.idforma_credito',1)
+              // mismo criterio que pdf_reporte.blade.php usa para descartar filas
+              // (saldodeuda_valid queda en 0): sin cuotas pendientes, solo entra si
+              // es Prendaria "X Entregar". Evita traer y procesar filas que la vista
+              // iba a descartar de todas formas.
+              ->where(function($query){
+                  $query->whereNotNull('creditos_pendientes.idcredito')
+                        ->orWhere(function($query2){
+                            $query2->where('credito.idforma_credito',1)
+                                   ->where('credito_garantia.idestadoentrega',1);
+                        });
+              })
               ->select(
                   'credito_garantia.id',
                   'credito_garantia.idcredito',

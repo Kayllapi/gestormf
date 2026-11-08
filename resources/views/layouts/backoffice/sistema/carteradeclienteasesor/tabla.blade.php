@@ -97,6 +97,7 @@
                             ['data' => 'Telefóno' ],
                             ['data' => 'Direc/Domicilio' ],
                             ['data' => 'Direc/Negocio' ],
+                            ['data' => 'Motivo' ],
                         ],
                         'tbody' => [
                             ['data' => 'orden','type'=>'text'],
@@ -113,9 +114,11 @@
                             ['data' => 'telefono','type'=>'text'],
                             ['data' => 'direcciondomicilio','type'=>'text'],
                             ['data' => 'direccionnegocio','type'=>'text'],
+                            ['data' => 'motivo','type'=>'text'],
                         ],
                         'tfoot' => [
                             ['type' => ''],
+                            ['type' => 'text'],
                             ['type' => 'text'],
                             ['type' => 'text'],
                             ['type' => 'text'],

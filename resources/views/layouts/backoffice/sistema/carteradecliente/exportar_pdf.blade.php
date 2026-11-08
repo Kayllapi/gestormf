@@ -129,6 +129,7 @@
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">DOC</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Nombre</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Ejec. Origen</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Motivo</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Saldo C. Ult. Desemb. (S/.)</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">F. Pago</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">Cuotas</td>
@@ -217,7 +218,13 @@
                   if($usersasesor){
                       $codigoasesor = $usersasesor->usuario;
                   }
-                
+
+                  // igual que en CarteradeclienteController::show('showcliente'): 'INACTIVIDAD'
+                  // solo aplica si el cliente esta realmente en el pool global (idasesor=0).
+                  $motivo = $value->idasesor==0
+                      ? ($value->origen_global!=''?$value->origen_global:'INACTIVIDAD')
+                      : ($value->origen_global!=''?$value->origen_global:'--');
+
                   $fecha_cancelado = $fecha_cancelado!=''?$fecha_cancelado:'';
 
                   $html .= "<tr id='show_data_select' idcredito='{$value->id}'>
@@ -226,6 +233,7 @@
                                 <td>{$value->identificacion}</td>
                                 <td>{$value->nombrecompleto}</td>
                                 <td>{$codigoasesor}</td>
+                                <td>{$motivo}</td>
                                 <td>{$saldo_pendientepago}</td>
                                 <td>{$frecuencianombre}</td>
                                 <td>{$cuota}</td>
@@ -241,6 +249,7 @@
             }
 
                   $html .= '<tr>
+                                <td style="border-top: 2px solid #000;"></td>
                                 <td style="border-top: 2px solid #000;"></td>
                                 <td style="border-top: 2px solid #000;"></td>
                                 <td style="border-top: 2px solid #000;"></td>

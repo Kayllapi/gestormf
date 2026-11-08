@@ -79,6 +79,28 @@ class CarteradeclienteController extends Controller
         } 
     }
 
+    /**
+     * "99" es el marcador de "INACTIVOS GLOBAL AGENCIA" del selector de Ejecutivo
+     * (MasterController::show_asesor): esos clientes tienen idasesor=0, no 99.
+     * Mismo criterio que AsignaciondecarteraController ya usa para su propio filtro.
+     */
+    protected function where_idasesor($idasesor)
+    {
+        return ['users.idasesor', $idasesor==99 ? 0 : $idasesor];
+    }
+
+    /**
+     * Asesor a mostrar en el encabezado del pdf/excel. Para "99" no hay un usuario
+     * real que buscar, se muestra la misma etiqueta del selector.
+     */
+    protected function asesor_filtro($idasesor)
+    {
+        if($idasesor==99){
+            return (object) ['usuario' => 'INACTIVOS GLOBAL AGENCIA'];
+        }
+        return DB::table('users')->whereId($idasesor)->first();
+    }
+
     public function show(Request $request, $idtienda, $id)
     {
 
@@ -87,7 +109,7 @@ class CarteradeclienteController extends Controller
           $where[] = ['users.idtienda',$request->idagencia];
 
           if($request->idasesor!='' && $request->idasesor!=0){
-              $where[] = ['users.idasesor',$request->idasesor];
+              $where[] = $this->where_idasesor($request->idasesor);
           }
           
           $where1 = [];
@@ -184,6 +206,13 @@ class CarteradeclienteController extends Controller
                       'doc'     => $value->identificacion,
                       'nombre'  => $value->nombrecompleto,
                       'asesororigen'  => $codigoasesor,
+                      // mismo campo (users.origen_global) que usa UsuarioglobalController. El
+                      // fallback a 'INACTIVIDAD' solo aplica si el cliente esta realmente en el
+                      // pool global (idasesor=0, igual que UsuarioglobalController filtra): un
+                      // cliente con asesor asignado nunca paso por ahi, y no tiene motivo.
+                      'motivo'  => $value->idasesor==0
+                          ? ($value->origen_global!=''?$value->origen_global:'INACTIVIDAD')
+                          : ($value->origen_global!=''?$value->origen_global:'--'),
                       'saldo'  => $saldo_pendientepago!=''?$saldo_pendientepago:'0.00',
                       'formapago'  => $frecuencianombre!=''?$frecuencianombre:'--',
                       'cuota'  => $cuota!=''?$cuota:'--',
@@ -223,20 +252,20 @@ class CarteradeclienteController extends Controller
           
           $where = [];
           $where[] = ['users.idtienda',$request->idagencia];
-          
+
           if($request->idasesor!='' && $request->idasesor!=0){
-              $where[] = ['users.idasesor',$request->idasesor];
+              $where[] = $this->where_idasesor($request->idasesor);
           }
-          
+
           $users = DB::table('users')
               ->where('users.idtipousuario',2)
               ->where($where)
               ->orderBy('users.nombre','asc')
               ->get();
-          
+
             $agencia = DB::table('tienda')->whereId($request->idagencia)->first();
-            $asesor = DB::table('users')->whereId($request->idasesor)->first();
-        
+            $asesor = $this->asesor_filtro($request->idasesor);
+
             $pdf = PDF::loadView(sistema_view().'/carteradecliente/exportar_pdf',[
                 'tienda' => $tienda,
                 'agencia' => $agencia,
@@ -253,20 +282,20 @@ class CarteradeclienteController extends Controller
           
           $where = [];
           $where[] = ['users.idtienda',$request->idagencia];
-          
+
           if($request->idasesor!='' && $request->idasesor!=0){
-              $where[] = ['users.idasesor',$request->idasesor];
+              $where[] = $this->where_idasesor($request->idasesor);
           }
-          
+
           $users = DB::table('users')
               ->where('users.idtipousuario',2)
               ->where($where)
               ->orderBy('users.nombre','asc')
               ->get();
-          
+
             $agencia = DB::table('tienda')->whereId($request->idagencia)->first();
-            $asesor = DB::table('users')->whereId($request->idasesor)->first();
-        
+            $asesor = $this->asesor_filtro($request->idasesor);
+
 
             return Excel::download(
                 new ReportecarteraclienteExport(

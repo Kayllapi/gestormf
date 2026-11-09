@@ -108,7 +108,7 @@
                 if(file_exists($rutaimagen) AND $subsubvalue->imagen!=''){
                     $urlimagen = url('public/backoffice/sistema/modulo/'.$subsubvalue->imagen);
                 }else{
-                    $urlimagen = url('public/backoffice/sistema/sin_imagen_redondo.png');
+                    $urlimagen = url('public/backoffice/sistema/logo_gestormf_icono.png');
                 }
             ?>
             <tr>
@@ -160,7 +160,7 @@
                 if(file_exists($rutaimagen) AND $sistemavalue->imagen!=''){
                     $urlimagen = url('public/backoffice/sistema/modulo/'.$sistemavalue->imagen);
                 }else{
-                    $urlimagen = url('public/backoffice/sistema/sin_imagen_redondo.png');
+                    $urlimagen = url('public/backoffice/sistema/logo_gestormf_icono.png');
                 }
             ?>
             <tr>
@@ -209,7 +209,7 @@
                 if(file_exists($rutaimagen) AND $sistemavalueopcion->imagen!=''){
                     $urlimagen = url('public/backoffice/sistema/modulo/'.$sistemavalueopcion->imagen);
                 }else{
-                    $urlimagen = url('public/backoffice/sistema/sin_imagen_redondo.png');
+                    $urlimagen = url('public/backoffice/sistema/logo_gestormf_icono.png');
                 }
             ?>
             <tr>

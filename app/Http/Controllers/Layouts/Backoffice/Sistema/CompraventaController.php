@@ -39,7 +39,7 @@ class CompraventaController extends Controller
             $agencias = DB::table('tienda')->get();
             $tipo_garantia = DB::table('tipo_garantia')->get();
             $estado_garantia = DB::table('estado_garantia')->get();
-            $bancos = DB::table('banco')->get();
+            $bancos = DB::table('banco')->where('estado','ACTIVO')->where('idtienda',$idtienda)->get();
 
             $disabled_agencia = $request->disabled_agencia ?? 'true';
 
@@ -54,7 +54,7 @@ class CompraventaController extends Controller
         } elseif (request('view') == 'create_venta') {
             $cvcompra = DB::table('cvcompra')->where('id',request('idcvcompra'))->first();
             $tienda = DB::table('tienda')->whereId($idtienda)->first();
-            $bancos = DB::table('banco')->get();
+            $bancos = DB::table('banco')->where('estado','ACTIVO')->where('idtienda',$idtienda)->get();
             
             return view(sistema_view().'/compraventa/create_venta', compact(
                 'cvcompra',
@@ -731,7 +731,7 @@ class CompraventaController extends Controller
             $agencias = DB::table('tienda')->get();
             $tipo_garantia = DB::table('tipo_garantia')->get();
             $estado_garantia = DB::table('estado_garantia')->get();
-            $bancos = DB::table('banco')->get();
+            $bancos = DB::table('banco')->where('estado','ACTIVO')->where('idtienda',$idtienda)->get();
 
             return view(sistema_view().'/compraventa/edit_compra', compact(
                 'tienda',

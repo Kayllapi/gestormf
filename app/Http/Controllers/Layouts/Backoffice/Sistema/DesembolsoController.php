@@ -224,7 +224,7 @@ class DesembolsoController extends Controller
         }
         elseif( $request->input('view') == 'desembolsarticket' ){
 
-            $bancos = DB::table('banco')->where('estado','ACTIVO')->get();
+            $bancos = DB::table('banco')->where('estado','ACTIVO')->where('idtienda',$idtienda)->get();
             
             $credito_propuesta = DB::table('credito_propuesta')->where('idcredito',$id)->first();
             $credito_desembolsar = DB::table('credito')->whereId($id)->first();

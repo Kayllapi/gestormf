@@ -42,7 +42,7 @@ class CvasignacioncapitalController extends Controller
         if($request->view == 'registrar') {
             
             $agencias = DB::table('tienda')->get();
-            $bancos = DB::table('banco')->where('estado','ACTIVO')->get();
+            $bancos = DB::table('banco')->where('estado','ACTIVO')->where('idtienda',$idtienda)->get();
             $tipooperacions= DB::table('credito_tipooperacion')->get();
             $tipodestinos = DB::table('credito_tipodestino')->get();
           
@@ -430,7 +430,7 @@ class CvasignacioncapitalController extends Controller
         if($request->input('view') == 'editar'){
 
               $agencias = DB::table('tienda')->get();
-              $bancos = DB::table('banco')->where('estado','ACTIVO')->get();
+              $bancos = DB::table('banco')->where('estado','ACTIVO')->where('idtienda',$idtienda)->get();
               $tipooperacions= DB::table('credito_tipooperacion')->get();
               $tipodestinos = DB::table('credito_tipodestino')->get();
 

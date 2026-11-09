@@ -39,7 +39,7 @@ class CvgastoadministrativooperativoController extends Controller
         
         if($request->view == 'registrar') {
             
-            $bancos = DB::table('banco')->where('estado','ACTIVO')->get();
+            $bancos = DB::table('banco')->where('estado','ACTIVO')->where('idtienda',$idtienda)->get();
             $s_sustento_comprobante = DB::table('s_sustento_comprobante')->where('idtipo',2)->get();
             $credito_tipoformapago = DB::table('credito_tipoformapago')->get();
           
@@ -256,7 +256,7 @@ class CvgastoadministrativooperativoController extends Controller
       
       if($request->input('view') == 'editar'){
             
-            $bancos = DB::table('banco')->where('estado','ACTIVO')->get();
+            $bancos = DB::table('banco')->where('estado','ACTIVO')->where('idtienda',$idtienda)->get();
             $s_sustento_comprobante = DB::table('s_sustento_comprobante')->where('idtipo',2)->get();
             $credito_tipoformapago = DB::table('credito_tipoformapago')->get();
 

@@ -32,7 +32,7 @@ class MovimientointernodineroController extends Controller
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
         
         if($request->view == 'registrar_retiro1') {
-            $bancos = DB::table('banco')->where('estado','ACTIVO')->get();
+            $bancos = DB::table('banco')->where('estado','ACTIVO')->where('idtienda',$idtienda)->get();
             $fuenteretiros= DB::table('credito_fuenteretiro')
               ->where('idtipo',2)
               ->whereIn('id',[6,7,8,9])
@@ -44,7 +44,7 @@ class MovimientointernodineroController extends Controller
             ]);
         }
         elseif($request->view == 'registrar_deposito1') {
-            $bancos = DB::table('banco')->where('estado','ACTIVO')->get();
+            $bancos = DB::table('banco')->where('estado','ACTIVO')->where('idtienda',$idtienda)->get();
             $fuenteretiros= DB::table('credito_fuenteretiro')
               ->where('idtipo',1)
               ->whereIn('id',[1,2,3,4])
@@ -56,7 +56,7 @@ class MovimientointernodineroController extends Controller
             ]);
         }
         elseif($request->view == 'registrar_retiro3') {
-            $bancos = DB::table('banco')->where('estado','ACTIVO')->get();
+            $bancos = DB::table('banco')->where('estado','ACTIVO')->where('idtienda',$idtienda)->get();
             $fuenteretiros= DB::table('credito_fuenteretiro')
               ->where('idtipo',2)
               ->whereIn('id',[6,8])
@@ -68,7 +68,7 @@ class MovimientointernodineroController extends Controller
             ]);
         }
         elseif($request->view == 'registrar_deposito3') {
-            $bancos = DB::table('banco')->where('estado','ACTIVO')->get();
+            $bancos = DB::table('banco')->where('estado','ACTIVO')->where('idtienda',$idtienda)->get();
             $fuenteretiros= DB::table('credito_fuenteretiro')
               ->where('idtipo',1)
               ->whereIn('id',[1,3])
@@ -711,7 +711,7 @@ class MovimientointernodineroController extends Controller
                       ->first();
       
         if($request->input('view') == 'editar_retiro1'){
-            $bancos = DB::table('banco')->where('estado','ACTIVO')->get();
+            $bancos = DB::table('banco')->where('estado','ACTIVO')->where('idtienda',$idtienda)->get();
             $fuenteretiros= DB::table('credito_fuenteretiro')
               ->where('idtipo',2)
               ->whereIn('id',[6,7,8,9])
@@ -739,7 +739,7 @@ class MovimientointernodineroController extends Controller
             ]);
         }
         elseif($request->input('view') == 'editar_deposito1'){
-            $bancos = DB::table('banco')->where('estado','ACTIVO')->get();
+            $bancos = DB::table('banco')->where('estado','ACTIVO')->where('idtienda',$idtienda)->get();
             $fuenteretiros= DB::table('credito_fuenteretiro')
               ->where('idtipo',1)
               ->whereIn('id',[1,2,3,4])
@@ -766,7 +766,7 @@ class MovimientointernodineroController extends Controller
             ]);
         }
         elseif($request->input('view') == 'editar_retiro3'){
-            $bancos = DB::table('banco')->where('estado','ACTIVO')->get();
+            $bancos = DB::table('banco')->where('estado','ACTIVO')->where('idtienda',$idtienda)->get();
             $fuenteretiros= DB::table('credito_fuenteretiro')
               ->where('idtipo',2)
               ->whereIn('id',[6,8])
@@ -793,7 +793,7 @@ class MovimientointernodineroController extends Controller
             ]);
         }
         elseif($request->input('view') == 'editar_deposito3'){
-            $bancos = DB::table('banco')->where('estado','ACTIVO')->get();
+            $bancos = DB::table('banco')->where('estado','ACTIVO')->where('idtienda',$idtienda)->get();
             $fuenteretiros= DB::table('credito_fuenteretiro')
               ->where('idtipo',1)
               ->whereIn('id',[1,3])

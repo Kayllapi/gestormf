@@ -4,6 +4,7 @@
         method: 'PUT',
           data:{
               view: 'editar',
+              idagencia: '{{ $agencia->id }}',
               capital: json_agencia_capital()
           }
       },
@@ -14,21 +15,24 @@
     <div class="modal-body">
       <div class="row justify-content-center">
         <div class="col-sm-12 col-md-6">
-          
-          
+
+          <div class="alert alert-warning p-1 mb-2" style="color: #000;">
+            <b>AGENCIA:</b> {{ $agencia->nombreagencia }} &mdash; al realizar los cambios se guardan solo sobre esta agencia.
+          </div>
+
           <div class="mb-1">
             <span class="badge d-block">Parametro de Evaluación</span>
           </div>
           <div class="row mt-1">
             <label class="col-sm-5 col-form-label" style="text-align: right;">PROVISION DE GASTOS FAMILIARES (%):</label>
             <div class="col-sm-7">
-              <input type="number" class="form-control" step="any" id="provision_gastos_familiares" value="{{ configuracion($tienda->id,'provision_gastos_familiares')['valor'] }}">
+              <input type="number" class="form-control" step="any" id="provision_gastos_familiares" value="{{ configuracion($agencia->id,'provision_gastos_familiares')['valor'] }}">
             </div>
           </div>
           <div class="row mt-1">
             <label class="col-sm-5 col-form-label" style="text-align: right;">PORCENTAJE MÍNIMO DE MUESTRA DE VENTAS (%):</label>
             <div class="col-sm-7">
-              <input type="number" class="form-control" step="any" id="porcentaje_min_muestra" value="{{ configuracion($tienda->id,'porcentaje_min_muestra')['valor'] }}">
+              <input type="number" class="form-control" step="any" id="porcentaje_min_muestra" value="{{ configuracion($agencia->id,'porcentaje_min_muestra')['valor'] }}">
             </div>
           </div>
           <hr>
@@ -76,38 +80,38 @@
           <!--div class="row mt-1">
             <label class="col-sm-5 col-form-label" style="text-align: right;">TOPE POR VINCULACION POR RIESGO UNICO(%):</label>
             <div class="col-sm-7">
-              <input type="number" class="form-control" step="any" id="tope_vinculacion_riesgo" value="{{ configuracion($tienda->id,'tope_vinculacion_riesgo')['valor'] }}">
+              <input type="number" class="form-control" step="any" id="tope_vinculacion_riesgo" value="{{ configuracion($agencia->id,'tope_vinculacion_riesgo')['valor'] }}">
             </div>
           </div-->
           <div class="row mt-1">
             <label class="col-sm-5 col-form-label" style="text-align: right;">TOPE POR VINCULACION POR RIESGO UNICO(%):</label>
             <div class="col-sm-7">
-              <input type="number" class="form-control" step="any" id="capital_asignado" value="{{ configuracion($tienda->id,'capital_asignado')['valor'] }}">
+              <input type="number" class="form-control" step="any" id="capital_asignado" value="{{ configuracion($agencia->id,'capital_asignado')['valor'] }}">
             </div>
           </div>
           <div class="row mt-1">
             <label class="col-sm-5 col-form-label" style="text-align: right;">Número de entidades de endeudamiento máximo:</label>
             <div class="col-sm-7">
-              <input type="number" class="form-control" step="any" id="entidades_maxima" value="{{ configuracion($tienda->id,'entidades_maxima')['valor'] }}">
+              <input type="number" class="form-control" step="any" id="entidades_maxima" value="{{ configuracion($agencia->id,'entidades_maxima')['valor'] }}">
             </div>
           </div>
           <hr>
           <div class="row mt-1">
             <label class="col-sm-5 col-form-label" style="text-align: right;">TOPE MÁXIMO DEL CICLO DE VENTA MENSUAL (%):</label>
             <div class="col-sm-7">
-              <input type="number" class="form-control" step="any" id="ciclo_negocio_maximo" value="{{ configuracion($tienda->id,'ciclo_negocio_maximo')['valor'] }}">
+              <input type="number" class="form-control" step="any" id="ciclo_negocio_maximo" value="{{ configuracion($agencia->id,'ciclo_negocio_maximo')['valor'] }}">
             </div>
           </div>
           <div class="row mt-1">
             <label class="col-sm-5 col-form-label" style="text-align: right;">(PARA EVALUACIÓN RESUMIDA)RELACIÓN CUOTA INGRESO(%):</label>
             <div class="col-sm-7">
-              <input type="number" class="form-control" step="any" id="relacion_couta_ingreso" value="{{ configuracion($tienda->id,'relacion_couta_ingreso')['valor'] }}">
+              <input type="number" class="form-control" step="any" id="relacion_couta_ingreso" value="{{ configuracion($agencia->id,'relacion_couta_ingreso')['valor'] }}">
             </div>
           </div>
           <div class="row mt-1">
             <label class="col-sm-5 col-form-label" style="text-align: right;">(PARA EVALUACIÓN RESUMIDA)RELACIÓN CUOTA VENTA(%):</label>
             <div class="col-sm-7">
-              <input type="number" class="form-control" step="any" id="relacion_cuota_venta" value="{{ configuracion($tienda->id,'relacion_cuota_venta')['valor'] }}">
+              <input type="number" class="form-control" step="any" id="relacion_cuota_venta" value="{{ configuracion($agencia->id,'relacion_cuota_venta')['valor'] }}">
             </div>
           </div>
           <div class="mb-1">
@@ -116,15 +120,15 @@
           <div class="row mt-1">
             <label class="col-sm-2 col-form-label" style="text-align: right;">RANGO MENOR (%):</label>
             <div class="col-sm-2">
-              <input type="number" class="form-control" step="any" id="rango_menor" disabled value="{{ configuracion($tienda->id,'rango_menor')['valor'] }}">
+              <input type="number" class="form-control" step="any" id="rango_menor" disabled value="{{ configuracion($agencia->id,'rango_menor')['valor'] }}">
             </div>
             <label class="col-sm-2 col-form-label" style="text-align: right;">DIFERENCIA (%):</label>
             <div class="col-sm-2">
-              <input type="number" class="form-control" step="any" id="rango_diferencia" onkeyup="calc_rango_menor()" onkeydown="calc_rango_menor()" value="{{ configuracion($tienda->id,'rango_diferencia')['valor'] }}">
+              <input type="number" class="form-control" step="any" id="rango_diferencia" onkeyup="calc_rango_menor()" onkeydown="calc_rango_menor()" value="{{ configuracion($agencia->id,'rango_diferencia')['valor'] }}">
             </div>
             <label class="col-sm-2 col-form-label" style="text-align: right;">RANGO TOPE (%):</label>
             <div class="col-sm-2">
-              <input type="number" class="form-control" step="any" id="rango_tope" onkeyup="calc_rango_menor()" onkeydown="calc_rango_menor()" value="{{ configuracion($tienda->id,'rango_tope')['valor'] }}">
+              <input type="number" class="form-control" step="any" id="rango_tope" onkeyup="calc_rango_menor()" onkeydown="calc_rango_menor()" value="{{ configuracion($agencia->id,'rango_tope')['valor'] }}">
             </div>
           </div>
           <div class="mb-1">
@@ -133,7 +137,7 @@
            <div class="row mt-1">
             <label class="col-sm-2 col-form-label" style="text-align: right;">RANGO TOPE (%):</label>
             <div class="col-sm-2">
-              <input type="number" class="form-control" step="any" id="rango_tope_dependiente" value="{{ configuracion($tienda->id,'rango_tope_dependiente')['valor'] }}">
+              <input type="number" class="form-control" step="any" id="rango_tope_dependiente" value="{{ configuracion($agencia->id,'rango_tope_dependiente')['valor'] }}">
             </div>
           </div>
           <div class="mb-1">
@@ -142,7 +146,7 @@
           <div class="row mt-1">
             <label class="col-sm-8 col-form-label" style="text-align: right;">Tasa de Interes Compensatorio Efectivo Mensual (TEM):</label>
             <label class="col-sm-2 chk" style="margin-top: 6px;">
-                <input type="checkbox" name="activar_tem" id="activar_tem" {{ configuracion($tienda->id,'activar_tem')['valor'] == '1' ? 'checked' : '' }}>
+                <input type="checkbox" name="activar_tem" id="activar_tem" {{ configuracion($agencia->id,'activar_tem')['valor'] == '1' ? 'checked' : '' }}>
                 <span class="checkmark"></span>
                 <span>Activar</span>
             </label>
@@ -150,7 +154,7 @@
           <div class="row mt-1">
             <label class="col-sm-8 col-form-label" style="text-align: right;">Tasa de Interes Costo Efectivo Mensual (TCEM):</label>
             <label class="col-sm-2 chk" style="margin-top: 6px;">
-                <input type="checkbox" name="activar_tcem" id="activar_tcem" {{ configuracion($tienda->id,'activar_tcem')['valor'] == '1' ? 'checked' : '' }}>
+                <input type="checkbox" name="activar_tcem" id="activar_tcem" {{ configuracion($agencia->id,'activar_tcem')['valor'] == '1' ? 'checked' : '' }}>
                 <span class="checkmark"></span>
                 <span>Activar</span>
             </label>

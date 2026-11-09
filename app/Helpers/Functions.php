@@ -2,7 +2,9 @@
 function consolidadooperaciones($tienda,$idagencia,$fechacorte){
            
           $agencia = DB::table('tienda')->whereId($idagencia)->first();
-          $bancos = DB::table('banco')->where('estado','ACTIVO')->get();
+          // el banco es por agencia (banco.idtienda, ver BancoController): sin este filtro
+          // el reporte mostraba los bancos de TODAS las agencias en el consolidado de cada una.
+          $bancos = DB::table('banco')->where('idtienda',$idagencia)->where('estado','ACTIVO')->get();
           
           // Ingreso y Egreso por Caja
           $where = [];

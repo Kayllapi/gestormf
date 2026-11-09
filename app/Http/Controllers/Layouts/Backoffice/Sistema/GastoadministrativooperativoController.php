@@ -178,7 +178,12 @@ class GastoadministrativooperativoController extends Controller
                 )
                 ->orderBy('gastoadministrativooperativo.id','ASC')
                 ->get();
-  
+
+            // Precarga del responsable de la validacion: evita 1 consulta por fila dentro del foreach.
+            $usuarios_validar = DB::table('users')
+                ->whereIn('id',$gastoadministrativooperativo->where('idformapago',2)->where('validar_estado',1)->pluck('validar_responsable')->unique())
+                ->pluck('codigo','id');
+
             $total = 0;
             $total_caja = 0;
             $total_banco = 0;
@@ -186,15 +191,14 @@ class GastoadministrativooperativoController extends Controller
             foreach($gastoadministrativooperativo as $key => $value){
                 $fechapago = date_format(date_create($value->fechapago),"d-m-Y H:i:s A");
                 $cuenta = $value->banco!=''?$value->banco.' - ***'.substr($value->cuenta, -5).' ('.$value->numerooperacion.')':'';
-                
+
                 $btn_validar = '';
                 if($value->idformapago==2){
                     $btn_validar = "<button type='button' class='btn btn-success' onclick='validar({$value->id})'><i class='fa-solid fa-check'></i> Validar</button>";
                     if($value->validar_estado==1){
-                        $users = DB::table('users')->whereId($value->validar_responsable)->first();
-                        $btn_validar = "<i class='fa-solid fa-check'></i> (".$users->codigo.")";
+                        $btn_validar = "<i class='fa-solid fa-check'></i> (".$usuarios_validar->get($value->validar_responsable).")";
                     }
-                } 
+                }
               
                 $html .= "<tr data-valor-columna='{$value->id}' onclick='show_data(this)'>
                               <td>".($key+1)."</td>
@@ -287,7 +291,8 @@ class GastoadministrativooperativoController extends Controller
             ]);
         }
         else if( $request->input('view') == 'exportar_pdf' ){
-              
+
+            $where = [];
             if($request->input('fechainicio') != ''){
                 $where[] = ['gastoadministrativooperativo.fechapago','>=',$request->fechainicio.' 00:00:00'];
             }

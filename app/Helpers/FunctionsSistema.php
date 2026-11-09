@@ -3720,7 +3720,7 @@ function createTokenSunat($id_token, $clave_token){
    * ESTE pago. Las cuotas que este pago cerro (pago_cuota) se separan en cuota y mora; cualquier
    * otra cuota del desglose sigue abierta y su total (cuota+mora) va integro a "Pago a Cuenta".
    */
-  function desglose_pago_cobranzacuota($credito_cobranzacuota) {
+  function desglose_pago_cobranzacuota($credito_cobranzacuota, $credito_adelanto_pago = null) {
       if ($credito_cobranzacuota->opcion_pago == 'PAGO_ANTICIPADO') {
           $tenencia      = (float) $credito_cobranzacuota->total_tenencia;
           $penalidad     = (float) $credito_cobranzacuota->total_penalidad;
@@ -3739,9 +3739,14 @@ function createTokenSunat($id_token, $clave_token){
           fn($v) => $v !== ''
       );
 
-      $credito_adelanto_pago = DB::table('credito_adelanto')
-          ->where('credito_adelanto.idcredito_cobranzacuota', $credito_cobranzacuota->id)
-          ->get();
+      if ($credito_adelanto_pago === null) {
+          // Al listar muchos pagos (historial/reporte), el llamador precarga todos los
+          // credito_adelanto con whereIn y pasa aqui solo los de este pago, para no
+          // disparar una consulta por fila.
+          $credito_adelanto_pago = DB::table('credito_adelanto')
+              ->where('credito_adelanto.idcredito_cobranzacuota', $credito_cobranzacuota->id)
+              ->get();
+      }
 
       $desglose = [
           'cuotapagado'   => 0,

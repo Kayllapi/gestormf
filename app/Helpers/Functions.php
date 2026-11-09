@@ -214,42 +214,42 @@ function consolidadooperaciones($tienda,$idagencia,$fechacorte){
           $validacion_0 = '';
           $validacion_cantidad = 0;
           $ingresoyegresobanco_ingreso_crediticio_cnpcps_validacion_cantidad = 0;
+
+          // Agregado por banco en una sola consulta (antes: 1 consulta por banco).
+          $ingresoyegresobanco_ingreso_crediticio_cnpcps_porbanco = DB::table('credito_cobranzacuota')
+              ->join('credito','credito.id','credito_cobranzacuota.idcredito')
+              ->where('credito_cobranzacuota.idestadocredito_cobranzacuota',1)
+              ->where('credito_cobranzacuota.idestadoextorno',0)
+              ->where('credito_cobranzacuota.idformapago',2)
+              ->where($where)
+              ->select(
+                  'credito_cobranzacuota.idbanco',
+                  DB::raw('SUM(credito_cobranzacuota.total_pagar_amortizacion) as banco_capital'),
+                  DB::raw('SUM(credito_cobranzacuota.total_pagar_interes) as banco_interes'),
+                  DB::raw('SUM(credito_cobranzacuota.total_pagar_comision + credito_cobranzacuota.total_pagar_cargo) as banco_desgravcargo'),
+                  DB::raw('SUM(credito_cobranzacuota.total_pagar_tenencia + credito_cobranzacuota.total_pagar_penalidad + credito_cobranzacuota.total_pagar_compensatorio) as banco_tenencxc'),
+                  DB::raw('MAX(credito_cobranzacuota.validar_estado) as validar_estado'),
+                  DB::raw('COUNT(*) as cantidad'),
+              )
+              ->groupBy('credito_cobranzacuota.idbanco')
+              ->get()
+              ->keyBy('idbanco');
+
           foreach($bancos as $valuebancos){
-              $bancosdatas = DB::table('credito_cobranzacuota')
-                  ->join('credito','credito.id','credito_cobranzacuota.idcredito')
-                  ->where('credito_cobranzacuota.idestadocredito_cobranzacuota',1)
-                  ->where('credito_cobranzacuota.idestadoextorno',0)
-                  ->where('credito_cobranzacuota.idformapago',2)
-                  ->where('credito_cobranzacuota.idbanco',$valuebancos->id)
-                  ->where($where)
-                  ->select(
-                      'credito_cobranzacuota.*',
-                  )
-                  ->orderBy('credito_cobranzacuota.id','asc')
-                  ->get();  
-          
-              $banco_capital = 0;
-              $banco_interes = 0;
-              $banco_desgravcargo = 0;
-              $banco_tenencxc = 0;
-              $banco = 0;
-              $validacion_1 = '';
-              foreach($bancosdatas as $value){
-                  if($value->validar_estado==1 && $validacion_1 == ''){
-                      $validacion_1 = 'CHECK';
-                  }
-                  $banco_capital += $value->total_pagar_amortizacion;
-                  $banco_interes += $value->total_pagar_interes;
-                  $banco_desgravcargo += $value->total_pagar_comision+$value->total_pagar_cargo;
-                  $banco_tenencxc += $value->total_pagar_tenencia+$value->total_pagar_penalidad+$value->total_pagar_compensatorio;
-              }
-                  
+              $bancodatas_agg = $ingresoyegresobanco_ingreso_crediticio_cnpcps_porbanco->get($valuebancos->id);
+
+              $banco_capital = $bancodatas_agg->banco_capital ?? 0;
+              $banco_interes = $bancodatas_agg->banco_interes ?? 0;
+              $banco_desgravcargo = $bancodatas_agg->banco_desgravcargo ?? 0;
+              $banco_tenencxc = $bancodatas_agg->banco_tenencxc ?? 0;
+              $validacion_1 = ($bancodatas_agg && $bancodatas_agg->validar_estado==1) ? 'CHECK' : '';
+
               if($validacion_1=='CHECK' && $validacion_0 == ''){
-                  $validacion_0 = 'CHECK';  
+                  $validacion_0 = 'CHECK';
                   $validacion_operaciones_cuenta_banco_cant += 1;
               }
-            
-              if(count($bancosdatas)>0){
+
+              if($bancodatas_agg && $bancodatas_agg->cantidad>0){
                   $validacion_cantidad += 1;
                   $ingresoyegresobanco_ingreso_crediticio_cnpcps_validacion_cantidad += 1;
               }
@@ -282,31 +282,36 @@ function consolidadooperaciones($tienda,$idagencia,$fechacorte){
           $ingresoyegresobanco_ingreso_incrementocapital_validacion = '';
           $validacion_0 = '';
           $ingresoyegresobanco_ingreso_incrementocapital_validacion_cantidad = 0;
+
+          // Agregado por banco en una sola consulta (antes: 1 consulta por banco).
+          $ingresoyegresobanco_ingreso_incrementocapital_porbanco = DB::table('asignacioncapital')
+              ->where('asignacioncapital.idtipodestino',3)
+              ->where('asignacioncapital.idestadoeliminado',1)
+              ->where('asignacioncapital.idtipooperacion',1)
+              ->where($where)
+              ->select(
+                  'asignacioncapital.idbanco',
+                  DB::raw('SUM(asignacioncapital.monto) as monto'),
+                  DB::raw('MAX(asignacioncapital.validar_estado) as validar_estado'),
+                  DB::raw('COUNT(*) as cantidad'),
+              )
+              ->groupBy('asignacioncapital.idbanco')
+              ->get()
+              ->keyBy('idbanco');
+
           foreach($bancos as $valuebancos){
-            
-              $db_ingresoyegresobanco_ingreso_incrementocapital = DB::table('asignacioncapital')
-                  ->where('asignacioncapital.idtipodestino',3)
-                  ->where('asignacioncapital.idestadoeliminado',1)
-                  ->where('asignacioncapital.idtipooperacion',1)
-                  ->where('asignacioncapital.idbanco',$valuebancos->id)
-                  ->where($where)
-                  ->get();
-            
-              $validacion_1 = '';
-              $ingresoyegresobanco_ingreso_incrementocapital_monto = 0;
-              foreach($db_ingresoyegresobanco_ingreso_incrementocapital as $valuecrediticio){
-                  if($valuecrediticio->validar_estado==1 && $validacion_1 == ''){
-                      $validacion_1 = 'CHECK';
-                  }
-                  $ingresoyegresobanco_ingreso_incrementocapital_monto += $valuecrediticio->monto;
-              }
-                  
+
+              $agg = $ingresoyegresobanco_ingreso_incrementocapital_porbanco->get($valuebancos->id);
+
+              $ingresoyegresobanco_ingreso_incrementocapital_monto = $agg->monto ?? 0;
+              $validacion_1 = ($agg && $agg->validar_estado==1) ? 'CHECK' : '';
+
               if($validacion_1=='CHECK' && $validacion_0 == ''){
                   $validacion_0 = 'CHECK';
                   $validacion_operaciones_cuenta_banco_cant += 1;
               }
-            
-              if(count($db_ingresoyegresobanco_ingreso_incrementocapital)>0){
+
+              if($agg && $agg->cantidad>0){
                   $validacion_cantidad += 1;
                   $ingresoyegresobanco_ingreso_incrementocapital_validacion_cantidad += 1;
               }
@@ -335,30 +340,35 @@ function consolidadooperaciones($tienda,$idagencia,$fechacorte){
           $ingresoyegresobanco_ingreso_ingresosextraordinarios_validacion = '';
           $validacion_0 = '';
           $ingresoyegresobanco_ingreso_ingresosextraordinarios_validacion_cantidad = 0;
+
+          // Agregado por banco en una sola consulta (antes: 1 consulta por banco).
+          $ingresoyegresobanco_ingreso_ingresosextraordinarios_porbanco = DB::table('ingresoextraordinario')
+              ->where('ingresoextraordinario.idformapago',2)
+              ->where('ingresoextraordinario.idestadoeliminado',1)
+              ->where($where)
+              ->select(
+                  'ingresoextraordinario.idbanco',
+                  DB::raw('SUM(ingresoextraordinario.monto) as monto'),
+                  DB::raw('MAX(ingresoextraordinario.validar_estado) as validar_estado'),
+                  DB::raw('COUNT(*) as cantidad'),
+              )
+              ->groupBy('ingresoextraordinario.idbanco')
+              ->get()
+              ->keyBy('idbanco');
+
           foreach($bancos as $valuebancos){
-            
-              $db_ingresoyegresobanco_ingreso_ingresosextraordinarios = DB::table('ingresoextraordinario')
-                  ->where('ingresoextraordinario.idformapago',2) 
-                  ->where('ingresoextraordinario.idestadoeliminado',1) 
-                  ->where('ingresoextraordinario.idbanco',$valuebancos->id)
-                  ->where($where)
-                  ->get();
-            
-              $validacion_1 = '';
-              $ingresoyegresobanco_ingreso_ingresosextraordinarios_monto = 0;
-              foreach($db_ingresoyegresobanco_ingreso_ingresosextraordinarios as $valuecrediticio){
-                  if($valuecrediticio->validar_estado==1 && $validacion_1 == ''){
-                      $validacion_1 = 'CHECK';
-                  }
-                  $ingresoyegresobanco_ingreso_ingresosextraordinarios_monto += $valuecrediticio->monto;
-              }
-                  
+
+              $agg = $ingresoyegresobanco_ingreso_ingresosextraordinarios_porbanco->get($valuebancos->id);
+
+              $ingresoyegresobanco_ingreso_ingresosextraordinarios_monto = $agg->monto ?? 0;
+              $validacion_1 = ($agg && $agg->validar_estado==1) ? 'CHECK' : '';
+
               if($validacion_1=='CHECK' && $validacion_0 == ''){
                   $validacion_0 = 'CHECK';
                   $validacion_operaciones_cuenta_banco_cant += 1;
               }
-            
-              if(count($db_ingresoyegresobanco_ingreso_ingresosextraordinarios)>0){
+
+              if($agg && $agg->cantidad>0){
                   $validacion_cantidad += 1;
                   $ingresoyegresobanco_ingreso_ingresosextraordinarios_validacion_cantidad += 1;
               }
@@ -389,31 +399,37 @@ function consolidadooperaciones($tienda,$idagencia,$fechacorte){
           $ingresoyegresobanco_egreso_crediticio_validacion = '';
           $validacion_0 = '';
           $ingresoyegresobanco_egreso_crediticio_validacion_cantidad = 0;
+
+          // Agregado por banco en una sola consulta (antes: 1 consulta por banco).
+          // validar_estado se lee de "credito" (credito_formapago no tiene esa columna).
+          $ingresoyegresobanco_egreso_crediticio_porbanco = DB::table('credito_formapago')
+              ->join('credito','credito.id','credito_formapago.idcredito')
+              ->where('credito_formapago.idformapago',2)
+              ->where('credito.estado','DESEMBOLSADO')
+              ->where($where)
+              ->select(
+                  'credito_formapago.idbanco',
+                  DB::raw('SUM(credito.monto_solicitado) as monto_solicitado'),
+                  DB::raw('MAX(credito.validar_estado) as validar_estado'),
+                  DB::raw('COUNT(*) as cantidad'),
+              )
+              ->groupBy('credito_formapago.idbanco')
+              ->get()
+              ->keyBy('idbanco');
+
           foreach($bancos as $valuebancos){
-            
-              $db_desembolsos_ingresoyegresobanco_egreso_crediticio = DB::table('credito_formapago')
-                  ->join('credito','credito.id','credito_formapago.idcredito')
-                  ->where('credito_formapago.idformapago',2)
-                  ->where('credito.estado','DESEMBOLSADO')
-                  ->where('credito_formapago.idbanco',$valuebancos->id)
-                  ->where($where)
-                  ->get();
-            
-              $validacion_1 = '';
-              $desembolsos_ingresoyegresobanco_egreso_crediticio = 0;
-              foreach($db_desembolsos_ingresoyegresobanco_egreso_crediticio as $valuecrediticio){
-                  if($valuecrediticio->validar_estado==1 && $validacion_1 == ''){
-                      $validacion_1 = 'CHECK';
-                  }
-                  $desembolsos_ingresoyegresobanco_egreso_crediticio += $valuecrediticio->monto_solicitado;
-              }
-                  
+
+              $agg = $ingresoyegresobanco_egreso_crediticio_porbanco->get($valuebancos->id);
+
+              $desembolsos_ingresoyegresobanco_egreso_crediticio = $agg->monto_solicitado ?? 0;
+              $validacion_1 = ($agg && $agg->validar_estado==1) ? 'CHECK' : '';
+
               if($validacion_1=='CHECK' && $validacion_0 == ''){
                   $validacion_0 = 'CHECK';
                   $validacion_operaciones_cuenta_banco_cant += 1;
               }
-            
-              if(count($db_desembolsos_ingresoyegresobanco_egreso_crediticio)>0){
+
+              if($agg && $agg->cantidad>0){
                   $validacion_cantidad += 1;
                   $ingresoyegresobanco_egreso_crediticio_validacion_cantidad += 1;
               }
@@ -442,31 +458,36 @@ function consolidadooperaciones($tienda,$idagencia,$fechacorte){
           $ingresoyegresobanco_egreso_reduccioncapital_validacion = '';
           $validacion_0 = '';
           $ingresoyegresobanco_egreso_reduccioncapital_validacion_cantidad = 0;
+
+          // Agregado por banco en una sola consulta (antes: 1 consulta por banco).
+          $ingresoyegresobanco_egreso_reduccioncapital_porbanco = DB::table('asignacioncapital')
+              ->where('asignacioncapital.idtipodestino',3)
+              ->where('asignacioncapital.idestadoeliminado',1)
+              ->where('asignacioncapital.idtipooperacion',2)
+              ->where($where)
+              ->select(
+                  'asignacioncapital.idbanco',
+                  DB::raw('SUM(asignacioncapital.monto) as monto'),
+                  DB::raw('MAX(asignacioncapital.validar_estado) as validar_estado'),
+                  DB::raw('COUNT(*) as cantidad'),
+              )
+              ->groupBy('asignacioncapital.idbanco')
+              ->get()
+              ->keyBy('idbanco');
+
           foreach($bancos as $valuebancos){
-            
-              $db_ingresoyegresobanco_egreso_reduccioncapital = DB::table('asignacioncapital')
-                  ->where('asignacioncapital.idtipodestino',3)
-                  ->where('asignacioncapital.idestadoeliminado',1)
-                  ->where('asignacioncapital.idtipooperacion',2)
-                  ->where('asignacioncapital.idbanco',$valuebancos->id)
-                  ->where($where)
-                  ->get();
-            
-              $validacion_1 = '';
-              $ingresoyegresobanco_egreso_reduccioncapital_monto = 0;
-              foreach($db_ingresoyegresobanco_egreso_reduccioncapital as $valuecrediticio){
-                  if($valuecrediticio->validar_estado==1 && $validacion_1 == ''){
-                      $validacion_1 = 'CHECK';
-                  }
-                  $ingresoyegresobanco_egreso_reduccioncapital_monto += $valuecrediticio->monto;
-              }
-                  
+
+              $agg = $ingresoyegresobanco_egreso_reduccioncapital_porbanco->get($valuebancos->id);
+
+              $ingresoyegresobanco_egreso_reduccioncapital_monto = $agg->monto ?? 0;
+              $validacion_1 = ($agg && $agg->validar_estado==1) ? 'CHECK' : '';
+
               if($validacion_1=='CHECK' && $validacion_0 == ''){
                   $validacion_0 = 'CHECK';
                   $validacion_operaciones_cuenta_banco_cant += 1;
               }
-            
-              if(count($db_ingresoyegresobanco_egreso_reduccioncapital)>0){
+
+              if($agg && $agg->cantidad>0){
                   $validacion_cantidad += 1;
                   $ingresoyegresobanco_egreso_reduccioncapital_validacion_cantidad += 1;
               }
@@ -495,30 +516,35 @@ function consolidadooperaciones($tienda,$idagencia,$fechacorte){
           $ingresoyegresobanco_egreso_gastosadministrativosyoperativos_validacion = '';
           $validacion_0 = '';
           $ingresoyegresobanco_egreso_gastosadministrativosyoperativos_validacion_cantidad = 0;
+
+          // Agregado por banco en una sola consulta (antes: 1 consulta por banco).
+          $ingresoyegresobanco_egreso_gastosadministrativosyoperativos_porbanco = DB::table('gastoadministrativooperativo')
+              ->where('gastoadministrativooperativo.idformapago',2)
+              ->where('gastoadministrativooperativo.idestadoeliminado',1)
+              ->where($where)
+              ->select(
+                  'gastoadministrativooperativo.idbanco',
+                  DB::raw('SUM(gastoadministrativooperativo.monto) as monto'),
+                  DB::raw('MAX(gastoadministrativooperativo.validar_estado) as validar_estado'),
+                  DB::raw('COUNT(*) as cantidad'),
+              )
+              ->groupBy('gastoadministrativooperativo.idbanco')
+              ->get()
+              ->keyBy('idbanco');
+
           foreach($bancos as $valuebancos){
-            
-              $db_ingresoyegresocaja_egreso_gastosadministrativosyoperativos = DB::table('gastoadministrativooperativo')
-                  ->where('gastoadministrativooperativo.idformapago',2) 
-                  ->where('gastoadministrativooperativo.idestadoeliminado',1) 
-                  ->where('gastoadministrativooperativo.idbanco',$valuebancos->id)
-                  ->where($where)
-                  ->get();
-            
-              $validacion_1 = '';
-              $ingresoyegresocaja_egreso_gastosadministrativosyoperativos_monto = 0;
-              foreach($db_ingresoyegresocaja_egreso_gastosadministrativosyoperativos as $valuecrediticio){
-                  if($valuecrediticio->validar_estado==1 && $validacion_1 == ''){
-                      $validacion_1 = 'CHECK';
-                  }
-                  $ingresoyegresocaja_egreso_gastosadministrativosyoperativos_monto += $valuecrediticio->monto;
-              }
-                  
+
+              $agg = $ingresoyegresobanco_egreso_gastosadministrativosyoperativos_porbanco->get($valuebancos->id);
+
+              $ingresoyegresocaja_egreso_gastosadministrativosyoperativos_monto = $agg->monto ?? 0;
+              $validacion_1 = ($agg && $agg->validar_estado==1) ? 'CHECK' : '';
+
               if($validacion_1=='CHECK' && $validacion_0 == ''){
                   $validacion_0 = 'CHECK';
                   $validacion_operaciones_cuenta_banco_cant += 1;
               }
-            
-              if(count($db_ingresoyegresocaja_egreso_gastosadministrativosyoperativos)>0){
+
+              if($agg && $agg->cantidad>0){
                   $validacion_cantidad += 1;
                   $ingresoyegresobanco_egreso_gastosadministrativosyoperativos_validacion_cantidad += 1;
               }
@@ -558,22 +584,29 @@ function consolidadooperaciones($tienda,$idagencia,$fechacorte){
           $ret_banco_caja_bancos = [];
           $dep_caja_banco = 0;
           $dep_caja_banco_bancos = [];
+
+          // Agregado por banco en una sola consulta por cada condicion (antes: 2 consultas por banco).
+          $ret_banco_caja_porbanco = DB::table('movimientointernodinero')
+              ->where('movimientointernodinero.idestadoeliminado',1)
+              ->where('movimientointernodinero.idfuenteretiro',7)
+              ->where('movimientointernodinero.idtipomovimientointerno',1)
+              ->where($where)
+              ->select('movimientointernodinero.idbanco', DB::raw('SUM(movimientointernodinero.monto) as monto'))
+              ->groupBy('movimientointernodinero.idbanco')
+              ->get()->keyBy('idbanco');
+          $dep_caja_banco_porbanco = DB::table('movimientointernodinero')
+              ->where('movimientointernodinero.idestadoeliminado',1)
+              ->where('movimientointernodinero.idfuenteretiro',2)
+              ->where('movimientointernodinero.idtipomovimientointerno',2)
+              ->where('movimientointernodinero.idresponsable','<>',0)
+              ->where($where)
+              ->select('movimientointernodinero.idbanco', DB::raw('SUM(movimientointernodinero.monto) as monto'))
+              ->groupBy('movimientointernodinero.idbanco')
+              ->get()->keyBy('idbanco');
+
           foreach($bancos as $valuebancos){
-              $movimientointernodineros = DB::table('movimientointernodinero')
-                  ->where('movimientointernodinero.idestadoeliminado',1)
-                  ->where('movimientointernodinero.idfuenteretiro',7)
-                  ->where('movimientointernodinero.idtipomovimientointerno',1)
-                  ->where('movimientointernodinero.idbanco',$valuebancos->id)
-                  ->where($where)
-                  ->sum('movimientointernodinero.monto');
-              $movimientointernodineros1 = DB::table('movimientointernodinero')
-                  ->where('movimientointernodinero.idestadoeliminado',1)
-                  ->where('movimientointernodinero.idfuenteretiro',2)
-                  ->where('movimientointernodinero.idtipomovimientointerno',2)
-                  ->where('movimientointernodinero.idresponsable','<>',0)
-                  ->where('movimientointernodinero.idbanco',$valuebancos->id)
-                  ->where($where)
-                  ->sum('movimientointernodinero.monto');
+              $movimientointernodineros = $ret_banco_caja_porbanco->get($valuebancos->id)->monto ?? 0;
+              $movimientointernodineros1 = $dep_caja_banco_porbanco->get($valuebancos->id)->monto ?? 0;
               $ret_banco_caja += number_format($movimientointernodineros, 2, '.', '');
               $dep_caja_banco += number_format($movimientointernodineros1, 2, '.', '');
             
@@ -600,23 +633,30 @@ function consolidadooperaciones($tienda,$idagencia,$fechacorte){
           $ret_caja_banco_bancos = [];
           $dep_banco_caja = 0;
           $dep_banco_caja_bancos = [];
+
+          // Agregado por banco en una sola consulta por cada condicion (antes: 2 consultas por banco).
+          $ret_caja_banco_porbanco = DB::table('movimientointernodinero')
+              ->where('movimientointernodinero.idestadoeliminado',1)
+              ->where('movimientointernodinero.idfuenteretiro',9)
+              ->where('movimientointernodinero.idtipomovimientointerno',1)
+              ->where($where)
+              ->select('movimientointernodinero.idbanco', DB::raw('SUM(movimientointernodinero.monto) as monto'))
+              ->groupBy('movimientointernodinero.idbanco')
+              ->get()->keyBy('idbanco');
+          $dep_banco_caja_porbanco = DB::table('movimientointernodinero')
+              ->where('movimientointernodinero.idestadoeliminado',1)
+              ->where('movimientointernodinero.idfuenteretiro',4)
+              ->where('movimientointernodinero.idtipomovimientointerno',2)
+              ->where('movimientointernodinero.idresponsable','<>',0)
+              ->where($where)
+              ->select('movimientointernodinero.idbanco', DB::raw('SUM(movimientointernodinero.monto) as monto'))
+              ->groupBy('movimientointernodinero.idbanco')
+              ->get()->keyBy('idbanco');
+
           foreach($bancos as $valuebancos){
-              $movimientointernodineros = DB::table('movimientointernodinero')
-                  ->where('movimientointernodinero.idestadoeliminado',1)
-                  ->where('movimientointernodinero.idfuenteretiro',9)
-                  ->where('movimientointernodinero.idtipomovimientointerno',1)
-                  ->where('movimientointernodinero.idbanco',$valuebancos->id)
-                  ->where($where)
-                  ->sum('movimientointernodinero.monto');
-              $movimientointernodineros1 = DB::table('movimientointernodinero')
-                  ->where('movimientointernodinero.idestadoeliminado',1)
-                  ->where('movimientointernodinero.idfuenteretiro',4)
-                  ->where('movimientointernodinero.idtipomovimientointerno',2)
-                  ->where('movimientointernodinero.idresponsable','<>',0)
-                  ->where('movimientointernodinero.idbanco',$valuebancos->id)
-                  ->where($where)
-                  ->sum('movimientointernodinero.monto');
-            
+              $movimientointernodineros = $ret_caja_banco_porbanco->get($valuebancos->id)->monto ?? 0;
+              $movimientointernodineros1 = $dep_banco_caja_porbanco->get($valuebancos->id)->monto ?? 0;
+
               $ret_caja_banco += number_format($movimientointernodineros, 2, '.', '');
               $dep_banco_caja += number_format($movimientointernodineros1, 2, '.', '');
               $ret_caja_banco_bancos[] = [
@@ -668,22 +708,29 @@ function consolidadooperaciones($tienda,$idagencia,$fechacorte){
           $ret_banco_reservacf_bancos = [];
           $dep_reservacf_banco = 0;
           $dep_reservacf_banco_bancos = [];
+
+          // Agregado por banco en una sola consulta por cada condicion (antes: 2 consultas por banco).
+          $ret_banco_reservacf_porbanco = DB::table('movimientointernodinero')
+              ->where('movimientointernodinero.idestadoeliminado',1)
+              ->where('movimientointernodinero.idfuenteretiro',10)
+              ->where('movimientointernodinero.idtipomovimientointerno',3)
+              ->where($where)
+              ->select('movimientointernodinero.idbanco', DB::raw('SUM(movimientointernodinero.monto) as monto'))
+              ->groupBy('movimientointernodinero.idbanco')
+              ->get()->keyBy('idbanco');
+          $dep_reservacf_banco_porbanco = DB::table('movimientointernodinero')
+              ->where('movimientointernodinero.idestadoeliminado',1)
+              ->where('movimientointernodinero.idfuenteretiro',5)
+              ->where('movimientointernodinero.idtipomovimientointerno',4)
+              ->where('movimientointernodinero.idresponsable','<>',0)
+              ->where($where)
+              ->select('movimientointernodinero.idbanco', DB::raw('SUM(movimientointernodinero.monto) as monto'))
+              ->groupBy('movimientointernodinero.idbanco')
+              ->get()->keyBy('idbanco');
+
           foreach($bancos as $valuebancos){
-              $movimientointernodineros = DB::table('movimientointernodinero')
-                  ->where('movimientointernodinero.idestadoeliminado',1)
-                  ->where('movimientointernodinero.idfuenteretiro',10)
-                  ->where('movimientointernodinero.idtipomovimientointerno',3)
-                  ->where('movimientointernodinero.idbanco',$valuebancos->id)
-                  ->where($where)
-                  ->sum('movimientointernodinero.monto');
-              $movimientointernodineros1 = DB::table('movimientointernodinero')
-                  ->where('movimientointernodinero.idestadoeliminado',1)
-                  ->where('movimientointernodinero.idfuenteretiro',5)
-                  ->where('movimientointernodinero.idtipomovimientointerno',4)
-                  ->where('movimientointernodinero.idresponsable','<>',0)
-                  ->where('movimientointernodinero.idbanco',$valuebancos->id)
-                  ->where($where)
-                  ->sum('movimientointernodinero.monto');
+              $movimientointernodineros = $ret_banco_reservacf_porbanco->get($valuebancos->id)->monto ?? 0;
+              $movimientointernodineros1 = $dep_reservacf_banco_porbanco->get($valuebancos->id)->monto ?? 0;
               $ret_banco_reservacf += number_format($movimientointernodineros, 2, '.', '');
               $dep_reservacf_banco += number_format($movimientointernodineros1, 2, '.', '');
               $ret_banco_reservacf_bancos[] = [
@@ -784,74 +831,87 @@ function consolidadooperaciones($tienda,$idagencia,$fechacorte){
 
           $saldos_cuentabanco = 0;
           $saldos_cuentabanco_bancos = [];
+
+          // Agregado por banco en una sola consulta por cada condicion (antes: 9 consultas por banco).
+          $saldos_capitalasignada_1_porbanco = DB::table('asignacioncapital')
+              ->where('asignacioncapital.idestadoeliminado',1)
+              ->whereIn('asignacioncapital.idtipooperacion',[1,4])
+              ->where($where3)
+              ->select('asignacioncapital.idbanco', DB::raw('SUM(asignacioncapital.monto) as monto'))
+              ->groupBy('asignacioncapital.idbanco')
+              ->get()->keyBy('idbanco');
+          $saldos_capitalasignada_2_porbanco = DB::table('asignacioncapital')
+              ->where('asignacioncapital.idestadoeliminado',1)
+              ->whereIn('asignacioncapital.idtipooperacion',[2])
+              ->where($where3)
+              ->select('asignacioncapital.idbanco', DB::raw('SUM(asignacioncapital.monto) as monto'))
+              ->groupBy('asignacioncapital.idbanco')
+              ->get()->keyBy('idbanco');
+          $cobranzas_porbanco = DB::table('credito_cobranzacuota')
+              ->join('credito','credito.id','credito_cobranzacuota.idcredito')
+              ->where('credito_cobranzacuota.idestadocredito_cobranzacuota',1)
+              ->where('credito_cobranzacuota.idestadoextorno',0)
+              ->where('credito_cobranzacuota.idformapago',2)
+              ->where($where1)
+              ->select('credito_cobranzacuota.idbanco', DB::raw('SUM(credito_cobranzacuota.total_recibido) as monto'))
+              ->groupBy('credito_cobranzacuota.idbanco')
+              ->get()->keyBy('idbanco');
+          $desembolsos_porbanco = DB::table('credito_formapago')
+              ->join('credito','credito.id','credito_formapago.idcredito')
+              ->where('credito_formapago.idformapago',2)
+              ->where('credito.estado','DESEMBOLSADO')
+              ->where($where2)
+              ->select('credito_formapago.idbanco', DB::raw('SUM(credito.monto_solicitado) as monto'))
+              ->groupBy('credito_formapago.idbanco')
+              ->get()->keyBy('idbanco');
+          $movimientointernodineros1_porbanco = DB::table('movimientointernodinero')
+              ->where('movimientointernodinero.idestadoeliminado',1)
+              ->where('movimientointernodinero.idfuenteretiro',7)
+              ->where($where4)
+              ->select('movimientointernodinero.idbanco', DB::raw('SUM(movimientointernodinero.monto) as monto'))
+              ->groupBy('movimientointernodinero.idbanco')
+              ->get()->keyBy('idbanco');
+          $movimientointernodineros2_porbanco = DB::table('movimientointernodinero')
+              ->where('movimientointernodinero.idestadoeliminado',1)
+              ->where('movimientointernodinero.idfuenteretiro',9)
+              ->where($where4)
+              ->select('movimientointernodinero.idbanco', DB::raw('SUM(movimientointernodinero.monto) as monto'))
+              ->groupBy('movimientointernodinero.idbanco')
+              ->get()->keyBy('idbanco');
+          $movimientointernodineros5_porbanco = DB::table('movimientointernodinero')
+              ->where('movimientointernodinero.idestadoeliminado',1)
+              ->where('movimientointernodinero.idfuenteretiro',10)
+              ->where($where4)
+              ->select('movimientointernodinero.idbanco', DB::raw('SUM(movimientointernodinero.monto) as monto'))
+              ->groupBy('movimientointernodinero.idbanco')
+              ->get()->keyBy('idbanco');
+          $gastosadministrativosyoperativos_porbanco = DB::table('gastoadministrativooperativo')
+              ->where('gastoadministrativooperativo.idformapago',2)
+              ->where('gastoadministrativooperativo.idestadoeliminado',1)
+              ->where($where5)
+              ->select('gastoadministrativooperativo.idbanco', DB::raw('SUM(gastoadministrativooperativo.monto) as monto'))
+              ->groupBy('gastoadministrativooperativo.idbanco')
+              ->get()->keyBy('idbanco');
+          $ingresosextraordinarios_porbanco = DB::table('ingresoextraordinario')
+              ->where('ingresoextraordinario.idformapago',2)
+              ->where('ingresoextraordinario.idestadoeliminado',1)
+              ->where($where6)
+              ->select('ingresoextraordinario.idbanco', DB::raw('SUM(ingresoextraordinario.monto) as monto'))
+              ->groupBy('ingresoextraordinario.idbanco')
+              ->get()->keyBy('idbanco');
+
           foreach($bancos as $valuebancos){
-            
-              $saldos_capitalasignada_1 = DB::table('asignacioncapital')
-                  ->where('asignacioncapital.idestadoeliminado',1)
-                  ->whereIn('asignacioncapital.idtipooperacion',[1,4])
-                  ->where('asignacioncapital.idbanco',$valuebancos->id)
-                  ->where($where3)
-                  ->sum('asignacioncapital.monto');
-            
-              $saldos_capitalasignada_2 = DB::table('asignacioncapital')
-                  ->where('asignacioncapital.idestadoeliminado',1)
-                  ->whereIn('asignacioncapital.idtipooperacion',[2])
-                  ->where('asignacioncapital.idbanco',$valuebancos->id)
-                  ->where($where3)
-                  ->sum('asignacioncapital.monto'); 
-            
-              $cobranzas = DB::table('credito_cobranzacuota')
-                  ->join('credito','credito.id','credito_cobranzacuota.idcredito')
-                  ->where('credito_cobranzacuota.idestadocredito_cobranzacuota',1)
-                  ->where('credito_cobranzacuota.idestadoextorno',0)
-                  ->where('credito_cobranzacuota.idformapago',2)
-                  ->where('credito_cobranzacuota.idbanco',$valuebancos->id)
-                  ->where($where1)
-                  ->sum('credito_cobranzacuota.total_recibido'); 
-            
-              $desembolsos = DB::table('credito_formapago')
-                  ->join('credito','credito.id','credito_formapago.idcredito')
-                  ->where('credito_formapago.idformapago',2)
-                  ->where('credito.estado','DESEMBOLSADO')
-                  ->where('credito_formapago.idbanco',$valuebancos->id)
-                  ->where($where2)
-                  ->sum('credito.monto_solicitado');
-            
-              $movimientointernodineros1 = DB::table('movimientointernodinero')
-                  ->where('movimientointernodinero.idestadoeliminado',1)
-                  ->where('movimientointernodinero.idfuenteretiro',7)
-                  ->where('movimientointernodinero.idbanco',$valuebancos->id)
-                  ->where($where4)
-                  ->sum('movimientointernodinero.monto');
-            
-              $movimientointernodineros2 = DB::table('movimientointernodinero')
-                  ->where('movimientointernodinero.idestadoeliminado',1)
-                  ->where('movimientointernodinero.idfuenteretiro',9)
-                  ->where('movimientointernodinero.idbanco',$valuebancos->id)
-                  ->where($where4)
-                  ->sum('movimientointernodinero.monto');
-            
-              $movimientointernodineros5 = DB::table('movimientointernodinero')
-                  ->where('movimientointernodinero.idestadoeliminado',1)
-                  ->where('movimientointernodinero.idfuenteretiro',10)
-                  ->where('movimientointernodinero.idbanco',$valuebancos->id)
-                  ->where($where4)
-                  ->sum('movimientointernodinero.monto');
-            
-              $gastosadministrativosyoperativos_monto = DB::table('gastoadministrativooperativo')
-                  ->where('gastoadministrativooperativo.idformapago',2) 
-                  ->where('gastoadministrativooperativo.idestadoeliminado',1) 
-                  ->where('gastoadministrativooperativo.idbanco',$valuebancos->id)
-                  ->where($where5)
-                  ->sum('gastoadministrativooperativo.monto');
-            
-              $ingresosextraordinarios_monto = DB::table('ingresoextraordinario')
-                  ->where('ingresoextraordinario.idformapago',2) 
-                  ->where('ingresoextraordinario.idestadoeliminado',1) 
-                  ->where('ingresoextraordinario.idbanco',$valuebancos->id)
-                  ->where($where6)
-                  ->sum('ingresoextraordinario.monto');
-            
+
+              $saldos_capitalasignada_1 = $saldos_capitalasignada_1_porbanco->get($valuebancos->id)->monto ?? 0;
+              $saldos_capitalasignada_2 = $saldos_capitalasignada_2_porbanco->get($valuebancos->id)->monto ?? 0;
+              $cobranzas = $cobranzas_porbanco->get($valuebancos->id)->monto ?? 0;
+              $desembolsos = $desembolsos_porbanco->get($valuebancos->id)->monto ?? 0;
+              $movimientointernodineros1 = $movimientointernodineros1_porbanco->get($valuebancos->id)->monto ?? 0;
+              $movimientointernodineros2 = $movimientointernodineros2_porbanco->get($valuebancos->id)->monto ?? 0;
+              $movimientointernodineros5 = $movimientointernodineros5_porbanco->get($valuebancos->id)->monto ?? 0;
+              $gastosadministrativosyoperativos_monto = $gastosadministrativosyoperativos_porbanco->get($valuebancos->id)->monto ?? 0;
+              $ingresosextraordinarios_monto = $ingresosextraordinarios_porbanco->get($valuebancos->id)->monto ?? 0;
+
               $saldos_cuentabanco += number_format($saldos_capitalasignada_1-
                                                    $saldos_capitalasignada_2+
                                                    $cobranzas-

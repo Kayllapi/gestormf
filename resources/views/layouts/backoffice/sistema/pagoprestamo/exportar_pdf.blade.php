@@ -159,7 +159,7 @@
           foreach($credito_cobranzacuotas as $key => $value){
             
               // Mismo desglose que el voucher de pago y el historial (pagoprestamo/showtable).
-              $desglose = desglose_pago_cobranzacuota($value);
+              $desglose = desglose_pago_cobranzacuota($value, $adelantos_por_pago->get($value->id, collect()));
 
               $t_cuotapagado = number_format($desglose['cuotapagado'], 2, '.', '');
               $t_acuenta = number_format($desglose['acuenta'], 2, '.', '');

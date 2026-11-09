@@ -55,28 +55,7 @@ class PagoprestamoController extends Controller
     {
 
         if($id == 'showtable'){
-          $where = [];
-          $where2 = [];
-          // Los pagos de creditos castigados se muestran en "Prestamos Castigados" (PagoprestamoCastigadoController), no aqui.
-          $where[] = ['credito.castigo_estado','!=','CONFIRMADO'];
-          $where2[] = ['credito.castigo_estado','!=','CONFIRMADO'];
-          if($request->idagencia!=''){
-              $where[] = ['credito.idtienda',$request->idagencia];
-              $where2[] = ['credito.idtienda',$request->idagencia];
-          }
-          if($request->idcliente!=''){
-              $where[] = ['credito.idcliente',$request->idcliente];
-              $where2[] = ['credito.idcliente',$request->idcliente];
-          }
-          if($request->idasesor!='' && $request->idasesor!='0'){
-              $where[] = ['credito.idasesor',$request->idasesor];
-              $where2[] = ['credito.idcajero',$request->idasesor];
-          }
-          $where[] = ['credito_cobranzacuota.fecharegistro','>=',$request->inicio.' 00:00:00'];
-          $where[] = ['credito_cobranzacuota.fecharegistro','<=',$request->fin.' 23:59:59'];
-          $where2[] = ['credito_cobranzacuota.fecharegistro','>=',$request->inicio.' 00:00:00'];
-          $where2[] = ['credito_cobranzacuota.fecharegistro','<=',$request->fin.' 23:59:59'];
-          
+
           $credito_cobranzacuotas = DB::table('credito_cobranzacuota')
               ->join('credito','credito.id','credito_cobranzacuota.idcredito')
               ->join('users as cliente','cliente.id','credito.idcliente')
@@ -84,10 +63,25 @@ class PagoprestamoController extends Controller
               ->join('ubigeo','ubigeo.id','cliente.idubigeo')
               ->where('credito_cobranzacuota.idestadocredito_cobranzacuota',1)
               ->where('credito_cobranzacuota.idestadoextorno',0)
-              ->where($where)
-              ->orWhere('credito_cobranzacuota.idestadocredito_cobranzacuota',1)
-              ->where('credito_cobranzacuota.idestadoextorno',0)
-              ->where($where2)
+              // Los pagos de creditos castigados se muestran en "Prestamos Castigados" (PagoprestamoCastigadoController), no aqui.
+              ->where('credito.castigo_estado','!=','CONFIRMADO')
+              ->where('credito_cobranzacuota.fecharegistro','>=',$request->inicio.' 00:00:00')
+              ->where('credito_cobranzacuota.fecharegistro','<=',$request->fin.' 23:59:59')
+              ->when($request->idagencia!='', function($query) use ($request){
+                  $query->where('credito.idtienda',$request->idagencia);
+              })
+              ->when($request->idcliente!='', function($query) use ($request){
+                  $query->where('credito.idcliente',$request->idcliente);
+              })
+              // El asesor del filtro puede ser el asesor del credito o el cajero que cobro el pago.
+              // Antes esto se resolvia duplicando TODO el filtro (agencia, cliente, fechas) en dos
+              // bloques unidos con OR a nivel de toda la consulta, solo para variar esta condicion.
+              ->when($request->idasesor!='' && $request->idasesor!='0', function($query) use ($request){
+                  $query->where(function($q) use ($request){
+                      $q->where('credito.idasesor',$request->idasesor)
+                        ->orWhere('credito_cobranzacuota.idcajero',$request->idasesor);
+                  });
+              })
               ->select(
                   'credito_cobranzacuota.*',
                   'credito.cuenta as cuentacredito',
@@ -101,7 +95,18 @@ class PagoprestamoController extends Controller
               )
               ->orderBy('credito_cobranzacuota.id','asc')
               ->get();
-          
+
+          // Precarga para no disparar una consulta por fila dentro del foreach:
+          // credito_adelanto (desglose_pago_cobranzacuota) y el responsable de la validacion.
+          $adelantos_por_pago = DB::table('credito_adelanto')
+              ->whereIn('credito_adelanto.idcredito_cobranzacuota',$credito_cobranzacuotas->pluck('id'))
+              ->get()
+              ->groupBy('idcredito_cobranzacuota');
+
+          $usuarios_validar = DB::table('users')
+              ->whereIn('id',$credito_cobranzacuotas->where('idformapago',2)->where('validar_estado',1)->pluck('validar_responsable')->unique())
+              ->pluck('codigo','id');
+
           $html = '<table class="table table-hover" id="table-lista-credito">
               <thead class="table-dark" style="position: sticky;top: 0;z-index:1;">
                 <tr>
@@ -142,7 +147,7 @@ class PagoprestamoController extends Controller
           foreach($credito_cobranzacuotas as $key => $value){
 
               // Mismo desglose que el voucher de pago (cobranzacuota/pdf_pago).
-              $desglose = desglose_pago_cobranzacuota($value);
+              $desglose = desglose_pago_cobranzacuota($value, $adelantos_por_pago->get($value->id, collect()));
 
               $t_cuotapagado   = number_format($desglose['cuotapagado'], 2, '.', '');    // C. PAGADO
               $t_acuenta       = number_format($desglose['acuenta'], 2, '.', '');        // ACUENTA
@@ -162,8 +167,7 @@ class PagoprestamoController extends Controller
               if($value->idformapago==2){
                   $btn_validar = "<button type='button' class='btn btn-success' onclick='validar({$value->id})'><i class='fa-solid fa-check'></i> Validar</button>";
                   if($value->validar_estado==1){
-                      $users = DB::table('users')->whereId($value->validar_responsable)->first();
-                      $btn_validar = "<i class='fa-solid fa-check'></i> (".$users->codigo.")";
+                      $btn_validar = "<i class='fa-solid fa-check'></i> (".$usuarios_validar->get($value->validar_responsable).")";
                   }
               }
 
@@ -418,30 +422,7 @@ class PagoprestamoController extends Controller
             ]);
         }
         else if( $request->input('view') == 'exportar_pdf' ){
-              
-            
-          $where = [];
-          $where2 = [];
-          // Los pagos de creditos castigados se muestran en "Prestamos Castigados" (PagoprestamoCastigadoController), no aqui.
-          $where[] = ['credito.castigo_estado','!=','CONFIRMADO'];
-          $where2[] = ['credito.castigo_estado','!=','CONFIRMADO'];
-          if($request->idagencia!=''){
-              $where[] = ['credito.idtienda',$request->idagencia];
-              $where2[] = ['credito.idtienda',$request->idagencia];
-          }
-          if($request->idcliente!=''){
-              $where[] = ['credito.idcliente',$request->idcliente];
-              $where2[] = ['credito.idcliente',$request->idcliente];
-          }
-          if($request->idasesor!=''){
-              $where[] = ['credito.idasesor',$request->idasesor];
-              $where2[] = ['credito.idcajero',$request->idasesor];
-          }
-          $where[] = ['credito_cobranzacuota.fecharegistro','>=',$request->fecha_inicio.' 00:00:00'];
-          $where[] = ['credito_cobranzacuota.fecharegistro','<=',$request->fecha_fin.' 23:59:59'];
-          $where2[] = ['credito_cobranzacuota.fecharegistro','>=',$request->fecha_inicio.' 00:00:00'];
-          $where2[] = ['credito_cobranzacuota.fecharegistro','<=',$request->fecha_fin.' 23:59:59'];
-          
+
           $credito_cobranzacuotas = DB::table('credito_cobranzacuota')
               ->join('credito','credito.id','credito_cobranzacuota.idcredito')
               ->join('users as cliente','cliente.id','credito.idcliente')
@@ -449,13 +430,25 @@ class PagoprestamoController extends Controller
               ->join('ubigeo','ubigeo.id','cliente.idubigeo')
               ->where('credito_cobranzacuota.idestadocredito_cobranzacuota',1)
               ->where('credito_cobranzacuota.idestadoextorno',0)
-              ->where($where)
-              ->orWhere('credito_cobranzacuota.idestadocredito_cobranzacuota',1)
-              ->where('credito_cobranzacuota.idestadoextorno',0)
-              ->where($where2)
+              // Los pagos de creditos castigados se muestran en "Prestamos Castigados" (PagoprestamoCastigadoController), no aqui.
+              ->where('credito.castigo_estado','!=','CONFIRMADO')
+              ->where('credito_cobranzacuota.fecharegistro','>=',$request->fecha_inicio.' 00:00:00')
+              ->where('credito_cobranzacuota.fecharegistro','<=',$request->fecha_fin.' 23:59:59')
+              ->when($request->idagencia!='', function($query) use ($request){
+                  $query->where('credito.idtienda',$request->idagencia);
+              })
+              ->when($request->idcliente!='', function($query) use ($request){
+                  $query->where('credito.idcliente',$request->idcliente);
+              })
+              // El asesor del filtro puede ser el asesor del credito o el cajero que cobro el pago (igual que en showtable).
+              ->when($request->idasesor!='', function($query) use ($request){
+                  $query->where(function($q) use ($request){
+                      $q->where('credito.idasesor',$request->idasesor)
+                        ->orWhere('credito_cobranzacuota.idcajero',$request->idasesor);
+                  });
+              })
               ->select(
                   'credito_cobranzacuota.*',
-            
                   'credito.cuenta as cuentacredito',
                   'cliente.id as idcliente',
                   'cliente.nombrecompleto as nombrecliente',
@@ -465,20 +458,27 @@ class PagoprestamoController extends Controller
               )
               ->orderBy('credito_cobranzacuota.id','asc')
               ->get();
-          
-          
+
             $agencia = DB::table('tienda')->whereId($request->idagencia)->first();
-        
+
+            // Precarga de credito_adelanto para todos los pagos del rango: evita 1 consulta
+            // por fila dentro del reporte (desglose_pago_cobranzacuota).
+            $adelantos_por_pago = DB::table('credito_adelanto')
+                ->whereIn('credito_adelanto.idcredito_cobranzacuota',$credito_cobranzacuotas->pluck('id'))
+                ->get()
+                ->groupBy('idcredito_cobranzacuota');
+
             $pdf = PDF::loadView(sistema_view().'/pagoprestamo/exportar_pdf',[
                 'tienda' => $tienda,
                 'agencia' => $agencia,
                 'credito_cobranzacuotas' => $credito_cobranzacuotas,
+                'adelantos_por_pago' => $adelantos_por_pago,
                 'fecha_inicio' => $request->fecha_inicio,
                 'fecha_fin' => $request->fecha_fin,
-            ]); 
+            ]);
             $pdf->setPaper('A4', 'landscape');
             return $pdf->stream('HISTORIAL_PAGOS_PRESTAMOS.pdf');
-        }  
+        }
         else if($request->input('view') == 'extornar') {
           
             if($request->tipo == 'admin'){

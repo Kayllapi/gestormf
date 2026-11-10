@@ -18,12 +18,8 @@
                               <div class="row">
                                 <label for="fecha_inicio" class="col-sm-3 col-form-label">AGENCIA</label>
                                 <div class="col-sm-9">
-                                    <select class="form-control" id="idagencia">
-                                      <option></option>
-                                      @foreach($agencias as $value)
-                                          <option value="{{$value->id}}">{{$value->nombreagencia}}</option>
-                                      @endforeach
-                                    </select>
+                                    <input type="text" class="form-control" value="{{$tienda->nombreagencia}}" disabled>
+                                    <input type="hidden" id="idagencia" value="{{$tienda->id}}">
                                 </div>
                               </div>
                             </div>
@@ -57,7 +53,6 @@
   </div>
 </div>
 <script>
-  sistema_select2({ input:'#idagencia',val:'{{$tienda->id}}' });
   verpdf();
   function verpdf(){
     let corte = $('#corte').val();

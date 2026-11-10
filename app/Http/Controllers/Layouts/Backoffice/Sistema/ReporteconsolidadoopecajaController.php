@@ -402,60 +402,25 @@ class ReporteconsolidadoopecajaController extends Controller
             if($arqueocaja){
                 $idarqueocaja = $arqueocaja->id;
             }
-            $arqueocaja_denominacion_1 = DB::table('arqueocaja_denominacion')
+            // Una sola consulta para las 11 denominaciones (antes: 1 consulta por denominacion).
+            // Se normaliza la clave con number_format para no depender del formato exacto
+            // (ej. "0.10" vs "0.1") con que el motor de BD devuelva la columna decimal.
+            $arqueocaja_denominaciones = DB::table('arqueocaja_denominacion')
                 ->where('idarqueocaja',$idarqueocaja)
-                ->where('denominacion','0.10')
-                ->first();
-          
-            $arqueocaja_denominacion_2 = DB::table('arqueocaja_denominacion')
-                ->where('idarqueocaja',$idarqueocaja)
-                ->where('denominacion','0.20')
-                ->first();
-          
-            $arqueocaja_denominacion_3 = DB::table('arqueocaja_denominacion')
-                ->where('idarqueocaja',$idarqueocaja)
-                ->where('denominacion','0.50')
-                ->first();
-          
-            $arqueocaja_denominacion_4 = DB::table('arqueocaja_denominacion')
-                ->where('idarqueocaja',$idarqueocaja)
-                ->where('denominacion','1.00')
-                ->first();
-          
-            $arqueocaja_denominacion_5 = DB::table('arqueocaja_denominacion')
-                ->where('idarqueocaja',$idarqueocaja)
-                ->where('denominacion','2.00')
-                ->first();
-          
-            $arqueocaja_denominacion_6 = DB::table('arqueocaja_denominacion')
-                ->where('idarqueocaja',$idarqueocaja)
-                ->where('denominacion','5.00')
-                ->first();
-          
-            $arqueocaja_denominacion_7 = DB::table('arqueocaja_denominacion')
-                ->where('idarqueocaja',$idarqueocaja)
-                ->where('denominacion','10.00')
-                ->first();
-          
-            $arqueocaja_denominacion_8 = DB::table('arqueocaja_denominacion')
-                ->where('idarqueocaja',$idarqueocaja)
-                ->where('denominacion','20.00')
-                ->first();
-          
-            $arqueocaja_denominacion_9 = DB::table('arqueocaja_denominacion')
-                ->where('idarqueocaja',$idarqueocaja)
-                ->where('denominacion','50.00')
-                ->first();
-          
-            $arqueocaja_denominacion_10 = DB::table('arqueocaja_denominacion')
-                ->where('idarqueocaja',$idarqueocaja)
-                ->where('denominacion','100.00')
-                ->first();
-          
-            $arqueocaja_denominacion_11 = DB::table('arqueocaja_denominacion')
-                ->where('idarqueocaja',$idarqueocaja)
-                ->where('denominacion','200.00')
-                ->first();
+                ->get()
+                ->keyBy(fn($d) => number_format((float) $d->denominacion, 2, '.', ''));
+
+            $arqueocaja_denominacion_1 = $arqueocaja_denominaciones->get('0.10');
+            $arqueocaja_denominacion_2 = $arqueocaja_denominaciones->get('0.20');
+            $arqueocaja_denominacion_3 = $arqueocaja_denominaciones->get('0.50');
+            $arqueocaja_denominacion_4 = $arqueocaja_denominaciones->get('1.00');
+            $arqueocaja_denominacion_5 = $arqueocaja_denominaciones->get('2.00');
+            $arqueocaja_denominacion_6 = $arqueocaja_denominaciones->get('5.00');
+            $arqueocaja_denominacion_7 = $arqueocaja_denominaciones->get('10.00');
+            $arqueocaja_denominacion_8 = $arqueocaja_denominaciones->get('20.00');
+            $arqueocaja_denominacion_9 = $arqueocaja_denominaciones->get('50.00');
+            $arqueocaja_denominacion_10 = $arqueocaja_denominaciones->get('100.00');
+            $arqueocaja_denominacion_11 = $arqueocaja_denominaciones->get('200.00');
           
             $pdf = PDF::loadView(sistema_view().'/reporteconsolidadoopecaja/reporte_arqueocaja_pdf',[
                 'tienda' => $tienda,

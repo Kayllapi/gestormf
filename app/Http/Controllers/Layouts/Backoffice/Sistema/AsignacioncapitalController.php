@@ -289,7 +289,12 @@ class AsignacioncapitalController extends Controller
                 )
                 ->orderBy('asignacioncapital.id','ASC')
                 ->get();
-  
+
+            // Precarga del responsable de la validacion: evita 1 consulta por fila dentro del foreach.
+            $usuarios_validar = DB::table('users')
+                ->whereIn('id',$asignacioncapital->where('idtipodestino',3)->where('validar_estado',1)->pluck('validar_responsable')->unique())
+                ->pluck('codigo','id');
+
             $total = 0;
             $total_suma = 0;
             $total_resta = 0;
@@ -316,10 +321,9 @@ class AsignacioncapitalController extends Controller
                 if($value->idtipodestino==3){
                     $btn_validar = "<button type='button' class='btn btn-success' onclick='validar({$value->id})'><i class='fa-solid fa-check'></i> Validar</button>";
                     if($value->validar_estado==1){
-                        $users = DB::table('users')->whereId($value->validar_responsable)->first();
-                        $btn_validar = "<i class='fa-solid fa-check'></i> (".$users->codigo.")";
+                        $btn_validar = "<i class='fa-solid fa-check'></i> (".$usuarios_validar->get($value->validar_responsable).")";
                     }
-                } 
+                }
               
                 $html .= "<tr data-valor-columna='{$value->id}' idresponsable_recfinal='{$value->idresponsable_recfinal}' onclick='show_data(this)'>
                               <td>{$value->tiendanombre}</td>
@@ -370,27 +374,33 @@ class AsignacioncapitalController extends Controller
             $tiendas = DB::table('tienda')
                 ->orderBy('tienda.nombre','ASC')
                 ->get();
-  
+
+            // Agregado por agencia en una sola consulta por condicion (antes: 2 consultas por agencia).
+            $monto_suma_portienda = DB::table('asignacioncapital')
+                ->where('asignacioncapital.idestadoeliminado',1)
+                ->whereIn('asignacioncapital.idtipooperacion',[1,4])
+                ->where('asignacioncapital.idresponsable_recfinal','<>',0)
+                //->where($where)
+                ->select('asignacioncapital.idtienda', DB::raw('SUM(asignacioncapital.monto) as monto'))
+                ->groupBy('asignacioncapital.idtienda')
+                ->get()->keyBy('idtienda');
+
+            $monto_resta_portienda = DB::table('asignacioncapital')
+                ->where('asignacioncapital.idestadoeliminado',1)
+                ->whereIn('asignacioncapital.idtipooperacion',[2,3])
+                ->where('asignacioncapital.idresponsable_recfinal','<>',0)
+                //->where($where)
+                ->select('asignacioncapital.idtienda', DB::raw('SUM(asignacioncapital.monto) as monto'))
+                ->groupBy('asignacioncapital.idtienda')
+                ->get()->keyBy('idtienda');
+
             $html = '';
             foreach($tiendas as $key => $value){
-              
-                $monto_suma = DB::table('asignacioncapital')
-                    ->where('asignacioncapital.idestadoeliminado',1)
-                    ->whereIn('asignacioncapital.idtipooperacion',[1,4])
-                    ->where('asignacioncapital.idtienda',$value->id)
-                    ->where('asignacioncapital.idresponsable_recfinal','<>',0)
-                    //->where($where)
-                    ->sum('asignacioncapital.monto');
-              
-                $monto_resta = DB::table('asignacioncapital')
-                    ->where('asignacioncapital.idestadoeliminado',1)
-                    ->whereIn('asignacioncapital.idtipooperacion',[2,3])
-                    ->where('asignacioncapital.idtienda',$value->id)
-                    ->where('asignacioncapital.idresponsable_recfinal','<>',0)
-                    //->where($where)
-                    ->sum('asignacioncapital.monto');
-                
-                $monto = number_format($monto_suma-$monto_resta, 2, '.', ''); 
+
+                $monto_suma = $monto_suma_portienda->get($value->id)->monto ?? 0;
+                $monto_resta = $monto_resta_portienda->get($value->id)->monto ?? 0;
+
+                $monto = number_format($monto_suma-$monto_resta, 2, '.', '');
                 
                 DB::table('tienda')->whereId($value->id)->update([
                     'capital_agencia' => $monto
@@ -523,7 +533,8 @@ class AsignacioncapitalController extends Controller
             ]);
         }
         else if( $request->input('view') == 'exportar_pdf' ){
-              
+
+            $where = [];
             if($request->input('fechainicio') != ''){
                 $where[] = ['asignacioncapital.fecharegistro','>=',$request->fechainicio.' 00:00:00'];
             }

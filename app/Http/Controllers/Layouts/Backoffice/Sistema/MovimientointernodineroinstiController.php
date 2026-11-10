@@ -512,12 +512,13 @@ class MovimientointernodineroinstiController extends Controller
             if($request->input('fechafin') != ''){
                 $where[] = ['movimientointernodinero.fecharegistro','<=',$request->fechafin.' 23:59:59']; 
             }
-            $movimientointernodinero_retiro2 = DB::table('movimientointernodinero')
+            // Una sola consulta para ambos tipos (antes: 2 consultas con los mismos joins y filtro de fecha).
+            $movimientointernodinero_todos = DB::table('movimientointernodinero')
                 ->join('credito_fuenteretiro','credito_fuenteretiro.id','movimientointernodinero.idfuenteretiro')
                 ->join('users as responsable','responsable.id','movimientointernodinero.idresponsable')
                 ->join('tienda','tienda.id','movimientointernodinero.idtienda')
                 ->where('movimientointernodinero.idestadoeliminado',1)
-                ->where('movimientointernodinero.idtipomovimientointerno',3)
+                ->whereIn('movimientointernodinero.idtipomovimientointerno',[3,4])
                 ->where($where)
                 ->select(
                     'movimientointernodinero.*',
@@ -527,23 +528,10 @@ class MovimientointernodineroinstiController extends Controller
                 )
                 ->orderBy('movimientointernodinero.id','ASC')
                 ->get();
-          
-            $movimientointernodinero_deposito3 = DB::table('movimientointernodinero')
-                ->join('credito_fuenteretiro','credito_fuenteretiro.id','movimientointernodinero.idfuenteretiro')
-                ->join('users as responsable','responsable.id','movimientointernodinero.idresponsable')
-                ->join('tienda','tienda.id','movimientointernodinero.idtienda')
-                ->where('movimientointernodinero.idestadoeliminado',1)
-                ->where('movimientointernodinero.idtipomovimientointerno',4)
-                ->where($where)
-                ->select(
-                    'movimientointernodinero.*',
-                    'credito_fuenteretiro.nombre as credito_fuenteretironombre',
-                    'tienda.nombreagencia as tiendanombre',
-                    'responsable.codigo as codigo_responsable',
-                )
-                ->orderBy('movimientointernodinero.id','ASC')
-                ->get();
-          
+
+            $movimientointernodinero_retiro2 = $movimientointernodinero_todos->where('idtipomovimientointerno',3)->values();
+            $movimientointernodinero_deposito3 = $movimientointernodinero_todos->where('idtipomovimientointerno',4)->values();
+
             $agencia = DB::table('tienda')->whereId(user_permiso()->idtienda)->first();
         
             $pdf = PDF::loadView(sistema_view().'/movimientointernodineroinsti/exportar_pdf',[

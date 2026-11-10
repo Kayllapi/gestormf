@@ -8,7 +8,7 @@ use DB;
 use Auth;
 use Carbon\Carbon;
 use PDF;
-use App\Exports\ReportehistorialpagocreditoExport;
+use App\Exports\ReportehistorialpagocreditoAdminExport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class HistorialpagocreditoAdminController extends Controller
@@ -49,9 +49,7 @@ class HistorialpagocreditoAdminController extends Controller
           }
           $where[] = ['credito_cobranzacuota.fecharegistro','>=',$request->fechainicio.' 00:00:00'];
           $where[] = ['credito_cobranzacuota.fecharegistro','<=',$request->fechafin.' 23:59:59'];
-          $where2[] = ['credito_cobranzacuota.fecharegistro','>=',$request->fechainicio.' 00:00:00'];
-          $where2[] = ['credito_cobranzacuota.fecharegistro','<=',$request->fechafin.' 23:59:59'];
-          
+
           $credito_cobranzacuotas = DB::table('credito_cobranzacuota')
               ->join('credito','credito.id','credito_cobranzacuota.idcredito')
               ->join('users as cliente','cliente.id','credito.idcliente')
@@ -62,7 +60,7 @@ class HistorialpagocreditoAdminController extends Controller
               ->where($where)
               ->select(
                   'credito_cobranzacuota.*',
-            
+
                   'credito.cuenta as cuentacredito',
                   'credito.idforma_credito as idforma_credito',
                   'cliente.id as idcliente',
@@ -74,9 +72,9 @@ class HistorialpagocreditoAdminController extends Controller
               )
               ->orderBy('credito_cobranzacuota.id','asc')
               ->get();
-          
+
           $agencia = DB::table('tienda')->whereId($request->idagencia)->first();
-          
+
           $pdf = PDF::loadView(sistema_view().'/historialpagocreditoadmin/pdf_reporte',[
               'tienda' => $tienda,
               'agencia' => $agencia,

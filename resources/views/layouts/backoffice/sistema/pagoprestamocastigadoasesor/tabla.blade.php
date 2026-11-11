@@ -1,8 +1,24 @@
+@php
+    $usuario = DB::table('users')
+        ->join('users_permiso','users_permiso.idusers','users.id')
+        ->join('permiso','permiso.id','users_permiso.idpermiso')
+        ->where('users_permiso.idpermiso',12)
+        ->where('users_permiso.idtienda',$tienda->id)
+        ->where('users.id', Auth::user()->id)
+        ->select('users.nombrecompleto','permiso.nombre as nombrepermiso')
+        ->first();
+@endphp
 <div class="modal-header">
   <h5 class="modal-title">Historial de Pagos de Préstamos <span style="background-color: #E8E585;">Castigados</span> Asesor/Cobranza</h5>
-  
   <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>
+@if (!$usuario)
+<div class="modal-body">
+  <div class="alert alert-warning" role="alert">
+    Este módulo es solo para usuarios con permiso de cobranza.
+  </div>
+</div>
+@else
 <div class="modal-body">
   <div class="row">
       <div class="col-sm-12">
@@ -123,6 +139,7 @@
           <i class="fa-solid fa-file-pdf"></i> REPORTE</button>
       </div>
 </div>
+@endif
 <script>
 
   // sistema_select2({ input:'#idagencia',val:'{{$tienda->id}}' });

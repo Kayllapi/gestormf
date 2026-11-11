@@ -8,7 +8,7 @@ use DB;
 use Auth;
 use Carbon\Carbon;
 use PDF;
-use App\Exports\ReportehistorialpagocreditoExport;
+use App\Exports\ReportehistorialpagocreditoAdminCastigadoExport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class HistorialpagocreditoCastigadoAdminController extends Controller
@@ -43,89 +43,25 @@ class HistorialpagocreditoCastigadoAdminController extends Controller
     {
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
         if($request->input('view') == 'pdf_reporte'){
-          $where = [];
-          if($request->idagencia!=''){
-              $where[] = ['credito.idtienda',$request->idagencia];
-          }
-          $where[] = ['credito_cobranzacuota.fecharegistro','>=',$request->fechainicio.' 00:00:00'];
-          $where[] = ['credito_cobranzacuota.fecharegistro','<=',$request->fechafin.' 23:59:59'];
-          $where2[] = ['credito_cobranzacuota.fecharegistro','>=',$request->fechainicio.' 00:00:00'];
-          $where2[] = ['credito_cobranzacuota.fecharegistro','<=',$request->fechafin.' 23:59:59'];
-          
-          $credito_cobranzacuotas = DB::table('credito_cobranzacuota')
-              ->join('credito','credito.id','credito_cobranzacuota.idcredito')
-              ->join('users as cliente','cliente.id','credito.idcliente')
-              ->leftjoin('users as cajero','cajero.id','credito_cobranzacuota.idcajero')
-              ->join('ubigeo','ubigeo.id','cliente.idubigeo')
-              ->where('credito_cobranzacuota.idestadocredito_cobranzacuota',1)
-              ->where('credito_cobranzacuota.idestadoextorno',0)
-              ->where($where)
-              ->select(
-                  'credito_cobranzacuota.*',
-            
-                  'credito.cuenta as cuentacredito',
-                  'credito.idforma_credito as idforma_credito',
-                  'cliente.id as idcliente',
-                  'cliente.identificacion as identificacion',
-                  'cliente.nombrecompleto as nombrecliente',
-                  'cliente.direccion as clientedireccion',
-                  'ubigeo.nombre as ubigeonombre',
-                  'cajero.codigo as usuariocajero',
-              )
-              ->orderBy('credito_cobranzacuota.id','asc')
-              ->get();
-          
+          $credito_cobranzacuotas = $this->obtenerPagosCreditoCastigado($request);
           $agencia = DB::table('tienda')->whereId($request->idagencia)->first();
-          
+
           $pdf = PDF::loadView(sistema_view().'/historialpagocreditocastigadoadmin/pdf_reporte',[
               'tienda' => $tienda,
               'agencia' => $agencia,
               'credito_cobranzacuotas' => $credito_cobranzacuotas,
               'fechainicio' => $request->fechainicio,
               'fechafin' => $request->fechafin,
-          ]); 
+          ]);
           $pdf->setPaper('A4', 'landscape');
           return $pdf->stream('HISTORIAL_PAGO_CREDITOS.pdf');
         }
         else if( $request->input('view') == 'exportar_excel' ){
-              
-            
-          $where = [];
-          if($request->idagencia!=''){
-              $where[] = ['credito.idtienda',$request->idagencia];
-          }
-          $where[] = ['credito_cobranzacuota.fecharegistro','>=',$request->fechainicio.' 00:00:00'];
-          $where[] = ['credito_cobranzacuota.fecharegistro','<=',$request->fechafin.' 23:59:59'];
-          $where2[] = ['credito_cobranzacuota.fecharegistro','>=',$request->fechainicio.' 00:00:00'];
-          $where2[] = ['credito_cobranzacuota.fecharegistro','<=',$request->fechafin.' 23:59:59'];
-          
-          $credito_cobranzacuotas = DB::table('credito_cobranzacuota')
-              ->join('credito','credito.id','credito_cobranzacuota.idcredito')
-              ->join('users as cliente','cliente.id','credito.idcliente')
-              ->leftjoin('users as cajero','cajero.id','credito_cobranzacuota.idcajero')
-              ->join('ubigeo','ubigeo.id','cliente.idubigeo')
-              ->where('credito_cobranzacuota.idestadocredito_cobranzacuota',1)
-              ->where('credito_cobranzacuota.idestadoextorno',0)
-              ->where($where)
-              ->select(
-                  'credito_cobranzacuota.*',
-            
-                  'credito.cuenta as cuentacredito',
-                  'credito.idforma_credito as idforma_credito',
-                  'cliente.id as idcliente',
-                  'cliente.identificacion as identificacion',
-                  'cliente.nombrecompleto as nombrecliente',
-                  'cliente.direccion as clientedireccion',
-                  'ubigeo.nombre as ubigeonombre',
-                  'cajero.codigo as usuariocajero',
-              )
-              ->orderBy('credito_cobranzacuota.id','asc')
-              ->get();
-          
+          $credito_cobranzacuotas = $this->obtenerPagosCreditoCastigado($request);
           $agencia = DB::table('tienda')->whereId($request->idagencia)->first();
-        
+
             return Excel::download(
-                new ReportehistorialpagocreditoAdminExport(
+                new ReportehistorialpagocreditoAdminCastigadoExport(
                     $tienda,
                     $agencia,
                     $credito_cobranzacuotas,
@@ -135,7 +71,7 @@ class HistorialpagocreditoCastigadoAdminController extends Controller
                 ),
                 'historial_pago_credito.xls'
             );
-        } 
+        }
     }
 
     public function update(Request $request, $idtienda, $id)
@@ -144,5 +80,51 @@ class HistorialpagocreditoCastigadoAdminController extends Controller
 
     public function destroy(Request $request, $idtienda, $id)
     {
+    }
+
+    /**
+     * Pagos de creditos castigados para pdf_reporte y exportar_excel (misma consulta para ambos).
+     * No se unen ubigeo ni el cajero: ninguno de los dos reportes usa esos datos.
+     */
+    private function obtenerPagosCreditoCastigado(Request $request)
+    {
+        $where = [
+            ['credito_cobranzacuota.fecharegistro','>=',$request->fechainicio.' 00:00:00'],
+            ['credito_cobranzacuota.fecharegistro','<=',$request->fechafin.' 23:59:59'],
+        ];
+        if($request->idagencia!=''){
+            $where[] = ['credito.idtienda',$request->idagencia];
+        }
+
+        return DB::table('credito_cobranzacuota')
+            ->join('credito','credito.id','credito_cobranzacuota.idcredito')
+            ->join('users as cliente','cliente.id','credito.idcliente')
+            ->where('credito_cobranzacuota.idestadocredito_cobranzacuota',1)
+            ->where('credito_cobranzacuota.idestadoextorno',0)
+            ->where($where)
+            ->select(
+                'credito_cobranzacuota.id',
+                'credito_cobranzacuota.idformapago',
+                'credito_cobranzacuota.pago_cuota',
+                'credito_cobranzacuota.fecharegistro',
+                'credito_cobranzacuota.total_amortizacion',
+                'credito_cobranzacuota.total_interes',
+                'credito_cobranzacuota.total_cargo',
+                'credito_cobranzacuota.total_comision',
+                'credito_cobranzacuota.total_tenencia',
+                'credito_cobranzacuota.total_penalidad',
+                'credito_cobranzacuota.total_compensatorio',
+                'credito_cobranzacuota.cobrar_cargo',
+                'credito_cobranzacuota.total_pagar',
+                'credito_cobranzacuota.total_recibido',
+                'credito_cobranzacuota.opcion_pago',
+                'credito_cobranzacuota.estadocargo',
+                'credito.cuenta as cuentacredito',
+                'credito.idforma_credito as idforma_credito',
+                'cliente.identificacion as identificacion',
+                'cliente.nombrecompleto as nombrecliente',
+            )
+            ->orderBy('credito_cobranzacuota.id','asc')
+            ->get();
     }
 }

@@ -3717,8 +3717,9 @@ function createTokenSunat($id_token, $clave_token){
    * manejo de reduccion_cuota/reduccion_plazo que no pasa por credito_adelanto).
    *
    * PAGO_CUOTA / PAGO_TOTAL / PAGO_ACUENTA: desde el desglose de credito_adelanto grabado con
-   * ESTE pago. Las cuotas que este pago cerro (pago_cuota) se separan en cuota y mora; cualquier
-   * otra cuota del desglose sigue abierta y su total (cuota+mora) va integro a "Pago a Cuenta".
+   * ESTE pago. Toda cuota del desglose separa su mora (penalidad/tenencia/compensatorio) de su
+   * capital+interes+comision+cargo; la cuota que este pago cerro (pago_cuota) manda ese capital a
+   * "Importe de Cuota(s)", y cualquier otra cuota (sigue abierta) lo manda a "Pago a Cuenta".
    */
   function desglose_pago_cobranzacuota($credito_cobranzacuota, $credito_adelanto_pago = null) {
       if ($credito_cobranzacuota->opcion_pago == 'PAGO_ANTICIPADO') {
@@ -3762,8 +3763,10 @@ function createTokenSunat($id_token, $clave_token){
               $desglose['tenencia']      += (float) $valueadelanto->tenencia;
               $desglose['compensatorio'] += (float) $valueadelanto->compensatorio;
           } else {
-              // Sumar su mora tambien en la linea de mora la duplicaria, ya va dentro de este total.
-              $desglose['acuenta'] += (float) $valueadelanto->total;
+              $desglose['acuenta']       += (float) $valueadelanto->capital + (float) $valueadelanto->interes + (float) $valueadelanto->comision + (float) $valueadelanto->cargo;
+              $desglose['penalidad']     += (float) $valueadelanto->penalidad;
+              $desglose['tenencia']      += (float) $valueadelanto->tenencia;
+              $desglose['compensatorio'] += (float) $valueadelanto->compensatorio;
           }
       }
       return $desglose;

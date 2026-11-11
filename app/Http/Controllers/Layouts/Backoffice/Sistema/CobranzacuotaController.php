@@ -2308,11 +2308,11 @@ class CobranzacuotaController extends Controller
                 ->when($porAsesor, function ($query) {
                     $query->where('credito.idasesor', Auth::id());
                 })
-                // agencia (sin por_asesor ni solo_castigados): solo la agencia actual
-                ->when(!$porAsesor && !$soloCastigados, function ($query) use ($idtienda) {
+                // agencia (sin por_asesor): solo la agencia actual, incluyendo castigados
+                ->when(!$porAsesor, function ($query) use ($idtienda) {
                     $query->where('credito.idtienda', $idtienda);
                 })
-                // castigados: de todas las agencias, sin restringir por asesor
+                // castigados: de la agencia actual; con por_asesor, de cualquier agencia
                 ->when($soloCastigados, function ($query) {
                     $query->where('credito.castigo_estado', 'CONFIRMADO');
                 }, function ($query) {

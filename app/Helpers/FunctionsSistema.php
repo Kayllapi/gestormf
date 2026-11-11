@@ -3773,6 +3773,58 @@ function createTokenSunat($id_token, $clave_token){
   }
 
   /**
+   * Suma por concepto (capital, interes, cargo, comision, tenencia, penalidad, compensatorio)
+   * realmente cobrado en un pago (credito_cobranzacuota), para los reportes que muestran esas
+   * columnas por separado (historial de pago de creditos, su pdf y su excel).
+   *
+   * Los totales guardados en credito_cobranzacuota (total_amortizacion, total_interes, etc.) solo
+   * acumulan las cuotas que ESTE pago cerro; en un Pago a Cuenta puro (no cierra ninguna cuota) o
+   * en el remanente que adelanta la siguiente cuota, esos totales quedan en 0 aunque si se cobro
+   * dinero. Por eso aqui se suma directo de credito_adelanto, que registra TODAS las cuotas
+   * tocadas por el pago, cerradas o no.
+   *
+   * PAGO_ANTICIPADO no pasa por credito_adelanto (ver desglose_pago_cobranzacuota), asi que para
+   * ese caso se devuelven los totales ya guardados en credito_cobranzacuota.
+   */
+  function totales_conceptos_cobranzacuota($credito_cobranzacuota, $credito_adelanto_pago = null) {
+      if ($credito_cobranzacuota->opcion_pago == 'PAGO_ANTICIPADO') {
+          return [
+              'capital'       => (float) $credito_cobranzacuota->total_amortizacion,
+              'interes'       => (float) $credito_cobranzacuota->total_interes,
+              'cargo'         => (float) $credito_cobranzacuota->total_cargo,
+              'comision'      => (float) $credito_cobranzacuota->total_comision,
+              'tenencia'      => (float) $credito_cobranzacuota->total_tenencia,
+              'penalidad'     => (float) $credito_cobranzacuota->total_penalidad,
+              'compensatorio' => (float) $credito_cobranzacuota->total_compensatorio,
+          ];
+      }
+
+      if ($credito_adelanto_pago === null) {
+          // Al listar muchos pagos (historial/reporte), el llamador precarga todos los
+          // credito_adelanto con whereIn y pasa aqui solo los de este pago, para no
+          // disparar una consulta por fila.
+          $credito_adelanto_pago = DB::table('credito_adelanto')
+              ->where('credito_adelanto.idcredito_cobranzacuota', $credito_cobranzacuota->id)
+              ->get();
+      }
+
+      $totales = [
+          'capital' => 0, 'interes' => 0, 'cargo' => 0, 'comision' => 0,
+          'tenencia' => 0, 'penalidad' => 0, 'compensatorio' => 0,
+      ];
+      foreach ($credito_adelanto_pago as $valueadelanto) {
+          $totales['capital']       += (float) $valueadelanto->capital;
+          $totales['interes']       += (float) $valueadelanto->interes;
+          $totales['cargo']         += (float) $valueadelanto->cargo;
+          $totales['comision']      += (float) $valueadelanto->comision;
+          $totales['tenencia']      += (float) $valueadelanto->tenencia;
+          $totales['penalidad']     += (float) $valueadelanto->penalidad;
+          $totales['compensatorio'] += (float) $valueadelanto->compensatorio;
+      }
+      return $totales;
+  }
+
+  /**
    * Cuenta x Cobrar, total de la operacion y monto recibido de un pago (credito_cobranzacuota).
    *
    * En PAGO_CUOTA / PAGO_TOTAL el "Total a Pagar" del modal de cobro ya incluye la Cuenta x Cobrar

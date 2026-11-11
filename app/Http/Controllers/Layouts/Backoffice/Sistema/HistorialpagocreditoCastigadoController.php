@@ -105,7 +105,7 @@ class HistorialpagocreditoCastigadoController extends Controller
             $where[] = ['credito.idtienda',$request->idagencia];
         }
 
-        return DB::table('credito_cobranzacuota')
+        $credito_cobranzacuotas = DB::table('credito_cobranzacuota')
             ->join('credito','credito.id','credito_cobranzacuota.idcredito')
             ->join('users as cliente','cliente.id','credito.idcliente')
             ->where('credito_cobranzacuota.idestadocredito_cobranzacuota',1)
@@ -135,5 +135,34 @@ class HistorialpagocreditoCastigadoController extends Controller
             )
             ->orderBy('credito_cobranzacuota.id','asc')
             ->get();
+
+        $this->aplicarTotalesPorConcepto($credito_cobranzacuotas);
+
+        return $credito_cobranzacuotas;
+    }
+
+    /**
+     * Sobrescribe en cada pago los totales por concepto (capital, interes, cargo, comision,
+     * tenencia, penalidad, compensatorio) con lo realmente cobrado (ver totales_conceptos_cobranzacuota):
+     * los guardados en credito_cobranzacuota solo cubren las cuotas que el pago cerro, y quedan
+     * en 0 para un Pago a Cuenta que no cierra ninguna.
+     */
+    private function aplicarTotalesPorConcepto($credito_cobranzacuotas)
+    {
+        $adelantos_por_pago = DB::table('credito_adelanto')
+            ->whereIn('credito_adelanto.idcredito_cobranzacuota', $credito_cobranzacuotas->pluck('id'))
+            ->get()
+            ->groupBy('idcredito_cobranzacuota');
+
+        foreach ($credito_cobranzacuotas as $pago) {
+            $totales = totales_conceptos_cobranzacuota($pago, $adelantos_por_pago->get($pago->id, collect()));
+            $pago->total_amortizacion  = $totales['capital'];
+            $pago->total_interes       = $totales['interes'];
+            $pago->total_cargo         = $totales['cargo'];
+            $pago->total_comision      = $totales['comision'];
+            $pago->total_tenencia      = $totales['tenencia'];
+            $pago->total_penalidad     = $totales['penalidad'];
+            $pago->total_compensatorio = $totales['compensatorio'];
+        }
     }
 }

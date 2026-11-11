@@ -89,6 +89,7 @@ class HistorialpagocreditoCastigadoAdminController extends Controller
     private function obtenerPagosCreditoCastigado(Request $request)
     {
         $where = [
+            ['credito.castigo_estado','CONFIRMADO'],
             ['credito_cobranzacuota.fecharegistro','>=',$request->fechainicio.' 00:00:00'],
             ['credito_cobranzacuota.fecharegistro','<=',$request->fechafin.' 23:59:59'],
         ];

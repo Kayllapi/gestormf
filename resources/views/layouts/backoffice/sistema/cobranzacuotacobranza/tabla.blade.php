@@ -1,6 +1,6 @@
 <div class="modal-header">
     <h5 class="modal-title">
-      Pago de Préstamos <span style="background-color: #E8E585;">Castigados</span>
+      Pago de Préstamos <span style="background-color: #E8E585;">Castigados</span> Agencia
       <button type="button" class="btn btn-success mb-1" id="idbuscarcliente" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="buscarcliente()">
         <i class="fa fa-search"></i> Buscar Cliente
       </button>

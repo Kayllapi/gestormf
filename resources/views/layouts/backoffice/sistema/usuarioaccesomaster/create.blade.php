@@ -13,7 +13,7 @@
     <div class="modal-body">
         <div class="row">
             <h6>Datos Generales</h6>
-            <div class="col-sm-12 mb-1">
+            <div class="col-sm-12 col-md-6 mb-1">
                 <label for="idagencia">Agencia: <span class="text-danger">(*)</span></label>
                 <select class="form-control" id="idagencia" name="idagencia" required>
                     <option value="">-- Seleccionar --</option>
@@ -22,7 +22,7 @@
                     @endforeach
                 </select>
             </div>
-            <div class="col-sm-12 mb-1">
+            <div class="col-sm-12 col-md-6 mb-1">
                 <label for="cargo-gerente-general">Cargo</label>
                 <input class="form-control" id="cargo-gerente-general" value="Gerente General" readonly disabled>
             </div>

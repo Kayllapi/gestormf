@@ -1,50 +1,171 @@
 <div class="modal-header">
-    <h5 class="modal-title">
-      Parametro de Evaluacion
-      @if($agencias->count()>1)
-      <button type="button" class="btn btn-primary mb-1" onclick="copiar_configuracion()">
-        <i class="fa fa-copy"></i> Copiar Configuración
-      </button>
-      @endif
-    </h5>
+    <h5 class="modal-title">Parametros de Evaluación</h5>
     <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>
-<div class="modal-body">
-  <div class="row">
-      <div class="col-sm-12">
-        <div class="card">
-          <div class="card-body p-2">
-            <div class="row">
-              <label for="idagencia" class="col-sm-2 col-form-label" style="text-align: right;">AGENCIA</label>
-              <div class="col-sm-5">
-                <select class="form-control" id="idagencia">
-                  @foreach($agencias as $value)
-                    <option value="{{ $value->id }}" {{ (int) $value->id == (int) $idtienda_seleccionada ? 'selected' : '' }}>{{ $value->nombreagencia }}</option>
-                  @endforeach
-                </select>
-              </div>
-              <div class="col-sm-5" style="text-align: right;">
-                <span class="badge" style="background-color: #bcbcbc;color: #000;">
-                  La configuración se visualiza y guarda sobre la agencia seleccionada
-                </span>
-              </div>
+<form action="javascript:;"
+      onsubmit="callback({
+          route: '{{ url('backoffice/'.$tienda->id.'/parametrosevaluacion/0') }}',
+          method: 'PUT',
+          data:{
+              view: 'editar',
+              capital: json_agencia_capital()
+          }
+      },
+      function(resultado){
+
+      },this)">
+    <div class="modal-body">
+      <div class="row justify-content-center">
+        <div class="col-sm-12 col-md-6">
+          <div class="mb-1">
+            <span class="badge d-block">Parametro de Evaluación</span>
+          </div>
+          <div class="row mt-1">
+            <label class="col-sm-5 col-form-label" style="text-align: right;">PROVISION DE GASTOS FAMILIARES (%):</label>
+            <div class="col-sm-7">
+              <input type="number" class="form-control" step="any" id="provision_gastos_familiares" value="{{ configuracion($tienda->id,'provision_gastos_familiares')['valor'] }}">
             </div>
-            <div id="form-credito-result"></div>
+          </div>
+          <div class="row mt-1">
+            <label class="col-sm-5 col-form-label" style="text-align: right;">PORCENTAJE MÍNIMO DE MUESTRA DE VENTAS (%):</label>
+            <div class="col-sm-7">
+              <input type="number" class="form-control" step="any" id="porcentaje_min_muestra" value="{{ configuracion($tienda->id,'porcentaje_min_muestra')['valor'] }}">
+            </div>
+          </div>
+          <hr>
+          <div class="row mt-1">
+            <label class="col-sm-5 col-form-label" style="text-align: right;">ASIGNACION DE CAPITAL A AGENCIA:</label>
+            <div class="col-sm-7">
+              <div class="card">
+                <div class="card-body" style="overflow-y: scroll;height: 150px;padding: 0;margin-top: 5px;overflow-x: scroll;">
+                  <table class="table table-bordered" id="table-capital-agencia">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Agencia</th>
+                        <th>Capital</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @foreach($agencias as $key => $value)
+                        <tr id="{{ $value->id }}">
+                          <td>{{ $key+1 }}</td>
+                          <td>{{ $value->nombreagencia }}</td>
+                          <td><input type="number" step="any" capital_agencia value="{{ $value->capital_agencia }}" class="form-control" disabled></td>
+                        </tr>
+                      @endforeach
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <script>
+                function json_agencia_capital(){
+                  let data = [];
+                  $(`#table-capital-agencia > tbody > tr`).each(function() {
+                    let id      = $(this).attr('id');
+                    let capital = $(this).find('td input[capital_agencia]').val();
+                    data.push({
+                      id: id,
+                      capital: capital,
+                    });
+                  });
+                  return JSON.stringify(data);
+                }
+              </script>
+            </div>
+          </div>
+          <div class="row mt-1">
+            <label class="col-sm-5 col-form-label" style="text-align: right;">TOPE POR VINCULACION POR RIESGO UNICO(%):</label>
+            <div class="col-sm-7">
+              <input type="number" class="form-control" step="any" id="capital_asignado" value="{{ configuracion($tienda->id,'capital_asignado')['valor'] }}">
+            </div>
+          </div>
+          <div class="row mt-1">
+            <label class="col-sm-5 col-form-label" style="text-align: right;">Número de entidades de endeudamiento máximo:</label>
+            <div class="col-sm-7">
+              <input type="number" class="form-control" step="any" id="entidades_maxima" value="{{ configuracion($tienda->id,'entidades_maxima')['valor'] }}">
+            </div>
+          </div>
+          <hr>
+          <div class="row mt-1">
+            <label class="col-sm-5 col-form-label" style="text-align: right;">TOPE MÁXIMO DEL CICLO DE VENTA MENSUAL (%):</label>
+            <div class="col-sm-7">
+              <input type="number" class="form-control" step="any" id="ciclo_negocio_maximo" value="{{ configuracion($tienda->id,'ciclo_negocio_maximo')['valor'] }}">
+            </div>
+          </div>
+          <div class="row mt-1">
+            <label class="col-sm-5 col-form-label" style="text-align: right;">(PARA EVALUACIÓN RESUMIDA)RELACIÓN CUOTA INGRESO(%):</label>
+            <div class="col-sm-7">
+              <input type="number" class="form-control" step="any" id="relacion_couta_ingreso" value="{{ configuracion($tienda->id,'relacion_couta_ingreso')['valor'] }}">
+            </div>
+          </div>
+          <div class="row mt-1">
+            <label class="col-sm-5 col-form-label" style="text-align: right;">(PARA EVALUACIÓN RESUMIDA)RELACIÓN CUOTA VENTA(%):</label>
+            <div class="col-sm-7">
+              <input type="number" class="form-control" step="any" id="relacion_cuota_venta" value="{{ configuracion($tienda->id,'relacion_cuota_venta')['valor'] }}">
+            </div>
+          </div>
+          <div class="mb-1">
+            <span class="badge d-block" style="background-color: #878a8d;">Tope de Ratio Cuota Total/Excedente Total - Independiente</span>
+          </div>
+          <div class="row mt-1">
+            <label class="col-sm-2 col-form-label" style="text-align: right;">RANGO MENOR (%):</label>
+            <div class="col-sm-2">
+              <input type="number" class="form-control" step="any" id="rango_menor" disabled value="{{ configuracion($tienda->id,'rango_menor')['valor'] }}">
+            </div>
+            <label class="col-sm-2 col-form-label" style="text-align: right;">DIFERENCIA (%):</label>
+            <div class="col-sm-2">
+              <input type="number" class="form-control" step="any" id="rango_diferencia" onkeyup="calc_rango_menor()" onkeydown="calc_rango_menor()" value="{{ configuracion($tienda->id,'rango_diferencia')['valor'] }}">
+            </div>
+            <label class="col-sm-2 col-form-label" style="text-align: right;">RANGO TOPE (%):</label>
+            <div class="col-sm-2">
+              <input type="number" class="form-control" step="any" id="rango_tope" onkeyup="calc_rango_menor()" onkeydown="calc_rango_menor()" value="{{ configuracion($tienda->id,'rango_tope')['valor'] }}">
+            </div>
+          </div>
+          <div class="mb-1">
+            <span class="badge d-block" style="background-color: #878a8d;">Tope de Ratio Cuota Total/Excedente Total - Dependiente</span>
+          </div>
+           <div class="row mt-1">
+            <label class="col-sm-2 col-form-label" style="text-align: right;">RANGO TOPE (%):</label>
+            <div class="col-sm-2">
+              <input type="number" class="form-control" step="any" id="rango_tope_dependiente" value="{{ configuracion($tienda->id,'rango_tope_dependiente')['valor'] }}">
+            </div>
+          </div>
+          <div class="mb-1">
+            <span class="badge d-block" style="background-color: #878a8d;">Mostrar tasas en Hoja Resumen de Crédito</span>
+          </div>
+          <div class="row mt-1">
+            <label class="col-sm-8 col-form-label" style="text-align: right;">Tasa de Interes Compensatorio Efectivo Mensual (TEM):</label>
+            <label class="col-sm-2 chk" style="margin-top: 6px;">
+                <input type="checkbox" name="activar_tem" id="activar_tem" {{ configuracion($tienda->id,'activar_tem')['valor'] == '1' ? 'checked' : '' }}>
+                <span class="checkmark"></span>
+                <span>Activar</span>
+            </label>
+          </div>
+          <div class="row mt-1">
+            <label class="col-sm-8 col-form-label" style="text-align: right;">Tasa de Interes Costo Efectivo Mensual (TCEM):</label>
+            <label class="col-sm-2 chk" style="margin-top: 6px;">
+                <input type="checkbox" name="activar_tcem" id="activar_tcem" {{ configuracion($tienda->id,'activar_tcem')['valor'] == '1' ? 'checked' : '' }}>
+                <span class="checkmark"></span>
+                <span>Activar</span>
+            </label>
           </div>
         </div>
+        <script>
+          function calc_rango_menor(){
+            let rango_tope = parseFloat($('#rango_tope').val());
+            let rango_diferencia = parseFloat($('#rango_diferencia').val());
+
+            let rango_menor = rango_tope - rango_diferencia;
+            $('#rango_menor').val(rango_menor.toFixed(2))
+          }
+        </script>
       </div>
-  </div>
-</div>
-<script>
-  sistema_select2({ input:'#idagencia' });
-  editar_select();
-  $("#idagencia").on("change", function () {
-    editar_select();
-  });
-  function editar_select(e) {
-    pagina({ route:"{{url('backoffice')}}/{{$tienda->id}}/parametrosevaluacion/0/edit?view=editar&idagencia="+$('#idagencia').val(), result:'#form-credito-result'});
-  }
-  function copiar_configuracion(){
-    modal({ route:"{{url('backoffice')}}/{{$tienda->id}}/parametrosevaluacion/0/edit?view=copiar&idagencia="+$('#idagencia').val(), size: 'modal-sm' })
-  }
-</script>
+      <div class="row mt-1 justify-content-center">
+        <div class="col-sm-12 col-md-2">
+          <button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i> GUARDAR CAMBIOS</button>
+        </div>
+      </div>
+
+    </div>
+</form>

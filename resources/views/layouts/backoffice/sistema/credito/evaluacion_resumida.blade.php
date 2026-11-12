@@ -1179,7 +1179,8 @@
         url:"{{url('backoffice/0/credito/showgiroeconomico')}}",
         type:'GET',
         data: {
-            tipogiro : e.currentTarget.value
+            tipogiro : e.currentTarget.value,
+            idcredito : {{ $credito->id }}
         },
         success: function (res){
 
@@ -1193,8 +1194,8 @@
             theme: 'bootstrap-5',
             dropdownParent:'.modal'
           }).val('{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->idgiro_economico_evaluacion : 0 }}').trigger('change');
-          
-          
+
+
           let valor_giro_economico = $("#idgiro_economico_evaluacion").val();
           let option_giro_economigo = $('#idgiro_economico_evaluacion option[value="' + valor_giro_economico + '"]');
           let margen_venta = option_giro_economigo.attr('margen');
@@ -1212,7 +1213,8 @@
         url:"{{url('backoffice/0/credito/showgiroeconomico')}}",
         type:'GET',
         data: {
-            tipogiro : e.currentTarget.value
+            tipogiro : e.currentTarget.value,
+            idcredito : {{ $credito->id }}
         },
         success: function (res){
 
@@ -1226,8 +1228,8 @@
             theme: 'bootstrap-5',
             dropdownParent:'.modal'
           }).val('{{ $credito_evaluacion_resumida ? $credito_evaluacion_resumida->idgiro_economico_evaluacion : 0 }}').trigger('change');
-          
-          
+
+
           /*let valor_giro_economico = $("#idgiro_economico_evaluacion").val();
           let option_giro_economigo = $('#idgiro_economico_evaluacion option[value="' + valor_giro_economico + '"]');
           let margen_venta = option_giro_economigo.attr('margen');
@@ -1246,7 +1248,8 @@
         type:'GET',
         data: {
             tipogiro : $('#idgiro_economico_evaluacion :selected').val(),
-            giro : e.currentTarget.value
+            giro : e.currentTarget.value,
+            idcredito : {{ $credito->id }}
         },
         success: function (res){
 

@@ -1392,10 +1392,14 @@ class CreditoController extends Controller
           );
         }
         else if($id == 'showgiroeconomico'){
-          // el catalogo de giros es por agencia: aqui no hay selector, asi que se
-          // usa la agencia activa del usuario (la del cargo con idsession=2).
+          // el catalogo de giros es por agencia: el que se ofrece para elegir debe ser
+          // el de la agencia DEL CREDITO que se esta editando, no la agencia activa de
+          // quien edita. Si por algun motivo no llega idcredito (JS viejo/cacheado), se
+          // cae a la agencia activa para no romper la pantalla.
+          $idtienda_giro = DB::table('credito')->whereId($request->input('idcredito'))->value('idtienda')
+              ?: idtienda_actual();
           $giros = DB::table('giro_economico_evaluacion')
-                          ->where('giro_economico_evaluacion.idtienda',idtienda_actual())
+                          ->where('giro_economico_evaluacion.idtienda',$idtienda_giro)
                           ->where('giro_economico_evaluacion.idtipo_giro_economico',$request->input('tipogiro'))
                           ->where('giro_economico_evaluacion.estado','HABILITADO')
                           ->select(
@@ -1406,8 +1410,10 @@ class CreditoController extends Controller
           return $giros;
         }
         else if($id == 'showgiroeconomico_giro'){
+          $idtienda_giro = DB::table('credito')->whereId($request->input('idcredito'))->value('idtienda')
+              ?: idtienda_actual();
           $giros = DB::table('giro_economico_evaluacion')
-                          ->where('giro_economico_evaluacion.idtienda',idtienda_actual())
+                          ->where('giro_economico_evaluacion.idtienda',$idtienda_giro)
                           ->where('giro_economico_evaluacion.id',$request->input('giro'))
                           ->where('giro_economico_evaluacion.estado','HABILITADO')
                           ->first();

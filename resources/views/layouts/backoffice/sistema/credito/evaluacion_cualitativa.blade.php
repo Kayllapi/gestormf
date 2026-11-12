@@ -609,7 +609,8 @@ function show_giro_economico(id){
       url:"{{url('backoffice/0/credito/showgiroeconomico')}}",
       type:'GET',
       data: {
-          tipogiro : id
+          tipogiro : id,
+          idcredito : {{ $credito->id }}
       },
       success: function (res){
         

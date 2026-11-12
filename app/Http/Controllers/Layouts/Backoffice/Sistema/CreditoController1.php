@@ -4680,19 +4680,25 @@ class CreditoController extends Controller
           ]);
         }
         else if( $request->input('view') == 'aprobar_propuesta' ){
-          
+
+           // Estos config_* quedan fijos en el credito para siempre (los lee el contrato/
+           // resumen en pdf_contrato_*/pdf_resumen*.blade.php), por eso deben ser los de la
+           // agencia DEL CREDITO (ya fijada desde que se registro la propuesta) y no la
+           // agencia activa de quien aprueba.
+           $idtienda_credito = DB::table('credito')->whereId($id)->value('idtienda');
+
            DB::table('credito')->whereId($id)->update([
               'estado' => 'PROCESO',
               'fecha_proceso' => Carbon::now(),
               'cuenta' => 0,
-              'config_dias_tolerancia' => configuracion($idtienda,'dias_tolerancia')['valor'],
-              'config_dias_tolerancia_garantia' => configuracion($idtienda,'dias_tolerancia_garantia')['valor'],
-              'config_dias_maximo_penalidad' => configuracion($idtienda,'dias_maximo_penalidad')['valor'],
-              'config_penalidad_couta_simple' => configuracion($idtienda,'penalidad_couta_simple')['valor'],
-              'config_penalidad_couta_compuesto' => configuracion($idtienda,'penalidad_couta_compuesto')['valor'],
-              'config_penalidad_couta_simple_noprendaria' => configuracion($idtienda,'penalidad_couta_simple_noprendaria')['valor'],
-              'config_penalidad_couta_compuesto_noprendaria' => configuracion($idtienda,'penalidad_couta_compuesto_noprendaria')['valor'],
-              'config_tasa_moratoria' => configuracion($idtienda,'tasa_moratoria')['valor'],
+              'config_dias_tolerancia' => configuracion($idtienda_credito,'dias_tolerancia')['valor'],
+              'config_dias_tolerancia_garantia' => configuracion($idtienda_credito,'dias_tolerancia_garantia')['valor'],
+              'config_dias_maximo_penalidad' => configuracion($idtienda_credito,'dias_maximo_penalidad')['valor'],
+              'config_penalidad_couta_simple' => configuracion($idtienda_credito,'penalidad_couta_simple')['valor'],
+              'config_penalidad_couta_compuesto' => configuracion($idtienda_credito,'penalidad_couta_compuesto')['valor'],
+              'config_penalidad_couta_simple_noprendaria' => configuracion($idtienda_credito,'penalidad_couta_simple_noprendaria')['valor'],
+              'config_penalidad_couta_compuesto_noprendaria' => configuracion($idtienda_credito,'penalidad_couta_compuesto_noprendaria')['valor'],
+              'config_tasa_moratoria' => configuracion($idtienda_credito,'tasa_moratoria')['valor'],
             ]);
             
             //actualizar cronograma

@@ -122,7 +122,7 @@
                     <div class="row">
                       <label class="col-sm-12 text-end" style="color: #b32121;">Gasto x custodia de garantía para cargo: 
                         <span class="popover-hover"
-                          data-bs-content='{{ configuracion($tienda->id,'comision_gestion_garantia_cargo')['valor'] }} % Mensual, de Cobertura'>
+                          data-bs-content='{{ configuracion($credito->idtienda,'comision_gestion_garantia_cargo')['valor'] }} % Mensual, de Cobertura'>
                           (Acreedor)
                         </span>
                       </label>
@@ -138,7 +138,7 @@
                         <div class="row">
                           <label class="col-sm-12 text-end" style="color: #b32121;">Gasto x custodia de garantía para cargo: 
                             <span class="popover-hover"
-                              data-bs-content='{{ configuracion($tienda->id,'comision_gestion_garantia_convenio')['valor'] }} % Mensual, de Cobertura'>
+                              data-bs-content='{{ configuracion($credito->idtienda,'comision_gestion_garantia_convenio')['valor'] }} % Mensual, de Cobertura'>
                               (Convenio con Acreedor)
                             </span>
                           </label>
@@ -470,7 +470,7 @@
     }
 
     @if($credito->idforma_credito==1 && $usuario->custodiagarantia_id==1)
-        var comision_gestion_garantia_cargo = parseFloat({{ configuracion($tienda->id,'comision_gestion_garantia_cargo')['valor'] }});
+        var comision_gestion_garantia_cargo = parseFloat({{ configuracion($credito->idtienda,'comision_gestion_garantia_cargo')['valor'] }});
         var monto_cobertura_garantia =  parseFloat($('#monto_cobertura_garantia').val());
         var cargocom = 0;
         var cargocom_mes = 0;
@@ -498,7 +498,7 @@
         $('#cargomes').val(cargomes.toFixed(2));
     @else
         @if($usuario->custodiagarantia_id==2)
-            var comision_gestion_garantia_convenio = parseFloat({{ configuracion($tienda->id,'comision_gestion_garantia_convenio')['valor'] }});
+            var comision_gestion_garantia_convenio = parseFloat({{ configuracion($credito->idtienda,'comision_gestion_garantia_convenio')['valor'] }});
             var monto_cobertura_garantia =  parseFloat($('#monto_cobertura_garantia').val());
             var cargocom = 0;
             var cargocom_mes = 0;

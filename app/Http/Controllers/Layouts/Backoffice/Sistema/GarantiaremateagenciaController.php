@@ -829,7 +829,11 @@ class GarantiaremateagenciaController extends Controller
                 ->where('credito_garantia.id','<>',$id)
                 ->sum('credito_garantia.precioliquidacion');
           
-            $porcentaje_precio_liquidacion = configuracion($idtienda,'porcentaje_precio_liquidacion')['valor']/100;
+            // La penalidad/comision de un credito siempre es la de SU PROPIA agencia, no la
+            // de la agencia activa (ver select_cronograma()/_datos_base_pagoacuenta() en
+            // FunctionsSistema.php).
+            $idtienda_credito = DB::table('credito')->whereId($request->idcredito)->value('idtienda');
+            $porcentaje_precio_liquidacion = configuracion($idtienda_credito,'porcentaje_precio_liquidacion')['valor']/100;
             $saldo_deudaprogramada_maximo = $request->saldo_deudaprogramada+($request->saldo_deudaprogramada*$porcentaje_precio_liquidacion);
             $saldo_deudaprogramada_restante_maximo = $saldo_deudaprogramada_maximo-$precioliquidacion;
           

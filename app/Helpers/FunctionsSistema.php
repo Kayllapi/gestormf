@@ -24,7 +24,13 @@ function select_cronograma(
     $credito = DB::table('credito')
         ->whereId($idcredito)
         ->first();
-  
+
+    // La penalidad/mora/comision de un credito siempre es la de SU PROPIA agencia,
+    // sin importar en que agencia este parado el usuario que esta calculando/cobrando
+    // (parametro $idtienda, que puede ser otra). Por eso no se usa $idtienda para leer
+    // configuracion()/tipo_garantia_penalidad() aqui abajo.
+    $idtienda_credito = $credito->idtienda;
+
     /*$total_adelantos = DB::table('credito_adelanto')
         ->where('credito_adelanto.idestadocredito_adelanto',1)
         ->where('credito_adelanto.idcredito',$idcredito)
@@ -48,10 +54,10 @@ function select_cronograma(
 
     if($idforma_credito==1){ // Prendaria
         if($modalidadproductocredito=='Interes Simple'){
-            $penalidad_descuento = configuracion($idtienda,'penalidad_couta_simple')['valor'];
+            $penalidad_descuento = configuracion($idtienda_credito,'penalidad_couta_simple')['valor'];
         }
         elseif($modalidadproductocredito=='Interes Compuesto'){
-            $penalidad_descuento = configuracion($idtienda,'penalidad_couta_compuesto')['valor'];
+            $penalidad_descuento = configuracion($idtienda_credito,'penalidad_couta_compuesto')['valor'];
         }
 
         // La penalidad de tenencia es la del TIPO DE GARANTIA segun la agencia del credito
@@ -65,7 +71,7 @@ function select_cronograma(
               'garantias.idtipogarantia as idtipogarantia'
             )
             ->get();
-        $penalidades_tipo_garantia = tipo_garantia_penalidad($idtienda,true);
+        $penalidades_tipo_garantia = tipo_garantia_penalidad($idtienda_credito,true);
         foreach($garantias as $value){
             $tenencia_descuento = $tenencia_descuento
                 +(float)($penalidades_tipo_garantia[$value->idtipogarantia]??0);
@@ -74,16 +80,16 @@ function select_cronograma(
     }
     elseif($idforma_credito==2){ // No prendaria
         if($modalidadproductocredito=='Interes Simple'){
-            $penalidad_descuento = configuracion($idtienda,'penalidad_couta_simple_noprendaria')['valor'];
+            $penalidad_descuento = configuracion($idtienda_credito,'penalidad_couta_simple_noprendaria')['valor'];
         }
         elseif($modalidadproductocredito=='Interes Compuesto'){
-            $penalidad_descuento = configuracion($idtienda,'penalidad_couta_compuesto_noprendaria')['valor'];
+            $penalidad_descuento = configuracion($idtienda_credito,'penalidad_couta_compuesto_noprendaria')['valor'];
         }
     }
-          
-    $tasa_moratoria = configuracion($idtienda,'tasa_moratoria')['valor']!=''?configuracion($idtienda,'tasa_moratoria')['valor']:0;
-    $dias_tolerancia_garantia = configuracion($idtienda,'dias_tolerancia_garantia')['valor'];
-    $dias_maximo_penalidad = configuracion($idtienda,'dias_maximo_penalidad')['valor'];
+
+    $tasa_moratoria = configuracion($idtienda_credito,'tasa_moratoria')['valor']!=''?configuracion($idtienda_credito,'tasa_moratoria')['valor']:0;
+    $dias_tolerancia_garantia = configuracion($idtienda_credito,'dias_tolerancia_garantia')['valor'];
+    $dias_maximo_penalidad = configuracion($idtienda_credito,'dias_maximo_penalidad')['valor'];
     $fecha_hoy = new DateTime(Carbon\Carbon::now()->format('Y-m-d'));
   
     $i = 0;
@@ -219,7 +225,7 @@ function select_cronograma(
     $calculos_en_pagoacuenta = null;
     if ($credito_adelanto != '') {
         $calculos_en_pagoacuenta = calculos_en_pagoacuenta(
-            $idtienda,
+            $idtienda_credito,
             $idcredito,
             $numerocuota
         );
@@ -470,7 +476,7 @@ function select_cronograma(
         }
 
         if($value->numerocuota == $ultimaCuota){
-            if (configuracion($idtienda,'cargo_custodia_garantia')['valor'] == '1' && $atraso_dias_tenencia>$dias_tolerancia_garantia && $atraso_dias_tenencia<=$dias_maximo_penalidad) {
+            if (configuracion($idtienda_credito,'cargo_custodia_garantia')['valor'] == '1' && $atraso_dias_tenencia>$dias_tolerancia_garantia && $atraso_dias_tenencia<=$dias_maximo_penalidad) {
                 // Sumar cargo a tenencia 
                 $credito_dt = $credito;
                 $cargoComision = 0;
@@ -1170,6 +1176,12 @@ function _datos_base_pagoacuenta($idtienda, $idcredito){
         return null;
     }
 
+    // La penalidad/mora/comision de un credito siempre es la de SU PROPIA agencia,
+    // sin importar en que agencia este parado el usuario (parametro $idtienda, que
+    // puede ser otra). Por eso no se usa $idtienda para leer
+    // configuracion()/tipo_garantia_penalidad() aqui abajo.
+    $idtienda_credito = $credito->idtienda;
+
     $primera_cuota_pendiente = DB::table('credito_cronograma')
         ->where('idcredito', $credito->id)
         ->where('idestadocredito_cronograma', 1)
@@ -1196,9 +1208,9 @@ function _datos_base_pagoacuenta($idtienda, $idcredito){
         $tenencia_descuento = (float) DB::table('credito_garantia')
             ->join('garantias','garantias.id','credito_garantia.idgarantias')
             ->join('tipo_garantia','tipo_garantia.id','garantias.idtipogarantia')
-            ->leftJoin('tipo_garantia_penalidad', function($join) use ($idtienda) {
+            ->leftJoin('tipo_garantia_penalidad', function($join) use ($idtienda_credito) {
                 $join->on('tipo_garantia_penalidad.idtipo_garantia','=','tipo_garantia.id')
-                     ->where('tipo_garantia_penalidad.idtienda','=',$idtienda);
+                     ->where('tipo_garantia_penalidad.idtienda','=',$idtienda_credito);
             })
             ->where('credito_garantia.idcredito', $credito->id)
             ->where('credito_garantia.tipo', 'CLIENTE')
@@ -1206,9 +1218,9 @@ function _datos_base_pagoacuenta($idtienda, $idcredito){
             ->sum(DB::raw('COALESCE(tipo_garantia_penalidad.penalidad, tipo_garantia.penalidad)'));
     }
 
-    $dias_maximo_penalidad = configuracion($idtienda, 'dias_maximo_penalidad')['valor'];
-    $dias_tolerancia_garantia = configuracion($idtienda, 'dias_tolerancia_garantia')['valor'];
-    $tasa_moratoria_config = configuracion($idtienda, 'tasa_moratoria')['valor'];
+    $dias_maximo_penalidad = configuracion($idtienda_credito, 'dias_maximo_penalidad')['valor'];
+    $dias_tolerancia_garantia = configuracion($idtienda_credito, 'dias_tolerancia_garantia')['valor'];
+    $tasa_moratoria_config = configuracion($idtienda_credito, 'tasa_moratoria')['valor'];
     $tasa_moratoria = $tasa_moratoria_config != '' ? $tasa_moratoria_config : 0;
     $tasacompensatorio = $credito->cuotas > 1
         ? $credito->tasa_tem
@@ -1218,7 +1230,7 @@ function _datos_base_pagoacuenta($idtienda, $idcredito){
         ->where('credito_cronograma.idcredito', $credito->id)
         ->max('numerocuota');
 
-    $cargo_custodia_garantia = configuracion($idtienda,'cargo_custodia_garantia')['valor'];
+    $cargo_custodia_garantia = configuracion($idtienda_credito,'cargo_custodia_garantia')['valor'];
 
     return [
         'credito' => $credito,

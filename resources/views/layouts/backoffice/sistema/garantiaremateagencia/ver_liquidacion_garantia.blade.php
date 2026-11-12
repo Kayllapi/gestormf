@@ -90,7 +90,7 @@
                                     <td>{{$value->garantias_serie_motor_partida}}</td>
                                     <td>{{$value->garantias_modelo_tipo}}</td>
                                     <td style="text-align: right">{{$value->valor_comercial}}</td>
-                                    <td style="text-align: right">{{ number_format($value->valor_comercial - ($value->valor_comercial * configuracion($tienda->id,'porcentaje_descuento_liquidacion')['valor'] / 100), 2) }}</td>
+                                    <td style="text-align: right">{{ number_format($value->valor_comercial - ($value->valor_comercial * configuracion($credito->idtienda,'porcentaje_descuento_liquidacion')['valor'] / 100), 2) }}</td>
                                     <td style="text-align: right">{{$value->valor_realizacion}}</td>
                                     <td style="background-color: #c1f5b5; text-align: right">{{ $value->precioliquidacion > 0 ? $value->precioliquidacion : '' }}</td>
                                     <td>{{$value->garantias_otros}}</td>
@@ -150,7 +150,7 @@
         $('#valor_realizacion').val(valor_realizacion);
 
         // Calcular el valor comercial con descuento
-        var porcentaje_descuento_liquidacion = {{ configuracion($tienda->id,'porcentaje_descuento_liquidacion')['valor'] }};
+        var porcentaje_descuento_liquidacion = {{ configuracion($credito->idtienda,'porcentaje_descuento_liquidacion')['valor'] }};
         var valor_comercial_descuento = valor_comercial - (valor_comercial * porcentaje_descuento_liquidacion / 100);
         $('#valor_comercial_descuento').val(valor_comercial_descuento.toFixed(2));
     });

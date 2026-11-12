@@ -64,16 +64,16 @@ class UsuarioMaster extends Command
             return self::FAILURE;
         }
         $nombre = trim((string) $this->ask('Nombre completo'));
-        $password = $this->secret('Contrasena (12 a 50 caracteres)', false);
+        $password = $this->secret('Contrasena (6 a 50 caracteres)', false);
         $confirmacion = $this->secret('Confirmar contrasena', false);
         $validacion = Validator::make([
             'nombre' => $nombre, 'password' => $password, 'password_confirmation' => $confirmacion,
         ], [
             'nombre' => 'required|string|max:100',
-            'password' => 'required|string|min:12|max:50|confirmed',
+            'password' => 'required|string|min:6|max:50|confirmed',
         ]);
         if ($validacion->fails() || strlen((string) $password) > 72) {
-            $this->error('Ingrese un nombre de hasta 100 caracteres y una contrasena de 12 a 50 caracteres (hasta 72 bytes) que coincida con su confirmacion.');
+            $this->error('Ingrese un nombre de hasta 100 caracteres y una contrasena de 6 a 50 caracteres (hasta 72 bytes) que coincida con su confirmacion.');
             return self::FAILURE;
         }
 
@@ -88,6 +88,7 @@ class UsuarioMaster extends Command
                     'usuario' => $login, 'clave' => $password, 'password' => Hash::make($password),
                     'idubigeo' => 0, 'iduserspadre' => 0, 'idtipousuario' => 1, 'idtienda' => $agencia,
                     'idestadousuario' => 1, 'idestado' => 1, 'es_master' => true,
+                    'intentos_maximo' => 0, 'intentos_fallidos' => 0,
                     'profesion' => '', 'nivelcredito' => '', 'ecaja' => '', 'idgenero' => 0,
                     'fechanacimiento' => null, 'idestadocivil' => 0, 'idnivelestudio' => 0,
                     'created_at' => now(), 'updated_at' => now(),

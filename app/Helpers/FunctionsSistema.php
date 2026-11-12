@@ -1880,14 +1880,12 @@ function modulos_acceso($idpermiso = 0, $idusers = 0, $idtienda = 0){
         ->where('userspermisoacceso.idpermiso',$idpermiso)
         ->get();
 
-    if($excepciones->isEmpty()){
-        return $modulos_cargo;
-    }
-
     $anular   = $excepciones->where('idestado',2)->pluck('idmodulo')->all();
     $agregar  = $excepciones->where('idestado',1)->pluck('idmodulo')->all();
+    $solo_master = DB::table('modulo')
+        ->where('controlador', 'Layouts\\Backoffice\\Sistema\\UsuarioaccesoMasterController')->pluck('id')->all();
 
-    return array_values(array_unique(array_merge(array_diff($modulos_cargo,$anular),$agregar)));
+    return array_values(array_diff(array_unique(array_merge(array_diff($modulos_cargo,$anular),$agregar)), $solo_master));
 }
 
 /**

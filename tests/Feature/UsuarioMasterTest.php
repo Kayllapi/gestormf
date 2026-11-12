@@ -4,11 +4,13 @@ namespace Tests\Feature;
 
 use App\Http\Controllers\Layouts\Backoffice\Sistema\MasterController;
 use App\Http\Controllers\Layouts\Backoffice\Sistema\UsuarioaccesoController;
+use App\Http\Controllers\Layouts\Backoffice\Sistema\UsuarioaccesoMasterController;
 use App\Models\User;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Tests\TestCase;
 
@@ -30,6 +32,8 @@ class UsuarioMasterTest extends TestCase
             $t->integer('idestadousuario')->default(1);
             $t->integer('idestado')->default(1);
             $t->integer('idtienda')->default(194);
+            $t->integer('intentos_maximo')->default(3);
+            $t->integer('intentos_fallidos')->default(0);
             foreach (['codigo', 'idtipopersona', 'nombre', 'apellidopaterno', 'apellidomaterno',
                 'nombrecompleto', 'razonsocial', 'identificacion', 'email', 'imagen', 'numerotelefono',
                 'direccion', 'mapa_latitud', 'mapa_longitud', 'email_verified_at', 'idubigeo',
@@ -41,12 +45,23 @@ class UsuarioMasterTest extends TestCase
         });
         Schema::create('tienda', function (Blueprint $t) {
             $t->integer('id'); $t->string('nombre'); $t->integer('idestado')->default(1);
+            $t->string('nombreagencia')->default('Agencia');
         });
         Schema::create('permiso', function (Blueprint $t) {
             $t->integer('id'); $t->string('nombre'); $t->integer('rango');
         });
         Schema::create('modulo', function (Blueprint $t) {
             $t->integer('id'); $t->integer('idestado')->default(1);
+            $t->string('controlador')->default('');
+        });
+        Schema::create('ubigeo', fn (Blueprint $t) => $t->integer('id'));
+        Schema::create('f_estadocivil', function (Blueprint $t) {
+            $t->integer('id'); $t->string('nombre');
+        });
+        DB::table('ubigeo')->insert(['id' => 1]);
+        DB::table('f_estadocivil')->insert(['id' => 1, 'nombre' => 'Soltero']);
+        Schema::create('s_config', function (Blueprint $t) {
+            $t->integer('idtienda'); $t->string('nombre'); $t->string('valor');
         });
         Schema::create('permisoacceso', function (Blueprint $t) {
             $t->integer('idpermiso'); $t->integer('idmodulo');
@@ -73,6 +88,8 @@ class UsuarioMasterTest extends TestCase
         DB::table('modulo')->insert([['id' => 1, 'idestado' => 1], ['id' => 2, 'idestado' => 2]]);
         $this->actingAs(User::find(10));
         unset($GLOBALS['__idtienda_actual_cache']);
+        unset($GLOBALS['__configuracion_cache']);
+        Route::resource('/prueba-master/{idtienda}/usuarios', UsuarioaccesoMasterController::class);
     }
 
     private function cambiarAgencia(int $agencia)
@@ -200,17 +217,19 @@ class UsuarioMasterTest extends TestCase
     {
         $this->artisan('usuario:master nuevo_master --crear')
             ->expectsQuestion('Nombre completo', 'Administrador Master')
-            ->expectsQuestion('Contrasena (12 a 50 caracteres)', 'ClaveSegura123!')
-            ->expectsQuestion('Confirmar contrasena', 'ClaveSegura123!')
+            ->expectsQuestion('Contrasena (6 a 50 caracteres)', 'Abc123')
+            ->expectsQuestion('Confirmar contrasena', 'Abc123')
             ->assertSuccessful();
         $usuario = User::where('usuario', 'nuevo_master')->sole();
         $this->assertTrue($usuario->esMaster());
+        $this->assertSame(0, $usuario->intentos_maximo);
+        $this->assertSame(0, $usuario->intentos_fallidos);
         $this->assertSame('Administrador Master', $usuario->nombrecompleto);
         $this->assertNotNull($usuario->email_verified_at);
         $this->assertSame('U'.str_pad($usuario->id, 8, '0', STR_PAD_LEFT), $usuario->codigo);
-        $this->assertTrue(\Illuminate\Support\Facades\Hash::check('ClaveSegura123!', $usuario->password));
+        $this->assertTrue(\Illuminate\Support\Facades\Hash::check('Abc123', $usuario->password));
         $this->assertSame(0, DB::table('users_permiso')->where('idusers', $usuario->id)->count());
-        $this->assertTrue(auth()->attempt(['usuario' => 'nuevo_master', 'password' => 'ClaveSegura123!', 'idestadousuario' => 1]));
+        $this->assertTrue(auth()->attempt(['usuario' => 'nuevo_master', 'password' => 'Abc123', 'idestadousuario' => 1]));
         $this->assertSame([1], modulos_acceso());
         $this->assertSame(194, user_permiso()->idtienda);
     }
@@ -230,7 +249,7 @@ class UsuarioMasterTest extends TestCase
             ['Master', str_repeat('a', 51), str_repeat('a', 51)]] as [$nombre, $password, $confirmacion]) {
             $this->artisan('usuario:master nuevo --crear')
                 ->expectsQuestion('Nombre completo', $nombre)
-                ->expectsQuestion('Contrasena (12 a 50 caracteres)', $password)
+                ->expectsQuestion('Contrasena (6 a 50 caracteres)', $password)
                 ->expectsQuestion('Confirmar contrasena', $confirmacion)
                 ->assertFailed();
         }
@@ -242,5 +261,183 @@ class UsuarioMasterTest extends TestCase
         DB::table('tienda')->update(['idestado' => 2]);
         $this->artisan('usuario:master nuevo --crear')->assertFailed();
         $this->assertSame(2, User::count());
+    }
+
+    private function datosGerente(array $cambios = []): array
+    {
+        return array_replace([
+            'view' => 'registrar', 'idagencia' => 198, 'usuario' => 'gerente_nuevo',
+            'password' => 'ClaveSegura123!', 'idestadousuario' => 1,
+            'apellido_parterno' => 'Perez', 'apellido_marterno' => 'Lopez', 'nombres' => 'Ana',
+            'identificacion' => '12345678', 'direccion' => 'Calle 1', 'idubigeo' => 1,
+            'fecha_nacimiento' => '1990-01-01', 'celular' => '999999999',
+            'idestadodivil' => 1, 'profesion' => 'Administrador',
+        ], $cambios);
+    }
+
+    public function test_modulo_gerentes_rechaza_usuario_comun_incluso_gerente_general(): void
+    {
+        $this->actingAs(User::find(20));
+        DB::table('users_permiso')->insert([
+            'idusers' => 20, 'idpermiso' => 2, 'idtienda' => 194, 'idestado' => 1, 'idsession' => 2,
+        ]);
+        foreach (['/prueba-master/194/usuarios', '/prueba-master/194/usuarios/create',
+            '/prueba-master/194/usuarios/show_table', '/prueba-master/194/usuarios/10/edit'] as $ruta) {
+            $this->getJson($ruta)->assertForbidden();
+        }
+        $this->postJson('/prueba-master/194/usuarios', $this->datosGerente())->assertForbidden();
+        $this->putJson('/prueba-master/194/usuarios/10', [])->assertForbidden();
+        $this->deleteJson('/prueba-master/194/usuarios/10')->assertForbidden();
+        $this->assertSame(2, User::count());
+    }
+
+    public function test_master_registra_solo_gerente_en_agencia_seleccionada_sin_poder_inyectar_permisos(): void
+    {
+        DB::table('permiso')->insert(['id' => 4, 'nombre' => 'Analista', 'rango' => 7]);
+        $this->postJson('/prueba-master/194/usuarios', $this->datosGerente([
+            'es_master' => true, 'idpermiso' => 4, 'idtienda' => 194,
+            'accesos' => json_encode([['idtienda' => 194, 'idpermiso' => 4]]),
+        ]))->assertOk()->assertJson(['resultado' => 'CORRECTO']);
+        $usuario = User::where('usuario', 'gerente_nuevo')->sole();
+        $this->assertSame(198, $usuario->idtienda);
+        $this->assertFalse($usuario->es_master);
+        $acceso = DB::table('users_permiso')->where('idusers', $usuario->id)->sole();
+        $this->assertSame(198, $acceso->idtienda);
+        $this->assertSame(2, $acceso->idpermiso);
+        $this->assertSame(2, $acceso->idsession);
+        $this->assertTrue(\Illuminate\Support\Facades\Hash::check('ClaveSegura123!', $usuario->password));
+        $this->getJson('/prueba-master/194/usuarios/show_table')->assertOk()
+            ->assertJsonPath('recordsTotal', 1)->assertJsonPath('data.0.id', $usuario->id);
+        $this->assertTrue(auth()->attempt(['usuario' => 'gerente_nuevo', 'password' => 'ClaveSegura123!', 'idestadousuario' => 1]));
+        $this->assertSame(198, user_permiso()->idtienda);
+        $this->assertSame(2, user_permiso()->idpermiso);
+    }
+
+    public function test_formulario_gerente_muestra_agencia_despues_de_datos_generales_y_cargo_fijo(): void
+    {
+        DB::table('tienda')->insert(['id' => 200, 'nombre' => 'Inactiva', 'nombreagencia' => 'Inactiva', 'idestado' => 2]);
+        $this->get('/prueba-master/194/usuarios/create?view=registrar')->assertOk()
+            ->assertSeeInOrder(['Datos Generales', 'id="idagencia"', 'Gerente General'], false)
+            ->assertSee('value="198"', false)->assertDontSee('value="200"', false)
+            ->assertDontSee('tabla-permisoacceso', false)->assertDontSee('listar_permisos', false);
+    }
+
+    public function test_registro_gerente_rechaza_agencias_invalidas_y_datos_incompletos(): void
+    {
+        DB::table('tienda')->whereId(198)->update(['idestado' => 2]);
+        foreach (['', 198, 999] as $agencia) {
+            $this->postJson('/prueba-master/194/usuarios', $this->datosGerente(['idagencia' => $agencia]))
+                ->assertUnprocessable()->assertJsonValidationErrors('idagencia');
+        }
+        $this->postJson('/prueba-master/194/usuarios', $this->datosGerente(['idagencia' => 194, 'nombres' => '']))
+            ->assertUnprocessable()->assertJsonValidationErrors('nombres');
+        $this->assertSame(2, User::count());
+        $this->assertSame(0, DB::table('users_permiso')->count());
+    }
+
+    public function test_registro_gerente_rechaza_login_duplicado_sin_crear_registros(): void
+    {
+        $this->postJson('/prueba-master/194/usuarios', $this->datosGerente(['usuario' => 'normal']))
+            ->assertUnprocessable()->assertJsonValidationErrors('usuario');
+        $this->assertSame(2, User::count());
+        $this->assertSame(0, DB::table('users_permiso')->count());
+    }
+
+    public function test_registro_gerente_no_crea_cuenta_si_falta_el_cargo(): void
+    {
+        DB::table('permiso')->delete();
+        $this->postJson('/prueba-master/194/usuarios', $this->datosGerente())
+            ->assertOk()->assertJson(['resultado' => 'ERROR']);
+        $this->assertSame(2, User::count());
+    }
+
+    public function test_registro_gerente_revierte_cuenta_si_no_puede_guardar_el_acceso(): void
+    {
+        Schema::drop('users_permiso');
+        $this->postJson('/prueba-master/194/usuarios', $this->datosGerente())
+            ->assertOk()->assertJson(['resultado' => 'ERROR'])->assertDontSee('ClaveSegura123!');
+        $this->assertSame(2, User::count());
+    }
+
+    public function test_modulo_gerentes_no_se_habilita_a_cuentas_comunes_mediante_cargo_o_excepciones(): void
+    {
+        DB::table('modulo')->insert([
+            'id' => 3, 'controlador' => 'Layouts\\Backoffice\\Sistema\\UsuarioaccesoMasterController',
+        ]);
+        DB::table('permisoacceso')->insert(['idpermiso' => 2, 'idmodulo' => 3]);
+        $this->actingAs(User::find(20));
+        $this->assertSame([], modulos_acceso(2));
+        DB::table('userspermisoacceso')->insert([
+            'idusers' => 20, 'idtienda' => 194, 'idpermiso' => 2, 'idmodulo' => 3, 'idestado' => 1,
+        ]);
+        $this->assertSame([], modulos_acceso(2));
+        $this->actingAs(User::find(10));
+        $this->assertContains(3, modulos_acceso());
+    }
+
+    public function test_instala_y_revierte_el_modulo_de_gerentes_sin_borrar_usuarios(): void
+    {
+        Schema::drop('modulo');
+        Schema::create('modulo', function (Blueprint $t) {
+            $t->increments('id'); $t->integer('idmodulo'); $t->integer('orden');
+            $t->integer('idestado'); $t->string('nombre'); $t->string('vista'); $t->string('controlador');
+        });
+        DB::table('modulo')->insert([
+            'id' => 188, 'idmodulo' => 47, 'orden' => 410, 'idestado' => 1, 'nombre' => 'Usuarios',
+            'vista' => 'backoffice/{idtienda}/usuarioacceso',
+            'controlador' => 'Layouts\\Backoffice\\Sistema\\UsuarioaccesoController',
+        ]);
+        $migration = require database_path('migrations/2026_11_12_000002_add_usuarioaccesomaster_module.php');
+        $migration->up();
+        $modulo = DB::table('modulo')->where('vista', 'backoffice/{idtienda}/usuarioaccesomaster')->sole();
+        $this->assertSame(47, $modulo->idmodulo);
+        $this->assertSame('Layouts\\Backoffice\\Sistema\\UsuarioaccesoMasterController', $modulo->controlador);
+        $this->assertContains($modulo->id, modulos_acceso());
+        $migration->down();
+        $this->assertSame(1, DB::table('modulo')->count());
+        $this->assertSame(2, User::count());
+    }
+
+    public function test_master_no_se_deshabilita_por_errores_de_password_y_puede_ingresar_despues(): void
+    {
+        config(['cache.default' => 'array']);
+        auth()->logout();
+        DB::table('users')->whereId(10)->update([
+            'password' => \Illuminate\Support\Facades\Hash::make('ClaveSegura123!'),
+            'intentos_maximo' => 3, 'intentos_fallidos' => 1,
+        ]);
+        for ($i = 0; $i < 4; $i++) {
+            $this->postJson('/login', ['usuario' => 'master', 'password' => 'incorrecta'])->assertUnprocessable();
+        }
+        $usuario = User::find(10);
+        $this->assertSame(1, $usuario->idestadousuario);
+        $this->assertSame(1, $usuario->intentos_fallidos);
+        $this->postJson('/login', ['usuario' => 'master', 'password' => 'ClaveSegura123!'])->assertNoContent();
+        $this->assertAuthenticatedAs($usuario);
+        $this->assertSame(0, User::find(10)->intentos_fallidos);
+    }
+
+    public function test_usuario_comun_conserva_bloqueo_por_intentos_fallidos(): void
+    {
+        config(['cache.default' => 'array']);
+        auth()->logout();
+        for ($i = 0; $i < 3; $i++) {
+            $this->postJson('/login', ['usuario' => 'normal', 'password' => 'incorrecta'])->assertUnprocessable();
+        }
+        $usuario = User::find(20);
+        $this->assertSame(2, $usuario->idestadousuario);
+        $this->assertSame(3, $usuario->intentos_fallidos);
+    }
+
+    public function test_master_deshabilitado_manualmente_no_puede_iniciar_sesion(): void
+    {
+        config(['cache.default' => 'array']);
+        auth()->logout();
+        DB::table('users')->whereId(10)->update([
+            'password' => \Illuminate\Support\Facades\Hash::make('ClaveSegura123!'), 'idestadousuario' => 2,
+        ]);
+        $this->postJson('/login', ['usuario' => 'master', 'password' => 'ClaveSegura123!'])->assertUnprocessable();
+        $this->assertGuest();
+        $this->assertSame(2, User::find(10)->idestadousuario);
     }
 }

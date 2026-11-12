@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\DB;
@@ -77,13 +78,13 @@ class LoginController extends Controller
 
     protected function sendFailedLoginResponse(Request $request)
     {
-        $usuario = DB::table('users')
+        $usuario = User::query()
             ->where('usuario', $request->{$this->username()})
             ->where('idestadousuario', 1)
             ->first();
 
-        // intentos_maximo = 0 significa sin límite
-        if ($usuario && $usuario->intentos_maximo > 0) {
+        // El Master no se deshabilita por intentos fallidos; 0 tambien significa sin limite.
+        if ($usuario && !$usuario->esMaster() && $usuario->intentos_maximo > 0) {
             DB::table('users')->whereId($usuario->id)->increment('intentos_fallidos');
             DB::table('users')->whereId($usuario->id)
                 ->whereColumn('intentos_fallidos', '>=', 'intentos_maximo')

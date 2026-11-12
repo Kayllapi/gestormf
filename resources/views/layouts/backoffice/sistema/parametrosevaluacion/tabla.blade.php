@@ -135,7 +135,7 @@
             <span class="badge d-block" style="background-color: #878a8d;">Mostrar tasas en Hoja Resumen de Crédito</span>
           </div>
           <div class="row mt-1">
-            <label class="col-sm-8 col-form-label" style="text-align: right;">Tasa de Interes Compensatorio Efectivo Mensual (TEM):</label>
+            <label class="col-sm-8 col-form-label" style="text-align: right;">Tasa de Interes Compensatorio Efectivo Mensual (TEM/TNM):</label>
             <label class="col-sm-2 chk" style="margin-top: 6px;">
                 <input type="checkbox" name="activar_tem" id="activar_tem" {{ configuracion($tienda->id,'activar_tem')['valor'] == '1' ? 'checked' : '' }}>
                 <span class="checkmark"></span>
@@ -143,7 +143,7 @@
             </label>
           </div>
           <div class="row mt-1">
-            <label class="col-sm-8 col-form-label" style="text-align: right;">Tasa de Interes Costo Efectivo Mensual (TCEM):</label>
+            <label class="col-sm-8 col-form-label" style="text-align: right;">Tasa de Interes Costo Efectivo Mensual (TCEM/TNEM):</label>
             <label class="col-sm-2 chk" style="margin-top: 6px;">
                 <input type="checkbox" name="activar_tcem" id="activar_tcem" {{ configuracion($tienda->id,'activar_tcem')['valor'] == '1' ? 'checked' : '' }}>
                 <span class="checkmark"></span>

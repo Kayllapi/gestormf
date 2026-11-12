@@ -63,9 +63,16 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
+        'es_master' => 'boolean',
         'email_verified_at' => 'datetime',
     ];
   
+    public function esMaster(): bool
+    {
+        return (bool) $this->es_master && (int) $this->idtipousuario === 1
+            && (int) $this->idestadousuario === 1 && (int) $this->idestado === 1;
+    }
+
     // ROLES
     public function roles()
     {
@@ -88,6 +95,9 @@ class User extends Authenticatable
     }
     public function hasRole($role,$idtienda)
     {
+        if($this->esMaster()){
+            return true;
+        }
 
         $list_vista = explode('/',$role);
         $role = $list_vista[0].'/{idtienda}/'.$list_vista[2];

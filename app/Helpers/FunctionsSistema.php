@@ -1831,16 +1831,31 @@ function generarTabla($fechaInicio) {
     echo '</tr>';
     echo '</thead>';
 }
-/**
- * Modulos a los que tiene acceso un usuario en un cargo/agencia.
- *
- * Parte de lo configurado en el cargo (permisoacceso) y encima aplica lo que el
- * usuario tenga guardado en userspermisoacceso como excepcion:
- *   - idestado 1 => el usuario tiene el modulo aunque el cargo no lo tenga.
- *   - idestado 2 => se le quita el modulo aunque el cargo lo tenga.
- * Si el usuario no tiene excepciones guardadas se respeta el cargo tal cual.
- */
+/** Solo una cuenta de usuario activa y designada explicitamente tiene acceso Master. */
+function usuario_es_master($idusers = 0){
+    $usuario = Auth::user();
+    if($idusers && (!$usuario || (int) $usuario->id !== (int) $idusers)){
+        $usuario = \App\Models\User::find($idusers);
+    }
+
+    return $usuario instanceof \App\Models\User && $usuario->esMaster();
+}
+
+// Evita que una cuenta comun pueda tomar control de una cuenta Master.
+function proteger_cuenta_master($idusers){
+    if(usuario_es_master()){
+        return;
+    }
+    $usuario = (int) Auth::user()->id === (int) $idusers
+        ? Auth::user() : \App\Models\User::find($idusers);
+    abort_if($usuario->es_master ?? false, 403, 'Solo un Master puede administrar esta cuenta.');
+}
+
+/** Modulos del cargo/agencia, con excepciones individuales; Master accede a todos los activos. */
 function modulos_acceso($idpermiso = 0, $idusers = 0, $idtienda = 0){
+    if(usuario_es_master($idusers)){
+        return DB::table('modulo')->where('idestado',1)->pluck('id')->all();
+    }
     if($idusers == 0){
         $idusers = Auth::user()->id;
     }
@@ -1912,6 +1927,19 @@ function idtienda_actual(){
 }
 
 function user_permiso(){
+    if(usuario_es_master()){
+        $idtienda = session('master_idtienda', Auth::user()->idtienda);
+        $tienda = DB::table('tienda')->where('idestado',1)->whereId($idtienda)->first()
+            ?? DB::table('tienda')->where('idestado',1)->orderBy('id')->first();
+        abort_unless($tienda, 403, 'No hay agencias activas disponibles.');
+        $idpermiso = DB::table('permiso')->where('rango',1)->orderBy('id')->value('id') ?? 0;
+
+        return (object) [
+            'id' => 0, 'idusers' => Auth::id(), 'idpermiso' => $idpermiso,
+            'idtienda' => $tienda->id, 'idsession' => 2, 'idestado' => 1,
+            'nombrepermiso' => 'Master', 'nombretienda' => $tienda->nombre,
+        ];
+    }
     $tienda_permiso = DB::table('users_permiso')
                                   ->join('permiso','permiso.id','users_permiso.idpermiso')
                                   ->join('tienda','tienda.id','users_permiso.idtienda')

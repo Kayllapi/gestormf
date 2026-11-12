@@ -32,6 +32,11 @@ class MasterController extends Controller
             ->limit(1)
             ->first();
  
+        if(usuario_es_master()){
+            $usuario = clone Auth::user();
+            $usuario->permiso = 'Master';
+        }
+
         $imagenusuario      = '';
         $imagenusuario_ruta = '/public/backoffice/tienda/'.$tienda->id.'/sistema/'.$usuario->imagen;
         if(file_exists(getcwd().$imagenusuario_ruta) AND $usuario->imagen!=''){
@@ -310,6 +315,11 @@ class MasterController extends Controller
             return consultaDniRuc($request->input('buscar_identificacion'), $request->input('tipo_persona'));
         }
         elseif($id == 'show_agenciapermiso'){
+            if(usuario_es_master()){
+                abort_unless(DB::table('tienda')->whereId($request->idagenciapermiso)->where('idestado',1)->exists(), 403);
+                $agencia = (int) $request->idagenciapermiso;
+                return '<li><a href="javascript:;" class="dropdown-item" onclick="cambiar_tienda(0,'.$agencia.')">Master</a></li>';
+            }
             
               $tienda_permiso = DB::table('users_permiso')
                                   ->join('permiso','permiso.id','users_permiso.idpermiso')
@@ -336,6 +346,18 @@ class MasterController extends Controller
             return $html;
         }
         elseif($id == 'show_cambiarsucursal'){
+            if(usuario_es_master()){
+                $request->validate(['idtienda' => 'required|integer|exists:tienda,id']);
+                abort_unless(DB::table('tienda')->whereId($request->idtienda)->where('idestado',1)->exists(), 403);
+                $request->session()->put('master_idtienda', (int) $request->idtienda);
+                unset($GLOBALS['__idtienda_actual_cache'][Auth::id()]);
+                return response()->json(['resultado' => 'CORRECTO']);
+            }
+
+            // La fila elegida debe pertenecer al usuario autenticado y estar activa.
+            $acceso = DB::table('users_permiso')->whereId($request->input('idpermiso'))
+                ->where('idusers',Auth::id())->where('idestado',1)->first();
+            abort_unless($acceso, 403);
             
             DB::table('users_permiso')
                 ->where('idusers',Auth::user()->id)
@@ -344,6 +366,7 @@ class MasterController extends Controller
                         ]);
             DB::table('users_permiso')
                 ->whereId($request->input('idpermiso'))
+                ->where('idusers',Auth::id())
                 ->update([
                             'idsession' => 2
                         ]);
@@ -578,6 +601,7 @@ class MasterController extends Controller
   
     public function update(Request $request, $idtienda, $idusuario)
     {
+        abort_unless((int) $idusuario === (int) Auth::id(), 403);
         if($request->input('view') == 'editarperfil'){
             $usuario = DB::table('users')
                         ->where('id','<>',$idusuario)
@@ -618,14 +642,7 @@ class MasterController extends Controller
                     'password_confirmation.required' => 'El "Confirmar Nueva Contraseña" es Obligatorio.',
             ];
             $this->validate($request,$rules,$messages);
-            $usuario = DB::table('users')
-                        ->where('id','<>',$idusuario)
-                        ->where('idtienda',$idtienda)
-                        ->where('clave',$request->input('antpassword'))
-                        ->where('idestado',1)
-                        ->first();
-
-            if(!$usuario){
+            if(!Hash::check($request->input('antpassword'), Auth::user()->password)){
                 return response()->json([
                     'resultado' => 'ERROR',
                     'mensaje' => 'la "Contraseña Actual" no es correcta.'
@@ -633,7 +650,6 @@ class MasterController extends Controller
             }
             DB::table('users')
                     ->whereId($idusuario)
-                    ->where('idtienda',$idtienda)
                     ->update([
 								'clave' => $request->input('password'),
                                 'password' => Hash::make($request->input('password')),

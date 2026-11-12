@@ -9,6 +9,9 @@ class CastigoCredito
 {
     public static function puedeSolicitar(int $usuario, int $agencia): bool
     {
+        if(\App\Models\User::find($usuario)?->esMaster()){
+            return true;
+        }
         $cargos = DB::table('users_permiso')->where('idusers', $usuario)->where('idtienda', $agencia);
         $activos = (clone $cargos)->where('idsession', 2);
         return ((clone $activos)->exists() ? $activos : $cargos)->where('idpermiso', 1)->exists();
@@ -16,6 +19,9 @@ class CastigoCredito
 
     public static function puedeConfirmar(int $usuario, int $agencia): bool
     {
+        if(\App\Models\User::find($usuario)?->esMaster()){
+            return true;
+        }
         $cargos = DB::table('users_permiso')->join('permiso', 'permiso.id', 'users_permiso.idpermiso')
             ->where('users_permiso.idusers', $usuario)->where('users_permiso.idtienda', $agencia);
         $activos = (clone $cargos)->where('users_permiso.idsession', 2);

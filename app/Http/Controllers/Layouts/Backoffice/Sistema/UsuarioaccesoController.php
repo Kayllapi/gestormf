@@ -516,6 +516,7 @@ class UsuarioaccesoController extends Controller
 
     public function edit(Request $request, $idtienda, $id)
     {
+        proteger_cuenta_master($id);
         // $request->user()->authorizeRoles($request->path(),$idtienda);
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
 
@@ -577,6 +578,9 @@ class UsuarioaccesoController extends Controller
      */
     private function rango_activo_usuario($idusuario, $idtienda)
     {
+        if(usuario_es_master($idusuario)){
+            return 1;
+        }
         $rango = DB::table('users_permiso')
             ->join('permiso','permiso.id','users_permiso.idpermiso')
             ->where('users_permiso.idusers',$idusuario)
@@ -784,6 +788,7 @@ class UsuarioaccesoController extends Controller
 
     public function update(Request $request, $idtienda, $id)
     {
+        proteger_cuenta_master($id);
         // $request->user()->authorizeRoles($request->path(),$idtienda);
       
         if($request->input('view') == 'editar') {
@@ -1191,6 +1196,7 @@ class UsuarioaccesoController extends Controller
 
     public function destroy(Request $request, $idtienda, $id)
     {
+        proteger_cuenta_master($id);
         // $request->user()->authorizeRoles($request->path(),$idtienda);
       
         if($request->input('view') == 'eliminar') {

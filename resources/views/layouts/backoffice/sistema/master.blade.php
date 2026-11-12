@@ -475,7 +475,10 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
       <ul class="navbar-nav d-flex">
       <div style="width:150px;float: right;margin-top: 2px;">
             <?php
-              $tienda_permiso = DB::table('users_permiso')
+              $tienda_permiso = usuario_es_master()
+                  ? DB::table('tienda')->where('idestado',1)
+                      ->select('tienda.*','nombreagencia as nombretienda')->orderBy('nombreagencia')->get()
+                  : DB::table('users_permiso')
                                   ->join('permiso','permiso.id','users_permiso.idpermiso')
                                   ->join('tienda','tienda.id','users_permiso.idtienda')
                                   ->where('users_permiso.idusers',Auth::user()->id)

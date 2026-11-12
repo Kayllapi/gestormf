@@ -1086,6 +1086,7 @@ class UsuarioController extends Controller
 
     public function edit(Request $request, $idtienda, $id)
     {
+        proteger_cuenta_master($id);
         // $request->user()->authorizeRoles($request->path(),$idtienda);
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
 
@@ -1201,6 +1202,7 @@ class UsuarioController extends Controller
 
     public function update(Request $request, $idtienda, $idusuario)
     {
+        proteger_cuenta_master($idusuario);
         // $request->user()->authorizeRoles($request->path(),$idtienda);
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
         
@@ -1903,6 +1905,7 @@ class UsuarioController extends Controller
 
     public function destroy(Request $request, $idtienda, $idusuario)
     {
+        proteger_cuenta_master($idusuario);
         // $request->user()->authorizeRoles($request->path(),$idtienda);
       
         if ($request->input('view') == 'eliminar') {

@@ -64,7 +64,7 @@
             </div>
             <div class="col-sm-12 col-md-6">
                 <label for="password">Contraseña: <span class="text-danger">(*)</span></label>
-                <input type="password" id="password" class="form-control" minlength="8" maxlength="50" autocomplete="new-password" required>
+                <input type="password" id="password" class="form-control" maxlength="50" autocomplete="new-password" required>
             </div>
             <div class="col-sm-12 col-md-6">
                 <label for="idestadodivil">Estado civil: <span class="text-danger">(*)</span></label>

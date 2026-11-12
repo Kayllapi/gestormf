@@ -263,6 +263,16 @@ class UsuarioMasterTest extends TestCase
         $this->assertSame(2, User::count());
     }
 
+    public function test_registro_gerente_admite_password_corto_sin_aplicar_el_minimo_del_master(): void
+    {
+        $this->postJson('/prueba-master/194/usuarios', $this->datosGerente(['password' => '123']))
+            ->assertOk()->assertJson(['resultado' => 'CORRECTO']);
+        $usuario = User::where('usuario', 'gerente_nuevo')->sole();
+        $this->assertFalse($usuario->es_master);
+        $this->assertTrue(\Illuminate\Support\Facades\Hash::check('123', $usuario->password));
+        $this->assertTrue(auth()->attempt(['usuario' => 'gerente_nuevo', 'password' => '123', 'idestadousuario' => 1]));
+    }
+
     private function datosGerente(array $cambios = []): array
     {
         return array_replace([

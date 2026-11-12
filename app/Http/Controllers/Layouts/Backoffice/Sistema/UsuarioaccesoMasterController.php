@@ -45,7 +45,7 @@ class UsuarioaccesoMasterController extends Controller
             'view' => 'required|in:registrar',
             'idagencia' => ['required', 'integer', Rule::exists('tienda', 'id')->where('idestado', 1)],
             'usuario' => 'required|string|max:100|regex:/^[A-Za-z0-9_.]+$/|unique:users,usuario',
-            'password' => ['bail', 'required', 'string', 'min:8', 'max:50', function ($attribute, $value, $fail) {
+            'password' => ['bail', 'required', 'string', 'max:50', function ($attribute, $value, $fail) {
                 if (strlen($value) > 72) {
                     $fail('La contrasena es demasiado larga.');
                 }

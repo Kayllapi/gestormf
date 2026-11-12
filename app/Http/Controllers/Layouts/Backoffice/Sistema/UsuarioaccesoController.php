@@ -77,6 +77,7 @@ class UsuarioaccesoController extends Controller
             }
 
             $rules = [
+                    'idagencia' => 'required|integer|exists:tienda,id',
                     // 'idusuario' => 'required',
                     // 'cargo' => 'required',
                     'usuario' => 'required|regex:/^[A-Za-z0-9_.]+$/',
@@ -94,6 +95,9 @@ class UsuarioaccesoController extends Controller
                     'profesion' => 'required',
             ];
             $messages = [
+                    'idagencia.required' => 'La "Agencia" es obligatoria.',
+                    'idagencia.integer' => 'La "Agencia" seleccionada no es valida.',
+                    'idagencia.exists' => 'La "Agencia" seleccionada no existe.',
                     // 'idusuario.required' => 'El "Usuario" es Obligatorio.',
                     'usuario.required' => 'El "Usuario (Login)" es Obligatorio.',
                     'usuario.regex' => 'El "Usuario" es invalido (no puede utilizar caracteres especiales).',
@@ -112,6 +116,14 @@ class UsuarioaccesoController extends Controller
                     'profesion.required' => 'El es Obligatorio.',
             ];
             $this->validate($request,$rules,$messages);
+
+            $idagencia = (int) $request->input('idagencia');
+            if(DB::table('users')->where('idtienda', $idagencia)->where('usuario', $request->usuario)->exists()){
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje' => 'El "Usuario" ya existe, ingreso otro.'
+                ]);
+            }
 
             $accesos = json_decode($request->input('accesos'),true);
           
@@ -174,7 +186,7 @@ class UsuarioaccesoController extends Controller
                 'idubigeo'            => $request->idubigeo != null ? $request->idubigeo : 0,
                 'iduserspadre'        => 0,
                 'idtipousuario'       => 1, // 1=USUARIO | 2=CLIENTE
-                'idtienda'            => $idtienda,
+                'idtienda'            => $idagencia,
                 'idestadousuario'     => 2,
                 'idestado'            => 1,
               
@@ -197,7 +209,7 @@ class UsuarioaccesoController extends Controller
                         ->join('role_user','role_user.user_id','users.id')
                         ->join('roles','roles.id','role_user.role_id')
                         ->where('role_user.user_id',$user_id)
-                        ->where('users.idtienda',$idtienda)
+                        ->where('users.idtienda',$idagencia)
                         ->where('users.idestado',1)
                         ->first();
 
@@ -208,18 +220,8 @@ class UsuarioaccesoController extends Controller
                 ]);
             }
           
-            $usuario = $request->usuario;
-          
-            $users = DB::table('users')->where('users.idtienda',$idtienda)->where('usuario',$usuario)->first();
-            if($users!=''){
-                return response()->json([
-                    'resultado' => 'ERROR',
-                    'mensaje'   => 'El "Usuario" ya existe, ingreso otro.'
-                ]);
-            }
-       
             DB::table('users')->whereId($user_id)->update([
-                'usuario' => $usuario,
+                'usuario' => $request->usuario,
                 'clave' => $request->password,
                 'password' => Hash::make($request->password),
                 'idestadousuario' => $request->idestadousuario,

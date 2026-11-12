@@ -3,6 +3,7 @@
         method: 'POST',
         data: {
             view    : 'registrar',
+            idagencia : $('#idagencia').val(),
             accesos : listar_permisos()
         }
     },
@@ -49,6 +50,14 @@
             <div class="col-sm-12 col-md-6">
                 <div class="row">
                     <h6>Datos Generales</h6>
+                    <div class="col-sm-12">
+                        <label for="idagencia">Agencia: <span class="text-danger">(*)</span></label>
+                        <select class="form-control" id="idagencia" name="idagencia" required>
+                            @foreach($tiendas as $agencia)
+                                <option value="{{ $agencia->id }}">{{ $agencia->nombreagencia }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                     <div class="col-sm-12 col-md-6">
                         <label>Apellido Paterno: <span class="text-danger">(*)</span></label>
                         <input type="text" id="apellido_parterno" class="form-control">
@@ -136,6 +145,7 @@
     </div>
 </form> 
 <script>
+    @include('app.nuevosistema.select2',['input'=>'#idagencia'])
     @include('app.nuevosistema.select2',['input'=>'#idestado'])
     @include('app.nuevosistema.select2',['input'=>'#idestadodivil'])
     @include('app.nuevosistema.select2',['json'=>'tienda:usuario','input'=>'#idusuario'])

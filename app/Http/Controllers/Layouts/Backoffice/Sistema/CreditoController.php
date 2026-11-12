@@ -5486,7 +5486,9 @@ class CreditoController extends Controller
                 }
                 
                 // representante comun
-                $credito_representantecomun = DB::table('credito_representantecomun')->where('estado_id',1)->get();
+                $credito_representantecomun = DB::table('credito_representantecomun')
+                    ->where('idtienda',$credito->idtienda)
+                    ->where('estado_id',1)->get();
                 DB::table('credito_representantecomun_prestamo')->where('id_credito',$credito->id)->delete();
                 foreach($credito_representantecomun as $value){
                     DB::table('credito_representantecomun_prestamo')

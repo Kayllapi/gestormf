@@ -59,6 +59,7 @@ class GarantiasController extends Controller
         $cliente = DB::table('users')->whereId($request->idcliente)->first();
         
         $credito_gestiondepositario = DB::table('credito_gestiondepositario')
+            ->where('idtienda',idtienda_actual())
             ->where('estado_id',1)
             ->select(
                 'credito_gestiondepositario.constituciongarantia_id as constituciongarantia_id',
@@ -310,6 +311,7 @@ class GarantiasController extends Controller
         else if($id=='show_constituciongarantia'){
           $where[] = ['credito_gestiondepositario.constituciongarantia_id',$request->constituciongarantia_id];
           $credito_gestiondepositario = DB::table('credito_gestiondepositario')
+                          ->where('credito_gestiondepositario.idtienda',idtienda_actual())
                           ->where('credito_gestiondepositario.estado_id',1)
                           ->where($where)
                           ->select(
@@ -329,6 +331,8 @@ class GarantiasController extends Controller
           $cliente_representante = DB::table('s_users_prestamo')->where('id_s_users',$request->idcliente)->first();
           //dd($cliente_representante);
           $credito_gestiondepositario = DB::table('credito_gestiondepositario')
+                          ->where('credito_gestiondepositario.idtienda',idtienda_actual())
+                          ->where('credito_gestiondepositario.custodiagarantia_id',$request->custodiagarantia_id)
                           ->where('credito_gestiondepositario.constituciongarantia_id',$request->constituciongarantia_id)
                           ->where('credito_gestiondepositario.doeruc',$request->doeruc)
                           ->where('credito_gestiondepositario.nombre',$request->nombre)

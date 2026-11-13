@@ -66,7 +66,7 @@ class DesembolsadoController extends Controller
           }
           if($request->idasesor!='' && $request->idasesor!='0'){
               $where[] = ['credito.idasesor',$request->idasesor];
-              $where2[] = ['credito.idcajero',$request->idasesor];
+              $where2[] = ['credito.idasesor',$request->idasesor];
           }
           if($request->tipo=='asesor'){
               $where[] = ['credito.fecha_desembolso','>=',Carbon::now()->format('Y-m-d').' 00:00:00'];
@@ -330,7 +330,7 @@ class DesembolsadoController extends Controller
           }
           if($request->idasesor!='' && $request->idasesor!='0'){
               $where[] = ['credito.idasesor',$request->idasesor];
-              $where2[] = ['credito.idcajero',$request->idasesor];
+              $where2[] = ['credito.idasesor',$request->idasesor];
           }
           
           if($request->tipo=='asesor'){

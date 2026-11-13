@@ -1,7 +1,7 @@
 @php
     /*
      * Los datos generales conservan su bloqueo por usuario. La tabla evalua
-     * cada fila segun el rango del cargo activo del usuario autenticado.
+     * cada fila segun el rango y las agencias del usuario autenticado.
      */
     $puede_editar = $puede_editar ?? true;
     $puede_editar_cargo = $puede_editar_cargo ?? $puede_editar;
@@ -176,6 +176,8 @@
     var RANGOS_CARGOS = @json($rangos_cargos);
     var MI_RANGO = @json($mi_rango);
     var FILAS_EDITABLES = {};
+    var AGENCIAS_A_CARGO = @json($tiendas->pluck('id')->map(fn ($id) => (int) $id)->values());
+    var AGENCIAS_ASIGNADAS = @json($agencias_asignadas);
     function cargo_editable(id){
         return MI_RANGO === null || Number(MI_RANGO) === 1 ||
             (RANGOS_CARGOS[id] !== undefined && Number(RANGOS_CARGOS[id]) > Number(MI_RANGO));
@@ -300,7 +302,8 @@
         
         var num   = $("#tabla-permisoacceso > tbody").attr('num');
         var cant  = $("#tabla-permisoacceso > tbody > tr").length;
-        FILAS_EDITABLES[num] = idpermiso == 0 || cargo_editable(idpermiso);
+        var agenciaEditable = idtienda == 0 || AGENCIAS_A_CARGO.includes(Number(idtienda));
+        FILAS_EDITABLES[num] = agenciaEditable && (idpermiso == 0 || cargo_editable(idpermiso));
         var dis = FILAS_EDITABLES[num] ? '' : ' disabled';
         var disCargo = dis;
       
@@ -316,6 +319,9 @@
         @foreach($tiendas as $value_tienda)
             option_tienda += '<option value="{{ $value_tienda->id }}">{{ $value_tienda->nombreagencia }}</option>';
         @endforeach
+        if(!agenciaEditable){
+            option_tienda = '<option value="'+Number(idtienda)+'">'+texto_seguro(AGENCIAS_ASIGNADAS[idtienda] || 'Agencia '+idtienda)+'</option>';
+        }
         let option_estado = '<option></option><option value="1">Act.</option><option value="2">Desact.</option>';
         var tabla='<tr id="'+num+'">'+
                       '<td><select class="form-control" id="idtienda'+num+'"'+disCargo+'>'+option_tienda+'</select></td>'+

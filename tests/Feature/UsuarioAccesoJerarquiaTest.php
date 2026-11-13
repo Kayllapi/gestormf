@@ -21,6 +21,15 @@ class UsuarioAccesoJerarquiaTest extends TestCase
         Schema::create('permiso', function (Blueprint $t) {
             $t->integer('id'); $t->integer('rango');
         });
+        Schema::create('tienda', function (Blueprint $t) {
+            $t->integer('id'); $t->integer('idestado')->default(1); $t->string('nombreagencia');
+        });
+        DB::table('tienda')->insert([
+            ['id' => 194, 'nombreagencia' => 'A'], ['id' => 198, 'nombreagencia' => 'B'],
+            ['id' => 200, 'nombreagencia' => 'Fuera de alcance'],
+        ]);
+        Schema::create('users', fn (Blueprint $t) => $t->integer('id'));
+        DB::table('users')->insert(['id' => 20]);
         Schema::create('users_permiso', function (Blueprint $t) {
             $t->increments('id'); $t->integer('idusers'); $t->integer('idtienda');
             $t->integer('idpermiso'); $t->integer('idestado'); $t->integer('idsession');
@@ -36,6 +45,7 @@ class UsuarioAccesoJerarquiaTest extends TestCase
         DB::table('permiso')->insert([
             ['id' => 1, 'rango' => 3], ['id' => 2, 'rango' => 1],
             ['id' => 4, 'rango' => 7], ['id' => 5, 'rango' => 2],
+            ['id' => 6, 'rango' => 10],
         ]);
         foreach([1 => 2, 2 => 1, 4 => 1, 5 => 1] as $cargo => $sesion){
             DB::table('users_permiso')->insert([
@@ -43,6 +53,9 @@ class UsuarioAccesoJerarquiaTest extends TestCase
                 'idestado' => 1, 'idsession' => $sesion,
             ]);
         }
+        DB::table('users_permiso')->insert([
+            'idusers' => 10, 'idtienda' => 198, 'idpermiso' => 6, 'idestado' => 1, 'idsession' => 1,
+        ]);
         DB::table('modulo')->insert(['id' => 99]);
         DB::table('userspermisoacceso')->insert([
             'idusers' => 10, 'idtienda' => 194, 'idpermiso' => 2,
@@ -57,12 +70,12 @@ class UsuarioAccesoJerarquiaTest extends TestCase
             ->map(fn ($f) => ['idtienda' => $f->idtienda, 'idpermiso' => $f->idpermiso, 'idestado' => $f->idestado])->all();
     }
 
-    private function guardar(array $filas, array $modulos = []): array
+    private function guardar(array $filas, array $modulos = [], int $idusuario = 10): array
     {
         $request = Request::create('/', 'PUT', [
             'view' => 'permiso', 'accesos' => json_encode($filas), 'modulos' => json_encode($modulos),
         ]);
-        return (new UsuarioaccesoController)->update($request, 194, 10)->getData(true);
+        return (new UsuarioaccesoController)->update($request, 194, $idusuario)->getData(true);
     }
 
     public function test_edita_fila_inferior_del_propio_usuario_y_conserva_filas_protegidas(): void
@@ -102,7 +115,7 @@ class UsuarioAccesoJerarquiaTest extends TestCase
         $filas = $this->filas();
         $filas[] = ['idtienda' => 198, 'idpermiso' => 1, 'idestado' => 1];
         $this->assertSame('ERROR', $this->guardar($filas)['resultado']);
-        $this->assertSame(4, DB::table('users_permiso')->count());
+        $this->assertSame(5, DB::table('users_permiso')->count());
     }
 
     public function test_conserva_permisos_protegidos_y_guarda_permisos_de_fila_editable(): void
@@ -112,5 +125,37 @@ class UsuarioAccesoJerarquiaTest extends TestCase
         ])['resultado']);
         $this->assertSame(1, DB::table('userspermisoacceso')->where('idpermiso', 2)->value('idestado'));
         $this->assertSame(1, DB::table('userspermisoacceso')->where('idpermiso', 4)->value('idestado'));
+    }
+
+    public function test_rechaza_asignar_agencia_ajena_aunque_el_cargo_sea_editable(): void
+    {
+        $filas = $this->filas();
+        $filas[] = ['idtienda' => 200, 'idpermiso' => 4, 'idestado' => 1];
+        $this->assertSame('ERROR', $this->guardar($filas)['resultado']);
+        $this->assertSame(0, DB::table('users_permiso')->where('idtienda', 200)->count());
+    }
+
+    public function test_conserva_accesos_y_excepciones_de_agencia_ajena_al_editar_una_permitida(): void
+    {
+        $filas = [
+            ['idtienda' => 194, 'idpermiso' => 1, 'idestado' => 1],
+            ['idtienda' => 194, 'idpermiso' => 4, 'idestado' => 2],
+            ['idtienda' => 200, 'idpermiso' => 4, 'idestado' => 1],
+        ];
+        foreach($filas as $fila){
+            DB::table('users_permiso')->insert(array_merge($fila, ['idusers' => 20, 'idsession' => 1]));
+        }
+        DB::table('userspermisoacceso')->insert([
+            'idusers' => 20, 'idtienda' => 200, 'idpermiso' => 4, 'idmodulo' => 99, 'idestado' => 1,
+        ]);
+        $antes = DB::table('users_permiso')->where('idusers',20)->where('idtienda',200)->first();
+        $this->assertSame('CORRECTO', $this->guardar($filas, ['200_4' => ['99' => 2]], 20)['resultado']);
+        $this->assertEquals($antes, DB::table('users_permiso')->where('idusers',20)->where('idtienda',200)->first());
+        $this->assertSame(1, DB::table('userspermisoacceso')->where('idusers',20)->where('idtienda',200)->value('idestado'));
+        $filas[2]['idestado'] = 2;
+        $this->assertSame('ERROR', $this->guardar($filas, [], 20)['resultado']);
+        array_pop($filas);
+        $this->assertSame('ERROR', $this->guardar($filas, [], 20)['resultado']);
+        $this->assertEquals($antes, DB::table('users_permiso')->where('idusers',20)->where('idtienda',200)->first());
     }
 }

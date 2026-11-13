@@ -36,7 +36,7 @@ class UsuarioaccesoController extends Controller
                 ->orderBy('permiso.rango','asc')
                 ->get();
 
-            $tiendas = DB::table('tienda')->get();
+            $tiendas = $this->agencias_a_cargo();
             return view(sistema_view().'/usuarioacceso/create',[
                 'tienda'        => $tienda,
                 'tiendas'       => $tiendas,
@@ -114,6 +114,13 @@ class UsuarioaccesoController extends Controller
             $this->validate($request,$rules,$messages);
 
             $accesos = json_decode($request->input('accesos'),true);
+            validator(['accesos' => $accesos], [
+                'accesos' => 'required|array|min:1',
+                'accesos.*.idpermiso' => 'required|integer|exists:permiso,id',
+                'accesos.*.idtienda' => ['required', 'integer', \Illuminate\Validation\Rule::in($this->agencias_a_cargo()->pluck('id')->all())],
+            ], [
+                'accesos.*.idtienda.in' => 'Solo puede asignar agencias que tiene a cargo.',
+            ])->validate();
           
             if(count($accesos)==0){
                 return response()->json([
@@ -541,13 +548,14 @@ class UsuarioaccesoController extends Controller
                 $permisos = $permisos->filter(fn ($cargo) => (int) $cargo->rango > (int) $mi_rango
                     || $user_permiso->contains('idpermiso', $cargo->id));
             }
-            $tiendas = DB::table('tienda')->get();
+            $tiendas = $this->agencias_a_cargo();
             $puede_editar = $this->puede_editar_usuario(Auth::user()->id, $id, $idtienda);
             return view(sistema_view().'/usuarioacceso/permiso',[
                 'tienda'        => $tienda,
                 'tiendas'       => $tiendas,
                 'permisos'      => $permisos,
                 'user_permiso'  => $user_permiso,
+                'agencias_asignadas' => DB::table('tienda')->whereIn('id', $user_permiso->pluck('idtienda'))->pluck('nombreagencia', 'id'),
                 'estadocivil'   => $estadocivil,
                 'usuario'       => $usuario,
                 'puede_editar'  => $puede_editar,
@@ -564,8 +572,24 @@ class UsuarioaccesoController extends Controller
     }
 
     /**
-     * true si el cargo activo del usuario tiene rango 1 (Gerente General).
+     * Agencias activas asignadas al operador; el Master conserva acceso global.
      */
+    private function agencias_a_cargo()
+    {
+        $agencias = DB::table('tienda')->where('tienda.idestado', 1);
+        if(!usuario_es_master()){
+            $agencias->whereExists(function ($query) {
+                $query->selectRaw('1')->from('users_permiso')
+                    ->whereColumn('users_permiso.idtienda', 'tienda.id')
+                    ->where('users_permiso.idusers', Auth::user()->id)
+                    ->where('users_permiso.idestado', 1);
+            });
+        }
+
+        return $agencias->orderBy('tienda.nombreagencia')->get();
+    }
+
+    /** true si el cargo activo del usuario tiene rango 1 (Gerente General). */
     private function es_rango_uno($idusuario, $idtienda)
     {
         return (int) $this->rango_activo_usuario($idusuario, $idtienda) === 1;
@@ -982,17 +1006,25 @@ class UsuarioaccesoController extends Controller
             // aunque se envie una peticion directamente al servidor.
             $mi_rango = $this->rango_activo_usuario(Auth::user()->id, $idtienda);
             $cargos = DB::table('permiso')->pluck('rango', 'id');
+            $agencias_a_cargo = $this->agencias_a_cargo()->pluck('id')->map(fn ($id) => (int) $id)->all();
             $protegidas = [];
             foreach($actuales as $fila){
                 $rango = $cargos->get($fila->idpermiso);
-                if($mi_rango !== null && (int) $mi_rango !== 1 && ($rango === null || (int) $rango <= (int) $mi_rango)){
+                if(!in_array((int) $fila->idtienda, $agencias_a_cargo, true)
+                    || ($mi_rango !== null && (int) $mi_rango !== 1 && ($rango === null || (int) $rango <= (int) $mi_rango))){
                     $protegidas[$fila->idtienda.'_'.$fila->idpermiso] = $fila;
                 }
             }
             foreach($protegidas as $clave => $fila){
                 $enviada = collect($accesos)->first(fn ($acceso) => $acceso['idtienda'].'_'.$acceso['idpermiso'] === $clave);
                 if(!$enviada || (int) $enviada['idestado'] !== (int) $fila->idestado){
-                    return response()->json(['resultado' => 'ERROR', 'mensaje' => 'No puede modificar ni quitar una fila de rango igual o menor al suyo.']);
+                    return response()->json(['resultado' => 'ERROR', 'mensaje' => 'No puede modificar ni quitar una fila protegida por rango o por agencia.']);
+                }
+            }
+            foreach($accesos as $value){
+                if(!isset($protegidas[$value['idtienda'].'_'.$value['idpermiso']])
+                    && !in_array((int) $value['idtienda'], $agencias_a_cargo, true)){
+                    return response()->json(['resultado' => 'ERROR', 'mensaje' => 'Solo puede asignar agencias que tiene a cargo.']);
                 }
             }
             if($mi_rango !== null && (int) $mi_rango !== 1){

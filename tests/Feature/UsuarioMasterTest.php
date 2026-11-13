@@ -34,11 +34,12 @@ class UsuarioMasterTest extends TestCase
             $t->integer('idtienda')->default(194);
             $t->integer('intentos_maximo')->default(3);
             $t->integer('intentos_fallidos')->default(0);
+            $t->integer('iduser_modificacion')->default(0);
             foreach (['codigo', 'idtipopersona', 'nombre', 'apellidopaterno', 'apellidomaterno',
                 'nombrecompleto', 'razonsocial', 'identificacion', 'email', 'imagen', 'numerotelefono',
                 'direccion', 'mapa_latitud', 'mapa_longitud', 'email_verified_at', 'idubigeo',
                 'iduserspadre', 'profesion', 'nivelcredito', 'ecaja', 'idgenero', 'fechanacimiento',
-                'idestadocivil', 'idnivelestudio'] as $campo) {
+                'idestadocivil', 'idnivelestudio', 'estadocreditoprendario', 'estadocreditonoprendario'] as $campo) {
                 $t->string($campo)->nullable();
             }
             $t->timestamps();
@@ -49,10 +50,13 @@ class UsuarioMasterTest extends TestCase
         });
         Schema::create('permiso', function (Blueprint $t) {
             $t->integer('id'); $t->string('nombre'); $t->integer('rango');
+            $t->integer('idtienda')->default(194);
         });
         Schema::create('modulo', function (Blueprint $t) {
             $t->integer('id'); $t->integer('idestado')->default(1);
             $t->string('controlador')->default('');
+            $t->string('nombre')->default('Modulo'); $t->string('vista')->default('');
+            $t->integer('idmodulo')->default(7); $t->integer('orden')->default(1);
         });
         Schema::create('ubigeo', fn (Blueprint $t) => $t->integer('id'));
         Schema::create('f_estadocivil', function (Blueprint $t) {
@@ -449,5 +453,56 @@ class UsuarioMasterTest extends TestCase
         $this->postJson('/login', ['usuario' => 'master', 'password' => 'ClaveSegura123!'])->assertUnprocessable();
         $this->assertGuest();
         $this->assertSame(2, User::find(10)->idestadousuario);
+    }
+
+    public function test_selectores_registrar_y_editar_solo_ofrecen_agencias_activas_asignadas_al_operador(): void
+    {
+        DB::table('tienda')->insert([
+            ['id' => 200, 'nombre' => 'C', 'nombreagencia' => 'C', 'idestado' => 1],
+            ['id' => 201, 'nombre' => 'D', 'nombreagencia' => 'D', 'idestado' => 2],
+        ]);
+        DB::table('permiso')->insert(['id' => 4, 'nombre' => 'Analista', 'rango' => 7]);
+        foreach([[194, 2, 1], [194, 4, 1], [198, 2, 2], [200, 2, 1], [201, 2, 1]] as [$agencia, $cargo, $estado]){
+            DB::table('users_permiso')->insert([
+                'idusers' => 20, 'idtienda' => $agencia, 'idpermiso' => $cargo, 'idestado' => $estado, 'idsession' => 1,
+            ]);
+        }
+        $this->actingAs(User::find(20));
+        $controller = new UsuarioaccesoController;
+        $create = $controller->create(Request::create('/', 'GET', ['view' => 'registrar']), 194)->getData();
+        $edit = $controller->edit(Request::create('/', 'GET', ['view' => 'permiso']), 194, 20)->getData();
+        $this->assertEqualsCanonicalizing([194, 200], $create['tiendas']->pluck('id')->all());
+        $this->assertEqualsCanonicalizing([194, 200], $edit['tiendas']->pluck('id')->all());
+        $this->assertArrayHasKey(198, $edit['agencias_asignadas']->all());
+        $html = view('layouts.backoffice.sistema.usuarioacceso.permiso', $edit)->render();
+        $this->assertStringContainsString('var AGENCIAS_A_CARGO = [194,200];', $html);
+        $this->assertStringNotContainsString('<option value="198">', $html);
+        $this->actingAs(User::find(10));
+        $master = $controller->create(Request::create('/', 'GET', ['view' => 'registrar']), 194)->getData();
+        $this->assertEqualsCanonicalizing([194, 198, 200], $master['tiendas']->pluck('id')->all());
+    }
+
+    public function test_registrar_no_permite_inyectar_agencia_fuera_de_las_asignadas(): void
+    {
+        DB::table('users_permiso')->insert([
+            'idusers' => 20, 'idtienda' => 194, 'idpermiso' => 2, 'idestado' => 1, 'idsession' => 2,
+        ]);
+        $this->actingAs(User::find(20));
+        try {
+            (new UsuarioaccesoController)->store(Request::create('/', 'POST', $this->datosGerente([
+                'accesos' => json_encode([['idtienda' => 198, 'idpermiso' => 2]]),
+            ])), 194);
+            $this->fail('No debe permitir asignar una agencia ajena.');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $this->assertArrayHasKey('accesos.0.idtienda', $e->errors());
+            $this->assertSame(2, User::count());
+        }
+    }
+
+    public function test_operador_sin_agencias_asignadas_no_recibe_todas_por_defecto(): void
+    {
+        $this->actingAs(User::find(20));
+        $datos = (new UsuarioaccesoController)->create(Request::create('/', 'GET', ['view' => 'registrar']), 194)->getData();
+        $this->assertCount(0, $datos['tiendas']);
     }
 }

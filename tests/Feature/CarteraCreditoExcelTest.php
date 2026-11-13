@@ -4,6 +4,9 @@ namespace Tests\Feature;
 
 use App\Exports\ReportecarteracreditoExport;
 use App\Exports\ReportecreditocastigadoExport;
+use App\Http\Controllers\Layouts\Backoffice\Sistema\CarteraCreditoController;
+use App\Http\Controllers\Layouts\Backoffice\Sistema\CreditoCastigadoController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Excel as FormatoExcel;
 use Maatwebsite\Excel\Facades\Excel;
@@ -94,5 +97,61 @@ class CarteraCreditoExcelTest extends TestCase
         $this->assertStringContainsString('Saldo Deuda T. (S/.)', $html);
         $this->assertStringContainsString('No hay ningún dato!!', $html);
         $this->assertStringContainsString('colspan="7"', $html);
+    }
+
+    public static function controladores(): array
+    {
+        return [
+            'cartera' => [CarteraCreditoController::class, false],
+            'castigados' => [CreditoCastigadoController::class, true],
+        ];
+    }
+
+    #[DataProvider('controladores')]
+    public function test_total_tabla_suma_sus_filas_y_coincide_con_excel(string $clase, bool $castigados): void
+    {
+        $consulta = DB::table('credito')->where('estado', 'DESEMBOLSADO')->where('idestadocredito', 1);
+        $castigados ? $consulta->where('castigo_estado', 'CONFIRMADO') : $consulta->where('castigo_estado', '!=', 'CONFIRMADO');
+        $muestra = $consulta->orderBy('fecha_desembolso')->first()
+            ?? DB::table('credito')->orderBy('fecha_desembolso')->first();
+        $this->assertNotNull($muestra);
+        $filtros = [
+            'idagencia' => $muestra->idtienda,
+            'idasesor' => $castigados ? $muestra->idusuariocobranza : $muestra->idasesor,
+            'idformacredito' => 0, 'inicio' => substr($muestra->fecha_desembolso, 0, 10),
+        ];
+        $controller = new $clase;
+        $respuesta = $controller->show(Request::create('/', 'GET', $filtros), $muestra->idtienda, 'showtable');
+        $tabla = new \DOMDocument;
+        $tabla->loadHTML('<table><tbody>'.$respuesta['html'].'</tbody></table>', LIBXML_NOERROR | LIBXML_NOWARNING);
+        $xpath = new \DOMXPath($tabla);
+        $filas = $xpath->query('//tr[@id="show_data_select"]');
+        $suma = 0;
+        $cuentas = [];
+        foreach ($filas as $fila) {
+            $celdas = $fila->getElementsByTagName('td');
+            $suma += (float) $celdas->item(9)->textContent;
+            $cuentas[] = trim($celdas->item(1)->textContent);
+        }
+        $total = $xpath->query('//tr[contains(@class,"fila-total")]/th[contains(.,"TOTAL S/.")]/following-sibling::th[3]')->item(0);
+        $this->assertNotNull($total);
+        $this->assertEqualsWithDelta($suma, (float) $total->textContent, 0.005);
+
+        $export = null;
+        Excel::shouldReceive('download')->once()->andReturnUsing(function ($reporte) use (&$export) {
+            $export = $reporte;
+            return response('');
+        });
+        $controller->edit(Request::create('/', 'GET', array_merge($filtros, [
+            'view' => 'exportar_excel', 'fecha_inicio' => $filtros['inicio'],
+        ])), $muestra->idtienda, 0);
+        $this->assertNotNull($export);
+        $this->assertSame($cuentas, $export->creditos->map(fn ($credito) => 'C'.$credito->cuenta)->all());
+        $documentoExcel = new \DOMDocument;
+        $documentoExcel->loadHTML($export->view()->render(), LIBXML_NOERROR | LIBXML_NOWARNING);
+        $xpathExcel = new \DOMXPath($documentoExcel);
+        $totalExcel = $xpathExcel->query('//tbody/tr/td[contains(.,"TOTAL S/.")]/following-sibling::td[3]')->item(0);
+        $this->assertNotNull($totalExcel);
+        $this->assertEqualsWithDelta($suma, (float) $totalExcel->textContent, 0.005);
     }
 }

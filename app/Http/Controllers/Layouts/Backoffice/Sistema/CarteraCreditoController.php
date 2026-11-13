@@ -253,7 +253,7 @@ class CarteraCreditoController extends Controller
                         </tr>";
               $total_desembolsado += $value->monto_solicitado;
               $total_saldo += $value->saldo_pendientepago;
-              $total_deuda += $value->total_pendientepago;
+              $total_deuda += (float) $cronograma['cuota_pendiente'];
           }
           $columnaCastigo = $seleccionCastigo ? '<th></th>' : '';
           $inicioTotales = $columnaCastigo.'<th colspan="7">TOTAL S/.</th>';
@@ -578,7 +578,6 @@ class CarteraCreditoController extends Controller
               ->where('credito.estado','DESEMBOLSADO')
               ->where('credito.idestadocredito',1)
               ->where('credito.castigo_estado', '!=', 'CONFIRMADO')
-              ->where('credito.saldo_pendientepago','>',0)
               ->where($where)
               ->select(
                   'credito.*',

@@ -193,7 +193,7 @@ class CreditoCastigadoController extends Controller
                         </tr>";
               $total_desembolsado += $value->monto_solicitado;
               $total_saldo += $value->saldo_pendientepago;
-              $total_deuda += $value->total_pendientepago;
+              $total_deuda += (float) $cronograma['cuota_pendiente'];
           }
           if(count($creditos)==0){
               $html.= '<tr><td colspan="19" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
@@ -482,7 +482,6 @@ class CreditoCastigadoController extends Controller
               ->where('credito.estado','DESEMBOLSADO')
               ->where('credito.idestadocredito',1)
               ->where('credito.castigo_estado', 'CONFIRMADO')
-              ->where('credito.saldo_pendientepago','>',0)
               ->where($where)
               ->select(
                   'credito.*',

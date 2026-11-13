@@ -97,7 +97,7 @@
                             ['data' => 'Telefóno' ],
                             ['data' => 'Direc/Domicilio' ],
                             ['data' => 'Direc/Negocio' ],
-                            ['data' => 'Motivo' ],
+                            ['data' => 'Motivo (C. Global)' ],
                         ],
                         'tbody' => [
                             ['data' => 'orden','type'=>'text'],

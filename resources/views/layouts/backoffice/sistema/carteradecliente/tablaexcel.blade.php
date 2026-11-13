@@ -3,7 +3,7 @@
         <tr></tr>
         <tr>
             <th></th>
-            <th style="font-weight: 900; background-color:#31353d; color: #ffffff; text-align: center; font-size: 12px; " colspan="15">
+            <th style="font-weight: 900; text-align: center; font-size: 12px; " colspan="15">
               {{ $titulo }}
             </th>
         </tr>
@@ -40,6 +40,7 @@
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Telefóno</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Direc/Domicilio</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Direc/Negocio</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Motivo (C. Global)</td>
         </tr>
     </thead>
     <tbody>
@@ -121,6 +122,10 @@
                   }
                 
                   $fecha_cancelado = $fecha_cancelado!=''?$fecha_cancelado:'';
+                  $motivo = $value->idasesor==0
+                      ? ($value->origen_global!=''?$value->origen_global:'INACTIVIDAD')
+                      : ($value->origen_global!=''?$value->origen_global:'--');
+                  $motivo = e($motivo);
 
                   $html .= "<tr>
                                 <td></td>
@@ -138,6 +143,7 @@
                                 <td>{$value->numerotelefono}</td>
                                 <td>{$value->direccion}</td>
                                 <td>{$direccionnegocio}</td>
+                                <td>{$motivo}</td>
                             </tr>";
                   $orden++;
               }
@@ -145,6 +151,7 @@
 
                   $html .= '<tr>
                                 <td></td>
+                                <td style="border-top: 2px solid #000;"></td>
                                 <td style="border-top: 2px solid #000;"></td>
                                 <td style="border-top: 2px solid #000;"></td>
                                 <td style="border-top: 2px solid #000;"></td>

@@ -3,7 +3,7 @@
         <tr></tr>
         <tr>
             <th></th>
-            <th style="font-weight: 900; background-color:#31353d; color: #ffffff; text-align: center; font-size: 12px; " colspan="16">
+            <th style="font-weight: 900; text-align: center; font-size: 12px; " colspan="19">
               {{ $titulo }}
             </th>
         </tr>
@@ -11,22 +11,22 @@
         <tr>
             <th></th>
             <th style="font-weight: 900;">Agencia:</th>
-            <th style="font-weight: 900;" colspan="15">{{ $agencia?$agencia->nombreagencia:'TODA LAS AGENCIAS' }}</th>
+            <th style="font-weight: 900;" colspan="18">{{ $agencia?$agencia->nombreagencia:'TODA LAS AGENCIAS' }}</th>
         </tr>
         <tr>
             <th></th>
             <th style="font-weight: 900;">Forma de Crédito:</th>
-            <th style="font-weight: 900;" colspan="15">{{ $idformacredito!=0?$idformacredito:'TODO' }}</th>
+            <th style="font-weight: 900;" colspan="18">{{ $idformacredito!=0?$idformacredito:'TODO' }}</th>
         </tr>
         <tr>
             <th></th>
             <th style="font-weight: 900;">Ejecutivo:</th>
-            <th style="font-weight: 900;" colspan="15">{{ $asesor?$asesor->usuario:'TODO' }}</th>
+            <th style="font-weight: 900;" colspan="18">{{ $asesor?$asesor->usuario:'TODO' }}</th>
         </tr>
         <tr>
             <th></th>
             <th style="font-weight: 900;">Corte:</th>
-            <th style="font-weight: 900;" colspan="15">{{$fecha_inicio}}</th>
+            <th style="font-weight: 900;" colspan="18">{{$fecha_inicio}}</th>
         </tr>
         <tr></tr>
         <tr>
@@ -35,9 +35,12 @@
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">CUENTA</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">DOI/RUC</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Apellidos y Nombres</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">RUC/DNI/CE (Aval)</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Ape. Nom. Aval</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Fecha Desemb.</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">MONTO (S/.)</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Saldo C. (S/.)</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Saldo Deuda T. (S/.)</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">F. Pago</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Cuotas</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Form. C.</td>
@@ -55,6 +58,7 @@
           $html = '';
           $total_desembolsado = 0;
           $total_saldo = 0;
+          $total_deuda = 0;
           foreach($creditos as $key => $value){
 
               $cp = '';
@@ -110,9 +114,12 @@
                             <td>C{$value->cuenta}</td>
                             <td>{$value->identificacioncliente}</td>
                             <td>{$value->nombrecliente}</td>
+                            <td>".e($value->identificacionaval ?? '')."</td>
+                            <td>".e($value->nombreaval ?? '')."</td>
                             <td>{$value->fecha_desembolso}</td>
                             <td style='text-align:right;'>{$value->monto_solicitado}</td>
                             <td style='text-align:right;'>{$value->saldo_pendientepago}</td>
+                            <td style='text-align:right;'>{$cronograma['cuota_pendiente']}</td>
                             <td>{$value->frecuencianombre}</td>
                             <td style='text-align:right;'>{$value->cuotas}</td>
                             <td>$cp</td>
@@ -125,16 +132,18 @@
                         </tr>";
               $total_desembolsado += $value->monto_solicitado;
               $total_saldo += $value->saldo_pendientepago;
+              $total_deuda += (float) $cronograma['cuota_pendiente'];
           }
           if(count($creditos)==0){
-              $html.= '<tr><td></td><td colspan="16" style="border-bottom: 2px solid #000;text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
+              $html.= '<tr><td></td><td colspan="19" style="border-bottom: 2px solid #000;text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
           }
               $html .= '
                 <tr>
                   <td></td>
-                  <td colspan="5" style="border-bottom: 2px solid #000;border-top: 2px solid #000;text-align:right;">TOTAL S/.</td>
+                  <td colspan="7" style="border-bottom: 2px solid #000;border-top: 2px solid #000;text-align:right;">TOTAL S/.</td>
                   <td style="border-bottom: 2px solid #000;border-top: 2px solid #000;text-align:right;">'.number_format($total_desembolsado, 2, '.', '').'</td>
                   <td style="border-bottom: 2px solid #000;border-top: 2px solid #000;text-align:right;">'.number_format($total_saldo, 2, '.', '').'</td>
+                  <td style="border-bottom: 2px solid #000;border-top: 2px solid #000;text-align:right;">'.number_format($total_deuda, 2, '.', '').'</td>
                   <td colspan="9" style="border-bottom: 2px solid #000;border-top: 2px solid #000;"></td>
                 </tr>';
             echo $html;

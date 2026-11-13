@@ -435,13 +435,16 @@ class UsuarioaccesoController extends Controller
             foreach([4 => 'tienda_filtro.nombre', 5 => 'tienda_filtro.nombreagencia', 6 => 'permiso_filtro.nombre'] as $columna => $campo){
                 $busqueda = $request->input('columns.'.$columna.'.search.value', '');
                 if($busqueda !== null && $busqueda !== ''){
-                    $usuarios->whereExists(function ($query) use ($campo, $busqueda) {
+                    $usuarios->whereExists(function ($query) use ($campo, $busqueda, $columna) {
                         $query->selectRaw('1')
                             ->from('users_permiso as acceso_filtro')
                             ->join('tienda as tienda_filtro', 'tienda_filtro.id', '=', 'acceso_filtro.idtienda')
                             ->join('permiso as permiso_filtro', 'permiso_filtro.id', '=', 'acceso_filtro.idpermiso')
                             ->whereColumn('acceso_filtro.idusers', 'users.id')
                             ->where($campo, 'LIKE', '%'.$busqueda.'%');
+                        if($columna === 6){
+                            $query->where('acceso_filtro.idestado', 1);
+                        }
                     });
                 }
             }
@@ -475,7 +478,9 @@ class UsuarioaccesoController extends Controller
                         $permiso = $val_permiso->tiendanombre.' / '.$val_permiso->nombreagencia.' ('.$val_permiso->nombrepermiso.')'.'<br>'.$permiso;
                         $permiso_tiendanombre = $val_permiso->tiendanombre.'<br>'.$permiso_tiendanombre;
                         $permiso_nombreagencia = $val_permiso->nombreagencia.'<br>'.$permiso_nombreagencia;
-                        $permiso_nombrepermiso = $val_permiso->nombrepermiso.'<br>'.$permiso_nombrepermiso;
+                        if((int) $val_permiso->idestado === 1){
+                            $permiso_nombrepermiso = $val_permiso->nombrepermiso.'<br>'.$permiso_nombrepermiso;
+                        }
                     }
 
 

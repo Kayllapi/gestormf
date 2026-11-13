@@ -40,6 +40,7 @@ class UsuarioAccesoFiltrosTest extends TestCase
             $table->integer('idusers');
             $table->integer('idtienda');
             $table->integer('idpermiso');
+            $table->integer('idestado')->default(1);
         });
         DB::table('users')->insert([['id' => 10], ['id' => 20], ['id' => 30]]);
         DB::table('tienda')->insert([
@@ -108,5 +109,32 @@ class UsuarioAccesoFiltrosTest extends TestCase
         $resultado = $this->listar([4 => 'INEXISTENTE']);
         $this->assertSame([], $resultado['data']);
         $this->assertSame(0, $resultado['recordsFiltered']);
+    }
+
+    public function test_columna_cargo_solo_muestra_asignaciones_activadas(): void
+    {
+        DB::table('users_permiso')->where('idusers', 10)->where('idpermiso', 2)->update(['idestado' => 2]);
+        $resultado = $this->listar();
+        $usuario = collect($resultado['data'])->firstWhere('id', 10);
+        $this->assertStringContainsString('Administrador', $usuario['cargo']);
+        $this->assertStringNotContainsString('Analista', $usuario['cargo']);
+        $this->assertStringContainsString('MERCADITO', $usuario['empresa']);
+    }
+
+    public function test_buscador_cargo_no_coincide_con_asignaciones_desactivadas(): void
+    {
+        DB::table('users_permiso')->where('idusers', 10)->where('idpermiso', 2)->update(['idestado' => 2]);
+        $resultado = $this->listar([6 => 'Analista']);
+        $this->assertSame([], $resultado['data']);
+        $this->assertSame(0, $resultado['recordsFiltered']);
+    }
+
+    public function test_usuario_sin_cargos_activos_sigue_visible_con_columna_cargo_vacia(): void
+    {
+        DB::table('users_permiso')->where('idusers', 20)->update(['idestado' => 2]);
+        $resultado = $this->listar();
+        $usuario = collect($resultado['data'])->firstWhere('id', 20);
+        $this->assertNotNull($usuario);
+        $this->assertSame('', $usuario['cargo']);
     }
 }

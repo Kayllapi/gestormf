@@ -117,7 +117,7 @@
     <div class="container">
       <h4 align="center">CRÉDITOS DESEMBOLSADOS</h4>
           @if($fecha_inicio!='' && $fecha_fin!='')
-           <b>De: {{$fecha_inicio}} Al: {{$fecha_fin}}</b>
+           <b>Agencia: {{ $agencia ? $agencia->nombreagencia : 'TODAS LAS AGENCIAS' }} | De: {{$fecha_inicio}} Al: {{$fecha_fin}}</b>
           @endif
             
             <table style="width:100%;">

@@ -127,6 +127,7 @@
                 <tr>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">N°</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">CLIENTE</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">F.C</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">CUOTAS</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">C. PAGADO</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center;font-weight: bold;">ACUENTA</td>
@@ -178,11 +179,23 @@
               if($value->idformapago==1){ $operacionen1 = 'CAJA'; }
               if($value->idformapago==2){ $operacionen1 = 'BANCO'; }
             
+              $cp = '';
+              if($value->idforma_credito==1){
+                  $cp = 'CP';
+              }
+              elseif($value->idforma_credito==2){
+                  $cp = 'CNP';
+              }
+              elseif($value->idforma_credito==3){
+                  $cp = 'CC';
+              }
+
               $coutas = str_replace(',',', ',$value->pago_cuota);
               $num_operacion =  'OP'.str_pad($value->codigo, 10, "0", STR_PAD_LEFT);
               $html .= "<tr id='show_data_select' idcredito_cobranzacuota='{$value->id}'>
                             <td style='height: 20px;'>".($key+1)."</td>
                             <td style='height: 20px;'>{$value->nombrecliente}</td>
+                            <td style='height: 20px;'>{$cp}</td>
                             <td style='height: 20px;'>{$coutas}</td>
                             <td style='text-align:right;height: 20px;'>{$t_cuotapagado}</td>
                             <td style='text-align:right;height: 20px;'>{$t_acuenta}</td>
@@ -218,11 +231,11 @@
               }
           }
           if(count($credito_cobranzacuotas)==0){
-              $html.= '<tr><td colspan="13" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
+              $html.= '<tr><td colspan="16" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
           }
               $html .= '</tbody><tfoot class="table-dark" style="position: sticky;bottom: 0;">
                 <tr>
-                  <td colspan="3" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">TOTAL S/.</td>
+                  <td colspan="4" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">TOTAL S/.</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">'.number_format($total_cuotapagado, 2, '.', '').'</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">'.number_format($total_acuenta, 2, '.', '').'</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">'.number_format($total_interes_compensatorio, 2, '.', '').'</td>

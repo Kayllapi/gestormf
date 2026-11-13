@@ -228,7 +228,7 @@ class PagoprestamoController extends Controller
           }
               $html .= '</tbody><tfoot class="table-dark" style="position: sticky;bottom: -1px;z-index:1;">
                 <tr>
-                  <th colspan="3" style="text-align:right">TOTAL (S/.)</th>
+                  <th colspan="4" style="text-align:right">TOTAL (S/.)</th>
                   <th style="text-align:right">'.number_format($total_amortizacion, 2, '.', '').'</th>
                   <th style="text-align:right">'.number_format($total_acuenta, 2, '.', '').'</th>
                   <th style="text-align:right">'.number_format($total_tenencia, 2, '.', '').'</th>
@@ -449,6 +449,7 @@ class PagoprestamoController extends Controller
               })
               ->select(
                   'credito_cobranzacuota.*',
+                  'credito.idforma_credito as idforma_credito',
                   'credito.cuenta as cuentacredito',
                   'cliente.id as idcliente',
                   'cliente.nombrecompleto as nombrecliente',

@@ -40,7 +40,7 @@
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Telefóno</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Direc/Domicilio</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Direc/Negocio</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Motivo (C. Global)</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:center">Motivo (D. Global)</td>
         </tr>
     </thead>
     <tbody>

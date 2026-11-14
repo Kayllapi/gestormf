@@ -14,7 +14,9 @@ class MasterController extends Controller
     public function index(Request $request, $idtienda)
     {         
       
-        $idtienda = user_permiso()->idtienda;
+        $permiso = user_permiso();
+        abort_unless($permiso, 403, 'No tiene un cargo asignado.');
+        $idtienda = $permiso->idtienda;
 
         // Validación automática al abrir el sistema: los clientes con atraso mayor a 120 días
         // (clasificación PÉRDIDA) pasan a lista negra.
@@ -22,20 +24,8 @@ class MasterController extends Controller
 
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
   
-        $usuario = DB::table('users')
-            ->join('users_permiso','users_permiso.idusers','users.id')
-            ->join('permiso','permiso.id','users_permiso.idpermiso')
-            ->where('users.id',Auth::user()->id)
-            ->where('users_permiso.idtienda',$idtienda)
-            ->where('users_permiso.idsession',2)
-            ->select('users.*','permiso.nombre as permiso')
-            ->limit(1)
-            ->first();
- 
-        if(usuario_es_master()){
-            $usuario = clone Auth::user();
-            $usuario->permiso = 'Master';
-        }
+        $usuario = clone Auth::user();
+        $usuario->permiso = $permiso->nombrepermiso;
 
         $imagenusuario      = '';
         $imagenusuario_ruta = '/public/backoffice/tienda/'.$tienda->id.'/sistema/'.$usuario->imagen;

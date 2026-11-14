@@ -470,10 +470,15 @@ class PagoprestamoCastigadoController extends Controller
           
           
             $agencia = DB::table('tienda')->whereId($request->idagencia)->first();
+            $ejecutivo = 'TODOS';
+            if($request->idasesor!='' && $request->idasesor!='0'){
+                $ejecutivo = DB::table('users')->whereId($request->idasesor)->value('nombrecompleto') ?: '--';
+            }
         
             $pdf = PDF::loadView(sistema_view().'/pagoprestamocastigado/exportar_pdf',[
                 'tienda' => $tienda,
                 'agencia' => $agencia,
+                'ejecutivo' => $ejecutivo,
                 'credito_cobranzacuotas' => $credito_cobranzacuotas,
                 'fecha_inicio' => $request->fecha_inicio,
                 'fecha_fin' => $request->fecha_fin,

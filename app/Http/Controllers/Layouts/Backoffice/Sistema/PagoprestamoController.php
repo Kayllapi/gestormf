@@ -419,6 +419,7 @@ class PagoprestamoController extends Controller
                 'fecha_fin' => $request->fecha_fin,
                 'idagencia' => $request->idagencia,
                 'idcliente' => $request->idcliente,
+                'idasesor' => $request->idasesor,
             ]);
         }
         else if( $request->input('view') == 'exportar_pdf' ){
@@ -441,7 +442,7 @@ class PagoprestamoController extends Controller
                   $query->where('credito.idcliente',$request->idcliente);
               })
               // El asesor del filtro puede ser el asesor del credito o el cajero que cobro el pago (igual que en showtable).
-              ->when($request->idasesor!='', function($query) use ($request){
+              ->when($request->idasesor!='' && $request->idasesor!='0', function($query) use ($request){
                   $query->where(function($q) use ($request){
                       $q->where('credito.idasesor',$request->idasesor)
                         ->orWhere('credito_cobranzacuota.idcajero',$request->idasesor);
@@ -461,6 +462,10 @@ class PagoprestamoController extends Controller
               ->get();
 
             $agencia = DB::table('tienda')->whereId($request->idagencia)->first();
+            $ejecutivo = 'TODOS';
+            if($request->idasesor!='' && $request->idasesor!='0'){
+                $ejecutivo = DB::table('users')->whereId($request->idasesor)->value('nombrecompleto') ?: '--';
+            }
 
             // Precarga de credito_adelanto para todos los pagos del rango: evita 1 consulta
             // por fila dentro del reporte (desglose_pago_cobranzacuota).
@@ -472,6 +477,7 @@ class PagoprestamoController extends Controller
             $pdf = PDF::loadView(sistema_view().'/pagoprestamo/exportar_pdf',[
                 'tienda' => $tienda,
                 'agencia' => $agencia,
+                'ejecutivo' => $ejecutivo,
                 'credito_cobranzacuotas' => $credito_cobranzacuotas,
                 'adelantos_por_pago' => $adelantos_por_pago,
                 'fecha_inicio' => $request->fecha_inicio,

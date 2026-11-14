@@ -117,7 +117,7 @@
   <main>
     <div class="container">
       <h4 align="center">HISTORIAL DE PAGOS - CRÉDITOS CASTIGADOS</h4>
-           <b>Agencia: {{ $agencia ? $agencia->nombreagencia : 'TODAS LAS AGENCIAS' }} | De: {{$fecha_inicio}} Al: {{$fecha_fin}}</b>
+           <b>Agencia: {{ $agencia ? $agencia->nombreagencia : 'TODAS LAS AGENCIAS' }} | Ejecutivo: {{ $ejecutivo }} | De: {{$fecha_inicio}} Al: {{$fecha_fin}}</b>
           
               
             

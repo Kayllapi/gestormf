@@ -105,13 +105,24 @@
                 ],
                 ['type' => ''],
                 ['type' => ''],
-                ['type' => ''],
+                [
+                    'data' => [
+                        ['id' => 'INACTIVIDAD', 'text' => 'INACTIVIDAD'],
+                        ['id' => 'CASTIGADO', 'text' => 'CASTIGADO'],
+                    ],
+                    'type' => 'select',
+                ],
                 ['type' => ''],
             ]
         ])
     </div>
 </div>
 <script>
+    $('#tabla-usuario').on('draw.dt', function () {
+        $(this).DataTable().rows({page: 'current'}).every(function () {
+            $('td', this.node()).eq(8).css('color', this.data().origen === 'CASTIGADO' ? '#c40000' : '');
+        });
+    });
     sistema_select2({ input:'#idagencia',val:'{{$tienda->id}}' });
 
     $("#idagencia").on("change", function(e) {

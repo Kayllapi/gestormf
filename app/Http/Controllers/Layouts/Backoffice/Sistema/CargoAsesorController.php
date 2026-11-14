@@ -14,8 +14,11 @@ class CargoAsesorController extends Controller
     {
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
         if($request->input('view') == 'tabla'){
+            $permiso = user_permiso();
+            abort_unless($permiso, 403, 'No tiene un cargo asignado.');
             return view(sistema_view().'/cargoasesor/tabla',[
               'tienda' => $tienda,
+              'usuarioText' => Auth::user()->nombrecompleto.' ('.$permiso->nombrepermiso.')',
             ]);
         }
     }

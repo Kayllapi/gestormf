@@ -39,6 +39,9 @@ class UsuarioglobalagenciaController extends Controller
 
             $idagencia = request('idagencia') ?? 0;
 
+            $request->validate(['columns.8.search.value' => 'nullable|in:INACTIVIDAD,CASTIGADO']);
+            $motivo = $request->input('columns.8.search.value', '');
+
             $where = [];
             if($request->input('columns')[4]['search']['value']!=''){
                 $where[] = ['tipopersona.id',$request->input('columns')[4]['search']['value']];
@@ -63,6 +66,9 @@ class UsuarioglobalagenciaController extends Controller
                 ->where('users.idestado',1)
                 ->where('users.idtipousuario',2)
                 ->where('users.idasesor',0)
+                ->when($motivo !== null && $motivo !== '', function ($query) use ($motivo) {
+                    $query->whereRaw("COALESCE(NULLIF(users.origen_global, ''), 'INACTIVIDAD') = ?", [$motivo]);
+                })
                 ->where('users.codigo','LIKE','%'.$request->input('columns')[0]['search']['value'].'%')
                 ->where('users.identificacion','LIKE','%'.$request->input('columns')[1]['search']['value'].'%')
                 ->where('users.nombrecompleto','LIKE','%'.$request->input('columns')[2]['search']['value'].'%')

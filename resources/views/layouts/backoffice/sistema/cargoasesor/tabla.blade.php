@@ -68,23 +68,20 @@
                     <div class="row mt-1">
                       <label for="fecha_fin" class="col-sm-4 col-form-label" style="text-align: right;">EJECUTIVO</label>
                       <div class="col-sm-8">
-                          @php
-                              $usuario = DB::table('users')
-                                  ->join('users_permiso','users_permiso.idusers','users.id')
-                                  ->join('permiso','permiso.id','users_permiso.idpermiso')
-                                  ->whereIn('users_permiso.idpermiso',[3,4,7,11])
-                                  ->where('users_permiso.idtienda',$tienda->id)
-                                  ->where('users.id', Auth::user()->id)
-                                  ->select('users.nombrecompleto','permiso.nombre as nombrepermiso')
-                                  ->first();
-                              $usuarioText = "$usuario->nombrecompleto ($usuario->nombrepermiso)";
-                          @endphp
                           <input type="text" class="form-control" value="{{$usuarioText}}" disabled>
                           <input type="hidden" id="idasesor" value="{{Auth::user()->id}}">
                           {{-- <select class="form-control" id="idasesor" disabled>
                               <option></option>
                           </select> --}}
                       </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6 offset-md-6">
+                    <div class="row mt-1">
+                        <label for="nombre_cobranza" class="col-sm-4 col-form-label" style="text-align: right;">COBRANZA</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="nombre_cobranza" value="" disabled>
+                        </div>
                     </div>
                 </div>
                 <!--div class="col-sm-12 col-md-5" style="text-align: right;">
@@ -155,6 +152,10 @@
       dropdownParent: $('#idcliente').parent()
   });
   function lista_credito_cliente(id){
+    $('#nombre_cobranza').val('');
+    $('#form-garantias-result').empty();
+    $('#table-detalle-prestamo > tbody').empty();
+    $('.data-cliente').addClass('d-none');
     $.ajax({
       url:"{{url('backoffice/0/cargo/showlistacreditos')}}",
       type:'GET',
@@ -170,19 +171,38 @@
         $('#data-cliente-nombre').val(res.cliente.nombrecompleto);
         $('#data-cliente-documento').val(res.cliente.identificacion);
         $('#table-detalle-prestamo > tbody').html(res.html);
+        $('#nombre_cobranza').val(res.cobranza || '');
         $("#exampleModal").modal('hide');
         //load_create_prestamo(res.cliente.id);
         $('#btn-create-cliente').removeClass('d-none');
+      },
+      error: function (xhr) {
+        mensaje = xhr.responseJSON?.message || 'No se pudo consultar los créditos del cliente.';
+        modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
       }
     })
   }
   
   function show_data(e) {
+    $('#nombre_cobranza').val($(e).attr('data-cobranza') || '');
     let id = $(e).attr('data-valor-columna');
     $('#table-detalle-prestamo tr.selected').removeClass('selected');
     $(e).addClass('selected');
     pagina({ route:"{{url('backoffice')}}/{{$tienda->id}}/cargo/"+id+"/edit?view=editar", result:'#form-garantias-result'});  
   }
+
+  $('#idcliente').on('select2:selecting', function (event) {
+    if (event.params.args.data.es_castigado) {
+      event.preventDefault();
+      $('#idcliente').val(null).trigger('change');
+      $('#table-detalle-prestamo > tbody').empty();
+      $('#form-garantias-result').empty();
+      $('#nombre_cobranza').val('');
+      $('.data-cliente').addClass('d-none');
+      mensaje = 'Es un cliente castigado. No puede filtrar por este cliente.';
+      modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
+    }
+  });
 
 </script>  
 

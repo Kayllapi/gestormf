@@ -10,6 +10,48 @@ use Carbon\Carbon;
 
 class CargoController extends Controller
 {
+    private function cargoEjecutivo(): int
+    {
+        if (usuario_es_master()) {
+            return 0;
+        }
+        $permiso = user_permiso();
+        abort_unless($permiso, 403, 'No tiene un cargo asignado.');
+        return (int) $permiso->idpermiso;
+    }
+
+    private function clienteCastigado($idcliente): bool
+    {
+        return DB::table('credito')->where('idcliente', $idcliente)
+            ->where('estado', 'DESEMBOLSADO')->where('idestadocredito', 1)
+            ->where('castigo_estado', 'CONFIRMADO')->exists();
+    }
+
+    private function filtrarCreditosEjecutivo($query)
+    {
+        $cargo = $this->cargoEjecutivo();
+        if ($cargo === 12) {
+            $query->where('credito.castigo_estado', 'CONFIRMADO')
+                ->where('credito.idusuariocobranza', Auth::id());
+        } elseif (in_array($cargo, [3, 4, 7, 11], true)) {
+            $query->where('credito.idasesor', Auth::id())
+                ->whereNotExists(function ($subquery) {
+                    $subquery->selectRaw('1')->from('credito as castigado')
+                        ->whereColumn('castigado.idcliente', 'credito.idcliente')
+                        ->where('castigado.estado', 'DESEMBOLSADO')
+                        ->where('castigado.idestadocredito', 1)
+                        ->where('castigado.castigo_estado', 'CONFIRMADO');
+                });
+        }
+        return $query;
+    }
+
+    private function autorizarCredito($idcredito): void
+    {
+        abort_unless($this->filtrarCreditosEjecutivo(DB::table('credito'))
+            ->where('credito.id', $idcredito)->exists(), 403, 'No puede acceder a este crédito.');
+    }
+
     public function index(Request $request,$idtienda)
     {
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
@@ -28,6 +70,7 @@ class CargoController extends Controller
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
       
         if($request->view == 'registrar') {
+            $this->autorizarCredito($request->idcredito);
           
             $tipocargos = DB::table('credito_tipocargo')->get();
           
@@ -43,6 +86,7 @@ class CargoController extends Controller
     public function store(Request $request, $idtienda)
     {
         if($request->input('view') == 'registrar') {
+            $this->autorizarCredito($request->idcredito);
             $rules = [
                 'idtipocargo' => 'required',           
                 'importe' => 'required',              
@@ -100,7 +144,7 @@ class CargoController extends Controller
     {
         if($id == 'show_credito'){
           
-          $creditos = DB::table('credito')
+          $creditos = $this->filtrarCreditosEjecutivo(DB::table('credito'))
             ->join('users as cliente','cliente.id','credito.idcliente')
             ->where('credito.estado','DESEMBOLSADO')
             ->where(function ($q) use ($request) {
@@ -135,7 +179,10 @@ class CargoController extends Controller
             ->join('users as cliente','cliente.id','credito.idcliente')
             ->where('credito.estado','DESEMBOLSADO')
             ->where('credito.idtienda',$idtienda)
-            ->where('credito.idasesor',Auth::user()->id)
+            ->where($this->cargoEjecutivo() === 12 ? 'credito.idusuariocobranza' : 'credito.idasesor', Auth::id())
+            ->when($this->cargoEjecutivo() === 12, function ($query) {
+                $query->where('credito.castigo_estado', 'CONFIRMADO');
+            })
             ->where(function ($q) use ($request) {
                 $q->where('cliente.identificacion', 'LIKE', '%' . $request->buscar . '%')
                   ->orWhere('cliente.nombrecompleto', 'LIKE', '%' . $request->buscar . '%');
@@ -160,9 +207,28 @@ class CargoController extends Controller
                     'text' => $value->identificacion.' - '.$value->nombrecliente,
                 ];
             }
+          if ($this->cargoEjecutivo() !== 12) {
+              $castigados = DB::table('credito')->whereIn('idcliente', array_column($data, 'id'))
+                  ->where('estado', 'DESEMBOLSADO')->where('idestadocredito', 1)
+                  ->where('castigo_estado', 'CONFIRMADO')->pluck('idcliente')->all();
+              foreach ($data as &$cliente) {
+                  $cliente['es_castigado'] = in_array($cliente['id'], $castigados);
+              }
+              unset($cliente);
+          }
           return $data;
         }
         else if($id == 'showlistacreditos'){
+            $cargo = $this->cargoEjecutivo();
+            if (in_array($cargo, [3, 4, 7, 11], true) && $this->clienteCastigado($request->idcliente)) {
+                return response()->json(['message' => 'Es un cliente castigado. No puede filtrar por este cliente.'], 403);
+            }
+            if (in_array($cargo, [3, 4, 7, 11, 12], true)) {
+                abort_unless($this->filtrarCreditosEjecutivo(DB::table('credito'))
+                    ->where('credito.idcliente', $request->idcliente)
+                    ->where('credito.estado', 'DESEMBOLSADO')->where('credito.idestadocredito', 1)
+                    ->exists(), 403, 'No tiene créditos de este cliente asignados a su nombre.');
+            }
             $where = [];
             if($request->idagencia!=''){
                 $where[] = ['credito.idtienda',$request->idagencia];
@@ -170,12 +236,13 @@ class CargoController extends Controller
             if($request->idcliente!=''){
                 $where[] = ['credito.idcliente',$request->idcliente];
             }
-            if($request->idasesor!='' && $request->idasesor!='0'){
+            if($cargo !== 12 && $request->idasesor!='' && $request->idasesor!='0'){
                 $where[] = ['credito.idasesor',$request->idasesor];
             }
 
-          $cliente = DB::table('users')->whereId($request->idcliente)->select('users.id','users.nombrecompleto','users.identificacion')->first();
-          $creditos = DB::table('credito')
+          $cliente = DB::table('users')->whereId($request->idcliente)->select('users.id','users.nombrecompleto','users.identificacion','users.idasesor')->first();
+          $creditos = $this->filtrarCreditosEjecutivo(DB::table('credito'))
+                            ->leftJoin('users as cobrador', 'cobrador.id', 'credito.idusuariocobranza')
                             ->join('forma_pago_credito','forma_pago_credito.id','credito.idforma_pago_credito')
                             ->join('users as cliente','cliente.id','credito.idcliente')
                             ->join('modalidad_credito','modalidad_credito.id','credito.idmodalidad_credito')
@@ -187,6 +254,7 @@ class CargoController extends Controller
                             ->where($where)
                             ->select(
                                 'credito.*',
+                                'cobrador.nombrecompleto as nombrecobranza',
                                 'cliente.identificacion as identificacion',
                                 'cliente.nombrecompleto as nombrecliente',
                             )
@@ -196,7 +264,7 @@ class CargoController extends Controller
                               
           $html = '';
           $asesor = '';
-          $idasesor = '';
+          $idasesor = $cliente->idasesor ?? 0;
           foreach($creditos as $value){
               $cp = '';
               if($value->idforma_credito==1){
@@ -209,12 +277,12 @@ class CargoController extends Controller
                   $cp = 'CC';
               }
               $cuenta = str_pad($value->cuenta, 8, "0", STR_PAD_LEFT);
-              $html .= "<tr data-valor-columna='{$value->id}' onclick='show_data(this)'>
+              $nombrecobranza = e($value->nombrecobranza ?? '');
+              $html .= "<tr data-valor-columna='{$value->id}' data-cobranza='{$nombrecobranza}' onclick='show_data(this)'>
                             <td style='text-align: right;width: 70px;'>S/ {$value->monto_solicitado}</td>
                             <td style='width: 20px;'>{$cp}</td>
                             <td>C{$cuenta}</td>
                         </tr>";
-                $idasesor = $value->idasesor;
           }
 
           if ($idasesor!='' && $idasesor!=0 && $idasesor!=null) {
@@ -225,16 +293,18 @@ class CargoController extends Controller
                 ->where('users.id', $idasesor)
                 ->select('users.nombrecompleto','permiso.nombre as nombrepermiso')
                 ->first();
-            $asesor = "$usuario->nombrecompleto ($usuario->nombrepermiso)";
+            $asesor = $usuario ? "$usuario->nombrecompleto ($usuario->nombrepermiso)" : '';
           }
           return array(
             'cliente' => $cliente,
             'html' => $html,
-            'asesor' => $asesor
+            'asesor' => $asesor,
+            'cobranza' => $creditos->pluck('nombrecobranza')->filter()->unique()->implode(' / '),
           );
           
         }
         else if($id == 'show_cargo'){
+            $this->autorizarCredito($request->idcredito);
    
             $where = [];
             //if($request->idestado==1){
@@ -278,6 +348,7 @@ class CargoController extends Controller
           
         }
         else if($id == 'show_cargo_cobranza'){
+            $this->autorizarCredito($request->idcredito);
             $where = [];
             $where[] = ['credito_cargo.idestadocredito_cargo',1];
             
@@ -333,6 +404,7 @@ class CargoController extends Controller
 
     public function edit(Request $request, $idtienda, $id)
     {
+      $this->autorizarCredito($id);
         
       $tienda = DB::table('tienda')->whereId($idtienda)->first();
       $credito = DB::table('credito')
@@ -401,6 +473,9 @@ class CargoController extends Controller
     {
 
       if( $request->input('view') == 'eliminar' ){
+        $cargo = DB::table('credito_cargo')->whereId($id)->first();
+        abort_unless($cargo, 404);
+        $this->autorizarCredito($cargo->idcredito);
         
             $rules = [         
                 'idresponsable' => 'required',          

@@ -82,6 +82,14 @@
                       </div>
                     </div>
                 </div>
+                <div class="col-sm-12 col-md-6 offset-md-6">
+                    <div class="row mt-1">
+                        <label for="nombre_cobranza" class="col-sm-4 col-form-label" style="text-align: right;">COBRANZA</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="nombre_cobranza" value="" disabled>
+                        </div>
+                    </div>
+                </div>
                 <!--div class="col-sm-12 col-md-5" style="text-align: right;">
                     <button type="button" class="btn btn-warning" onclick="vistapreliminar()"><i class="fa-solid fa-search"></i> VISTA PRELIMINAR</button>
                 </div-->
@@ -188,6 +196,10 @@
 
   function lista_credito_cliente(id){
     $('#idasesor').val('');
+    $('#nombre_cobranza').val('');
+    $('#form-garantias-result').empty();
+    $('#table-detalle-prestamo > tbody').empty();
+    $('.data-cliente').addClass('d-none');
     $.ajax({
       url:"{{url('backoffice/0/cargo/showlistacreditos')}}",
       type:'GET',
@@ -208,11 +220,16 @@
         $('#btn-create-cliente').removeClass('d-none');
 
         $('#idasesor').val(res.asesor);
+        $('#nombre_cobranza').val(res.cobranza || '');
+      },
+      error: function (xhr) {
+        alert(xhr.responseJSON?.message || 'No se pudo consultar los créditos del cliente.');
       }
     })
   }
   
   function show_data(e) {
+    $('#nombre_cobranza').val($(e).attr('data-cobranza') || '');
     let id = $(e).attr('data-valor-columna');
     $('#table-detalle-prestamo tr.selected').removeClass('selected');
     $(e).addClass('selected');

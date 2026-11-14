@@ -69,8 +69,8 @@ class PagoprestamoCastigadoController extends Controller
               $where2[] = ['credito.idcliente',$request->idcliente];
           }
           if($request->idasesor!='' && $request->idasesor!='0'){
-              $where[] = ['credito.idasesor',$request->idasesor];
-              $where2[] = ['credito.idcajero',$request->idasesor];
+              $where[] = ['credito.idusuariocobranza',$request->idasesor];
+              $where2[] = ['credito.idusuariocobranza',$request->idasesor];
           }
           $where[] = ['credito_cobranzacuota.fecharegistro','>=',$request->inicio.' 00:00:00'];
           $where[] = ['credito_cobranzacuota.fecharegistro','<=',$request->fin.' 23:59:59'];
@@ -415,6 +415,7 @@ class PagoprestamoCastigadoController extends Controller
                 'fecha_fin' => $request->fecha_fin,
                 'idagencia' => $request->idagencia,
                 'idcliente' => $request->idcliente,
+                'idasesor' => $request->idasesor,
             ]);
         }
         else if( $request->input('view') == 'exportar_pdf' ){
@@ -433,9 +434,9 @@ class PagoprestamoCastigadoController extends Controller
               $where[] = ['credito.idcliente',$request->idcliente];
               $where2[] = ['credito.idcliente',$request->idcliente];
           }
-          if($request->idasesor!=''){
-              $where[] = ['credito.idasesor',$request->idasesor];
-              $where2[] = ['credito.idcajero',$request->idasesor];
+          if($request->idasesor!='' && $request->idasesor!='0'){
+              $where[] = ['credito.idusuariocobranza',$request->idasesor];
+              $where2[] = ['credito.idusuariocobranza',$request->idasesor];
           }
           $where[] = ['credito_cobranzacuota.fecharegistro','>=',$request->fecha_inicio.' 00:00:00'];
           $where[] = ['credito_cobranzacuota.fecharegistro','<=',$request->fecha_fin.' 23:59:59'];

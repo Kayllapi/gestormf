@@ -116,12 +116,12 @@
   <main>
     <div class="container">
       <h4 align="center">CRÉDITOS DESEMBOLSADOS</h4>
-          <b>Agencia: {{ $agencia ? $agencia->nombreagencia : 'TODAS LAS AGENCIAS' }}
+          <b>Agencia: <span style="font-weight: normal;">{{ $agencia ? $agencia->nombreagencia : 'TODAS LAS AGENCIAS' }}</span>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ejecutivo: {{ $ejecutivo }}
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ejecutivo: <span style="font-weight: normal;">{{ $ejecutivo }}</span>
             @if($fecha_inicio!='' && $fecha_fin!='')
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;De: {{$fecha_inicio}} Al: {{$fecha_fin}}
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;De: <span style="font-weight: normal;">{{$fecha_inicio}}</span> Al: <span style="font-weight: normal;">{{$fecha_fin}}</span>
             @endif
           </b>
             

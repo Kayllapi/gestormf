@@ -480,8 +480,8 @@ class PagoprestamoController extends Controller
                 'ejecutivo' => $ejecutivo,
                 'credito_cobranzacuotas' => $credito_cobranzacuotas,
                 'adelantos_por_pago' => $adelantos_por_pago,
-                'fecha_inicio' => $request->fecha_inicio,
-                'fecha_fin' => $request->fecha_fin,
+                'fecha_inicio' => $request->filled('fecha_inicio') ? Carbon::parse($request->fecha_inicio)->format('Y/m/d') : '',
+                'fecha_fin' => $request->filled('fecha_fin') ? Carbon::parse($request->fecha_fin)->format('Y/m/d') : '',
             ]);
             $pdf->setPaper('A4', 'landscape');
             return $pdf->stream('HISTORIAL_PAGOS_PRESTAMOS.pdf');

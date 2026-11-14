@@ -117,8 +117,9 @@
   <main>
     <div class="container">
       <h4 align="center" style="font-size:16px;">INGRESOS EXTRAORDINARIOS</h4>
-           <b>DE: </b>{{ $fechainicio }}<br>
-           <b>HASTA: </b>{{ $fechafin }}<br>
+           <b>Agencia:</b> {{ $tienda->nombreagencia }}
+           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+           <b>Fecha:</b> <b>De:</b> {{ $fechainicio }} <b>Al:</b> {{ $fechafin }}
             
             <table style="width:100%;">
               <thead class="table-dark">

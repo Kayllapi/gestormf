@@ -278,6 +278,7 @@ class IngresoextraordinarioController extends Controller
                 ->join('users as responsable','responsable.id','ingresoextraordinario.idresponsable')
                 ->where('ingresoextraordinario.idestadoeliminado',1)
                 ->where($where)
+                ->where('ingresoextraordinario.idtienda', $idtienda)
                 ->select(
                     'ingresoextraordinario.*',
                     's_sustento_comprobante.nombre as s_sustento_comprobantenombre',

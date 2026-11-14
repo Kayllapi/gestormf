@@ -306,6 +306,7 @@ class GastoadministrativooperativoController extends Controller
                 ->join('users as responsable','responsable.id','gastoadministrativooperativo.idresponsable')
                 ->where('gastoadministrativooperativo.idestadoeliminado',1)
                 ->where($where)
+                ->where('gastoadministrativooperativo.idtienda', $idtienda)
                 ->select(
                     'gastoadministrativooperativo.*',
                     's_sustento_comprobante.nombre as s_sustento_comprobantenombre',

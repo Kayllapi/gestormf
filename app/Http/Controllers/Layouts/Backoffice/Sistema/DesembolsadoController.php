@@ -382,10 +382,17 @@ class DesembolsadoController extends Controller
               ->get();
           
             $agencia = DB::table('tienda')->whereId($request->idagencia)->first();
+            $ejecutivo = 'TODOS';
+            if($request->idasesor!='' && $request->idasesor!='0'){
+                $ejecutivo = $request->idasesor=='99'
+                    ? 'INACTIVOS GLOBAL AGENCIA'
+                    : (DB::table('users')->whereId($request->idasesor)->value('nombrecompleto') ?: '--');
+            }
         
             $pdf = PDF::loadView(sistema_view().'/desembolsado/exportar_pdf',[
                 'tienda' => $tienda,
                 'agencia' => $agencia,
+                'ejecutivo' => $ejecutivo,
                 'creditos' => $creditos,
                 'fecha_inicio' => $request->fecha_inicio,
                 'fecha_fin' => $request->fecha_fin,

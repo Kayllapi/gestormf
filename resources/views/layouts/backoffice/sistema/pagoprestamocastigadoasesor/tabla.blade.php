@@ -186,7 +186,8 @@
       let url = "{{ url('backoffice/'.$tienda->id) }}/pagoprestamocastigado/0/edit?view=exportar&fecha_inicio="+$('#fecha_inicio').val()+
           "&fecha_fin="+$('#fecha_fin').val()+
           "&idagencia="+$('#idagencia').val()+
-          "&idcliente="+$('#idcliente').val();
+          "&idcliente="+$('#idcliente').val()+
+          "&idasesor="+$('#idasesor').val();
       modal({ route: url,size:'modal-fullscreen' })
    }
   

@@ -108,7 +108,7 @@
                   ['data' => 'N°'],
                   ['data' => 'GP'],
                   ['data' => 'CUENTA'],
-                  ['data' => 'DOI/RUC'],
+                  ['data' => 'RUC/DNI'],
                   ['data' => 'Apellidos y Nombres'],
                   ['data' => 'Fecha Desemb.'],
                   ['data' => 'Monto Crédito (S/.)'],
@@ -124,7 +124,7 @@
                   ['data' => 'Calificación'],
                   ['data' => 'Producto'],
                   ['data' => 'Modalidad'],
-                  ['data' => 'DOI/RUC (Aval)'],
+                  ['data' => 'RUC/DNI (Aval)'],
                   ['data' => 'Ape. Nom. Aval'],
                   ['data' => 'Ejecutivo'],
               ],
@@ -205,7 +205,7 @@
                   <th>Calificación</th>
                   <th>Producto</th>
                   <th>Modalidad</th>
-                  <th>DOI/RUC (Aval)</th>
+                  <th>RUC/DNI (Aval)</th>
                   <th>Ape. Nom. Aval</th>
                   <th>Ejecutivo</th>
                 </tr>

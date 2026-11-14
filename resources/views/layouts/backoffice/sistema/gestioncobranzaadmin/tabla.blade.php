@@ -113,7 +113,7 @@
                   <th>Calificación</th>
                   <th>Producto</th>
                   <th>Modalidad</th>
-                  <th>DOI/RUC (Aval)</th>
+                  <th>RUC/DNI (Aval)</th>
                   <th>Ape. Nom. Aval</th>
                   <th>Ejecutivo</th>
                 </tr>

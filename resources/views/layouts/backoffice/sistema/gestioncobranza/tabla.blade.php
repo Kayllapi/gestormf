@@ -311,7 +311,13 @@ table .dropdown {
       let url = "{{ url('backoffice/'.$tienda->id) }}/gestioncobranza/0/edit?view=exportar&dias_retencion_desde="+$('#dias_retencion_desde').val()+
           "&dias_retencion_hasta="+$('#dias_retencion_hasta').val()+
           "&idagencia="+$('#idagencia').val()+
-          "&idasesor="+$('#idasesor').val();
+          "&idasesor="+$('#idasesor').val()+
+          "&"+$.param({
+              buscar_cuenta: $('#buscar_cuenta').val() || '',
+              buscar_identificacion: $('#buscar_identificacion').val() || '',
+              buscar_nombre: $('#buscar_nombre').val() || '',
+              buscar_formac: $('#buscar_formac').val() || ''
+          });
       modal({ route: url,size:'modal-fullscreen' })
    }
   

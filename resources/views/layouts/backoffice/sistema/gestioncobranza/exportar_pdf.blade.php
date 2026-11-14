@@ -168,7 +168,7 @@
 
               $html .= "<tr>
                   <td >".($key+1)."</td>
-                  <td >--</td>
+                  <td >{$value['gp']}</td>
                   <td >C{$value['cuenta']}</td>
                   <td >{$value['identificacioncliente']}</td>
                   <td >{$value['nombrecliente']}</td>

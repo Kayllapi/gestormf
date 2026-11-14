@@ -117,7 +117,11 @@
   <main>
     <div class="container">
       <h4 align="center">HISTORIAL DE PAGOS TOTALES DE PRÉSTAMOS</h4>
-           <b>Agencia: {{ $agencia ? $agencia->nombreagencia : 'TODAS LAS AGENCIAS' }} | Ejecutivo: {{ $ejecutivo }} | De: {{$fecha_inicio}} Al: {{$fecha_fin}}</b>
+           <b>Agencia: {{ $agencia ? $agencia->nombreagencia : 'TODAS LAS AGENCIAS' }}
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ejecutivo: {{ $ejecutivo }}
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;De: {{$fecha_inicio}} Al: {{$fecha_fin}}</b>
               <?php  
               $html = '<table style="width:100%;">
               <thead class="table-dark" style="position: sticky;top: 0;">

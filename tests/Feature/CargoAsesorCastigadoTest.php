@@ -25,6 +25,9 @@ class CargoAsesorCastigadoTest extends TestCase
             $table->string('nombrecompleto')->default('Cliente');
             $table->string('identificacion')->default('12345678');
         });
+        Schema::create('s_listanegra', function (Blueprint $table) {
+            $table->integer('idcliente');
+        });
         Schema::create('tienda', function (Blueprint $table) {
             $table->integer('id');
             $table->string('nombre')->default('Agencia');
@@ -158,5 +161,17 @@ class CargoAsesorCastigadoTest extends TestCase
         $this->actingAs(User::find(20));
         $this->expectException(HttpException::class);
         (new CargoController)->show(Request::create('/', 'GET', ['idcliente' => 101]), 0, 'showlistacreditos');
+    }
+
+    public function test_aviso_combina_lista_negra_y_castigo_del_credito(): void
+    {
+        $castigado = DB::table('credito')->whereId(1)->first();
+        $normal = DB::table('credito')->whereId(4)->first();
+        $this->assertSame('', sistema_aviso_credito($normal));
+        $this->assertSame('CRÉDITO CASTIGADO', sistema_aviso_credito($castigado));
+        DB::table('s_listanegra')->insert([['idcliente' => 100], ['idcliente' => 101]]);
+        $this->assertSame('OBSERVADO', sistema_aviso_credito($normal));
+        $this->assertSame('OBSERVADO / CRÉDITO CASTIGADO', sistema_aviso_credito($castigado));
+        $this->assertSame('', sistema_aviso_credito(null));
     }
 }

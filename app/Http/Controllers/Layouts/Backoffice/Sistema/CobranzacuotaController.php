@@ -1827,18 +1827,10 @@ class CobranzacuotaController extends Controller
                 ->where('credito_descuentocuota.idestadocredito_descuentocuota',1)
                 ->first();
           
-          $avisos_credito = [];
-          if ($credito && DB::table('s_listanegra')->where('idcliente', $credito->idcliente)->exists()) {
-              $avisos_credito[] = 'OBSERVADO';
-          }
-          if ($credito && $credito->castigo_estado === 'CONFIRMADO') {
-              $avisos_credito[] = 'CRÉDITO CASTIGADO';
-          }
-
           return array(
               'idcredito' => $idcredito,
               'datosprestamos' => $datosprestamos,
-              'aviso_credito' => implode(' / ', $avisos_credito),
+              'aviso_credito' => sistema_aviso_credito($credito),
               // Agencia donde se desbordo el credito (credito.idtienda -> tienda.nombreagencia)
               'agencia_desembolso' => $credito?($credito->agencia_desembolso?:''):'',
               'es_castigado' => $credito ? ($credito->castigo_estado === 'CONFIRMADO') : false,

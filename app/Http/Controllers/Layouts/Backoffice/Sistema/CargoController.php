@@ -442,6 +442,7 @@ class CargoController extends Controller
         return view(sistema_view().'/cargo/edit',[
             'tienda' => $tienda,
             'credito' => $credito,
+            'aviso_credito' => sistema_aviso_credito($credito),
         ]);
       }
       else if($request->input('view') == 'eliminar'){

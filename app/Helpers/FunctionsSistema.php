@@ -2,6 +2,18 @@
 
 use Illuminate\Support\Facades\DB;
 
+function sistema_aviso_credito($credito): string
+{
+    $avisos = [];
+    if ($credito && DB::table('s_listanegra')->where('idcliente', $credito->idcliente)->exists()) {
+        $avisos[] = 'OBSERVADO';
+    }
+    if ($credito && $credito->castigo_estado === 'CONFIRMADO') {
+        $avisos[] = 'CRÉDITO CASTIGADO';
+    }
+    return implode(' / ', $avisos);
+}
+
 function select_cronograma(
     $idtienda,
     $idcredito,

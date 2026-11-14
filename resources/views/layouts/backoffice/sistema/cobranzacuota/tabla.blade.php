@@ -450,7 +450,7 @@
             success: function (respuesta){
                 $('#idcredito').val(respuesta.idcredito);
                 $('#table-datosprestamos').html(respuesta.datosprestamos);
-                $('#badge_castigado').css('display', respuesta.es_castigado ? 'inline-block' : 'none');
+                $('#badge_castigado').text(respuesta.aviso_credito || '').css('display', respuesta.aviso_credito ? 'inline-block' : 'none');
                 $('#agencia_desembolso').html('DESEMBOLSADO EN AGENCIA: <span style="font-weight: normal; background-color: #E8E585;">'+ (respuesta.agencia_desembolso || '-') +'</span>');
               
                 $('#numero_cuotas').html(respuesta.numero_cuotas);

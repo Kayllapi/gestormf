@@ -109,7 +109,7 @@
 </head>
 <body>
   <header>
-    <div style="float:left;font-size:18px;">{{ $tienda->nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
+    <div style="float:left;font-size:18px;">{{ $tienda->nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d/m/Y H:iA') }}
   </header>
   <main>
     <div class="container">
@@ -157,7 +157,7 @@
           <td><b>MODALIDAD DE CRED.</b> </td>
           <td><b>:</b> {{ $credito->modalidad_credito_nombre }}</td>
           <td><b>F. DE DESEMBOLSO</b> </td>
-          <td><b>:</b> {{ date_format(date_create($credito->fecha_desembolso),'d-m-Y h:i:s A') }}</td>
+          <td><b>:</b> {{ date_format(date_create($credito->fecha_desembolso),'d/m/Y h:i:s A') }}</td>
         </tr>
         <?php
         $cronograma = select_cronograma(

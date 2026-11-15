@@ -121,7 +121,7 @@
 </head>
 <body>
   <header>
-    <div style="float:left;font-size:15px;">{{ $tienda->nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->usuario }} | {{ date('d-m-Y H:iA') }}
+    <div style="float:left;font-size:15px;">{{ $tienda->nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->usuario }} | {{ date('d/m/Y H:iA') }}
   </header>
   <footer>
     <p class="page">Página </p>
@@ -163,7 +163,7 @@
         <table>
           <tr>
             <td>FECHA:</td>
-            <td class="border-td" width="100px">{{ $credito_cuantitativa_inventario!=''?date_format(date_create($credito_cuantitativa_inventario->fecha),'Y-m-d') : '' }}</td>
+            <td class="border-td" width="100px">{{ $credito_cuantitativa_inventario!=''?date_format(date_create($credito_cuantitativa_inventario->fecha),'d/m/Y') : '' }}</td>
           </tr>
           <tr>
             <td>RUC/DNI/CE</td>

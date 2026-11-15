@@ -117,12 +117,12 @@
 </head>
 <body>
   <header>
-    <div style="float:left;font-size:18px;">{{ $tienda->nombre }}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
+    <div style="float:left;font-size:18px;">{{ $tienda->nombre }}</div> {{ Auth::user()->codigo }} | {{ date('d/m/Y H:iA') }}
   </header>
   <main>
     <div class="container">
       <h4 align="center">HISTORIAL DE PAGOS DE PRÉSTAMOS</h4>
-           <b>De: {{$fecha_inicio}} Al: {{$fecha_fin}}</b>
+           <b>De: {{ sistema_fecha_pdf($fecha_inicio) }} Al: {{ sistema_fecha_pdf($fecha_fin) }}</b>
           <table style="width:100%;">
             <tr>
               <th style="border-bottom: 2px solid #000;">N°</th>
@@ -196,7 +196,7 @@
                             <td style='text-align:right'>{{$value->total_tenencia}}</td>
                             <td style='text-align:right'>{{$value->total_compensatorio}}</td>
                             <td style='text-align:right'>{{$value->total_pagar}}</td>
-                            <td style='text-align:center'>{{$value->fecharegistro}}</td>
+                            <td style='text-align:center'>{{ sistema_fecha_pdf($value->fecharegistro) }}</td>
                             <td>{{$operacionen}}</td>
                             <td>{{$value->banco}}</td>
                             <td>{{$value->cuenta}}</td>

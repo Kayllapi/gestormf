@@ -109,7 +109,7 @@
 </head>
 <body>
   <header>
-    <div style="float:left;font-size:15px;">{{ $tienda->ticket_nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
+    <div style="float:left;font-size:15px;">{{ $tienda->ticket_nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d/m/Y H:iA') }}
   </header>
   <footer>
     <p class="page">Página </p>
@@ -118,8 +118,8 @@
     <div class="container">
       <h4 align="center" style="font-size:15px; margin: 0px;">GASTOS ADMINISTRATIVOS Y  OPERATIVOS</h4>
       <h4 align="center" style="font-size:15px; margin: 0px;">COMPRA Y VENTA DE BIENES</h4>
-           <b>DE: </b>{{ $fechainicio }}<br>
-           <b>HASTA: </b>{{ $fechafin }}<br>
+           <b>DE: </b>{{ sistema_fecha_pdf($fechainicio) }}<br>
+           <b>HASTA: </b>{{ sistema_fecha_pdf($fechafin) }}<br>
             
             <table style="width:100%;">
               <thead class="table-dark">
@@ -147,13 +147,13 @@
             $total_banco = 0;
             $html = '';
             foreach($gastoadministrativooperativo as $key => $value){
-                $fechapago = date_format(date_create($value->fechapago),"d-m-Y H:i:s A");
+                $fechapago = date_format(date_create($value->fechapago),"d/m/Y H:i:s A");
                 $cuenta = $value->banco!=''?$value->banco.' - ***'.substr($value->cuenta, -4).' ('.$value->numerooperacion.')':'';
                 $html .= "<tr>
                               <td>".($key+1)."</td>
                               <td>{$value->codigoprefijo}{$value->codigo}</td>
                               <td style='text-align: right;'>{$value->monto}</td>
-                              <td>{$fechapago}</td>
+                              <td>".e(sistema_fecha_pdf($fechapago))."</td>
                               <td>{$value->descripcion}</td>
                               <td>{$value->s_sustento_comprobantenombre}</td>
                               <td>{$value->sustento_descripcion}</td>

@@ -57,8 +57,8 @@
   $documento = str_replace('[asesor_direccion]', $prestamodesembolso->asesordireccion, $documento);
   $documento = str_replace('[asesor_ubigeo]', $prestamodesembolso->asesorubigeonombre, $documento);
       
-  $documento = str_replace('[credito_fechadesembolso]', $credito_fechadesembolso, $documento);
-  $documento = str_replace('[credito_ultimafechapago]', $credito_ultimacuota, $documento);
+  $documento = str_replace('[credito_fechadesembolso]', sistema_fecha_pdf($credito_fechadesembolso), $documento);
+  $documento = str_replace('[credito_ultimafechapago]', sistema_fecha_pdf($credito_ultimacuota), $documento);
   $documento = str_replace('[credito_monto]', $prestamodesembolso->monedasimbolo.' '.$prestamodesembolso->monto, $documento);
   $documento = str_replace('[credito_tasacredito]', $prestamodesembolso->tasa, $documento);
   $documento = str_replace('[credito_numerocuota]', $prestamodesembolso->numerocuota, $documento);

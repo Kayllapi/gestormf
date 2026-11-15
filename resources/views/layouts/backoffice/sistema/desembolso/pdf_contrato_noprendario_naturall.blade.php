@@ -109,7 +109,7 @@
 </head>
 <body>
   <header>
-    <div style="float:left;font-size:15px;">{{ $tienda->nombre }}</div> C{{ str_pad($credito->cuenta, 8, "0", STR_PAD_LEFT) }} | {{ date('d-m-Y H:iA') }}
+    <div style="float:left;font-size:15px;">{{ $tienda->nombre }}</div> C{{ str_pad($credito->cuenta, 8, "0", STR_PAD_LEFT) }} | {{ date('d/m/Y H:iA') }}
   </header>
   <footer>
     <p class="page">Página </p>
@@ -275,9 +275,7 @@ De conformidad a los Artículos 25 y 26 del Código Procesal Civil y al Artícul
     donde se les hará llegar las notificaciones a que hubiere lugar.
 <br><br>
     <?php
-    $meses = array("enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre");
-    $mes = $meses[(date_format(date_create($credito->fecha_desembolso),'n')) - 1];
-    $fecha_texto = date_format(date_create($credito->fecha_desembolso),'d') . ' de ' . $mes . ' de ' . date_format(date_create($credito->fecha_desembolso),'Y');
+    $fecha_texto = date_format(date_create($credito->fecha_desembolso), 'd/m/Y');
     ?>
 EL/LOS PRESTATARIO(S) y/o SU(S) AVAL(ES) SOLIDARIO(S), declaramos haber recibido una copia del presente contrato, de la Hoja Resumen, Cronograma de pagos, y 
     los aceptamos en su integridad y suscribimos en fe a la verdad del presente contrato en la ciudad de {{ $ubigeo_tienda->distrito }}, a {{ $fecha_texto }}.

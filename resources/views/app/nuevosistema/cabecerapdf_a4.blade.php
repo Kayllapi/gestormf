@@ -1,5 +1,5 @@
 <header>
-    <div style="float:left;">{{ $tienda->nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
+    <div style="float:left;">{{ $tienda->nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d/m/Y H:iA') }}
 </header>
 <footer>
     <p class="page" style="margin: 0">Página </p>

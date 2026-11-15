@@ -109,7 +109,7 @@
 </head>
 <body>
     <header>
-        <div style="float:left;font-size:15px;">{{ $tienda->ticket_nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
+        <div style="float:left;font-size:15px;">{{ $tienda->ticket_nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d/m/Y H:iA') }}
     </header>
     <footer style="text-align:right;">
         <p class="page">Página </p>
@@ -119,7 +119,7 @@
             <h4 align="center" style="margin-bottom: 0px;">REPORTE DE VENTA DE BIENES</h4>
             <h4 align="center" style="margin-top: 0px;">(EN SOLES)</h4>
             <b>AGENCIA: </b>{{ $tienda->nombreagencia }}<br>
-            <b>PERIODO: </b>{{ $fecha_inicio_venta }} al {{ $fecha_fin_venta }}<br>
+            <b>PERIODO: </b>{{ sistema_fecha_pdf($fecha_inicio_venta) }} al {{ sistema_fecha_pdf($fecha_fin_venta) }}<br>
             <table style="width:100%;">
                 <thead class="table-dark">
                     <tr>
@@ -145,7 +145,7 @@
                     <?php
                         $html = '';
                         foreach($cvventas as $key => $value){
-                            $fecharegistro = date_format(date_create($value->venta_fecharegistro),"d-m-Y h:i:s A");
+                            $fecharegistro = date_format(date_create($value->venta_fecharegistro),"d/m/Y h:i:s A");
                             $tienda = DB::table('tienda')->where('id',$value->idorigen)->first();
                             $origen = $value->idorigen == '0' ? 'OTROS' : ($tienda->nombre??'');
                             $lugar_pago = $value->venta_idformapago == '1' ? 'CAJA' : 'BANCO';
@@ -155,7 +155,7 @@
                             $html .= "<tr id='show_data_select' idcredito='{$value->id}'>
                                         <td>".($key+1)."</td>
                                         <td>VB{$value->codigoventa}</td>
-                                        <td>{$fecharegistro}</td>
+                                        <td>".e(sistema_fecha_pdf($fecharegistro))."</td>
                                         <td>{$descripcion}</td>
                                         <td>{$value->serie_motor_partida}</td>
                                         <td style='text-align: right;'>{$value->valorcompra}</td>

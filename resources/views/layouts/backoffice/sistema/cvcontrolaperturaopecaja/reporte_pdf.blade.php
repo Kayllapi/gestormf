@@ -109,7 +109,7 @@
 </head>
 <body>
   <header>
-    <div style="float:left;font-size:15px;">{{ $tienda->ticket_nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
+    <div style="float:left;font-size:15px;">{{ $tienda->ticket_nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d/m/Y H:iA') }}
   </header>
   <footer>
     <p class="page">Página </p>
@@ -117,7 +117,7 @@
   <main>
     <div class="container">
       <h4 align="center">REPORTE DE CONTROL DE APERTURA Y CIERRE DE OPE. DE CAJA</h4>
-           <b>FECHA: {{date_format(date_create($fecha_corte),"d-m-Y")}}</b>
+           <b>FECHA: {{date_format(date_create($fecha_corte),"d/m/Y")}}</b>
           
               
             
@@ -160,9 +160,9 @@
           $i = 1;
           foreach($cierre_insitucionaldetalle as $value){
 
-              $apertura_fecha = $value->apertura_fecha ? date_format(date_create($value->apertura_fecha),"d-m-Y H:i:s A") : "-.-";
-              $arqueo_fecha = $value->arqueo_fecha ? date_format(date_create($value->arqueo_fecha),"d-m-Y H:i:s A") : "-.-";
-              $cierre_fecha = $value->cierre_fecha ? date_format(date_create($value->cierre_fecha),"d-m-Y H:i:s A") : "-.-";
+              $apertura_fecha = $value->apertura_fecha ? date_format(date_create($value->apertura_fecha),"d/m/Y H:i:s A") : "-.-";
+              $arqueo_fecha = $value->arqueo_fecha ? date_format(date_create($value->arqueo_fecha),"d/m/Y H:i:s A") : "-.-";
+              $cierre_fecha = $value->cierre_fecha ? date_format(date_create($value->cierre_fecha),"d/m/Y H:i:s A") : "-.-";
 
               $nombrecompleto_responsable = "-.-";
               $usuario_responsable = "-.-";
@@ -201,7 +201,7 @@
                   <td><b>REGISTRADO CIERRE DE CAJA - INSTITUCIONAL</b></td>
                 </tr>
                 <tr>
-                  <td>Fecha y Hora: '.date_format(date_create($cierre_insitucional->fecharegistro),"d-m-Y H:i:s A").'</td>
+                  <td>Fecha y Hora: '.date_format(date_create($cierre_insitucional->fecharegistro),"d/m/Y H:i:s A").'</td>
                 </tr>
             </table>';
             echo $html1;

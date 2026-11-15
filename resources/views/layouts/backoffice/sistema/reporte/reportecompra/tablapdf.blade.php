@@ -45,7 +45,7 @@
                         <td style="text-align:center;">{{ $value['serie_correlativo'] }}</td>
                         <td style="text-align:center;">{{ $value['proveedor'] }}</td>
                         <td style="text-align:center;">{{ $value['responsable'] }}</td>
-                        <td style="text-align:right;">{{ $value['fechaconfirmacion'] }}</td>
+                        <td style="text-align:right;">{{ sistema_fecha_pdf($value['fechaconfirmacion']) }}</td>
                         <td style="text-align:right;">{{ $value['total_detalle'] }}</td>
                     </tr>
                     @endforeach
@@ -76,7 +76,7 @@
                       <td class="tabla_subtitulo" style="text-align:center;">{{ $valuedetalle['comprobante'] }}</td>
                       <td class="tabla_subtitulo" style="text-align:center;">{{ $valuedetalle['serie_correlativo'] }}</td>
                       <td class="tabla_subtitulo" style="text-align:left;">{{ $valuedetalle['responsable'] }}</td>
-                      <td class="tabla_subtitulo" style="text-align:center;">{{ $valuedetalle['fechaconfirmacion'] }}</td>
+                      <td class="tabla_subtitulo" style="text-align:center;">{{ sistema_fecha_pdf($valuedetalle['fechaconfirmacion']) }}</td>
                   </tr>
                   <tr>
                       <td style="text-align:left;padding:0px;" colspan="5">
@@ -135,7 +135,7 @@
                       <td class="tabla_subtitulo" style="text-align:center;">{{ $valuedetalle['comprobante'] }}</td>
                       <td class="tabla_subtitulo" style="text-align:center;">{{ $valuedetalle['serie_correlativo'] }}</td>
                       <td class="tabla_subtitulo" style="text-align:left;">{{ $valuedetalle['proveedor'] }}</td>
-                      <td class="tabla_subtitulo" style="text-align:center;">{{ $valuedetalle['fechaconfirmacion'] }}</td>
+                      <td class="tabla_subtitulo" style="text-align:center;">{{ sistema_fecha_pdf($valuedetalle['fechaconfirmacion']) }}</td>
                   </tr>
                   <tr>
                       <td style="text-align:left;padding:0px;" colspan="5">

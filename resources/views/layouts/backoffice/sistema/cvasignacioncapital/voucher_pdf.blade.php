@@ -34,7 +34,7 @@
           <table style="width:100%;">
             <tr>
                 <td style="width:65px;">
-                    <b>Fecha :</b> {{ date_format(date_create($asignacioncapital->fecharegistro),'d-m-Y h:i:s A') }}
+                    <b>Fecha :</b> {{ date_format(date_create($asignacioncapital->fecharegistro),'d/m/Y h:i:s A') }}
                 </td>
             </tr>
             <tr>

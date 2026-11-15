@@ -45,7 +45,7 @@
                         <td>{{ $value['cliente'] }}</td>
                         <td>{{ $value['vendedor'] }}</td>
                         <td>{{ $value['cajero'] }}</td>
-                        <td style="text-align:center;">{{ $value['fechaconfirmacion'] }}</td>
+                        <td style="text-align:center;">{{ sistema_fecha_pdf($value['fechaconfirmacion']) }}</td>
                         <td style="text-align:right;">{{ $value['total'] }}</td>
                     </tr>
                     @endforeach
@@ -76,7 +76,7 @@
                       <td class="tabla_subtitulo">{{ $valuedetalle['comprobante'] }}</td>
                       <td class="tabla_subtitulo">{{ $valuedetalle['vendedor'] }}</td>
                       <td class="tabla_subtitulo">{{ $valuedetalle['cajero'] }}</td>
-                      <td class="tabla_subtitulo" style="text-align:center;">{{ $valuedetalle['fechaconfirmacion'] }}</td>
+                      <td class="tabla_subtitulo" style="text-align:center;">{{ sistema_fecha_pdf($valuedetalle['fechaconfirmacion']) }}</td>
                   </tr>
                   <tr>
                       <td style="text-align:left;padding:0px;" colspan="5">
@@ -135,7 +135,7 @@
                       <td class="tabla_subtitulo">{{ $valuedetalle['comprobante'] }}</td>
                       <td class="tabla_subtitulo">{{ $valuedetalle['cliente'] }}</td>
                       <td class="tabla_subtitulo">{{ $valuedetalle['cajero'] }}</td>
-                      <td class="tabla_subtitulo" style="text-align:center;">{{ $valuedetalle['fechaconfirmacion'] }}</td>
+                      <td class="tabla_subtitulo" style="text-align:center;">{{ sistema_fecha_pdf($valuedetalle['fechaconfirmacion']) }}</td>
                   </tr>
                   <tr>
                       <td style="text-align:left;padding:0px;" colspan="5">
@@ -194,7 +194,7 @@
                       <td class="tabla_subtitulo">{{ $valuedetalle['comprobante'] }}</td>
                       <td class="tabla_subtitulo">{{ $valuedetalle['cliente'] }}</td>
                       <td class="tabla_subtitulo">{{ $valuedetalle['vendedor'] }}</td>
-                      <td class="tabla_subtitulo" style="text-align:center;">{{ $valuedetalle['fechaconfirmacion'] }}</td>
+                      <td class="tabla_subtitulo" style="text-align:center;">{{ sistema_fecha_pdf($valuedetalle['fechaconfirmacion']) }}</td>
                   </tr>
                   <tr>
                       <td style="text-align:left;padding:0px;" colspan="5">

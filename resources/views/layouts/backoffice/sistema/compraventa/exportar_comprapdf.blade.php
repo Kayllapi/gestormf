@@ -109,7 +109,7 @@
 </head>
 <body>
     <header>
-        <div style="float:left;font-size:15px;">{{ $tienda->ticket_nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
+        <div style="float:left;font-size:15px;">{{ $tienda->ticket_nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d/m/Y H:iA') }}
     </header>
     <footer style="text-align:right;">
         <p class="page">Página </p>
@@ -119,7 +119,7 @@
             <h4 align="center" style="margin-bottom: 0px;">REPORTE DE COMPRA DE BIENES</h4>
             <h4 align="center" style="margin-top: 0px;">(EN SOLES)</h4>
             <b>AGENCIA: </b>{{ $tienda->nombreagencia }}<br>
-            <b>PERIODO: </b>{{ $fecha_inicio_compra }} al {{ $fecha_fin_compra }}<br>
+            <b>PERIODO: </b>{{ sistema_fecha_pdf($fecha_inicio_compra) }} al {{ sistema_fecha_pdf($fecha_fin_compra) }}<br>
             <table style="width:100%;">
                 <thead class="table-dark">
                     <tr>
@@ -151,7 +151,7 @@
                             $prefijo = $value->idestadocvcompra == '1' ? 'CB' : 'VB';
                             $descripcion = Str::limit($value->descripcion, 25);
                             $vendedor = Str::limit($value->vendedor_nombreapellidos, 25);
-                            $fecharegistro = date_format(date_create($value->fecharegistro),"d-m-Y h:i:s A");
+                            $fecharegistro = date_format(date_create($value->fecharegistro),"d/m/Y h:i:s A");
                             $tienda = DB::table('tienda')->where('id',$value->idorigen)->first();
                             $origen = $value->idorigen == '0' ? 'OTROS' : ($tienda->nombre??'');
                             $lugar_pago = $value->compra_idformapago == '1' ? 'CAJA' : 'BANCO';
@@ -160,7 +160,7 @@
                                         <td>".($key+1)."</td>
                                         <td>{$estado}</td>
                                         <td>{$prefijo}{$value->codigo}</td>
-                                        <td>{$fecharegistro}</td>
+                                        <td>".e(sistema_fecha_pdf($fecharegistro))."</td>
                                         <td>{$descripcion}</td>
                                         <td>{$value->serie_motor_partida}</td>
                                         <td>{$value->modelo_tipo}</td>

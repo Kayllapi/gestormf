@@ -121,7 +121,7 @@
 </head>
 <body>
   <header>
-    <div style="float:left;font-size:15px;">{{ $tienda->nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->usuario }} | {{ date('d-m-Y H:iA') }}
+    <div style="float:left;font-size:15px;">{{ $tienda->nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->usuario }} | {{ date('d/m/Y H:iA') }}
   </header>
   <footer>
     <p class="page">Página </p>
@@ -147,7 +147,7 @@
           @endif
           <tr>
             <td>FECHA DE APROBACIÓN:</td>
-            <td class="border-td">{{ date_format(date_create($credito->fecha_aprobacion),'d-m-Y H:i:s A') }}</td>
+            <td class="border-td">{{ date_format(date_create($credito->fecha_aprobacion),'d/m/Y H:i:s A') }}</td>
           </tr>
         </table>
       </div>
@@ -229,7 +229,7 @@
           </tr>
           <tr>
             <td>Fecha primer pago:</td>
-            <td class="border-td">{{ $credito->fecha_primerpago }}</td>
+            <td class="border-td">{{ sistema_fecha_pdf($credito->fecha_primerpago) }}</td>
           </tr>
         </table>
       </div>

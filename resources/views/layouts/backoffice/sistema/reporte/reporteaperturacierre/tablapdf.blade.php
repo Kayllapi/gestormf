@@ -63,8 +63,8 @@
                 <tr>
                     <td style="text-align:left;">{{$valuedetalle['responsable']}}</td>
                     <td style="text-align:left;">{{$valuedetalle['recepcion']}}</td>
-                    <td>{{$valuedetalle['fechaapertura']}}</td>
-                    <td>{{$valuedetalle['fechacierre']}}</td>
+                    <td>{{ sistema_fecha_pdf($valuedetalle['fechaapertura']) }}</td>
+                    <td>{{ sistema_fecha_pdf($valuedetalle['fechacierre']) }}</td>
                     <td style="text-align:right;">{{$valuedetalle['montoapertura']}}</td>
                     <td style="text-align:right;">{{$valuedetalle['montocierre']}}</td>
                 </tr>
@@ -95,8 +95,8 @@
                 <tr>
                     <td style="text-align:left;">{{$valuedetalle['cajanombre']}}</td>
                     <td style="text-align:left;">{{$valuedetalle['recepcion']}}</td>
-                    <td>{{$valuedetalle['fechaapertura']}}</td>
-                    <td>{{$valuedetalle['fechacierre']}}</td>
+                    <td>{{ sistema_fecha_pdf($valuedetalle['fechaapertura']) }}</td>
+                    <td>{{ sistema_fecha_pdf($valuedetalle['fechacierre']) }}</td>
                     <td style="text-align:right;">{{$valuedetalle['montoapertura']}}</td>
                     <td style="text-align:right;">{{$valuedetalle['montocierre']}}</td>
                 </tr>
@@ -127,8 +127,8 @@
                 <tr>
                     <td style="text-align:left;">{{$valuedetalle['cajanombre']}}</td>
                     <td style="text-align:left;">{{$valuedetalle['responsable']}}</td>
-                    <td>{{$valuedetalle['fechaapertura']}}</td>
-                    <td>{{$valuedetalle['fechacierre']}}</td>
+                    <td>{{ sistema_fecha_pdf($valuedetalle['fechaapertura']) }}</td>
+                    <td>{{ sistema_fecha_pdf($valuedetalle['fechacierre']) }}</td>
                     <td style="text-align:right;">{{$valuedetalle['montoapertura']}}</td>
                     <td style="text-align:right;">{{$valuedetalle['montocierre']}}</td>
                 </tr>

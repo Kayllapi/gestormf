@@ -109,7 +109,7 @@
 </head>
 <body>
   <header>
-    <div style="float:left;font-size:15px;">{{ $tienda->nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
+    <div style="float:left;font-size:15px;">{{ $tienda->nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d/m/Y H:iA') }}
   </header>
   <main>
     <div class="container">
@@ -158,7 +158,7 @@
               <td>{{$cp}}</td>
               <td>{{$value->nombreproductocredito}}</td>
               <td style="text-align: right;">S/. {{$value->monto_solicitado}}</td>
-              <td>{{date_format(date_create($value->fecha_desembolso),'d-m-Y h:i:s A')}}</td>
+              <td>{{date_format(date_create($value->fecha_desembolso),'d/m/Y h:i:s A')}}</td>
               <td>{{ strtoupper($value->forma_pago_credito_nombre) }}</td>
               <td style="text-align: right;">{{$value->cuotas}}</td>
               <td style="text-align: right;">{{$value->tasa_tem}} ({{ ($value->modalidad_calculo ?? '') == 'Interes Compuesto' ? 'TEM' : 'TNM' }})</td>

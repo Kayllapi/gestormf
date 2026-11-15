@@ -126,7 +126,7 @@
 </head>
 <body>
   <header>
-    <div style="float:left;font-size:15px;">{{ $tienda->nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->usuario }} | {{ date('d-m-Y H:iA') }}
+    <div style="float:left;font-size:15px;">{{ $tienda->nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->usuario }} | {{ date('d/m/Y H:iA') }}
   </header>
   <footer>
     <p class="page">Página </p>
@@ -169,7 +169,7 @@
           </tr>
           <tr>
             <td>FECHA:</td>
-            <td class="border-td">{{ $credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->fecha : date('Y-m-d') }}</td>
+            <td class="border-td">{{ sistema_fecha_pdf($credito_evaluacion_cualitativa ? $credito_evaluacion_cualitativa->fecha : date('d/m/Y')) }}</td>
           </tr>
         </table>
       </div>

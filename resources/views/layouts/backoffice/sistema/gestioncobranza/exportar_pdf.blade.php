@@ -108,7 +108,7 @@
 </head>
 <body>
   <header>
-    <div style="float:left;font-size:15px;">{{ $tienda->nombre }} @if($agencia)| {{ $tienda->nombreagencia }} @else | TODA LAS AGENCIAS @endif</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
+    <div style="float:left;font-size:15px;">{{ $tienda->nombre }} @if($agencia)| {{ $tienda->nombreagencia }} @else | TODA LAS AGENCIAS @endif</div> {{ Auth::user()->codigo }} | {{ date('d/m/Y H:iA') }}
   </header>
   <footer>
     <p class="page">Página </p>
@@ -172,7 +172,7 @@
                   <td >C{$value['cuenta']}</td>
                   <td >{$value['identificacioncliente']}</td>
                   <td >{$value['nombrecliente']}</td>
-                  <!--td >{$value['fecha_desembolso']}</td-->
+                  <!--td >".e(sistema_fecha_pdf($value['fecha_desembolso']))."</td-->
                   <td style='text-align: right;'>{$value['monto_solicitado']}</td>
                   <td >{$value['frecuencianombre']}</td>
                   <td style='text-align: right;'>{$value['cuota_vencida']}</td>

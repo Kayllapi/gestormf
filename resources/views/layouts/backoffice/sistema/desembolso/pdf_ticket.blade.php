@@ -46,7 +46,7 @@
                   <td><b>DNI:</b> {{ $usuario->identificacion }}</td>
               </tr>
               <tr>
-                  <td><b>FECHA:</b> {{ date_format(date_create($credito->fecha_desembolso),'d-m-Y h:s:i A') }}</td>
+                  <td><b>FECHA:</b> {{ date_format(date_create($credito->fecha_desembolso),'d/m/Y h:s:i A') }}</td>
               </tr>
               <tr>
                 @php

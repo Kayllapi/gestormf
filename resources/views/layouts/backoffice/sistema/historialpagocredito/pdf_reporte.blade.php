@@ -109,7 +109,7 @@
 </head>
 <body>
   <header>
-    <div style="float:left;font-size:15px;">{{ $tienda->nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
+    <div style="float:left;font-size:15px;">{{ $tienda->nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d/m/Y H:iA') }}
   </header>
   <footer>
     <p class="page">Página </p>
@@ -118,8 +118,8 @@
     <div class="container">
       <h4 align="center">HISTORIAL DE PAGO DETALLADO DE CRÉDITOS</h4>
             <div ><b>AGENCIA: </b>{{ $agencia->nombreagencia }}  </div>
-            <div ><b>PERIODO: </b>{{ date_format(date_create($fechainicio),"d-m-Y") }} -  
-              <b>AL: </b>{{date_format(date_create($fechafin),"d-m-Y")}}</div>
+            <div ><b>PERIODO: </b>{{ date_format(date_create($fechainicio),"d/m/Y") }} -
+              <b>AL: </b>{{date_format(date_create($fechafin),"d/m/Y")}}</div>
           <?php  
               $html = '<table style="width:100%;">
               <thead class="table-dark" style="position: sticky;top: 0;">
@@ -231,7 +231,7 @@
               elseif($value->idforma_credito==3){
                   $cp = 'CC';
               }
-              $fecharegistro = date_format(date_create($value->fecharegistro),"d-m-Y H:i:s A");
+              $fecharegistro = date_format(date_create($value->fecharegistro),"d/m/Y H:i:s A");
               // "Total (S/.)" = lo realmente cobrado/recibido (igual que pagoprestamo y el voucher),
               // no total_totalcuota (suma aritmetica de conceptos, antes de redondeo de caja).
               $montos_cxc = montos_cxc_cobranzacuota($value);
@@ -244,7 +244,7 @@
                             <td style='height: 20px;'>{$cp}</td>
                             <td style='height: 20px;'>{$value->nombrecliente}</td>
                             <td style='height: 20px;'>{$value->identificacion}</td>
-                            <td style='text-align:center;height: 20px;width: 135px;'>{$fecharegistro}</td>
+                            <td style='text-align:center;height: 20px;width: 135px;'>".e(sistema_fecha_pdf($fecharegistro))."</td>
                             <td style='height: 20px;'>{$cuotas}</td>
                             
                             <td style='text-align:right;height: 20px;'>{$value->total_amortizacion}</td>

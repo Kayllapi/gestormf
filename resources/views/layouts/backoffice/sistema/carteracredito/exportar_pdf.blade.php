@@ -109,7 +109,7 @@
 </head>
 <body>
   <header>
-    <div style="float:left;font-size:15px;">{{ $tienda->nombre }} @if($agencia)| {{ $tienda->nombreagencia }} @else | TODA LAS AGENCIAS @endif</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
+    <div style="float:left;font-size:15px;">{{ $tienda->nombre }} @if($agencia)| {{ $tienda->nombreagencia }} @else | TODA LAS AGENCIAS @endif</div> {{ Auth::user()->codigo }} | {{ date('d/m/Y H:iA') }}
   </header>
   <footer>
     <p class="page">Página </p>
@@ -121,7 +121,7 @@
            <b>AGENCIA: </b>{{ $agencia?$agencia->nombreagencia:'TODA LAS AGENCIAS' }}<br>
            <b>FORMA DE CRÉDITO: </b>{{ $idformacredito!=0?$idformacredito:'TODO' }}<br>
            <b>EJECUTIVO: </b>{{ $asesor?$asesor->usuario:'TODO' }}<br>
-           <b>FECHA DE CORTE: {{$fecha_inicio}}</b>
+           <b>FECHA DE CORTE: {{ sistema_fecha_pdf($fecha_inicio) }}</b>
           @endif
             
             <table style="width:100%;">
@@ -211,7 +211,7 @@
                             <td>{$value->nombrecliente}</td>
                             <td>{$value->avalidentificacion}</td>
                             <td>{$value->avalnombrecompleto}</td>
-                            <td>{$value->fecha_desembolso}</td>
+                            <td>".e(sistema_fecha_pdf($value->fecha_desembolso))."</td>
                             <td style='text-align:right;'>{$value->monto_solicitado}</td>
                             <td style='text-align:right;'>{$value->saldo_pendientepago}</td>
                             <td style='text-align:right;'>{$cronograma['cuota_pendiente']}</td>

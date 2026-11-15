@@ -56,7 +56,7 @@
                     <td>{{ $value->db_cliente }}</td>
                     <td>{{ $value->motivo }}</td>
                     <td>{{ $value->codigo }}</td>
-                    <td>{{ date_format(date_create($value->fecharegistro),'d-m-Y') }}</td>
+                    <td>{{ date_format(date_create($value->fecharegistro),'d/m/Y') }}</td>
                     <td>{{ $value->agencia }}</td>
                 </tr>
                 @endforeach

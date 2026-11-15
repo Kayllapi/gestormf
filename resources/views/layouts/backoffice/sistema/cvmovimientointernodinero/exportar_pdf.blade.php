@@ -109,7 +109,7 @@
 </head>
 <body>
   <header>
-    <div style="float:left;font-size:15px;">{{ $tienda->ticket_nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
+    <div style="float:left;font-size:15px;">{{ $tienda->ticket_nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d/m/Y H:iA') }}
   </header>
   <footer>
     <p class="page">Página </p>
@@ -144,7 +144,7 @@
             $total = 0;
             $html = '';
             foreach($movimientointernodinero_retiro1 as $key => $value){
-                $fecharegistro = date_format(date_create($value->fecharegistro),"d-m-Y H:i:s A");
+                $fecharegistro = date_format(date_create($value->fecharegistro),"d/m/Y H:i:s A");
                 $cuenta = $value->banco!=''?$value->banco.' - ***'.substr($value->cuenta, -4):'';
                 $numerooperacion = $value->banco!=''?$value->numerooperacion:'';
                 $html .= "<tr>
@@ -154,7 +154,7 @@
                               <td style='white-space: nowrap;'>{$cuenta}</td>
                               <td style='white-space: nowrap;'>{$numerooperacion}</td>
                               <td style='white-space: nowrap;'>{$value->descripcion}</td>
-                              <td style='white-space: nowrap;'>{$fecharegistro}</td>
+                              <td style='white-space: nowrap;'>".e(sistema_fecha_pdf($fecharegistro))."</td>
                               <td style='white-space: nowrap;'>{$value->codigo_responsable}</td>
                           </tr>";
                 $total = $total+$value->monto;
@@ -196,7 +196,7 @@
             $total = 0;
             $html = '';
             foreach($movimientointernodinero_deposito1 as $key => $value){
-                $fecharegistro = date_format(date_create($value->fecharegistro),"d-m-Y H:i:s A");
+                $fecharegistro = date_format(date_create($value->fecharegistro),"d/m/Y H:i:s A");
                 $cuenta = $value->banco!=''?$value->banco.' - ***'.substr($value->cuenta, -4):'';
                 $numerooperacion = $value->banco!=''?$value->numerooperacion:'';
                 $html .= "<tr>
@@ -206,7 +206,7 @@
                               <td style='white-space: nowrap;'>{$cuenta}</td>
                               <td style='white-space: nowrap;'>{$numerooperacion}</td>
                               <td style='white-space: nowrap;'>{$value->descripcion}</td>
-                              <td style='white-space: nowrap;'>{$fecharegistro}</td>
+                              <td style='white-space: nowrap;'>".e(sistema_fecha_pdf($fecharegistro))."</td>
                               <td style='white-space: nowrap;'>{$value->codigo_responsable}</td>
                           </tr>";
                 $total = $total+$value->monto;
@@ -250,15 +250,15 @@
             $total = 0;
             $html = '';
             foreach($movimientointernodinero_retiro3 as $key => $value){
-                $fecharegistro = date_format(date_create($value->fecharegistro),"d-m-Y H:i:s A");
-                $fecharegularizacion =  $value->fecharegularizacion!='' ? date_format(date_create($value->fecharegularizacion),"d-m-Y H:i:s A") : '---';
+                $fecharegistro = date_format(date_create($value->fecharegistro),"d/m/Y H:i:s A");
+                $fecharegularizacion =  $value->fecharegularizacion!='' ? date_format(date_create($value->fecharegularizacion),"d/m/Y H:i:s A") : '---';
                 $html .= "<tr>
                               <td style='white-space: nowrap;'>{$value->codigoprefijo}{$value->codigo}</td>
                               <td style='white-space: nowrap;'>{$value->credito_fuenteretironombre}</td>
                               <td style='white-space: nowrap;text-align:right;'>{$value->monto}</td>
                               <td style='white-space: nowrap;'>{$value->descripcion}</td>
-                              <td style='white-space: nowrap;'>{$fecharegistro}</td>
-                              <td style='white-space: nowrap;'>{$fecharegularizacion}</td>
+                              <td style='white-space: nowrap;'>".e(sistema_fecha_pdf($fecharegistro))."</td>
+                              <td style='white-space: nowrap;'>".e(sistema_fecha_pdf($fecharegularizacion))."</td>
                               <td style='white-space: nowrap;'>{$value->codigo_responsable}</td>
                           </tr>";
                 $total = $total+$value->monto;
@@ -300,15 +300,15 @@
             $total = 0;
             $html = '';
             foreach($movimientointernodinero_deposito3 as $key => $value){
-                $fecharegistro = date_format(date_create($value->fecharegistro),"d-m-Y H:i:s A");
-                $fecharegularizacion =  $value->fecharegularizacion!='' ? date_format(date_create($value->fecharegularizacion),"d-m-Y H:i:s A") : '---';
+                $fecharegistro = date_format(date_create($value->fecharegistro),"d/m/Y H:i:s A");
+                $fecharegularizacion =  $value->fecharegularizacion!='' ? date_format(date_create($value->fecharegularizacion),"d/m/Y H:i:s A") : '---';
                 $html .= "<tr>
                               <td style='white-space: nowrap;'>{$value->codigoprefijo}{$value->codigo}</td>
                               <td style='white-space: nowrap;'>{$value->credito_fuenteretironombre}</td>
                               <td style='white-space: nowrap;text-align:right;'>{$value->monto}</td>
                               <td style='white-space: nowrap;'>{$value->descripcion}</td>
-                              <td style='white-space: nowrap;'>{$fecharegistro}</td>
-                              <td style='white-space: nowrap;'>{$fecharegularizacion}</td>
+                              <td style='white-space: nowrap;'>".e(sistema_fecha_pdf($fecharegistro))."</td>
+                              <td style='white-space: nowrap;'>".e(sistema_fecha_pdf($fecharegularizacion))."</td>
                               <td style='white-space: nowrap;'>{$value->codigo_responsable}</td>
                           </tr>";
                 $total = $total+$value->monto;

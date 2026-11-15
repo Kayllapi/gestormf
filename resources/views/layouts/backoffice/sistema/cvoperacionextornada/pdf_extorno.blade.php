@@ -109,7 +109,7 @@
 </head>
 <body>
   <header>
-    <div style="float:left;font-size:15px;" >{{ $tienda->ticket_nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
+    <div style="float:left;font-size:15px;" >{{ $tienda->ticket_nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d/m/Y H:iA') }}
   </header>
   <footer>
     <p class="page" style="text-align:right;">Página </p>
@@ -117,7 +117,7 @@
   <main>
     <div class="container">
       <h4 align="center" style="margin:0px;">OPERACIONES EXTORNADAS</h4>
-           <b>De: {{$fecha_inicio}} Al: {{$fecha_fin}}</b>
+           <b>De: {{ sistema_fecha_pdf($fecha_inicio) }} Al: {{ sistema_fecha_pdf($fecha_fin) }}</b>
           <table style="width:100%;">
             <thead>
 
@@ -145,7 +145,7 @@
                   $cuenta = $value->banco!=''?$value->banco.' - ***'.substr($value->cuenta, -4).' ('.$value->numerooperacion.')':'';
                 ?>
                 <tr>
-                  <td>{{$value->fechaextorno}}</td>
+                  <td>{{ sistema_fecha_pdf($value->fechaextorno) }}</td>
                   <td>{{$value->codigo}}</td>
                   <td>{{$value->operacion}}</td>
                   <td>{{$value->detalleoperacion}}</td>

@@ -109,7 +109,7 @@
 </head>
 <body>
   <header>
-    <div style="float:left;font-size:15px;">{{ $tienda->nombre }}</div> C{{ str_pad($credito->cuenta, 8, "0", STR_PAD_LEFT) }} | {{ date('d-m-Y H:iA') }}
+    <div style="float:left;font-size:15px;">{{ $tienda->nombre }}</div> C{{ str_pad($credito->cuenta, 8, "0", STR_PAD_LEFT) }} | {{ date('d/m/Y H:iA') }}
   </header>
   <footer>
     <p class="page">Página </p>
@@ -247,9 +247,7 @@ Ambas partes y de forma separada, declaran tener la capacidad necesaria y la fac
           </table>
     <br>
     <?php
-    $meses = array("enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre");
-    $mes = $meses[(date_format(date_create($credito->fecha_desembolso),'n')) - 1];
-    $fecha_texto = date_format(date_create($credito->fecha_desembolso),'d') . ' de ' . $mes . ' de ' . date_format(date_create($credito->fecha_desembolso),'Y');
+    $fecha_texto = date_format(date_create($credito->fecha_desembolso), 'd/m/Y');
     ?>
         <b>VII.</b> Al incumplimiento de pago de EL/LOS PRESTATARIO(S) a EL ACREEDOR sea el saldo o total del préstamo otorgado, al 
     vencimiento del plazo pactado conforme cláusula I. del presente, EL/LOS PRESTATARIO(S) tendrá {{$credito->config_dias_tolerancia}} días para su 

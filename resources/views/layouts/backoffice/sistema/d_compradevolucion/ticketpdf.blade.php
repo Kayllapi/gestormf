@@ -42,7 +42,7 @@
       {{ strtoupper($compradevolucion->tiendadireccion) }}<br><br>
 	<div class="datocomprobante">
     DEVOLUCIÓN: {{ str_pad($compradevolucion->codigo, 8, "0", STR_PAD_LEFT) }} <br>
-    FECHA: {{$compradevolucion->fecharegistro}}<br>
+    FECHA: {{ sistema_fecha_pdf($compradevolucion->fecharegistro) }}<br>
     PROVEEDOR: {{$compradevolucion->apellidosproveedor}},{{$compradevolucion->nombreproveedor}} <br>
     RUC: {{$compradevolucion->identificacionproveedor}} <br>
     DIRECCIÓN: {{$compradevolucion->direccionproveedor}}<br>

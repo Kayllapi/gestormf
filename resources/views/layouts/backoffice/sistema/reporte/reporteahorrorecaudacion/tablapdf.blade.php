@@ -45,7 +45,7 @@
                         <td style="text-align:center;">{{$value['tipo']}}</td>
                         <td>{{$value['cajero_apellidos']}},<br>{{$value['cajero_nombre']}}</td>
                         <td>{{$value['cliente_identificacion']}}<br>{{$value['cliente']}}</td>
-                        <td>{{$value['fecharegistro']}}</td>
+                        <td>{{ sistema_fecha_pdf($value['fecharegistro']) }}</td>
                         <td style="text-align:center;">{{$value['ahorrocodigo']}}</td>
                         <td style="text-align:center;">{{$value['codigo']}}</td>
                         <td style="text-align:right;">{{$value['monto_total']}}</td>
@@ -79,7 +79,7 @@
                     <tr>
                         <td style="text-align:center;">{{$valuedetalle['tipo']}}</td>
                         <td>{{$valuedetalle['cajero']}}</td>
-                        <td style="text-align:left;">{{$valuedetalle['fecharegistro']}}</td>
+                        <td style="text-align:left;">{{ sistema_fecha_pdf($valuedetalle['fecharegistro']) }}</td>
                         <td style="text-align:center;">{{$valuedetalle['codigo']}}</td>
                         <td style="text-align:center;">{{$valuedetalle['ahorrocodigo']}}</td>
                         <td style="text-align:right;">{{$valuedetalle['monto_total']}}</td>
@@ -126,7 +126,7 @@
                     <tr>
                         <td style="text-align:center;">{{$valuedetalle['tipo']}}</td>
                         <td>{{$valuedetalle['cliente_identificacion']}} - {{$valuedetalle['cliente']}}</td>
-                        <td style="text-align:left;">{{$valuedetalle['fecharegistro']}}</td>
+                        <td style="text-align:left;">{{ sistema_fecha_pdf($valuedetalle['fecharegistro']) }}</td>
                         <td style="text-align:center;">{{$valuedetalle['ahorrocodigo']}}</td>
                         <td style="text-align:center;">{{$valuedetalle['codigo']}}</td>
                         <td style="text-align:right;">{{$valuedetalle['monto_total']}}</td>

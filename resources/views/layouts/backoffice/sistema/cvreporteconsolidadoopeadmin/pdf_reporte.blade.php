@@ -109,7 +109,7 @@
 </head>
 <body>
   <header>
-    <div style="float:left;font-size:15px;">{{ $co_actual['tienda']->ticket_nombre }} | {{ $co_actual['agencia']->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
+    <div style="float:left;font-size:15px;">{{ $co_actual['tienda']->ticket_nombre }} | {{ $co_actual['agencia']->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d/m/Y H:iA') }}
   </header>
   <footer>
     <p class="page">Página </p>
@@ -138,9 +138,9 @@
             </tr>
             <tr>
               <th style="border-bottom: 2px solid #000;">Arqueo</th>
-              <th style="border-bottom: 2px solid #000;">{{$co_actual['corte']}}</th>
+              <th style="border-bottom: 2px solid #000;">{{ sistema_fecha_pdf($co_actual['corte']) }}</th>
               <th style="border-bottom: 2px solid #000;">Arqueo</th>
-              <th style="border-bottom: 2px solid #000;">{{$co_anterior?date("d-m-Y",strtotime(date($co_anterior->corte))):'0.00'}}</th>
+              <th style="border-bottom: 2px solid #000;">{{$co_anterior?date("d/m/Y",strtotime(date($co_anterior->corte))):'0.00'}}</th>
             </tr>
             <tr>
               <td style="text-align:left;width:80px;"><b>Saldos</b></td>

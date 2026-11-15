@@ -57,7 +57,7 @@
                     <tr>
                         <td style="text-align:center;">{{$valuedetalle['numeroclientes']}}</td>
                         <td style="text-align:left;">{{$valuedetalle['cliente']}}</td>
-                        <td style="text-align:center;">{{$valuedetalle['fechadesembolso']}}</td>
+                        <td style="text-align:center;">{{ sistema_fecha_pdf($valuedetalle['fechadesembolso']) }}</td>
                         <td style="text-align:right;<?php echo $valuedetalle['mora_1']>0? 'background-color:'.configuracion($tienda->id,'sistema_color')['valor'].'40;':'' ?>">{{$valuedetalle['mora_1']}}</td>
                         <td style="text-align:right;<?php echo $valuedetalle['mora_2']>0? 'background-color:'.configuracion($tienda->id,'sistema_color')['valor'].'40;':'' ?>">{{$valuedetalle['mora_2']}}</td>
                         <td style="text-align:right;<?php echo $valuedetalle['mora_3']>0? 'background-color:'.configuracion($tienda->id,'sistema_color')['valor'].'40;':'' ?>">{{$valuedetalle['mora_3']}}</td>
@@ -109,7 +109,7 @@
                     <tr>
                         <td style="text-align:center;">{{$valuedetalle['numeroclientes']}}</td>
                         <td style="text-align:left;">{{$valuedetalle['cliente']}}</td>
-                        <td style="text-align:center;">{{$valuedetalle['fechadesembolso']}}</td>
+                        <td style="text-align:center;">{{ sistema_fecha_pdf($valuedetalle['fechadesembolso']) }}</td>
                         <td style="text-align:right;<?php echo $valuedetalle['mora_1']>0? 'background-color:'.configuracion($tienda->id,'sistema_color')['valor'].'40;':'' ?>">{{$valuedetalle['mora_1']}}</td>
                         <td style="text-align:right;<?php echo $valuedetalle['mora_2']>0? 'background-color:'.configuracion($tienda->id,'sistema_color')['valor'].'40;':'' ?>">{{$valuedetalle['mora_2']}}</td>
                         <td style="text-align:right;<?php echo $valuedetalle['mora_3']>0? 'background-color:'.configuracion($tienda->id,'sistema_color')['valor'].'40;':'' ?>">{{$valuedetalle['mora_3']}}</td>

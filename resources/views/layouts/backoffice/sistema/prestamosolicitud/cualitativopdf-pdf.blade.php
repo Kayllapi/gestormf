@@ -35,7 +35,7 @@
 
             <?php 
           
-            $laboradesde = Carbon\Carbon::now()->format('d-m-Y');
+            $laboradesde = Carbon\Carbon::now()->format('d/m/Y');
             $estabilidaddomiciliaria = 0;
             $referenciascrediticia = 0;
             $licenciafuncionamiento = '';

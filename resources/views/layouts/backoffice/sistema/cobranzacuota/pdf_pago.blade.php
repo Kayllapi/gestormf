@@ -41,7 +41,7 @@
                     <b>:</b>
                 </td>
                 <td>
-                    {{ date_format(date_create($credito_cobranzacuota->fecharegistro),'d-m-Y h:i:s A') }}
+                    {{ date_format(date_create($credito_cobranzacuota->fecharegistro),'d/m/Y h:i:s A') }}
                 </td>
             </tr>
             <tr>
@@ -211,7 +211,7 @@
           </table>     
           <table class="tabla_informativa" style="width:100%; margin-top:-8px;">
               <tr>
-                  <td><b>Proximo Vencimiento:</b> {{ $credito_cobranzacuota->proximo_vencimiento }}</td>
+                  <td><b>Proximo Vencimiento:</b> {{ sistema_fecha_pdf($credito_cobranzacuota->proximo_vencimiento) }}</td>
               </tr>
           </table> 
           <table style="width:100%; margin-top:-8px;">

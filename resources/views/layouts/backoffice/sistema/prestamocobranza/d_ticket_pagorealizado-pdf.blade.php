@@ -48,7 +48,7 @@
       <thead>
         <tr>
           <td>FECHA</td>
-          <td>: {{ $cobranza->fecharegistro }}</td>
+          <td>: {{ sistema_fecha_pdf($cobranza->fecharegistro) }}</td>
         </tr>
         <tr>
           <td>AGENCIA</td>

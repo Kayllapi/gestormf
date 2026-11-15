@@ -109,7 +109,7 @@
 </head>
 <body>
   <header>
-    <div style="float:left;font-size:15px;">{{ $tienda->ticket_nombre }}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
+    <div style="float:left;font-size:15px;">{{ $tienda->ticket_nombre }}</div> {{ Auth::user()->codigo }} | {{ date('d/m/Y H:iA') }}
   </header>
   <footer>
     <p class="page">Página </p>
@@ -117,8 +117,8 @@
   <main>
     <div class="container">
       <h4 align="center" style="font-size:15px;">ASIGNACIÓN Y REDUCCIÓN DE CAPITAL</h4>
-           <b>DE: </b>{{ $fechainicio }}<br>
-           <b>HASTA: </b>{{ $fechafin }}<br>
+           <b>DE: </b>{{ sistema_fecha_pdf($fechainicio) }}<br>
+           <b>HASTA: </b>{{ sistema_fecha_pdf($fechafin) }}<br>
             
             <table style="width:100%;">
               <thead class="table-dark">
@@ -144,12 +144,12 @@
             $total_banco = 0;
             $html = '';
             foreach($asignacioncapital as $key => $value){
-                $fecharegistro = date_format(date_create($value->fecharegistro),"d-m-Y H:i:s A");
+                $fecharegistro = date_format(date_create($value->fecharegistro),"d/m/Y H:i:s A");
                 $cuenta = $value->banco!=''?$value->banco.' - ***'.substr($value->cuenta, -4):'';
                 $numerooperacion = $value->banco!=''?'('.$value->numerooperacion.')':'';
                 $html .= "<tr data-valor-columna='{$value->id}' onclick='show_data(this)'>
                               <td>{$value->tiendanombre}</td>
-                              <td>{$fecharegistro}</td>
+                              <td>".e(sistema_fecha_pdf($fecharegistro))."</td>
                               <td>{$value->codigoprefijo}{$value->codigo}</td>
                               <td>{$value->credito_tipooperacionnombre}</td>
                               <td>{$value->credito_tipodestinonombre}</td>

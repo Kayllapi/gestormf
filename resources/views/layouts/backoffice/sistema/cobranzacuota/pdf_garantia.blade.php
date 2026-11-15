@@ -39,7 +39,7 @@
                     <b>N° DE CUENTA:</b> C{{ str_pad($credito_cobranzacuota->creditocuenta, 8, "0", STR_PAD_LEFT) }}</td>
               </tr>
               <tr>
-                  <td><b>FECHA:</b> {{ date_format(date_create($credito_cobranzacuota->fecharegistro),'d-m-Y H:i:s A') }}</td>
+                  <td><b>FECHA:</b> {{ date_format(date_create($credito_cobranzacuota->fecharegistro),'d/m/Y H:i:s A') }}</td>
               </tr>
               
             <?php $i=1 ?>

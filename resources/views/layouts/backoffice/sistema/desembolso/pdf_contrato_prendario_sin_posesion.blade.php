@@ -120,7 +120,7 @@ CON GARANTÍA MOBILIARIA SIN POSESIÓN</title>
 </head>
 <body>
   <header>
-    <div style="float:left;font-size:15px;">{{ $tienda->nombre }}</div> C{{ str_pad($credito->cuenta, 8, "0", STR_PAD_LEFT) }} | {{ date('d-m-Y H:iA') }}
+    <div style="float:left;font-size:15px;">{{ $tienda->nombre }}</div> C{{ str_pad($credito->cuenta, 8, "0", STR_PAD_LEFT) }} | {{ date('d/m/Y H:iA') }}
   </header>
   <footer>
     <p class="page">Página </p>
@@ -351,9 +351,7 @@ EL/LOS PRESTATARIO(S) reconoce(n) que, como parte de la evaluación para el otor
     su parte no podrá ceder su posición contractual a terceros, salvo autorice EL ACREEDOR.
 <br><br>
     <?php
-    $meses = array("enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre");
-    $mes = $meses[(date_format(date_create($credito->fecha_desembolso),'n')) - 1];
-    $fecha_texto = date_format(date_create($credito->fecha_desembolso),'d') . ' de ' . $mes . ' de ' . date_format(date_create($credito->fecha_desembolso),'Y');
+    $fecha_texto = date_format(date_create($credito->fecha_desembolso), 'd/m/Y');
     ?>
 <b>IX. VIGENCIA.</b> <br>
     Indeterminada hasta la cancelación total de la Obligación Garantizada.

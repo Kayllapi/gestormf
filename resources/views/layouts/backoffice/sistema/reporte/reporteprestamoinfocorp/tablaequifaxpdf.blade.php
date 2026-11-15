@@ -46,7 +46,7 @@
                     @foreach($prestamomoras as $valuedetalle)
                     <tr>
                         <td style="border: 1px solid #31353d;text-align:center;"><?php echo $i; ?></td>
-                        <td style="border: 1px solid #31353d;text-align:center;">{{$valuedetalle['fechaperiodo']}}</td>
+                        <td style="border: 1px solid #31353d;text-align:center;">{{ sistema_fecha_pdf($valuedetalle['fechaperiodo']) }}</td>
                         <td style="border: 1px solid #31353d;text-align:center;">{{$valuedetalle['codigoentidad']}}</td>
                         <td style="border: 1px solid #31353d;text-align:center;">{{$valuedetalle['codigotarjeta']}}</td>
                         <td style="border: 1px solid #31353d;text-align:center;">{{$valuedetalle['codigoprestamo']}}</td>
@@ -84,7 +84,7 @@
                         <td style="border: 1px solid #31353d;text-align:left;">{{$valuedetalle['provincia']}}</td>
                         <td style="border: 1px solid #31353d;text-align:left;">{{$valuedetalle['departamento']}}</td>
                         <td style="border: 1px solid #31353d;text-align:center;">{{$valuedetalle['telefono']}}</td>
-                        <td style="border: 1px solid #31353d;text-align:center;">{{$valuedetalle['fechavencimiento']}}</td>
+                        <td style="border: 1px solid #31353d;text-align:center;">{{ sistema_fecha_pdf($valuedetalle['fechavencimiento']) }}</td>
                     </tr>
                     <?php $i++; ?>
                     @endforeach

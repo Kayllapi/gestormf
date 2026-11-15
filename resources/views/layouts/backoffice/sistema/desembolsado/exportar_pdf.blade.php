@@ -108,7 +108,7 @@
 </head>
 <body>
   <header>
-    <div style="float:left;font-size:15px;">{{ $tienda->nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
+    <div style="float:left;font-size:15px;">{{ $tienda->nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d/m/Y H:iA') }}
   </header>
   <footer>
     <p class="page">Página </p>
@@ -121,7 +121,7 @@
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ejecutivo: <span style="font-weight: normal;">{{ $ejecutivo }}</span>
             @if($fecha_inicio!='' && $fecha_fin!='')
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;De: <span style="font-weight: normal;">{{$fecha_inicio}}</span> Al: <span style="font-weight: normal;">{{$fecha_fin}}</span>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;De: <span style="font-weight: normal;">{{ sistema_fecha_pdf($fecha_inicio) }}</span> Al: <span style="font-weight: normal;">{{ sistema_fecha_pdf($fecha_fin) }}</span>
             @endif
           </b>
             
@@ -161,7 +161,7 @@
                   }
               }
 
-              $fechaFormateado = Carbon\Carbon::parse($value->fecha_desembolso)->format('d-m-Y h:i A');
+              $fechaFormateado = Carbon\Carbon::parse($value->fecha_desembolso)->format('d/m/Y h:i A');
               $formacredito = $value->idforma_credito == 1 ? 'CP' : ($value->idforma_credito == 2 ? 'CNP' : '');
             
               $html .= "<tr id='show_data_select' idcredito='{$value->id}'>
@@ -172,7 +172,7 @@
                             <td style='text-align:right;'>{$value->cuotas}</td>
                             <td>{$formacredito}</td>
                             <td>{$value->frecuencianombre}</td>
-                            <td>{$fechaFormateado}</td>
+                            <td>".e(sistema_fecha_pdf($fechaFormateado))."</td>
                             <td>{$value->codigocajero}</td>
                             <td>{$operacionen}</td>
                             <td>{$value->nombremodalidadcredito}</td>

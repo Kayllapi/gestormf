@@ -109,7 +109,7 @@
 </head>
 <body>
   <header>
-    <div style="float:left;font-size:15px;">{{ $tienda->nombre }} @if($agencia)| {{ $tienda->nombreagencia }} @else | TODA LAS AGENCIAS @endif</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
+    <div style="float:left;font-size:15px;">{{ $tienda->nombre }} @if($agencia)| {{ $tienda->nombreagencia }} @else | TODA LAS AGENCIAS @endif</div> {{ Auth::user()->codigo }} | {{ date('d/m/Y H:iA') }}
   </header>
   <footer>
     <p class="page">Página </p>
@@ -120,7 +120,7 @@
            <b>AGENCIA: </b>{{ $agencia?$agencia->nombreagencia:'TODA LAS AGENCIAS' }}<br>
            <b>FORMA DE CRÉDITO: </b>{{ $idformacredito!=0?$idformacredito:'TODO' }}<br>
            <b>EJECUTIVO: </b>{{ $asesor?$asesor->usuario:'TODO' }}<br>
-           <b>FECHA DE CORTE: </b> {{$fecha_inicio}}
+           <b>FECHA DE CORTE: </b> {{ sistema_fecha_pdf($fecha_inicio) }}
             
             
               <?php  

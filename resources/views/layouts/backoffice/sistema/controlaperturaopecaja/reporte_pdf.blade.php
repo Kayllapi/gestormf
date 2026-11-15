@@ -109,7 +109,7 @@
 </head>
 <body>
   <header>
-    <div style="float:left;font-size:15px;">{{ $tienda->nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
+    <div style="float:left;font-size:15px;">{{ $tienda->nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d/m/Y H:iA') }}
   </header>
   <footer>
     <p class="page">Página </p>
@@ -117,7 +117,7 @@
   <main>
     <div class="container">
       <h4 align="center">REPORTE DE CONTROL DE APERTURA Y CIERRE DE OPE. DE CAJA</h4>
-           <b>FECHA: {{date_format(date_create($fecha_corte),"d-m-Y")}}</b>
+           <b>FECHA: {{date_format(date_create($fecha_corte),"d/m/Y")}}</b>
           
               
             
@@ -168,11 +168,11 @@
                             <td>'.$value->nombreagencia.'</td>
                             <td>'.$value->apertura_estado.'</td>
                             <td style="text-align:right;">'.$value->apertura_efectivo.'</td>
-                            <td style="text-align:center;">'.date_format(date_create($value->apertura_fecha),"d-m-Y H:i:s A").'</td>
+                            <td style="text-align:center;">'.date_format(date_create($value->apertura_fecha),"d/m/Y H:i:s A").'</td>
                             <td style="text-align:right;">'.$value->arqueo_efectivo.'</td>
-                            <td style="text-align:center;">'.date_format(date_create($value->arqueo_fecha),"d-m-Y H:i:s A").'</td>
+                            <td style="text-align:center;">'.date_format(date_create($value->arqueo_fecha),"d/m/Y H:i:s A").'</td>
                             <td>'.$value->cierre_estado.'</td>
-                            <td style="text-align:center;">'.date_format(date_create($value->cierre_fecha),"d-m-Y H:i:s A").'</td>
+                            <td style="text-align:center;">'.date_format(date_create($value->cierre_fecha),"d/m/Y H:i:s A").'</td>
                             <td>'.$value->nombrecompleto_responsable.'</td>
                             <td>'.$value->usuario_responsable.'</td>
                         </tr>';
@@ -192,7 +192,7 @@
                   <td><b>REGISTRADO CIERRE DE CAJA - INSTITUCIONAL</b></td>
                 </tr>
                 <tr>
-                  <td>Fecha y Hora: '.date_format(date_create($cierre_insitucional->fecharegistro),"d-m-Y H:i:s A").'</td>
+                  <td>Fecha y Hora: '.date_format(date_create($cierre_insitucional->fecharegistro),"d/m/Y H:i:s A").'</td>
                 </tr>
             </table>';
             echo $html1;

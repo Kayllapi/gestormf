@@ -41,7 +41,7 @@
                 </tr>
                 <tr>
                     <td style="text-align:center;">{{$valuedetalle['creditocodigo']}}</td>
-                    <td style="text-align:center;">{{$valuedetalle['creditofechadesembolso']}}</td>
+                    <td style="text-align:center;">{{ sistema_fecha_pdf($valuedetalle['creditofechadesembolso']) }}</td>
                     <td style="text-align:center;">{{$valuedetalle['creditodesembolso']}}</td>
                     <td style="text-align:center;">{{$valuedetalle['creditotasa']}}</td>
                     <td style="text-align:center;">{{$valuedetalle['creditocuota']}}</td>

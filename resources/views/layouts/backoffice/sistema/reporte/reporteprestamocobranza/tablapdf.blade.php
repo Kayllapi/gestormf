@@ -43,7 +43,7 @@
                     <tr>
                         <td>{{$value['cajero_apellidos']}},<br>{{$value['cajero_nombre']}}</td>
                         <td>{{$value['cliente_identificacion']}}<br>{{$value['cliente']}}</td>
-                        <td>{{$value['fecharegistro']}}</td>
+                        <td>{{ sistema_fecha_pdf($value['fecharegistro']) }}</td>
                         <td style="text-align:center;">{{$value['codigo']}}</td>
                         <td style="text-align:center;">{{$value['creditocodigo']}}</td>
                         <td style="text-align:right;">{{$value['cronograma_total']}}</td>
@@ -78,7 +78,7 @@
                     @foreach($value['detalle'] as $valuedetalle)
                     <tr>
                         <td>{{$valuedetalle['cajero']}}</td>
-                        <td style="text-align:center;">{{$valuedetalle['fecharegistro']}}</td>
+                        <td style="text-align:center;">{{ sistema_fecha_pdf($valuedetalle['fecharegistro']) }}</td>
                         <td style="text-align:center;">{{$valuedetalle['codigo']}}</td>
                         <td style="text-align:center;">{{$valuedetalle['creditocodigo']}}</td>
                         <td style="text-align:right;">{{$valuedetalle['cronograma_totalcuota']}}</td>
@@ -125,7 +125,7 @@
                     @foreach($value['detalle'] as $valuedetalle)
                     <tr>
                         <td>{{$valuedetalle['cliente_identificacion']}} - {{$valuedetalle['cliente']}}</td>
-                        <td style="text-align:center;">{{$valuedetalle['fecharegistro']}}</td>
+                        <td style="text-align:center;">{{ sistema_fecha_pdf($valuedetalle['fecharegistro']) }}</td>
                         <td style="text-align:center;">{{$valuedetalle['codigo']}}</td>
                         <td style="text-align:center;">{{$valuedetalle['creditocodigo']}}</td>
                         <td style="text-align:right;">{{$valuedetalle['cronograma_totalcuota']}}</td>

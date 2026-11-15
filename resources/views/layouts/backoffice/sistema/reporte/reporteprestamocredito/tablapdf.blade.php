@@ -61,7 +61,7 @@
                         <td style="text-align:center;"><?php echo $i; ?></td>
                         <td>{{$valuedetalle['clienteidentificacion']}} - {{$valuedetalle['cliente']}}</td>
                         <td style="text-align:center;">{{$valuedetalle['creditocodigo']}}</td>
-                        <td style="text-align:center;">{{$valuedetalle['fechadesembolso']}}</td>
+                        <td style="text-align:center;">{{ sistema_fecha_pdf($valuedetalle['fechadesembolso']) }}</td>
                         <td style="text-align:right;">{{$valuedetalle['desembolso']}}</td>
                         <td style="text-align:right;">{{$valuedetalle['cancelado']}}</td>
                         <td style="text-align:right;">{{$valuedetalle['pendiente']}}</td>
@@ -117,7 +117,7 @@
                         <td style="text-align:center;"><?php echo $i; ?></td>
                         <td>{{$valuedetalle['clienteidentificacion']}} - {{$valuedetalle['cliente']}}</td>
                         <td style="text-align:center;">{{$valuedetalle['creditocodigo']}}</td>
-                        <td style="text-align:center;">{{$valuedetalle['fechadesembolso']}}</td>
+                        <td style="text-align:center;">{{ sistema_fecha_pdf($valuedetalle['fechadesembolso']) }}</td>
                         <td style="text-align:right;">{{$valuedetalle['desembolso']}}</td>
                         <td style="text-align:right;">{{$valuedetalle['cancelado']}}</td>
                         <td style="text-align:right;">{{$valuedetalle['pendiente']}}</td>
@@ -179,7 +179,7 @@
                         <td style="text-align:center;"><?php echo $i; ?></td>
                         <td>{{$valuedetalle['clienteidentificacion']}} - {{$valuedetalle['cliente']}} <?php echo $valuedetalle['estadocobranza']; ?></td>
                         <td style="text-align:center;">{{$valuedetalle['creditocodigo']}}</td>
-                        <td style="text-align:center;">{{$valuedetalle['fechadesembolso']}}</td>
+                        <td style="text-align:center;">{{ sistema_fecha_pdf($valuedetalle['fechadesembolso']) }}</td>
                         <td style="text-align:right;">{{$valuedetalle['desembolso']}}</td>
                         <td style="text-align:right;">{{$valuedetalle['cancelado']}}</td>
                         <td style="text-align:right;">{{$valuedetalle['pendiente']}}</td>

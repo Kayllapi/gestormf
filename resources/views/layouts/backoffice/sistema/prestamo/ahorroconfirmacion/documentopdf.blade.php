@@ -35,7 +35,7 @@
   $documento = str_replace('[cliente_estadocivil]', $prestamoahorro->cliente_estadocivil, $documento);
       
   $documento = str_replace('[documento_pagare_correlativo]', str_pad($prestamoahorro->codigo, 8, "0", STR_PAD_LEFT), $documento);
-  $documento = str_replace('[documento_fechaactual]', Carbon\Carbon::now()->format("m/d/Y"), $documento);
+  $documento = str_replace('[documento_fechaactual]', Carbon\Carbon::now()->format("d/m/Y"), $documento);
   $documento = str_replace('[documento_horaactual]', Carbon\Carbon::now()->format("h:i:s A"), $documento);
 
   $documento = str_replace('[conyugue_dni]', $prestamoahorro->conyugeidentificacion, $documento);

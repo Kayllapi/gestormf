@@ -97,7 +97,7 @@
                     @foreach($value['cuotas'] as $valuecuota)
                         <tr>
                             <td style="text-align:center;">{{$valuecuota['tabla_numero']}}</td>
-                            <td style="text-align:center;">{{$valuecuota['tabla_fechavencimiento']}}</td>
+                            <td style="text-align:center;">{{ sistema_fecha_pdf($valuecuota['tabla_fechavencimiento']) }}</td>
                             <td style="text-align:right;">{{$valuecuota['tabla_cuota']}}</td>
                             <td style="text-align:right;">{{$valuecuota['tabla_atraso']}} días</td>
                             <td style="text-align:right;">{{$valuecuota['tabla_mora']}}</td>
@@ -158,7 +158,7 @@
                     @foreach($value['cuotas'] as $valuecuota)
                         <tr>
                             <td style="text-align:center;">{{$valuecuota['tabla_numero']}}</td>
-                            <td style="text-align:center;">{{$valuecuota['tabla_fechavencimiento']}}</td>
+                            <td style="text-align:center;">{{ sistema_fecha_pdf($valuecuota['tabla_fechavencimiento']) }}</td>
                             <td style="text-align:right;">{{$valuecuota['tabla_cuota']}}</td>
                             <td style="text-align:right;">{{$valuecuota['tabla_atraso']}} días</td>
                             <td style="text-align:right;">{{$valuecuota['tabla_mora']}}</td>

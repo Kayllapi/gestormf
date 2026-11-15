@@ -119,7 +119,7 @@
               ?>
               <tr>
                   <td style="text-align: center;">{{$value['tabla_numero']}}</td>
-                  <td style="text-align: center;">{{$value['tabla_fechavencimiento']}}</td>
+                  <td style="text-align: center;">{{ sistema_fecha_pdf($value['tabla_fechavencimiento']) }}</td>
                   <td style="text-align: right;">{{number_format($totalapagar, 2, '.', '')}}</td>
                   <td style="text-align: right;">{{$value['tabla_cuota']}}</td>
                   <td style="text-align: center;">{{$value['tabla_moraapagar']>0?$value['tabla_moraapagar']:''}}</td>
@@ -155,7 +155,7 @@
               @foreach($cronograma['cuotas_pendientes'] as $value)
               <tr>
                   <td style="text-align: center;">{{$value['tabla_numero']}}</td>
-                  <td style="text-align: center;">{{$value['tabla_fechavencimiento']}}</td>
+                  <td style="text-align: center;">{{ sistema_fecha_pdf($value['tabla_fechavencimiento']) }}</td>
                   <td style="text-align: right;">{{number_format($totalapagar, 2, '.', '')}}</td>
                   <td style="text-align: right;">{{$value['tabla_cuota']}}</td>
                   <td style="text-align: center;"></td>

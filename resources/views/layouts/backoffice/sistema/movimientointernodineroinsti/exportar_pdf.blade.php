@@ -109,7 +109,7 @@
 </head>
 <body>
   <header>
-    <div style="float:left;font-size:15px;">{{ $tienda->nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
+    <div style="float:left;font-size:15px;">{{ $tienda->nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d/m/Y H:iA') }}
   </header>
   <footer>
     <p class="page">Página </p>
@@ -144,7 +144,7 @@
             $total = 0;
             $html = '';
             foreach($movimientointernodinero_retiro2 as $key => $value){
-                $fecharegistro = date_format(date_create($value->fecharegistro),"d-m-Y H:i:s A");
+                $fecharegistro = date_format(date_create($value->fecharegistro),"d/m/Y H:i:s A");
                 $cuenta = $value->banco!=''?$value->banco.' - ***'.substr($value->cuenta, -5):'';
                 $numerooperacion = $value->banco!=''?$value->numerooperacion:'';
                 $html .= "<tr data-valor-columna='{$value->id}' onclick='show_data_retiro1(this)'>
@@ -154,7 +154,7 @@
                               <td style='white-space: nowrap;'>{$cuenta}</td>
                               <td style='white-space: nowrap;'>{$numerooperacion}</td>
                               <td style='white-space: nowrap;'>{$value->descripcion}</td>
-                              <td style='white-space: nowrap;'>{$fecharegistro}</td>
+                              <td style='white-space: nowrap;'>".e(sistema_fecha_pdf($fecharegistro))."</td>
                               <td style='white-space: nowrap;'>{$value->codigo_responsable}</td>
                           </tr>";
                 $total = $total+$value->monto;
@@ -197,7 +197,7 @@
             $total = 0;
             $html = '';
             foreach($movimientointernodinero_deposito3 as $key => $value){
-                $fecharegistro = date_format(date_create($value->fecharegistro),"d-m-Y H:i:s A");
+                $fecharegistro = date_format(date_create($value->fecharegistro),"d/m/Y H:i:s A");
                 $cuenta = $value->banco!=''?$value->banco.' - ***'.substr($value->cuenta, -5):'';
                 $numerooperacion = $value->banco!=''?$value->numerooperacion:'';
                 $html .= "<tr data-valor-columna='{$value->id}' onclick='show_data_deposito1(this)'>
@@ -207,7 +207,7 @@
                               <td style='white-space: nowrap;'>{$cuenta}</td>
                               <td style='white-space: nowrap;'>{$numerooperacion}</td>
                               <td style='white-space: nowrap;'>{$value->descripcion}</td>
-                              <td style='white-space: nowrap;'>{$fecharegistro}</td>
+                              <td style='white-space: nowrap;'>".e(sistema_fecha_pdf($fecharegistro))."</td>
                               <td style='white-space: nowrap;'>{$value->codigo_responsable}</td>
                           </tr>";
                 $total = $total+$value->monto;

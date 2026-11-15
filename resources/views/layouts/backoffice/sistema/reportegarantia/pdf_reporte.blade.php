@@ -108,7 +108,7 @@
 </head>
 <body>
   <header>
-    <div style="float:left;font-size:15px;">{{ $tienda->nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
+    <div style="float:left;font-size:15px;">{{ $tienda->nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d/m/Y H:iA') }}
   </header>
   <footer>
     <p class="page">Página </p>
@@ -120,7 +120,7 @@
           <div style="height:35px;">
           <div style="width:400px;float:left;"> 
             <div ><b>AGENCIA: </b>{{ $agencia->nombreagencia }}  </div>
-            <div ><b>FECHA Y HORA: </b>{{ now()->format('d-m-Y h:i:s A') }}  </div>
+            <div ><b>FECHA Y HORA: </b>{{ now()->format('d/m/Y h:i:s A') }}  </div>
           </div>
           <div style="width:400px;float:left;"> 
             <div><b>MODALIDAD: </b>

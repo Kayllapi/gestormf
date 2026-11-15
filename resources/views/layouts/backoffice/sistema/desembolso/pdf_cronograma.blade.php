@@ -103,7 +103,7 @@
 </head>
 <body>
   <header>
-    <div style="float:left;font-size:15px;">{{ $tienda->nombre }} | {{$tienda->nombreagencia}}</div> {{ Auth::user()->codigo ?? '' }} | {{ date('d-m-Y H:iA') }}
+    <div style="float:left;font-size:15px;">{{ $tienda->nombre }} | {{$tienda->nombreagencia}}</div> {{ Auth::user()->codigo ?? '' }} | {{ date('d/m/Y H:iA') }}
   </header>
   <main>
     <div class="container">
@@ -125,7 +125,7 @@
             <tr>
               <td width="100px"><b>MONTO DE PRESTAMO:</b> {{ $credito->monto_solicitado }}</td>
               <td width="100px"><b>MONEDA:</b> SOLES</td>
-              <td width="100px"><b>FECHA DE DESEMBOLSO:</b> {{ date_format(date_create($credito->fecha_desembolso),'d-m-Y') }}</td>
+              <td width="100px"><b>FECHA DE DESEMBOLSO:</b> {{ date_format(date_create($credito->fecha_desembolso),'d/m/Y') }}</td>
             </tr>
             <tr>
               <td><b>FORMA DE PAGO:</b> {{ strtoupper($credito->forma_pago_credito_nombre) }}</td>
@@ -157,7 +157,7 @@
             @foreach($credito_cronograma as $value)
             <tr>
               <td>{{$value->numerocuota}}</td>
-              <td>{{$value->fechapago}}</td>
+              <td>{{ sistema_fecha_pdf($value->fechapago) }}</td>
               <td style="text-align: right;">{{$value->capital}}</td>
               <td style="text-align: right;">{{$value->amortizacion}}</td>
               <td style="text-align: right;">{{$value->interes}}</td>

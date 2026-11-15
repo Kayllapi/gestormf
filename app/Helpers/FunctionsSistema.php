@@ -2,6 +2,36 @@
 
 use Illuminate\Support\Facades\DB;
 
+function sistema_fecha_pdf($valor): string
+{
+    if ($valor instanceof \DateTimeInterface) {
+        return $valor->format('d/m/Y H:i:s');
+    }
+
+    $texto = trim((string) $valor);
+    if (preg_match('/^(\d{4})[-\/]([0-9]{1,2})[-\/]([0-9]{1,2})([T\s].*)?$/', $texto, $partes)) {
+        [, $anio, $mes, $dia] = $partes;
+    } elseif (preg_match('/^([0-9]{1,2})[-\/]([0-9]{1,2})[-\/](\d{4})([T\s].*)?$/', $texto, $partes)) {
+        [, $dia, $mes, $anio] = $partes;
+    } elseif (preg_match('/^([0-9]{1,2})[-\/]([0-9]{1,2})[-\/](\d{2})([T\s].*)?$/', $texto, $partes)) {
+        [, $dia, $mes, $anio] = $partes;
+        $anio = \DateTimeImmutable::createFromFormat('!y', $anio)->format('Y');
+    } else {
+        return $texto;
+    }
+
+    if (!checkdate((int) $mes, (int) $dia, (int) $anio)) {
+        return $texto;
+    }
+
+    $hora = $partes[4] ?? '';
+    if (str_starts_with($hora, 'T')) {
+        $hora = ' '.substr($hora, 1);
+    }
+
+    return sprintf('%02d/%02d/%04d', $dia, $mes, $anio).$hora;
+}
+
 function sistema_aviso_credito($credito): string
 {
     $avisos = [];

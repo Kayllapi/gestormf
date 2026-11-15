@@ -116,7 +116,7 @@
 </head>
 <body>
   <header>
-    <div style="float:left;font-size:15px;">{{ $tienda->nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
+    <div style="float:left;font-size:15px;">{{ $tienda->nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d/m/Y H:iA') }}
   </header>
   <footer>
     <div style="position:absolute;left:0px;bottom:0px;">Contacto: {{$tienda->numerotelefono}}</div>
@@ -131,9 +131,7 @@
       <div style="text-align: justify;">
         
     <?php
-    $meses = array("enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre");
-    $mes = $meses[(date_format(date_create(now()),'n')) - 1];
-    $fecha_texto = date_format(date_create(now()),'d') . ' de ' . $mes . ' de ' . date_format(date_create(now()),'Y');
+    $fecha_texto = date_format(date_create(now()), 'd/m/Y');
     ?>
     {{ $ubigeo_tienda->distrito }}, {{ $fecha_texto }}<br><br>
 
@@ -163,9 +161,7 @@
 <br><br>
         
     <?php
-    $meses = array("enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre");
-    $mes = $meses[(date_format(date_create($credito->fecha_desembolso),'n')) - 1];
-    $fecha_texto = date_format(date_create($credito->fecha_desembolso),'d') . ' de ' . $mes . ' de ' . date_format(date_create($credito->fecha_desembolso),'Y');
+    $fecha_texto = date_format(date_create($credito->fecha_desembolso), 'd/m/Y');
     ?>
         
 <b>REFERENCIA:</b> Contrato de Crédito N° C{{ $credito->cuenta }} de fecha {{ $fecha_texto }}

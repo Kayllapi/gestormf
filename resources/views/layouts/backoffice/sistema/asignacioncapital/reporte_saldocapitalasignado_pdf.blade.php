@@ -109,7 +109,7 @@
 </head>
 <body>
   <header>
-    <div style="float:left;font-size:15px;">{{ $tienda->nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
+    <div style="float:left;font-size:15px;">{{ $tienda->nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d/m/Y H:iA') }}
   </header>
   <footer>
     <p class="page">Página </p>
@@ -118,7 +118,7 @@
     <div class="container">
       <h4 align="center" style="font-size:15px;">MOVIMIENTO Y SALDO DE  CAPITAL ASIGNADO</h4>
             <div style="float:left;"><b>AGENCIA: </b>{{ $agencia->nombreagencia }}  </div>     
-            <div style="margin-left:50px;float:left;"><b>A FECHA: </b>{{ now()->format('d-m-Y H:i:s A') }}</div>    <br>
+            <div style="margin-left:50px;float:left;"><b>A FECHA: </b>{{ now()->format('d/m/Y H:i:s A') }}</div>    <br>
             
             <table style="width:100%;">
               <thead class="table-dark">
@@ -156,12 +156,12 @@
                     $signo = '-';
                 }
               
-                $fecharegistro = date_format(date_create($value->fecharegistro),"d-m-Y H:i:s A");
+                $fecharegistro = date_format(date_create($value->fecharegistro),"d/m/Y H:i:s A");
                 $cuenta = $value->banco!=''?$value->banco.' - ***'.substr($value->cuenta, -5):'';
                 $numerooperacion = $value->banco!=''?$value->numerooperacion:'';
                 $html .= "<tr data-valor-columna='{$value->id}' onclick='show_data(this)'>
                               <td>{$value->codigoprefijo}{$value->codigo}</td>
-                              <td>{$fecharegistro}</td>
+                              <td>".e(sistema_fecha_pdf($fecharegistro))."</td>
                               <td><span style='{$subrayado_sincolor}'>{$value->credito_tipooperacionnombre}</span></td>
                               <td>{$value->credito_tipodestinonombre}</td>
                               <td style='text-align: right;{$style}'><span style='{$subrayado}'>{$signo}{$value->monto}</span></td>

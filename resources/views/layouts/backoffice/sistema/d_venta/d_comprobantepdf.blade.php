@@ -88,7 +88,7 @@
 		</tr>
 		<tr>
 			<td><b>Dirección:</b> {{ $cliente->direccion }}, {{ $cliente->ubigeonombre }}</td>
-			<td style="white-space: nowrap;text-align: right;"><b>Fecha de emisión:</b> {{ $venta->fechaconfirmacion }}</td>
+			<td style="white-space: nowrap;text-align: right;"><b>Fecha de emisión:</b> {{ sistema_fecha_pdf($venta->fechaconfirmacion) }}</td>
 		</tr>
 		<tr>
 			<td><b>Vendedor:</b> {{ $vendedor->nombre }}</td>
@@ -141,7 +141,7 @@
   <b>ENTREGA:</b>
   <table class="table-sinborde">
 		<tr>
-			<td width="200px"><b>Fecha y Hora:</b> {{ $s_ventadelivery->fecha }} {{ $s_ventadelivery->hora }}</td>
+			<td width="200px"><b>Fecha y Hora:</b> {{ sistema_fecha_pdf($s_ventadelivery->fecha) }} {{ $s_ventadelivery->hora }}</td>
 		</tr>
 		<tr>
 			<td><b>Nombre de Persona:</b> {{ $s_ventadelivery->nombre }}</td>

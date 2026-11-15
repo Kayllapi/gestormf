@@ -52,7 +52,7 @@
                     <td style="text-align:center;">{{$valuedetalle['codigo']}}</td>
                     <td style="text-align:left;">{{$valuedetalle['concepto']}}</td>
                     <td style="text-align:left;">{{$valuedetalle['descripcion']}}</td>
-                    <td style="text-align:center;">{{$valuedetalle['fechaconfirmado']}}</td>
+                    <td style="text-align:center;">{{ sistema_fecha_pdf($valuedetalle['fechaconfirmado']) }}</td>
                     <td style="text-align:right;">{{$valuedetalle['monto']}}</td>
                 </tr>
                 @endforeach
@@ -91,7 +91,7 @@
                     <td style="text-align:center;">{{$valuedetalle['codigo']}}</td>
                     <td style="text-align:left;">{{$valuedetalle['conceptomovimientonombre']}}</td>
                     <td style="text-align:left;">{{$valuedetalle['descripcion']}}</td>
-                    <td style="text-align:center;">{{$valuedetalle['fechaconfirmado']}}</td>
+                    <td style="text-align:center;">{{ sistema_fecha_pdf($valuedetalle['fechaconfirmado']) }}</td>
                     <td style="text-align:right;">{{$valuedetalle['monto']}}</td>
                 </tr>
                 @endforeach

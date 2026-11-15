@@ -112,7 +112,7 @@
 </head>
 <body>
   <header>
-    <div style="float:left;font-size:15px;">{{ $tienda->nombre }} | {{$tienda->nombreagencia}}</div> {{ Auth::user()->codigo ?? '' }} | {{ date('d-m-Y H:iA') }}
+    <div style="float:left;font-size:15px;">{{ $tienda->nombre }} | {{$tienda->nombreagencia}}</div> {{ Auth::user()->codigo ?? '' }} | {{ date('d/m/Y H:iA') }}
   </header>
   <main>
     <div class="container">
@@ -174,10 +174,10 @@
       <table style="width:100%; border: 1px solid #000;border-top:0px solid #000;">
         <tr>
           <td style="text-align: right">
-            <span style="float: left"><b>Fecha de Desembolso:</b> {{ date_format(date_create($credito->fecha_desembolso),'d-m-Y h:i:s A') }}</span>
+            <span style="float: left"><b>Fecha de Desembolso:</b> {{ date_format(date_create($credito->fecha_desembolso),'d/m/Y h:i:s A') }}</span>
             <span><b>Días de gracia:</b> {{ $credito->dia_gracia }}</span>
           </td>
-          <td style="text-align: right"><b>Fecha de Cancelación:</b> {{ date_format(date_create($credito->fecha_ultimopago),'d-m-Y') }}</td>
+          <td style="text-align: right"><b>Fecha de Cancelación:</b> {{ date_format(date_create($credito->fecha_ultimopago),'d/m/Y') }}</td>
         </tr>
       </table>
       

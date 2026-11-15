@@ -112,7 +112,7 @@
 </head>
 <body>
   <header>
-    <div style="float:left;font-size:15px;"></div> {{ date('d-m-Y H:iA') }}
+    <div style="float:left;font-size:15px;"></div> {{ date('d/m/Y H:iA') }}
   </header>
   <main>
     <div class="container">
@@ -184,9 +184,7 @@
       
     
     <?php
-    $meses = array("enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre");
-    $mes = $meses[(date_format(date_create($credito->fecha_desembolso),'n')) - 1];
-    $fecha_texto = date_format(date_create($credito->fecha_desembolso),'d') . ' de ' . $mes . ' de ' . date_format(date_create($credito->fecha_desembolso),'Y');
+    $fecha_texto = date_format(date_create($credito->fecha_desembolso), 'd/m/Y');
     ?>
       <br>
       <p>{{ $ubigeo_tienda->distrito }}, {{ $fecha_texto }}</p>

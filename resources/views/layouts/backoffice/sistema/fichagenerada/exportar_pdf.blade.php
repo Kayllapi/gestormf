@@ -108,7 +108,7 @@
 </head>
 <body>
   <header>
-    <div style="float:left;font-size:15px;">{{ $tienda->nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
+    <div style="float:left;font-size:15px;">{{ $tienda->nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d/m/Y H:iA') }}
   </header>
   <footer>
     <p class="page">Página </p>
@@ -116,10 +116,10 @@
   <main>
     <div class="container">
       <h4 align="center">HISTORIAL DE FICHA DE LIQUIDACIONES</h4>
-      <div align="center"><b>Periodo:</b> {{$fecha_inicio}} Al: {{$fecha_fin}}</div>
+      <div align="center"><b>Periodo:</b> {{ sistema_fecha_pdf($fecha_inicio) }} Al: {{ sistema_fecha_pdf($fecha_fin) }}</div>
         @foreach($creditos as $valuecredito)
           <br>
-          <b>Cuenta: C{{$valuecredito->cuenta}}</b> - <b>Responsable: {{$valuecredito->responsablenombre}}</b> - <b>Fecha: {{ $valuecredito->fechaliquidaciongarantia }}</b> - <b>Agencia: {{$valuecredito->agencianombre}}</b>
+          <b>Cuenta: C{{$valuecredito->cuenta}}</b> - <b>Responsable: {{$valuecredito->responsablenombre}}</b> - <b>Fecha: {{ sistema_fecha_pdf($valuecredito->fechaliquidaciongarantia) }}</b> - <b>Agencia: {{$valuecredito->agencianombre}}</b>
           <table style="width:100%;" style="border-bottom:2px solid #000">
             <thead class="table-dark">
               <tr>

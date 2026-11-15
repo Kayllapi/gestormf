@@ -119,7 +119,7 @@
 </head>
 <body>
     <header>
-      <div style="float:left;font-size:15px;">{{ $tienda->nombre }} | {{$tienda->nombreagencia}}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
+      <div style="float:left;font-size:15px;">{{ $tienda->nombre }} | {{$tienda->nombreagencia}}</div> {{ Auth::user()->codigo }} | {{ date('d/m/Y H:iA') }}
     </header>
     <footer style="text-align:right;">
         <p class="page">Página </p>
@@ -129,7 +129,7 @@
             <h4 align="center" style="margin-bottom: 0px;">FICHA DE LIQUIDACIÓN</h4>
             <b>CLIENTE: </b>{{ $credito->clientenombrecompleto }}<br>
             <b>CUENTA: </b>C{{ $credito->cuenta }}<br>
-            <b>FECHA: </b>{{ $credito->fechaliquidaciongarantia }}<br>
+            <b>FECHA: </b>{{ sistema_fecha_pdf($credito->fechaliquidaciongarantia) }}<br>
             <table style="width:100%;" style="border-bottom:2px solid #000">
                 <thead class="table-dark">
                     <tr>

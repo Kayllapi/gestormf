@@ -121,7 +121,7 @@
                         <b>DOCUMENTOS:</b> 
                     </td>
                     <td>
-                        <b>FECHA DE TRASLADO:</b> {{ date_format(date_create($facturacionguiaremision->envio_fechatraslado), 'Y-m-d') }}
+                        <b>FECHA DE TRASLADO:</b> {{ date_format(date_create($facturacionguiaremision->envio_fechatraslado), 'd/m/Y') }}
                     </td>
                 </tr>
                 <tr>

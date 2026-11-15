@@ -130,7 +130,7 @@
     
     <div class="header">
         <div class="header_agencia_informacion">
-            <div class="header_agencia_nombrecomercial"><div style="float:left;font-size:15px;">{{ $tienda->nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->usuario }} | {{ date('d-m-Y H:iA') }}</div>
+            <div class="header_agencia_nombrecomercial"><div style="float:left;font-size:15px;">{{ $tienda->nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->usuario }} | {{ date('d/m/Y H:iA') }}</div>
         </div>
     </div>
     <div class="footer">
@@ -301,7 +301,7 @@
                             <p><b>Nombre: Persona Natural/Persona Jurídica:</b> {{ $users_prestamo->razonsocial_laboral_cliente }}</p>
                             @endif
                             @if($users_prestamo->fechainicio_laboral_cliente!='')
-                            <p><b>Fecha Inicio:</b> {{ $users_prestamo->fechainicio_laboral_cliente }}</p> 
+                            <p><b>Fecha Inicio:</b> {{ sistema_fecha_pdf($users_prestamo->fechainicio_laboral_cliente) }}</p>
                             @endif
                             @if($users_prestamo->antiguedad_laboral_cliente!='')
                             <p><b>Antiguedad (en años):</b> {{ $users_prestamo->antiguedad_laboral_cliente }}</p>
@@ -382,7 +382,7 @@
                         <p><b>Empresa:</b> {{ $users_prestamo->razonsocial_ac_economica }}</p>
                         @endif
                         @if($usuario->fechanacimiento!='')
-                        <p><b>Fecha Nacimiento/Creación:</b> {{ date_format(date_create($usuario->fechanacimiento),'d-m-Y') }}</p>
+                        <p><b>Fecha Nacimiento/Creación:</b> {{ date_format(date_create($usuario->fechanacimiento),'d/m/Y') }}</p>
                         @endif
                         @if($users_prestamo->profesion!='')
                         <p><b>Profesión:</b> {{ $users_prestamo->profesion }}</p>

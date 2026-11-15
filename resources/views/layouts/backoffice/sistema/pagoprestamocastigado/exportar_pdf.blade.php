@@ -109,7 +109,7 @@
 </head>
 <body>
   <header>
-    <div style="float:left;font-size:15px;">{{ $tienda->nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d-m-Y H:iA') }}
+    <div style="float:left;font-size:15px;">{{ $tienda->nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d/m/Y H:iA') }}
   </header>
   <footer>
     <p class="page">Página </p>
@@ -121,7 +121,7 @@
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ejecutivo: <span style="font-weight: normal;">{{ $ejecutivo }}</span>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;De: <span style="font-weight: normal;">{{$fecha_inicio}}</span> Al: <span style="font-weight: normal;">{{$fecha_fin}}</span></b>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;De: <span style="font-weight: normal;">{{ sistema_fecha_pdf($fecha_inicio) }}</span> Al: <span style="font-weight: normal;">{{ sistema_fecha_pdf($fecha_fin) }}</span></b>
           
               
             
@@ -208,7 +208,7 @@
                             <td style='text-align:right;height: 20px;'>{$t_tenencia}</td>
                             <td style='text-align:right;height: 20px;'>{$t_cuentaxcobrar}</td>
                             <td style='text-align:right;height: 20px;'>{$t_total}</td>
-                            <td style='text-align:center;height: 20px;width: 125px;'>{$value->fecharegistro}</td>
+                            <td style='text-align:center;height: 20px;width: 125px;'>".e(sistema_fecha_pdf($value->fecharegistro))."</td>
                             <td style='height: 20px;'>{$operacionen1}</td>
                             <td style='height: 20px;'>{$value->banco}</td>
                             <td style='height: 20px;'>{$num_operacion}</td>

@@ -93,7 +93,7 @@
                             <p><b>Nivel de estudios:</b> {{ $usuario->db_idnivelestudio }}</p>
                             @endif
                             @if($usuario->fechanacimiento!='')
-                            <p><b>Fecha Nacimiento/Creación:</b> {{ date_format(date_create($usuario->fechanacimiento),'d-m-Y') }}</p>
+                            <p><b>Fecha Nacimiento/Creación:</b> {{ date_format(date_create($usuario->fechanacimiento),'d/m/Y') }}</p>
                             @endif
                         </div>
                     </td>
@@ -397,7 +397,7 @@
                             <p><b>Nombre: Persona Natural/Persona Jurídica:</b> {{ $users_prestamo->razonsocial_laboral_cliente }}</p>
                             @endif
                             @if($users_prestamo->fechainicio_laboral_cliente!='')
-                            <p><b>Fecha Inicio:</b> {{ $users_prestamo->fechainicio_laboral_cliente }}</p> 
+                            <p><b>Fecha Inicio:</b> {{ sistema_fecha_pdf($users_prestamo->fechainicio_laboral_cliente) }}</p>
                             @endif
                             @if($users_prestamo->antiguedad_laboral_cliente!='')
                             <p><b>Antiguedad (en años):</b> {{ $users_prestamo->antiguedad_laboral_cliente }}</p>
@@ -451,7 +451,7 @@
                             <p><b>Nombre: Persona Natural/Persona Jurídica:</b> {{ $users_prestamo->razonsocial_laboral_pareja }}</p>
                             @endif
                             @if($users_prestamo->fechainicio_laboral_pareja!='')
-                            <p><b>Fecha Incio:</b> {{ $users_prestamo->fechainicio_laboral_pareja }}</p>
+                            <p><b>Fecha Incio:</b> {{ sistema_fecha_pdf($users_prestamo->fechainicio_laboral_pareja) }}</p>
                             @endif
                             @if($users_prestamo->antiguedad_laboral_pareja!='')
                             <p><b>Antiguedad (en años):</b> {{ $users_prestamo->antiguedad_laboral_pareja }}</p>

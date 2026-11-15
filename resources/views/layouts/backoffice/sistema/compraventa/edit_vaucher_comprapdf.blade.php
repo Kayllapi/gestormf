@@ -39,7 +39,7 @@
                 <td style="width:1px;">
                     <b>:</b>
                 </td>
-                <td>{{ date_format(date_create($cvcompra->fecharegistro),'d-m-Y h:i:s A') }}</td>
+                <td>{{ date_format(date_create($cvcompra->fecharegistro),'d/m/Y h:i:s A') }}</td>
             </tr>
             <tr>
                 <td>

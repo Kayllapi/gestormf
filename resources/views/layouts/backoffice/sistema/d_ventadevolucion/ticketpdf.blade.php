@@ -44,7 +44,7 @@
       {{ strtoupper($ventadevolucion->nombreubigeo) }}<br><br>
 	<div class="datocomprobante">
     DEVOLUCIÓN: {{ str_pad($ventadevolucion->codigo, 8, "0", STR_PAD_LEFT) }} <br>
-    FECHA: {{$ventadevolucion->fecharegistro}}<br>
+    FECHA: {{ sistema_fecha_pdf($ventadevolucion->fecharegistro) }}<br>
     MONEDA: {{$ventadevolucion->nombremoneda}}<br>
     CLIENTE:{{$ventadevolucion->apellidoscliente}},{{$ventadevolucion->nombrecliente}} <br>
     RUC:{{$ventadevolucion->identificacioncliente}} <br>

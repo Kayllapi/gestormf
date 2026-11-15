@@ -120,6 +120,7 @@
            <b>AGENCIA: </b>{{ $agencia?$agencia->nombreagencia:'TODA LAS AGENCIAS' }}<br>
            <b>F. CRÉDITO: </b>{{ $idformacredito?$idformacredito:'TODO' }}<br>
            <b>EJECUTIVO: </b>{{ $asesor?$asesor->usuario:'TODO' }}<br>
+           <b>FECHA DE CORTE: </b>{{ date('d/m/Y H:iA') }}
             
             <table style="width:100%;">
               <thead class="table-dark">

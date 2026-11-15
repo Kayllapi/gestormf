@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CARTERA DE CRÉDITO</title>
+    <title>CARTERA DE CRÉDITOS CASTIGADOS</title>
     <style>
       *{
         font-family:helvetica;
@@ -116,12 +116,12 @@
   </footer>
   <main>
     <div class="container">
-      <h4 align="center">CARTERA DE CRÉDITO</h4>
+      <h4 align="center">CARTERA DE CRÉDITOS CASTIGADOS</h4>
           @if($fecha_inicio!='' && $fecha_fin!='')
            <b>AGENCIA: </b>{{ $agencia?$agencia->nombreagencia:'TODA LAS AGENCIAS' }}<br>
            <b>FORMA DE CRÉDITO: </b>{{ $idformacredito!=0?$idformacredito:'TODO' }}<br>
            <b>EJECUTIVO: </b>{{ $asesor?$asesor->usuario:'TODO' }}<br>
-           <b>FECHA DE CORTE: {{ sistema_fecha_pdf($fecha_inicio) }}</b>
+           <b>FECHA DE CORTE: </b>{{ sistema_fecha_pdf($fecha_inicio) }}
           @endif
             
             <table style="width:100%;">

@@ -121,7 +121,7 @@
            <b>AGENCIA: </b>{{ $agencia?$agencia->nombreagencia:'TODA LAS AGENCIAS' }}<br>
            <b>FORMA DE CRÉDITO: </b>{{ $idformacredito!=0?$idformacredito:'TODO' }}<br>
            <b>EJECUTIVO: </b>{{ $asesor?$asesor->usuario:'TODO' }}<br>
-           <b>FECHA DE CORTE: {{ sistema_fecha_pdf($fecha_inicio) }}</b>
+           <b>FECHA DE CORTE: </b>{{ sistema_fecha_pdf($fecha_inicio) }}
           @endif
             
             <table style="width:100%;">

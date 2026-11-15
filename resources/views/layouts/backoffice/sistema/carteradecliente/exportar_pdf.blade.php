@@ -117,9 +117,12 @@
   <main>
     <div class="container">
       <h4 align="center">CARTERA DE CLIENTE</h4>
-           <b>AGENCIA: </b>{{ $agencia?$agencia->nombreagencia:'TODA LAS AGENCIAS' }}<br>
-           <b>F. CRÉDITO: </b>{{ $idformacredito?$idformacredito:'TODO' }}<br>
-           <b>EJECUTIVO: </b>{{ $asesor?$asesor->usuario:'TODO' }}<br>
+           <b>AGENCIA: </b>{{ $agencia?$agencia->nombreagencia:'TODA LAS AGENCIAS' }}
+           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+           <b>F. CRÉDITO: </b>{{ $idformacredito?$idformacredito:'TODO' }}
+           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+           <b>EJECUTIVO: </b>{{ $asesor?$asesor->usuario:'TODO' }}
+           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
            <b>FECHA DE CORTE: </b>{{ date('d/m/Y H:iA') }}
             
             <table style="width:100%;">

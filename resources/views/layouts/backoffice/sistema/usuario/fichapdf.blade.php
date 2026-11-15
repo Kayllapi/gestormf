@@ -71,7 +71,7 @@
             $users_prestamo->telefono_cliente!='')
         <h5 class="ficha-titulo">
             DATOS DE CLIENTE
-            <span style="margin-left: 20px;font-weight: normal;">{{ !empty($usuario->fechamodificacion) ? date_format(date_create($usuario->fechamodificacion), 'd/m/Y') : '' }}</span>
+            <span style="margin-left: 20px;font-weight: normal;">| Fecha de registro: {{ !empty($usuario->fechamodificacion) ? date_format(date_create($usuario->fechamodificacion), 'd/m/Y') : '' }}</span>
         </h5>
         <table>
             <tbody>

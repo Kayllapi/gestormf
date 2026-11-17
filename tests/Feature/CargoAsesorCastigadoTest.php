@@ -105,6 +105,7 @@ class CargoAsesorCastigadoTest extends TestCase
 
     public function test_cargo_asesor_excluye_castigados_incluso_para_administrador(): void
     {
+        DB::table('users')->whereId(100)->update(['idasesor' => 10]);
         DB::table('permiso')->insert(['id' => 1, 'nombre' => 'Administrador']);
         DB::table('users_permiso')->where('idusers', 10)->update(['idpermiso' => 1]);
         $this->actingAs(User::find(10));
@@ -117,6 +118,30 @@ class CargoAsesorCastigadoTest extends TestCase
         DB::table('credito')->whereId(3)->update(['idestadocredito' => 2]);
         $clientes = $controller->show(Request::create('/', 'GET', ['buscar' => '123']), 1, 'show_credito_asesor');
         $this->assertNotContains(100, array_column($clientes, 'id'));
+    }
+
+    public function test_cargo_asesor_de_cobranza_encuentra_su_cartera_actual_y_excluye_castigados(): void
+    {
+        $this->actingAs(User::find(20));
+        DB::table('users')->whereId(100)->update(['idasesor' => 20, 'nombrecompleto' => 'Lucas']);
+        DB::table('users')->whereId(101)->update(['idasesor' => 20, 'nombrecompleto' => 'Berny']);
+        $controller = new CargoAsesorController;
+        foreach (['Lucas' => 100, 'Berny' => 101] as $nombre => $idcliente) {
+            $clientes = $controller->show(Request::create('/', 'GET', ['buscar' => $nombre]), 1, 'show_credito_asesor');
+            $this->assertSame([$idcliente], array_column($clientes, 'id'));
+        }
+        $resultado = $controller->show(Request::create('/', 'GET', [
+            'idcliente' => 100, 'idasesor' => 20,
+        ]), 0, 'showlistacreditos');
+        $this->assertStringContainsString("data-valor-columna='3'", $resultado['html']);
+        $this->assertStringNotContainsString("data-valor-columna='1'", $resultado['html']);
+        $this->assertStringNotContainsString("data-valor-columna='2'", $resultado['html']);
+
+        DB::table('users')->whereId(101)->update(['idasesor' => 30]);
+        $clientes = $controller->show(Request::create('/', 'GET', ['buscar' => 'Berny']), 1, 'show_credito_asesor');
+        $this->assertSame([], $clientes);
+        $this->expectException(HttpException::class);
+        $controller->show(Request::create('/', 'GET', ['idcliente' => 101]), 0, 'showlistacreditos');
     }
 
     public function test_ejecutivo_puede_filtrar_cliente_mixto_y_solo_recibe_sus_creditos_sin_castigo(): void

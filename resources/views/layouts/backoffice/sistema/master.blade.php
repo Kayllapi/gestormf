@@ -459,17 +459,23 @@ $moneda_dolares = DB::table('s_moneda')->whereId(2)->first();
             left: auto;
             right: 100%;
         }
+        .dropdown-submenu > a.dropdown-toggle {
+            position: relative;
+            padding-right: 2rem;
+        }
         .dropdown-submenu > a.dropdown-toggle::after {
-            float: right;
-            margin-top: 5px;
-            transform: rotate(-90deg);
+            position: absolute;
+            right: .75rem;
+            top: 50%;
+            margin: 0;
+            transform: translateY(-50%) rotate(-90deg);
             border-top-width: .45em;
             border-right-width: .45em;
             border-bottom-width: 0;
             border-left-width: .45em;
         }
         .dropdown-submenu.dropdown-submenu-left > a.dropdown-toggle::after {
-            transform: rotate(90deg);
+            transform: translateY(-50%) rotate(90deg);
         }
       </style>
       <ul class="navbar-nav d-flex">

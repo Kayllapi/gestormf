@@ -193,19 +193,6 @@
     pagina({ route:"{{url('backoffice')}}/{{$tienda->id}}/cargo/"+id+"/edit?view=editar", result:'#form-garantias-result'});  
   }
 
-  $('#idcliente').on('select2:selecting', function (event) {
-    if (event.params.args.data.es_castigado) {
-      event.preventDefault();
-      $('#idcliente').val(null).trigger('change');
-      $('#table-detalle-prestamo > tbody').empty();
-      $('#form-garantias-result').empty();
-      $('#nombre_cobranza').val('');
-      $('#nombre_asesor').val('');
-      $('.data-cliente').addClass('d-none');
-      mensaje = 'Es un cliente castigado. No puede filtrar por este cliente.';
-      modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
-    }
-  });
 
 </script>  
 

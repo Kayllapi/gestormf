@@ -36,13 +36,6 @@ class CargoController extends Controller
         return (int) $permiso->idpermiso;
     }
 
-    private function clienteCastigado($idcliente): bool
-    {
-        return DB::table('credito')->where('idcliente', $idcliente)
-            ->where('estado', 'DESEMBOLSADO')->where('idestadocredito', 1)
-            ->where('castigo_estado', 'CONFIRMADO')->exists();
-    }
-
     private function filtrarCreditosEjecutivo($query)
     {
         $cargo = $this->cargoEjecutivo();
@@ -51,13 +44,7 @@ class CargoController extends Controller
                 ->where('credito.idusuariocobranza', Auth::id());
         } elseif (in_array($cargo, [3, 4, 7, 11], true)) {
             $query->where('credito.idasesor', Auth::id())
-                ->whereNotExists(function ($subquery) {
-                    $subquery->selectRaw('1')->from('credito as castigado')
-                        ->whereColumn('castigado.idcliente', 'credito.idcliente')
-                        ->where('castigado.estado', 'DESEMBOLSADO')
-                        ->where('castigado.idestadocredito', 1)
-                        ->where('castigado.castigo_estado', 'CONFIRMADO');
-                });
+                ->where('credito.castigo_estado', '!=', 'CONFIRMADO');
         }
         return $query;
     }
@@ -200,6 +187,8 @@ class CargoController extends Controller
             ->where($this->cargoEjecutivo() === 12 ? 'credito.idusuariocobranza' : 'credito.idasesor', Auth::id())
             ->when($this->cargoEjecutivo() === 12, function ($query) {
                 $query->where('credito.castigo_estado', 'CONFIRMADO');
+            }, function ($query) {
+                $query->where('credito.castigo_estado', '!=', 'CONFIRMADO');
             })
             ->where(function ($q) use ($request) {
                 $q->where('cliente.identificacion', 'LIKE', '%' . $request->buscar . '%')
@@ -225,22 +214,10 @@ class CargoController extends Controller
                     'text' => $value->identificacion.' - '.$value->nombrecliente,
                 ];
             }
-          if ($this->cargoEjecutivo() !== 12) {
-              $castigados = DB::table('credito')->whereIn('idcliente', array_column($data, 'id'))
-                  ->where('estado', 'DESEMBOLSADO')->where('idestadocredito', 1)
-                  ->where('castigo_estado', 'CONFIRMADO')->pluck('idcliente')->all();
-              foreach ($data as &$cliente) {
-                  $cliente['es_castigado'] = in_array($cliente['id'], $castigados);
-              }
-              unset($cliente);
-          }
           return $data;
         }
         else if($id == 'showlistacreditos'){
             $cargo = $this->cargoEjecutivo();
-            if (in_array($cargo, [3, 4, 7, 11], true) && $this->clienteCastigado($request->idcliente)) {
-                return response()->json(['message' => 'Es un cliente castigado. No puede filtrar por este cliente.'], 403);
-            }
             if (in_array($cargo, [3, 4, 7, 11, 12], true)) {
                 abort_unless($this->filtrarCreditosEjecutivo(DB::table('credito'))
                     ->where('credito.idcliente', $request->idcliente)

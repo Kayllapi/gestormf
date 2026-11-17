@@ -102,15 +102,21 @@ class CargoAsesorCastigadoTest extends TestCase
         $this->assertStringNotContainsString("data-valor-columna='3'", $resultado['html']);
     }
 
-    public function test_ejecutivo_recibe_alerta_y_no_puede_filtrar_cliente_castigado_aunque_tenga_otro_credito_normal(): void
+    public function test_ejecutivo_puede_filtrar_cliente_mixto_y_solo_recibe_sus_creditos_sin_castigo(): void
     {
         $this->actingAs(User::find(10));
         $controller = new CargoController;
         $clientes = $controller->show(Request::create('/', 'GET', ['buscar' => '123']), 1, 'show_credito_asesor');
-        $this->assertTrue($clientes[0]['es_castigado']);
+        $this->assertContains(100, array_column($clientes, 'id'));
+        $this->assertArrayNotHasKey('es_castigado', $clientes[0]);
         $response = $controller->show(Request::create('/', 'GET', ['idcliente' => 100]), 0, 'showlistacreditos');
-        $this->assertSame(403, $response->getStatusCode());
-        $this->assertStringContainsString('cliente castigado', $response->getData()->message);
+        $this->assertStringContainsString("data-valor-columna='3'", $response['html']);
+        $this->assertStringNotContainsString("data-valor-columna='1'", $response['html']);
+        $this->assertStringNotContainsString("data-valor-columna='2'", $response['html']);
+
+        DB::table('credito')->whereId(3)->update(['idestadocredito' => 2]);
+        $clientes = $controller->show(Request::create('/', 'GET', ['buscar' => '123']), 1, 'show_credito_asesor');
+        $this->assertNotContains(100, array_column($clientes, 'id'));
     }
 
     public function test_busquedas_de_cargos_solo_encuentran_clientes_con_creditos_activos(): void
@@ -125,7 +131,7 @@ class CargoAsesorCastigadoTest extends TestCase
         $controller = new CargoController;
         foreach (['show_credito', 'show_credito_asesor'] as $endpoint) {
             $clientes = $controller->show(Request::create('/', 'GET', ['buscar' => '123']), 1, $endpoint);
-            $this->assertSame([100, 102], array_column($clientes, 'id'));
+            $this->assertSame($endpoint === 'show_credito' ? [100, 102] : [100], array_column($clientes, 'id'));
         }
 
         DB::table('credito')->insert(['id' => 6, 'idcliente' => 100, 'idestadocredito' => 2]);

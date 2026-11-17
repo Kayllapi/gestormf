@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Http\Controllers\Layouts\Backoffice\Sistema\CargoController;
+use App\Http\Controllers\Layouts\Backoffice\Sistema\CobranzacuotaController;
 use App\Models\User;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
@@ -42,7 +43,7 @@ class CargoAsesorCastigadoTest extends TestCase
             $table->integer('idtienda')->default(1);
             $table->integer('idsession')->default(2);
         });
-        foreach (['forma_pago_credito', 'modalidad_credito', 'tipo_operacion_credito', 'credito_prendatario'] as $tabla) {
+        foreach (['tipo_credito', 'forma_pago_credito', 'modalidad_credito', 'tipo_operacion_credito', 'credito_prendatario'] as $tabla) {
             Schema::create($tabla, function (Blueprint $table) {
                 $table->integer('id');
             });
@@ -77,6 +78,28 @@ class CargoAsesorCastigadoTest extends TestCase
             ['id' => 3, 'idcliente' => 100, 'castigo_estado' => 'NINGUNO', 'idusuariocobranza' => 20],
             ['id' => 4, 'idcliente' => 101, 'castigo_estado' => 'NINGUNO', 'idusuariocobranza' => null],
         ]);
+    }
+
+    public function test_cobranza_cuota_excluye_castigados_del_listado_normal_del_cliente(): void
+    {
+        $resultado = (new CobranzacuotaController)->show(Request::create('/', 'GET', [
+            'idcliente' => 100,
+        ]), 0, 'showlistacreditos');
+
+        $this->assertStringContainsString("data-valor-columna='3'", $resultado['html']);
+        $this->assertStringNotContainsString("data-valor-columna='1'", $resultado['html']);
+        $this->assertStringNotContainsString("data-valor-columna='2'", $resultado['html']);
+    }
+
+    public function test_cobranza_cuota_conserva_el_listado_exclusivo_de_castigados(): void
+    {
+        $resultado = (new CobranzacuotaController)->show(Request::create('/', 'GET', [
+            'idcliente' => 100, 'solo_castigados' => 1,
+        ]), 0, 'showlistacreditos');
+
+        $this->assertStringContainsString("data-valor-columna='1'", $resultado['html']);
+        $this->assertStringContainsString("data-valor-columna='2'", $resultado['html']);
+        $this->assertStringNotContainsString("data-valor-columna='3'", $resultado['html']);
     }
 
     public function test_ejecutivo_recibe_alerta_y_no_puede_filtrar_cliente_castigado_aunque_tenga_otro_credito_normal(): void

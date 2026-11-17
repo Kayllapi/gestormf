@@ -2368,6 +2368,8 @@ class CobranzacuotaController extends Controller
                             ->where('credito.idestadocredito',1)
                             ->when($request->boolean('solo_castigados'), function ($query) {
                                 $query->where('credito.castigo_estado', 'CONFIRMADO');
+                            }, function ($query) {
+                                $query->where('credito.castigo_estado', '!=', 'CONFIRMADO');
                             })
                             ->select(
                                 'credito.*',

@@ -10,6 +10,22 @@ use Carbon\Carbon;
 
 class CargoController extends Controller
 {
+    private function nombreUsuarioConRol($idusuario, array $roles): string
+    {
+        if (!$idusuario) {
+            return '';
+        }
+        $usuario = DB::table('users')
+            ->join('users_permiso', 'users_permiso.idusers', 'users.id')
+            ->join('permiso', 'permiso.id', 'users_permiso.idpermiso')
+            ->whereIn('users_permiso.idpermiso', $roles)
+            ->where('users.id', $idusuario)
+            ->select('users.nombrecompleto', 'permiso.nombre as nombrepermiso')
+            ->first();
+
+        return $usuario ? "$usuario->nombrecompleto ($usuario->nombrepermiso)" : '';
+    }
+
     private function cargoEjecutivo(): int
     {
         if (usuario_es_master()) {
@@ -147,6 +163,7 @@ class CargoController extends Controller
           $creditos = $this->filtrarCreditosEjecutivo(DB::table('credito'))
             ->join('users as cliente','cliente.id','credito.idcliente')
             ->where('credito.estado','DESEMBOLSADO')
+            ->where('credito.idestadocredito', 1)
             ->where(function ($q) use ($request) {
                 $q->where('cliente.identificacion', 'LIKE', '%' . $request->buscar . '%')
                   ->orWhere('cliente.nombrecompleto', 'LIKE', '%' . $request->buscar . '%');
@@ -178,6 +195,7 @@ class CargoController extends Controller
           $creditos = DB::table('credito')
             ->join('users as cliente','cliente.id','credito.idcliente')
             ->where('credito.estado','DESEMBOLSADO')
+            ->where('credito.idestadocredito', 1)
             ->where('credito.idtienda',$idtienda)
             ->where($this->cargoEjecutivo() === 12 ? 'credito.idusuariocobranza' : 'credito.idasesor', Auth::id())
             ->when($this->cargoEjecutivo() === 12, function ($query) {
@@ -242,7 +260,6 @@ class CargoController extends Controller
 
           $cliente = DB::table('users')->whereId($request->idcliente)->select('users.id','users.nombrecompleto','users.identificacion','users.idasesor')->first();
           $creditos = $this->filtrarCreditosEjecutivo(DB::table('credito'))
-                            ->leftJoin('users as cobrador', 'cobrador.id', 'credito.idusuariocobranza')
                             ->join('forma_pago_credito','forma_pago_credito.id','credito.idforma_pago_credito')
                             ->join('users as cliente','cliente.id','credito.idcliente')
                             ->join('modalidad_credito','modalidad_credito.id','credito.idmodalidad_credito')
@@ -254,7 +271,6 @@ class CargoController extends Controller
                             ->where($where)
                             ->select(
                                 'credito.*',
-                                'cobrador.nombrecompleto as nombrecobranza',
                                 'cliente.identificacion as identificacion',
                                 'cliente.nombrecompleto as nombrecliente',
                             )
@@ -263,8 +279,9 @@ class CargoController extends Controller
 
                               
           $html = '';
-          $asesor = '';
           $idasesor = $cliente->idasesor ?? 0;
+          $cobradores = $creditos->pluck('idusuariocobranza')->filter()->unique()
+              ->mapWithKeys(fn ($id) => [$id => $this->nombreUsuarioConRol($id, [12])]);
           foreach($creditos as $value){
               $cp = '';
               if($value->idforma_credito==1){
@@ -277,7 +294,7 @@ class CargoController extends Controller
                   $cp = 'CC';
               }
               $cuenta = str_pad($value->cuenta, 8, "0", STR_PAD_LEFT);
-              $nombrecobranza = e($value->nombrecobranza ?? '');
+              $nombrecobranza = e($cobradores->get($value->idusuariocobranza, ''));
               $html .= "<tr data-valor-columna='{$value->id}' data-cobranza='{$nombrecobranza}' onclick='show_data(this)'>
                             <td style='text-align: right;width: 70px;'>S/ {$value->monto_solicitado}</td>
                             <td style='width: 20px;'>{$cp}</td>
@@ -285,21 +302,12 @@ class CargoController extends Controller
                         </tr>";
           }
 
-          if ($idasesor!='' && $idasesor!=0 && $idasesor!=null) {
-            $usuario = DB::table('users')
-                ->join('users_permiso','users_permiso.idusers','users.id')
-                ->join('permiso','permiso.id','users_permiso.idpermiso')
-                ->whereIn('users_permiso.idpermiso',[3,4,7,11])
-                ->where('users.id', $idasesor)
-                ->select('users.nombrecompleto','permiso.nombre as nombrepermiso')
-                ->first();
-            $asesor = $usuario ? "$usuario->nombrecompleto ($usuario->nombrepermiso)" : '';
-          }
+          $asesor = $this->nombreUsuarioConRol($idasesor, [3, 4, 7, 11]);
           return array(
             'cliente' => $cliente,
             'html' => $html,
             'asesor' => $asesor,
-            'cobranza' => $creditos->pluck('nombrecobranza')->filter()->unique()->implode(' / '),
+            'cobranza' => $cobradores->filter()->unique()->implode(' / '),
           );
           
         }

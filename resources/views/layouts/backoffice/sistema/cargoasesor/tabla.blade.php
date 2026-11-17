@@ -68,7 +68,7 @@
                     <div class="row mt-1">
                       <label for="fecha_fin" class="col-sm-4 col-form-label" style="text-align: right;">EJECUTIVO</label>
                       <div class="col-sm-8">
-                          <input type="text" class="form-control" value="{{$usuarioText}}" disabled>
+                          <input type="text" class="form-control" id="nombre_asesor" value="" disabled>
                           <input type="hidden" id="idasesor" value="{{Auth::user()->id}}">
                           {{-- <select class="form-control" id="idasesor" disabled>
                               <option></option>
@@ -152,6 +152,7 @@
       dropdownParent: $('#idcliente').parent()
   });
   function lista_credito_cliente(id){
+    $('#nombre_asesor').val('');
     $('#nombre_cobranza').val('');
     $('#form-garantias-result').empty();
     $('#table-detalle-prestamo > tbody').empty();
@@ -172,6 +173,7 @@
         $('#data-cliente-documento').val(res.cliente.identificacion);
         $('#table-detalle-prestamo > tbody').html(res.html);
         $('#nombre_cobranza').val(res.cobranza || '');
+        $('#nombre_asesor').val(res.asesor || '');
         $("#exampleModal").modal('hide');
         //load_create_prestamo(res.cliente.id);
         $('#btn-create-cliente').removeClass('d-none');
@@ -198,6 +200,7 @@
       $('#table-detalle-prestamo > tbody').empty();
       $('#form-garantias-result').empty();
       $('#nombre_cobranza').val('');
+      $('#nombre_asesor').val('');
       $('.data-cliente').addClass('d-none');
       mensaje = 'Es un cliente castigado. No puede filtrar por este cliente.';
       modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });

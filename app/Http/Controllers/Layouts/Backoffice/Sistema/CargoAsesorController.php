@@ -18,7 +18,6 @@ class CargoAsesorController extends Controller
             abort_unless($permiso, 403, 'No tiene un cargo asignado.');
             return view(sistema_view().'/cargoasesor/tabla',[
               'tienda' => $tienda,
-              'usuarioText' => Auth::user()->nombrecompleto.' ('.$permiso->nombrepermiso.')',
             ]);
         }
     }

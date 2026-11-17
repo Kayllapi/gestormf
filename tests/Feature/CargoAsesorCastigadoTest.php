@@ -113,6 +113,31 @@ class CargoAsesorCastigadoTest extends TestCase
         $this->assertStringContainsString('cliente castigado', $response->getData()->message);
     }
 
+    public function test_busquedas_de_cargos_solo_encuentran_clientes_con_creditos_activos(): void
+    {
+        DB::table('permiso')->insert(['id' => 1, 'nombre' => 'Administrador']);
+        DB::table('users_permiso')->where('idusers', 10)->update(['idpermiso' => 1]);
+        $this->actingAs(User::find(10));
+        DB::table('credito')->whereId(4)->update(['idestadocredito' => 2]);
+        DB::table('users')->insert(['id' => 102]);
+        DB::table('credito')->insert(['id' => 5, 'idcliente' => 102, 'castigo_estado' => 'CONFIRMADO']);
+
+        $controller = new CargoController;
+        foreach (['show_credito', 'show_credito_asesor'] as $endpoint) {
+            $clientes = $controller->show(Request::create('/', 'GET', ['buscar' => '123']), 1, $endpoint);
+            $this->assertSame([100, 102], array_column($clientes, 'id'));
+        }
+
+        DB::table('credito')->insert(['id' => 6, 'idcliente' => 100, 'idestadocredito' => 2]);
+        $resultado = $controller->show(Request::create('/', 'GET', ['idcliente' => 100]), 0, 'showlistacreditos');
+        $this->assertStringContainsString("data-valor-columna='3'", $resultado['html']);
+        $this->assertStringContainsString("data-valor-columna='1'", $resultado['html']);
+        $this->assertStringContainsString("data-valor-columna='2'", $resultado['html']);
+        foreach ([6] as $id) {
+            $this->assertStringNotContainsString("data-valor-columna='{$id}'", $resultado['html']);
+        }
+    }
+
     public function test_cobranza_solo_lista_castigados_asignados_a_el_sin_usar_el_asesor_original(): void
     {
         $this->actingAs(User::find(20));
@@ -151,7 +176,8 @@ class CargoAsesorCastigadoTest extends TestCase
             'idcliente' => 100, 'idagencia' => 1,
         ]), 0, 'showlistacreditos');
         $this->assertSame('', $resultado['asesor']);
-        $this->assertSame('Ejecutivo Cobranza', $resultado['cobranza']);
+        $this->assertSame('Ejecutivo Cobranza (Cobranza)', $resultado['cobranza']);
+        $this->assertStringContainsString('data-cobranza=\'Ejecutivo Cobranza (Cobranza)\'', $resultado['html']);
     }
 
     public function test_muestra_asesor_actual_del_cliente_y_cobranza_vacia_si_no_tiene(): void

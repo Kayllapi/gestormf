@@ -144,6 +144,29 @@ class CargoAsesorCastigadoTest extends TestCase
         $controller->show(Request::create('/', 'GET', ['idcliente' => 101]), 0, 'showlistacreditos');
     }
 
+    public function test_cargo_asesor_permite_buscar_por_cobranza_aunque_otro_ejecutivo_sea_responsable(): void
+    {
+        $this->actingAs(User::find(20));
+        DB::table('users')->whereId(20)->update(['nombrecompleto' => 'Percy']);
+        DB::table('users')->whereId(100)->update(['idasesor' => 10, 'nombrecompleto' => 'Lucas']);
+        DB::table('credito')->insert(['id' => 5, 'idcliente' => 100, 'idusuariocobranza' => 30]);
+        $controller = new CargoAsesorController;
+
+        $clientes = $controller->show(Request::create('/', 'GET', ['buscar' => 'Lucas']), 1, 'show_credito_asesor');
+        $this->assertSame([100], array_column($clientes, 'id'));
+        $resultado = $controller->show(Request::create('/', 'GET', [
+            'idcliente' => 100, 'idasesor' => 20,
+        ]), 0, 'showlistacreditos');
+        $this->assertStringContainsString("data-valor-columna='3' data-cobranza='Percy (Cobranza)'", $resultado['html']);
+        foreach ([1, 2, 5] as $id) {
+            $this->assertStringNotContainsString("data-valor-columna='{$id}'", $resultado['html']);
+        }
+
+        DB::table('credito')->whereId(3)->update(['castigo_estado' => 'CONFIRMADO']);
+        $clientes = $controller->show(Request::create('/', 'GET', ['buscar' => 'Lucas']), 1, 'show_credito_asesor');
+        $this->assertSame([], $clientes);
+    }
+
     public function test_ejecutivo_puede_filtrar_cliente_mixto_y_solo_recibe_sus_creditos_sin_castigo(): void
     {
         $this->actingAs(User::find(10));

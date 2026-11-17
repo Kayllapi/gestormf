@@ -40,10 +40,13 @@ class CargoController extends Controller
     {
         if ($carteraAsesor) {
             return $query->where('credito.castigo_estado', '!=', 'CONFIRMADO')
-                ->whereExists(function ($cliente) {
-                    $cliente->selectRaw('1')->from('users as responsable_cliente')
-                        ->whereColumn('responsable_cliente.id', 'credito.idcliente')
-                        ->where('responsable_cliente.idasesor', Auth::id());
+                ->where(function ($asignacion) {
+                    $asignacion->where('credito.idusuariocobranza', Auth::id())
+                        ->orWhereExists(function ($cliente) {
+                            $cliente->selectRaw('1')->from('users as responsable_cliente')
+                                ->whereColumn('responsable_cliente.id', 'credito.idcliente')
+                                ->where('responsable_cliente.idasesor', Auth::id());
+                        });
                 });
         }
         $cargo = $this->cargoEjecutivo();

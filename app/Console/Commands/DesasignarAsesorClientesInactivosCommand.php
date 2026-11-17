@@ -45,7 +45,7 @@ class DesasignarAsesorClientesInactivosCommand extends Command
         $total = 0;
 
         $this->consultar($fecha_limite, $incluir_sin_credito, $idtienda)
-            ->chunkById(500, function($usuarios) use (&$total, $dry_run) {
+            ->chunkById(500, function($usuarios) use (&$total, $dry_run, $fecha_limite, $incluir_sin_credito, $idtienda) {
 
                 $ids = $usuarios->pluck('id')->toArray();
                 if(empty($ids)){
@@ -53,10 +53,9 @@ class DesasignarAsesorClientesInactivosCommand extends Command
                 }
 
                 if(!$dry_run){
-                    DB::table('users')
-                        ->whereIn('users.id',$ids)
-                        ->where('users.idasesor','>',0)
-                        ->update(['users.idasesor' => 0, 'users.origen_global' => 'INACTIVIDAD']);
+                    $this->consultar($fecha_limite, $incluir_sin_credito, $idtienda)
+                        ->whereIn('users.id', $ids)
+                        ->update(['idasesor' => 0, 'origen_global' => 'INACTIVIDAD']);
                 }
 
                 foreach($usuarios as $value){
@@ -117,8 +116,10 @@ class DesasignarAsesorClientesInactivosCommand extends Command
 
         if($incluir_sin_credito){
             // ultimo credito anterior a la fecha limite o nunca tuvo credito y esta registrado hace mas de N dias
-            $query->whereRaw('('.$ultimo_credito.' is null and '.$fecha_registro.' < ?)',[$fecha_limite]);
-            $query->orWhereRaw('('.$ultimo_credito.' is not null and '.$ultimo_credito.' < ?)',[$fecha_limite]);
+            $query->where(function ($query) use ($ultimo_credito, $fecha_registro, $fecha_limite) {
+                $query->whereRaw('('.$ultimo_credito.' is null and '.$fecha_registro.' < ?)', [$fecha_limite])
+                    ->orWhereRaw('('.$ultimo_credito.' is not null and '.$ultimo_credito.' < ?)', [$fecha_limite]);
+            });
         }
         else{
             $query->whereRaw($ultimo_credito.' is not null and '.$ultimo_credito.' < ?',[$fecha_limite]);

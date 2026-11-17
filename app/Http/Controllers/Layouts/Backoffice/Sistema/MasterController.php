@@ -22,6 +22,11 @@ class MasterController extends Controller
         // (clasificación PÉRDIDA) pasan a lista negra.
         sistema_actualizar_lista_negra($idtienda, Auth::user()->id);
 
+        // Actualiza los clientes inactivos de la agencia al abrir el sistema.
+        \Illuminate\Support\Facades\Artisan::call('clientes:desasignar-asesor', [
+            '--dias' => 90, '--incluir-sin-credito' => true, '--tienda' => $idtienda,
+        ]);
+
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
   
         $usuario = clone Auth::user();

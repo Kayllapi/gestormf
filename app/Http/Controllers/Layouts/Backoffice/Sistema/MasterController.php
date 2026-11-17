@@ -20,6 +20,7 @@ class MasterController extends Controller
 
         // Validación automática al abrir el sistema: los clientes con atraso mayor a 120 días
         // (clasificación PÉRDIDA) pasan a lista negra.
+        \App\Services\CastigoCredito::actualizarListaNegra((int) $idtienda, Auth::user()->id);
         sistema_actualizar_lista_negra($idtienda, Auth::user()->id);
 
         // Actualiza los clientes inactivos de la agencia al abrir el sistema.

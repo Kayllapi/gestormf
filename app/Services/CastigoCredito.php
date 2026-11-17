@@ -7,6 +7,36 @@ use Illuminate\Validation\ValidationException;
 
 class CastigoCredito
 {
+    /** Registra una sola observacion por cliente, conservando cualquier motivo existente. */
+    public static function registrarEnListaNegra(object $credito, int $responsable): void
+    {
+        DB::transaction(function () use ($credito, $responsable) {
+            $cliente = DB::table('users')->where('id', $credito->idcliente)->lockForUpdate()->first();
+            if (!$cliente || DB::table('s_listanegra')->where('idcliente', $credito->idcliente)->exists()) {
+                return;
+            }
+            DB::table('s_listanegra')->insert([
+                'idcliente' => $credito->idcliente,
+                'motivo' => 'CRÉDITO CASTIGADO de la cuenta C'.$credito->cuenta,
+                'idresponsable' => $responsable,
+                'fecharegistro' => now(),
+                'idtienda' => $credito->idtienda,
+                'idestado' => '1',
+                'db_cliente' => $cliente->nombrecompleto,
+            ]);
+        });
+    }
+
+    public static function actualizarListaNegra(int $agencia, int $responsable): void
+    {
+        DB::table('credito')->where('idtienda', $agencia)->where('castigo_estado', 'CONFIRMADO')
+            ->orderBy('id')->chunkById(500, function ($creditos) use ($responsable) {
+                foreach ($creditos as $credito) {
+                    self::registrarEnListaNegra($credito, $responsable);
+                }
+            });
+    }
+
     public static function puedeSolicitar(int $usuario, int $agencia): bool
     {
         if(\App\Models\User::find($usuario)?->esMaster()){
@@ -87,6 +117,9 @@ class CastigoCredito
                 'castigo_estado' => 'PENDIENTE', 'castigo_solicitante' => $usuario, 'castigo_solicitado_at' => now(),
             ]);
             if ($confirmar) {
+                foreach ($creditos as $credito) {
+                    self::registrarEnListaNegra($credito, $usuario);
+                }
                 foreach ($clientes as $cliente) {
                     if (!self::tieneCreditosVigentes($cliente)) {
                         // El ejecutivo de cobranza queda registrado en la cuenta (idusuariocobranza), no reemplaza

@@ -24,6 +24,12 @@ class CastigoCreditoTest extends TestCase
         Schema::create('users', function (Blueprint $t) {
             $t->integer('id')->primary(); $t->integer('idasesor'); $t->string('origen_global')->nullable();
             $t->integer('idestado')->default(1); $t->string('clave')->default('secreto');
+            $t->string('nombrecompleto')->default('Cliente');
+        });
+        Schema::create('s_listanegra', function (Blueprint $t) {
+            $t->increments('id'); $t->integer('idcliente'); $t->string('motivo');
+            $t->integer('idresponsable'); $t->dateTime('fecharegistro'); $t->integer('idtienda');
+            $t->integer('idestado'); $t->string('db_cliente');
         });
         Schema::create('permiso', function (Blueprint $t) { $t->integer('id'); $t->integer('rango'); });
         Schema::create('users_permiso', function (Blueprint $t) {
@@ -31,6 +37,7 @@ class CastigoCreditoTest extends TestCase
         });
         Schema::create('credito', function (Blueprint $t) {
             $t->integer('id')->primary(); $t->integer('idcliente'); $t->integer('idasesor'); $t->integer('idtienda');
+            $t->integer('cuenta')->default(123);
             $t->string('estado'); $t->integer('idestadocredito'); $t->integer('idforma_credito')->default(2);
             $t->decimal('saldo_pendientepago', 12, 2); $t->decimal('total_pendientepago', 12, 2);
         });
@@ -69,8 +76,23 @@ class CastigoCreditoTest extends TestCase
         $this->assertEquals(240, DB::table('credito')->sum('total_pendientepago'));
         $this->assertEquals(20, DB::table('credito')->where('id', 1)->value('castigo_responsable'));
         $this->assertEquals(50, DB::table('credito')->where('id', 1)->value('idusuariocobranza'));
+        $this->assertSame('CRÉDITO CASTIGADO de la cuenta C123', DB::table('s_listanegra')->value('motivo'));
+        $this->assertSame(1, DB::table('s_listanegra')->count());
         $this->expectException(ValidationException::class);
         $s->procesar([1], 20, 1, true, 50);
+    }
+
+    public function test_actualizacion_historica_respeta_agencia_y_motivo_existente(): void
+    {
+        $this->cuenta(1, ['castigo_estado' => 'CONFIRMADO']);
+        $this->cuenta(2, ['castigo_estado' => 'CONFIRMADO', 'idtienda' => 2]);
+        CastigoCredito::actualizarListaNegra(2, 20);
+        $this->assertSame(2, DB::table('s_listanegra')->value('idtienda'));
+        DB::table('s_listanegra')->update(['motivo' => 'MOTIVO PREVIO']);
+        CastigoCredito::actualizarListaNegra(1, 20);
+        CastigoCredito::actualizarListaNegra(1, 20);
+        $this->assertSame(1, DB::table('s_listanegra')->count());
+        $this->assertSame('MOTIVO PREVIO', DB::table('s_listanegra')->value('motivo'));
     }
 
     public function test_otro_credito_con_deuda_en_otra_agencia_conserva_asesor(): void

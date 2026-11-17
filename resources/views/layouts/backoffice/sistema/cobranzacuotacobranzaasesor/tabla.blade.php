@@ -247,6 +247,7 @@
       type:'GET',
       data: {
           idcliente : $('#idclientesearch :selected').val(),
+          por_asesor: 1,
           solo_castigados: 1
       },
       success: function (res){

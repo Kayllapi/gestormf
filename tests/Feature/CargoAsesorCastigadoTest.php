@@ -104,6 +104,52 @@ class CargoAsesorCastigadoTest extends TestCase
         $this->assertStringNotContainsString("data-valor-columna='3'", $resultado['html']);
     }
 
+    public function test_pago_castigado_por_asesor_busca_y_lista_solo_asignados_a_cobranza(): void
+    {
+        $this->actingAs(User::find(20));
+        $controller = new CobranzacuotaController;
+        $clientes = $controller->show(Request::create('/', 'GET', [
+            'buscar' => '123', 'por_asesor' => 1, 'solo_castigados' => 1,
+        ]), 1, 'show_credito_tienda');
+        $this->assertSame([100], array_column($clientes, 'id'));
+
+        $resultado = $controller->show(Request::create('/', 'GET', [
+            'idcliente' => 100, 'por_asesor' => 1, 'solo_castigados' => 1,
+        ]), 0, 'showlistacreditos');
+        $this->assertStringContainsString("data-valor-columna='1'", $resultado['html']);
+        foreach ([2, 3] as $id) {
+            $this->assertStringNotContainsString("data-valor-columna='{$id}'", $resultado['html']);
+        }
+
+        $this->actingAs(User::find(10));
+        $clientes = $controller->show(Request::create('/', 'GET', [
+            'buscar' => '123', 'por_asesor' => 1, 'solo_castigados' => 1,
+        ]), 1, 'show_credito_tienda');
+        $this->assertSame([], $clientes);
+    }
+
+    public function test_pago_castigado_encuentra_cliente_del_ejecutivo_con_credito_castigado(): void
+    {
+        $this->actingAs(User::find(20));
+        DB::table('users')->whereId(101)->update(['nombrecompleto' => 'Berny', 'idasesor' => 20]);
+        DB::table('credito')->whereId(4)->update(['castigo_estado' => 'CONFIRMADO']);
+        $controller = new CobranzacuotaController;
+        $clientes = $controller->show(Request::create('/', 'GET', [
+            'buscar' => 'Berny', 'por_asesor' => 1, 'solo_castigados' => 1,
+        ]), 1, 'show_credito_tienda');
+        $this->assertSame([101], array_column($clientes, 'id'));
+        $resultado = $controller->show(Request::create('/', 'GET', [
+            'idcliente' => 101, 'por_asesor' => 1, 'solo_castigados' => 1,
+        ]), 0, 'showlistacreditos');
+        $this->assertStringContainsString("data-valor-columna='4'", $resultado['html']);
+
+        DB::table('users')->whereId(101)->update(['idasesor' => 30]);
+        $clientes = $controller->show(Request::create('/', 'GET', [
+            'buscar' => 'Berny', 'por_asesor' => 1, 'solo_castigados' => 1,
+        ]), 1, 'show_credito_tienda');
+        $this->assertSame([], $clientes);
+    }
+
     public function test_cargo_castigado_busca_y_lista_solo_castigados_asignados(): void
     {
         $this->actingAs(User::find(20));

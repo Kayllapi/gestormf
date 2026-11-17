@@ -14,6 +14,18 @@ use PDF;
 
 class CobranzacuotaController extends Controller
 {
+    private function filtrarCarteraAsesor($query, bool $soloCastigados)
+    {
+        if (!$soloCastigados) {
+            return $query->where('credito.idasesor', Auth::id());
+        }
+
+        return $query->where(function ($asignacion) {
+            $asignacion->where('credito.idusuariocobranza', Auth::id())
+                ->orWhere('cliente.idasesor', Auth::id());
+        });
+    }
+
     public function __construct()
     {
         $this->tipo_credito = DB::table('tipo_credito')->get();
@@ -2305,9 +2317,9 @@ class CobranzacuotaController extends Controller
                 ->join('users as cliente', 'cliente.id', '=', 'credito.idcliente')
                 ->where('credito.estado', 'DESEMBOLSADO')
                 ->where('credito.idestadocredito', 1)
-                // asesor: solo sus propios creditos, de cualquier agencia
-                ->when($porAsesor, function ($query) {
-                    $query->where('credito.idasesor', Auth::id());
+                // Castigados: cobranza del credito o responsable actual del cliente.
+                ->when($porAsesor, function ($query) use ($soloCastigados) {
+                    $this->filtrarCarteraAsesor($query, $soloCastigados);
                 })
                 // agencia (sin por_asesor): solo la agencia actual, incluyendo castigados
                 ->when(!$porAsesor, function ($query) use ($idtienda) {
@@ -2366,6 +2378,9 @@ class CobranzacuotaController extends Controller
                             ->where('credito.estado','DESEMBOLSADO')
                             ->where('cliente.id',$request->idcliente)
                             ->where('credito.idestadocredito',1)
+                            ->when($request->boolean('por_asesor'), function ($query) use ($request) {
+                                $this->filtrarCarteraAsesor($query, $request->boolean('solo_castigados'));
+                            })
                             ->when($request->boolean('solo_castigados'), function ($query) {
                                 $query->where('credito.castigo_estado', 'CONFIRMADO');
                             }, function ($query) {

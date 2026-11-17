@@ -177,7 +177,7 @@
     var RANGOS_CARGOS = @json($rangos_cargos);
     var MI_RANGO = @json($mi_rango);
     var FILAS_EDITABLES = {};
-    var AGENCIAS_A_CARGO = @json($tiendas->pluck('id')->map(fn ($id) => (int) $id)->values());
+    var AGENCIAS_A_CARGO = @json($agencias_editables);
     var AGENCIAS_ASIGNADAS = @json($agencias_asignadas);
     function cargo_editable(id){
         return MI_RANGO === null || Number(MI_RANGO) === 1 ||
@@ -320,11 +320,8 @@
         @endforeach
         let option_tienda = '<option></option>';
         @foreach($tiendas as $value_tienda)
-            option_tienda += '<option value="{{ $value_tienda->id }}">{{ $value_tienda->nombreagencia }}</option>';
+            option_tienda += '<option value="{{ $value_tienda->id }}"{{ (int) $value_tienda->idestado === 1 ? '' : ' disabled' }}>{{ $value_tienda->nombreagencia }}</option>';
         @endforeach
-        if(!agenciaEditable){
-            option_tienda = '<option value="'+Number(idtienda)+'">'+texto_seguro(AGENCIAS_ASIGNADAS[idtienda] || 'Agencia '+idtienda)+'</option>';
-        }
         let option_estado = '<option></option><option value="1">Act.</option><option value="2">Desact.</option>';
         var tabla='<tr id="'+num+'">'+
                       '<td><select class="form-control" id="idtienda'+num+'"'+disCargo+'>'+option_tienda+'</select></td>'+

@@ -455,7 +455,7 @@ class UsuarioMasterTest extends TestCase
         $this->assertSame(2, User::find(10)->idestadousuario);
     }
 
-    public function test_selectores_registrar_y_editar_solo_ofrecen_agencias_activas_asignadas_al_operador(): void
+    public function test_editar_ofrece_todas_las_agencias_y_registrar_conserva_las_asignadas(): void
     {
         DB::table('tienda')->insert([
             ['id' => 200, 'nombre' => 'C', 'nombreagencia' => 'C', 'idestado' => 1],
@@ -472,11 +472,13 @@ class UsuarioMasterTest extends TestCase
         $create = $controller->create(Request::create('/', 'GET', ['view' => 'registrar']), 194)->getData();
         $edit = $controller->edit(Request::create('/', 'GET', ['view' => 'permiso']), 194, 20)->getData();
         $this->assertEqualsCanonicalizing([194, 200], $create['tiendas']->pluck('id')->all());
-        $this->assertEqualsCanonicalizing([194, 200], $edit['tiendas']->pluck('id')->all());
+        $this->assertEqualsCanonicalizing([194, 198, 200, 201], $edit['tiendas']->pluck('id')->all());
+        $this->assertEqualsCanonicalizing([194, 198, 200], $edit['agencias_editables']->all());
         $this->assertArrayHasKey(198, $edit['agencias_asignadas']->all());
         $html = view('layouts.backoffice.sistema.usuarioacceso.permiso', $edit)->render();
-        $this->assertStringContainsString('var AGENCIAS_A_CARGO = [194,200];', $html);
-        $this->assertStringNotContainsString('<option value="198">', $html);
+        $this->assertStringContainsString('var AGENCIAS_A_CARGO = [194,198,200];', $html);
+        $this->assertStringContainsString('<option value="198">', $html);
+        $this->assertStringContainsString('<option value="201" disabled>', $html);
         $this->actingAs(User::find(10));
         $master = $controller->create(Request::create('/', 'GET', ['view' => 'registrar']), 194)->getData();
         $this->assertEqualsCanonicalizing([194, 198, 200], $master['tiendas']->pluck('id')->all());
@@ -505,7 +507,7 @@ class UsuarioMasterTest extends TestCase
     {
         Schema::table('users', fn (Blueprint $table) => $table->dateTime('fechamodificacion')->nullable());
         DB::table('permiso')->insert(['id' => 4, 'nombre' => 'Analista', 'rango' => 7]);
-        foreach ([194, 198] as $agencia) {
+        foreach ([194] as $agencia) {
             DB::table('users_permiso')->insert([
                 'idusers' => 20, 'idtienda' => $agencia, 'idpermiso' => 2,
                 'idestado' => 1, 'idsession' => $agencia === 194 ? 2 : 1,

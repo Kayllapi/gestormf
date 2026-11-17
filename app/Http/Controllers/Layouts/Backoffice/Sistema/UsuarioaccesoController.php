@@ -553,11 +553,15 @@ class UsuarioaccesoController extends Controller
                 $permisos = $permisos->filter(fn ($cargo) => (int) $cargo->rango > (int) $mi_rango
                     || $user_permiso->contains('idpermiso', $cargo->id));
             }
-            $tiendas = $this->agencias_a_cargo();
+            $tiendas = DB::table('tienda')->orderBy('nombreagencia')->get();
+            $agencias_editables = (int) $mi_rango === 1
+                ? $tiendas->where('idestado', 1)->pluck('id')
+                : $this->agencias_a_cargo()->pluck('id');
             $puede_editar = $this->puede_editar_usuario(Auth::user()->id, $id, $idtienda);
             return view(sistema_view().'/usuarioacceso/permiso',[
                 'tienda'        => $tienda,
                 'tiendas'       => $tiendas,
+                'agencias_editables' => $agencias_editables->map(fn ($id) => (int) $id)->values(),
                 'permisos'      => $permisos,
                 'user_permiso'  => $user_permiso,
                 'agencias_asignadas' => DB::table('tienda')->whereIn('id', $user_permiso->pluck('idtienda'))->pluck('nombreagencia', 'id'),
@@ -1019,7 +1023,9 @@ class UsuarioaccesoController extends Controller
                 }
             }
             $cargos = DB::table('permiso')->pluck('rango', 'id');
-            $agencias_a_cargo = $this->agencias_a_cargo()->pluck('id')->map(fn ($id) => (int) $id)->all();
+            $agencias_a_cargo = ($puede_editar_cargos
+                ? DB::table('tienda')->where('idestado', 1)->pluck('id')
+                : $this->agencias_a_cargo()->pluck('id'))->map(fn ($id) => (int) $id)->all();
             $protegidas = [];
             foreach($actuales as $fila){
                 $rango = $cargos->get($fila->idpermiso);

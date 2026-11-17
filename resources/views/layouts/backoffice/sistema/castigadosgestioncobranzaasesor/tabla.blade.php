@@ -25,12 +25,12 @@
                             $usuario = DB::table('users')
                                 ->join('users_permiso','users_permiso.idusers','users.id')
                                 ->join('permiso','permiso.id','users_permiso.idpermiso')
-                                ->whereIn('users_permiso.idpermiso',[3,4,7,11])
+                                ->whereIn('users_permiso.idpermiso',[3,4,7,11,12])
                                 ->where('users_permiso.idtienda',$tienda->id)
                                 ->where('users.id', Auth::user()->id)
                                 ->select('users.nombrecompleto','permiso.nombre as nombrepermiso')
                                 ->first();
-                            $usuarioText = "$usuario->nombrecompleto ($usuario->nombrepermiso)";
+                            $usuarioText = $usuario ? "$usuario->nombrecompleto ($usuario->nombrepermiso)" : '';
                         @endphp
                         <input type="text" class="form-control" value="{{$usuarioText}}" disabled>
                         <input type="hidden" id="idasesor" value="{{Auth::user()->id}}">

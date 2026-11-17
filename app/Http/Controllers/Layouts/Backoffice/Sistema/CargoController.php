@@ -36,8 +36,11 @@ class CargoController extends Controller
         return (int) $permiso->idpermiso;
     }
 
-    private function filtrarCreditosEjecutivo($query, bool $carteraAsesor = false)
+    private function filtrarCreditosEjecutivo($query, bool $carteraAsesor = false, bool $soloCastigados = false)
     {
+        if ($soloCastigados) {
+            $query->where('credito.castigo_estado', 'CONFIRMADO');
+        }
         if ($carteraAsesor) {
             return $query->where('credito.castigo_estado', '!=', 'CONFIRMADO')
                 ->where(function ($asignacion) {
@@ -160,7 +163,7 @@ class CargoController extends Controller
         }
     }
 
-    public function show(Request $request, $idtienda, $id, bool $excluirCastigados = false)
+    public function show(Request $request, $idtienda, $id, bool $excluirCastigados = false, bool $soloCastigados = false)
     {
         if($id == 'show_credito'){
           
@@ -196,7 +199,7 @@ class CargoController extends Controller
         }
         else if($id == 'show_credito_asesor'){
 
-          $creditos = $this->filtrarCreditosEjecutivo(DB::table('credito'), $excluirCastigados)
+          $creditos = $this->filtrarCreditosEjecutivo(DB::table('credito'), $excluirCastigados, $soloCastigados)
             ->join('users as cliente','cliente.id','credito.idcliente')
             ->where('credito.estado','DESEMBOLSADO')
             ->where('credito.idestadocredito', 1)
@@ -204,7 +207,7 @@ class CargoController extends Controller
             ->when(!$excluirCastigados, function ($query) {
                 $query->where($this->cargoEjecutivo() === 12 ? 'credito.idusuariocobranza' : 'credito.idasesor', Auth::id());
             })
-            ->when(!$excluirCastigados && $this->cargoEjecutivo() === 12, function ($query) {
+            ->when($soloCastigados || (!$excluirCastigados && $this->cargoEjecutivo() === 12), function ($query) {
                 $query->where('credito.castigo_estado', 'CONFIRMADO');
             }, function ($query) {
                 $query->where('credito.castigo_estado', '!=', 'CONFIRMADO');
@@ -237,8 +240,8 @@ class CargoController extends Controller
         }
         else if($id == 'showlistacreditos'){
             $cargo = $this->cargoEjecutivo();
-            if ($excluirCastigados || in_array($cargo, [3, 4, 7, 11, 12], true)) {
-                abort_unless($this->filtrarCreditosEjecutivo(DB::table('credito'), $excluirCastigados)
+            if ($excluirCastigados || $soloCastigados || in_array($cargo, [3, 4, 7, 11, 12], true)) {
+                abort_unless($this->filtrarCreditosEjecutivo(DB::table('credito'), $excluirCastigados, $soloCastigados)
                     ->where('credito.idcliente', $request->idcliente)
                     ->where('credito.estado', 'DESEMBOLSADO')->where('credito.idestadocredito', 1)
                     ->exists(), 403, 'No tiene créditos de este cliente asignados a su nombre.');
@@ -255,7 +258,7 @@ class CargoController extends Controller
             }
 
           $cliente = DB::table('users')->whereId($request->idcliente)->select('users.id','users.nombrecompleto','users.identificacion','users.idasesor')->first();
-          $creditos = $this->filtrarCreditosEjecutivo(DB::table('credito'), $excluirCastigados)
+          $creditos = $this->filtrarCreditosEjecutivo(DB::table('credito'), $excluirCastigados, $soloCastigados)
                             ->join('forma_pago_credito','forma_pago_credito.id','credito.idforma_pago_credito')
                             ->join('users as cliente','cliente.id','credito.idcliente')
                             ->join('modalidad_credito','modalidad_credito.id','credito.idmodalidad_credito')

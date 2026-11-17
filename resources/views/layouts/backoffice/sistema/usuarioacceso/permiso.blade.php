@@ -1,10 +1,11 @@
 @php
     /*
      * Los datos generales conservan su bloqueo por usuario. La tabla evalua
-     * cada fila segun el rango y las agencias del usuario autenticado.
+     * el estado de cada fila segun rango y agencia. Solo rango 1 cambia
+     * agencias, cargos y permisos especificos.
      */
     $puede_editar = $puede_editar ?? true;
-    $puede_editar_cargo = $puede_editar_cargo ?? $puede_editar;
+    $puede_editar_cargo = (int) ($mi_rango ?? 0) === 1;
     $d  = $puede_editar ? '' : 'disabled';
     $dc = $puede_editar_cargo ? '' : 'disabled';
 @endphp
@@ -32,7 +33,7 @@
         @if(!$puede_editar)
         <div class="alert alert-warning py-2 mb-2">
             <i class="fa-solid fa-lock"></i>
-            Los datos generales estan bloqueados. En la tabla puede editar las filas con un numero de rango mayor al suyo.
+            Los datos generales estan bloqueados. En la tabla puede editar el estado de las filas con un numero de rango mayor al suyo.
         </div>
         @endif
         <div class="row">
@@ -83,7 +84,7 @@
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <label>Usuario (Login) <span class="text-danger">(*)</span></label>
-                        <input type="text" class="form-control" id="usuario" value="{{ $usuario->usuario }}" {{ $d }} >
+                        <input type="text" class="form-control" id="usuario" value="{{ $usuario->usuario }}" disabled>
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <label>Contraseña <span class="text-danger">(*)</span></label>
@@ -189,6 +190,7 @@
         $('#apellido_marterno').removeAttr('disabled');
         $('#nombres').removeAttr('disabled');
         $('#identificacion').removeAttr('disabled');
+        $('#usuario').removeAttr('disabled');
         
     }
     //mostrar_permisomodulo();
@@ -299,13 +301,14 @@
     @endforeach
     
     function agregar_permiso(idpermiso = 0, idtienda = 0, idestado = 0){
+        if(idestado == 0 && !PUEDE_EDITAR_CARGO){ return; }
         
         var num   = $("#tabla-permisoacceso > tbody").attr('num');
         var cant  = $("#tabla-permisoacceso > tbody > tr").length;
         var agenciaEditable = idtienda == 0 || AGENCIAS_A_CARGO.includes(Number(idtienda));
         FILAS_EDITABLES[num] = agenciaEditable && (idpermiso == 0 || cargo_editable(idpermiso));
         var dis = FILAS_EDITABLES[num] ? '' : ' disabled';
-        var disCargo = dis;
+        var disCargo = FILAS_EDITABLES[num] && PUEDE_EDITAR_CARGO ? '' : ' disabled';
       
         var tdeliminar = '<td></td>';
         if(idestado==0 && PUEDE_EDITAR_CARGO){
@@ -327,7 +330,7 @@
                       '<td><select class="form-control" id="idtienda'+num+'"'+disCargo+'>'+option_tienda+'</select></td>'+
                       '<td><select class="form-control" id="idpermiso'+num+'"'+disCargo+'>'+option_permiso+'</select></td>'+
                       '<td><select class="form-control" id="idestado'+num+'"'+dis+'>'+option_estado+'</select></td>'+
-                      '<td><button type="button" class="btn btn-primary btnhover"'+dis+' onclick="abrir_permisos('+num+')"><i class="fa fa-key"></i> Permisos</button></td>'+
+                      '<td><button type="button" class="btn btn-primary btnhover"'+disCargo+' onclick="abrir_permisos('+num+')"><i class="fa fa-key"></i> Permisos</button></td>'+
                       tdeliminar+
                   '</tr>';
 
@@ -344,7 +347,7 @@
         cargar_permisos_fila(num,idpermiso,idtienda);
     }
     function eliminar_permiso(num){
-        if(!FILAS_EDITABLES[num]){ return; }
+        if(!PUEDE_EDITAR_CARGO || !FILAS_EDITABLES[num]){ return; }
         $("#tabla-permisoacceso > tbody > tr#"+num).remove();
         delete estado_modulos[num];
     }
@@ -464,7 +467,7 @@
     }
 
     function abrir_permisos(num){
-        if(!FILAS_EDITABLES[num]){ return; }
+        if(!PUEDE_EDITAR_CARGO || !FILAS_EDITABLES[num]){ return; }
         var idpermiso = $('#idpermiso'+num+' option:selected').val();
         var idtienda  = $('#idtienda'+num+' option:selected').val();
         if(!idpermiso || !idtienda){
@@ -541,6 +544,7 @@
 
     // Solo se envian las diferencias con el cargo, agrupadas por agencia y cargo.
     function listar_permisos_modulo(){
+        if(!PUEDE_EDITAR_CARGO){ return '{}'; }
         var data = {};
         $("#tabla-permisoacceso > tbody > tr").each(function() {
             var num   = $(this).attr('id');

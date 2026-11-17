@@ -82,11 +82,11 @@ class UsuarioAccesoJerarquiaTest extends TestCase
     {
         $antes = DB::table('users_permiso')->whereIn('idpermiso', [1, 2, 5])->get()->all();
         $filas = $this->filas();
-        $filas[2] = ['idtienda' => 198, 'idpermiso' => 4, 'idestado' => 2];
+        $filas[2]['idestado'] = 2;
         $this->assertSame('CORRECTO', $this->guardar($filas)['resultado']);
         $this->assertEquals($antes, DB::table('users_permiso')->whereIn('idpermiso', [1, 2, 5])->get()->all());
         $this->assertSame(2, DB::table('users_permiso')->where('idpermiso', 4)->value('idestado'));
-        $this->assertSame(198, DB::table('users_permiso')->where('idpermiso', 4)->value('idtienda'));
+        $this->assertSame(194, DB::table('users_permiso')->where('idpermiso', 4)->value('idtienda'));
     }
 
     public function test_rechaza_cambiar_estado_de_cada_rango_protegido(): void
@@ -118,13 +118,28 @@ class UsuarioAccesoJerarquiaTest extends TestCase
         $this->assertSame(5, DB::table('users_permiso')->count());
     }
 
-    public function test_conserva_permisos_protegidos_y_guarda_permisos_de_fila_editable(): void
+    public function test_sin_rango_uno_no_modifica_permisos_especificos_y_los_conserva_al_guardar_estado(): void
     {
-        $this->assertSame('CORRECTO', $this->guardar($this->filas(), [
+        $this->assertSame('ERROR', $this->guardar($this->filas(), [
             '194_2' => ['99' => 2], '194_4' => ['99' => 1],
         ])['resultado']);
+        $this->assertSame('CORRECTO', $this->guardar($this->filas())['resultado']);
         $this->assertSame(1, DB::table('userspermisoacceso')->where('idpermiso', 2)->value('idestado'));
-        $this->assertSame(1, DB::table('userspermisoacceso')->where('idpermiso', 4)->value('idestado'));
+        $this->assertSame(0, DB::table('userspermisoacceso')->where('idpermiso', 4)->count());
+    }
+
+    public function test_sin_rango_uno_no_puede_mover_cambiar_agregar_o_quitar_filas_inferiores(): void
+    {
+        $antes = DB::table('users_permiso')->get()->all();
+        foreach (['agencia', 'cargo', 'agregar', 'quitar'] as $operacion) {
+            $filas = $this->filas();
+            if ($operacion === 'agencia') { $filas[2]['idtienda'] = 198; }
+            if ($operacion === 'cargo') { $filas[2]['idpermiso'] = 6; }
+            if ($operacion === 'agregar') { $filas[] = ['idtienda' => 198, 'idpermiso' => 4, 'idestado' => 1]; }
+            if ($operacion === 'quitar') { array_splice($filas, 2, 1); }
+            $this->assertSame('ERROR', $this->guardar($filas)['resultado']);
+            $this->assertEquals($antes, DB::table('users_permiso')->get()->all());
+        }
     }
 
     public function test_rechaza_asignar_agencia_ajena_aunque_el_cargo_sea_editable(): void
@@ -149,7 +164,7 @@ class UsuarioAccesoJerarquiaTest extends TestCase
             'idusers' => 20, 'idtienda' => 200, 'idpermiso' => 4, 'idmodulo' => 99, 'idestado' => 1,
         ]);
         $antes = DB::table('users_permiso')->where('idusers',20)->where('idtienda',200)->first();
-        $this->assertSame('CORRECTO', $this->guardar($filas, ['200_4' => ['99' => 2]], 20)['resultado']);
+        $this->assertSame('CORRECTO', $this->guardar($filas, [], 20)['resultado']);
         $this->assertEquals($antes, DB::table('users_permiso')->where('idusers',20)->where('idtienda',200)->first());
         $this->assertSame(1, DB::table('userspermisoacceso')->where('idusers',20)->where('idtienda',200)->value('idestado'));
         $filas[2]['idestado'] = 2;

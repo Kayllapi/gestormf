@@ -564,7 +564,7 @@ class UsuarioaccesoController extends Controller
                 'estadocivil'   => $estadocivil,
                 'usuario'       => $usuario,
                 'puede_editar'  => $puede_editar,
-                'puede_editar_cargo' => true,
+                'puede_editar_cargo' => (int) $mi_rango === 1,
                 'rangos_cargos' => DB::table('permiso')->pluck('rango', 'id'),
                 'mi_rango' => $mi_rango,
                 'arbol_modulos' => $this->arbol_modulos(),
@@ -1010,6 +1010,14 @@ class UsuarioaccesoController extends Controller
             // No se puede asignar un cargo de igual o mayor jerarquia,
             // aunque se envie una peticion directamente al servidor.
             $mi_rango = $this->rango_activo_usuario(Auth::user()->id, $idtienda);
+            $puede_editar_cargos = (int) $mi_rango === 1;
+            if (!$puede_editar_cargos) {
+                $claves_actuales = $actuales->map(fn ($fila) => $fila->idtienda.'_'.$fila->idpermiso)->sort()->values()->all();
+                $claves_enviadas = collect($accesos)->map(fn ($fila) => $fila['idtienda'].'_'.$fila['idpermiso'])->sort()->values()->all();
+                if ($claves_actuales !== $claves_enviadas || !empty(json_decode($request->input('modulos', '{}'), true))) {
+                    return response()->json(['resultado' => 'ERROR', 'mensaje' => 'Solo el gerente de rango 1 puede modificar agencias, cargos o permisos específicos por usuario.']);
+                }
+            }
             $cargos = DB::table('permiso')->pluck('rango', 'id');
             $agencias_a_cargo = $this->agencias_a_cargo()->pluck('id')->map(fn ($id) => (int) $id)->all();
             $protegidas = [];
@@ -1120,7 +1128,9 @@ class UsuarioaccesoController extends Controller
                 ]);
             }
 
-            $this->guardar_permisos_usuario($id,$accesos,$request->input('modulos'), $protegidas);
+            if ($puede_editar_cargos) {
+                $this->guardar_permisos_usuario($id,$accesos,$request->input('modulos'), $protegidas);
+            }
 
             //json_usuarioacceso($idtienda);
           

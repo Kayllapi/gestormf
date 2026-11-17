@@ -482,6 +482,51 @@ class UsuarioMasterTest extends TestCase
         $this->assertEqualsCanonicalizing([194, 198, 200], $master['tiendas']->pluck('id')->all());
     }
 
+    public function test_solo_rango_uno_habilita_la_edicion_de_cargos_y_permisos_especificos(): void
+    {
+        DB::table('permiso')->insert(['id' => 4, 'nombre' => 'Analista', 'rango' => 7]);
+        DB::table('users_permiso')->insert([
+            'idusers' => 20, 'idtienda' => 194, 'idpermiso' => 2, 'idestado' => 1, 'idsession' => 2,
+        ]);
+        $this->actingAs(User::find(20));
+        $controller = new UsuarioaccesoController;
+        $request = Request::create('/', 'GET', ['view' => 'permiso']);
+        $gerente = $controller->edit($request, 194, 20)->getData();
+        $this->assertTrue($gerente['puede_editar_cargo']);
+        $this->assertStringContainsString('var PUEDE_EDITAR_CARGO = true;', view('layouts.backoffice.sistema.usuarioacceso.permiso', $gerente)->render());
+
+        DB::table('users_permiso')->where('idusers', 20)->update(['idpermiso' => 4]);
+        $analista = $controller->edit($request, 194, 20)->getData();
+        $this->assertFalse($analista['puede_editar_cargo']);
+        $this->assertStringContainsString('var PUEDE_EDITAR_CARGO = false;', view('layouts.backoffice.sistema.usuarioacceso.permiso', $analista)->render());
+    }
+
+    public function test_gerente_rango_uno_puede_guardar_cargos_y_permisos_especificos(): void
+    {
+        Schema::table('users', fn (Blueprint $table) => $table->dateTime('fechamodificacion')->nullable());
+        DB::table('permiso')->insert(['id' => 4, 'nombre' => 'Analista', 'rango' => 7]);
+        foreach ([194, 198] as $agencia) {
+            DB::table('users_permiso')->insert([
+                'idusers' => 20, 'idtienda' => $agencia, 'idpermiso' => 2,
+                'idestado' => 1, 'idsession' => $agencia === 194 ? 2 : 1,
+            ]);
+        }
+        $this->actingAs(User::find(20));
+        $request = Request::create('/', 'PUT', $this->datosGerente([
+            'view' => 'permiso', 'usuario' => 'normal', 'password' => '',
+            'iduser_modificacion' => 20, 'intentos_maximo' => 3,
+            'accesos' => json_encode([
+                ['idtienda' => 194, 'idpermiso' => 2, 'idestado' => 1],
+                ['idtienda' => 198, 'idpermiso' => 4, 'idestado' => 1],
+            ]),
+            'modulos' => json_encode(['198_4' => ['1' => 1]]),
+        ]));
+        $resultado = (new UsuarioaccesoController)->update($request, 194, 20)->getData(true);
+        $this->assertSame('CORRECTO', $resultado['resultado']);
+        $this->assertSame(4, DB::table('users_permiso')->where('idusers', 20)->where('idtienda', 198)->value('idpermiso'));
+        $this->assertSame(1, DB::table('userspermisoacceso')->where('idusers', 20)->where('idtienda', 198)->where('idpermiso', 4)->value('idestado'));
+    }
+
     public function test_registrar_no_permite_inyectar_agencia_fuera_de_las_asignadas(): void
     {
         DB::table('users_permiso')->insert([

@@ -172,7 +172,7 @@
         $('#data-cliente-nombre').val(res.cliente.nombrecompleto);
         $('#data-cliente-documento').val(res.cliente.identificacion);
         $('#table-detalle-prestamo > tbody').html(res.html);
-        $('#nombre_cobranza').val(res.cobranza || '');
+        $('#nombre_cobranza').val('');
         $('#nombre_asesor').val(res.asesor || '');
         $("#exampleModal").modal('hide');
         //load_create_prestamo(res.cliente.id);

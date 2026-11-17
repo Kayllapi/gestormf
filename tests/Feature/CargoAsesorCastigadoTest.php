@@ -196,6 +196,22 @@ class CargoAsesorCastigadoTest extends TestCase
         $this->assertSame('', $resultado['cobranza']);
     }
 
+    public function test_cada_credito_incluye_su_cobrador_con_permiso_o_vacio_si_no_tiene(): void
+    {
+        DB::table('permiso')->insert(['id' => 1, 'nombre' => 'Administrador']);
+        DB::table('users_permiso')->where('idusers', 10)->update(['idpermiso' => 1]);
+        $this->actingAs(User::find(10));
+        DB::table('users')->whereId(20)->update(['nombrecompleto' => 'Cobrador asignado']);
+        DB::table('credito')->whereId(3)->update(['idusuariocobranza' => null]);
+
+        $resultado = (new CargoController)->show(Request::create('/', 'GET', [
+            'idcliente' => 100,
+        ]), 0, 'showlistacreditos');
+
+        $this->assertStringContainsString("data-valor-columna='1' data-cobranza='Cobrador asignado (Cobranza)'", $resultado['html']);
+        $this->assertStringContainsString("data-valor-columna='3' data-cobranza=''", $resultado['html']);
+    }
+
     public function test_ejecutivo_no_puede_registrar_cargo_en_castigado_enviando_el_id_directamente(): void
     {
         $this->actingAs(User::find(10));

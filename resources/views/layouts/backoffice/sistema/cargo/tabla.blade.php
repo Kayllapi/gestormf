@@ -220,7 +220,7 @@
         $('#btn-create-cliente').removeClass('d-none');
 
         $('#idasesor').val(res.asesor);
-        $('#nombre_cobranza').val(res.cobranza || '');
+        $('#nombre_cobranza').val('');
       },
       error: function (xhr) {
         alert(xhr.responseJSON?.message || 'No se pudo consultar los créditos del cliente.');

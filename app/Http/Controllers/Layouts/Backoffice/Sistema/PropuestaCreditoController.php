@@ -1419,6 +1419,7 @@ class PropuestaCreditoController extends Controller
               DB::table('credito')->whereId($id)->update([
                 'fecha_eliminado' => Carbon::now(),
                 'idadministrador' => Auth::user()->id,
+                'idasesor_eliminacion' => $idresponsable,
                 'idcredito_refinanciado'  => 0,
                 'estado' => 'ELIMINADO',
               ]);
@@ -1710,9 +1711,11 @@ class PropuestaCreditoController extends Controller
               }
               //----------------
               
-              DB::table('credito')->whereId($id)->update([
+              DB::table('credito')->whereId($id)->where('estado', '!=', 'ELIMINADO')->update([
                 'fecha_eliminado' => Carbon::now(),
-                'idadministrador' => $idresponsable,
+                'idadministrador' => Auth::user()->id,
+                'idasesor_eliminacion' => $idresponsable,
+                'estado_previo_eliminacion' => DB::raw('estado'),
                 'idcredito_refinanciado'  => 0,
                 'estado' => 'ELIMINADO',
               ]);

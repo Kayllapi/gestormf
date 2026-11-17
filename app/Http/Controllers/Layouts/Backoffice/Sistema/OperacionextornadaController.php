@@ -123,7 +123,8 @@ class OperacionextornadaController extends Controller
           $creditos = DB::table('credito')
               ->join('users as cliente','cliente.id','credito.idcliente')
               ->leftJoin('credito_formapago','credito_formapago.idcredito','credito.id')
-              ->leftJoin('users as responsable','responsable.id','credito.idadministrador')
+              ->leftJoin('users as responsable','responsable.id','credito.idasesor')
+              ->leftJoin('users as responsableeliminado','responsableeliminado.id','credito.idasesor_eliminacion')
               ->leftJoin('tienda','tienda.id','credito.idtienda')
               ->where('credito.estado','ELIMINADO')
               ->where($where2)
@@ -136,10 +137,10 @@ class OperacionextornadaController extends Controller
                   'credito_formapago.banco as banco',
                   'credito_formapago.numerooperacion as numerooperacion',
                   'credito_formapago.codigo as codigo',
-                  'cliente.nombrecompleto as nombrecliente',
+                  DB::raw("CONCAT(CASE WHEN credito.estado_previo_eliminacion = 'PROCESO' THEN 'EN PROCESO' ELSE COALESCE(credito.estado_previo_eliminacion, 'ESTADO NO REGISTRADO') END, ' / ', cliente.nombrecompleto) as nombrecliente"),
                   'responsable.codigo as codigoresponsable',
                   'tienda.nombreagencia as tiendanombre',
-                  DB::raw('CONCAT("") as codigoresponsableeliminado'),
+                  'responsableeliminado.codigo as codigoresponsableeliminado',
                   DB::raw("CASE
                       WHEN credito.idforma_credito = 1 THEN 'CP'
                       WHEN credito.idforma_credito = 2 THEN 'CNP'

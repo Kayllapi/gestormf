@@ -92,8 +92,7 @@ class OperacionextornadaController extends Controller
                   'tienda.nombreagencia as tiendanombre',
                    'responsableeliminado.codigo as codigoresponsableeliminado',
                   DB::raw('CONCAT("") as fc')
-              )
-              ->orderBy('fechaextorno','asc');
+              );
           
           $gastoadministrativooperativos = DB::table('gastoadministrativooperativo')
               ->join('s_sustento_comprobante','s_sustento_comprobante.id','gastoadministrativooperativo.s_idsustento_comprobante')
@@ -117,8 +116,7 @@ class OperacionextornadaController extends Controller
                   'tienda.nombreagencia as tiendanombre',
                   'responsableeliminado.codigo as codigoresponsableeliminado',
                   DB::raw('CONCAT("") as fc')
-              )
-              ->orderBy('fechaextorno','asc');
+              );
           
           $creditos = DB::table('credito')
               ->join('users as cliente','cliente.id','credito.idcliente')
@@ -147,8 +145,7 @@ class OperacionextornadaController extends Controller
                       WHEN credito.idforma_credito = 3 THEN 'CC'
                       ELSE ''
                   END as fc")
-              )
-              ->orderBy('fechaextorno','asc');
+              );
           
           $creditos_extornados = DB::table('credito_cobranzacuota')
               ->join('credito','credito.id','credito_cobranzacuota.idcredito')

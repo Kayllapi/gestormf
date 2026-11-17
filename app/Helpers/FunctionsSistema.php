@@ -32,6 +32,22 @@ function sistema_fecha_pdf($valor): string
     return sprintf('%02d/%02d/%04d', $dia, $mes, $anio).$hora;
 }
 
+function sistema_nombre_usuario_con_rol($idusuario, array $roles): string
+{
+    if (!$idusuario) {
+        return '';
+    }
+    $usuario = DB::table('users')
+        ->join('users_permiso', 'users_permiso.idusers', 'users.id')
+        ->join('permiso', 'permiso.id', 'users_permiso.idpermiso')
+        ->whereIn('users_permiso.idpermiso', $roles)
+        ->where('users.id', $idusuario)
+        ->select('users.nombrecompleto', 'permiso.nombre as nombrepermiso')
+        ->first();
+
+    return $usuario ? "$usuario->nombrecompleto ($usuario->nombrepermiso)" : '';
+}
+
 function sistema_aviso_credito($credito): string
 {
     $avisos = [];

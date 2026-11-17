@@ -2225,6 +2225,7 @@ class CobranzacuotaController extends Controller
               'numero_credito' => $numero_credito,
               'estadocuotas' => $credito->forma_pago_credito_nombre,
               'asesor' => $credito->asesor,
+              'cobranza' => sistema_nombre_usuario_con_rol($credito->idusuariocobranza, [12]),
               //'numero_total' => $cronograma['numero_cuota_cancelada']+$cronograma['numero_cuota_pendiente']+$cronograma['numero_cuota_vencida'],
               //'saldo_total' => number_format($cronograma['cuota_pagada']+$cronograma['cuota_pendiente']+$cronograma['cuota_vencida'],2,'.',''),
               

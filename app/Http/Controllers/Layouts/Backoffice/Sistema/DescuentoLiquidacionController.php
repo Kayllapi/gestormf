@@ -652,6 +652,7 @@ class DescuentoLiquidacionController extends Controller
         
       $tienda = DB::table('tienda')->whereId($idtienda)->first();
       $credito = DB::table('credito')
+                    ->leftJoin('tienda as agencia_desembolso', 'agencia_desembolso.id', 'credito.idtienda')
                     ->join('users as cliente','cliente.id','credito.idcliente')
                     ->leftjoin('users as aval','aval.id','credito.idaval')
                     ->join('forma_credito','forma_credito.id','credito.idforma_credito')
@@ -664,6 +665,7 @@ class DescuentoLiquidacionController extends Controller
 
                     ->select(
                         'credito.*',
+                        'agencia_desembolso.nombreagencia as agencia_desembolso',
                         'cliente.codigo as codigo_cliente',
                         'cliente.identificacion as docuementocliente',
                         'cliente.nombrecompleto as nombreclientecredito',
@@ -686,6 +688,7 @@ class DescuentoLiquidacionController extends Controller
         return view(sistema_view().'/descuentoliquidacion/edit',[
             'tienda' => $tienda,
             'credito' => $credito,
+            'aviso_credito' => sistema_aviso_credito($credito),
         ]);
       }
       else if($request->input('view') == 'eliminar'){

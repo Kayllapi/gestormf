@@ -10,22 +10,6 @@ use Carbon\Carbon;
 
 class CargoController extends Controller
 {
-    private function nombreUsuarioConRol($idusuario, array $roles): string
-    {
-        if (!$idusuario) {
-            return '';
-        }
-        $usuario = DB::table('users')
-            ->join('users_permiso', 'users_permiso.idusers', 'users.id')
-            ->join('permiso', 'permiso.id', 'users_permiso.idpermiso')
-            ->whereIn('users_permiso.idpermiso', $roles)
-            ->where('users.id', $idusuario)
-            ->select('users.nombrecompleto', 'permiso.nombre as nombrepermiso')
-            ->first();
-
-        return $usuario ? "$usuario->nombrecompleto ($usuario->nombrepermiso)" : '';
-    }
-
     private function cargoEjecutivo(): int
     {
         if (usuario_es_master()) {
@@ -280,7 +264,7 @@ class CargoController extends Controller
           $html = '';
           $idasesor = $cliente->idasesor ?? 0;
           $cobradores = $creditos->pluck('idusuariocobranza')->filter()->unique()
-              ->mapWithKeys(fn ($id) => [$id => $this->nombreUsuarioConRol($id, [12])]);
+              ->mapWithKeys(fn ($id) => [$id => sistema_nombre_usuario_con_rol($id, [12])]);
           foreach($creditos as $value){
               $cp = '';
               if($value->idforma_credito==1){
@@ -301,7 +285,7 @@ class CargoController extends Controller
                         </tr>";
           }
 
-          $asesor = $this->nombreUsuarioConRol($idasesor, [3, 4, 7, 11]);
+          $asesor = sistema_nombre_usuario_con_rol($idasesor, [3, 4, 7, 11]);
           return array(
             'cliente' => $cliente,
             'html' => $html,

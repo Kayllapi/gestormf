@@ -363,6 +363,15 @@ class CargoAsesorCastigadoTest extends TestCase
         (new CargoController)->show(Request::create('/', 'GET', ['idcliente' => 101]), 0, 'showlistacreditos');
     }
 
+    public function test_nombre_de_cobranza_incluye_permiso_y_queda_vacio_sin_asignacion_valida(): void
+    {
+        DB::table('users')->whereId(20)->update(['nombrecompleto' => 'Percy']);
+        $this->assertSame('Percy (Cobranza)', sistema_nombre_usuario_con_rol(20, [12]));
+        $this->assertSame('', sistema_nombre_usuario_con_rol(null, [12]));
+        $this->assertSame('', sistema_nombre_usuario_con_rol(999, [12]));
+        $this->assertSame('', sistema_nombre_usuario_con_rol(10, [12]));
+    }
+
     public function test_aviso_combina_lista_negra_y_castigo_del_credito(): void
     {
         $castigado = DB::table('credito')->whereId(1)->first();

@@ -60,6 +60,10 @@
           </tr>
         </tbody>
       </table>
+      <div id="resumen-pagos-saldos" aria-live="polite">
+        @include('layouts.backoffice.sistema.partials.resumen_pagos_saldos')
+      </div>
+      <div id="resumen-pagos-error" class="text-danger" role="alert"></div>
     </div>
     <div class="col-sm-12 col-md-9">
       <div class="card">
@@ -70,6 +74,41 @@
   </div>
 </div>
 <script>
+  var solicitudResumenPagos = null;
+
+  function limpiar_resumen_pagos() {
+    if (solicitudResumenPagos) {
+      solicitudResumenPagos.abort();
+      solicitudResumenPagos = null;
+    }
+    $('#resumen-pagos-error').text('');
+    $('#resumen-pagos-saldos span[id]').text('');
+    $('#resumen-pagos-saldos td[id^="numero_cuota_"]').text('0');
+    $('#cuota_pagada, #cuota_pendiente, #saldo_vencido, #saldo_capital').text('0.00');
+  }
+
+  function cargar_resumen_pagos(idcredito) {
+    limpiar_resumen_pagos();
+    solicitudResumenPagos = $.ajax({
+      url: "{{url('backoffice/'.$tienda->id.'/cobranzacuota/show_cobranzacuota_cronograma')}}",
+      type: 'GET',
+      data: { idcredito: idcredito, numerocuota: 0, tipo: 'pagocuota', acuenta: 0 },
+      success: function (res) {
+        ['estadocuotas', 'numerodecuenta', 'asesor', 'numero_cuota_cancelada',
+         'numero_cuota_pendiente', 'numero_cuota_vencida', 'cuota_pagada',
+         'cuota_pendiente', 'saldo_vencido', 'saldo_capital'].forEach(function (campo) {
+          $('#resumen-pagos-saldos #' + campo).text(res[campo]);
+        });
+        $('#resumen-pagos-saldos #clasificacion').text(res.clasificacion).css('background-color', '#ffc107');
+        $('#resumen-pagos-saldos #resumen_cobranza').text(res.cobranza || '');
+      },
+      error: function (xhr, estado) {
+        if (estado !== 'abort') {
+          $('#resumen-pagos-error').text('No se pudo cargar el resumen de pagos y saldos. Seleccione el crédito nuevamente.');
+        }
+      }
+    });
+  }
 
   $('#idclientesearch').select2({
       ajax: {
@@ -105,6 +144,8 @@
   }
   
   function lista_credito_cliente(id){
+    limpiar_resumen_pagos();
+    $('#form-garantias-result').empty();
     $.ajax({
       url:"{{url('backoffice/0/descuentoliquidacion/showlistacreditos')}}",
       type:'GET',
@@ -127,6 +168,7 @@
   
   function show_data(e) {
     let id = $(e).attr('data-valor-columna');
+    cargar_resumen_pagos(id);
     $('#table-detalle-prestamo tr.selected').removeClass('selected');
     $(e).addClass('selected');
     pagina({ route:"{{url('backoffice')}}/{{$tienda->id}}/descuentoliquidacion/"+id+"/edit?view=editar", result:'#form-garantias-result'});  

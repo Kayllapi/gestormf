@@ -20,10 +20,7 @@ class CobranzacuotaController extends Controller
             return $query->where('credito.idasesor', Auth::id());
         }
 
-        return $query->where(function ($asignacion) {
-            $asignacion->where('credito.idusuariocobranza', Auth::id())
-                ->orWhere('cliente.idasesor', Auth::id());
-        });
+        return $query->where('credito.idusuariocobranza', Auth::id());
     }
 
     public function __construct()
@@ -2317,7 +2314,7 @@ class CobranzacuotaController extends Controller
                 ->join('users as cliente', 'cliente.id', '=', 'credito.idcliente')
                 ->where('credito.estado', 'DESEMBOLSADO')
                 ->where('credito.idestadocredito', 1)
-                // Castigados: cobranza del credito o responsable actual del cliente.
+                // Castigados: solo el ejecutivo de cobranza asignado al credito.
                 ->when($porAsesor, function ($query) use ($soloCastigados) {
                     $this->filtrarCarteraAsesor($query, $soloCastigados);
                 })

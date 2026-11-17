@@ -128,7 +128,7 @@ class CargoAsesorCastigadoTest extends TestCase
         $this->assertSame([], $clientes);
     }
 
-    public function test_pago_castigado_encuentra_cliente_del_ejecutivo_con_credito_castigado(): void
+    public function test_pago_castigado_exige_cobranza_asignada_aunque_el_cliente_sea_del_ejecutivo(): void
     {
         $this->actingAs(User::find(20));
         DB::table('users')->whereId(101)->update(['nombrecompleto' => 'Berny', 'idasesor' => 20]);
@@ -137,17 +137,17 @@ class CargoAsesorCastigadoTest extends TestCase
         $clientes = $controller->show(Request::create('/', 'GET', [
             'buscar' => 'Berny', 'por_asesor' => 1, 'solo_castigados' => 1,
         ]), 1, 'show_credito_tienda');
-        $this->assertSame([101], array_column($clientes, 'id'));
+        $this->assertSame([], $clientes);
         $resultado = $controller->show(Request::create('/', 'GET', [
             'idcliente' => 101, 'por_asesor' => 1, 'solo_castigados' => 1,
         ]), 0, 'showlistacreditos');
-        $this->assertStringContainsString("data-valor-columna='4'", $resultado['html']);
+        $this->assertSame('', $resultado['html']);
 
-        DB::table('users')->whereId(101)->update(['idasesor' => 30]);
+        DB::table('credito')->whereId(4)->update(['idusuariocobranza' => 20]);
         $clientes = $controller->show(Request::create('/', 'GET', [
             'buscar' => 'Berny', 'por_asesor' => 1, 'solo_castigados' => 1,
         ]), 1, 'show_credito_tienda');
-        $this->assertSame([], $clientes);
+        $this->assertSame([101], array_column($clientes, 'id'));
     }
 
     public function test_cargo_castigado_busca_y_lista_solo_castigados_asignados(): void

@@ -32,6 +32,9 @@ class CargoAsesorController extends Controller
 
     public function show(Request $request, $idtienda, $id)
     {
+        abort_unless(in_array($id, ['show_credito_asesor', 'showlistacreditos'], true), 404);
+
+        return app(CargoController::class)->show($request, $idtienda, $id, true);
     }
 
     public function edit(Request $request, $idtienda, $id)

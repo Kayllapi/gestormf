@@ -143,7 +143,7 @@ class CargoController extends Controller
         }
     }
 
-    public function show(Request $request, $idtienda, $id)
+    public function show(Request $request, $idtienda, $id, bool $excluirCastigados = false)
     {
         if($id == 'show_credito'){
           
@@ -180,6 +180,7 @@ class CargoController extends Controller
         else if($id == 'show_credito_asesor'){
 
           $creditos = DB::table('credito')
+            ->when($excluirCastigados, fn ($query) => $query->where('credito.castigo_estado', '!=', 'CONFIRMADO'))
             ->join('users as cliente','cliente.id','credito.idcliente')
             ->where('credito.estado','DESEMBOLSADO')
             ->where('credito.idestadocredito', 1)
@@ -237,6 +238,7 @@ class CargoController extends Controller
 
           $cliente = DB::table('users')->whereId($request->idcliente)->select('users.id','users.nombrecompleto','users.identificacion','users.idasesor')->first();
           $creditos = $this->filtrarCreditosEjecutivo(DB::table('credito'))
+                            ->when($excluirCastigados, fn ($query) => $query->where('credito.castigo_estado', '!=', 'CONFIRMADO'))
                             ->join('forma_pago_credito','forma_pago_credito.id','credito.idforma_pago_credito')
                             ->join('users as cliente','cliente.id','credito.idcliente')
                             ->join('modalidad_credito','modalidad_credito.id','credito.idmodalidad_credito')

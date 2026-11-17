@@ -131,7 +131,7 @@
 <script>
   $('#idcliente').select2({
       ajax: {
-          url:"{{url('backoffice/'.$tienda->id.'/cargo/show_credito_asesor')}}",
+          url:"{{url('backoffice/'.$tienda->id.'/cargoasesor/show_credito_asesor')}}",
           dataType: 'json',
           delay: 250,
           data: function (params) {
@@ -158,7 +158,7 @@
     $('#table-detalle-prestamo > tbody').empty();
     $('.data-cliente').addClass('d-none');
     $.ajax({
-      url:"{{url('backoffice/0/cargo/showlistacreditos')}}",
+      url:"{{url('backoffice/0/cargoasesor/showlistacreditos')}}",
       type:'GET',
       data: {
           idagencia : $('#idagencia').val(),

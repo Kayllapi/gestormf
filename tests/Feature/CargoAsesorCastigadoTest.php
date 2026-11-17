@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Http\Controllers\Layouts\Backoffice\Sistema\CargoController;
+use App\Http\Controllers\Layouts\Backoffice\Sistema\CargoAsesorController;
 use App\Http\Controllers\Layouts\Backoffice\Sistema\CobranzacuotaController;
 use App\Models\User;
 use Illuminate\Database\Schema\Blueprint;
@@ -100,6 +101,22 @@ class CargoAsesorCastigadoTest extends TestCase
         $this->assertStringContainsString("data-valor-columna='1'", $resultado['html']);
         $this->assertStringContainsString("data-valor-columna='2'", $resultado['html']);
         $this->assertStringNotContainsString("data-valor-columna='3'", $resultado['html']);
+    }
+
+    public function test_cargo_asesor_excluye_castigados_incluso_para_administrador(): void
+    {
+        DB::table('permiso')->insert(['id' => 1, 'nombre' => 'Administrador']);
+        DB::table('users_permiso')->where('idusers', 10)->update(['idpermiso' => 1]);
+        $this->actingAs(User::find(10));
+        $controller = new CargoAsesorController;
+        $resultado = $controller->show(Request::create('/', 'GET', ['idcliente' => 100]), 0, 'showlistacreditos');
+        $this->assertStringContainsString("data-valor-columna='3'", $resultado['html']);
+        $this->assertStringNotContainsString("data-valor-columna='1'", $resultado['html']);
+        $this->assertStringNotContainsString("data-valor-columna='2'", $resultado['html']);
+
+        DB::table('credito')->whereId(3)->update(['idestadocredito' => 2]);
+        $clientes = $controller->show(Request::create('/', 'GET', ['buscar' => '123']), 1, 'show_credito_asesor');
+        $this->assertNotContains(100, array_column($clientes, 'id'));
     }
 
     public function test_ejecutivo_puede_filtrar_cliente_mixto_y_solo_recibe_sus_creditos_sin_castigo(): void

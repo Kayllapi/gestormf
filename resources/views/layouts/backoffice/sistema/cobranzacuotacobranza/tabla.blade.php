@@ -462,7 +462,7 @@
             success: function (respuesta){
               
                 $('#table-datosprestamos_cronograma').html(respuesta.tabla_cronorgrama);
-                $('#opciones_datosprestamos').html(respuesta.btn_congelarcredito);
+                $('#opciones_datosprestamos').html(respuesta.opciones_datosprestamos);
                 
                 $('#estadocuotas').html(respuesta.estadocuotas);
                 $('#numerodecuenta').html(respuesta.numerodecuenta);

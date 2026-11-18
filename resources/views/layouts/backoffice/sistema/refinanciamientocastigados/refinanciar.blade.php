@@ -1,0 +1,551 @@
+<form action="javascript:;" 
+      onsubmit="callback({
+          route: '{{ url('backoffice/'.$tienda->id.'/refinanciamientocastigados/'.$credito->id) }}',
+          method: 'PUT',
+          data:{
+              view: 'refinanciamiento',
+              interes_total: $('#interes_total').html(),
+              total_pagar: $('#total_pagar').html(),
+              tipotasa : '{{$credito->modalidad_calculo}}' == 'Interes Simple' ? 1 : 2,
+              validdiasdegracia : '{{$diasdegracia}}',
+          }
+      },
+      function(resultado){
+        lista_credito();
+        $('#modal-close-garantia-cliente').click();
+      },this)"> 
+    <div class="modal-header" style="border-bottom: 0;">
+        <h5 class="modal-title">REFINANCIAR </h5>
+        <button type="button" class="btn-close text-white" id="modal-close-garantia-cliente" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+      <div class="row" style="background-color: #cfecc5 !important;
+              border: 1px solid #326222 !important;
+              color: #000;
+              font-size: 14px;padding: 7px;">
+          <div class="col-md-4"><b>CLIENTE:</b> <span style="font-weight: normal;">{{ $usuario->nombrecompleto }}</span></div>
+          <div class="col-md-4">@if($credito->idaval != 0) <b>AVAL:</b> <span style="font-weight: normal;">{{ $credito->nombreavalcredito }} </span>@endif</div>
+          <div class="col-md-4"><b>PRODUCTO:</b> <span style="font-weight: normal;">{{ $credito->nombreproductocredito }}</span></div>
+      </div>
+    <div class="modal-body">
+      <div class="row">
+          <div class="col-md-7 mt-3">
+              <div class="row">
+              <div class="col-md-6">
+                <div class="row">
+                  <label class="col-sm-5 col-form-label" style="text-align: right;">Monto de Préstamo</label>
+                  <div class="col-sm-7">
+                    <input type="number" step="any" class="form-control" disabled id="monto_solicitado" value="{{$cronograma['cuota_pendiente'] }}" onclick="showtasa()" onkeyup="showtasa()">
+                  </div>
+                </div>
+                <div class="row">
+                  <label class="col-sm-5 col-form-label" style="text-align: right;">Frecuencia de Pago:</label>
+                  <div class="col-sm-7">
+                    <select class="form-control" id="idforma_pago_credito" onchange="showtasa()">
+                      <option></option>
+                      @foreach($forma_pago_credito as $value)
+                        <option value="{{ $value->id }}">{{ $value->nombre }}</option>
+                      @endforeach
+                    </select>
+                  </div>
+                </div>
+                <div class="row">
+                  <label class="col-sm-5 col-form-label" style="text-align: right;">Número de Cuotas:</label>
+                  <div class="col-sm-7">
+                    
+                    <input type="number" step="any" class="form-control" id="cuotas" value="{{ $credito->cuotas }}" onclick="showtasa()" onkeyup="showtasa()">
+                    <input type="hidden" step="any" class="form-control" id="coutas_max_credito" value="0">
+                  </div>
+                </div>
+                @php
+                  $esCompuesto = $credito->modalidad_calculo == 'Interes Compuesto';
+                  $tem_label  = $esCompuesto ? 'TEM' : 'TNM';
+                  $tcem_label = $esCompuesto ? 'TCEM' : 'TCNM';
+                @endphp
+                <div class="row">
+                  <label class="col-sm-5 col-form-label" style="text-align: right;">{{ $tem_label }} (%):</label>
+                  <div class="col-sm-4">
+                    <input type="text" step="any" class="form-control" id="tasa_tem" value="{{ $credito->tasa_tem }}">
+                    <input type="hidden" step="any" class="form-control" id="tasa_tem_old" value="{{ $credito->tasa_tem }}">
+                  </div>
+                  <div class="col-sm-3">
+                    <input type="number" step="any" class="form-control" id="tasa_tem_minima" value="0" disabled>
+                  </div>
+                </div>
+                <div class="row">
+                  <label class="col-sm-5 col-form-label" style="text-align: right;">{{ $tcem_label }} (%):</label>
+                  <div class="col-sm-7">
+                    <input type="number" step="any" class="form-control" id="tasa_tcem" value="0.00" disabled>
+                  </div>
+                </div> 
+                <div style="{{ $credito->modalidad_calculo == 'Interes Compuesto' ? 'display:none;' : '' }}">
+                  <div class="row">
+                    <label class="col-sm-5 col-form-label" style="text-align: right;">TIP (%):</label>
+                    <div class="col-sm-7">
+                      <input type="number" step="any" class="form-control" id="tasa_tip" value="0.00" disabled>
+                    </div>
+                  </div>  
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="row">
+                  <label class="col-sm-8 col-form-label" style="text-align: right;">Dia de Gracia:</label>
+                  <div class="col-sm-4">
+                    <input type="number" step="any" class="form-control" id="dia_gracia" value="{{ $credito->dia_gracia }}">
+                  </div>
+                </div>
+                <div class="row">
+                  <label class="col-sm-8 col-form-label" style="text-align: right;">Fecha de Cálculo:</label>
+                  <div class="col-sm-4">
+                    <input type="date" class="form-control" id="fecha_desembolso" 
+                           value="{{ Carbon\Carbon::now()->format('Y-m-d') }}" disabled>
+                  </div>
+                </div>
+                <div class="row">
+                  <label class="col-sm-8 col-form-label" style="text-align: right;">Ss. Recaudo S/.:</label>
+                  <div class="col-sm-4">
+                    <input type="number" step="any" class="form-control" id="comision" value="{{ $cronograma['total_comision'] }}" disabled>
+                  </div>
+                </div>
+                <div class="row d-none">
+                  <label class="col-sm-8 col-form-label" style="text-align: right;">Cargo Mes S/.:</label>
+                  <div class="col-sm-4">
+                    <input type="number" step="any" class="form-control" id="cargomes" value="0.00">
+                  </div>
+                </div>
+                @if($credito->idforma_credito==1 && $usuario->custodiagarantia_id==1)
+                    <div class="row">
+                      <label class="col-sm-8 col-form-label" style="text-align: right;">Cargo x Custodia/Otros (Periodo) S/.:</label>
+                      <div class="col-sm-4">
+                        <input type="number" step="any" class="form-control" {{ $view_detalle=='false' ? 'disabled' : '' }} id="cargo" value="{{ $credito->cargo }}" disabled>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <label class="col-sm-12 text-end" style="color: #b32121;">Gasto x custodia de garantía para cargo: 
+                        <span class="popover-hover"
+                          data-bs-content='{{ configuracion($credito->idtienda,'comision_gestion_garantia_cargo')['valor'] }} % Mensual, de Cobertura'>
+                          (Acreedor)
+                        </span>
+                      </label>
+                    </div>
+                @else
+                    @if ($usuario->custodiagarantia_id==2)
+                      <div class="row">
+                        <label class="col-sm-8 col-form-label" style="text-align: right;">Cargo x Custodia/Otros (Periodo) S/.:</label>
+                        <div class="col-sm-4">
+                          <input type="number" step="any" class="form-control" {{ $view_detalle=='false' ? 'disabled' : '' }} id="cargo" value="{{ $credito->cargo }}" disabled>
+                        </div>
+                      </div>
+                        <div class="row">
+                          <label class="col-sm-12 text-end" style="color: #b32121;">Gasto x custodia de garantía para cargo: 
+                            <span class="popover-hover"
+                              data-bs-content='{{ configuracion($credito->idtienda,'comision_gestion_garantia_convenio')['valor'] }} % Mensual, de Cobertura'>
+                              (Convenio con Acreedor)
+                            </span>
+                          </label>
+                        </div>
+                    @else
+                      <div class="row">
+                        <label class="col-sm-8 col-form-label" style="text-align: right;">Cargo x Custodia/Otros (Periodo) S/.:</label>
+                        <div class="col-sm-4">
+                          <input type="number" step="any" class="form-control" {{ $view_detalle=='false' ? 'disabled' : '' }} id="cargo" value="{{ $credito->cargo }}">
+                        </div>
+                      </div>
+                    @endif
+                    @if($credito->idforma_credito==1 && $usuario->custodiagarantia_id==0)
+                        <div class="row">
+                          <label class="col-sm-2"></label>
+                          <label class="col-sm-10 text-end" style="color: #b32121;">Seleccionar Depositario.</label>
+                        </div>
+                    @endif
+                @endif
+                @if($view_detalle!='false')
+                <div class="row">
+                  <label class="col-sm-5 col-form-label" style="text-align: right;"></label>
+                  <div class="col-sm-7 ">
+                    <button type="button" class="btn btn-primary" id="generar_cronograma" onclick="cronograma()">CALCULAR</button>
+                  </div>
+                </div>
+                @endif
+              </div>
+              </div>
+          </div>
+          <div class="col-md-5">
+          <div class="text-center" style="font-size: 12px !important;"><b>LISTA DE GARANTIAS</b></div>
+          <div class="table-responsive">
+            <table class="table table-striped" id="table-garantia-cliente">
+              <thead>
+                <tr>
+                  <th>Descripción</th>
+                  <th>V. Mercado</th>
+                  <th>V. Comercial</th>
+                  <th>Cobertura</th>
+                  <th>Garantia</th>
+                </tr>
+              </thead>
+              <tbody>
+
+              </tbody>
+            </table>
+          </div>
+          </div>
+      </div>
+      <div class="row d-none">
+        <div class="col-sm-12">
+          <table class="table">
+              <tr>
+                <td>MONTO</td>
+                <td>CUOTAS</td>
+                <td>TEM</td>
+              </tr>
+            @foreach($tarifario_producto as $value)
+              <tr>
+                <td>{{ $value->monto }}</td>
+                <td>{{ $value->cuotas }}</td>
+                <td>{{ $value->tem }}</td>
+              </tr>
+            @endforeach
+          </table>
+        </div>
+      </div>
+      
+      <div class="row mt-3" style="background-color: #cfecc5 !important;
+              border: 1px solid #326222 !important;
+              color: #000;">
+        <div class="col-sm-12 col-md-3">
+          <div class="row">
+            <input type="hidden" id="monto_cobertura_garantia" value="{{ $credito->monto_cobertura_garantia }}">
+            @if($credito->idforma_credito==1)
+            <label class="col-sm-12 col-form-label" >
+              <span class="bg-light text-dark" style="padding: 4px;border: 1px solid #000 !important;border-radius: 4px;">
+                <b>COBERTURA GARANTIA:</b> <span style="font-weight: normal;">{{ $credito->monto_cobertura_garantia }} SOLES</span>
+              </span>
+            </label>
+            @endif
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-3 d-none">
+          <div class="row">
+            <label class="col-sm-12 col-form-label text-center"><b>CRONOGRAMA DE PAGOS</b></label>
+          </div>
+          
+        </div>
+        <div class="col-sm-12 col-md-9">
+          <div class="row">
+            <div class="col-sm-3">
+              <label class="col-form-label" style="text-align: right;"><b>Interés Total (S/):</b></label>
+              <span class="col-form-label" id="interes_total" style="font-weight: normal;">
+                {{ $credito->interes_total }}
+              </span>
+            </div>
+            <div class="col-sm-3">
+              <label class="col-form-label" style="text-align: right;"><b>Cargo x Cust./Otros (S/):</b></label>
+              <span class="col-form-label" id="total_cargo" style="font-weight: normal;">
+                0.00
+              </span>
+            </div>
+            <div class="col-sm-3">
+              <label class="col-form-label" style="text-align: right;"><b>Ss. Recaudo (S/):</b></label>
+              <span class="col-form-label" id="total_comision" style="font-weight: normal;">
+                0.00
+              </span>
+            </div>
+            <div class="col-sm-3">
+              <label class="col-form-label" style="text-align: right;"><b>Total a Pagar (S/):</b></label>
+              <span class="col-form-label" id="total_pagar" style="font-weight: normal;">
+                {{ $credito->total_pagar }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script>
+        
+        function cronograma(){
+          
+          let monto       = parseFloat($('#monto_solicitado').val());
+          let numerocuota = parseFloat($('#cuotas').val());
+          let fechainicio = $('#fecha_desembolso').val();
+          let frecuencia  = $('#idforma_pago_credito').val();
+          let dia_gracia  = $('#dia_gracia').val();
+
+          if (dia_gracia == '') {
+              $('#dia_gracia').val(0);
+              dia_gracia = 0;
+          }
+          
+          let cargo       = $('#cargo').val();
+          let cargomes  = $('#cargomes').val();
+          
+          let tasa        = $('#tasa_tem').val();
+          let tasa_tem_old = $('#tasa_tem_old').val()??0;
+          let tipotasa    = "{{$credito->modalidad_calculo}}" == 'Interes Simple' ? 1 : 2;
+          
+          if(monto<=0){
+              mensaje = 'Monto de Prestamo debe ser mayor a 0.00.';
+              modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
+              return;
+          }
+          if(numerocuota<=0){
+              mensaje = 'El Número de Cuotas debe ser mayor a 0.';
+              modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
+              return;
+          }
+          
+          if(dia_gracia<0){
+              mensaje = 'El día de gracia debe ser mayor o igual a 0!!.';
+              modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
+              return;
+          }
+          if(dia_gracia > {{$diasdegracia}}){
+              mensaje = 'Máximo puede poner {{$diasdegracia}} días de gracia!!.';
+              modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
+              return;
+          }
+
+          if(monto=='' || numerocuota=='' || fechainicio=='' || frecuencia==''){
+              return false;
+          }
+          
+          $('#table-cronograma > tbody').html('<tr><td colspan="8"><div style="width:100px;height:100px;"></div></td></tr>');
+          load('#table-cronograma > tbody tr td');
+
+          $.ajax({
+              url:"{{url('backoffice/0/credito/cronograma')}}",
+              type: 'GET',
+              data: {
+                  modalidad_credito: 'REFINANCIADO',
+                  monto: monto,
+                  numerocuota: numerocuota,
+                  fechainicio: fechainicio,
+                  frecuencia: frecuencia,
+                  tasa: tasa,
+                  tasa_tem_old: tasa_tem_old,
+                  tipotasa: tipotasa,
+                  dia_gracia: dia_gracia,
+                  cargo: cargo,
+                  cargomes: cargomes,
+                  idcredito: '{{ $credito->id }}'
+              },
+              success: function (res) {
+                  if(res.resultado=='ERROR'){
+                      $('#table-cronograma > tbody').html('<tr><td colspan="8"><div style="width:100px;height:100px;"></div></td></tr>');
+                      // $('#tasa_tem_minima').val(tasa_tem_old);
+                      //$('#tasa_tem').val('0.00');
+                      $('#tasa_tip').val('0.00');
+                      $('#tasa_tcem').val('0.00');
+                      $('#comision').val('0.00');
+                      var mensaje = res.mensaje;
+                      modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
+                  }else{
+                      $('#table-cronograma > tbody').html(res.cronograma);
+                      $('#interes_total').html(res.interes_total);
+                      $('#total_cargo').html(res.total_cargo);
+                      $('#total_comision').html(res.total_comision);
+                      $('#total_pagar').html(res.total_pagar);
+                    
+                      $('#tasa_tem_minima').val(res.tasa_tem_minima);
+                      $('#tasa_tem').val(res.tasa_tem);
+                      $('#tasa_tip').val(res.tasa_tip);
+                      $('#tasa_tcem').val(res.tasa_tcem);
+                      $('#comision').val(res.total_comision); // anterior estaba "cargootros"
+                  }
+              }
+          });
+        }
+
+      </script>
+      <div class="row mt-1 justify-content-center">
+        <div class="col-sm-12 col-md-10">
+            <div style="overflow-y: scroll;height: calc(-360px + 100vh);">
+              <table class="table table-striped" id="table-cronograma">
+                <thead style="position: sticky;top: 0;z-index: 1;">
+                  <th class="text-center">Cuota N°</th>
+                  <th>Fecha de Pago</th>
+                  <th class="text-end">Capital</th>
+                  <th class="text-end">Amortización</th>
+                  <th class="text-end">Interés</th>
+                  <th class="text-end">Cargo x Cust. Garant./Otros</th>
+                  <th class="text-end">Cuota de Préstamo <br> (Cap. + Int. + Cust.)</th>
+                  <th class="text-end">Ss. Recaudo</th>
+                  <th class="text-end">Total a Pagar</th>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td colspan="8">
+                      <div style="width:100px;height:100px;"></div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-2">
+            @if($view_detalle!='false')
+              {{-- <button type="submit" class="btn btn-warning mt-1"><i class="fa-solid fa-floppy-disk"></i> REFINANCIAR CRÉDITO</button> --}}
+              <button type="submit" class="btn btn-warning"
+                style="height: fit-content;
+                  margin-right: 10px;">
+                  <i class="fa-solid fa-floppy-disk"></i> REFINANCIAR CRÉDITO
+              </button>
+            @endif
+          </div>
+      </div>
+
+      <div class="row mt-1 d-none">
+        <div class="col-sm-12">
+          <button type="button" onclick="modal_credito('fuente_ingreso')" class="btn btn-warning"><i class="fa-solid fa-money-bill-trend-up"></i> Fuentes de Ingreso</button>
+          <button type="button" onclick="modal_credito('datos_cliente')" class="btn btn-warning"><i class="fa-solid fa-user-tie"></i> Datos de Cliente</button>
+          <button type="button" onclick="modal_credito('garantia_cliente')" class="btn btn-warning"><i class="fa-solid fa-building-user"></i> Garantias de Cliente</button>
+          <button type="button" onclick="modal_credito('garantia_aval')" class="btn btn-warning"><i class="fa-solid fa-building-user"></i> Garantias de Aval</button>
+          <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Guardar Cambios</button>
+        </div>
+      </div>
+    </div>
+</form>  
+<script>
+  
+  
+    setTimeout(function() {
+      @if($credito->monto_solicitado>0 && $credito->cuotas>0)
+      cronograma();
+      @endif
+    }, 1000);
+  
+  $('#tasa_tem').inputmask("decimal", {
+    digits  : 2,
+    placeholder : "0.00",
+    allowMinus : false,
+    allowPlus : false,
+    max : 9999999999999991,
+    digitsOptional : false
+  });
+  $('#tasa_tem').on('blur', function() {
+    valida_tem()
+  });
+  $('#tasa_tem').on('keydown', function() {
+    setTimeout(function() {
+      valida_tem();
+    }, 1000);
+  });
+  function valida_tem(){
+    let minimo = parseFloat($('#tasa_tem_minima').val());
+    if ($('#tasa_tem').val() === "" || parseFloat($('#tasa_tem').val()) < minimo) {
+      $('#tasa_tem').val(minimo.toFixed(2));
+    }
+  }
+  @include('app.nuevosistema.select2',['input'=>'#idforma_pago_credito', 'val' => $credito->idforma_pago_credito ])
+  function modal_credito(vista){
+    modal({ route:"{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=')}}"+vista+'&detalle=false' });  
+  }
+
+  carga_garantia_table();
+  function carga_garantia_table(){
+    $.ajax({
+      url:"{{url('backoffice/0/credito/showgarantiacliente')}}",
+      type:'GET',
+      data: {
+          idcredito : '{{ $credito->id }}',
+      },
+      success: function (res){
+        $('#table-garantia-cliente > tbody').html(res);
+        plugins_popover();
+      }
+    })
+  }
+  function showtasa(){
+    
+    //$('#tasa_tem').val('');
+    $('#tasa_tem_minima').val('');
+    $('#tasa_tip').val('');
+    $('#comision').val('');
+    
+    let monto       = $('#monto_solicitado').val();
+    let numerocuota = $('#cuotas').val();
+    let frecuencia  = $('#idforma_pago_credito').val();
+    if(monto==''){
+        return false;
+    }
+    if(numerocuota==''){
+        return false;
+    }
+
+    @if($credito->idforma_credito==1 && $usuario->custodiagarantia_id==1)
+        var comision_gestion_garantia_cargo = parseFloat({{ configuracion($credito->idtienda,'comision_gestion_garantia_cargo')['valor'] }});
+        var monto_cobertura_garantia =  parseFloat($('#monto_cobertura_garantia').val());
+        var cargocom = 0;
+        var cargocom_mes = 0;
+        if(frecuencia==1){
+            cargocom = ((comision_gestion_garantia_cargo/26)*numerocuota)/100;
+            cargocom_mes = ((comision_gestion_garantia_cargo/26)*26)/100;
+        }
+        else if(frecuencia==2){
+            cargocom = ((comision_gestion_garantia_cargo/4)*numerocuota)/100;
+            cargocom_mes = ((comision_gestion_garantia_cargo/4)*4)/100;
+        }
+        else if(frecuencia==3){
+            cargocom = ((comision_gestion_garantia_cargo/2)*numerocuota)/100;
+            cargocom_mes = ((comision_gestion_garantia_cargo/2)*2)/100;
+        }
+        else if(frecuencia==4){
+            cargocom = ((comision_gestion_garantia_cargo/1)*numerocuota)/100;
+            cargocom_mes = ((comision_gestion_garantia_cargo/1)*1)/100;
+        }
+        var cargo = cargocom*monto_cobertura_garantia;
+        var cargomes = cargocom_mes*monto_cobertura_garantia;
+
+        let redondeado = (Math.round(cargo * 10) / 10).toFixed(2);
+        $('#cargo').val(redondeado);
+        $('#cargomes').val(cargomes.toFixed(2));
+    @else
+        @if($usuario->custodiagarantia_id==2)
+            var comision_gestion_garantia_convenio = parseFloat({{ configuracion($credito->idtienda,'comision_gestion_garantia_convenio')['valor'] }});
+            var monto_cobertura_garantia =  parseFloat($('#monto_cobertura_garantia').val());
+            var cargocom = 0;
+            var cargocom_mes = 0;
+            if(frecuencia==1){
+                cargocom = ((comision_gestion_garantia_convenio/26)*numerocuota)/100;
+                cargocom_mes = ((comision_gestion_garantia_convenio/26)*26)/100;
+            }
+            else if(frecuencia==2){
+                cargocom = ((comision_gestion_garantia_convenio/4)*numerocuota)/100;
+                cargocom_mes = ((comision_gestion_garantia_convenio/4)*4)/100;
+            }
+            else if(frecuencia==3){
+                cargocom = ((comision_gestion_garantia_convenio/2)*numerocuota)/100;
+                cargocom_mes = ((comision_gestion_garantia_convenio/2)*2)/100;
+            }
+            else if(frecuencia==4){
+                cargocom = ((comision_gestion_garantia_convenio/1)*numerocuota)/100;
+                cargocom_mes = ((comision_gestion_garantia_convenio/1)*1)/100;
+            }
+            var cargo = cargocom*monto_cobertura_garantia;
+            var cargomes = cargocom_mes*monto_cobertura_garantia;
+
+            let redondeado = (Math.round(cargo * 10) / 10).toFixed(2);
+            $('#cargo').val(redondeado);
+            $('#cargomes').val(cargomes.toFixed(2));
+        @endif
+        $('#cargomes').val('0.00');
+    @endif
+
+    $.ajax({
+      url:"{{url('backoffice/0/credito/showtasa')}}",
+      type:'GET',
+      data: {
+          monto: monto,
+          numerocuota: numerocuota,
+          tasa: $('#tasa_tem').val(),
+          // tasa_tem_old: $('#tasa_tem_old').val(),
+          frecuencia: frecuencia,
+          idcredito: '{{ $credito->id }}'
+      },
+      success: function (res){
+        $('#tasa_tem_minima').val(res.tasa_tem_minima);
+        $('#tasa_tip').val(res.tasa_tip);
+        // $('#comision').val(res.cargootros);
+      }
+    })
+  }
+  
+</script>    
+

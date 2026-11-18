@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h5 class="modal-title">Refinanciamiento de Crédito</h5>
+  <h5 class="modal-title">Refinanciamiento de Créditos <span style="background-color: #E8E585;">Castigados</span></h5>
   
   <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>
@@ -49,6 +49,12 @@
                                 {{-- <select class="form-control" id="idasesor" disabled>
                                     <option></option>
                                 </select> --}}
+                            </div>
+                          </div>
+                          <div class="row mt-1">
+                            <label for="nombrecobranza" class="col-sm-4 col-form-label" style="text-align: right;">COBRANZA</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="nombrecobranza" value="" disabled>
                             </div>
                           </div>
                       </div>
@@ -101,26 +107,20 @@
     theme: 'bootstrap-5', dropdownParent: $('#idcliente').parent(),
     placeholder: '-- Seleccionar --', minimumInputLength: 2,
     ajax: {
-      url: @json(url('backoffice/'.$tienda->id.'/refinanciamientoasesor/clientes')),
+      url: @json(url('backoffice/'.$tienda->id.'/refinanciamientocastigados/clientes')),
       dataType: 'json', delay: 250,
       data: params => ({buscar: params.term}),
       processResults: data => data
     }
   }).on('select2:select', function(e) {
-    if (e.params.data.observado && !e.params.data.tiene_creditos_activos) {
-      modal({ route: @json(url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')) + '&mensaje=' + encodeURIComponent('Cliente Observado'), size: 'modal-sm' });
-      $('#idcliente').val(null).trigger('change');
-      $('#nombreasesor').val(@json(Auth::user()->nombrecompleto));
-      $('#idasesor').val(@json(Auth::user()->id));
-      $('#table-lista-credito > tbody').empty();
-      return;
-    }
     $('#nombreasesor').val(e.params.data.nombreasesor);
     $('#idasesor').val(e.params.data.idasesor || '');
+    $('#nombrecobranza').val(e.params.data.nombrecobranza);
     $('#table-lista-credito > tbody').empty();
   }).on('select2:clear', function() {
     $('#nombreasesor').val(@json(Auth::user()->nombrecompleto));
     $('#idasesor').val(@json(Auth::user()->id));
+    $('#nombrecobranza').val('');
     $('#table-lista-credito > tbody').empty();
   });
   // sistema_select2({ input:'#idasesor',val:'{{Auth::user()->id}}' });
@@ -149,7 +149,7 @@
     }*/
     
     $.ajax({
-      url:"{{url('backoffice/0/refinanciamiento/showtable')}}",
+      url:"{{url('backoffice/0/refinanciamientocastigados/showtable')}}",
       type:'GET',
       data: {
           idagencia : $('#idagencia').val(),
@@ -178,7 +178,7 @@
     let id = $(e).attr('refinanciar-valor-columna');
     //$('tr.selected').removeClass('selected');
     //$(e).addClass('selected');
-    modal({ route:"{{url('backoffice')}}/{{$tienda->id}}/refinanciamiento/"+id+"/edit?view=refinanciar", size: 'modal-fullscreen' });  
+    modal({ route:"{{url('backoffice')}}/{{$tienda->id}}/refinanciamientocastigados/"+id+"/edit?view=refinanciar", size: 'modal-fullscreen' });  
   }
  
    function vistapreliminar(){

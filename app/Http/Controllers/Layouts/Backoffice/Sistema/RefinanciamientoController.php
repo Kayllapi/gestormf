@@ -47,8 +47,40 @@ class RefinanciamientoController extends Controller
     {
     }
 
+    public static function buscarClientes(Request $request, $idtienda, ?int $idasesor = null)
+    {
+            $request->validate(['buscar' => 'nullable|string|max:100']);
+            $buscar = trim((string) $request->input('buscar'));
+            $clientes = DB::table('users as cliente')
+                ->leftJoin('users as asesor', 'asesor.id', 'cliente.idasesor')
+                ->where('cliente.idtienda', $idtienda)
+                ->where('cliente.idestado', 1)
+                ->where('cliente.idtipousuario', 2)
+                ->when($idasesor !== null, fn ($query) => $query->where('cliente.idasesor', $idasesor))
+                ->where(function ($query) use ($buscar) {
+                    $query->where('cliente.nombrecompleto', 'like', '%'.$buscar.'%')
+                        ->orWhere('cliente.identificacion', 'like', '%'.$buscar.'%');
+                })
+                ->orderBy('cliente.nombrecompleto')
+                ->limit(50)
+                ->select('cliente.id', 'cliente.nombrecompleto', 'cliente.identificacion', 'cliente.idasesor', 'asesor.nombrecompleto as nombreasesor')
+                ->selectRaw('exists (select 1 from s_listanegra where s_listanegra.idcliente = cliente.id) as observado')
+                ->get();
+
+            return response()->json(['results' => $clientes->map(fn ($cliente) => [
+                'id' => $cliente->id,
+                'text' => ($cliente->identificacion && $cliente->identificacion != '0' ? $cliente->identificacion.' - ' : '').$cliente->nombrecompleto,
+                'idasesor' => $cliente->idasesor,
+                'nombreasesor' => $cliente->nombreasesor ?: 'Sin ejecutivo asignado',
+                'observado' => (bool) $cliente->observado,
+            ])]);
+    }
+
     public function show(Request $request, $idtienda, $id)
     {
+        if ($id == 'clientes') {
+            return self::buscarClientes($request, $idtienda);
+        }
 
         if($id == 'showtable'){
           $where = [];
@@ -61,7 +93,7 @@ class RefinanciamientoController extends Controller
               $where[] = ['credito.idcliente',$request->idcliente];
               $where2[] = ['credito.idcliente',$request->idcliente];
           }
-          if($request->idasesor!=''){
+          if($request->idasesor!='' && $request->idcliente==''){
               $where[] = ['credito.idasesor',$request->idasesor];
               $where2[] = ['credito.idasesor',$request->idasesor];
           }
@@ -78,6 +110,7 @@ class RefinanciamientoController extends Controller
               ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
               ->where('credito.estado','DESEMBOLSADO')
               ->where('credito.idestadocredito',1)
+              ->where('credito.castigo_estado', '!=', 'CONFIRMADO')
               ->where(function($query) use ($where, $where2){
                   $query->where(function($query) use ($where){
                       $query->where($where);
@@ -138,6 +171,7 @@ class RefinanciamientoController extends Controller
                 ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
                 ->where('credito.estado','DESEMBOLSADO')
                 ->where('credito.idestadocredito',1)
+                ->where('credito.castigo_estado', '!=', 'CONFIRMADO')
                 ->where(function($query) use ($where, $where2){
                     $query->where(function($query) use ($where){
                         $query->where($where);

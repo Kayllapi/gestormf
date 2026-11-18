@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h5 class="modal-title">Refinanciamiento de Crédito</h5>
+  <h5 class="modal-title">Refinanciamiento de Crédito Administración</h5>
   
   <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>
@@ -44,18 +44,7 @@
                           <div class="row mt-1">
                             <label for="fecha_fin" class="col-sm-4 col-form-label" style="text-align: right;">EJECUTIVO</label>
                             <div class="col-sm-8">
-                                @php
-                                    $usuario = DB::table('users')
-                                        ->join('users_permiso','users_permiso.idusers','users.id')
-                                        ->join('permiso','permiso.id','users_permiso.idpermiso')
-                                        ->whereIn('users_permiso.idpermiso',[3,4,7,11])
-                                        ->where('users_permiso.idtienda',$tienda->id)
-                                        ->where('users.id', Auth::user()->id)
-                                        ->select('users.nombrecompleto','permiso.nombre as nombrepermiso')
-                                        ->first();
-                                    $usuarioText = "$usuario->nombrecompleto ($usuario->nombrepermiso)";
-                                @endphp
-                                <input type="text" class="form-control" value="{{$usuarioText}}" disabled>
+                                <input type="text" class="form-control" id="nombreasesor" value="{{Auth::user()->nombrecompleto}}" disabled>
                                 <input type="hidden" id="idasesor" value="{{Auth::user()->id}}">
                                 {{-- <select class="form-control" id="idasesor" disabled>
                                     <option></option>
@@ -108,7 +97,32 @@
 <script>
 
   // sistema_select2({ input:'#idagencia',val:'{{$tienda->id}}' });
-  sistema_select2({ idtienda:{{$tienda->id}}, json:'tienda:usuario', input:'#idcliente' });
+  $('#idcliente').select2({
+    theme: 'bootstrap-5', dropdownParent: $('#idcliente').parent(),
+    placeholder: '-- Seleccionar --', allowClear: true, minimumInputLength: 2,
+    ajax: {
+      url: @json(url('backoffice/'.$tienda->id.'/refinanciamiento/clientes')),
+      dataType: 'json', delay: 250,
+      data: params => ({buscar: params.term}),
+      processResults: data => data
+    }
+  }).on('select2:select', function(e) {
+    if (e.params.data.observado) {
+      modal({ route: @json(url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')) + '&mensaje=' + encodeURIComponent('Cliente Observado'), size: 'modal-sm' });
+      $('#idcliente').val(null).trigger('change');
+      $('#nombreasesor').val(@json(Auth::user()->nombrecompleto));
+      $('#idasesor').val(@json(Auth::user()->id));
+      $('#table-lista-credito > tbody').empty();
+      return;
+    }
+    $('#nombreasesor').val(e.params.data.nombreasesor);
+    $('#idasesor').val(e.params.data.idasesor || '');
+    $('#table-lista-credito > tbody').empty();
+  }).on('select2:clear', function() {
+    $('#nombreasesor').val(@json(Auth::user()->nombrecompleto));
+    $('#idasesor').val(@json(Auth::user()->id));
+    $('#table-lista-credito > tbody').empty();
+  });
   // sistema_select2({ input:'#idasesor',val:'{{Auth::user()->id}}' });
 
   // mostrarAsesor();

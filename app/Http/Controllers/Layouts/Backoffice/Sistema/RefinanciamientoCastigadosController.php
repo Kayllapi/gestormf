@@ -199,7 +199,7 @@ class RefinanciamientoCastigadosController extends Controller
                             <td>{$operacionen}</td>
                             <td>{$value->nombremodalidadcredito}</td>
                             <td>{$value->codigoasesor}</td>
-                            <td>".($value->borrador_refinanciamiento ? 'En proceso de refinanciamiento' : '')."</td>
+                            <td>".($value->borrador_refinanciamiento ? '<span style="background-color: #ffb2b2 !important; font-weight: bold;">En proceso de refinanciamiento</span>' : '')."</td>
                             <td>{$opcion}</td>
                         </tr>";
               $total_desembolsado += $value->monto_solicitado;

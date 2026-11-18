@@ -94,28 +94,12 @@
         </div>
       </div>
 </div>
-<style>
-  .refinanciamiento-cliente .select2-selection { position: relative; padding-right: 3.5rem; }
-  .refinanciamiento-cliente .select2-selection__clear {
-    position: absolute;
-    right: 2rem;
-    top: 50%;
-    transform: translateY(-50%);
-    margin: 0;
-    padding: 0 0.25rem;
-    color: #6c757d;
-    font-size: 1.25rem;
-    line-height: 1;
-    cursor: pointer;
-  }
-  .refinanciamiento-cliente .select2-selection__clear:hover { color: #212529; }
-</style>
 <script>
 
   // sistema_select2({ input:'#idagencia',val:'{{$tienda->id}}' });
   $('#idcliente').select2({
     theme: 'bootstrap-5', dropdownParent: $('#idcliente').parent(),
-    placeholder: '-- Seleccionar --', allowClear: true, minimumInputLength: 2,
+    placeholder: '-- Seleccionar --', minimumInputLength: 2,
     ajax: {
       url: @json(url('backoffice/'.$tienda->id.'/refinanciamientoasesor/clientes')),
       dataType: 'json', delay: 250,

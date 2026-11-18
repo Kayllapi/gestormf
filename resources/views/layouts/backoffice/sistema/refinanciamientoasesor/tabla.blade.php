@@ -28,7 +28,7 @@
                         </div>
                         <div class="row">
                             <label for="fecha_fin" class="col-sm-3 col-form-label">CLIENTE</label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-9 refinanciamiento-cliente">
                                 <select class="form-control" id="idcliente">
                                   <option></option>
                                 </select>
@@ -94,6 +94,22 @@
         </div>
       </div>
 </div>
+<style>
+  .refinanciamiento-cliente .select2-selection { position: relative; padding-right: 3.5rem; }
+  .refinanciamiento-cliente .select2-selection__clear {
+    position: absolute;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: 0;
+    padding: 0 0.25rem;
+    color: #6c757d;
+    font-size: 1.25rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+  .refinanciamiento-cliente .select2-selection__clear:hover { color: #212529; }
+</style>
 <script>
 
   // sistema_select2({ input:'#idagencia',val:'{{$tienda->id}}' });

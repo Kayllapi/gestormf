@@ -278,6 +278,16 @@ class RefinanciamientoCastigadosController extends Controller
         abort_unless($esAdministrador || $this->esCobranza((int) $idtienda), 403);
         $borrador = DB::table('refinanciamiento_castigado_borradores')->where('idcredito', $id)->first();
         $datosPrevios = $borrador ? json_decode($borrador->datos, true) : [];
+        $responsables = $esAdministrador ? DB::table('users')
+            ->join('users_permiso', 'users_permiso.idusers', 'users.id')
+            ->join('permiso', 'permiso.id', 'users_permiso.idpermiso')
+            ->where('users.idestado', 1)->where('users.idestadousuario', 1)->where('users.idtipousuario', 1)
+            ->where('users_permiso.idtienda', $credito->idtienda)
+            ->where(fn ($query) => $query->where('permiso.rango', 1)->orWhere('permiso.id', 1))
+            ->select('users.id', 'users.nombrecompleto', 'permiso.nombre as nombrepermiso')
+            ->orderBy('users.nombrecompleto')->get()
+            ->filter(fn ($responsable) => \App\Services\CastigoCredito::puedeConfirmar((int) $responsable->id, (int) $credito->idtienda))
+            ->unique('id') : collect();
         
       
       $tarifario_producto = DB::table('tarifario')
@@ -318,6 +328,7 @@ class RefinanciamientoCastigadosController extends Controller
           'diasdegracia' => $diasdegracia->dias,
           'esAdministrador' => $esAdministrador,
           'datosPrevios' => $datosPrevios,
+          'responsables' => $responsables,
           'view_detalle' => $request->detalle
         ]);
       }
@@ -361,7 +372,10 @@ class RefinanciamientoCastigadosController extends Controller
         }
         if($request->input('view') == 'refinanciamiento') {
             abort_unless(\App\Services\CastigoCredito::puedeConfirmar((int) Auth::id(), (int) $idtienda), 403);
-            $request->merge(['idresponsable' => (int) Auth::id()]);
+            $request->validate([
+                'idresponsable' => 'required|integer|min:1', 'responsableclave' => 'required|string',
+            ]);
+            \App\Services\AutorizacionRefinanciamientoCastigado::verificar((int) $request->idresponsable, (int) $idtienda, (string) $request->responsableclave);
 
             return DB::transaction(function () use ($request, $idtienda, $id) {
                 $original = DB::table('credito')->where('id', $id)->lockForUpdate()->first();

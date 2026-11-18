@@ -16,7 +16,7 @@
         $('#modal-close-garantia-cliente').click();
       },this)"> 
     <div class="modal-header" style="border-bottom: 0;">
-        <h5 class="modal-title">REFINANCIAR </h5>
+        <h5 class="modal-title">REFINANCIAR <span style="background-color: #E8E585;">CASTIGADOS</span></h5>
         <button type="button" class="btn-close text-white" id="modal-close-garantia-cliente" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
       <div class="row" style="background-color: #cfecc5 !important;
@@ -386,7 +386,15 @@
           <div class="col-sm-12 col-md-2">
             @if($view_detalle!='false')
               @if($esAdministrador)
-              {{-- <button type="submit" class="btn btn-warning mt-1"><i class="fa-solid fa-floppy-disk"></i> REFINANCIAR CRÉDITO</button> --}}
+              <label for="idresponsable" class="form-label">Responsable *</label>
+              <select id="idresponsable" class="form-select mb-2" required>
+                <option value="">-- Seleccionar --</option>
+                @foreach($responsables as $responsable)
+                  <option value="{{ $responsable->id }}">{{ $responsable->nombrecompleto }} ({{ $responsable->nombrepermiso }})</option>
+                @endforeach
+              </select>
+              <label for="responsableclave" class="form-label">Contraseña *</label>
+              <input type="password" id="responsableclave" class="form-control mb-2" autocomplete="current-password" required>
               <button type="submit" class="btn btn-warning" {{ !$datosPrevios ? 'disabled' : '' }}
                 style="height: fit-content;
                   margin-right: 10px;">
@@ -411,9 +419,9 @@
     </div>
 </form>  
 <script>
+  @if($esAdministrador) sistema_select2({ input:'#idresponsable' }); @endif
   @if($datosPrevios)
-  const datosPreviosRefinanciamiento = @json($datosPrevios);
-  Object.entries(datosPreviosRefinanciamiento).forEach(([id, valor]) => $('#' + id).val(valor));
+  Object.entries(@json($datosPrevios)).forEach(([id, valor]) => $('#' + id).val(valor));
   @endif
   
     setTimeout(function() {
@@ -444,7 +452,10 @@
       $('#tasa_tem').val(minimo.toFixed(2));
     }
   }
-  @include('app.nuevosistema.select2',['input'=>'#idforma_pago_credito', 'val' => $datosPrevios['idforma_pago_credito'] ?? $credito->idforma_pago_credito ])
+  $('#idforma_pago_credito').select2({
+    placeholder: '-- Seleccionar --', minimumResultsForSearch: -1, theme: 'bootstrap-5',
+    dropdownParent: $('#idforma_pago_credito').parent().parent()
+  }).val(@json($datosPrevios['idforma_pago_credito'] ?? $credito->idforma_pago_credito)).trigger('change.select2');
   function modal_credito(vista){
     modal({ route:"{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=')}}"+vista+'&detalle=false' });  
   }

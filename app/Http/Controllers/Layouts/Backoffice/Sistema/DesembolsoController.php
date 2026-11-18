@@ -470,6 +470,25 @@ class DesembolsoController extends Controller
 
     public function update(Request $request, $idtienda, $id)
     {
+        if ($request->input('view') === 'realizar_desembolo') {
+            $propuesta = DB::table('credito')->where('id', $id)->first();
+            if ($propuesta && ($propuesta->es_refinanciamiento_castigado ?? false)) {
+                if (!(int) $propuesta->refinanciamiento_castigado_responsable) {
+                    throw \Illuminate\Validation\ValidationException::withMessages([
+                        'credito' => 'La propuesta no tiene una autorización de refinanciamiento.',
+                    ]);
+                }
+                $cuenta = DB::transaction(fn () => \App\Services\CierreRefinanciamientoCastigado::finalizarConDeudaActual(
+                    (int) $propuesta->idcredito_refinanciado, (int) $id, (int) $idtienda,
+                    (int) $propuesta->refinanciamiento_castigado_responsable, (int) $propuesta->idasesor
+                ), 3);
+
+                return response()->json([
+                    'resultado' => 'CORRECTO',
+                    'mensaje' => 'Refinanciamiento activado sin movimiento de caja. Cuenta C'.$cuenta.'.',
+                ]);
+            }
+        }
         
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
       
@@ -802,17 +821,7 @@ class DesembolsoController extends Controller
                              
               }
           
-              $credito_ult = DB::table('credito')
-                  ->orderBy('credito.cuenta','desc')
-                  ->limit(1)
-                  ->first();
-              $codigo_credito = 1;
-              if($credito_ult!=''){
-                  $codigo_credito = $credito_ult->cuenta+1;
-              }
-          
-              DB::table('credito')->whereId($id)->update([
-                'cuenta' => $codigo_credito,
+              \App\Services\NumeracionCuentaCredito::asignar((int) $id, [
                 'monto_desembolsado' => $monto_desembolsado,
                 'descuento_saldo' => $descuento_saldo,
                 'neto_entregar' => $neto_entregar,

@@ -11,11 +11,13 @@
           },
           function(res){
               lista_credito();
+              @if(!($credito->es_refinanciamiento_castigado ?? false))
               verpdf('pdf_ticket',0,0,{{$credito->id}});
               $('#cont_botonesdesembolso').css('display','block'); 
               $('#cont_garantias').css('display','block'); 
-              $('#btn_desembolsar').css('display','none'); 
               imprimirTicketPdf();
+              @endif
+              $('#btn_desembolsar').css('display','none');
               $('#modal-close-desembolar-credito').click();
               removecarga({input:'#carga_desembolsar_credito'});
           },this)"> 
@@ -26,6 +28,9 @@
         <button type="button" class="btn-close text-white" id="modal-close-desembolar-credito" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <div class="modal-body modal-body-cualitativa">
+      @if($credito->es_refinanciamiento_castigado ?? false)
+        <p>Se sustituirá la deuda castigada por la nueva cuenta. No se entregará ni recibirá dinero.</p>
+      @endif
  
       {{-- refinanciado --}}
       @if($credito->idmodalidad_credito==4)

@@ -69,6 +69,26 @@ class CobranzacuotaController extends Controller
   
     public function store(Request $request, $idtienda)
     {
+        if ($request->input('view') === 'registrar') {
+            $request->validate(['idcredito' => 'required|integer|min:1']);
+
+            return DB::transaction(function () use ($request, $idtienda) {
+                $credito = DB::table('credito')->where('id', $request->idcredito)->lockForUpdate()->first();
+                if (!$credito || $credito->estado !== 'DESEMBOLSADO' || (int) $credito->idestadocredito !== 1) {
+                    throw \Illuminate\Validation\ValidationException::withMessages([
+                        'idcredito' => 'El crédito ya no está activo. Actualice la pantalla antes de registrar el pago.',
+                    ]);
+                }
+
+                return $this->procesarRegistro($request, $idtienda);
+            });
+        }
+
+        return $this->procesarRegistro($request, $idtienda);
+    }
+
+    private function procesarRegistro(Request $request, $idtienda)
+    {
         
       
         if($request->input('view') == 'registrar') {

@@ -533,8 +533,28 @@ class PagoprestamoCastigadoController extends Controller
 
     public function update(Request $request, $idtienda, $id)
     {
-        
-        
+        if ($request->input('view') === 'extornar') {
+            return DB::transaction(function () use ($request, $idtienda, $id) {
+                $idcredito = DB::table('credito_cobranzacuota')->where('id', $id)->value('idcredito');
+                if ($idcredito) {
+                    DB::table('credito')->where('id', $idcredito)->lockForUpdate()->first();
+                    if (DB::table('refinanciamiento_castigado_acuerdos')->where('idcredito_original', $idcredito)->exists()) {
+                        return response()->json([
+                            'resultado' => 'ERROR',
+                            'mensaje' => 'No se puede extornar un pago de un crédito con un acuerdo de refinanciamiento vigente.',
+                        ]);
+                    }
+                }
+
+                return $this->procesarActualizacion($request, $idtienda, $id);
+            });
+        }
+
+        return $this->procesarActualizacion($request, $idtienda, $id);
+    }
+
+    private function procesarActualizacion(Request $request, $idtienda, $id)
+    {
         if($request->input('view') == 'extornar'){
           $rules = [     
               'idresponsable' => 'required',          

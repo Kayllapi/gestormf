@@ -109,67 +109,6 @@ class RefinanciamientoCastigadosController extends Controller
               $where2[] = ['credito.idcliente',$request->idcliente];
           }
           
-          $creditos_dt = DB::table('credito')
-              ->join('forma_pago_credito','forma_pago_credito.id','credito.idforma_pago_credito')
-              ->join('users as cliente','cliente.id','credito.idcliente')
-              ->leftjoin('users as cajero','cajero.id','credito.idcajero')
-              ->leftjoin('users as asesor','asesor.id','credito.idasesor')
-              ->leftjoin('users as administrador','administrador.id','credito.idadministrador')
-              ->leftjoin('users as aval','aval.id','credito.idaval')
-              ->join('modalidad_credito','modalidad_credito.id','credito.idmodalidad_credito')
-              ->join('tipo_operacion_credito','tipo_operacion_credito.id','credito.idtipo_operacion_credito')
-              ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
-              ->where('credito.estado','DESEMBOLSADO')
-              ->where('credito.idestadocredito',1)
-              ->where('credito.castigo_estado', 'CONFIRMADO')
-              ->where(function($query) use ($where, $where2){
-                  $query->where(function($query) use ($where){
-                      $query->where($where);
-                  })
-                  ->orWhere(function($query) use ($where2){
-                      $query->where($where2);
-                  });
-              })
-              ->select(
-                  'credito.*',
-                  'cliente.nombrecompleto as nombrecliente',
-                  'aval.nombrecompleto as nombreaval',
-                  'credito_prendatario.nombre as nombreproductocredito' ,
-                  'modalidad_credito.nombre as nombremodalidadcredito' ,
-                  'forma_pago_credito.nombre as frecuencianombre' ,
-                  'cajero.usuario as codigocajero',
-                  'asesor.usuario as codigoasesor',
-                  'administrador.nombrecompleto as nombreadministrador',
-              )
-              ->orderBy('credito.fecha_desembolso','asc')
-              ->get();
-
-            foreach ($creditos_dt as $value) {
-                $creditorefinanciado = DB::table('credito')
-                    ->where('idcredito_refinanciado',$value->id)
-                    ->first();
-                if($creditorefinanciado){
-                    if (Carbon::parse($creditorefinanciado->fecha)->lte(now()->subDay())) {
-                        DB::table('credito_cronograma')->where('idcredito', $creditorefinanciado->id)->delete();
-                        DB::table('credito_garantia')->where('idcredito', $creditorefinanciado->id)->delete();
-                        DB::table('credito_evaluacion_cualitativa')->where('idcredito', $creditorefinanciado->id)->delete();
-                        DB::table('credito_evaluacion_cuantitativa')->where('idcredito', $creditorefinanciado->id)->delete();
-                        DB::table('credito_cuantitativa_deudas')->where('idcredito', $creditorefinanciado->id)->delete();
-                        DB::table('credito_cuantitativa_control_limites')->where('idcredito', $creditorefinanciado->id)->delete();
-                        DB::table('credito_cuantitativa_ingreso_adicional')->where('idcredito', $creditorefinanciado->id)->delete();
-                        DB::table('credito_cuantitativa_margen_venta')->where('idcredito', $creditorefinanciado->id)->delete();
-                        DB::table('credito_evaluacion_resumida')->where('idcredito', $creditorefinanciado->id)->delete();
-                        DB::table('credito_flujo_caja')->where('idcredito', $creditorefinanciado->id)->delete();
-                        DB::table('credito_formato_evaluacion')->where('idcredito', $creditorefinanciado->id)->delete();
-                        DB::table('credito_propuesta')->where('idcredito', $creditorefinanciado->id)->delete();
-                        DB::table('credito_cuantitativa_inventario')->where('idcredito', $creditorefinanciado->id)->delete();
-                        DB::table('credito_polizaseguro_prestamo')->where('id_credito', $creditorefinanciado->id)->delete();
-                        DB::table('credito_representantecomun_prestamo')->where('id_credito', $creditorefinanciado->id)->delete();
-                        DB::table('credito')->whereId($creditorefinanciado->id)->delete();
-                    }
-                }
-            }
-
             $creditos = DB::table('credito')
                 ->join('forma_pago_credito','forma_pago_credito.id','credito.idforma_pago_credito')
                 ->join('users as cliente','cliente.id','credito.idcliente')
@@ -334,6 +273,16 @@ class RefinanciamientoCastigadosController extends Controller
           ]);
         }
       else if( $request->input('view') == 'refinanciar' ){
+        $responsables = DB::table('users')
+            ->join('users_permiso', 'users_permiso.idusers', 'users.id')
+            ->join('permiso', 'permiso.id', 'users_permiso.idpermiso')
+            ->where('users.idestado', 1)->where('users.idestadousuario', 1)->where('users.idtipousuario', 1)
+            ->where('users_permiso.idtienda', $credito->idtienda)
+            ->where(fn ($query) => $query->where('permiso.rango', 1)->orWhere('permiso.id', 1))
+            ->select('users.id', 'users.nombrecompleto', 'permiso.nombre as nombrepermiso')
+            ->orderBy('users.nombrecompleto')->get()
+            ->filter(fn ($usuario) => \App\Services\CastigoCredito::puedeConfirmar((int) $usuario->id, (int) $credito->idtienda))
+            ->unique('id');
         
       
       $tarifario_producto = DB::table('tarifario')
@@ -372,12 +321,76 @@ class RefinanciamientoCastigadosController extends Controller
           'credito' => $credito,
           'forma_credito' => $this->forma_credito,
           'diasdegracia' => $diasdegracia->dias,
+          'responsables' => $responsables,
           'view_detalle' => $request->detalle
         ]);
       }
     }
 
     public function update(Request $request, $idtienda, $id)
+    {
+        if($request->input('view') == 'refinanciamiento') {
+            $request->validate([
+                'idresponsable' => 'required|integer|min:1', 'responsableclave' => 'required|string',
+                'monto_solicitado' => ['required', 'numeric', 'gt:0', 'regex:/^\d{1,13}(?:\.\d{1,2})?$/'],
+                'idforma_pago_credito' => 'required|integer|in:1,2,3,4',
+                'cuotas' => 'required|integer|min:1|max:600', 'tasa_tem' => 'required|numeric|gt:0',
+                'dia_gracia' => 'required|integer|min:0|max:365', 'cargo' => 'nullable|numeric|min:0',
+            ]);
+            \App\Services\AutorizacionRefinanciamientoCastigado::verificar((int) $request->idresponsable, (int) $idtienda, (string) $request->responsableclave);
+
+            return DB::transaction(function () use ($request, $idtienda, $id) {
+                $original = DB::table('credito')->where('id', $id)->lockForUpdate()->first();
+                if (!$original || (int) $original->idtienda !== (int) $idtienda
+                    || $original->estado !== 'DESEMBOLSADO' || (int) $original->idestadocredito !== 1
+                    || $original->castigo_estado !== 'CONFIRMADO') {
+                    throw \Illuminate\Validation\ValidationException::withMessages(['credito' => 'El crédito castigado ya no está disponible.']);
+                }
+                if (DB::table('credito')->where('idcredito_refinanciado', $id)->where('estado', '!=', 'ELIMINADO')->exists()) {
+                    throw \Illuminate\Validation\ValidationException::withMessages(['credito' => 'El crédito ya tiene un refinanciamiento registrado.']);
+                }
+                $modalidad = DB::table('credito_prendatario')->where('id', $original->idcredito_prendatario)->value('modalidad');
+                if (!in_array($modalidad, ['Interes Simple', 'Interes Compuesto'], true)) {
+                    throw \Illuminate\Validation\ValidationException::withMessages(['credito' => 'El producto no tiene una modalidad de cálculo válida.']);
+                }
+                $tipoCredito = (int) $original->idforma_credito === 1 ? 'PRENDARIA' : 'NOPRENDARIA';
+                $diasMaximos = DB::table('diasdegracia')->where('nombre', $tipoCredito)->value('dias');
+                if ($diasMaximos === null || (int) $request->dia_gracia > (int) $diasMaximos) {
+                    throw \Illuminate\Validation\ValidationException::withMessages(['dia_gracia' => 'Los días de gracia superan el máximo permitido para el producto.']);
+                }
+                $request->merge([
+                    'fecha_desembolso' => now()->toDateString(),
+                    'tipotasa' => $modalidad === 'Interes Simple' ? 1 : 2,
+                    'cargo' => $request->input('cargo') ?: 0,
+                ]);
+                $respuesta = $this->crearPropuesta($request, $idtienda, $id);
+                $resultado = $respuesta->getData(true);
+                if (($resultado['resultado'] ?? null) !== 'CORRECTO') {
+                    return $respuesta;
+                }
+                $nuevoId = (int) ($resultado['idcredito'] ?? 0);
+                $aprobado = DB::table('credito')->where('id', $nuevoId)
+                    ->where('idcredito_refinanciado', $id)->where('estado', 'PROCESO')
+                    ->where('es_refinanciamiento_castigado', true)->update([
+                        'estado' => 'APROBADO', 'fecha_aprobacion' => now(),
+                        'idadministrador' => (int) $request->idresponsable,
+                    ]);
+                if ($aprobado !== 1) {
+                    throw \Illuminate\Validation\ValidationException::withMessages(['credito' => 'No se pudo aprobar la propuesta de refinanciamiento.']);
+                }
+                $cuenta = \App\Services\CierreRefinanciamientoCastigado::finalizarConDeudaActual(
+                    (int) $id, $nuevoId, (int) $idtienda, (int) $request->idresponsable, (int) Auth::id()
+                );
+
+                return response()->json([
+                    'resultado' => 'CORRECTO', 'idcredito' => $nuevoId, 'cuenta' => $cuenta,
+                    'mensaje' => 'Refinanciamiento aprobado y activado como crédito castigado, sin movimiento de caja.',
+                ]);
+            }, 3);
+        }
+    }
+
+    protected function crearPropuesta(Request $request, $idtienda, $id)
     {
         if($request->input('view') == 'refinanciamiento') {
           
@@ -539,6 +552,9 @@ class RefinanciamientoCastigadosController extends Controller
                   ->orderBy('tarifario.monto','asc')
                   ->limit(1)
                   ->first();
+                if (!$tasatarifario_db) {
+                    throw \Illuminate\Validation\ValidationException::withMessages(['idforma_pago_credito' => 'No se encontró un tarifario para calcular el cronograma.']);
+                }
                 $comision_cargo = $tasatarifario_db->cargos_otros;
             }
 
@@ -549,7 +565,7 @@ class RefinanciamientoCastigadosController extends Controller
               4 => 1,
             ];
             $dias = $frecuenciaDiasMap[$request->input('idforma_pago_credito')];
-            $tasa_tip = number_format(($request->input('tasa_tem') / $dias) * $request->input('cuotas'), 2, '.', '');
+            $tasa_tip = number_format(($request->input('tasa_tem') / $dias) * $request->input('cuotas'), 8, '.', '');
             if($credito->modalidad_calculo == 'Interes Compuesto'){
                 $tasa_tip = $request->input('tasa_tem');
             }
@@ -567,6 +583,22 @@ class RefinanciamientoCastigadosController extends Controller
                   $comision_cargo,
                   $request->input('cargo')
             );
+            if ((int) $request->input('tipotasa') === 2) {
+                $tir = tir($cronograma['data_tir']);
+                if ($tir === null || !is_finite($tir) || $tir <= -1) {
+                    throw \Illuminate\Validation\ValidationException::withMessages(['tasa_tem' => 'No se pudo calcular la tasa efectiva del acuerdo.']);
+                }
+                $tir = floor($tir * 10000000000) / 10000000000;
+                $exponente = [1 => 30, 2 => 30 / 7, 3 => 2, 4 => 1][(int) $request->input('idforma_pago_credito')];
+                $tasaTcem = round((pow(1 + $tir, $exponente) - 1) * 100, 2);
+            } else {
+                $frecuenciaMensual = [1 => 26, 2 => 4, 3 => 2, 4 => 1][(int) $request->input('idforma_pago_credito')];
+                $tasaTcem = round((((float) $cronograma['total_cargo'] / (int) $request->input('cuotas') * $frecuenciaMensual)
+                    / (float) $request->input('monto_solicitado') * 100) + (float) $request->input('tasa_tem'), 2);
+            }
+            if (!is_finite($tasaTcem)) {
+                throw \Illuminate\Validation\ValidationException::withMessages(['tasa_tem' => 'La tasa calculada no es válida.']);
+            }
             //-------- fin validar cronograma
           
             // ---- SELECCIONAR LOS DATOS FILTRADOS
@@ -620,13 +652,13 @@ class RefinanciamientoCastigadosController extends Controller
                 'cuotas'                    => $request->input('cuotas'),
                 'dia_gracia'                => $request->input('dia_gracia'),
                 'tasa_tem'                  => $request->input('tasa_tem'),
-                'tasa_tem_minima'           => $request->input('tasa_tem_minima'),
-                'tasa_tip'                  => $request->input('tasa_tip'),
-                'tasa_tcem'                 => $request->input('tasa_tcem'),
-                'interes_total'             => $request->input('interes_total'),
-                'total_pagar'               => $request->input('total_pagar'),
+                'tasa_tem_minima'           => $tasa_tem_minima,
+                'tasa_tip'                  => $tasa_tip,
+                'tasa_tcem'                 => $tasaTcem,
+                'interes_total'             => $cronograma['total_interes'],
+                'total_pagar'               => $cronograma['total_cuotafinal'],
                 'total_propuesta'           => $cronograma['total_propuesta'],
-                'comision'                  => $request->input('comision'),
+                'comision'                  => $cronograma['total_comision'],
                 'cargo'                     => $request->input('cargo'),
                 'cuota_comision'            => $cronograma['cuota_comision'],
                 'cuota_cargo'               => $cronograma['cuota_cargo'],
@@ -657,6 +689,8 @@ class RefinanciamientoCastigadosController extends Controller
                 'idforma_credito'           => $credito->idforma_credito,
                 'idtipo_destino_credito'    => $credito->idtipo_destino_credito,
                 'idcredito_refinanciado'    => $credito->id,
+                'es_refinanciamiento_castigado' => true,
+                'refinanciamiento_castigado_responsable' => (int) $request->input('idresponsable'),
                 //'idforma_pago_credito'      => 1,
                 'idmodalidad_credito'       => 4, //Refinanciado
                 'fecha'                     => Carbon::now(),
@@ -664,7 +698,7 @@ class RefinanciamientoCastigadosController extends Controller
                 'estado'                    => 'PROCESO',
                 'idevaluacion'              => 1,
                 'idestadocredito'           => 1,
-                'idtienda'                  => user_permiso()->idtienda,
+                'idtienda'                  => $idtienda,
                 'idestadorefinanciamiento'  => 1,
             ]);
           
@@ -1360,7 +1394,6 @@ class RefinanciamientoCastigadosController extends Controller
                   ->limit(1)
                   ->first();
           
-            $comision_cargo = 0;
             if($tasatarifario!=''){
                 $comision_cargo = $tasatarifario->cargos_otros;
             }
@@ -1488,7 +1521,8 @@ class RefinanciamientoCastigadosController extends Controller
           
             return response()->json([
                 'resultado' => 'CORRECTO',
-                'mensaje'   => 'Se ha registrado correctamente.'
+                'mensaje'   => 'Se ha registrado correctamente.',
+                'idcredito' => $idcreditorefinanciado,
             ]);
         }
     

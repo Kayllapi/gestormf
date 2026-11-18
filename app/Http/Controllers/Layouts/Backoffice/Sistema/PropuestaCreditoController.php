@@ -179,6 +179,7 @@ class PropuestaCreditoController extends Controller
                   'credito_prendatario.nombre as nombreproductocredito',
                   'modalidad_credito.nombre as nombremodalidadcredito' , 
               )
+              ->selectRaw('exists (select 1 from refinanciamiento_castigado_acuerdos where refinanciamiento_castigado_acuerdos.idcredito_original = credito.id) as cierre_por_refinanciamiento_castigado')
               ->orderBy($orderBy)
               ->get();
           
@@ -256,7 +257,7 @@ class PropuestaCreditoController extends Controller
                             <td>{$value->nombreproductocredito}</td>
                             <td>{$value->monto_solicitado}</td>
                             <td>{$formacredito}</td>
-                            <td>{$request->input('estado')}</td>
+                            <td>".($value->cierre_por_refinanciamiento_castigado ? 'REFINANCIADO' : $request->input('estado'))."</td>
                             <td>{$value->nombreasesor}</td>
                             <td>".$fecha."</td>
                             <td>{$value->nombremodalidadcredito}</td>
@@ -935,6 +936,13 @@ class PropuestaCreditoController extends Controller
 
     public function update(Request $request, $idtienda, $id)
     {
+        if ($request->input('view') === 'cambiar_estado' && $request->input('estado') === 'ELIMINAR'
+            && DB::table('refinanciamiento_castigado_acuerdos')->where('idcredito_nuevo', $id)->exists()) {
+            return response()->json([
+                'resultado' => 'ERROR',
+                'mensaje' => 'Este crédito tiene un acuerdo de refinanciamiento castigado y no puede eliminarse mediante el proceso habitual.',
+            ]);
+        }
         
         if( $request->input('view') == 'cambiar_estado' ) {
             if($request->input('estado')=='PENDIENTE'){

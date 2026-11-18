@@ -34,7 +34,7 @@
                 <div class="row">
                   <label class="col-sm-5 col-form-label" style="text-align: right;">Monto de Préstamo</label>
                   <div class="col-sm-7">
-                    <input type="number" step="any" class="form-control" disabled id="monto_solicitado" value="{{$cronograma['cuota_pendiente'] }}" onclick="showtasa()" onkeyup="showtasa()">
+                    <input type="number" step="0.01" min="0.01" class="form-control" id="monto_solicitado" value="{{$cronograma['cuota_pendiente'] }}" onclick="showtasa()" onkeyup="showtasa()" required>
                   </div>
                 </div>
                 <div class="row">
@@ -381,6 +381,15 @@
           </div>
           <div class="col-sm-12 col-md-2">
             @if($view_detalle!='false')
+              <label for="idresponsable" class="form-label">Responsable *</label>
+              <select id="idresponsable" class="form-select mb-2" required>
+                <option value="">-- Seleccionar --</option>
+                @foreach($responsables as $responsable)
+                  <option value="{{ $responsable->id }}">{{ $responsable->nombrecompleto }} ({{ $responsable->nombrepermiso }})</option>
+                @endforeach
+              </select>
+              <label for="responsableclave" class="form-label">Contraseña *</label>
+              <input type="password" id="responsableclave" class="form-control mb-2" autocomplete="current-password" required>
               {{-- <button type="submit" class="btn btn-warning mt-1"><i class="fa-solid fa-floppy-disk"></i> REFINANCIAR CRÉDITO</button> --}}
               <button type="submit" class="btn btn-warning"
                 style="height: fit-content;
@@ -403,7 +412,7 @@
     </div>
 </form>  
 <script>
-  
+  sistema_select2({ input:'#idresponsable' });
   
     setTimeout(function() {
       @if($credito->monto_solicitado>0 && $credito->cuotas>0)

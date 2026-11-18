@@ -11,6 +11,13 @@ use Tests\TestCase;
 
 class RefinanciamientoCastigadosTest extends TestCase
 {
+    public function test_no_acepta_una_propuesta_sin_condiciones_ni_autorizacion(): void
+    {
+        $controller = (new \ReflectionClass(RefinanciamientoCastigadosController::class))->newInstanceWithoutConstructor();
+        $this->expectException(\Illuminate\Validation\ValidationException::class);
+        $controller->update(Request::create('/', 'PUT', ['view' => 'refinanciamiento']), 1, 1);
+    }
+
     public function test_busca_clientes_con_castigos_y_muestra_solo_cuentas_castigadas(): void
     {
         config(['database.default' => 'castigados_ref_test', 'database.connections.castigados_ref_test' => [

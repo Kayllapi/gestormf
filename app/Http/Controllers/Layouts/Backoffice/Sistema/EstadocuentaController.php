@@ -331,6 +331,7 @@ class EstadocuentaController extends Controller
                                 'cliente.identificacion as identificacion',
                                 'cliente.nombrecompleto as nombrecliente',
                             )
+                            ->selectRaw('exists (select 1 from refinanciamiento_castigado_acuerdos where refinanciamiento_castigado_acuerdos.idcredito_original = credito.id) as cierre_por_refinanciamiento_castigado')
                             ->orderBy('credito.idestadocredito','asc')
                             ->orderBy('credito.fecha_desembolso','desc')
                             ->get();
@@ -339,7 +340,7 @@ class EstadocuentaController extends Controller
               $estadocredito = 'PEND.';
               $color = '#E8E585';
               if($value->idestadocredito==2){
-                  $estadocredito = 'CANC.';
+                  $estadocredito = $value->cierre_por_refinanciamiento_castigado ? 'REFIN.' : 'CANC.';
                   $color = '';
               }
               $cp = '';

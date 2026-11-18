@@ -38,7 +38,7 @@
                 <div class="row">
                   <label class="col-sm-5 col-form-label" style="text-align: right;">Monto de Préstamo</label>
                   <div class="col-sm-7">
-                    <input type="number" step="0.01" min="0.01" class="form-control" id="monto_solicitado" value="{{$cronograma['cuota_pendiente'] }}" onclick="showtasa()" onkeyup="showtasa()" {{ $esAdministrador ? 'disabled' : '' }} required>
+                    <input type="number" step="0.01" min="0.01" class="form-control" id="monto_solicitado" value="{{$cronograma['cuota_pendiente'] }}" onclick="showtasa()" onkeyup="showtasa()" disabled required>
                   </div>
                 </div>
                 <div class="row">

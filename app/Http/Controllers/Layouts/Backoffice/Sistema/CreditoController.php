@@ -1273,6 +1273,12 @@ class CreditoController extends Controller
                   ->orderBy('tarifario.monto','asc')
                   ->limit(1)
                   ->first();
+                if (!$tasatarifario_db) {
+                    return response()->json([
+                        'resultado' => 'ERROR',
+                        'mensaje' => 'No se encontró un tarifario para calcular el cronograma.',
+                    ]);
+                }
                 $comision_cargo = $tasatarifario_db->cargos_otros;
                 /*$tasa_tem_minima = $request->input('tasa_tem_old')??0;
                 if($request->input('tasa')!='' && $request->input('tasa')>0 && $request->input('tasa') < $tasa_tem_minima){

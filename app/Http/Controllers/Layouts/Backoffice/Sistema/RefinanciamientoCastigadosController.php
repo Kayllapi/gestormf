@@ -273,16 +273,11 @@ class RefinanciamientoCastigadosController extends Controller
           ]);
         }
       else if( $request->input('view') == 'refinanciar' ){
-        $responsables = DB::table('users')
-            ->join('users_permiso', 'users_permiso.idusers', 'users.id')
-            ->join('permiso', 'permiso.id', 'users_permiso.idpermiso')
-            ->where('users.idestado', 1)->where('users.idestadousuario', 1)->where('users.idtipousuario', 1)
-            ->where('users_permiso.idtienda', $credito->idtienda)
-            ->where(fn ($query) => $query->where('permiso.rango', 1)->orWhere('permiso.id', 1))
-            ->select('users.id', 'users.nombrecompleto', 'permiso.nombre as nombrepermiso')
-            ->orderBy('users.nombrecompleto')->get()
-            ->filter(fn ($usuario) => \App\Services\CastigoCredito::puedeConfirmar((int) $usuario->id, (int) $credito->idtienda))
-            ->unique('id');
+        abort_unless($credito && (int) $credito->idtienda === (int) $idtienda, 404);
+        $esAdministrador = \App\Services\CastigoCredito::puedeConfirmar((int) Auth::id(), (int) $idtienda);
+        abort_unless($esAdministrador || $this->esCobranza((int) $idtienda), 403);
+        $borrador = DB::table('refinanciamiento_castigado_borradores')->where('idcredito', $id)->first();
+        $datosPrevios = $borrador ? json_decode($borrador->datos, true) : [];
         
       
       $tarifario_producto = DB::table('tarifario')
@@ -321,23 +316,52 @@ class RefinanciamientoCastigadosController extends Controller
           'credito' => $credito,
           'forma_credito' => $this->forma_credito,
           'diasdegracia' => $diasdegracia->dias,
-          'responsables' => $responsables,
+          'esAdministrador' => $esAdministrador,
+          'datosPrevios' => $datosPrevios,
           'view_detalle' => $request->detalle
         ]);
       }
     }
 
+    private function esCobranza(int $idtienda): bool
+    {
+        $cargos = DB::table('users_permiso')->where('idusers', Auth::id())->where('idtienda', $idtienda);
+        $activos = (clone $cargos)->where('idsession', 2);
+        return ((clone $activos)->exists() ? $activos : $cargos)->where('idpermiso', 12)->exists();
+    }
+
     public function update(Request $request, $idtienda, $id)
     {
-        if($request->input('view') == 'refinanciamiento') {
-            $request->validate([
-                'idresponsable' => 'required|integer|min:1', 'responsableclave' => 'required|string',
+        if ($request->input('view') == 'guardar_borrador') {
+            abort_unless($this->esCobranza((int) $idtienda) && !\App\Services\CastigoCredito::puedeConfirmar((int) Auth::id(), (int) $idtienda), 403);
+            $datos = $request->validate([
                 'monto_solicitado' => ['required', 'numeric', 'gt:0', 'regex:/^\d{1,13}(?:\.\d{1,2})?$/'],
                 'idforma_pago_credito' => 'required|integer|in:1,2,3,4',
                 'cuotas' => 'required|integer|min:1|max:600', 'tasa_tem' => 'required|numeric|gt:0',
                 'dia_gracia' => 'required|integer|min:0|max:365', 'cargo' => 'nullable|numeric|min:0',
+                'cargomes' => 'nullable|numeric|min:0',
             ]);
-            \App\Services\AutorizacionRefinanciamientoCastigado::verificar((int) $request->idresponsable, (int) $idtienda, (string) $request->responsableclave);
+            return DB::transaction(function () use ($id, $idtienda, $datos) {
+                $original = DB::table('credito')->where('id', $id)->lockForUpdate()->first();
+                if (!$original || (int) $original->idtienda !== (int) $idtienda || $original->estado !== 'DESEMBOLSADO'
+                    || (int) $original->idestadocredito !== 1 || $original->castigo_estado !== 'CONFIRMADO'
+                    || DB::table('credito')->where('idcredito_refinanciado', $id)->where('estado', '!=', 'ELIMINADO')->exists()) {
+                    throw \Illuminate\Validation\ValidationException::withMessages(['credito' => 'El crédito castigado ya no está disponible.']);
+                }
+                $tipo = (int) $original->idforma_credito === 1 ? 'PRENDARIA' : 'NOPRENDARIA';
+                $maximo = DB::table('diasdegracia')->where('nombre', $tipo)->value('dias');
+                if ($maximo === null || (int) $datos['dia_gracia'] > (int) $maximo) {
+                    throw \Illuminate\Validation\ValidationException::withMessages(['dia_gracia' => 'Los días de gracia superan el máximo permitido.']);
+                }
+                DB::table('refinanciamiento_castigado_borradores')->updateOrInsert(
+                    ['idcredito' => $id], ['datos' => json_encode($datos), 'idusuario' => Auth::id(), 'updated_at' => now()]
+                );
+                return response()->json(['resultado' => 'CORRECTO', 'mensaje' => 'Información guardada para revisión del administrador.']);
+            }, 3);
+        }
+        if($request->input('view') == 'refinanciamiento') {
+            abort_unless(\App\Services\CastigoCredito::puedeConfirmar((int) Auth::id(), (int) $idtienda), 403);
+            $request->merge(['idresponsable' => (int) Auth::id()]);
 
             return DB::transaction(function () use ($request, $idtienda, $id) {
                 $original = DB::table('credito')->where('id', $id)->lockForUpdate()->first();
@@ -349,6 +373,23 @@ class RefinanciamientoCastigadosController extends Controller
                 if (DB::table('credito')->where('idcredito_refinanciado', $id)->where('estado', '!=', 'ELIMINADO')->exists()) {
                     throw \Illuminate\Validation\ValidationException::withMessages(['credito' => 'El crédito ya tiene un refinanciamiento registrado.']);
                 }
+                $borrador = DB::table('refinanciamiento_castigado_borradores')->where('idcredito', $id)->first();
+                if (!$borrador) {
+                    throw \Illuminate\Validation\ValidationException::withMessages(['credito' => 'El asesor de cobranza debe guardar las condiciones antes de refinanciar.']);
+                }
+                $version = $borrador ? hash('sha256', $borrador->datos) : '';
+                if (!hash_equals($version, (string) $request->input('version_borrador', ''))) {
+                    throw \Illuminate\Validation\ValidationException::withMessages(['credito' => 'Las condiciones cambiaron. Cierre y vuelva a abrir la vista para revisarlas.']);
+                }
+                if ($borrador) {
+                    $request->merge(json_decode($borrador->datos, true, 512, JSON_THROW_ON_ERROR));
+                }
+                $request->validate([
+                    'monto_solicitado' => ['required', 'numeric', 'gt:0', 'regex:/^\d{1,13}(?:\.\d{1,2})?$/'],
+                    'idforma_pago_credito' => 'required|integer|in:1,2,3,4',
+                    'cuotas' => 'required|integer|min:1|max:600', 'tasa_tem' => 'required|numeric|gt:0',
+                    'dia_gracia' => 'required|integer|min:0|max:365', 'cargo' => 'nullable|numeric|min:0',
+                ]);
                 $modalidad = DB::table('credito_prendatario')->where('id', $original->idcredito_prendatario)->value('modalidad');
                 if (!in_array($modalidad, ['Interes Simple', 'Interes Compuesto'], true)) {
                     throw \Illuminate\Validation\ValidationException::withMessages(['credito' => 'El producto no tiene una modalidad de cálculo válida.']);

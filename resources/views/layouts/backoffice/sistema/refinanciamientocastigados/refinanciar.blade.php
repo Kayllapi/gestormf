@@ -3,7 +3,8 @@
           route: '{{ url('backoffice/'.$tienda->id.'/refinanciamientocastigados/'.$credito->id) }}',
           method: 'PUT',
           data:{
-              view: 'refinanciamiento',
+              view: '{{ $esAdministrador ? 'refinanciamiento' : 'guardar_borrador' }}',
+              version_borrador: '{{ $datosPrevios ? hash('sha256', json_encode($datosPrevios)) : '' }}',
               interes_total: $('#interes_total').html(),
               total_pagar: $('#total_pagar').html(),
               tipotasa : '{{$credito->modalidad_calculo}}' == 'Interes Simple' ? 1 : 2,
@@ -27,6 +28,9 @@
           <div class="col-md-4"><b>PRODUCTO:</b> <span style="font-weight: normal;">{{ $credito->nombreproductocredito }}</span></div>
       </div>
     <div class="modal-body">
+      @if($esAdministrador)
+        <div class="alert alert-info">{{ $datosPrevios ? 'Condiciones guardadas por cobranza para revisión.' : 'El asesor de cobranza debe guardar las condiciones antes de refinanciar.' }}</div>
+      @endif
       <div class="row">
           <div class="col-md-7 mt-3">
               <div class="row">
@@ -34,13 +38,13 @@
                 <div class="row">
                   <label class="col-sm-5 col-form-label" style="text-align: right;">Monto de Préstamo</label>
                   <div class="col-sm-7">
-                    <input type="number" step="0.01" min="0.01" class="form-control" id="monto_solicitado" value="{{$cronograma['cuota_pendiente'] }}" onclick="showtasa()" onkeyup="showtasa()" required>
+                    <input type="number" step="0.01" min="0.01" class="form-control" id="monto_solicitado" value="{{$cronograma['cuota_pendiente'] }}" onclick="showtasa()" onkeyup="showtasa()" {{ $esAdministrador ? 'disabled' : '' }} required>
                   </div>
                 </div>
                 <div class="row">
                   <label class="col-sm-5 col-form-label" style="text-align: right;">Frecuencia de Pago:</label>
                   <div class="col-sm-7">
-                    <select class="form-control" id="idforma_pago_credito" onchange="showtasa()">
+                    <select class="form-control" id="idforma_pago_credito" onchange="showtasa()" {{ $esAdministrador ? 'disabled' : '' }}>
                       <option></option>
                       @foreach($forma_pago_credito as $value)
                         <option value="{{ $value->id }}">{{ $value->nombre }}</option>
@@ -52,7 +56,7 @@
                   <label class="col-sm-5 col-form-label" style="text-align: right;">Número de Cuotas:</label>
                   <div class="col-sm-7">
                     
-                    <input type="number" step="any" class="form-control" id="cuotas" value="{{ $credito->cuotas }}" onclick="showtasa()" onkeyup="showtasa()">
+                    <input type="number" step="any" class="form-control" id="cuotas" value="{{ $credito->cuotas }}" onclick="showtasa()" onkeyup="showtasa()" {{ $esAdministrador ? 'disabled' : '' }}>
                     <input type="hidden" step="any" class="form-control" id="coutas_max_credito" value="0">
                   </div>
                 </div>
@@ -64,7 +68,7 @@
                 <div class="row">
                   <label class="col-sm-5 col-form-label" style="text-align: right;">{{ $tem_label }} (%):</label>
                   <div class="col-sm-4">
-                    <input type="text" step="any" class="form-control" id="tasa_tem" value="{{ $credito->tasa_tem }}">
+                    <input type="text" step="any" class="form-control" id="tasa_tem" value="{{ $credito->tasa_tem }}" {{ $esAdministrador ? 'disabled' : '' }}>
                     <input type="hidden" step="any" class="form-control" id="tasa_tem_old" value="{{ $credito->tasa_tem }}">
                   </div>
                   <div class="col-sm-3">
@@ -90,7 +94,7 @@
                 <div class="row">
                   <label class="col-sm-8 col-form-label" style="text-align: right;">Dia de Gracia:</label>
                   <div class="col-sm-4">
-                    <input type="number" step="any" class="form-control" id="dia_gracia" value="{{ $credito->dia_gracia }}">
+                    <input type="number" step="any" class="form-control" id="dia_gracia" value="{{ $credito->dia_gracia }}" {{ $esAdministrador ? 'disabled' : '' }}>
                   </div>
                 </div>
                 <div class="row">
@@ -109,7 +113,7 @@
                 <div class="row d-none">
                   <label class="col-sm-8 col-form-label" style="text-align: right;">Cargo Mes S/.:</label>
                   <div class="col-sm-4">
-                    <input type="number" step="any" class="form-control" id="cargomes" value="0.00">
+                    <input type="number" step="any" class="form-control" id="cargomes" value="0.00" {{ $esAdministrador ? 'disabled' : '' }}>
                   </div>
                 </div>
                 @if($credito->idforma_credito==1 && $usuario->custodiagarantia_id==1)
@@ -147,7 +151,7 @@
                       <div class="row">
                         <label class="col-sm-8 col-form-label" style="text-align: right;">Cargo x Custodia/Otros (Periodo) S/.:</label>
                         <div class="col-sm-4">
-                          <input type="number" step="any" class="form-control" {{ $view_detalle=='false' ? 'disabled' : '' }} id="cargo" value="{{ $credito->cargo }}">
+                          <input type="number" step="any" class="form-control" {{ $view_detalle=='false' || $esAdministrador ? 'disabled' : '' }} id="cargo" value="{{ $credito->cargo }}">
                         </div>
                       </div>
                     @endif
@@ -158,7 +162,7 @@
                         </div>
                     @endif
                 @endif
-                @if($view_detalle!='false')
+                @if($view_detalle!='false' && !$esAdministrador)
                 <div class="row">
                   <label class="col-sm-5 col-form-label" style="text-align: right;"></label>
                   <div class="col-sm-7 ">
@@ -381,21 +385,16 @@
           </div>
           <div class="col-sm-12 col-md-2">
             @if($view_detalle!='false')
-              <label for="idresponsable" class="form-label">Responsable *</label>
-              <select id="idresponsable" class="form-select mb-2" required>
-                <option value="">-- Seleccionar --</option>
-                @foreach($responsables as $responsable)
-                  <option value="{{ $responsable->id }}">{{ $responsable->nombrecompleto }} ({{ $responsable->nombrepermiso }})</option>
-                @endforeach
-              </select>
-              <label for="responsableclave" class="form-label">Contraseña *</label>
-              <input type="password" id="responsableclave" class="form-control mb-2" autocomplete="current-password" required>
+              @if($esAdministrador)
               {{-- <button type="submit" class="btn btn-warning mt-1"><i class="fa-solid fa-floppy-disk"></i> REFINANCIAR CRÉDITO</button> --}}
-              <button type="submit" class="btn btn-warning"
+              <button type="submit" class="btn btn-warning" {{ !$datosPrevios ? 'disabled' : '' }}
                 style="height: fit-content;
                   margin-right: 10px;">
                   <i class="fa-solid fa-floppy-disk"></i> REFINANCIAR CRÉDITO
               </button>
+              @else
+              <button type="submit" class="btn btn-primary">GUARDAR</button>
+              @endif
             @endif
           </div>
       </div>
@@ -412,7 +411,10 @@
     </div>
 </form>  
 <script>
-  sistema_select2({ input:'#idresponsable' });
+  @if($datosPrevios)
+  const datosPreviosRefinanciamiento = @json($datosPrevios);
+  Object.entries(datosPreviosRefinanciamiento).forEach(([id, valor]) => $('#' + id).val(valor));
+  @endif
   
     setTimeout(function() {
       @if($credito->monto_solicitado>0 && $credito->cuotas>0)
@@ -442,7 +444,7 @@
       $('#tasa_tem').val(minimo.toFixed(2));
     }
   }
-  @include('app.nuevosistema.select2',['input'=>'#idforma_pago_credito', 'val' => $credito->idforma_pago_credito ])
+  @include('app.nuevosistema.select2',['input'=>'#idforma_pago_credito', 'val' => $datosPrevios['idforma_pago_credito'] ?? $credito->idforma_pago_credito ])
   function modal_credito(vista){
     modal({ route:"{{url('backoffice/'.$tienda->id.'/credito/'.$credito->id.'/edit?view=')}}"+vista+'&detalle=false' });  
   }

@@ -107,7 +107,7 @@
       processResults: data => data
     }
   }).on('select2:select', function(e) {
-    if (e.params.data.observado) {
+    if (e.params.data.observado && !e.params.data.tiene_creditos_activos) {
       modal({ route: @json(url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')) + '&mensaje=' + encodeURIComponent('Cliente Observado'), size: 'modal-sm' });
       $('#idcliente').val(null).trigger('change');
       $('#nombreasesor').val(@json(Auth::user()->nombrecompleto));

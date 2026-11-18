@@ -65,6 +65,7 @@ class RefinanciamientoController extends Controller
                 ->limit(50)
                 ->select('cliente.id', 'cliente.nombrecompleto', 'cliente.identificacion', 'cliente.idasesor', 'asesor.nombrecompleto as nombreasesor')
                 ->selectRaw('exists (select 1 from s_listanegra where s_listanegra.idcliente = cliente.id) as observado')
+                ->selectRaw("exists (select 1 from credito where credito.idcliente = cliente.id and credito.idtienda = cliente.idtienda and credito.estado = 'DESEMBOLSADO' and credito.idestadocredito = 1 and credito.castigo_estado != 'CONFIRMADO') as tiene_creditos_activos")
                 ->get();
 
             return response()->json(['results' => $clientes->map(fn ($cliente) => [
@@ -73,6 +74,7 @@ class RefinanciamientoController extends Controller
                 'idasesor' => $cliente->idasesor,
                 'nombreasesor' => $cliente->nombreasesor ?: 'Sin ejecutivo asignado',
                 'observado' => (bool) $cliente->observado,
+                'tiene_creditos_activos' => (bool) $cliente->tiene_creditos_activos,
             ])]);
     }
 

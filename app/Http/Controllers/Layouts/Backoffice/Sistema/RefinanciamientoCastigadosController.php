@@ -25,6 +25,7 @@ class RefinanciamientoCastigadosController extends Controller
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
       
         if($request->input('view') == 'tabla'){
+            $this->limpiarBorradoresVencidos((int) $idtienda);
             
             $agencias = DB::table('tienda')->get();
           
@@ -98,6 +99,7 @@ class RefinanciamientoCastigadosController extends Controller
         }
 
         if($id == 'showtable'){
+          $this->limpiarBorradoresVencidos((int) $idtienda);
           $where = [];
           $where2 = [];
           if($request->idagencia!=''){
@@ -110,6 +112,7 @@ class RefinanciamientoCastigadosController extends Controller
           }
           
             $creditos = DB::table('credito')
+                ->leftJoin('refinanciamiento_castigado_borradores as borrador', 'borrador.idcredito', '=', 'credito.id')
                 ->join('forma_pago_credito','forma_pago_credito.id','credito.idforma_pago_credito')
                 ->join('users as cliente','cliente.id','credito.idcliente')
                 ->leftjoin('users as cajero','cajero.id','credito.idcajero')
@@ -140,6 +143,7 @@ class RefinanciamientoCastigadosController extends Controller
                     'cajero.usuario as codigocajero',
                     'asesor.usuario as codigoasesor',
                     'administrador.nombrecompleto as nombreadministrador',
+                    'borrador.idcredito as borrador_refinanciamiento',
                 )
                 ->orderBy('credito.fecha_desembolso','asc')
                 ->get();
@@ -195,18 +199,19 @@ class RefinanciamientoCastigadosController extends Controller
                             <td>{$operacionen}</td>
                             <td>{$value->nombremodalidadcredito}</td>
                             <td>{$value->codigoasesor}</td>
+                            <td>".($value->borrador_refinanciamiento ? 'En proceso de refinanciamiento' : '')."</td>
                             <td>{$opcion}</td>
                         </tr>";
               $total_desembolsado += $value->monto_solicitado;
           }
           if(count($creditos)==0){
-              $html.= '<tr style="background-color: #b7b6b7 !important;"><td colspan="17" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
+              $html.= '<tr style="background-color: #b7b6b7 !important;"><td colspan="15" style="text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';
           }
               $html .= '
                 <tr style="position: sticky;bottom: 0;font-weight: bold;background-color: #b7b6b7 !important;">
                   <td colspan="5" style="text-align:right;">TOTAL S/.</td>
                   <td style="text-align:right;">'.number_format($total_desembolsado, 2, '.', '').'</td>
-                  <td colspan="8" style=""></td>
+                  <td colspan="9" style=""></td>
                 </tr>';
           return array(
             'html' => $html
@@ -276,6 +281,7 @@ class RefinanciamientoCastigadosController extends Controller
         abort_unless($credito && (int) $credito->idtienda === (int) $idtienda, 404);
         $esAdministrador = \App\Services\CastigoCredito::puedeConfirmar((int) Auth::id(), (int) $idtienda);
         abort_unless($esAdministrador || $this->esCobranza((int) $idtienda), 403);
+        $this->limpiarBorradoresVencidos((int) $idtienda);
         $borrador = DB::table('refinanciamiento_castigado_borradores')->where('idcredito', $id)->first();
         $datosPrevios = $borrador ? json_decode($borrador->datos, true) : [];
         $responsables = $esAdministrador ? DB::table('users')
@@ -334,6 +340,14 @@ class RefinanciamientoCastigadosController extends Controller
       }
     }
 
+    private function limpiarBorradoresVencidos(int $idtienda): void
+    {
+        DB::table('refinanciamiento_castigado_borradores')
+            ->where('updated_at', '<', now()->startOfDay())
+            ->whereIn('idcredito', DB::table('credito')->where('idtienda', $idtienda)->select('id'))
+            ->delete();
+    }
+
     private function esCobranza(int $idtienda): bool
     {
         $cargos = DB::table('users_permiso')->where('idusers', Auth::id())->where('idtienda', $idtienda);
@@ -387,6 +401,8 @@ class RefinanciamientoCastigadosController extends Controller
                 if (DB::table('credito')->where('idcredito_refinanciado', $id)->where('estado', '!=', 'ELIMINADO')->exists()) {
                     throw \Illuminate\Validation\ValidationException::withMessages(['credito' => 'El crédito ya tiene un refinanciamiento registrado.']);
                 }
+                DB::table('refinanciamiento_castigado_borradores')->where('idcredito', $id)
+                    ->where('updated_at', '<', now()->startOfDay())->delete();
                 $borrador = DB::table('refinanciamiento_castigado_borradores')->where('idcredito', $id)->first();
                 if (!$borrador) {
                     throw \Illuminate\Validation\ValidationException::withMessages(['credito' => 'El asesor de cobranza debe guardar las condiciones antes de refinanciar.']);

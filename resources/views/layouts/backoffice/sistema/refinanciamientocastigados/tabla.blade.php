@@ -88,6 +88,7 @@
                   <td>OPE. EN</td>
                   <td>MODA. CRÉDITO</td>
                   <td>ASESOR</td>
+                  <td>ESTADO</td>
                   <td>OPCIÓN</td>
                 </tr>
               </thead>

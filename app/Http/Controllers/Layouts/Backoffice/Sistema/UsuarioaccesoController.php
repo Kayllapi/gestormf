@@ -121,6 +121,7 @@ class UsuarioaccesoController extends Controller
             ], [
                 'accesos.*.idtienda.in' => 'Solo puede asignar agencias que tiene a cargo.',
             ])->validate();
+            $this->validar_cargo_protegido_unico($accesos);
           
             if(count($accesos)==0){
                 return response()->json([
@@ -628,6 +629,17 @@ class UsuarioaccesoController extends Controller
         return $rango;
     }
 
+    private function validar_cargo_protegido_unico(array $accesos): void
+    {
+        $ids = collect($accesos)->pluck('idpermiso')->unique()->all();
+        $cantidad = DB::table('permiso')->whereIn('id', $ids)->whereIn('rango', [4, 5, 6, 8])->count();
+        if ($cantidad > 1) {
+            throw \Illuminate\Validation\ValidationException::withMessages([
+                'accesos' => 'El usuario solo puede tener un cargo de los rangos 4, 5, 6 y 8, aunque pertenezca a varias agencias.',
+            ]);
+        }
+    }
+
     /**
      * Mayor jerarquia (rango mas bajo) que tiene un usuario en una agencia.
      */
@@ -916,6 +928,7 @@ class UsuarioaccesoController extends Controller
         elseif($request->input('view') == 'permiso') {
 
             return DB::transaction(function () use ($request, $idtienda, $id) {
+            DB::table('users')->where('id', $id)->lockForUpdate()->first();
             $actuales = DB::table('users_permiso')->where('idusers', $id)->orderBy('id')->lockForUpdate()->get();
             $puede_editar_datos = $this->puede_editar_usuario(Auth::user()->id, $id, $idtienda);
 
@@ -996,6 +1009,7 @@ class UsuarioaccesoController extends Controller
                 'accesos.*.idtienda' => 'required|integer|min:1',
                 'accesos.*.idestado' => 'required|integer|in:1,2',
             ])->validate();
+            $this->validar_cargo_protegido_unico($accesos);
             $guardados = [];
             foreach($accesos as $value){
 

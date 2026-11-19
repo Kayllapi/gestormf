@@ -19,6 +19,7 @@
             <div class="col-sm-12 col-md-8">
                 <label>Rango</label>
                 <input type="number" id="rango" class="form-control">
+                <small>Los rangos 4, 5, 6 y 8 están reservados.</small>
                 <label>Nombre Cargo</label>
                 <input type="text" id="nombre" class="form-control">
             </div>

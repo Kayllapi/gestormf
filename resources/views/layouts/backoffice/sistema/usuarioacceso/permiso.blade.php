@@ -122,6 +122,7 @@
                 </div>
             </div>
             <div class="col-sm-12 col-md-7">
+                <div class="alert alert-warning py-2">El usuario solo puede tener un cargo de los rangos 4, 5, 6 y 8; el mismo cargo puede asignarse en varias agencias.</div>
                 <table class="table" id="tabla-permisoacceso">
                     <thead>
                         <tr>

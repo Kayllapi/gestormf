@@ -14,6 +14,8 @@ use PDF;
 
 class PermisosController extends Controller
 {
+    private const RANGOS_PROTEGIDOS = [4, 5, 6, 8];
+
     public function index(Request $request,$idtienda)
     {
         // $request->user()->authorizeRoles($request->path(),$idtienda);
@@ -51,9 +53,10 @@ class PermisosController extends Controller
       
         if ($request->input('view') == 'registrar') {
             
-            $rules['rango']        =  'required';
+            $rules['rango']        =  'required|integer|not_in:4,5,6,8';
             $rules['nombre']        =  'required';
             $messages['rango.required']    = 'El campo "Rango" es obligatorio.';
+            $messages['rango.not_in'] = 'Los rangos 4, 5, 6 y 8 están reservados y no se pueden duplicar.';
             $messages['nombre.required']    = 'El campo "Nombre" es obligatorio.';
 
             $this->validate($request,$rules,$messages);
@@ -92,7 +95,9 @@ class PermisosController extends Controller
                 
               $tabla[]=[
                   'id'      => $value->id,
-                  'rango'  => $value->rango,
+                  'rango'  => in_array((int) $value->rango, self::RANGOS_PROTEGIDOS, true)
+                      ? '<span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:#ffc9ca;color:#93222c;font-weight:bold;">'.(int) $value->rango.'</span>'
+                      : e($value->rango),
                   'nombre'  => $value->nombre,
                   'opcion' => [
                      [
@@ -131,6 +136,7 @@ class PermisosController extends Controller
             return view(sistema_view().'/permisos/edit',[
                 'permiso'  => $permiso,
                 'tienda'    => $tienda,
+                'rango_protegido' => in_array((int) $permiso->rango, self::RANGOS_PROTEGIDOS, true),
             ]);
           
         } 
@@ -144,13 +150,19 @@ class PermisosController extends Controller
         
         if ($request->input('view') == 'editar') {
 
-            $rules['rango']        =  'required';
+            $permiso = DB::table('permiso')->whereId($idpermiso)->first();
+            abort_unless($permiso, 404);
+            $rangoProtegido = in_array((int) $permiso->rango, self::RANGOS_PROTEGIDOS, true);
+            $rules['rango'] = $rangoProtegido ? 'required|integer|in:'.$permiso->rango : 'required|integer|not_in:4,5,6,8';
             $rules['nombre']        =  'required';
             $messages['rango.required']    = 'El campo "Rango" es obligatorio.';
+            $messages['rango.in'] = 'Este rango está protegido y no se puede modificar.';
+            $messages['rango.not_in'] = 'Los rangos 4, 5, 6 y 8 están reservados y no se pueden duplicar.';
             $messages['nombre.required']    = 'El campo "Nombre" es obligatorio.';
+            $this->validate($request, $rules, $messages);
           
             DB::table('permiso')->whereId($idpermiso)->update([
-                'rango'    => $request->input('rango'),
+                'rango'    => $rangoProtegido ? $permiso->rango : $request->input('rango'),
                 'nombre'    => $request->input('nombre'),
             ]);
 

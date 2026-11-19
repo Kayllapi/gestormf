@@ -20,7 +20,7 @@
           
              <div class="col-md-12">
                 <label>Rango</label>
-                <input type="number" value="{{ $permiso->rango }}" id="rango" class="form-control">
+                <input type="number" value="{{ $permiso->rango }}" id="rango" class="form-control" {{ $rango_protegido ? 'disabled' : '' }} />
                 <label>Nombre *</label>
                 <input type="text" class="form-control" value="{{ $permiso->nombre }}" id="nombre"/>
   

@@ -126,6 +126,9 @@
           </tr>
         </tbody>
       </table>
+      <div style="text-align: right;">
+        <span id="cont_listanegra"></span>
+      </div>
     </div>
     <div class="col-sm-12 col-md-8">
       <div class="card">
@@ -199,6 +202,7 @@
     $('#nombre_cobranza').val('');
     $('#form-garantias-result').empty();
     $('#table-detalle-prestamo > tbody').empty();
+    $('#cont_listanegra').empty();
     $('.data-cliente').addClass('d-none');
     $.ajax({
       url:"{{url('backoffice/0/cargo/showlistacreditos')}}",
@@ -215,6 +219,9 @@
         $('#data-cliente-nombre').val(res.cliente.nombrecompleto);
         $('#data-cliente-documento').val(res.cliente.identificacion);
         $('#table-detalle-prestamo > tbody').html(res.html);
+        if (res.estado_listanegra == 2) {
+          $('#cont_listanegra').html('<span style="background-color: #ffc9ca;padding-left: 5px;padding-right: 5px;border-radius: 5px;color: #93222c;">Cliente Observado</span>');
+        }
         $("#exampleModal").modal('hide');
         //load_create_prestamo(res.cliente.id);
         $('#btn-create-cliente').removeClass('d-none');

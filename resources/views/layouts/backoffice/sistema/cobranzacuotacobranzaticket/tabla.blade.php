@@ -70,7 +70,8 @@
                 <input type="hidden" id="idcredito" value="0">
                <b> N° DE CUENTA: <span id="numerodecuenta" style="font-weight: normal;"></span></b><br>
                <b> CLASIFICACIÓN: <span id="clasificacion" style="font-weight: normal;"></span></b><br>
-               <b> ASES./EJEC.: <span id="asesor" style="color: #002a8d;font-weight: normal;"></span></b>
+               <b> ASES./EJEC.: <span id="asesor" style="color: #002a8d;font-weight: normal;"></span></b><br>
+               <b> COBRANZA: <span id="cobranza" style="color: #002a8d;font-weight: normal;"></span></b>
                 <table class="table" id="table-prestamos">
                   <thead>
                       <tr>
@@ -293,6 +294,7 @@
         $('#numerodecuenta').html('');
         $('#clasificacion').html('');
         $('#asesor').html('');
+        $('#cobranza').text('');
         $('#numero_cuota_cancelada').html('0');
         $('#numero_cuota_pendiente').html('0');
         $('#numero_cuota_vencida').html('0');
@@ -469,6 +471,7 @@
                 $('#numerodecuenta').html(respuesta.numerodecuenta);
                 $('#clasificacion').html('<span style="background-color: #ffc107;padding-left: 5px;padding-right: 5px;">'+respuesta.clasificacion+'</span>');
                 $('#asesor').html(respuesta.asesor);
+                $('#cobranza').text(respuesta.cobranza || '');
                 $('#numero_cuota_cancelada').html(respuesta.numero_cuota_cancelada);
                 $('#numero_cuota_pendiente').html(respuesta.numero_cuota_pendiente);
                 $('#numero_cuota_vencida').html(respuesta.numero_cuota_vencida);

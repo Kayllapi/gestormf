@@ -12,7 +12,7 @@
           //load_edit_garantia();
           lista_garantias_cliente({{ $credito->idcliente }});
       },this)" id="form-editar-garantia">
-    @include('layouts.backoffice.sistema.partials.cabecera_datos_prestamo')
+    @include('layouts.backoffice.sistema.partials.cabecera_datos_prestamo', ['aviso_credito' => null])
     @php
       $tem_label = $credito->modalidad_calculo == 'Interes Compuesto' ? 'TEM' : 'TNM';
     @endphp

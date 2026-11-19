@@ -10,7 +10,7 @@
     <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>
 <div class="modal-body">
-    <div class="alert alert-warning" role="alert">Los rangos 4, 5, 6 y 8 son únicos y no se pueden duplicar ni editar.</div>
+    <div class="alert alert-danger" role="alert">Los rangos 4, 5, 6 y 8 son únicos y no se pueden duplicar ni editar.</div>
     @include('app.nuevosistema.tabla',[
         'tabla' => '#tabla-permisos',
         'route' => url('backoffice/'.$tienda->id.'/permisos/show_table'),

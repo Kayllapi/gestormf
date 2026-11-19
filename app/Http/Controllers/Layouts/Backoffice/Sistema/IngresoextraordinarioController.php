@@ -237,9 +237,15 @@ class IngresoextraordinarioController extends Controller
                 'bancos' => $bancos,
                 's_sustento_comprobante' => $s_sustento_comprobante,
                 'credito_tipoformapago' => $credito_tipoformapago,
+                'esCreditoCastigado' => DB::table('s_sustento_comprobante')
+                    ->where('id', $ingresoextraordinario->s_idsustento_comprobante)
+                    ->where('nombre', 'Credito Castigado')->exists(),
         ]);
       } 
       elseif($request->input('view') == 'eliminar'){
+            abort_if(DB::table('s_sustento_comprobante')
+                ->where('id', $ingresoextraordinario->s_idsustento_comprobante)
+                ->where('nombre', 'Credito Castigado')->exists(), 403);
             
             $usuarios = DB::table('users')
                 ->join('users_permiso','users_permiso.idusers','users.id')
@@ -415,11 +421,22 @@ class IngresoextraordinarioController extends Controller
                 ]);
             }
         
-            DB::table('ingresoextraordinario')->whereId($id)->update([
+            $actualizados = DB::table('ingresoextraordinario')->where('id', $id)->where('idtienda', $idtienda)
+                ->whereNotExists(function ($query) {
+                    $query->selectRaw('1')->from('s_sustento_comprobante')
+                        ->whereColumn('s_sustento_comprobante.id', 'ingresoextraordinario.s_idsustento_comprobante')
+                        ->where('s_sustento_comprobante.nombre', 'Credito Castigado');
+                })->update([
                'fecha_eliminado' => now(),
                'idestadoeliminado' => 2,
                'idresponsble_eliminado' => $idresponsable,
             ]);
+            if (!$actualizados) {
+                return response()->json([
+                    'resultado' => 'ERROR',
+                    'mensaje' => 'No se puede eliminar este ingreso.',
+                ]);
+            }
         
             //DB::table('ingresoextraordinario')->whereId($id)->delete();
             return response()->json([

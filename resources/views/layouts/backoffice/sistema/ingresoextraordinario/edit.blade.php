@@ -59,12 +59,14 @@
                 </div>
 
               @endif
+              @if(!$esCreditoCastigado)
               <div class="row">
                 <label class="col-sm-4 col-form-label" style="text-align: right;"></label>
                 <div class="col-sm-8">
                     <button type="button" onclick="eliminar_ingresoextraordinario()" class="btn btn-danger"><i class="fa-solid fa-trash"></i> ELIMINAR</button>
                 </div>
               </div>
+              @endif
             
           </div>
        </div>

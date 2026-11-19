@@ -82,7 +82,7 @@
       solicitudResumenPagos = null;
     }
     $('#resumen-pagos-error').text('');
-    $('#resumen-pagos-saldos span[id]').text('');
+    $('#resumen-pagos-saldos span[id]').not('#cont_listanegra').text('');
     $('#resumen-pagos-saldos td[id^="numero_cuota_"]').text('0');
     $('#cuota_pagada, #cuota_pendiente, #saldo_vencido, #saldo_capital').text('0.00');
   }
@@ -100,7 +100,7 @@
           $('#resumen-pagos-saldos #' + campo).text(res[campo]);
         });
         $('#resumen-pagos-saldos #clasificacion').text(res.clasificacion).css('background-color', '#ffc107');
-        $('#resumen-pagos-saldos #resumen_cobranza').text(res.cobranza || '');
+        $('#resumen-pagos-saldos #resumen_cobranza').text(res.nombre_cobranza || '');
       },
       error: function (xhr, estado) {
         if (estado !== 'abort') {
@@ -145,6 +145,7 @@
   
   function lista_credito_cliente(id){
     limpiar_resumen_pagos();
+    $('#cont_listanegra').empty();
     $('#form-garantias-result').empty();
     $.ajax({
       url:"{{url('backoffice/0/descuentoliquidacion/showlistacreditos')}}",
@@ -159,6 +160,9 @@
         $('#data-cliente-nombre').val(res.cliente.nombrecompleto);
         $('#data-cliente-documento').val(res.cliente.identificacion);
         $('#table-detalle-prestamo > tbody').html(res.html);
+        if (res.estado_listanegra == 2) {
+          $('#cont_listanegra').html('<span style="background-color: #ffc9ca;padding-left: 5px;padding-right: 5px;border-radius: 5px;color: #93222c;">Cliente Observado</span>');
+        }
         $("#exampleModal").modal('hide');
         $('#btn-create-cliente').removeClass('d-none');
         

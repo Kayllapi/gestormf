@@ -349,7 +349,8 @@ class DescuentoLiquidacionController extends Controller
           }
           return array(
             'cliente' => $cliente,
-            'html' => $html
+            'html' => $html,
+            'estado_listanegra' => DB::table('s_listanegra')->where('idcliente', $request->idcliente)->exists() ? 2 : 1,
           );
           
         }
@@ -688,7 +689,7 @@ class DescuentoLiquidacionController extends Controller
         return view(sistema_view().'/descuentoliquidacion/edit',[
             'tienda' => $tienda,
             'credito' => $credito,
-            'aviso_credito' => sistema_aviso_credito($credito),
+            'aviso_credito' => $credito->castigo_estado === 'CONFIRMADO' ? 'CRÉDITO CASTIGADO' : '',
         ]);
       }
       else if($request->input('view') == 'eliminar'){

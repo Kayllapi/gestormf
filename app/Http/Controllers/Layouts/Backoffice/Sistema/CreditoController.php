@@ -58,6 +58,12 @@ class CreditoController extends Controller
           
             return view(sistema_view().'/credito/tabla',[
               'tienda' => $tienda,
+              'cargo_usuario' => DB::table('users_permiso')
+                  ->join('permiso', 'permiso.id', 'users_permiso.idpermiso')
+                  ->where('users_permiso.idusers', Auth::id())
+                  ->where('users_permiso.idtienda', $tienda->id)
+                  ->whereIn('users_permiso.idpermiso', [3, 4, 7, 11])
+                  ->value('permiso.nombre'),
             ]);
         }
             

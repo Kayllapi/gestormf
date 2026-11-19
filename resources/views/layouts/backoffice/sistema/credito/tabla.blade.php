@@ -17,10 +17,10 @@
             <div class="col-2 mb-2">
               <input type="text" class="form-control" value="{{$tienda->nombreagencia}}" disabled>
             </div>
-            <div class="col-2 mb-2">
-              <input type="text" class="form-control" value="{{auth()->user()->nombrecompleto}}" disabled>
+            <div class="col-4 mb-2">
+              <input type="text" class="form-control" value="{{ auth()->user()->nombrecompleto }}{{ $cargo_usuario ? ' ('.$cargo_usuario.')' : '' }}" disabled>
             </div>
-            <div class="col-8">
+            <div class="col-6 mb-2">
               Préstamos en Procesos
             </div>
           </div>

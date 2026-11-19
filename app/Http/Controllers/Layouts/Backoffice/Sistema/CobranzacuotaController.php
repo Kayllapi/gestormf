@@ -1895,9 +1895,11 @@ class CobranzacuotaController extends Controller
               ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
                     ->join('forma_pago_credito','forma_pago_credito.id','credito.idforma_pago_credito')
                     ->join('users as asesor','asesor.id','credito.idasesor')
+                    ->leftJoin('users as cobrador','cobrador.id','credito.idusuariocobranza')
               ->where('credito.id',$request->idcredito)
               ->select(
                     'credito.*',
+                    'cobrador.nombrecompleto as nombre_cobranza',
                     'credito_prendatario.modalidad as modalidadproductocredito',
                     'forma_pago_credito.nombre as forma_pago_credito_nombre',
                     'asesor.nombrecompleto as asesor',
@@ -2246,6 +2248,7 @@ class CobranzacuotaController extends Controller
               'estadocuotas' => $credito->forma_pago_credito_nombre,
               'asesor' => $credito->asesor,
               'cobranza' => sistema_nombre_usuario_con_rol($credito->idusuariocobranza, [12]),
+              'nombre_cobranza' => $credito->nombre_cobranza ?? '',
               //'numero_total' => $cronograma['numero_cuota_cancelada']+$cronograma['numero_cuota_pendiente']+$cronograma['numero_cuota_vencida'],
               //'saldo_total' => number_format($cronograma['cuota_pagada']+$cronograma['cuota_pendiente']+$cronograma['cuota_vencida'],2,'.',''),
               

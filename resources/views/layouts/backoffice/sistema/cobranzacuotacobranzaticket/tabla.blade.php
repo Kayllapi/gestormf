@@ -471,7 +471,7 @@
                 $('#numerodecuenta').html(respuesta.numerodecuenta);
                 $('#clasificacion').html('<span style="background-color: #ffc107;padding-left: 5px;padding-right: 5px;">'+respuesta.clasificacion+'</span>');
                 $('#asesor').html(respuesta.asesor);
-                $('#cobranza').text(respuesta.cobranza || '');
+                $('#cobranza').text(respuesta.nombre_cobranza || '');
                 $('#numero_cuota_cancelada').html(respuesta.numero_cuota_cancelada);
                 $('#numero_cuota_pendiente').html(respuesta.numero_cuota_pendiente);
                 $('#numero_cuota_vencida').html(respuesta.numero_cuota_vencida);

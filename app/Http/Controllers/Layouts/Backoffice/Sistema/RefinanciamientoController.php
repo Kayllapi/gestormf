@@ -504,6 +504,9 @@ class RefinanciamientoController extends Controller
                   ->orderBy('tarifario.monto','asc')
                   ->limit(1)
                   ->first();
+            $tasatarifario = $tasatarifario ?: \App\Services\TarifarioRefinanciamiento::paraMontoExcedido(
+                $credito, $request->input('idforma_pago_credito'), $request->input('monto_solicitado'), $request->input('cuotas')
+            );
             $tasa_tem_minima = 0;
             $comision_cargo = 0;
             if($tasatarifario!=''){

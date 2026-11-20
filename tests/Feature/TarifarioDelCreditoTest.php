@@ -81,6 +81,28 @@ class TarifarioDelCreditoTest extends TestCase
         $this->assertStringContainsString('10000', $datos['mensaje']);
     }
 
+    public function test_refinanciamiento_usa_comision_del_monto_maximo_y_avisa(): void
+    {
+        $credito = $this->prepararCredito();
+        DB::table('tarifario')->where('idtienda', $credito->idtienda)->update(['monto' => 500, 'cargos_otros' => 8.75]);
+
+        $datos = (new CreditoController)->show(Request::create('/', 'GET', [
+            'idcredito' => $credito->id, 'frecuencia' => 4, 'monto' => 600,
+            'numerocuota' => 6, 'modalidad_credito' => 'REFINANCIADO',
+            'tasa' => 6, 'tipotasa' => 1, 'fechainicio' => '2026-11-20',
+            'dia_gracia' => 0, 'cargo' => 0, 'cargomes' => 0,
+        ]), 198, 'cronograma');
+
+        $this->assertEquals(8.75, $datos['cargootros']);
+        $this->assertSame('No se encontró un tarifario para calcular el cronograma.', $datos['advertencia_tarifario']);
+        $this->assertEquals(
+            8.75,
+            \App\Services\TarifarioRefinanciamiento::paraMontoExcedido($credito, 4, 600, 6)->cargos_otros
+        );
+        $this->assertNull(\App\Services\TarifarioRefinanciamiento::paraMontoExcedido($credito, 1, 600, 6));
+        $this->assertNull(\App\Services\TarifarioRefinanciamiento::paraMontoExcedido($credito, 4, 600, 13));
+    }
+
     public function test_formularios_de_credito_y_refinanciamiento_muestran_su_tarifario(): void
     {
         $credito = $this->prepararCredito();

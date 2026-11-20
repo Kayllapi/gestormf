@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h5 class="modal-title">Créditos Castigados Administración</h5>
+  <h5 class="modal-title">Créditos <span style="background-color: #E8E585;">Castigados</span> Administración</h5>
   <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>
 <div class="modal-body">

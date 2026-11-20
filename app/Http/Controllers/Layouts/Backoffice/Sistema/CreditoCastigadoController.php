@@ -514,7 +514,7 @@ class CreditoCastigadoController extends Controller
                     $request->fecha_inicio,
                     $request->idformacredito,
                     $asesor,
-                    'REPORTE DE CARTERA DE CRÉDITO'
+                    'CARTERA DE CRÉDITOS CASTIGADOS'
                 ),
                 'reporte_cartera_credito.xls'
             );

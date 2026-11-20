@@ -10,7 +10,7 @@
 @endphp
 
 <div class="modal-header">
-  <h5 class="modal-title">Créditos Castigados Asesor/Ejecutivo</h5>
+  <h5 class="modal-title">Créditos <span style="background-color: #E8E585;">Castigados</span> Asesor/Ejecutivo</h5>
   <button type="button" class="btn-close" onclick="ir_inicio()"></button>
 </div>
 @if (!$usuario)

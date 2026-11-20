@@ -1242,13 +1242,13 @@ class CreditoController extends Controller
                 ->limit(1)
                 ->first();
           
-          $advertencia_tarifario = null;
+          $tarifario_monto_excedido = false;
           if (!$tasatarifario && strtoupper($request->modalidad_credito) === 'REFINANCIADO') {
               $tasatarifario = \App\Services\TarifarioRefinanciamiento::paraMontoExcedido(
                   $credito, $request->input('frecuencia'), $request->input('monto'), $request->input('numerocuota')
               );
               if ($tasatarifario) {
-                  $advertencia_tarifario = 'No se encontró un tarifario para calcular el cronograma.';
+                  $tarifario_monto_excedido = true;
               }
           }
           $tasa_tem = $request->input('tasa');
@@ -1256,8 +1256,8 @@ class CreditoController extends Controller
           $comision_cargo = 0;
           if($tasatarifario!=''){
               $comision_cargo = $tasatarifario->cargos_otros;
-              $tasa_tem_minima = $advertencia_tarifario ? 0 : $tasatarifario->tem;
-              if(!$advertencia_tarifario && $request->input('tasa')!='' && $request->input('tasa')>0 && $request->input('tasa') < $tasatarifario->tem){
+              $tasa_tem_minima = $tarifario_monto_excedido ? 0 : $tasatarifario->tem;
+              if(!$tarifario_monto_excedido && $request->input('tasa')!='' && $request->input('tasa')>0 && $request->input('tasa') < $tasatarifario->tem){
                   // if(strtoupper($request->modalidad_credito) != 'REFINANCIADO'){
                   return response()->json([
                       'resultado' => 'ERROR',
@@ -1400,7 +1400,6 @@ class CreditoController extends Controller
           
           return array(
             'cronograma' => $html,
-            'advertencia_tarifario' => $advertencia_tarifario,
             'tasa_tem' => $tasa_tem,
             'tasa_tem_minima' => $tasa_tem_minima,
             'tasa_tip' => number_format($tasa_tip, 2, '.', ''),

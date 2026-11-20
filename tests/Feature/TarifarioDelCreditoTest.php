@@ -81,7 +81,7 @@ class TarifarioDelCreditoTest extends TestCase
         $this->assertStringContainsString('10000', $datos['mensaje']);
     }
 
-    public function test_refinanciamiento_usa_comision_del_monto_maximo_y_avisa(): void
+    public function test_refinanciamiento_usa_comision_del_monto_maximo(): void
     {
         $credito = $this->prepararCredito();
         DB::table('tarifario')->where('idtienda', $credito->idtienda)->update(['monto' => 500, 'cargos_otros' => 8.75]);
@@ -94,7 +94,6 @@ class TarifarioDelCreditoTest extends TestCase
         ]), 198, 'cronograma');
 
         $this->assertEquals(8.75, $datos['cargootros']);
-        $this->assertSame('No se encontró un tarifario para calcular el cronograma.', $datos['advertencia_tarifario']);
         $this->assertEquals(
             8.75,
             \App\Services\TarifarioRefinanciamiento::paraMontoExcedido($credito, 4, 600, 6)->cargos_otros

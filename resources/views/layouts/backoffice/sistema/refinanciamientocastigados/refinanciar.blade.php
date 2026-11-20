@@ -342,9 +342,6 @@
                       modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
                   }else{
                       $('#table-cronograma > tbody').html(res.cronograma);
-                      if (res.advertencia_tarifario) {
-                          modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+encodeURIComponent(res.advertencia_tarifario), size: 'modal-sm' });
-                      }
                       $('#interes_total').html(res.interes_total);
                       $('#total_cargo').html(res.total_cargo);
                       $('#total_comision').html(res.total_comision);

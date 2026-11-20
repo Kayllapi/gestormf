@@ -642,7 +642,7 @@ class UsuarioaccesoController extends Controller
             $agencia = (int) $acceso['idtienda'];
             if (isset($porAgencia[$agencia]) && $porAgencia[$agencia] !== $cargo) {
                 throw \Illuminate\Validation\ValidationException::withMessages([
-                    'accesos' => 'El usuario solo puede tener un cargo de los rangos 4, 5, 6 y 8 en la misma agencia.',
+                    'accesos' => 'El usuario solo puede tener un solo cargo de los rangos 4, 5, 6 y 8 en la misma agencia.',
                 ]);
             }
             $porAgencia[$agencia] = $cargo;

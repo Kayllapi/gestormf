@@ -402,7 +402,6 @@ class CreditoCastigadoController extends Controller
               ->where('credito.estado','DESEMBOLSADO')
               ->where('credito.idestadocredito',1)
               ->where('credito.castigo_estado', 'CONFIRMADO')
-              ->where('credito.saldo_pendientepago','>',0)
               ->where($where)
               ->select(
                   'credito.*',
@@ -410,6 +409,7 @@ class CreditoCastigadoController extends Controller
                   'cliente.nombrecompleto as nombrecliente',
                   'cliente.numerotelefono as telefonocliente',
                   'cliente.direccion as direccioncliente',
+                  'aval.identificacion as identificacionaval',
                   'aval.nombrecompleto as nombreaval',
                   'credito_prendatario.nombre as nombreproductocredito' ,
                   'credito_prendatario.modalidad as modalidadproductocredito',

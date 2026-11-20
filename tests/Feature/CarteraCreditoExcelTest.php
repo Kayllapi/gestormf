@@ -6,6 +6,8 @@ use App\Exports\ReportecarteracreditoExport;
 use App\Exports\ReportecreditocastigadoExport;
 use App\Http\Controllers\Layouts\Backoffice\Sistema\CarteraCreditoController;
 use App\Http\Controllers\Layouts\Backoffice\Sistema\CreditoCastigadoController;
+use App\Models\User;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Excel as FormatoExcel;
@@ -16,6 +18,7 @@ use Tests\TestCase;
 
 class CarteraCreditoExcelTest extends TestCase
 {
+    use DatabaseTransactions;
     public static function exportadores(): array
     {
         return [
@@ -110,11 +113,13 @@ class CarteraCreditoExcelTest extends TestCase
     #[DataProvider('controladores')]
     public function test_total_tabla_suma_sus_filas_y_coincide_con_excel(string $clase, bool $castigados): void
     {
+        $this->actingAs(User::firstOrFail());
         $consulta = DB::table('credito')->where('estado', 'DESEMBOLSADO')->where('idestadocredito', 1);
         $castigados ? $consulta->where('castigo_estado', 'CONFIRMADO') : $consulta->where('castigo_estado', '!=', 'CONFIRMADO');
         $muestra = $consulta->orderBy('fecha_desembolso')->first()
             ?? DB::table('credito')->orderBy('fecha_desembolso')->first();
         $this->assertNotNull($muestra);
+        DB::table('credito')->where('id', $muestra->id)->update(['saldo_pendientepago' => 0]);
         $filtros = [
             'idagencia' => $muestra->idtienda,
             'idasesor' => $castigados ? $muestra->idusuariocobranza : $muestra->idasesor,
@@ -126,16 +131,20 @@ class CarteraCreditoExcelTest extends TestCase
         $tabla->loadHTML('<table><tbody>'.$respuesta['html'].'</tbody></table>', LIBXML_NOERROR | LIBXML_NOWARNING);
         $xpath = new \DOMXPath($tabla);
         $filas = $xpath->query('//tr[@id="show_data_select"]');
-        $suma = 0;
+        $sumas = [0, 0, 0];
         $cuentas = [];
         foreach ($filas as $fila) {
             $celdas = $fila->getElementsByTagName('td');
-            $suma += (float) $celdas->item(9)->textContent;
+            foreach ($sumas as $indice => $suma) {
+                $sumas[$indice] += (float) $celdas->item(7 + $indice)->textContent;
+            }
             $cuentas[] = trim($celdas->item(1)->textContent);
         }
-        $total = $xpath->query('//tr[contains(@class,"fila-total")]/th[contains(.,"TOTAL S/.")]/following-sibling::th[3]')->item(0);
-        $this->assertNotNull($total);
-        $this->assertEqualsWithDelta($suma, (float) $total->textContent, 0.005);
+        foreach ($sumas as $indice => $suma) {
+            $total = $xpath->query('//tr[contains(@class,"fila-total")]/th[contains(.,"TOTAL S/.")]/following-sibling::th['.($indice + 1).']')->item(0);
+            $this->assertNotNull($total);
+            $this->assertEqualsWithDelta($suma, (float) $total->textContent, 0.005);
+        }
 
         $export = null;
         Excel::shouldReceive('download')->once()->andReturnUsing(function ($reporte) use (&$export) {
@@ -150,8 +159,32 @@ class CarteraCreditoExcelTest extends TestCase
         $documentoExcel = new \DOMDocument;
         $documentoExcel->loadHTML($export->view()->render(), LIBXML_NOERROR | LIBXML_NOWARNING);
         $xpathExcel = new \DOMXPath($documentoExcel);
-        $totalExcel = $xpathExcel->query('//tbody/tr/td[contains(.,"TOTAL S/.")]/following-sibling::td[3]')->item(0);
-        $this->assertNotNull($totalExcel);
-        $this->assertEqualsWithDelta($suma, (float) $totalExcel->textContent, 0.005);
+        foreach ($sumas as $indice => $suma) {
+            $totalExcel = $xpathExcel->query('//tbody/tr/td[contains(.,"TOTAL S/.")]/following-sibling::td['.($indice + 1).']')->item(0);
+            $this->assertNotNull($totalExcel);
+            $this->assertEqualsWithDelta($suma, (float) $totalExcel->textContent, 0.005);
+        }
+
+        $pdfDatos = null;
+        $pdf = \Mockery::mock(\Barryvdh\DomPDF\PDF::class);
+        $pdf->shouldReceive('setPaper')->once();
+        $pdf->shouldReceive('stream')->once()->andReturn(response(''));
+        \PDF::shouldReceive('loadView')->once()->andReturnUsing(function ($vista, $datos) use (&$pdfDatos, $pdf) {
+            $pdfDatos = $datos;
+            return $pdf;
+        });
+        $controller->edit(Request::create('/', 'GET', array_merge($filtros, [
+            'view' => 'exportar_pdf', 'fecha_inicio' => $filtros['inicio'],
+        ])), $muestra->idtienda, 0);
+        $this->assertSame($cuentas, $pdfDatos['creditos']->map(fn ($credito) => 'C'.$credito->cuenta)->all());
+        $vistaPdf = $castigados ? 'creditocastigado' : 'carteracredito';
+        $documentoPdf = new \DOMDocument;
+        $documentoPdf->loadHTML(view("layouts.backoffice.sistema.$vistaPdf.exportar_pdf", $pdfDatos)->render(), LIBXML_NOERROR | LIBXML_NOWARNING);
+        $xpathPdf = new \DOMXPath($documentoPdf);
+        foreach ($sumas as $indice => $suma) {
+            $totalPdf = $xpathPdf->query('//tbody/tr/td[contains(.,"TOTAL S/.")]/following-sibling::td['.($indice + 1).']')->item(0);
+            $this->assertNotNull($totalPdf);
+            $this->assertEqualsWithDelta($suma, (float) $totalPdf->textContent, 0.005);
+        }
     }
 }

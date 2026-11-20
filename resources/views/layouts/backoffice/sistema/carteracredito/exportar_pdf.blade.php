@@ -209,8 +209,8 @@
                             <td>C{$value->cuenta}</td>
                             <td>{$value->identificacioncliente}</td>
                             <td>{$value->nombrecliente}</td>
-                            <td>{$value->avalidentificacion}</td>
-                            <td>{$value->avalnombrecompleto}</td>
+                            <td>{$value->identificacionaval}</td>
+                            <td>{$value->nombreaval}</td>
                             <td>".e(sistema_fecha_pdf($value->fecha_desembolso))."</td>
                             <td style='text-align:right;'>{$value->monto_solicitado}</td>
                             <td style='text-align:right;'>{$value->saldo_pendientepago}</td>
@@ -226,7 +226,7 @@
                         </tr>";
               $total_desembolsado += $value->monto_solicitado;
               $total_saldo += $value->saldo_pendientepago;
-              $total_deuda += $value->total_pendientepago;
+              $total_deuda += (float) $cronograma['cuota_pendiente'];
           }
           if(count($creditos)==0){
               $html.= '<tr><td colspan="19" style="border-bottom: 2px solid #000;text-align: center;font-weight: bold;">No hay ningún dato!!</td></tr>';

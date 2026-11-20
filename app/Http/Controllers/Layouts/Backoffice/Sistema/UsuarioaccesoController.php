@@ -632,11 +632,20 @@ class UsuarioaccesoController extends Controller
     private function validar_cargo_protegido_unico(array $accesos): void
     {
         $ids = collect($accesos)->pluck('idpermiso')->unique()->all();
-        $cantidad = DB::table('permiso')->whereIn('id', $ids)->whereIn('rango', [4, 5, 6, 8])->count();
-        if ($cantidad > 1) {
-            throw \Illuminate\Validation\ValidationException::withMessages([
-                'accesos' => 'El usuario solo puede tener un cargo de los rangos 4, 5, 6 y 8, aunque pertenezca a varias agencias.',
-            ]);
+        $protegidos = DB::table('permiso')->whereIn('id', $ids)->whereIn('rango', [4, 5, 6, 8])->pluck('id')->map(fn ($id) => (int) $id)->all();
+        $porAgencia = [];
+        foreach ($accesos as $acceso) {
+            $cargo = (int) $acceso['idpermiso'];
+            if (!in_array($cargo, $protegidos, true)) {
+                continue;
+            }
+            $agencia = (int) $acceso['idtienda'];
+            if (isset($porAgencia[$agencia]) && $porAgencia[$agencia] !== $cargo) {
+                throw \Illuminate\Validation\ValidationException::withMessages([
+                    'accesos' => 'El usuario solo puede tener un cargo de los rangos 4, 5, 6 y 8 en la misma agencia.',
+                ]);
+            }
+            $porAgencia[$agencia] = $cargo;
         }
     }
 

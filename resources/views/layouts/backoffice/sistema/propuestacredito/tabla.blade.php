@@ -65,7 +65,7 @@
                           return false;
                         }
                         if(estado == "CANCELADO"){
-                          var mensaje = "En Crédito Cancelado, no puede realizar ninguna acción. <br> Para eliminar realizar por Extorno de Operaciones.";
+                          var mensaje = "En Crédito Cancelado, no puede realizar ninguna acción. Para eliminar realizar por Extorno de Operaciones.";
                           modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
                           return false;
                         }

@@ -108,7 +108,8 @@
     }
   }).on('select2:select', function(e) {
     if (e.params.data.observado && !e.params.data.tiene_creditos_activos) {
-      modal({ route: @json(url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')) + '&mensaje=' + encodeURIComponent('Cliente Observado'), size: 'modal-sm' });
+      const mensaje = 'Cliente Observado' + (e.params.data.tiene_credito_castigado ? ' / Crédito Castigado' : '');
+      modal({ route: @json(url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')) + '&mensaje=' + encodeURIComponent(mensaje), size: 'modal-sm' });
       $('#idcliente').val(null).trigger('change');
       $('#nombreasesor').val(@json(Auth::user()->nombrecompleto));
       $('#idasesor').val(@json(Auth::user()->id));

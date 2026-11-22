@@ -43,6 +43,7 @@ class RefinanciamientoFiltrosTest extends TestCase
         $this->assertSame(10, $resultado[0]['idasesor']);
         $this->assertSame('Ejecutivo Uno', $resultado[0]['nombreasesor']);
         $this->assertFalse($resultado[0]['observado']);
+        $this->assertFalse($resultado[0]['tiene_credito_castigado']);
         DB::table('s_listanegra')->insert(['idcliente' => 11]);
         $observado = $controller->show(Request::create('/', 'GET', ['buscar' => 'Ana']), 1, 'clientes')->getData(true)['results'];
         $this->assertTrue($observado[0]['observado']);
@@ -69,6 +70,7 @@ class RefinanciamientoFiltrosTest extends TestCase
         }
         $observadoConCredito = $controller->show(Request::create('/', 'GET', ['buscar' => 'Ana Cliente']), 1, 'clientes')->getData(true)['results'][0];
         $this->assertTrue($observadoConCredito['observado']);
+        $this->assertTrue($observadoConCredito['tiene_credito_castigado']);
         $this->assertTrue($observadoConCredito['tiene_creditos_activos']);
         DB::table('credito')->where('id', 1)->update(['castigo_estado' => 'CONFIRMADO']);
         $soloCastigados = $controller->show(Request::create('/', 'GET', ['buscar' => 'Ana Cliente']), 1, 'clientes')->getData(true)['results'][0];

@@ -111,22 +111,32 @@
     sistema_select2({ input:'#idagencia',val:'{{$tienda->id}}' });
     sistema_select2({ input:'#idasesor' });
 
+    var solicitudAsesores;
     cliente_tienda({{$tienda->id}});
     $("#idagencia").on("change", function(e) {
         var idtienda = $('#idagencia').val();
         cliente_tienda(idtienda);
-        filtro();
     });
     function cliente_tienda(idtienda){
-        $.ajax({
+        if (solicitudAsesores) {
+            solicitudAsesores.abort();
+        }
+        $('#idasesor').html('<option></option>').prop('disabled', true).trigger('change.select2');
+        solicitudAsesores = $.ajax({
             url:"{{url('backoffice/'.$tienda->id.'/inicio/show_asesor_v2')}}",
             type:'GET',
             data: {
                 idtienda : idtienda
             },
             success: function (respuesta){
-                $('#idasesor').html(respuesta);
+                $('#idasesor').html(respuesta).val('0').prop('disabled', false);
                 sistema_select2({ input:'#idasesor' });
+                $('#idasesor').trigger('change');
+            },
+            error: function (xhr, estado) {
+                if (estado !== 'abort') {
+                    $('#idasesor').prop('disabled', false);
+                }
             }
         })
     }
@@ -140,11 +150,10 @@
         $('#cont-usuario').addClass('d-none');
 
         var root = '{{url('backoffice/'.$tienda->id.'/usuario/show_table')}}?idagencia='+$('#idagencia').val()+'&idasesor='+$('#idasesor').val();
-        $('#tabla-usuario').DataTable().ajax.url(root).load();
-
-        $('#tabla-usuario').on('xhr.dt', function(e, settings, json, xhr){
+        $('#tabla-usuario').DataTable().ajax.url(root).load(function () {
             $('#cont_loading').html('');
             $('#cont-usuario').removeClass('d-none');
+            $('#tabla-usuario').DataTable().columns.adjust();
         });
     }
 </script>

@@ -107,9 +107,14 @@
       processResults: data => data
     }
   }).on('select2:select', function(e) {
-    if (e.params.data.observado && !e.params.data.tiene_creditos_activos) {
-      const mensaje = 'Cliente Observado' + (e.params.data.tiene_credito_castigado ? ' / Crédito Castigado' : '');
+    if (e.params.data.observado || e.params.data.tiene_credito_castigado) {
+      const mensaje = [
+        e.params.data.observado ? 'Cliente Observado' : '',
+        e.params.data.tiene_credito_castigado ? 'Crédito Castigado' : ''
+      ].filter(Boolean).join(' / ');
       modal({ route: @json(url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')) + '&mensaje=' + encodeURIComponent(mensaje), size: 'modal-sm' });
+    }
+    if (e.params.data.observado && !e.params.data.tiene_creditos_activos) {
       $('#idcliente').val(null).trigger('change');
       $('#nombreasesor').val(@json(Auth::user()->nombrecompleto));
       $('#idasesor').val(@json(Auth::user()->id));

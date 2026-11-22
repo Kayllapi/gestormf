@@ -117,7 +117,7 @@
       <table style="width:100%; table-layout:fixed;">
         <tr>
           <td><b>CLIENTE:</b></td>
-          <td style="text-align:center;">@if($credito->castigo_estado === 'CONFIRMADO') <b>Crédito Castigado</b> @endif</td>
+          <td style="text-align:center;">@if($credito->castigo_estado === 'CONFIRMADO') <b style="color: #93222c;">Crédito Castigado</b> @endif</td>
           <td style="text-align:right;"><b>Agencia:</b> {{ $credito->nombre_agencia_credito }}</td>
         </tr>
       </table>

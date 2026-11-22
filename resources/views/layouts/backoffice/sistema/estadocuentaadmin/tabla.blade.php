@@ -67,6 +67,7 @@
       </div>
       <label>Préstamos: </label>
       <span id="cont_listanegra"></span>
+      <span id="cont_credito_castigado" class="badge bg-danger" style="display:none; float:right; margin-right:5px;">Crédito Castigado</span>
       <div style="overflow-y: scroll;height: calc(-246px + 100vh);">
       <table class="table table-striped table-hover" id="table-detalle-prestamo">
         <thead class="table-dark" style="position: sticky;top: 0;">
@@ -138,6 +139,7 @@
       
   });
   function verpdf(){
+      $('#cont_credito_castigado').hide();
       //$('#cont_opcioncredito').css('display','none');
       $('#cont_irainicio').css('display','block');
       var idcliente = $('#idcliente_credito').val();
@@ -184,6 +186,7 @@
   
   
   function lista_credito_cliente(id){
+    $('#cont_credito_castigado').hide();
     $.ajax({
       url:"{{url('backoffice/0/estadocuenta/showlistacreditos')}}",
       type:'GET',
@@ -217,6 +220,7 @@
   }
   
   function show_data(e) {
+    $('#cont_credito_castigado').toggle($(e).attr('data-castigado') === '1');
     let id = $(e).attr('data-valor-columna');
     $('#table-detalle-prestamo tr.selected').removeClass('selected');
     $(e).addClass('selected');

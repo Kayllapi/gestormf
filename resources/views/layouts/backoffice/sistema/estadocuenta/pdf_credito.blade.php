@@ -114,7 +114,13 @@
   <main>
     <div class="container">
       <h4 align="center">ESTADO DE CUENTA</h4>
-      <b>CLIENTE:</b>
+      <table style="width:100%; table-layout:fixed;">
+        <tr>
+          <td><b>CLIENTE:</b></td>
+          <td style="text-align:center;">@if($credito->castigo_estado === 'CONFIRMADO') <b>Crédito Castigado</b> @endif</td>
+          <td style="text-align:right;"><b>Agencia:</b> {{ $credito->nombre_agencia_credito }}</td>
+        </tr>
+      </table>
       <table style="width:100%; border-top: 1px solid #000;border-bottom: 2px solid #000;border-left:0px solid #000;border-right:0px solid #000;">
         <tr>
           <td><b>APELLIDOS Y NOMBRES</b> </td>

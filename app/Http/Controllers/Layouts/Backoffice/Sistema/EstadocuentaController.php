@@ -354,7 +354,8 @@ class EstadocuentaController extends Controller
                   $cp = 'CC';
               }
               $fechadesemobolso = date_format(date_create($value->fecha_desembolso),'d-m-Y h:i:s A');
-              $html .= "<tr data-valor-columna='{$value->id}' onclick='show_data(this)'>
+              $castigado = $value->castigo_estado === 'CONFIRMADO' ? '1' : '0';
+              $html .= "<tr data-valor-columna='{$value->id}' data-castigado='{$castigado}' onclick='show_data(this)'>
                             <td style='text-align: right;width: 70px;'>S/ {$value->monto_solicitado}</td>
                             <td style='width: 20px;'>{$cp}</td>
                             <td style='width: 20px;'><span style='background-color: {$color};'>{$estadocredito}</span></td>
@@ -734,6 +735,7 @@ class EstadocuentaController extends Controller
         
       $tienda = DB::table('tienda')->whereId($idtienda)->first();
       $credito = DB::table('credito')
+                    ->leftJoin('tienda as agencia_credito', 'agencia_credito.id', 'credito.idtienda')
                     ->join('users as cliente','cliente.id','credito.idcliente')
                     ->join('ubigeo as clienteubigeo','clienteubigeo.id','cliente.idubigeo')
                     ->leftjoin('users as aval','aval.id','credito.idaval')
@@ -747,6 +749,7 @@ class EstadocuentaController extends Controller
 
                     ->select(
                         'credito.*',
+                        'agencia_credito.nombreagencia as nombre_agencia_credito',
                         'cliente.codigo as codigo_cliente',
                         'cliente.identificacion as docuementocliente',
                         'cliente.nombrecompleto as nombreclientecredito',

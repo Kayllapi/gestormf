@@ -66,8 +66,7 @@
         <input type="hidden" id="idultimocredito_completa" value="0">
       </div>
       <label>Préstamos: </label>
-      <span id="cont_listanegra"></span>
-      <span id="cont_credito_castigado" class="badge bg-danger" style="display:none; float:right; margin-right:5px;">Crédito Castigado</span>
+      <span id="cont_listanegra" style="display:none;background-color:#ffc9ca;padding:0 5px;border-radius:5px;color:#93222c;float:right;"></span>
       <div style="overflow-y: scroll;height: calc(-246px + 100vh);">
       <table class="table table-striped table-hover" id="table-detalle-prestamo">
         <thead class="table-dark" style="position: sticky;top: 0;">
@@ -101,6 +100,7 @@
     </div>
   </div>
 </div>
+@include('layouts.backoffice.sistema.estadocuenta.indicador_estados')
 <script>
   $('#idclientesearch').select2({
       ajax: {
@@ -168,7 +168,8 @@
       });
   }
   function verpdf(){
-      $('#cont_credito_castigado').hide();
+      $('#cont_listanegra').data('castigado', false);
+      actualizar_indicador_estados();
       //$('#cont_opcioncredito').css('display','none');
       $('#cont_irainicio').css('display','block');
       var idcliente = $('#idcliente_credito').val();
@@ -215,7 +216,8 @@
   
   
   function lista_credito_cliente(id){
-    $('#cont_credito_castigado').hide();
+    $('#cont_listanegra').data('observado', false).data('castigado', false);
+    actualizar_indicador_estados();
     $.ajax({
       url:"{{url('backoffice/0/estadocuenta/showlistacreditos')}}",
       type:'GET',
@@ -231,9 +233,9 @@
         $('#table-detalle-prestamo > tbody').html(res.html);
         $("#exampleModal").modal('hide');
         $('#btn-create-cliente').removeClass('d-none');
-        $('#cont_listanegra').html('');
+        $('#cont_listanegra').data('observado', res.estado_listanegra == 2);
+        actualizar_indicador_estados();
         if(res.estado_listanegra==2){
-          $('#cont_listanegra').html('<span style="background-color: #ffc9ca;padding-left: 5px;padding-right: 5px;border-radius: 5px;color: #93222c; float: right;cursor: pointer;">Cliente Observado</span>'); // onclick="ver_motivo_listanegra()"
           $('#motivo_listanegra_texto').text(res.motivo_listanegra);
         }
         
@@ -249,7 +251,8 @@
   }
   
   function show_data(e) {
-    $('#cont_credito_castigado').toggle($(e).attr('data-castigado') === '1');
+    $('#cont_listanegra').data('castigado', $(e).attr('data-castigado') === '1');
+    actualizar_indicador_estados();
     let id = $(e).attr('data-valor-columna');
     $('#table-detalle-prestamo tr.selected').removeClass('selected');
     $(e).addClass('selected');

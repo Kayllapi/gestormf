@@ -48,7 +48,7 @@ class ConsolidadoCarteraCreditoController extends Controller
     {
 
         if($id == 'showtable'){
-          $where = [];
+          $where = [['credito.castigo_estado', '!=', 'CONFIRMADO']];
 
           if($request->idagencia!='' && $request->idagencia!=0){
               $where[] = ['credito.idtienda',$request->idagencia];
@@ -305,7 +305,7 @@ class ConsolidadoCarteraCreditoController extends Controller
         else if( $request->input('view') == 'exportar_pdf' ){
               
             
-          $where = [];
+          $where = [['credito.castigo_estado', '!=', 'CONFIRMADO']];
 
           if($request->idagencia!='' && $request->idagencia!=0){
               $where[] = ['credito.idtienda',$request->idagencia];

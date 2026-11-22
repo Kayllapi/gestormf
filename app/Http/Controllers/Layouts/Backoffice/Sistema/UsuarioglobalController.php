@@ -41,15 +41,15 @@ class UsuarioglobalController extends Controller
 
             $idagencia = request('idagencia') ?? 0;
 
-            $request->validate(['columns.8.search.value' => 'nullable|in:INACTIVIDAD,CASTIGADO']);
-            $motivo = $request->input('columns.8.search.value', '');
+            $request->validate(['columns.9.search.value' => 'nullable|in:INACTIVIDAD,CASTIGADO']);
+            $motivo = $request->input('columns.9.search.value', '');
 
             $where = [];
-            if($request->input('columns')[4]['search']['value']!=''){
-                $where[] = ['tipopersona.id',$request->input('columns')[4]['search']['value']];
-            }
             if($request->input('columns')[5]['search']['value']!=''){
-                $where[] = ['s_users_prestamo.idtipodocumento',$request->input('columns')[5]['search']['value']];
+                $where[] = ['tipopersona.id',$request->input('columns')[5]['search']['value']];
+            }
+            if($request->input('columns')[6]['search']['value']!=''){
+                $where[] = ['s_users_prestamo.idtipodocumento',$request->input('columns')[6]['search']['value']];
             }
 
             if ($idagencia!=0) {
@@ -71,10 +71,10 @@ class UsuarioglobalController extends Controller
                 ->when($motivo !== null && $motivo !== '', function ($query) use ($motivo) {
                     $query->whereRaw("COALESCE(NULLIF(users.origen_global, ''), 'INACTIVIDAD') = ?", [$motivo]);
                 })
-                ->where('users.codigo','LIKE','%'.$request->input('columns')[0]['search']['value'].'%')
-                ->where('users.identificacion','LIKE','%'.$request->input('columns')[1]['search']['value'].'%')
-                ->where('users.nombrecompleto','LIKE','%'.$request->input('columns')[2]['search']['value'].'%')
-                ->where('ubigeo.nombre','LIKE','%'.$request->input('columns')[3]['search']['value'].'%')
+                ->where('users.codigo','LIKE','%'.$request->input('columns')[1]['search']['value'].'%')
+                ->where('users.identificacion','LIKE','%'.$request->input('columns')[2]['search']['value'].'%')
+                ->where('users.nombrecompleto','LIKE','%'.$request->input('columns')[3]['search']['value'].'%')
+                ->where('ubigeo.nombre','LIKE','%'.$request->input('columns')[4]['search']['value'].'%')
                 ->where($where)
                 ->select(
                     'users.*',

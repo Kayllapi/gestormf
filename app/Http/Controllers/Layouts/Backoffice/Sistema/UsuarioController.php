@@ -895,7 +895,16 @@ class UsuarioController extends Controller
             $tienda = DB::table('tienda')->whereId($idtienda)->first();
 
             $idagencia = request('idagencia') ?? 0;
-            $idasesor = request('idasesor') ?? 0;
+            $idasesor = request('idasesor');
+
+            if (!is_numeric($idasesor) || $idasesor < 0) {
+                return response()->json([
+                    'draw' => $request->draw,
+                    'recordsTotal' => 0,
+                    'recordsFiltered' => 0,
+                    'data' => [],
+                ]);
+            }
 
             $where = [];
             if($request->input('columns')[5]['search']['value']!=''){
@@ -918,6 +927,12 @@ class UsuarioController extends Controller
                 ->leftJoin('s_users_prestamo','s_users_prestamo.id_s_users','users.id')
                 ->where('users.idestado',1)
                 ->where('users.idtipousuario',2)
+                ->where('users.idasesor', '>', 0)
+                ->whereNotExists(function ($query) {
+                    $query->select(DB::raw(1))
+                        ->from('s_listanegra')
+                        ->whereColumn('s_listanegra.idcliente', 'users.id');
+                })
                 ->where('users.codigo','LIKE','%'.$request->input('columns')[1]['search']['value'].'%')
                 ->where('users.identificacion','LIKE','%'.$request->input('columns')[2]['search']['value'].'%')
                 ->where('users.nombrecompleto','LIKE','%'.$request->input('columns')[3]['search']['value'].'%')

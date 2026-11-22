@@ -167,6 +167,9 @@ $name_table = generateRandomString();
         @if($type=='GET')
         processing: true,
         serverSide: true,
+        @if(!empty($deferLoading))
+        deferLoading: 0,
+        @endif
         @endif
         @endif
         ajax: {

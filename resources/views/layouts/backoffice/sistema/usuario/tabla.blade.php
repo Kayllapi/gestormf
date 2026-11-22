@@ -43,7 +43,8 @@
         @include('app.nuevosistema.tabla',[
             'tabla' => '#tabla-usuario',
             // 'route' => url('backoffice/'.$tienda->id.'/usuario/show_table'),
-            'route' => '',
+            'route' => url('backoffice/'.$tienda->id.'/usuario/show_table'),
+            'deferLoading' => true,
             'type' => 'GET',
             'scrollY' => 'calc(-196px + 100vh)',
             'thead' => [
@@ -116,6 +117,7 @@
     $("#idagencia").on("change", function(e) {
         var idtienda = $('#idagencia').val();
         cliente_tienda(idtienda);
+        $('#tabla-usuario').DataTable().ajax.url('{{url('backoffice/'.$tienda->id.'/usuario/show_table')}}').load();
     });
     function cliente_tienda(idtienda){
         if (solicitudAsesores) {
@@ -129,9 +131,9 @@
                 idtienda : idtienda
             },
             success: function (respuesta){
-                $('#idasesor').html(respuesta).val('0').prop('disabled', false);
+                $('#idasesor').html(respuesta).val('').prop('disabled', false);
                 sistema_select2({ input:'#idasesor' });
-                $('#idasesor').trigger('change');
+                $('#idasesor').trigger('change.select2');
             },
             error: function (xhr, estado) {
                 if (estado !== 'abort') {
@@ -142,7 +144,9 @@
     }
 
     $('#idasesor').on('change', function(e) {
-        filtro();
+        if ($(this).val()) {
+            filtro();
+        }
     });
 
     function filtro(){

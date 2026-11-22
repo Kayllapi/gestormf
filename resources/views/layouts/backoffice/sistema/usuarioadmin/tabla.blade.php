@@ -42,6 +42,7 @@
             'type' => 'GET',
             'scrollY' => 'calc(-196px + 100vh)',
             'thead' => [
+                ['data' => 'Nro'],
                 ['data' => 'Código'],
                 ['data' => 'RUC/DNI/CE'],
                 ['data' => 'Cliente'],
@@ -51,6 +52,7 @@
                 ['data' => ''],
             ],
             'tbody' => [
+                ['type' => 'secuencia'],
                 ['data' => 'codigo','type'=>'code'],
                 ['data' => 'identificacion','type'=>'code'],
                 ['data' => 'cliente','type'=>'text'],
@@ -60,6 +62,7 @@
                 ['data' => 'opcion','type'=>'btn'],
             ],
             'tfoot' => [
+                ['type' => ''],
                 ['type' => 'text'],
                 ['type' => 'text'],
                 ['type' => 'text'],

@@ -898,11 +898,11 @@ class UsuarioController extends Controller
             $idasesor = request('idasesor') ?? 0;
 
             $where = [];
-            if($request->input('columns')[4]['search']['value']!=''){
-                $where[] = ['tipopersona.id',$request->input('columns')[4]['search']['value']];
-            }
             if($request->input('columns')[5]['search']['value']!=''){
-                $where[] = ['s_users_prestamo.idtipodocumento',$request->input('columns')[5]['search']['value']];
+                $where[] = ['tipopersona.id',$request->input('columns')[5]['search']['value']];
+            }
+            if($request->input('columns')[6]['search']['value']!=''){
+                $where[] = ['s_users_prestamo.idtipodocumento',$request->input('columns')[6]['search']['value']];
             }
 
             if ($idagencia!=0) {
@@ -918,10 +918,10 @@ class UsuarioController extends Controller
                 ->leftJoin('s_users_prestamo','s_users_prestamo.id_s_users','users.id')
                 ->where('users.idestado',1)
                 ->where('users.idtipousuario',2)
-                ->where('users.codigo','LIKE','%'.$request->input('columns')[0]['search']['value'].'%')
-                ->where('users.identificacion','LIKE','%'.$request->input('columns')[1]['search']['value'].'%')
-                ->where('users.nombrecompleto','LIKE','%'.$request->input('columns')[2]['search']['value'].'%')
-                ->where('ubigeo.nombre','LIKE','%'.$request->input('columns')[3]['search']['value'].'%')
+                ->where('users.codigo','LIKE','%'.$request->input('columns')[1]['search']['value'].'%')
+                ->where('users.identificacion','LIKE','%'.$request->input('columns')[2]['search']['value'].'%')
+                ->where('users.nombrecompleto','LIKE','%'.$request->input('columns')[3]['search']['value'].'%')
+                ->where('ubigeo.nombre','LIKE','%'.$request->input('columns')[4]['search']['value'].'%')
                 ->where($where)
                 ->select(
                     'users.*',

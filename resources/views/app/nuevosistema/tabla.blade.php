@@ -237,7 +237,17 @@ $name_table = generateRandomString();
         columns: [
             @foreach($tbody as $value)
                   @if(isset($value['type']))
-                      @if($value['type']=='img')
+                      @if($value['type']=='secuencia')
+                      {
+                          data: null,
+                          searchable: false,
+                          orderable: false,
+                          render: function (data, type, full, meta) {
+                              return meta.settings._iDisplayStart + meta.row + 1;
+                          },
+                          className: 'table-type-num',
+                      },
+                      @elseif($value['type']=='img')
                       {
                           render: function ( data, type, full, meta ) {
                               var img = '<div class="img" style="background-image: url({{url('/public/backoffice/sistema/sin_imagen_cuadrado.png')}});"></div>';

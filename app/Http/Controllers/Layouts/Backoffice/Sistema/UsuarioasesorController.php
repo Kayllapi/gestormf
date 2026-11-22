@@ -43,11 +43,11 @@ class UsuarioasesorController extends Controller
             $tienda = DB::table('tienda')->whereId($idtienda)->first(); 
           
             $where = [];
-            if($request->input('columns')[4]['search']['value']!=''){
-                $where[] = ['tipopersona.id',$request->input('columns')[4]['search']['value']];
-            }
             if($request->input('columns')[5]['search']['value']!=''){
-                $where[] = ['s_users_prestamo.idtipodocumento',$request->input('columns')[5]['search']['value']];
+                $where[] = ['tipopersona.id',$request->input('columns')[5]['search']['value']];
+            }
+            if($request->input('columns')[6]['search']['value']!=''){
+                $where[] = ['s_users_prestamo.idtipodocumento',$request->input('columns')[6]['search']['value']];
             }
             $usuarios = DB::table('users')
                 ->join('tipopersona','tipopersona.id','=','users.idtipopersona')
@@ -57,10 +57,10 @@ class UsuarioasesorController extends Controller
                 ->where('users.idtipousuario',2)
                 ->where('users.idtienda',$idtienda)
                 ->where('users.idasesor',Auth::user()->id)
-                ->where('users.codigo','LIKE','%'.$request->input('columns')[0]['search']['value'].'%')
-                ->where('users.identificacion','LIKE','%'.$request->input('columns')[1]['search']['value'].'%')
-                ->where('users.nombrecompleto','LIKE','%'.$request->input('columns')[2]['search']['value'].'%')
-                ->where('ubigeo.nombre','LIKE','%'.$request->input('columns')[3]['search']['value'].'%')
+                ->where('users.codigo','LIKE','%'.$request->input('columns')[1]['search']['value'].'%')
+                ->where('users.identificacion','LIKE','%'.$request->input('columns')[2]['search']['value'].'%')
+                ->where('users.nombrecompleto','LIKE','%'.$request->input('columns')[3]['search']['value'].'%')
+                ->where('ubigeo.nombre','LIKE','%'.$request->input('columns')[4]['search']['value'].'%')
                 ->where($where)
                 ->select(
                     'users.*',

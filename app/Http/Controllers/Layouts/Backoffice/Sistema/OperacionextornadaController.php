@@ -50,23 +50,27 @@ class OperacionextornadaController extends Controller
           $where2 = [];
           $where3 = [];
           $where4 = [];
+          $where5 = [];
           if($request->idagencia!=''){
               $where1[] = ['credito_cobranzacuota.idtienda',$request->idagencia];
               $where2[] = ['credito.idtienda',$request->idagencia];
               $where3[] = ['gastoadministrativooperativo.idtienda',$request->idagencia];
               $where4[] = ['ingresoextraordinario.idtienda',$request->idagencia];
+              $where5[] = ['asignacioncapital.idtienda',$request->idagencia];
           }
           if($request->fecha_inicio!=''){
               $where1[] = ['credito_cobranzacuota.fechaextorno','>=',$request->fecha_inicio.' 00:00:00'];
               $where2[] = ['credito.fecha_eliminado','>=',$request->fecha_inicio.' 00:00:00'];
               $where3[] = ['gastoadministrativooperativo.fecha_eliminado','>=',$request->fecha_inicio.' 00:00:00'];
               $where4[] = ['ingresoextraordinario.fecha_eliminado','>=',$request->fecha_inicio.' 00:00:00'];
+              $where5[] = ['asignacioncapital.fecha_eliminado','>=',$request->fecha_inicio.' 00:00:00'];
           }
           if($request->fecha_fin!=''){
               $where1[] = ['credito_cobranzacuota.fechaextorno','<=',$request->fecha_fin.' 23:59:59'];
               $where2[] = ['credito.fecha_eliminado','<=',$request->fecha_fin.' 23:59:59'];
               $where3[] = ['gastoadministrativooperativo.fecha_eliminado','<=',$request->fecha_fin.' 23:59:59'];
               $where4[] = ['ingresoextraordinario.fecha_eliminado','<=',$request->fecha_fin.' 23:59:59'];
+              $where5[] = ['asignacioncapital.fecha_eliminado','<=',$request->fecha_fin.' 23:59:59'];
           }
           
           $ingresoextraordinarios = DB::table('ingresoextraordinario')
@@ -150,6 +154,30 @@ class OperacionextornadaController extends Controller
                   END as fc")
               );
           
+          $asignaciones = DB::table('asignacioncapital')
+              ->leftJoin('credito_tipooperacion', 'credito_tipooperacion.id', 'asignacioncapital.idtipooperacion')
+              ->leftJoin('users as responsable', 'responsable.id', 'asignacioncapital.idresponsable')
+              ->leftJoin('users as responsableeliminado', 'responsableeliminado.id', 'asignacioncapital.idresponsble_eliminado')
+              ->leftJoin('tienda', 'tienda.id', 'asignacioncapital.idtienda')
+              ->where('asignacioncapital.idestadoeliminado', 2)
+              ->where($where5)
+              ->select(
+                  DB::raw("'ELIM. CAPITAL' as operacion"),
+                  DB::raw("'--' as cuenta"),
+                  'asignacioncapital.fecha_eliminado as fechaextorno',
+                  DB::raw("'--' as pago_cuota"),
+                  'asignacioncapital.monto as total_pagar',
+                  'asignacioncapital.banco as banco',
+                  'asignacioncapital.cuenta as cuenta_bancaria',
+                  'asignacioncapital.numerooperacion as numerooperacion',
+                  DB::raw("CONCAT(asignacioncapital.codigoprefijo, asignacioncapital.codigo) as codigo"),
+                  DB::raw("CONCAT(COALESCE(credito_tipooperacion.nombre, ''), ' / ', COALESCE(asignacioncapital.descripcion, '')) as nombrecliente"),
+                  'responsable.codigo as codigoresponsable',
+                  'tienda.nombreagencia as tiendanombre',
+                  'responsableeliminado.codigo as codigoresponsableeliminado',
+                  DB::raw("'' as fc")
+              );
+
           $creditos_extornados = DB::table('credito_cobranzacuota')
               ->join('credito','credito.id','credito_cobranzacuota.idcredito')
               ->join('users as cliente','cliente.id','credito.idcliente')
@@ -162,6 +190,7 @@ class OperacionextornadaController extends Controller
               ->union($creditos)
               ->union($gastoadministrativooperativos)
               ->union($ingresoextraordinarios)
+              ->union($asignaciones)
               ->select(
                   DB::raw('CONCAT("EXT. CUOTAS") as operacion'),
                   DB::raw('CONCAT("C",credito.cuenta) as cuenta'),

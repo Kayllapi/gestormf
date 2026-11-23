@@ -128,8 +128,8 @@
                 <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">N° CUOTA.</th>
                 <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">TIPO OPER.</th>
                 <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">DESCRIPCIÓN/CLIENTE</th>
-                <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">BANCO(OPER.)</th>
-                <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">MONTO</th>
+                <th style="width: 9%;border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">BANCO(OPER.)</th>
+                <th style="width: 10%;border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">MONTO</th>
                 <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">US.(EMISOR)</th>
                 <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">US.(EXTORNO)</th>
                 <th style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-weight: bold;">SUCURSAL</th>
@@ -156,7 +156,7 @@
                 <td>{{$value->operacion}}</td>
                 <td>{{$value->nombrecliente}}</td>
                 <td>{{$cuenta}}</td>
-                <td style="text-align: right;">S/. {{$value->total_pagar}}</td>
+                <td style="text-align: right;white-space: nowrap;">S/. {{$value->total_pagar}}</td>
                 <td>{{$value->codigoresponsable}}</td>
                 <td>{{$value->codigoresponsableeliminado ?? ''}}</td>
                 <td>{{$value->tiendanombre}}</td>

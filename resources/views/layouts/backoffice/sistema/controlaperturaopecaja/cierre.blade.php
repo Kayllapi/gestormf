@@ -33,7 +33,7 @@
                                   width: 90%;
                                   margin: auto;">No hay ninguna apertura!!</p>
       @else
-        <label class="mt-1 bg-primary subtitulo">Aprobación</label>
+        <div class="mt-1 bg-primary subtitulo">Aprobación</div>
               <div class="mb-1">
                   <label>Responsable *</label>
                   <select class="form-select" id="idresponsable">

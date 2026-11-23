@@ -844,7 +844,7 @@ class AsignacioncapitalController extends Controller
             $actualizado = DB::table('asignacioncapital')->whereId($id)->where('idestadoeliminado', 1)->update([
                'fecha_eliminado' => now(),
                'idestadoeliminado' => 2,
-               'idresponsble_eliminado' => Auth::user()->id,
+               'idresponsble_eliminado' => $idresponsable,
             ]);
             abort_unless($actualizado, 404);
             return response()->json([

@@ -1337,7 +1337,7 @@ class MovimientointernodineroController extends Controller
                 ->whereId($id)
                 ->first();
           
-            ExtornoMovimientoInterno::eliminar((int) $id, (int) Auth::id(), true);
+            ExtornoMovimientoInterno::eliminar((int) $id, (int) $idresponsable, true);
           
             return response()->json([
               'resultado' => 'CORRECTO',
@@ -1404,7 +1404,7 @@ class MovimientointernodineroController extends Controller
                 ]);
             }
 
-            ExtornoMovimientoInterno::eliminar((int) $id, (int) Auth::id(), true);
+            ExtornoMovimientoInterno::eliminar((int) $id, (int) $idresponsable, true);
             return response()->json([
               'resultado' => 'CORRECTO',
               'mensaje'   => 'Se ha elimino correctamente.'
@@ -1443,7 +1443,7 @@ class MovimientointernodineroController extends Controller
                'idresponsble_eliminado' => Auth::user()->id,
             ]);*/
 
-            ExtornoMovimientoInterno::eliminar((int) $id, (int) Auth::id(), false);
+            ExtornoMovimientoInterno::eliminar((int) $id, (int) $idresponsable, false);
             return response()->json([
               'resultado' => 'CORRECTO',
               'mensaje'   => 'Se ha elimino correctamente.'

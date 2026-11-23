@@ -19,12 +19,7 @@
         <div class="alert alert-danger">
           <i class="fa-solid fa-triangle-exclamation"></i> ¿Esta seguro de eliminar el  Gasto Administrativo y Operativo?<br>
         </div>
-        <label class="mt-1" style="background-color: #636363;
-          color: #fff;
-          width: 100%;
-          border-radius: 5px;
-          padding: 0px 5px;
-          margin-bottom: 5px;">Aprobación</label>
+        <label class="mt-1 bg-primary subtitulo">Aprobación</label>
               <div class="mb-1">
                   <label>Responsable *</label>
                   <select class="form-select" id="idresponsable">

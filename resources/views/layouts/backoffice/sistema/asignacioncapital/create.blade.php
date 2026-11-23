@@ -8,12 +8,8 @@
               <div class="row">
                 <label class="col-sm-3 col-form-label" style="text-align: right;">Agencia:</label>
                 <div class="col-sm-9">
-                    <select class="form-control" id="idagencia">
-                      <option></option>
-                      @foreach($agencias as $value)
-                          <option value="{{$value->id}}">{{$value->nombreagencia}}</option>
-                      @endforeach
-                    </select>
+                    <input type="text" class="form-control" value="{{$tienda->nombreagencia}}" disabled>
+                    <input type="hidden" id="idagencia" value="{{$tienda->id}}">
                 </div>
               </div>
               <div class="row">
@@ -94,7 +90,6 @@
 </form>  
 <script>
   
-    sistema_select2({ input:'#idagencia',val:'{{$tienda->id}}' });
     sistema_select2({ input:'#idtipooperacion' });
     sistema_select2({ input:'#idtipodestino' });
     sistema_select2({ input:'#idbanco' });

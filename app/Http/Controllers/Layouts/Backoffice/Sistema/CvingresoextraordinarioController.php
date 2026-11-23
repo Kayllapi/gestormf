@@ -158,7 +158,7 @@ class CvingresoextraordinarioController extends Controller
             $html = '';
             foreach($ingresoextraordinario as $key => $value){
                 $fechapago = date_format(date_create($value->fechapago),"d-m-Y H:i:s A");
-                $cuenta = $value->banco!=''?$value->banco.' - ***'.substr($value->cuenta, -4).' ('.$value->numerooperacion.')':'';
+                $cuenta = $value->banco!=''?$value->banco.' - ***'.substr($value->cuenta, -5).' ('.$value->numerooperacion.')':'';
                 
                 $btn_validar = '';
                 if($value->idformapago==2){

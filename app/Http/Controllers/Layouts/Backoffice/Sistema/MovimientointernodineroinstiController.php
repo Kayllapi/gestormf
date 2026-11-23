@@ -287,7 +287,7 @@ class MovimientointernodineroinstiController extends Controller
             $html = '';
             foreach($movimientointernodinero as $key => $value){
                 $fecharegistro = date_format(date_create($value->fecharegistro),"d-m-Y H:i:s A");
-                $cuenta = $value->banco!=''?$value->banco.' - ***'.substr($value->cuenta, -4):'';
+                $cuenta = $value->banco!=''?$value->banco.' - ***'.substr($value->cuenta, -5):'';
                 $numerooperacion = $value->banco!=''?$value->numerooperacion:'';
                 $html .= "<tr data-valor-columna='{$value->id}' onclick='show_data_retiro2(this)'>
                               <td style='white-space: nowrap;'>{$value->codigoprefijo}{$value->codigo}</td>
@@ -346,7 +346,7 @@ class MovimientointernodineroinstiController extends Controller
             $html = '';
             foreach($movimientointernodinero as $key => $value){
                 $fecharegistro = date_format(date_create($value->fecharegistro),"d-m-Y H:i:s A");
-                $cuenta = $value->banco!=''?$value->banco.' - ***'.substr($value->cuenta, -4):'';
+                $cuenta = $value->banco!=''?$value->banco.' - ***'.substr($value->cuenta, -5):'';
                 $numerooperacion = $value->banco!=''?$value->numerooperacion:'';
                 $bgcolor = '';
                 if($value->idresponsable==0){

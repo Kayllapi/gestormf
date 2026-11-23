@@ -142,7 +142,7 @@
                 <?php
                   $coutas = str_replace(',',', ',$value->pago_cuota);
                   $totalpago += $value->total_pagar;
-                  $cuenta = $value->banco!=''?$value->banco.' - ***'.substr($value->cuenta, -4).' ('.$value->numerooperacion.')':'';
+                  $cuenta = $value->banco!=''?$value->banco.' - ***'.substr($value->cuenta, -5).' ('.$value->numerooperacion.')':'';
                 ?>
                 <tr>
                   <td>{{ sistema_fecha_pdf($value->fechaextorno) }}</td>

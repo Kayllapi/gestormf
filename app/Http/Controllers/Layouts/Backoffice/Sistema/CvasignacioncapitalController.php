@@ -314,7 +314,7 @@ class CvasignacioncapitalController extends Controller
                 }
               
                 $fecharegistro = date_format(date_create($value->fecharegistro),"d-m-Y H:i:s A");
-                $cuenta = $value->banco!=''?$value->banco.' - ***'.substr($value->cuenta, -4):'';
+                $cuenta = $value->banco!=''?$value->banco.' - ***'.substr($value->cuenta, -5):'';
                 $numerooperacion = $value->banco!=''?$value->numerooperacion:'';
                    
                 $btn_validar = '';

@@ -144,7 +144,7 @@
               <?php
                 $coutas = str_replace(',',', ',$value->pago_cuota);
                 $totalpago += $value->total_pagar;
-                $cuenta = $value->banco!=''?$value->banco.' - ***'.substr($value->cuenta, -5).' ('.$value->numerooperacion.')':'';
+                $cuenta = $value->banco != '' ? $value->banco.($value->cuenta_bancaria ? ' - ***'.substr($value->cuenta_bancaria, -5) : '').($value->numerooperacion ? ' ('.$value->numerooperacion.')' : '') : '';
                 // $num_operacion =  'OP'.str_pad($value->codigo, 10, "0", STR_PAD_LEFT);
               ?>
               <tr>

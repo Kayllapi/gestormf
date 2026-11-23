@@ -213,6 +213,11 @@
           // idasesor : $('#idasesor').val(),
       },
       success: function (res){
+        if (res.cliente_castigado) {
+          $('#idcliente').val(null).trigger('change');
+          modal({ route: "{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje=" + encodeURIComponent('El Cliente se encuentra en Castigados'), size: 'modal-sm' });
+          return;
+        }
         
         $('.data-cliente').removeClass('d-none')
         $('#data-cliente-id').val(res.cliente.id);

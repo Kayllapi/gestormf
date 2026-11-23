@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Layouts\Backoffice\Sistema;
 
 use App\Http\Controllers\Controller;
+use App\Services\CastigoCredito;
 use Illuminate\Http\Request;
 use DB;
 use Auth;
@@ -224,6 +225,14 @@ class CargoController extends Controller
         }
         else if($id == 'showlistacreditos'){
             $cargo = $this->cargoEjecutivo();
+            if (!$excluirCastigados && !$soloCastigados) {
+                $cliente = DB::table('users')->whereId($request->idcliente)->first(['id', 'idasesor']);
+                if ($cliente && DB::table('credito')->where('idcliente', $cliente->id)
+                    ->where('castigo_estado', 'CONFIRMADO')->exists()
+                    && (!(int) $cliente->idasesor || !CastigoCredito::tieneCreditosVigentes((int) $cliente->id))) {
+                    return response()->json(['cliente_castigado' => true]);
+                }
+            }
             if ($excluirCastigados || $soloCastigados || in_array($cargo, [3, 4, 7, 11, 12], true)) {
                 abort_unless($this->filtrarCreditosEjecutivo(DB::table('credito'), $excluirCastigados, $soloCastigados)
                     ->where('credito.idcliente', $request->idcliente)

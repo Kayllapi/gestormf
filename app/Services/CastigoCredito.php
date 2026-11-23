@@ -61,7 +61,7 @@ class CastigoCredito
         })->exists();
     }
 
-    private static function tieneCreditosVigentes(int $cliente): bool
+    public static function tieneCreditosVigentes(int $cliente): bool
     {
         return DB::table('credito')->where('idcliente', $cliente)->where('estado', 'DESEMBOLSADO')
             ->where('idestadocredito', 1)->where('castigo_estado', '!=', 'CONFIRMADO')

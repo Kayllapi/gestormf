@@ -186,6 +186,7 @@ class OperacionextornadaAdminController extends Controller
               );
 
           $movimientos = DB::table('movimientointernodinero')
+              ->leftJoin('credito_fuenteretiro', 'credito_fuenteretiro.id', 'movimientointernodinero.idfuenteretiro')
               ->leftJoin('users as responsable', 'responsable.id', 'movimientointernodinero.idresponsable')
               ->leftJoin('users as responsableeliminado', 'responsableeliminado.id', 'movimientointernodinero.idresponsble_eliminado')
               ->leftJoin('tienda', 'tienda.id', 'movimientointernodinero.idtienda')
@@ -202,7 +203,7 @@ class OperacionextornadaAdminController extends Controller
                   'movimientointernodinero.cuenta as cuenta_bancaria',
                   'movimientointernodinero.numerooperacion as numerooperacion',
                   DB::raw("CONCAT(movimientointernodinero.codigoprefijo, movimientointernodinero.codigo) as codigo"),
-                  'movimientointernodinero.descripcion as nombrecliente',
+                  DB::raw("CONCAT_WS(' / ', NULLIF(movimientointernodinero.descripcion, ''), NULLIF(credito_fuenteretiro.nombre, '')) as nombrecliente"),
                   'responsable.codigo as codigoresponsable',
                   'tienda.nombreagencia as tiendanombre',
                   'responsableeliminado.codigo as codigoresponsableeliminado',

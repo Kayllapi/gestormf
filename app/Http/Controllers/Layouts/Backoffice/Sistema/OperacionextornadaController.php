@@ -51,12 +51,14 @@ class OperacionextornadaController extends Controller
           $where3 = [];
           $where4 = [];
           $where5 = [];
+          $where6 = [];
           if($request->idagencia!=''){
               $where1[] = ['credito_cobranzacuota.idtienda',$request->idagencia];
               $where2[] = ['credito.idtienda',$request->idagencia];
               $where3[] = ['gastoadministrativooperativo.idtienda',$request->idagencia];
               $where4[] = ['ingresoextraordinario.idtienda',$request->idagencia];
               $where5[] = ['asignacioncapital.idtienda',$request->idagencia];
+              $where6[] = ['movimientointernodinero.idtienda',$request->idagencia];
           }
           if($request->fecha_inicio!=''){
               $where1[] = ['credito_cobranzacuota.fechaextorno','>=',$request->fecha_inicio.' 00:00:00'];
@@ -64,6 +66,7 @@ class OperacionextornadaController extends Controller
               $where3[] = ['gastoadministrativooperativo.fecha_eliminado','>=',$request->fecha_inicio.' 00:00:00'];
               $where4[] = ['ingresoextraordinario.fecha_eliminado','>=',$request->fecha_inicio.' 00:00:00'];
               $where5[] = ['asignacioncapital.fecha_eliminado','>=',$request->fecha_inicio.' 00:00:00'];
+              $where6[] = ['movimientointernodinero.fecha_eliminado','>=',$request->fecha_inicio.' 00:00:00'];
           }
           if($request->fecha_fin!=''){
               $where1[] = ['credito_cobranzacuota.fechaextorno','<=',$request->fecha_fin.' 23:59:59'];
@@ -71,6 +74,7 @@ class OperacionextornadaController extends Controller
               $where3[] = ['gastoadministrativooperativo.fecha_eliminado','<=',$request->fecha_fin.' 23:59:59'];
               $where4[] = ['ingresoextraordinario.fecha_eliminado','<=',$request->fecha_fin.' 23:59:59'];
               $where5[] = ['asignacioncapital.fecha_eliminado','<=',$request->fecha_fin.' 23:59:59'];
+              $where6[] = ['movimientointernodinero.fecha_eliminado','<=',$request->fecha_fin.' 23:59:59'];
           }
           
           $ingresoextraordinarios = DB::table('ingresoextraordinario')
@@ -178,6 +182,30 @@ class OperacionextornadaController extends Controller
                   DB::raw("'' as fc")
               );
 
+          $movimientos = DB::table('movimientointernodinero')
+              ->leftJoin('users as responsable', 'responsable.id', 'movimientointernodinero.idresponsable')
+              ->leftJoin('users as responsableeliminado', 'responsableeliminado.id', 'movimientointernodinero.idresponsble_eliminado')
+              ->leftJoin('tienda', 'tienda.id', 'movimientointernodinero.idtienda')
+              ->where('movimientointernodinero.idestadoeliminado', 2)
+              ->where('movimientointernodinero.extorno_agrupado', false)
+              ->where($where6)
+              ->select(
+                  DB::raw("'ELIM. MOVIMIENTO' as operacion"),
+                  DB::raw("'--' as cuenta"),
+                  'movimientointernodinero.fecha_eliminado as fechaextorno',
+                  DB::raw("'--' as pago_cuota"),
+                  'movimientointernodinero.monto as total_pagar',
+                  'movimientointernodinero.banco as banco',
+                  'movimientointernodinero.cuenta as cuenta_bancaria',
+                  'movimientointernodinero.numerooperacion as numerooperacion',
+                  DB::raw("CONCAT(movimientointernodinero.codigoprefijo, movimientointernodinero.codigo) as codigo"),
+                  'movimientointernodinero.descripcion as nombrecliente',
+                  'responsable.codigo as codigoresponsable',
+                  'tienda.nombreagencia as tiendanombre',
+                  'responsableeliminado.codigo as codigoresponsableeliminado',
+                  DB::raw("'' as fc")
+              );
+
           $creditos_extornados = DB::table('credito_cobranzacuota')
               ->join('credito','credito.id','credito_cobranzacuota.idcredito')
               ->join('users as cliente','cliente.id','credito.idcliente')
@@ -191,6 +219,7 @@ class OperacionextornadaController extends Controller
               ->union($gastoadministrativooperativos)
               ->union($ingresoextraordinarios)
               ->union($asignaciones)
+              ->union($movimientos)
               ->select(
                   DB::raw('CONCAT("EXT. CUOTAS") as operacion'),
                   DB::raw('CONCAT("C",credito.cuenta) as cuenta'),

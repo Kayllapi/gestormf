@@ -52,7 +52,7 @@
               <label for="fecha_inicio" class="col-sm-3 col-form-label">Saldo en Caja (S/.):</label>
               <div class="col-sm-4">
                   <input type="text" class="form-control" 
-                         value="{{$consolidadooperaciones['saldos_caja']}}" id="saldocaja_arqueocaja" disabled>
+                         value="{{ number_format(round($consolidadooperaciones['saldos_caja'], 1), 2, '.', '') }}" id="saldocaja_arqueocaja" disabled>
               </div>
               @endif
               @if($arqueocaja)
@@ -309,4 +309,4 @@
       $('#total_efectivo_caja_arqueo').html(total_efectivo_caja_arqueo.toFixed(2));
       $('#total_arqueocaja').val(total_efectivo_caja_arqueo.toFixed(2));
     }
-</script> 
+</script>

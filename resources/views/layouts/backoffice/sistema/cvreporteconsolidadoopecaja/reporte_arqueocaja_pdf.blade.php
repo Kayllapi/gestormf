@@ -131,10 +131,10 @@
       </div>
       @if(!$arqueocaja)
                       <p class="text-center" 
-                           style="background-color: #dc3545;
+                           style="background-color: #ffc9ca !important;
+                                  color: #93222c !important;
                                   padding: 15px;
                                   border-radius: 5px;
-                                  color: #fff;
                                   width: 90%;
                                   margin: auto;text-align:center;">No Hay arqueo de caja con esta fecha!!</p>
       @else

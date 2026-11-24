@@ -117,7 +117,7 @@
 </head>
 <body>
   <header>
-    <div style="float:left;font-size:18px;">{{ $tienda->nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d/m/Y H:iA') }}
+    <div style="float:left;font-size:18px;">{{ $tienda->ticket_nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d/m/Y H:iA') }}
   </header>
   <footer>
     <p class="page">Página </p>
@@ -131,10 +131,10 @@
       </div>
       @if(!$arqueocaja)
                       <p class="text-center" 
-                           style="background-color: #dc3545;
+                           style="background-color: #ffc9ca !important;
+                                  color: #93222c !important;
                                   padding: 15px;
                                   border-radius: 5px;
-                                  color: #fff;
                                   width: 90%;
                                   margin: auto;text-align:center;">No Hay arqueo de caja con esta fecha!!</p>
       @else

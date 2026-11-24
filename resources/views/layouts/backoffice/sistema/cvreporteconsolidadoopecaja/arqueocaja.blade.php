@@ -228,13 +228,6 @@
                   <div class="alert alert-danger">
                     <b>Para realizar el arqueo de caja, la validación debe estar VERIFICADO!!</b>
                   </div>
-                    {{-- <p class="text-center" 
-                      style="background-color: #ffc9ca !important;
-                            padding: 15px;
-                            border-radius: 5px;
-                            color: #93222c !important;
-                            width: 90%;
-                            margin: auto;">Para realizar el arqueo de caja, la validación debe estar VERIFICADO!!</p> --}}
                   @endif
                 @endif
               @endif

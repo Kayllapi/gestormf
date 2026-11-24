@@ -54,9 +54,9 @@ class ArqueoCajaEliminado
         $consulta = self::consulta($request, $tipo);
 
         if ($tipo === 'cv') {
-            return $consulta->selectRaw("'ELIM. ARQUEO CAJA' as operacion, CONCAT('AR-', ae.idarqueocaja) as codigo, '--' as cuenta, ae.fecha_eliminacion as fechaextorno, '--' as pago_cuota, '' as detalleoperacion, CONCAT('Corte: ', ae.corte) as descripcion, ae.total as total_pagar, '' as banco, '' as numerooperacion, responsable.codigo as codigoresponsable, responsableeliminado.codigo as codigoresponsableeliminado, tienda.nombreagencia as tiendanombre");
+            return $consulta->selectRaw("'ELIM. ARQUEO CAJA' as operacion, CONCAT('A', LPAD(ae.idarqueocaja, GREATEST(8, LENGTH(ae.idarqueocaja)), '0')) as codigo, '--' as cuenta, ae.fecha_eliminacion as fechaextorno, '--' as pago_cuota, '' as detalleoperacion, CONCAT('Corte: ', ae.corte) as descripcion, ae.total as total_pagar, '' as banco, '' as numerooperacion, responsable.codigo as codigoresponsable, responsableeliminado.codigo as codigoresponsableeliminado, tienda.nombreagencia as tiendanombre");
         }
 
-        return $consulta->selectRaw("'ELIM. ARQUEO CAJA' as operacion, '--' as cuenta, ae.fecha_eliminacion as fechaextorno, '--' as pago_cuota, ae.total as total_pagar, '' as banco, '' as cuenta_bancaria, '' as numerooperacion, CONCAT('AR-', ae.idarqueocaja) as codigo, CONCAT('Corte: ', ae.corte) as nombrecliente, responsable.codigo as codigoresponsable, tienda.nombreagencia as tiendanombre, responsableeliminado.codigo as codigoresponsableeliminado, '' as fc");
+        return $consulta->selectRaw("'ELIM. ARQUEO CAJA' as operacion, '--' as cuenta, ae.fecha_eliminacion as fechaextorno, '--' as pago_cuota, ae.total as total_pagar, '' as banco, '' as cuenta_bancaria, '' as numerooperacion, CONCAT('A', LPAD(ae.idarqueocaja, GREATEST(8, LENGTH(ae.idarqueocaja)), '0')) as codigo, CONCAT('Corte: ', ae.corte) as nombrecliente, responsable.codigo as codigoresponsable, tienda.nombreagencia as tiendanombre, responsableeliminado.codigo as codigoresponsableeliminado, '' as fc");
     }
 }

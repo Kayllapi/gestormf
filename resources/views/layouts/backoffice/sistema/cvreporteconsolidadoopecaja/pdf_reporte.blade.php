@@ -143,9 +143,9 @@
               <td style="border-bottom: 2px solid #000;">
                 @if($co_actual['saldos_operaciones_efectivo_validacion_existe'])
                   @if($co_actual['saldos_operaciones_efectivo_validacion_cantidad']==0)
-                    <img src="{{url('public/backoffice/sistema/icono_check.png')}}" width="20px">
+                    <img src="{{ 'data:image/png;base64,'.base64_encode(file_get_contents(public_path('backoffice/sistema/icono_check.png'))) }}" width="20px">
                   @else
-                    <img src="{{url('public/backoffice/sistema/icono_close.png')}}" width="20px">
+                    <img src="{{ 'data:image/png;base64,'.base64_encode(file_get_contents(public_path('backoffice/sistema/icono_close.png'))) }}" width="20px">
                   @endif
                 @endif
               </td>
@@ -234,9 +234,9 @@
               <td>
                 @if($co_actual['ingresoyegresobanco_ingreso_cvventa_validacion_cantidad']>0)
                   @if($co_actual['ingresoyegresobanco_ingreso_cvventa_validacion']=='CHECK')
-                    <img src="{{url('public/backoffice/sistema/icono_check.png')}}" width="20px">
+                    <img src="{{ 'data:image/png;base64,'.base64_encode(file_get_contents(public_path('backoffice/sistema/icono_check.png'))) }}" width="20px">
                   @else
-                    <img src="{{url('public/backoffice/sistema/icono_close.png')}}" width="20px">
+                    <img src="{{ 'data:image/png;base64,'.base64_encode(file_get_contents(public_path('backoffice/sistema/icono_close.png'))) }}" width="20px">
                   @endif
                 @endif
               </td>
@@ -252,10 +252,10 @@
               <td colspan="4" style="text-align:left;">{{ $value['banco_nombre'] }}: {{ $value['banco_cuenta'] }}</td>
               <td>
                 @if($value['validacion']=='CHECK')
-                  <img src="{{url('public/backoffice/sistema/icono_check.png')}}" width="20px">
+                  <img src="{{ 'data:image/png;base64,'.base64_encode(file_get_contents(public_path('backoffice/sistema/icono_check.png'))) }}" width="20px">
                 @else
                   @if($value['banco']>0)
-                    <img src="{{url('public/backoffice/sistema/icono_close.png')}}" width="20px">
+                    <img src="{{ 'data:image/png;base64,'.base64_encode(file_get_contents(public_path('backoffice/sistema/icono_close.png'))) }}" width="20px">
                   @endif
                 @endif
               </td>
@@ -273,9 +273,9 @@
               <td>
                 @if($co_actual['ingresoyegresobanco_ingreso_incrementocapital_validacion_cantidad']>0)
                   @if($co_actual['ingresoyegresobanco_ingreso_incrementocapital_validacion']=='CHECK')
-                    <img src="{{url('public/backoffice/sistema/icono_check.png')}}" width="20px">
+                    <img src="{{ 'data:image/png;base64,'.base64_encode(file_get_contents(public_path('backoffice/sistema/icono_check.png'))) }}" width="20px">
                   @else
-                    <img src="{{url('public/backoffice/sistema/icono_close.png')}}" width="20px">
+                    <img src="{{ 'data:image/png;base64,'.base64_encode(file_get_contents(public_path('backoffice/sistema/icono_close.png'))) }}" width="20px">
                   @endif
                 @endif
               </td>
@@ -292,10 +292,10 @@
               <td colspan="4" style="text-align:left;">{{ $value['banco_nombre'] }}: {{ $value['banco_cuenta'] }}</td>
               <td>
                 @if($value['validacion']=='CHECK')
-                  <img src="{{url('public/backoffice/sistema/icono_check.png')}}" width="20px">
+                  <img src="{{ 'data:image/png;base64,'.base64_encode(file_get_contents(public_path('backoffice/sistema/icono_check.png'))) }}" width="20px">
                 @else
                   @if($value['banco']>0)
-                    <img src="{{url('public/backoffice/sistema/icono_close.png')}}" width="20px">
+                    <img src="{{ 'data:image/png;base64,'.base64_encode(file_get_contents(public_path('backoffice/sistema/icono_close.png'))) }}" width="20px">
                   @endif
                 @endif
               </td>
@@ -313,9 +313,9 @@
               <td>
                 @if($co_actual['ingresoyegresobanco_ingreso_ingresosextraordinarios_validacion_cantidad']>0)
                 @if($co_actual['ingresoyegresobanco_ingreso_ingresosextraordinarios_validacion']=='CHECK')
-                <img src="{{url('public/backoffice/sistema/icono_check.png')}}" width="20px">
+                <img src="{{ 'data:image/png;base64,'.base64_encode(file_get_contents(public_path('backoffice/sistema/icono_check.png'))) }}" width="20px">
                 @else
-                <img src="{{url('public/backoffice/sistema/icono_close.png')}}" width="20px">
+                <img src="{{ 'data:image/png;base64,'.base64_encode(file_get_contents(public_path('backoffice/sistema/icono_close.png'))) }}" width="20px">
                 @endif
                 @endif
               </td>
@@ -332,10 +332,10 @@
               <td colspan="4" style="text-align:left;">{{ $value['banco_nombre'] }}: {{ $value['banco_cuenta'] }}</td>
               <td>
                 @if($value['validacion']=='CHECK')
-                  <img src="{{url('public/backoffice/sistema/icono_check.png')}}" width="20px">
+                  <img src="{{ 'data:image/png;base64,'.base64_encode(file_get_contents(public_path('backoffice/sistema/icono_check.png'))) }}" width="20px">
                 @else
                   @if($value['banco']>0)
-                    <img src="{{url('public/backoffice/sistema/icono_close.png')}}" width="20px">
+                    <img src="{{ 'data:image/png;base64,'.base64_encode(file_get_contents(public_path('backoffice/sistema/icono_close.png'))) }}" width="20px">
                   @endif
                 @endif
               </td>
@@ -353,9 +353,9 @@
               <td style="border-top: 2px solid #000;">
                 @if($co_actual['ingresoyegresobanco_egreso_cvcompra_validacion_cantidad']>0)
                   @if($co_actual['ingresoyegresobanco_egreso_cvcompra_validacion']=='CHECK')
-                    <img src="{{url('public/backoffice/sistema/icono_check.png')}}" width="20px">
+                    <img src="{{ 'data:image/png;base64,'.base64_encode(file_get_contents(public_path('backoffice/sistema/icono_check.png'))) }}" width="20px">
                   @else
-                    <img src="{{url('public/backoffice/sistema/icono_close.png')}}" width="20px">
+                    <img src="{{ 'data:image/png;base64,'.base64_encode(file_get_contents(public_path('backoffice/sistema/icono_close.png'))) }}" width="20px">
                   @endif
                 @endif
               </td>
@@ -372,10 +372,10 @@
               <td colspan="4" style="text-align:left;">{{ $value['banco_nombre'] }}: {{ $value['banco_cuenta'] }}</td>
               <td>
                 @if($value['validacion']=='CHECK')
-                  <img src="{{url('public/backoffice/sistema/icono_check.png')}}" width="20px">
+                  <img src="{{ 'data:image/png;base64,'.base64_encode(file_get_contents(public_path('backoffice/sistema/icono_check.png'))) }}" width="20px">
                 @else
                   @if($value['banco']>0)
-                    <img src="{{url('public/backoffice/sistema/icono_close.png')}}" width="20px">
+                    <img src="{{ 'data:image/png;base64,'.base64_encode(file_get_contents(public_path('backoffice/sistema/icono_close.png'))) }}" width="20px">
                   @endif
                 @endif
               </td>
@@ -393,9 +393,9 @@
               <td>
                 @if($co_actual['ingresoyegresobanco_egreso_reduccioncapital_validacion_cantidad']>0)
                 @if($co_actual['ingresoyegresobanco_egreso_reduccioncapital_validacion']=='CHECK')
-                <img src="{{url('public/backoffice/sistema/icono_check.png')}}" width="20px">
+                <img src="{{ 'data:image/png;base64,'.base64_encode(file_get_contents(public_path('backoffice/sistema/icono_check.png'))) }}" width="20px">
                 @else
-                <img src="{{url('public/backoffice/sistema/icono_close.png')}}" width="20px">
+                <img src="{{ 'data:image/png;base64,'.base64_encode(file_get_contents(public_path('backoffice/sistema/icono_close.png'))) }}" width="20px">
                 @endif
                 @endif
               </td>
@@ -412,10 +412,10 @@
               <td colspan="4" style="text-align:left;">{{ $value['banco_nombre'] }}: {{ $value['banco_cuenta'] }}</td>
               <td>
                 @if($value['validacion']=='CHECK')
-                  <img src="{{url('public/backoffice/sistema/icono_check.png')}}" width="20px">
+                  <img src="{{ 'data:image/png;base64,'.base64_encode(file_get_contents(public_path('backoffice/sistema/icono_check.png'))) }}" width="20px">
                 @else
                   @if($value['banco']>0)
-                    <img src="{{url('public/backoffice/sistema/icono_close.png')}}" width="20px">
+                    <img src="{{ 'data:image/png;base64,'.base64_encode(file_get_contents(public_path('backoffice/sistema/icono_close.png'))) }}" width="20px">
                   @endif
                 @endif
               </td>
@@ -433,9 +433,9 @@
               <td>
                 @if($co_actual['ingresoyegresobanco_egreso_gastosadministrativosyoperativos_validacion_cantidad']>0)
                 @if($co_actual['ingresoyegresobanco_egreso_gastosadministrativosyoperativos_validacion']=='CHECK')
-                <img src="{{url('public/backoffice/sistema/icono_check.png')}}" width="20px">
+                <img src="{{ 'data:image/png;base64,'.base64_encode(file_get_contents(public_path('backoffice/sistema/icono_check.png'))) }}" width="20px">
                 @else
-                <img src="{{url('public/backoffice/sistema/icono_close.png')}}" width="20px">
+                <img src="{{ 'data:image/png;base64,'.base64_encode(file_get_contents(public_path('backoffice/sistema/icono_close.png'))) }}" width="20px">
                 @endif
                 @endif
               </td>
@@ -452,10 +452,10 @@
               <td colspan="4" style="text-align:left;">{{ $value['banco_nombre'] }}: {{ $value['banco_cuenta'] }}</td>
               <td>
                 @if($value['validacion']=='CHECK')
-                  <img src="{{url('public/backoffice/sistema/icono_check.png')}}" width="20px">
+                  <img src="{{ 'data:image/png;base64,'.base64_encode(file_get_contents(public_path('backoffice/sistema/icono_check.png'))) }}" width="20px">
                 @else
                   @if($value['banco']>0)
-                    <img src="{{url('public/backoffice/sistema/icono_close.png')}}" width="20px">
+                    <img src="{{ 'data:image/png;base64,'.base64_encode(file_get_contents(public_path('backoffice/sistema/icono_close.png'))) }}" width="20px">
                   @endif
                 @endif
               </td>
@@ -642,7 +642,7 @@
               <td></td>
               <td></td>
               <td colspan="4" style="text-align:left;">Validación de Operaciones por Cuenta Banco: 
-              <img src="{{url('public/backoffice/sistema/icono_check.png')}}" width="20px"></td>
+              <img src="{{ 'data:image/png;base64,'.base64_encode(file_get_contents(public_path('backoffice/sistema/icono_check.png'))) }}" width="20px"></td>
               <td></td>
               <td></td>
               <td></td>

@@ -444,7 +444,7 @@ class ReporteconsolidadoopecajaController extends Controller
         }
         else if($request->input('view') == 'valid_eliminar_arqueocaja') {
           
-            $arqueocaja = DB::table('arqueocaja')->where('corte',$request->corte)->first();
+            $arqueocaja = DB::table('arqueocaja')->where('corte',$request->corte)->where('idagencia',$request->idagencia)->first();
             $usuarios = DB::table('users')
                 ->join('users_permiso','users_permiso.idusers','users.id')
                 ->join('permiso','permiso.id','users_permiso.idpermiso')
@@ -523,9 +523,7 @@ class ReporteconsolidadoopecajaController extends Controller
                 ]);
             }
           
-            $arqueocaja = DB::table('arqueocaja')->whereId($id)->first();
-            DB::table('arqueocaja')->whereId($id)->delete();
-            DB::table('arqueocaja_denominacion')->where('idarqueocaja',$id)->delete();
+            $arqueocaja = \App\Support\ArqueoCajaEliminado::eliminar('normal', (int) $id, Auth::id(), $idresponsable);
           
             return response()->json([
               'resultado' => 'CORRECTO',

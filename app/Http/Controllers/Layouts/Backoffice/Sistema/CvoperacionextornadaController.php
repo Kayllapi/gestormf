@@ -206,6 +206,7 @@ class CvoperacionextornadaController extends Controller
                 ->union($ingresoextraordinarios)
                 ->union($asignacioncapital)
                 ->union($movimientointernodinero)
+                ->unionAll(\App\Support\ArqueoCajaEliminado::paraReporte($request, 'cv'))
                 ->where($where3)
                 ->select(
                     DB::raw('CONCAT("ELIM. GASTO") as operacion'),

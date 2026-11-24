@@ -224,6 +224,7 @@ class OperacionextornadaAdminController extends Controller
               ->union($ingresoextraordinarios)
               ->union($asignaciones)
               ->union($movimientos)
+              ->unionAll(\App\Support\ArqueoCajaEliminado::paraReporte($request, 'normal'))
               ->select(
                   DB::raw('CONCAT("EXT. CUOTAS") as operacion'),
                   DB::raw('CONCAT("C",credito.cuenta) as cuenta'),

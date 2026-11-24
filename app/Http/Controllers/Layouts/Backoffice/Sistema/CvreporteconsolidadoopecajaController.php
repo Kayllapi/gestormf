@@ -487,7 +487,7 @@ class CvreporteconsolidadoopecajaController extends Controller
         }
         else if($request->input('view') == 'valid_eliminar_arqueocaja') {
           
-            $arqueocaja = DB::table('cvarqueocaja')->where('corte',$request->corte)->first();
+            $arqueocaja = DB::table('cvarqueocaja')->where('corte',$request->corte)->where('idagencia',$request->idagencia)->first();
             $usuarios = DB::table('users')
                 ->join('users_permiso','users_permiso.idusers','users.id')
                 ->join('permiso','permiso.id','users_permiso.idpermiso')
@@ -571,9 +571,7 @@ class CvreporteconsolidadoopecajaController extends Controller
                 ]);
             }
           
-            $arqueocaja = DB::table('cvarqueocaja')->whereId($id)->first();
-            DB::table('cvarqueocaja')->whereId($id)->delete();
-            DB::table('cvarqueocaja_denominacion')->where('idarqueocaja',$id)->delete();
+            $arqueocaja = \App\Support\ArqueoCajaEliminado::eliminar('cv', (int) $id, Auth::id(), $idresponsable);
           
             return response()->json([
               'resultado' => 'CORRECTO',

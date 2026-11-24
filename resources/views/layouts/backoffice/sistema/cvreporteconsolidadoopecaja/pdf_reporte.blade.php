@@ -642,7 +642,7 @@
               <td></td>
               <td></td>
               <td colspan="4" style="text-align:left;">Validación de Operaciones por Cuenta Banco
-              <img src="{{ 'data:image/png;base64,'.base64_encode(file_get_contents(public_path('backoffice/sistema/icono_check.png'))) }}" width="20px">:</td>
+              <img src="{{ 'data:image/png;base64,'.base64_encode(file_get_contents(public_path('backoffice/sistema/icono_check.png'))) }}" width="20px"><b>:</b></td>
               <td></td>
               <td></td>
               <td></td>
@@ -684,7 +684,7 @@
             <tr>
               <td></td>
               <td></td>
-              <td colspan="4" style="text-align:left;">Efectivo Contable en Caja al Corte (S/.):</td>
+              <td colspan="4" style="text-align:left;">Efectivo Contable en Caja al Corte (S/.)<b>:</b></td>
               <td></td>
               <td></td>
               <td></td>
@@ -698,7 +698,7 @@
             <tr>
               <td></td>
               <td></td>
-              <td colspan="4" style="text-align:left;">Efectivo Físico en Caja al Arqueo (S/.):</td>
+              <td colspan="4" style="text-align:left;">Efectivo Físico en Caja al Arqueo (S/.)<b>:</b></td>
               <td></td>
               <td></td>
               <td></td>
@@ -712,7 +712,7 @@
             <tr>
               <td></td>
               <td></td>
-              <td colspan="4" style="text-align:left;">Resultado:</td>
+              <td colspan="4" style="text-align:left;">Resultado<b>:</b></td>
               <td></td>
               <td></td>
               <td></td>

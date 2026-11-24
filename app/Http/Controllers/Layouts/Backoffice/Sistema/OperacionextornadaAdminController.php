@@ -194,7 +194,7 @@ class OperacionextornadaAdminController extends Controller
               ->where('movimientointernodinero.extorno_agrupado', false)
               ->where($where6)
               ->select(
-                  DB::raw("'ELIM. MOVIMIENTO' as operacion"),
+                  DB::raw("CASE WHEN movimientointernodinero.idtipomovimientointerno IN (1, 2, 3, 4) THEN 'ELIM. H. y G. Liquidez' WHEN movimientointernodinero.idtipomovimientointerno IN (5, 6) THEN 'ELIM. C. y A. Caja' ELSE 'ELIM. MOVIMIENTO' END as operacion"),
                   DB::raw("'--' as cuenta"),
                   'movimientointernodinero.fecha_eliminado as fechaextorno',
                   DB::raw("'--' as pago_cuota"),

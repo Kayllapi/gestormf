@@ -29,12 +29,11 @@
           right: 0.7cm;
           height: 0.6cm;
           /** Estilos extra personales **/
-          color: #676869;
+          color: #0f0f0f;
           text-align: center;
           line-height: 0.6cm;
-          font-size:18px !important;
+          font-size:15px !important;
           font-weight: bold;
-          border-bottom: 2px solid #144081; 
           margin:5px;
           text-align:right;
           padding:5px;
@@ -117,17 +116,16 @@
 </head>
 <body>
   <header>
-    <div style="float:left;font-size:18px;">{{ $tienda->ticket_nombre }} | {{ $tienda->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d/m/Y H:iA') }}
+    <div style="float:left;font-size:15px;">{{ $tienda->ticket_nombre }} | {{ $agencia->nombreagencia }}</div> {{ Auth::user()->codigo }} | {{ date('d/m/Y H:iA') }}
   </header>
   <footer>
     <p class="page">Página </p>
   </footer>
   <main>
     <div class="container">
-      <h4 align="center">REPORTE DE ARQUEO DE CAJA</h4>
-      <div style="width:100%; height: 20px;">
-            <div style="margin-left:180px;float:left;font-size: 13px;"><b>AGENCIA: </b>{{ $agencia->nombreagencia }}  </div>     
-            <div style="margin-left:50px;float:left;font-size: 13px;"><b>CORTE : </b>{{ date_format(date_create($corte),'d/m/Y') }}</div> 
+      <h4 align="center" style="margin:0px;">REPORTE DE ARQUEO DE CAJA</h4>
+      <div style="margin-top:-5px;">
+            <b>AGENCIA: </b>{{ $agencia->nombreagencia }} &nbsp;&nbsp; <b>CORTE: </b>{{ date_format(date_create($corte),'d/m/Y') }}
       </div>
       @if(!$arqueocaja)
                       <p class="text-center" 
@@ -136,6 +134,7 @@
                                   padding: 15px;
                                   border-radius: 5px;
                                   width: 90%;
+                                  font-size: 14px;
                                   margin: auto;text-align:center;">No Hay arqueo de caja con esta fecha!!</p>
       @else
       <div style="width:100%; margin-top: 10px; height:150px;">

@@ -82,6 +82,8 @@ class CierreRefinanciamientoCastigado
             'created_at' => now(), 'updated_at' => now(),
         ]);
 
+        ListaNegraCredito::registrar($original, $responsable, 'REFINANCIAMIENTO de la cuenta C'.str_pad($original->cuenta, 8, '0', STR_PAD_LEFT));
+
         return $cuenta;
     }
 

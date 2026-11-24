@@ -17,6 +17,12 @@ class CierreRefinanciamientoCastigadoTest extends TestCase
         config(['database.default' => 'cierre_ref_test', 'database.connections.cierre_ref_test' => [
             'driver' => 'sqlite', 'database' => ':memory:', 'prefix' => '',
         ]]);
+        Schema::create('users', function (Blueprint $t) { $t->integer('id')->primary(); $t->string('nombrecompleto'); });
+        Schema::create('s_listanegra', function (Blueprint $t) {
+            $t->increments('id'); $t->integer('idcliente'); $t->string('motivo'); $t->integer('idresponsable');
+            $t->dateTime('fecharegistro'); $t->integer('idtienda'); $t->integer('idestado'); $t->string('db_cliente');
+        });
+        DB::table('users')->insert(['id' => 10, 'nombrecompleto' => 'Cliente']);
         Schema::create('credito', function (Blueprint $t) {
             $t->integer('id')->primary(); $t->integer('idtienda'); $t->integer('idcliente');
             $t->integer('idasesor')->default(50);
@@ -60,6 +66,16 @@ class CierreRefinanciamientoCastigadoTest extends TestCase
         $this->assertDatabaseHas('credito', ['id' => 1, 'idestadocredito' => 2, 'saldo_pendientepago' => 0]);
         $this->assertDatabaseHas('credito', ['id' => 2, 'cuenta' => 21, 'castigo_estado' => 'CONFIRMADO', 'idusuariocobranza' => 30, 'saldo_pendientepago' => 420, 'total_pendientepago' => 450]);
         $this->assertDatabaseHas('refinanciamiento_castigado_acuerdos', ['idcredito_original' => 1, 'idcredito_nuevo' => 2, 'ajuste' => -30]);
+        $this->assertDatabaseHas('s_listanegra', ['idcliente' => 10, 'motivo' => 'REFINANCIAMIENTO de la cuenta C00000020', 'idresponsable' => 40]);
+    }
+
+    public function test_conserva_el_motivo_existente_en_lista_negra(): void
+    {
+        DB::table('s_listanegra')->insert(['idcliente' => 10, 'motivo' => 'Observación anterior', 'idresponsable' => 30,
+            'fecharegistro' => now(), 'idtienda' => 1, 'idestado' => 1, 'db_cliente' => 'Cliente']);
+        DB::transaction(fn () => CierreRefinanciamientoCastigado::finalizar(1, 2, 1, 40, 50, '450.00'));
+        $this->assertSame(1, DB::table('s_listanegra')->count());
+        $this->assertSame('Observación anterior', DB::table('s_listanegra')->value('motivo'));
     }
 
     public function test_rechaza_un_acuerdo_sin_cronograma(): void

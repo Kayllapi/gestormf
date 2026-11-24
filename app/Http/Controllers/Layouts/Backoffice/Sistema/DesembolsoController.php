@@ -493,6 +493,7 @@ class DesembolsoController extends Controller
         $tienda = DB::table('tienda')->whereId($idtienda)->first();
       
         if( $request->input('view') == 'realizar_desembolo' ) {
+          return DB::transaction(function () use ($request, $idtienda, $id, $tienda) {
            
               if($request->idformapago==2){
                   $rules = [
@@ -1211,11 +1212,20 @@ class DesembolsoController extends Controller
                 ]);
             }
             // FIN CANCELAR CREDITO
+
+            if ($ultimocredito->idcredito_refinanciado) {
+                $original = DB::table('credito')->where('id', $ultimocredito->idcredito_refinanciado)->first();
+                if (!$original || $original->idcliente != $ultimocredito->idcliente) {
+                    throw new \RuntimeException('No se encontró el crédito original del refinanciamiento.');
+                }
+                \App\Services\ListaNegraCredito::registrar($original, (int) Auth::id(), 'REFINANCIAMIENTO de la cuenta C'.str_pad($original->cuenta, 8, '0', STR_PAD_LEFT));
+            }
           
             return response()->json([
                 'resultado' => 'CORRECTO',
                 'mensaje'   => 'Se ha desembolsado correctamente.',
             ]);
+          });
         }
         
     

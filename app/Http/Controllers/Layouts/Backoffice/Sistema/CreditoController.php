@@ -11,6 +11,20 @@ use PDF;
 
 class CreditoController extends Controller
 {
+    private function creditoRefinanciadoQueBloquea($idcliente)
+    {
+        return DB::table('credito')
+            ->where('credito.idcliente', $idcliente)
+            ->where('credito.idforma_credito', 2)
+            ->where('credito.idmodalidad_credito', 4)
+            ->whereNotIn('credito.estado', ['ELIMINADO', 'CANCELADO'])
+            ->where(function ($query) {
+                $query->whereNull('credito.idestadocredito')->orWhere('credito.idestadocredito', '<>', 2);
+            })
+            ->orderBy('credito.id', 'desc')
+            ->first();
+    }
+
     public function __construct()
     {
         $this->tipo_credito = DB::table('tipo_credito')->get();
@@ -144,13 +158,7 @@ class CreditoController extends Controller
 
             // ---- VALIDACION: cliente con credito No Prendario refinanciado
             if($request->input('idforma_credito') == 2){ // 2 = No Prendario
-                $credito_norefinanciable = DB::table('credito')
-                    ->where('credito.idcliente', $request->input('idcliente'))
-                    ->where('credito.idforma_credito', 2)     // No Prendario
-                    ->where('credito.idmodalidad_credito', 4) // Refinanciado
-                    ->where('credito.estado', '<>', 'ELIMINADO')
-                    ->orderBy('credito.id', 'desc')
-                    ->first();
+                $credito_norefinanciable = $this->creditoRefinanciadoQueBloquea($request->input('idcliente'));
 
                 if($credito_norefinanciable != ''){
                     return response()->json([
@@ -898,13 +906,7 @@ class CreditoController extends Controller
           $cuenta = '';
 
           if($request->input('idforma_credito') == 2 && $request->input('idcliente') != ''){ // 2 = No Prendario
-              $credito_refinanciado = DB::table('credito')
-                  ->where('credito.idcliente', $request->input('idcliente'))
-                  ->where('credito.idforma_credito', 2)     // No Prendario
-                  ->where('credito.idmodalidad_credito', 4) // Refinanciado
-                  ->where('credito.estado', '<>', 'ELIMINADO')
-                  ->orderBy('credito.id', 'desc')
-                  ->first();
+              $credito_refinanciado = $this->creditoRefinanciadoQueBloquea($request->input('idcliente'));
 
               if($credito_refinanciado != ''){
                   $result = 'TIENE REFINANCIADO';

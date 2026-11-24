@@ -10,21 +10,7 @@ class CastigoCredito
     /** Registra una sola observacion por cliente, conservando cualquier motivo existente. */
     public static function registrarEnListaNegra(object $credito, int $responsable): void
     {
-        DB::transaction(function () use ($credito, $responsable) {
-            $cliente = DB::table('users')->where('id', $credito->idcliente)->lockForUpdate()->first();
-            if (!$cliente || DB::table('s_listanegra')->where('idcliente', $credito->idcliente)->exists()) {
-                return;
-            }
-            DB::table('s_listanegra')->insert([
-                'idcliente' => $credito->idcliente,
-                'motivo' => 'CRÉDITO CASTIGADO de la cuenta C'.$credito->cuenta,
-                'idresponsable' => $responsable,
-                'fecharegistro' => now(),
-                'idtienda' => $credito->idtienda,
-                'idestado' => '1',
-                'db_cliente' => $cliente->nombrecompleto,
-            ]);
-        });
+        ListaNegraCredito::registrar($credito, $responsable, 'CRÉDITO CASTIGADO de la cuenta C'.$credito->cuenta);
     }
 
     public static function actualizarListaNegra(int $agencia, int $responsable): void

@@ -55,8 +55,10 @@
                          value="{{ number_format(round($consolidadooperaciones['saldos_caja'], 1), 2, '.', '') }}" id="saldocaja_arqueocaja" disabled>
               </div>
               @endif
+              <div class="col-sm-3">
+              </div>
               @if($arqueocaja)
-              <div class="col-sm-5" style="text-align: right;">
+              <div class="col-sm-3" style="text-align: right;">
                   <?php 
                     $co_actual = consolidadooperaciones($tienda,$arqueocaja->idagencia,$arqueocaja->corte);
                     $date = Carbon\Carbon::createFromFormat('Y-m-d', $arqueocaja->corte);
@@ -67,9 +69,10 @@
                         ->first();
                     ?>
                     @if(!$arqueocaja_diasiguiente)
-                    <button type="button" class="btn btn-danger" onclick="valid_eliminar_arqueocaja()">
-                      <i class="fa fa-trash"></i>
-                      ELIMINAR ARQUEO DE CAJA</button>
+                        <button type="button" class="btn btn-danger" onclick="valid_eliminar_arqueocaja()">
+                          <i class="fa fa-trash"></i>
+                          ELIMINAR ARQUEO<br>DE CAJA
+                        </button>
                     @endif
               </div>
               @endif
@@ -77,13 +80,9 @@
           <div class="row" style="margin-top:10px;">
               <div class="col-sm-10">
               @if($arqueocaja)
-                      <p class="text-center" 
-                           style="background-color: #dc3545;
-                                  padding: 15px;
-                                  border-radius: 5px;
-                                  color: #fff;
-                                  width: 90%;
-                                  margin: auto;">Ya esta arqueado la CAJA!!</p>
+                <div class="alert alert-danger">
+                  <b>Ya esta arqueado la CAJA!!</b>
+                </div>
               @else
                 @if($consolidadooperaciones['validacion_operaciones_cuenta_banco']=='VERIFICADO' ||
                 $consolidadooperaciones['validacion_operaciones_cuenta_banco']=='SIN OPERACIONES')

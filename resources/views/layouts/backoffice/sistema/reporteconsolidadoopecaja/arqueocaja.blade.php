@@ -177,13 +177,9 @@
                   </table>
                 </div>
                 @else
-                      <p class="text-center" 
-                           style="background-color: #dc3545;
-                                  padding: 15px;
-                                  border-radius: 5px;
-                                  color: #fff;
-                                  width: 90%;
-                                  margin: auto;">Para realizar el arqueo de caja, la validación debe estar VERIFICADO!!</p>
+                  <div class="alert alert-danger">
+                    <b>Para realizar el arqueo de caja, la validación debe estar VERIFICADO!!</b>
+                  </div>
                 @endif
               @endif
               </div>

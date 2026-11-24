@@ -226,7 +226,7 @@
                     @endif
                   @else
                   <div class="alert alert-danger">
-                    <b>Para realizar el arqueo de caja, la validación debe estar VERIFICADO!!</b>
+                    <b>Para realizar el arqueo de caja, la validación de operaciones por bancos debe estar VERIFICADO!!</b>
                   </div>
                   @endif
                 @endif

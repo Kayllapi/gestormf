@@ -641,8 +641,8 @@
             <tr>
               <td></td>
               <td></td>
-              <td colspan="4" style="text-align:left;">Validación de Operaciones por Cuenta Banco: 
-              <img src="{{ 'data:image/png;base64,'.base64_encode(file_get_contents(public_path('backoffice/sistema/icono_check.png'))) }}" width="20px"></td>
+              <td colspan="4" style="text-align:left;">Validación de Operaciones por Cuenta Banco
+              <img src="{{ 'data:image/png;base64,'.base64_encode(file_get_contents(public_path('backoffice/sistema/icono_check.png'))) }}" width="20px">:</td>
               <td></td>
               <td></td>
               <td></td>

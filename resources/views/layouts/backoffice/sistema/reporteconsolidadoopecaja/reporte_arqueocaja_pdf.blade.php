@@ -236,8 +236,8 @@
                         <td colspan="2"><b>FECHA Y HORA DE REGISTRO: </b>{{ date_format(date_create($arqueocaja->fecharegistro),'d/m/Y H:i:s A') }}</td>
                       </tr>
                       <tr>
-                        <td>I. Validación de Operaciones por Cuenta Banco:  
-                          <img src="{{ 'data:image/png;base64,'.base64_encode(file_get_contents(public_path('backoffice/sistema/icono_check.png'))) }}" width="20px" style="margin-top:0px;"></td>
+                        <td>I. Validación de Operaciones por Cuenta Banco  
+                          <img src="{{ 'data:image/png;base64,'.base64_encode(file_get_contents(public_path('backoffice/sistema/icono_check.png'))) }}" width="20px" style="margin-top:0px;">:</td>
                         <td style="width:120px;">{{$arqueocaja->validacion_operaciones_cuenta_banco}}</td>
                       </tr>
                       <tr>

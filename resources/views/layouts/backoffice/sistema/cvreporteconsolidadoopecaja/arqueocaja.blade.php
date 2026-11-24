@@ -246,8 +246,8 @@
                   <div class="row">
                       <label for="fecha_inicio" class="col-sm-2 col-form-label"></label>
                       <div class="col-sm-7">
-                          I. Validación de Operaciones por Cuenta Banco: 
-                          <img src="{{ 'data:image/png;base64,'.base64_encode(file_get_contents(public_path('backoffice/sistema/icono_check.png'))) }}" width="20px" style="margin-top:-5px;">
+                          I. Validación de Operaciones por Cuenta Banco
+                          <img src="{{ 'data:image/png;base64,'.base64_encode(file_get_contents(public_path('backoffice/sistema/icono_check.png'))) }}" width="20px" style="margin-top:-5px;">:
                       </div>
                       <div class="col-sm-3">
                         @if ($consolidadooperaciones['validacion_operaciones_cuenta_banco']=='VERIFICADO')

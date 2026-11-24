@@ -179,7 +179,7 @@ class CvoperacionextornadaController extends Controller
                 ->where('cvmovimientointernodinero.idestadoeliminado',2)
                 ->where($where6)
                 ->select(
-                    DB::raw('CONCAT("ELIM. MOVIMIENTO") as operacion'),
+                    DB::raw("CASE WHEN cvmovimientointernodinero.idtipomovimientointerno IN (1, 2, 3, 4) THEN 'ELIM. H. y G. Liquidez' WHEN cvmovimientointernodinero.idtipomovimientointerno IN (5, 6) THEN 'ELIM. C. y A. Caja' ELSE 'ELIM. MOVIMIENTO' END as operacion"),
                     DB::raw('CONCAT(cvmovimientointernodinero.codigoprefijo, cvmovimientointernodinero.codigo) as codigo'),
                     'cvmovimientointernodinero.cuenta as cuenta',
                     'cvmovimientointernodinero.fecha_eliminado as fechaextorno',

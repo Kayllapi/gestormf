@@ -123,7 +123,7 @@
   </footer>
   <main>
     <div class="container">
-      <h4 align="center" style="margin:0px;">REPORTE DE ARQUEO DE CAJA</h4>
+      <h4 align="center" style="margin:0px; margin-top:5px">REPORTE DE ARQUEO DE CAJA</h4>
       <div style="margin-top:-5px;">
             <b>AGENCIA: </b>{{ $agencia->nombreagencia }} &nbsp;&nbsp; <b>CORTE: </b>{{ date_format(date_create($corte),'d/m/Y') }}
       </div>

@@ -660,16 +660,16 @@
               </tr>
               <tr>
                 
-                <th colspan=2 style="text-align:center;">Por propiedad Directa</th>
-                <th colspan=2 style="text-align:center;">Por Propiedad Indirecta</th>
-                <th>Gestión</th>
+                <th colspan=2 style="text-align:center;">Por propiedad Directa (<b style="color: #c40000;">P. Jurídica</b>)</th>
+                <th colspan=2 style="text-align:center;">Por Propiedad Indirecta (<b style="color: #c40000;">P. Jurídica</b>)</th>
+                <th>Gestión (<b style="color: #c40000;">P. Jurídica y Natural</b>)</th>
               </tr>
               <tr>
                 
-                <th style="width:100px;">Pertenece al Cliente (%)</th>
-                <th style="width:100px;">Pertenece al Vinculado (%)</th>
-                <th style="width:100px;">Pertenece al Cliente (%)</th>
-                <th style="width:100px;">Pertenece al Vinculado (%)</th>
+                <th style="width:120px;">Pertenece al Cliente (%)</th>
+                <th style="width:120px;">Pertenece al Vinculado (%)</th>
+                <th style="width:120px;">Pertenece al Cliente (%)</th>
+                <th style="width:120px;">Pertenece al Vinculado (%)</th>
                 <th>Textual</th>
               </tr>
             </thead>

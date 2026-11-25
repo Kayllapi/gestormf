@@ -690,6 +690,7 @@
                       <option value="Administrador" {{ $value->gestion == "Administrador" ? "selected" : "" }}>Administrador</option>
                       <option value="Directivo"     {{ $value->gestion == "Directivo"     ? "selected" : "" }}>Directivo</option>
                       <option value="Trabajador"    {{ $value->gestion == "Trabajador"    ? "selected" : "" }}>Trabajador</option>
+                      <option value="Mismo Negocio" {{ $value->gestion == "Mismo Negocio" ? "selected" : "" }}>Mismo Negocio</option>
                       <option value="Otros"         {{ $value->gestion == "Otros"         ? "selected" : "" }}>Otros</option>
                     </select>
                   </td>
@@ -914,6 +915,7 @@
                       <option value="Administrador">Administrador</option>
                       <option value="Directivo">Directivo</option>
                       <option value="Trabajador">Trabajador</option>
+                      <option value="Mismo Negocio">Mismo Negocio</option>
                       <option value="Otros">Otros</option>
                     </select>
                   </td>

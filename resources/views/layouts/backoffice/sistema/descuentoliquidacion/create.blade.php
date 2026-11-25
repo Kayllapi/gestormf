@@ -55,6 +55,12 @@
               <td><input type="text" class="form-control campo_moneda" id="saldo_comision" disabled></td>
           </tr>
           <tr>
+              <td>Cuota</td>
+              <td><input type="text" class="form-control campo_moneda" value="{{ $cronograma['select_cuota'] }}" id="data_cuota" disabled></td>
+              <td><input type="text" class="form-control campo_moneda" id="saldo_cuota" disabled></td>
+              <td><input type="text" class="form-control campo_moneda" id="saldo_cuota" disabled></td>
+          </tr>
+          <tr>
               <td>P. Cust.</td>
               <td><input type="text" class="form-control campo_moneda" value="{{ $cronograma['select_tenencia'] }}" id="data_tenencia" disabled></td>
               <td><input type="text"
@@ -168,4 +174,4 @@
       $('#descuento_total').val(descuento_total.toFixed(2));
       $('#saldo_total').val(saldo_total.toFixed(2));
   }
-</script>    
+</script>

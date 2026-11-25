@@ -298,10 +298,11 @@
           <table class="table table-bordered" id="table-garantia-cliente-aval">
             <thead style="border: 1px solid transparent !important;">
               <tr>
-                <th colspan="2" style="text-align: center;">AVALADO</th>
+                <th colspan="3" style="text-align: center;">AVALADO</th>
               </tr>
               <tr>
                 <th>CUENTA</th>
+                <th>APELLIDOS Y NOMBRES</th>
                 <th>SALDOS (S/.)</th>
               </tr>
             </thead>
@@ -318,6 +319,7 @@
                   @foreach($saldo_vigente as $value)
                     <tr>
                         <td>{{ $value->cuenta }}</td>
+                        <td>{{ $value->nombre_cliente ?? $nombres_cuentas_avaladas->get((int) substr($value->cuenta, 1), '') }}</td>
                         <td class="campo_moneda">{{ $value->saldo_vigente }}</td>
                     </tr>
                     <?php $cuentas_aval[] = $value->cuenta; ?>
@@ -328,6 +330,7 @@
                   @foreach($credito_saldodeduda_cliente_aval as $value)
                     <tr>
                         <td>{{ $value['cuenta'] }}</td>
+                        <td>{{ $value['nombre_cliente'] ?? '' }}</td>
                         <td class="campo_moneda">{{ $value['cuota_pendiente'] }}</td>
                     </tr>
                     <?php $cuentas_aval[] = $value['cuenta']; ?>
@@ -337,7 +340,7 @@
             </tbody>
             <tfoot>
               <tr>
-                <th>TOTAL</th>
+                <th colspan="2">TOTAL</th>
                 <th class="campo_moneda">{{number_format($total_saldo_vigente_aval, 2, '.', '')}}</th>
               </tr>
             </tfoot>
@@ -593,10 +596,11 @@
           <table class="table table-bordered" id="table-garantia-aval-aval">
             <thead style="border: 1px solid transparent !important;">
               <tr>
-                <th colspan="2" style="text-align: center;">AVALADO</th>
+                <th colspan="3" style="text-align: center;">AVALADO</th>
               </tr>
               <tr>
                 <th>CUENTA</th>
+                <th>APELLIDOS Y NOMBRES</th>
                 <th>SALDOS (S/.)</th>
               </tr>
             </thead>
@@ -610,6 +614,7 @@
                   @foreach($saldo_vigente as $value)
                     <tr>
                         <td>{{ $value->cuenta }}</td>
+                        <td>{{ $value->nombre_cliente ?? $nombres_cuentas_avaladas->get((int) substr($value->cuenta, 1), '') }}</td>
                         <td class="campo_moneda">{{ $value->saldo_vigente }}</td>
                     </tr>
                     <?php $total_saldo_vigente_aval = $total_saldo_vigente_aval+$value->saldo_vigente; ?>
@@ -619,6 +624,7 @@
                   @foreach($credito_saldodeduda_aval_aval as $value)
                     <tr>
                         <td>{{ $value['cuenta'] }}</td>
+                        <td>{{ $value['nombre_cliente'] ?? '' }}</td>
                         <td class="campo_moneda">{{ $value['cuota_pendiente'] }}</td>
                     </tr>
                     <?php $total_saldo_vigente_aval = $total_saldo_vigente_aval+$value['cuota_pendiente']; ?>
@@ -627,7 +633,7 @@
             </tbody>
             <tfoot>
               <tr>
-                <th>TOTAL</th>
+                <th colspan="2">TOTAL</th>
                 <th class="campo_moneda">{{number_format($total_saldo_vigente_aval, 2, '.', '')}}</th>
               </tr>
             </tfoot>

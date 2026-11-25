@@ -1975,6 +1975,12 @@ class CobranzacuotaController extends Controller
               <tbody>';
 
           
+          $fechas_cobranza = DB::table('credito_cronograma')
+              ->join('credito_cobranzacuota', 'credito_cobranzacuota.id', '=', 'credito_cronograma.idcredito_cobranzacuota')
+              ->where('credito_cronograma.idcredito', $request->idcredito)
+              ->where('credito_cronograma.idestadocredito_cronograma', 2)
+              ->pluck('credito_cobranzacuota.fecharegistro', 'credito_cronograma.id');
+
           $primera_cuota_pendiente = 0;
           foreach($cronograma['cronograma'] as $value){
 
@@ -1991,18 +1997,27 @@ class CobranzacuotaController extends Controller
                   ->join('credito_cobranzacuota','credito_cobranzacuota.id','credito_adelanto.idcredito_cobranzacuota')
                   ->where('credito_adelanto.idcredito_cronograma',$value['id'])
                   ->where('credito_adelanto.idestadocredito_adelanto',1)
+                  ->select('credito_adelanto.total', 'credito_adelanto.fecharegistro')
+                  ->orderBy('credito_adelanto.fecharegistro')
+                  ->orderBy('credito_adelanto.id')
                   ->get();
             
               $totaladelanto = 0;
-              $ultimafechaadelanto = 0;
+              $ultimafechaadelanto = null;
               foreach($credito_adelanto as $valueade){
                   $totaladelanto += $valueade->total;
-                  $ultimafechaadelanto = date_format(date_create($valueade->fecharegistro),'d-m-Y h:i:s A');
+                  $ultimafechaadelanto = $valueade->fecharegistro;
               }
               
               $fechacobranza_fecharegistro = '';
-              if($totaladelanto>=$value['totalcuota']){
-                  $fechacobranza_fecharegistro = 'class="popover-hover" data-bs-content="Fecha Cancelada: '.$ultimafechaadelanto.'"';
+              $fecha_cancelacion = null;
+              if($value['idestadocredito_cronograma']==2){
+                  $fecha_cancelacion = $fechas_cobranza[$value['id']] ?? $ultimafechaadelanto;
+              }elseif($ultimafechaadelanto && $totaladelanto>=$value['totalcuota']){
+                  $fecha_cancelacion = $ultimafechaadelanto;
+              }
+              if($fecha_cancelacion){
+                  $fechacobranza_fecharegistro = 'class="popover-hover" data-bs-content="Fecha Cancelada: '.date_format(date_create($fecha_cancelacion),'d-m-Y h:i:s A').'"';
               }
             
               

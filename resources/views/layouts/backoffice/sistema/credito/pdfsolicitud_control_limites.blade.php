@@ -640,7 +640,7 @@
         <span>Deudores Vinculados con los que conforma Riesgo Único (Revisar Reporte, de existir Vinculación registrar) <br>
         <b>REGISTRAR SALDO DE PRÉSTAMO VIGENTE:</b>
       </span>
-      <b style="float: right;">P.J.:Persona Juridica, P.N.:Persona Natural</b>
+      <span style="float: right;"><b>P.J.:</b> Persona Juridica, <b>P.N.:</b> Persona Natural</span>
         <table class="table table-bordered" id="table-vinculo-deudor">
           <thead>
             <tr>

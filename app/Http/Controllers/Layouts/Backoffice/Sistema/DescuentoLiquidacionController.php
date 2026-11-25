@@ -482,7 +482,7 @@ class DescuentoLiquidacionController extends Controller
                             <th>Capital</th>
                             <th>Interes</th>
                             <th>Carg. x Cust. G./Ot.</th>
-                            <th>Comisión</th>
+                            <th>Ss. Recau.</th>
                             <th>Custodia</th>
                             <th>Int. Comp.</th>
                             <th>Int. Morat.</th>

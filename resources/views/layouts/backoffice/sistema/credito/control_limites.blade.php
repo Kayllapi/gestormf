@@ -644,7 +644,8 @@
       <div class="row">
         <div class="col-sm-12">
           <p style="margin-bottom: 5px;">Deudores Vinculados con los que conforma Riesgo Único (Revisar Reporte, de existir Vinculación registrar)<br>
-            <b style="background-color:yellow">REGISTRAR SALDO DE PRÉSTAMO VIGENTE: P.J=Persona Juridica, P.N=Persona Natural</b>
+            <b style="background-color:yellow">REGISTRAR SALDO DE PRÉSTAMO VIGENTE:</b>
+            <b style="float: right;">P.J.:Persona Juridica, P.N.:Persona Natural</b>
           </p>
           <table class="table table-bordered" id="table-vinculo-deudor">
             <thead style="border: 1px solid transparent !important;">
@@ -660,9 +661,9 @@
               </tr>
               <tr>
                 
-                <th colspan=2 style="text-align:center;">Por Propiedad Directa (<b style="color: #c40000;">P.J</b>)</th>
-                <th colspan=2 style="text-align:center;">Por Propiedad Indirecta (<b style="color: #c40000;">P.J</b>)</th>
-                <th>Gestión (<b style="color: #c40000;">P.J y P.N</b>)</th>
+                <th colspan=2 style="text-align:center;">Por Propiedad Directa (<b style="color: #c40000;">P.J.</b>)</th>
+                <th colspan=2 style="text-align:center;">Por Propiedad Indirecta (<b style="color: #c40000;">P.J.</b>)</th>
+                <th>Gestión (<b style="color: #c40000;">P.J. y P.N.</b>)</th>
               </tr>
               <tr>
                 

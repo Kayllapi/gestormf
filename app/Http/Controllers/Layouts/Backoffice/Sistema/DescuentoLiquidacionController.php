@@ -481,8 +481,8 @@ class DescuentoLiquidacionController extends Controller
                             <th style="width:5px;">N° Cuota</th>
                             <th>Capital</th>
                             <th>Interes</th>
+                            <th>Carg. x Cust. G./Ot.</th>
                             <th>Comisión</th>
-                            <th>Cargo</th>
                             <th>Custodia</th>
                             <th>Int. Comp.</th>
                             <th>Int. Morat.</th>
@@ -513,8 +513,8 @@ class DescuentoLiquidacionController extends Controller
                                     <td style='text-align:center'>{$value->numerocuota}</td>
                                     <td style='text-align:right'>{$value->capital}</td>
                                     <td style='text-align:right'>{$value->interes}</td>
-                                    <td style='text-align:right'>{$value->comision}</td>
                                     <td style='text-align:right'>{$value->cargo}</td>
+                                    <td style='text-align:right'>{$value->comision}</td>
                                     <td style='text-align:right'>{$value->tenencia}</td>
                                     <td style='text-align:right'>{$value->penalidad}</td>
                                     <td style='text-align:right'>{$value->compensatorio}</td>
@@ -539,8 +539,8 @@ class DescuentoLiquidacionController extends Controller
                 <th></th>
                 <th style="text-align:right">'.number_format($total_capital, 2, '.', '').'</th>
                 <th style="text-align:right">'.number_format($total_interes, 2, '.', '').'</th>
-                <th style="text-align:right">'.number_format($total_comision, 2, '.', '').'</th>
                 <th style="text-align:right">'.number_format($total_cargo, 2, '.', '').'</th>
+                <th style="text-align:right">'.number_format($total_comision, 2, '.', '').'</th>
                 <th style="text-align:right">'.number_format($total_tenencia, 2, '.', '').'</th>
                 <th  style="text-align:right">'.number_format($total_penalidad, 2, '.', '').'</th>
                 <th style="text-align:right">'.number_format($total_compensatorio, 2, '.', '').'</th>

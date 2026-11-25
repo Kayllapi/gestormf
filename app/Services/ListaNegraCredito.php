@@ -6,6 +6,15 @@ use Illuminate\Support\Facades\DB;
 
 class ListaNegraCredito
 {
+    public static function registrarCancelacionRefinanciado(object $credito, int $responsable): void
+    {
+        if ((int) $credito->idmodalidad_credito !== 4) {
+            return;
+        }
+
+        self::registrar($credito, $responsable, 'CANCELACIÓN DE CRÉDITO REFINANCIADO de la cuenta C'.str_pad($credito->cuenta, 8, '0', STR_PAD_LEFT));
+    }
+
     public static function registrar(object $credito, int $responsable, string $motivo): void
     {
         DB::transaction(function () use ($credito, $responsable, $motivo) {

@@ -1013,6 +1013,8 @@ class CobranzacuotaController extends Controller
                     'fecha_cancelado' => Carbon::now(),
                     'idestadocredito' => 2,
                 ]);
+
+                \App\Services\ListaNegraCredito::registrarCancelacionRefinanciado($credito, (int) Auth::id());
                 
                 $idestadocredito = 2;
               

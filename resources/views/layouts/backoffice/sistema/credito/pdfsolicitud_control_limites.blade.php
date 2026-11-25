@@ -638,7 +638,7 @@
     <div class="row">
       <div class="col">
         <span>Deudores Vinculados con los que conforma Riesgo Único (Revisar Reporte, de existir Vinculación registrar) <br>
-        <b>REGISTRAR SALDO DE PRÉSTAMO VIGENTE</b></span>
+        <b>REGISTRAR SALDO DE PRÉSTAMO VIGENTE: P.J=Persona Juridica, P.N=Persona Natural</b></span>
         <table class="table table-bordered" id="table-vinculo-deudor">
           <thead>
             <tr>
@@ -648,9 +648,9 @@
               <th rowspan=3>{{ $tienda->nombre }} </th>
             </tr>
             <tr>
-              <th colspan=2>Por propiedad Directa</th>
-              <th colspan=2>Por Propiedad Indirecta</th>
-              <th>Gestión</th>
+              <th colspan=2>Por Propiedad Directa (P.J)</th>
+              <th colspan=2>Por Propiedad Indirecta (P.J)</th>
+              <th>Gestión (P.J y P.N)</th>
             </tr>
             <tr>
               <th>Pertenece al Cliente (%)</th>

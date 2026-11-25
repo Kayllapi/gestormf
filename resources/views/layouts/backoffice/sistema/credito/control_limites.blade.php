@@ -663,7 +663,7 @@
                 
                 <th colspan=2 style="text-align:center;">Por Propiedad Directa (<b style="color: #c40000;">P.J.</b>)</th>
                 <th colspan=2 style="text-align:center;">Por Propiedad Indirecta (<b style="color: #c40000;">P.J.</b>)</th>
-                <th>Gestión (<b style="color: #c40000;">P.J. y P.N.</b>)</th>
+                <th style="text-align:center;">Gestión (<b style="color: #c40000;">P.J. y P.N.</b>)</th>
               </tr>
               <tr>
                 
@@ -671,7 +671,7 @@
                 <th style="width:100px;">Pertenece al Vinculado (%)</th>
                 <th style="width:100px;">Pertenece al Cliente (%)</th>
                 <th style="width:100px;">Pertenece al Vinculado (%)</th>
-                <th>Textual</th>
+                <th style="text-align:center;">Textual</th>
               </tr>
             </thead>
             <tbody>

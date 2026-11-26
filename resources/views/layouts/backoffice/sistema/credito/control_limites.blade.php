@@ -670,7 +670,7 @@
               <tr>
                 <th rowspan=3 style="width:100px;">RUC/DNI/CE CLIENTE</th>
                 <th rowspan=3>APELLIDOS Y NOMBRES</th>
-                <th colspan=5 style="text-align:center;">FORMA DE VINCULACIÓN</th>
+                <th colspan=6 style="text-align:center;">FORMA DE VINCULACIÓN</th>
                 
                 <th rowspan=3 style="width:100px;">{{ $tienda->nombre }} </th>
                   @if($view_detalle!='false')
@@ -682,6 +682,7 @@
                 <th colspan=2 style="text-align:center;">Por Propiedad Directa (<b style="color: #c40000;">P.J.</b>)</th>
                 <th colspan=2 style="text-align:center;">Por Propiedad Indirecta (<b style="color: #c40000;">P.J.</b>)</th>
                 <th style="text-align:center;">Gestión (<b style="color: #c40000;">P.J. y P.N.</b>)</th>
+                <th rowspan=2>Dependencia <br> Económica o <br> Familiar</th>
               </tr>
               <tr>
                 
@@ -704,12 +705,21 @@
                   <td gestion>
                     <select {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto">
                       <option value=""></option>
+                      <option value="Directivo"     {{ $value->gestion == "Directivo"     ? "selected" : "" }}>Directivo</option>
                       <option value="Gerente"       {{ $value->gestion == "Gerente"       ? "selected" : "" }}>Gerente</option>
                       <option value="Administrador" {{ $value->gestion == "Administrador" ? "selected" : "" }}>Administrador</option>
-                      <option value="Directivo"     {{ $value->gestion == "Directivo"     ? "selected" : "" }}>Directivo</option>
-                      <option value="Trabajador"    {{ $value->gestion == "Trabajador"    ? "selected" : "" }}>Trabajador</option>
+                      @if($value->gestion == 'Trabajador')
+                      <option value="Trabajador" selected hidden>Trabajador</option>
+                      @endif
                       <option value="Mismo Negocio" {{ $value->gestion == "Mismo Negocio" ? "selected" : "" }}>Mismo Negocio</option>
                       <option value="Otros"         {{ $value->gestion == "Otros"         ? "selected" : "" }}>Otros</option>
+                    </select>
+                  </td>
+                  <td dependencia>
+                    <select {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto">
+                      <option value=""></option>
+                      <option value="Parejas" {{ ($value->dependencia ?? '') == 'Parejas' ? 'selected' : '' }}>Parejas</option>
+                      <option value="Otro, V. Fam. o Depen." {{ ($value->dependencia ?? '') == 'Otro, V. Fam. o Depen.' ? 'selected' : '' }}>Otro, V. Fam. o Depen.</option>
                     </select>
                   </td>
                   <td saldo><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto" onkeyup="calcular_total()" value="{{ $value->saldo }}"></td>
@@ -722,7 +732,7 @@
             </tbody>
             <tfoot>
               <tr>
-                <td class="color_totales campo_moneda" colspan=7>TOTAL S/.</td>
+                <td class="color_totales campo_moneda" colspan=8>TOTAL S/.</td>
                 <td class="color_totales"><input type="text" disabled class="form-control campo_moneda" value="{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->total_vinculo_deudor : '0.00' }}" id="total_vinculo_deudor"></td>
               </tr>
             </tfoot>
@@ -929,12 +939,18 @@
                   <td gestion>
                     <select {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto">
                       <option></option>
+                      <option value="Directivo">Directivo</option>
                       <option value="Gerente">Gerente</option>
                       <option value="Administrador">Administrador</option>
-                      <option value="Directivo">Directivo</option>
-                      <option value="Trabajador">Trabajador</option>
                       <option value="Mismo Negocio">Mismo Negocio</option>
                       <option value="Otros">Otros</option>
+                    </select>
+                  </td>
+                  <td dependencia>
+                    <select {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto">
+                      <option value=""></option>
+                      <option value="Parejas">Parejas</option>
+                      <option value="Otro, V. Fam. o Depen.">Otro, V. Fam. o Depen.</option>
                     </select>
                   </td>
                   <td saldo><input type="text" valida_input_vacio value="0.00" onkeyup="calcular_total()" {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto"></td>
@@ -984,6 +1000,7 @@
       let cliente_propiedad_indirecta   = $(this).find('td[cliente_propiedad_indirecta] input').val();
       let vinculado_propiedad_indirecta = $(this).find('td[vinculado_propiedad_indirecta] input').val();
       let gestion                       = $(this).find('td[gestion] select').val();
+      let dependencia                   = $(this).find('td[dependencia] select').val();
       let saldo                         = $(this).find('td[saldo] input').val();
 
       data.push({ 
@@ -994,6 +1011,7 @@
         cliente_propiedad_indirecta: cliente_propiedad_indirecta,
         vinculado_propiedad_indirecta: vinculado_propiedad_indirecta,
         gestion: gestion,
+        dependencia: dependencia,
         saldo: saldo,
       });
     });

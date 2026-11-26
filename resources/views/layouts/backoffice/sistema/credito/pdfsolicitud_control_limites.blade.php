@@ -664,13 +664,14 @@
             <tr>
               <th rowspan=3>RUC/DNI/CE CLIENTE</th>
               <th rowspan=3>APELLIDOS Y NOMBRES</th>
-              <th colspan=5>FORMA DE VINCULACIÓN</th>
+              <th colspan=6>FORMA DE VINCULACIÓN</th>
               <th rowspan=3>{{ $tienda->nombre }} </th>
             </tr>
             <tr>
               <th colspan=2>Por Propiedad Directa (P.J.)</th>
               <th colspan=2>Por Propiedad Indirecta (P.J.)</th>
               <th>Gestión (P.J. y P.N.)</th>
+              <th rowspan=2>Dependencia <br> Económica o <br> Familiar</th>
             </tr>
             <tr>
               <th>Pertenece al Cliente (%)</th>
@@ -690,13 +691,14 @@
                 <td>{{ $value->cliente_propiedad_indirecta }}</td>
                 <td>{{ $value->vinculado_propiedad_indirecta }}</td>
                 <td>{{ $value->gestion }}</td>
+                <td>{{ $value->dependencia ?? '' }}</td>
                 <td class="campo_moneda">{{ $value->saldo }}</td>
                </tr>
             @endforeach
           </tbody>
           <tfoot>
             <tr>
-              <td class="color_totales campo_moneda" colspan=7>TOTAL S/.</td>
+              <td class="color_totales campo_moneda" colspan=8>TOTAL S/.</td>
               <td class="color_totales campo_moneda">
                 {{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->total_vinculo_deudor : '0.00' }}
                 <input type="hidden" value="{{ $credito_cuantitativa_control_limites ? $credito_cuantitativa_control_limites->total_vinculo_deudor : '0.00' }}" id="total_vinculo_deudor">

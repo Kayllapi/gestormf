@@ -44,7 +44,7 @@ class VinculacionAvalControlLimites
         foreach ($avaladosAval as $fila) {
             if ((int) $titular($fila) === (int) $credito->idcliente) {
                 $avalAvalaCliente = true;
-                $totalAvalCliente += (float) ($detalle === 'false' ? ($fila['saldo_vigente'] ?? 0) : ($fila['cuota_pendiente'] ?? 0));
+                $totalAvalCliente += (float) ($fila['saldo_vigente'] ?? 0);
             }
         }
 

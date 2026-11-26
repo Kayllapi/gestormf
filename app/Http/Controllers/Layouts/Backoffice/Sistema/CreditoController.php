@@ -1741,7 +1741,7 @@ class CreditoController extends Controller
                                           ->first();
         
           $credito_aval = DB::table('credito')->where('credito.idcliente',$credito->idaval)->first();
-          $idcredito_aval_idcliente = 0;
+          $idcredito_aval_idcliente = $credito->idaval ?: 0;
           $idcredito_aval_idaval = 0;
           if($credito_aval){
               $idcredito_aval_idcliente = $credito_aval->idcliente;
@@ -1769,7 +1769,7 @@ class CreditoController extends Controller
               ->where('credito.id','<>',$credito->id)
               ->where(function ($query) use ($credito) {
                   $query->where(function ($query) use ($credito) {
-                      $query->where('credito.idforma_credito', 1)
+                      $query->whereIn('credito.idforma_credito', [1, 2])
                           ->where('credito.idcliente', $credito->idcliente);
                   })->orWhere(function ($query) use ($credito) {
                       $query->where('credito.idforma_credito', 2)
@@ -1794,13 +1794,19 @@ class CreditoController extends Controller
               ->get();
         
           $lista_credito_garantia_cliente_aval = DB::table('credito')
-              ->join('credito_garantia','credito_garantia.idcredito','credito.id')
               ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
               ->leftJoin('users as titular_avalado','titular_avalado.id','credito.idcliente')
-              ->where('credito_garantia.idcliente',$credito->idcliente)
-              ->where('credito_garantia.tipo','AVAL')
+              ->where(function ($query) use ($credito) {
+                  $query->where('credito.idaval', $credito->idcliente)
+                      ->orWhereExists(function ($query) use ($credito) {
+                          $query->select(DB::raw('1'))->from('credito_garantia')
+                              ->whereColumn('credito_garantia.idcredito', 'credito.id')
+                              ->where('credito_garantia.idcliente', $credito->idcliente)
+                              ->where('credito_garantia.tipo', 'AVAL');
+                      });
+              })
               ->where('credito.estado','DESEMBOLSADO')
-              ->where('credito.idforma_credito',2)
+              ->whereIn('credito.idforma_credito', [1, 2])
               ->where('credito.idestadocredito',1)
               ->select(
                   'credito.id as idcredito',
@@ -1936,7 +1942,7 @@ class CreditoController extends Controller
               ->where('credito.id','<>',$credito->id)
               ->where(function ($query) use ($idcredito_aval_idcliente) {
                   $query->where(function ($query) use ($idcredito_aval_idcliente) {
-                      $query->where('credito.idforma_credito', 1)
+                      $query->whereIn('credito.idforma_credito', [1, 2])
                           ->where('credito.idcliente', $idcredito_aval_idcliente);
                   })->orWhere(function ($query) use ($idcredito_aval_idcliente) {
                       $query->where('credito.idforma_credito', 2)
@@ -1961,13 +1967,23 @@ class CreditoController extends Controller
               ->get();
         
           $lista_credito_garantia_aval_aval = DB::table('credito')
-              ->join('credito_garantia','credito_garantia.idcredito','credito.id')
               ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
               ->leftJoin('users as titular_avalado','titular_avalado.id','credito.idcliente')
-              ->where('credito_garantia.idcliente',$idcredito_aval_idcliente)
-              ->where('credito_garantia.tipo','AVAL')
+              ->where(function ($query) use ($idcredito_aval_idcliente) {
+                  if (!$idcredito_aval_idcliente) {
+                      $query->whereRaw('1 = 0');
+                      return;
+                  }
+                  $query->where('credito.idaval', $idcredito_aval_idcliente)
+                      ->orWhereExists(function ($query) use ($idcredito_aval_idcliente) {
+                          $query->select(DB::raw('1'))->from('credito_garantia')
+                              ->whereColumn('credito_garantia.idcredito', 'credito.id')
+                              ->where('credito_garantia.idcliente', $idcredito_aval_idcliente)
+                              ->where('credito_garantia.tipo', 'AVAL');
+                      });
+              })
               ->where('credito.estado','DESEMBOLSADO')
-              ->where('credito.idforma_credito',2)
+              ->whereIn('credito.idforma_credito', [1, 2])
               ->where('credito.idestadocredito',1)
               ->select(
                   'credito.id as idcredito',
@@ -2546,7 +2562,7 @@ class CreditoController extends Controller
                                  ->get();*/
 
         $credito_aval = DB::table('credito')->where('credito.idcliente',$credito->idaval)->first();
-          $idcredito_aval_idcliente = 0;
+          $idcredito_aval_idcliente = $credito->idaval ?: 0;
           $idcredito_aval_idaval = 0;
           if($credito_aval){
               $idcredito_aval_idcliente = $credito_aval->idcliente;
@@ -2574,7 +2590,7 @@ class CreditoController extends Controller
               ->where('credito.id','<>',$credito->id)
               ->where(function ($query) use ($credito) {
                   $query->where(function ($query) use ($credito) {
-                      $query->where('credito.idforma_credito', 1)
+                      $query->whereIn('credito.idforma_credito', [1, 2])
                           ->where('credito.idcliente', $credito->idcliente);
                   })->orWhere(function ($query) use ($credito) {
                       $query->where('credito.idforma_credito', 2)
@@ -2599,13 +2615,19 @@ class CreditoController extends Controller
               ->get();
         
           $lista_credito_garantia_cliente_aval = DB::table('credito')
-              ->join('credito_garantia','credito_garantia.idcredito','credito.id')
               ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
               ->leftJoin('users as titular_avalado','titular_avalado.id','credito.idcliente')
-              ->where('credito_garantia.idcliente',$credito->idcliente)
-              ->where('credito_garantia.tipo','AVAL')
+              ->where(function ($query) use ($credito) {
+                  $query->where('credito.idaval', $credito->idcliente)
+                      ->orWhereExists(function ($query) use ($credito) {
+                          $query->select(DB::raw('1'))->from('credito_garantia')
+                              ->whereColumn('credito_garantia.idcredito', 'credito.id')
+                              ->where('credito_garantia.idcliente', $credito->idcliente)
+                              ->where('credito_garantia.tipo', 'AVAL');
+                      });
+              })
               ->where('credito.estado','DESEMBOLSADO')
-              ->where('credito.idforma_credito',2)
+              ->whereIn('credito.idforma_credito', [1, 2])
               ->where('credito.idestadocredito',1)
               ->select(
                   'credito.id as idcredito',
@@ -2741,7 +2763,7 @@ class CreditoController extends Controller
               ->where('credito.id','<>',$credito->id)
               ->where(function ($query) use ($idcredito_aval_idcliente) {
                   $query->where(function ($query) use ($idcredito_aval_idcliente) {
-                      $query->where('credito.idforma_credito', 1)
+                      $query->whereIn('credito.idforma_credito', [1, 2])
                           ->where('credito.idcliente', $idcredito_aval_idcliente);
                   })->orWhere(function ($query) use ($idcredito_aval_idcliente) {
                       $query->where('credito.idforma_credito', 2)
@@ -2766,13 +2788,23 @@ class CreditoController extends Controller
               ->get();
         
           $lista_credito_garantia_aval_aval = DB::table('credito')
-              ->join('credito_garantia','credito_garantia.idcredito','credito.id')
               ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
               ->leftJoin('users as titular_avalado','titular_avalado.id','credito.idcliente')
-              ->where('credito_garantia.idcliente',$idcredito_aval_idcliente)
-              ->where('credito_garantia.tipo','AVAL')
+              ->where(function ($query) use ($idcredito_aval_idcliente) {
+                  if (!$idcredito_aval_idcliente) {
+                      $query->whereRaw('1 = 0');
+                      return;
+                  }
+                  $query->where('credito.idaval', $idcredito_aval_idcliente)
+                      ->orWhereExists(function ($query) use ($idcredito_aval_idcliente) {
+                          $query->select(DB::raw('1'))->from('credito_garantia')
+                              ->whereColumn('credito_garantia.idcredito', 'credito.id')
+                              ->where('credito_garantia.idcliente', $idcredito_aval_idcliente)
+                              ->where('credito_garantia.tipo', 'AVAL');
+                      });
+              })
               ->where('credito.estado','DESEMBOLSADO')
-              ->where('credito.idforma_credito',2)
+              ->whereIn('credito.idforma_credito', [1, 2])
               ->where('credito.idestadocredito',1)
               ->select(
                   'credito.id as idcredito',

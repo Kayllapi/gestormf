@@ -682,7 +682,7 @@
                 <th colspan=2 style="text-align:center;">Por Propiedad Directa (<b style="color: #c40000;">P.J.</b>)</th>
                 <th colspan=2 style="text-align:center;">Por Propiedad Indirecta (<b style="color: #c40000;">P.J.</b>)</th>
                 <th style="text-align:center;">Gestión (<b style="color: #c40000;">P.J. y P.N.</b>)</th>
-                <th rowspan=2>Dependencia <br> Económica o <br> Familiar</th>
+                <th rowspan=2 style="text-align:center;">Dependencia <br> Económica o <br> Familiar (<b style="color: #c40000;">P.J. y P.N.</b>)</th>
               </tr>
               <tr>
                 
@@ -719,7 +719,7 @@
                     <select {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto">
                       <option value=""></option>
                       <option value="Parejas" {{ ($value->dependencia ?? '') == 'Parejas' ? 'selected' : '' }}>Parejas</option>
-                      <option value="Otro, V. Fam. o Depen." {{ ($value->dependencia ?? '') == 'Otro, V. Fam. o Depen.' ? 'selected' : '' }}>Otro, V. Fam. o Depen.</option>
+                      <option value="Otro, Vinculo Fam. o Depen." {{ ($value->dependencia ?? '') == 'Otro, Vinculo Fam. o Depen.' ? 'selected' : '' }}>Otro, Vinculo Fam. o Depen.</option>
                     </select>
                   </td>
                   <td saldo><input type="text" valida_input_vacio {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto" onkeyup="calcular_total()" value="{{ $value->saldo }}"></td>
@@ -950,7 +950,7 @@
                     <select {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto">
                       <option value=""></option>
                       <option value="Parejas">Parejas</option>
-                      <option value="Otro, V. Fam. o Depen.">Otro, V. Fam. o Depen.</option>
+                      <option value="Otro, Vinculo Fam. o Depen.">Otro, Vinculo Fam. o Depen.</option>
                     </select>
                   </td>
                   <td saldo><input type="text" valida_input_vacio value="0.00" onkeyup="calcular_total()" {{ $view_detalle=='false' ? 'disabled' : '' }} class="form-control color_cajatexto"></td>

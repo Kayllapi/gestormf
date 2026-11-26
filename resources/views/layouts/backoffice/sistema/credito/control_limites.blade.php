@@ -670,7 +670,7 @@
               <tr>
                 <th rowspan=3 style="width:100px;">RUC/DNI/CE CLIENTE</th>
                 <th rowspan=3>APELLIDOS Y NOMBRES</th>
-                <th colspan=6 style="text-align:center;">FORMA DE VINCULACIÓN</th>
+                <th colspan=6 style="text-align:center; background-color: #aaa !important;">FORMA DE VINCULACIÓN</th>
                 
                 <th rowspan=3 style="width:100px;">{{ $tienda->nombre }} </th>
                   @if($view_detalle!='false')

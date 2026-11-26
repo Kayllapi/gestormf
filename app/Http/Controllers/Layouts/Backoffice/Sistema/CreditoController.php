@@ -1765,13 +1765,23 @@ class CreditoController extends Controller
               ->get();
         
           $lista_credito_garantia_cliente_propio = DB::table('credito')
-              ->join('credito_garantia','credito_garantia.idcredito','credito.id')
               ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
-              ->where('credito_garantia.idcredito','<>',$credito->id)
-              ->where('credito_garantia.idcliente',$credito->idcliente)
-              ->where('credito_garantia.tipo','CLIENTE')
+              ->where('credito.id','<>',$credito->id)
+              ->where(function ($query) use ($credito) {
+                  $query->where(function ($query) use ($credito) {
+                      $query->where('credito.idforma_credito', 1)
+                          ->where('credito.idcliente', $credito->idcliente);
+                  })->orWhere(function ($query) use ($credito) {
+                      $query->where('credito.idforma_credito', 2)
+                          ->whereExists(function ($query) use ($credito) {
+                              $query->select(DB::raw('1'))->from('credito_garantia')
+                                  ->whereColumn('credito_garantia.idcredito', 'credito.id')
+                                  ->where('credito_garantia.idcliente', $credito->idcliente)
+                                  ->where('credito_garantia.tipo', 'CLIENTE');
+                          });
+                  });
+              })
               ->where('credito.estado','DESEMBOLSADO')
-              ->where('credito.idforma_credito',2)
               ->where('credito.idestadocredito',1)
               ->select(
                   'credito.id as idcredito',
@@ -1922,13 +1932,23 @@ class CreditoController extends Controller
               ->get();
           //dump($idcredito_aval_idcliente);
           $lista_credito_garantia_aval_propio = DB::table('credito')
-              ->join('credito_garantia','credito_garantia.idcredito','credito.id')
               ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
-              ->where('credito_garantia.idcredito','<>',$credito->id)
-              ->where('credito_garantia.idcliente',$idcredito_aval_idcliente)
-              ->where('credito_garantia.tipo','CLIENTE')
+              ->where('credito.id','<>',$credito->id)
+              ->where(function ($query) use ($idcredito_aval_idcliente) {
+                  $query->where(function ($query) use ($idcredito_aval_idcliente) {
+                      $query->where('credito.idforma_credito', 1)
+                          ->where('credito.idcliente', $idcredito_aval_idcliente);
+                  })->orWhere(function ($query) use ($idcredito_aval_idcliente) {
+                      $query->where('credito.idforma_credito', 2)
+                          ->whereExists(function ($query) use ($idcredito_aval_idcliente) {
+                              $query->select(DB::raw('1'))->from('credito_garantia')
+                                  ->whereColumn('credito_garantia.idcredito', 'credito.id')
+                                  ->where('credito_garantia.idcliente', $idcredito_aval_idcliente)
+                                  ->where('credito_garantia.tipo', 'CLIENTE');
+                          });
+                  });
+              })
               ->where('credito.estado','DESEMBOLSADO')
-              ->where('credito.idforma_credito',2)
               ->where('credito.idestadocredito',1)
               ->select(
                   'credito.id as idcredito',
@@ -2075,7 +2095,15 @@ class CreditoController extends Controller
 
           // Los detalles guardados antes de incorporar el nombre solo tienen la cuenta.
           $cuentas_avaladas_guardadas = [];
+          $cuentas_sin_forma_guardadas = [];
           if ($credito_cuantitativa_control_limites) {
+              foreach (['credito_saldodeduda_cliente_propio_det', 'credito_saldodeduda_cliente_aval_det', 'credito_saldodeduda_aval_propio_det', 'credito_saldodeduda_aval_aval_det'] as $campo) {
+                  foreach (json_decode($credito_cuantitativa_control_limites->$campo ?? '', true) ?: [] as $detalle) {
+                      if (empty($detalle['idforma_credito']) && preg_match('/^C(\d+)$/', $detalle['cuenta'] ?? '', $coincidencia)) {
+                          $cuentas_sin_forma_guardadas[] = (int) $coincidencia[1];
+                      }
+                  }
+              }
               foreach (['credito_saldodeduda_cliente_aval_det', 'credito_saldodeduda_aval_aval_det'] as $campo) {
                   foreach (json_decode($credito_cuantitativa_control_limites->$campo ?? '', true) ?: [] as $detalle) {
                       if (preg_match('/^C(\d+)$/', $detalle['cuenta'] ?? '', $coincidencia)) {
@@ -2084,6 +2112,14 @@ class CreditoController extends Controller
                   }
               }
           }
+          $formas_cuentas_guardadas = DB::table('credito')
+              ->whereIn('cuenta', array_unique($cuentas_sin_forma_guardadas))
+              ->get(['cuenta', 'idforma_credito'])
+              ->groupBy('cuenta')
+              ->map(function ($creditos) {
+                  $formas = $creditos->pluck('idforma_credito')->unique();
+                  return $formas->count() === 1 ? $formas->first() : null;
+              });
           $nombres_cuentas_avaladas = DB::table('credito')
               ->join('users', 'users.id', '=', 'credito.idcliente')
               ->whereIn('credito.cuenta', array_unique($cuentas_avaladas_guardadas))
@@ -2118,6 +2154,7 @@ class CreditoController extends Controller
               'credito_saldodeduda_aval_propio' => $credito_saldodeduda_aval_propio,
               'credito_saldodeduda_aval_aval' => $credito_saldodeduda_aval_aval,
               'nombres_cuentas_avaladas' => $nombres_cuentas_avaladas,
+              'formas_cuentas_guardadas' => $formas_cuentas_guardadas,
               'view_detalle' => $request->detalle,
               'credito_formato_evaluacion' => $credito_formato_evaluacion,
           ]);
@@ -2532,13 +2569,23 @@ class CreditoController extends Controller
               ->get();
         
           $lista_credito_garantia_cliente_propio = DB::table('credito')
-              ->join('credito_garantia','credito_garantia.idcredito','credito.id')
               ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
-              ->where('credito_garantia.idcredito','<>',$credito->id)
-              ->where('credito_garantia.idcliente',$credito->idcliente)
-              ->where('credito_garantia.tipo','CLIENTE')
+              ->where('credito.id','<>',$credito->id)
+              ->where(function ($query) use ($credito) {
+                  $query->where(function ($query) use ($credito) {
+                      $query->where('credito.idforma_credito', 1)
+                          ->where('credito.idcliente', $credito->idcliente);
+                  })->orWhere(function ($query) use ($credito) {
+                      $query->where('credito.idforma_credito', 2)
+                          ->whereExists(function ($query) use ($credito) {
+                              $query->select(DB::raw('1'))->from('credito_garantia')
+                                  ->whereColumn('credito_garantia.idcredito', 'credito.id')
+                                  ->where('credito_garantia.idcliente', $credito->idcliente)
+                                  ->where('credito_garantia.tipo', 'CLIENTE');
+                          });
+                  });
+              })
               ->where('credito.estado','DESEMBOLSADO')
-              ->where('credito.idforma_credito',2)
               ->where('credito.idestadocredito',1)
               ->select(
                   'credito.id as idcredito',
@@ -2553,6 +2600,7 @@ class CreditoController extends Controller
           $lista_credito_garantia_cliente_aval = DB::table('credito')
               ->join('credito_garantia','credito_garantia.idcredito','credito.id')
               ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
+              ->leftJoin('users as titular_avalado','titular_avalado.id','credito.idcliente')
               ->where('credito_garantia.idcliente',$credito->idcliente)
               ->where('credito_garantia.tipo','AVAL')
               ->where('credito.estado','DESEMBOLSADO')
@@ -2562,6 +2610,7 @@ class CreditoController extends Controller
                   'credito.id as idcredito',
                   'credito.idforma_credito as idforma_credito',
                   'credito.cuenta as credito_cuenta',
+                  'titular_avalado.nombrecompleto as nombre_cliente',
                   'credito_prendatario.modalidad as modalidadproductocredito',
                   DB::raw('CONCAT("AVALADO") as tipoprestamo')
               )
@@ -2664,6 +2713,7 @@ class CreditoController extends Controller
                   'idforma_credito' => $valuec->idforma_credito,
                   'modalidad' => $valuec->modalidadproductocredito,
                   'cuenta' => 'C'.str_pad($valuec->credito_cuenta, 8, "0", STR_PAD_LEFT),
+                  'nombre_cliente' => $valuec->nombre_cliente,
                   'saldo_vigente' => $cronograma['saldo_capital'],
                   'cuota_pendiente' => $cronograma['cuota_pendiente'],
               ];
@@ -2686,13 +2736,23 @@ class CreditoController extends Controller
               ->get();
           //dump($idcredito_aval_idcliente);
           $lista_credito_garantia_aval_propio = DB::table('credito')
-              ->join('credito_garantia','credito_garantia.idcredito','credito.id')
               ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
-              ->where('credito_garantia.idcredito','<>',$credito->id)
-              ->where('credito_garantia.idcliente',$idcredito_aval_idcliente)
-              ->where('credito_garantia.tipo','CLIENTE')
+              ->where('credito.id','<>',$credito->id)
+              ->where(function ($query) use ($idcredito_aval_idcliente) {
+                  $query->where(function ($query) use ($idcredito_aval_idcliente) {
+                      $query->where('credito.idforma_credito', 1)
+                          ->where('credito.idcliente', $idcredito_aval_idcliente);
+                  })->orWhere(function ($query) use ($idcredito_aval_idcliente) {
+                      $query->where('credito.idforma_credito', 2)
+                          ->whereExists(function ($query) use ($idcredito_aval_idcliente) {
+                              $query->select(DB::raw('1'))->from('credito_garantia')
+                                  ->whereColumn('credito_garantia.idcredito', 'credito.id')
+                                  ->where('credito_garantia.idcliente', $idcredito_aval_idcliente)
+                                  ->where('credito_garantia.tipo', 'CLIENTE');
+                          });
+                  });
+              })
               ->where('credito.estado','DESEMBOLSADO')
-              ->where('credito.idforma_credito',2)
               ->where('credito.idestadocredito',1)
               ->select(
                   'credito.id as idcredito',
@@ -2707,6 +2767,7 @@ class CreditoController extends Controller
           $lista_credito_garantia_aval_aval = DB::table('credito')
               ->join('credito_garantia','credito_garantia.idcredito','credito.id')
               ->join('credito_prendatario','credito_prendatario.id','credito.idcredito_prendatario')
+              ->leftJoin('users as titular_avalado','titular_avalado.id','credito.idcliente')
               ->where('credito_garantia.idcliente',$idcredito_aval_idcliente)
               ->where('credito_garantia.tipo','AVAL')
               ->where('credito.estado','DESEMBOLSADO')
@@ -2716,6 +2777,7 @@ class CreditoController extends Controller
                   'credito.id as idcredito',
                   'credito.idforma_credito as idforma_credito',
                   'credito.cuenta as credito_cuenta',
+                  'titular_avalado.nombrecompleto as nombre_cliente',
                   'credito_prendatario.modalidad as modalidadproductocredito',
                   DB::raw('CONCAT("AVALADO") as tipoprestamo')
               )
@@ -2818,6 +2880,7 @@ class CreditoController extends Controller
                   'idforma_credito' => $valuec->idforma_credito,
                   'modalidad' => $valuec->modalidadproductocredito,
                   'cuenta' => 'C'.str_pad($valuec->credito_cuenta, 8, "0", STR_PAD_LEFT),
+                  'nombre_cliente' => $valuec->nombre_cliente,
                   'saldo_vigente' => $cronograma['saldo_capital'],
                   'cuota_pendiente' => $cronograma['cuota_pendiente'],
               ];
@@ -2833,6 +2896,43 @@ class CreditoController extends Controller
               ->first();
 
         $credito_formato_evaluacion = DB::table('credito_formato_evaluacion')->where('credito_formato_evaluacion.idcredito',$id)->first();
+
+          $cuentas_avaladas_guardadas = [];
+          $cuentas_sin_forma_guardadas = [];
+          if ($credito_cuantitativa_control_limites) {
+              foreach (['credito_saldodeduda_cliente_propio_det', 'credito_saldodeduda_cliente_aval_det', 'credito_saldodeduda_aval_propio_det', 'credito_saldodeduda_aval_aval_det'] as $campo) {
+                  foreach (json_decode($credito_cuantitativa_control_limites->$campo ?? '', true) ?: [] as $detalle) {
+                      if (empty($detalle['idforma_credito']) && preg_match('/^C(\d+)$/', $detalle['cuenta'] ?? '', $coincidencia)) {
+                          $cuentas_sin_forma_guardadas[] = (int) $coincidencia[1];
+                      }
+                  }
+              }
+              foreach (['credito_saldodeduda_cliente_aval_det', 'credito_saldodeduda_aval_aval_det'] as $campo) {
+                  foreach (json_decode($credito_cuantitativa_control_limites->$campo ?? '', true) ?: [] as $detalle) {
+                      if (preg_match('/^C(\d+)$/', $detalle['cuenta'] ?? '', $coincidencia)) {
+                          $cuentas_avaladas_guardadas[] = (int) $coincidencia[1];
+                      }
+                  }
+              }
+          }
+          $formas_cuentas_guardadas = DB::table('credito')
+              ->whereIn('cuenta', array_unique($cuentas_sin_forma_guardadas))
+              ->get(['cuenta', 'idforma_credito'])
+              ->groupBy('cuenta')
+              ->map(function ($creditos) {
+                  $formas = $creditos->pluck('idforma_credito')->unique();
+                  return $formas->count() === 1 ? $formas->first() : null;
+              });
+          $nombres_cuentas_avaladas = DB::table('credito')
+              ->join('users', 'users.id', '=', 'credito.idcliente')
+              ->whereIn('credito.cuenta', array_unique($cuentas_avaladas_guardadas))
+              ->select('credito.cuenta', 'users.nombrecompleto')
+              ->get()
+              ->groupBy('cuenta')
+              ->map(function ($creditos) {
+                  $nombres = $creditos->pluck('nombrecompleto')->unique();
+                  return $nombres->count() === 1 ? $nombres->first() : null;
+              });
 
         $pdf = PDF::loadView(sistema_view().'/credito/pdfsolicitud_control_limites',[
           'users_prestamo'    => $users_prestamo,
@@ -2856,6 +2956,8 @@ class CreditoController extends Controller
           'credito_saldodeduda_cliente_aval' => $credito_saldodeduda_cliente_aval,
           'credito_saldodeduda_aval_propio' => $credito_saldodeduda_aval_propio,
           'credito_saldodeduda_aval_aval' => $credito_saldodeduda_aval_aval,
+          'nombres_cuentas_avaladas' => $nombres_cuentas_avaladas,
+          'formas_cuentas_guardadas' => $formas_cuentas_guardadas,
           'view_detalle' => $request->detalle,
           'credito_formato_evaluacion' => $credito_formato_evaluacion,
         ]); 

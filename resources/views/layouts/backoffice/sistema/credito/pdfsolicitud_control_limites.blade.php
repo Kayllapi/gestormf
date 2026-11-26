@@ -294,10 +294,11 @@
             <table class="table table-bordered">
               <thead>
                 <tr>
-                  <th colspan="2" style="text-align: center;">PROPIOS</th>
+                  <th colspan="3" style="text-align: center;">PROPIOS</th>
                 </tr>
                 <tr>
                   <th width="80px">CUENTA</th>
+                  <th>F.C.</th>
                   <th width="80px">SALDOS (S/.)</th>
                 </tr>
               </thead>
@@ -314,6 +315,7 @@
                       @foreach($saldo_vigente as $value)
                         <tr>
                             <td>{{ $value->cuenta }}</td>
+                            <td>{{ [1 => 'CP', 2 => 'CNP'][$value->idforma_credito ?? $formas_cuentas_guardadas->get((int) substr($value->cuenta, 1))] ?? '' }}</td>
                             <td class="campo_moneda">{{ $value->saldo_vigente }}</td>
                         </tr>
                         <?php $total_saldo_vigente_propio = $total_saldo_vigente_propio+$value->saldo_vigente; ?>
@@ -323,6 +325,7 @@
                       @foreach($credito_saldodeduda_cliente_propio as $value)
                         <tr>
                             <td>{{ $value['cuenta'] }}</td>
+                            <td>{{ [1 => 'CP', 2 => 'CNP'][$value['idforma_credito'] ?? null] ?? '' }}</td>
                             <td class="campo_moneda">{{ $value['cuota_pendiente'] }}</td>
                         </tr>
                         <?php $total_saldo_vigente_propio = $total_saldo_vigente_propio+$value['cuota_pendiente']; ?>
@@ -331,7 +334,7 @@
               </tbody>
               <tfoot>
                 <tr>
-                  <th>TOTAL</th>
+                  <th colspan="2">TOTAL</th>
                   <th class="campo_moneda">{{number_format($total_saldo_vigente_propio, 2, '.', '')}}</th>
                 </tr>
               </tfoot>
@@ -345,10 +348,12 @@
             <table class="table table-bordered">
               <thead>
                 <tr>
-                  <th colspan="2" style="text-align: center;">AVALADO</th>
+                  <th colspan="4" style="text-align: center;">AVALADO</th>
                 </tr>
                 <tr>
                   <th width="80px">CUENTA</th>
+                  <th>F.C.</th>
+                  <th>APELLIDOS Y NOMBRES</th>
                   <th width="80px">SALDOS (S/.)</th>
                 </tr>
               </thead>
@@ -365,6 +370,8 @@
                     @foreach($saldo_vigente as $value)
                       <tr>
                           <td>{{ $value->cuenta }}</td>
+                            <td>{{ [1 => 'CP', 2 => 'CNP'][$value->idforma_credito ?? $formas_cuentas_guardadas->get((int) substr($value->cuenta, 1))] ?? '' }}</td>
+                            <td>{{ $value->nombre_cliente ?? $nombres_cuentas_avaladas->get((int) substr($value->cuenta, 1), '') }}</td>
                           <td class="campo_moneda">{{ $value->saldo_vigente }}</td>
                       </tr>
                       <?php $cuentas_aval[] = $value->cuenta; ?>
@@ -375,6 +382,8 @@
                     @foreach($credito_saldodeduda_cliente_aval as $value)
                       <tr>
                           <td>{{ $value['cuenta'] }}</td>
+                            <td>{{ [1 => 'CP', 2 => 'CNP'][$value['idforma_credito'] ?? null] ?? '' }}</td>
+                            <td>{{ $value['nombre_cliente'] ?? '' }}</td>
                           <td class="campo_moneda">{{ $value['cuota_pendiente'] }}</td>
                       </tr>
                       <?php $cuentas_aval[] = $value['cuenta']; ?>
@@ -384,7 +393,7 @@
               </tbody>
               <tfoot>
                 <tr>
-                  <th>TOTAL</th>
+                  <th colspan="3">TOTAL</th>
                   <th class="campo_moneda">{{number_format($total_saldo_vigente_aval, 2, '.', '')}}</th>
                 </tr>
               </tfoot>
@@ -533,10 +542,11 @@
           <table class="table table-bordered" id="table-garantia-aval-propio">
             <thead>
               <tr>
-                <th colspan="2" style="text-align: center;">PROPIOS</th>
+                <th colspan="3" style="text-align: center;">PROPIOS</th>
               </tr>
               <tr>
                 <th width="80px">CUENTA</th>
+                  <th>F.C.</th>
                 <th width="80px">SALDOS (S/.)</th>
               </tr>
             </thead>
@@ -551,6 +561,7 @@
                   @foreach($saldo_vigente as $value)
                     <tr>
                         <td>{{ $value->cuenta }}</td>
+                            <td>{{ [1 => 'CP', 2 => 'CNP'][$value->idforma_credito ?? $formas_cuentas_guardadas->get((int) substr($value->cuenta, 1))] ?? '' }}</td>
                         <td class="campo_moneda">{{ $value->saldo_vigente }}</td>
                     </tr>
                     <?php $total_saldo_vigente_propio += $value->saldo_vigente; ?>
@@ -563,6 +574,7 @@
                   @foreach($credito_saldodeduda_aval_propio as $value)
                     <tr>
                         <td>{{ $value['cuenta'] }}</td>
+                            <td>{{ [1 => 'CP', 2 => 'CNP'][$value['idforma_credito'] ?? null] ?? '' }}</td>
                         <td class="campo_moneda">{{ $value['cuota_pendiente'] }}</td>
                     </tr>
                     <?php $total_saldo_vigente_propio += $value['cuota_pendiente']; ?>
@@ -574,7 +586,7 @@
             </tbody>
             <tfoot>
               <tr>
-                <th>TOTAL</th>
+                <th colspan="2">TOTAL</th>
                 <th class="campo_moneda">{{number_format($total_saldo_vigente_propio, 2, '.', '')}}</th>
               </tr>
             </tfoot>
@@ -589,10 +601,12 @@
           <table class="table table-bordered" id="table-garantia-aval-aval">
             <thead>
               <tr>
-                <th colspan="2" style="text-align: center;">AVALADO</th>
+                <th colspan="4" style="text-align: center;">AVALADO</th>
               </tr>
               <tr>
                 <th width="80px">CUENTA</th>
+                  <th>F.C.</th>
+                  <th>APELLIDOS Y NOMBRES</th>
                 <th width="80px">SALDOS (S/.)</th>
               </tr>
             </thead>
@@ -606,6 +620,8 @@
                   @foreach($saldo_vigente as $value)
                     <tr>
                         <td>{{ $value->cuenta }}</td>
+                            <td>{{ [1 => 'CP', 2 => 'CNP'][$value->idforma_credito ?? $formas_cuentas_guardadas->get((int) substr($value->cuenta, 1))] ?? '' }}</td>
+                            <td>{{ $value->nombre_cliente ?? $nombres_cuentas_avaladas->get((int) substr($value->cuenta, 1), '') }}</td>
                         <td class="campo_moneda">{{ $value->saldo_vigente }}</td>
                     </tr>
                     <?php $total_saldo_vigente_aval = $total_saldo_vigente_aval+$value->saldo_vigente; ?>
@@ -615,6 +631,8 @@
                   @foreach($credito_saldodeduda_aval_aval as $value)
                     <tr>
                         <td>{{ $value['cuenta'] }}</td>
+                            <td>{{ [1 => 'CP', 2 => 'CNP'][$value['idforma_credito'] ?? null] ?? '' }}</td>
+                            <td>{{ $value['nombre_cliente'] ?? '' }}</td>
                         <td class="campo_moneda">{{ $value['cuota_pendiente'] }}</td>
                     </tr>
                     <?php $total_saldo_vigente_aval = $total_saldo_vigente_aval+$value['cuota_pendiente']; ?>
@@ -623,7 +641,7 @@
             </tbody>
             <tfoot>
               <tr>
-                <th>TOTAL</th>
+                <th colspan="3">TOTAL</th>
                 <th class="campo_moneda">{{number_format($total_saldo_vigente_aval, 2, '.', '')}}</th>
               </tr>
             </tfoot>

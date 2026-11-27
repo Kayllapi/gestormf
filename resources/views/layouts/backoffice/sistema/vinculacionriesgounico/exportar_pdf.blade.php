@@ -126,11 +126,10 @@
               <thead class="table-dark">
                 <tr>
                   <td style="border-top: 2px solid #000;text-align: center;font-weight: bold;" rowspan="2" colspan="3">VINCULADOS</td>
-                  <td style="border-top: 2px solid #000;text-align: center;font-weight: bold;" colspan="8">RIESGO Saldo de Créd.(S/.)</td>
+                  <td style="border-top: 2px solid #000;text-align: center;font-weight: bold;" colspan="4">RIESGO Saldo de Créd.(S/.)</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;font-weight: bold;" rowspan="3">TOTAL</td>
                 </tr> 
                 <tr>
-                  <td style="border-top: 2px solid #000;text-align: center;font-weight: bold;" colspan="4">POR PROPIEDAD Y AVAL</td>
                   <td style="border-top: 2px solid #000;text-align: center;font-weight: bold;" colspan="2">POR NEGOCIO</td>
                   <td style="border-top: 2px solid #000;text-align: center;font-weight: bold;" colspan="2">FAMILIARES EN LA EMPRESA</td>
                 </tr>
@@ -138,10 +137,6 @@
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;font-weight: bold;">N°</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;font-weight: bold;">DOI/RUC</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;font-weight: bold;">Nombres y Apellidos</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;font-weight: bold;">Cnta</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;font-weight: bold;">Avalados por Cliente al Vinculado con  MISMO DOMICILIO</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;font-weight: bold;">Cnta</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;font-weight: bold;">Avalados por Vinculado al Cliente  con MISMO DOMICILIO </td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;font-weight: bold;">Cnta</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;font-weight: bold;">Misma dirección de negocio del vinculado</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;font-weight: bold;">Cnta</td>
@@ -157,34 +152,13 @@
 
                    $total_valor = 0;
 
-                   $credito_garantias_valado = DB::table('credito_garantia')
-                      ->join('credito','credito.id','credito_garantia.idcredito')
-                      ->join('users as cliente','cliente.id','credito.idcliente')
-                      ->where('credito.idestadocredito',1)
-                      ->whereIn('credito.estado',['APROBADO','DESEMBOLSADO'])
-                      ->where('credito_garantia.idcliente',$value->idcliente)
-                      ->where('cliente.direccion',$value->direccioncliente)
-                      ->where('credito_garantia.tipo','AVAL')
-                      ->select(
-                          'credito_garantia.*',
-                          'credito.cuenta as cuenta',
-                      )
-                      ->get();
-                  $cuenta_avalado = '';
-                  $valor_avalado = '';
-                  foreach($credito_garantias_valado as $valueavalado){
-                      $cuenta_avalado = $cuenta_avalado.' C'.$valueavalado->cuenta;
-                      $valor_avalado = $valor_avalado.' '.$valueavalado->valor_mercado;
-                      $total_valor += $valueavalado->valor_mercado;
-                  }
-
                    $credito_garantias_mismadireccion = DB::table('credito_garantia')
                       ->join('credito','credito.id','credito_garantia.idcredito')
                       //->join('users as cliente','cliente.id','credito.idcliente')
                       ->join('s_users_prestamo','s_users_prestamo.id_s_users','credito.idcliente')
                       ->where('credito.idestadocredito',1)
                       ->whereIn('credito.estado',['APROBADO','DESEMBOLSADO'])
-                      ->where('s_users_prestamo.direccion_ac_economica','LIKE','%'.$s_users_prestamo->direccionnegocio.'%')
+                      ->when(!empty($s_users_prestamo->direccionnegocio), fn ($query) => $query->where('s_users_prestamo.direccion_ac_economica', 'LIKE', '%'.$s_users_prestamo->direccionnegocio.'%'), fn ($query) => $query->whereRaw('1 = 0'))
                       ->where('credito_garantia.idcredito',$value->idcredito)
                       //->where('credito_garantia.tipo','AVAL')
                       ->select(
@@ -218,10 +192,7 @@
                                 <td>".($key+1)."</td>
                                 <td>{$value->identificacioncliente}</td>
                                 <td style='width: 200px;'>{$value->nombrecliente}</td>
-                                <td style='text-align: center;width: 80px;'>C{$value->cuenta}</td>
-                                <td style='text-align: right;'>{$value->valor_mercado}</td>
-                                <td style='text-align: center;width: 80px;'>{$cuenta_avalado}</td>
-                                <td style='text-align: right;'>{$valor_avalado}</td>
+
                                 <td style='text-align: center;width: 80px;'>{$cuenta_mismadireccion}</td>
                                 <td style='text-align: right;'>{$valor_mismadireccion}</td>
                                 <td style='text-align: center;width: 80px;'>{$cuenta_direccionusuario}</td>
@@ -237,7 +208,7 @@
                 ->join('s_users_prestamo','s_users_prestamo.id_s_users','credito.idcliente')
                 ->where('credito.idestadocredito',1)
                 ->whereIn('credito.estado',['APROBADO','DESEMBOLSADO'])
-                ->where('s_users_prestamo.direccion_ac_economica','LIKE','%'.$s_users_prestamo->direccionnegocio.'%')
+                ->when(!empty($s_users_prestamo->direccionnegocio), fn ($query) => $query->where('s_users_prestamo.direccion_ac_economica', 'LIKE', '%'.$s_users_prestamo->direccionnegocio.'%'), fn ($query) => $query->whereRaw('1 = 0'))
                 ->where('cliente.id','<>',$idcliente)
                 ->select(
                       'cliente.id as idcliente',
@@ -258,7 +229,7 @@
                       ->join('s_users_prestamo','s_users_prestamo.id_s_users','credito.idcliente')
                       ->where('credito.idestadocredito',1)
                       ->whereIn('credito.estado',['APROBADO','DESEMBOLSADO'])
-                      ->where('s_users_prestamo.direccion_ac_economica','LIKE','%'.$s_users_prestamo->direccionnegocio.'%')
+                      ->when(!empty($s_users_prestamo->direccionnegocio), fn ($query) => $query->where('s_users_prestamo.direccion_ac_economica', 'LIKE', '%'.$s_users_prestamo->direccionnegocio.'%'), fn ($query) => $query->whereRaw('1 = 0'))
                       ->where('cliente.id',$value->idcliente)
                       ->select(
                           'credito_garantia.*',
@@ -279,10 +250,7 @@
                                 <td>".($key+1)."</td>
                                 <td>{$value->identificacioncliente}</td>
                                 <td>{$value->nombrecliente}</td>
-                                <td style='text-align: center;width: 80px;'></td>
-                                <td style='text-align: right;'></td>
-                                <td style='text-align: center;width: 80px;'></td>
-                                <td style='text-align: right;'></td>
+
                                 <td style='text-align: center;width: 80px;'>{$cuenta_mismadireccion}</td>
                                 <td style='text-align: right;'>{$valor_mismadireccion}</td>
                                 <td style='text-align: center;width: 80px;'></td>
@@ -293,7 +261,7 @@
               }
               $html .= '
                 <tr style="position: sticky;bottom: 0;">
-                  <td colspan="11" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">TOTAL S/.</td>
+                  <td colspan="7" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">TOTAL S/.</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">'.number_format($total, 2, '.', '').'</td>
                 </tr>';
                 echo $html;

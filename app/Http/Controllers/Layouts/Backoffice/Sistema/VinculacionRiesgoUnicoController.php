@@ -90,27 +90,6 @@ class VinculacionRiesgoUnicoController extends Controller
             
                $total_valor = 0;
             
-               $credito_garantias_valado = DB::table('credito')
-                  //->join('credito','credito.id','credito_garantia.idcredito')
-                  ->join('users as cliente','cliente.id','credito.idcliente')
-                  ->where('credito.idestadocredito',1)
-                  ->whereIn('credito.estado',['APROBADO','DESEMBOLSADO'])
-                  ->where('credito.idcliente',$value->idcliente)
-                  ->where('cliente.direccion',$value->direccioncliente)
-                  //->where('credito_garantia.tipo','AVAL')
-                  ->select(
-                      //'credito_garantia.*',
-                      'credito.*',
-                  )
-                  ->get();
-              $cuenta_avalado = '';
-              $valor_avalado = '';
-              foreach($credito_garantias_valado as $valueavalado){
-                  $cuenta_avalado = $cuenta_avalado.' C'.$valueavalado->cuenta;
-                  $valor_avalado = $valor_avalado.' '.$valueavalado->monto_solicitado;
-                  $total_valor += $valueavalado->monto_solicitado;
-              }
-            
                $credito_garantias_mismadireccion = DB::table('credito')
                   //->join('credito','credito.id','credito_garantia.idcredito')
                   ->join('s_users_prestamo','s_users_prestamo.id_s_users','credito.idcliente')
@@ -149,10 +128,7 @@ class VinculacionRiesgoUnicoController extends Controller
                             <td>".($key+1)."</td>
                             <td>{$value->identificacioncliente}</td>
                             <td>{$value->nombrecliente}</td>
-                            <td style='text-align: center;width: 100px;'>C{$value->cuenta}</td>
-                            <td style='text-align: right;'>{$value->monto_solicitado}</td>
-                            <td style='text-align: center;width: 100px;'>{$cuenta_avalado}</td>
-                            <td style='text-align: right;'>{$valor_avalado}</td>
+
                             <td style='text-align: center;width: 100px;'>{$cuenta_mismadireccion}</td>
                             <td style='text-align: right;'>{$valor_mismadireccion}</td>
                             <td style='text-align: center;width: 100px;'>{$cuenta_direccionusuario}</td>
@@ -212,10 +188,7 @@ class VinculacionRiesgoUnicoController extends Controller
                             <td>".($key+1)."</td>
                             <td>{$value->identificacioncliente}</td>
                             <td>{$value->nombrecliente}</td>
-                            <td style='text-align: center;width: 100px;'></td>
-                            <td style='text-align: right;'></td>
-                            <td style='text-align: center;width: 100px;'></td>
-                            <td style='text-align: right;'></td>
+
                             <td style='text-align: center;width: 100px;'>{$cuenta_mismadireccion}</td>
                             <td style='text-align: right;'>{$valor_mismadireccion}</td>
                             <td style='text-align: center;width: 100px;'></td>
@@ -227,7 +200,7 @@ class VinculacionRiesgoUnicoController extends Controller
    
               $html .= '
                 <tr class="tabla-total">
-                  <th colspan="11" class="text-end">TOTAL S/.</th>
+                  <th colspan="7" class="text-end">TOTAL S/.</th>
                   <th class="text-end">'.number_format($total, 2, '.', '').'</th>
                 </tr>';
           return array(
@@ -291,13 +264,18 @@ class VinculacionRiesgoUnicoController extends Controller
       $tienda = DB::table('tienda')->whereId($idtienda)->first();
  
       if($request->input('view') == 'exportar') {
+            abort_unless(DB::table('users')->where('id', $request->idcliente)->exists(), 404, 'Seleccione un cliente válido para generar el reporte.');
             return view(sistema_view().'/vinculacionriesgounico/exportar',[
                 'tienda' => $tienda,
                 'idcliente' => $request->idcliente,
             ]);
         }
         else if( $request->input('view') == 'exportar_pdf' ){
-              
+          $cliente = DB::table('users')
+              ->where('users.id', $request->idcliente)
+              ->select('users.id', 'users.identificacion', 'users.nombrecompleto', 'users.direccion as direcciondomicilio', 'db_idubigeo')
+              ->first();
+          abort_unless($cliente, 404, 'Seleccione un cliente válido para generar el reporte.');
             
           $credito_garantias = DB::table('credito_garantia')
               ->join('credito','credito.id','credito_garantia.idcredito')
@@ -317,9 +295,6 @@ class VinculacionRiesgoUnicoController extends Controller
               )
               ->get();
           
-            $cliente = DB::table('users')
-              ->where('users.id',$request->idcliente)
-              ->select('users.id','users.identificacion','users.nombrecompleto','users.direccion as direcciondomicilio','db_idubigeo')->first();
             $s_users_prestamo = DB::table('s_users_prestamo')
               ->where('id_s_users',$request->idcliente)
               ->select('s_users_prestamo.direccion_ac_economica as direccionnegocio','db_idubigeo_ac_economica')->first();
@@ -331,7 +306,7 @@ class VinculacionRiesgoUnicoController extends Controller
                 's_users_prestamo' => $s_users_prestamo,
                 'cliente' => $cliente->identificacion.' - '.$cliente->nombrecompleto,
                 'direcciondomicilio' => $cliente->direcciondomicilio.', '.$cliente->db_idubigeo,
-                'direccionnegocio'   => $s_users_prestamo->direccionnegocio.', '.$s_users_prestamo->db_idubigeo_ac_economica,
+                'direccionnegocio'   => trim(($s_users_prestamo->direccionnegocio ?? '').', '.($s_users_prestamo->db_idubigeo_ac_economica ?? ''), ', '),
             ]); 
             $pdf->setPaper('A4', 'landscape');
             return $pdf->stream('CARTERA_DE_CREDITO.pdf');

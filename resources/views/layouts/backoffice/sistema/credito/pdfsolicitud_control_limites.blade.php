@@ -595,7 +595,7 @@
           <input type="hidden" id="total_saldodeuda_aval_propio" value="{{number_format($total_saldo_vigente_propio, 2, '.', '')}}">
           <input type="hidden" id="total_saldodeuda_aval_propio_input" value="{{number_format($total_saldo_vigente_propio_input, 2, '.', '')}}">
           @php
-            $total_financiado_deudor = $total_financiado_deudor + ($vinculacion_aval_calculo['cruzado'] ? $total_saldo_vigente_propio_input : 0) + $vinculacion_aval_calculo['total_aval_cliente'];
+            $total_financiado_deudor = $total_financiado_deudor + ($vinculacion_aval_calculo['cruzado'] ? $vinculacion_aval_calculo['total_aval_sin_duplicados'] : $vinculacion_aval_calculo['total_aval_cliente']);
         @endphp
         <div class="col">
           <table class="table table-bordered" id="table-garantia-aval-aval">

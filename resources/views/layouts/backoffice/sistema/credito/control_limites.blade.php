@@ -796,7 +796,8 @@
               
               let aval_cruzado = @json($vinculacion_aval_calculo['cruzado']);
               let total_aval_cliente = @json($vinculacion_aval_calculo['total_aval_cliente']);
-              let total_financiado_deudor = credito_solicitado + total_saldodeuda_cliente_propio + total_saldodeuda_cliente_aval + (aval_cruzado ? total_saldodeuda_aval_propio_input : 0) + total_aval_cliente + total_vinculo_deudor + entidad_financiera_pareja;
+              let total_aval_sin_duplicados = @json($vinculacion_aval_calculo['total_aval_sin_duplicados']);
+              let total_financiado_deudor = credito_solicitado + total_saldodeuda_cliente_propio + total_saldodeuda_cliente_aval + (aval_cruzado ? total_aval_sin_duplicados : total_aval_cliente) + total_vinculo_deudor + entidad_financiera_pareja;
               
               $('#total_financiado_deudor').val(total_financiado_deudor.toFixed(2))
               

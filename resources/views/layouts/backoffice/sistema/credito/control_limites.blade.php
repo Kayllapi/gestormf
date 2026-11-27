@@ -683,7 +683,7 @@
                 <th colspan=2 style="text-align:center;">Por Propiedad Directa (<b style="color: #c40000;">P.J.</b>)</th>
                 <th colspan=2 style="text-align:center;">Por Propiedad Indirecta (<b style="color: #c40000;">P.J.</b>)</th>
                 <th style="text-align:center;">Gestión (<b style="color: #c40000;">P.J. y P.N.</b>)</th>
-                <th rowspan=2 style="text-align:center;">Dependencia <br> Económica o <br> Familiar (<b style="color: #c40000;">P.J. y P.N.</b>)</th>
+                <th style="text-align:center;">Dependencia Económica o <br> Familiar (<b style="color: #c40000;">P.J. y P.N.</b>)</th>
               </tr>
               <tr>
                 
@@ -691,6 +691,7 @@
                 <th style="width:100px;">Pertenece al Vinculado (%)</th>
                 <th style="width:100px;">Pertenece al Cliente (%)</th>
                 <th style="width:100px;">Pertenece al Vinculado (%)</th>
+                <th style="text-align:center;">Textual</th>
                 <th style="text-align:center;">Textual</th>
               </tr>
             </thead>

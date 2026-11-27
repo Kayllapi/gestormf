@@ -671,13 +671,14 @@
               <th colspan=2>Por Propiedad Directa (P.J.)</th>
               <th colspan=2>Por Propiedad Indirecta (P.J.)</th>
               <th>Gestión (P.J. y P.N.)</th>
-              <th rowspan=2>Dependencia <br> Económica o <br> Familiar (P.J. y P.N.)</th>
+              <th>Dependencia Económica o <br> Familiar (P.J. y P.N.)</th>
             </tr>
             <tr>
               <th>Pertenece al Cliente (%)</th>
               <th>Pertenece al Vinculado (%)</th>
               <th>Pertenece al Cliente (%)</th>
               <th>Pertenece al Vinculado (%)</th>
+              <th>Textual</th>
               <th>Textual</th>
             </tr>
           </thead>

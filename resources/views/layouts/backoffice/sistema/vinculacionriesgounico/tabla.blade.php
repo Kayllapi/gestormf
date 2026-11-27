@@ -76,17 +76,17 @@
                   <th style="text-align: center; border:0.1px solid #5a5a5a;" rowspan="3">TOTAL</th>
                 </tr> 
                 <tr>
-                  <th style="text-align: center; border:0.1px solid #5a5a5a;" colspan="2">POR NEGOCIO</th>
-                  <th style="text-align: center; border:0.1px solid #7a7a7a;" colspan="2">FAMILIARES EN LA EMPRESA</th>
+                  <th style="text-align: center; border:0.1px solid #5a5a5a;" colspan="2">VINCULACIÓN POR GESTIÓN</th>
+                  <th style="text-align: center; border:0.1px solid #7a7a7a;" colspan="2">VINCULACIÓN POR DEPENDENCIA ECONÓMICA O FAMILIAR</th>
                 </tr>
                 <tr>
                   <th style="text-align: center; border:0.1px solid #7a7a7a;">N°</th>
                   <th style="text-align: center; border:0.1px solid #7a7a7a;">RUC/DNI/CE</th>
                   <th style="text-align: center; border:0.1px solid #7a7a7a;">Nombres y Apellidos</th>
                   <th style="text-align: center; border:0.1px solid #7a7a7a;">Cnta</th>
-                  <th style="text-align: center; border:0.1px solid #7a7a7a;">Misma dirección de negocio del vinculado</th>
+                  <th style="text-align: center; border:0.1px solid #7a7a7a;">Misma dirección de negocio (Mismo Negocio)</th>
                   <th style="text-align: center; border:0.1px solid #7a7a7a;">Cnta</th>
-                  <th style="text-align: center; border:0.1px solid #7a7a7a;">Usuario Vinculado con mismo domicilio del Cliente</th>
+                  <th style="text-align: center; border:0.1px solid #7a7a7a;">Unión Económica Familiar (Parejas)</th>
                 </tr>
               </thead>
               <tbody>

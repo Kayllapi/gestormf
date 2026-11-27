@@ -130,17 +130,17 @@
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;font-weight: bold;" rowspan="3">TOTAL</td>
                 </tr> 
                 <tr>
-                  <td style="border-top: 2px solid #000;text-align: center;font-weight: bold;" colspan="2">POR NEGOCIO</td>
-                  <td style="border-top: 2px solid #000;text-align: center;font-weight: bold;" colspan="2">FAMILIARES EN LA EMPRESA</td>
+                  <td style="border-top: 2px solid #000;text-align: center;font-weight: bold;" colspan="2">VINCULACIÓN POR GESTIÓN</td>
+                  <td style="border-top: 2px solid #000;text-align: center;font-weight: bold;" colspan="2">VINCULACIÓN POR DEPENDENCIA ECONÓMICA O FAMILIAR</td>
                 </tr>
                 <tr>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;font-weight: bold;">N°</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;font-weight: bold;">DOI/RUC</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;font-weight: bold;">Nombres y Apellidos</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;font-weight: bold;">Cnta</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;font-weight: bold;">Misma dirección de negocio del vinculado</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;font-weight: bold;">Misma dirección de negocio (Mismo Negocio)</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;font-weight: bold;">Cnta</td>
-                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;font-weight: bold;">Usuario Vinculado con mismo domicilio del Cliente</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;font-weight: bold;">Unión Económica Familiar (Parejas)</td>
                 </tr>
               </thead>
               <tbody>

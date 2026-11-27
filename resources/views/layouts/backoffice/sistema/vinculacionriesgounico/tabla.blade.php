@@ -72,12 +72,13 @@
               <thead class="table-dark">
                 <tr>
                   <th style="text-align: center; border:0.1px solid #5a5a5a;" rowspan="2" colspan="3">VINCULADOS</th>
-                  <th style="text-align: center; border:0.1px solid #5a5a5a;" colspan="4">RIESGO Saldo de Créd.(S/.)</th>
+                  <th style="text-align: center; border:0.1px solid #5a5a5a;" colspan="6">RIESGO Saldo de Créd.(S/.)</th>
                   <th style="text-align: center; border:0.1px solid #5a5a5a;" rowspan="3">TOTAL</th>
                 </tr> 
                 <tr>
                   <th style="text-align: center; border:0.1px solid #5a5a5a;" colspan="2">VINCULACIÓN POR GESTIÓN</th>
                   <th style="text-align: center; border:0.1px solid #7a7a7a;" colspan="2">VINCULACIÓN POR DEPENDENCIA ECONÓMICA O FAMILIAR</th>
+                  <th style="text-align: center; border:0.1px solid #7a7a7a;" colspan="2">VINCULACIÓN POR PROPIEDAD Y GESTIÓN</th>
                 </tr>
                 <tr>
                   <th style="text-align: center; border:0.1px solid #7a7a7a;">N°</th>
@@ -87,6 +88,8 @@
                   <th style="text-align: center; border:0.1px solid #7a7a7a;">Misma dirección de negocio (Mismo Negocio)</th>
                   <th style="text-align: center; border:0.1px solid #7a7a7a;">Cnta</th>
                   <th style="text-align: center; border:0.1px solid #7a7a7a;">Unión Económica Familiar (Parejas)</th>
+                  <th style="text-align: center; border:0.1px solid #7a7a7a;">Cnta</th>
+                  <th style="text-align: center; border:0.1px solid #7a7a7a;">Control Directo</th>
                 </tr>
               </thead>
               <tbody>

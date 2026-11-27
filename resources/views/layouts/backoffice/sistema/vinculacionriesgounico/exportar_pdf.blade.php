@@ -126,12 +126,13 @@
               <thead class="table-dark">
                 <tr>
                   <td style="border-top: 2px solid #000;text-align: center;font-weight: bold;" rowspan="2" colspan="3">VINCULADOS</td>
-                  <td style="border-top: 2px solid #000;text-align: center;font-weight: bold;" colspan="4">RIESGO Saldo de Créd.(S/.)</td>
+                  <td style="border-top: 2px solid #000;text-align: center;font-weight: bold;" colspan="6">RIESGO Saldo de Créd.(S/.)</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;font-weight: bold;" rowspan="3">TOTAL</td>
                 </tr> 
                 <tr>
                   <td style="border-top: 2px solid #000;text-align: center;font-weight: bold;" colspan="2">VINCULACIÓN POR GESTIÓN</td>
                   <td style="border-top: 2px solid #000;text-align: center;font-weight: bold;" colspan="2">VINCULACIÓN POR DEPENDENCIA ECONÓMICA O FAMILIAR</td>
+                  <td style="border-top: 2px solid #000;text-align: center;font-weight: bold;" colspan="2">VINCULACIÓN POR PROPIEDAD Y GESTIÓN</td>
                 </tr>
                 <tr>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;font-weight: bold;">N°</td>
@@ -141,6 +142,8 @@
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;font-weight: bold;">Misma dirección de negocio (Mismo Negocio)</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;font-weight: bold;">Cnta</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;font-weight: bold;">Unión Económica Familiar (Parejas)</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;font-weight: bold;">Cnta</td>
+                  <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align: center;font-weight: bold;">Control Directo</td>
                 </tr>
               </thead>
               <tbody>

@@ -151,22 +151,23 @@
               <?php  
               $html = '';
               $total = 0;
+          $familia_por_cliente = [];
+          $numero_fila = 0;
               foreach($credito_garantias as $key => $value){
 
                    $total_valor = 0;
 
-                   $credito_garantias_mismadireccion = DB::table('credito_garantia')
-                      ->join('credito','credito.id','credito_garantia.idcredito')
+                   $credito_garantias_mismadireccion = DB::table('credito')
                       //->join('users as cliente','cliente.id','credito.idcliente')
                       ->join('s_users_prestamo','s_users_prestamo.id_s_users','credito.idcliente')
                       ->where('credito.idestadocredito',1)
                       ->whereIn('credito.estado',['APROBADO','DESEMBOLSADO'])
-                      ->when(!empty($s_users_prestamo->direccionnegocio), fn ($query) => $query->where('s_users_prestamo.direccion_ac_economica', 'LIKE', '%'.$s_users_prestamo->direccionnegocio.'%'), fn ($query) => $query->whereRaw('1 = 0'))
-                      ->where('credito_garantia.idcredito',$value->idcredito)
+                      ->whereIn('credito.idcliente', $clientes_mismo_negocio)
+                      ->where('credito.id',$value->idcredito)
                       //->where('credito_garantia.tipo','AVAL')
                       ->select(
-                          'credito_garantia.*',
                           'credito.cuenta as cuenta',
+                          'credito.monto_solicitado',
                       )
                       ->get();
             
@@ -174,8 +175,8 @@
                   $valor_mismadireccion = '';
                   foreach($credito_garantias_mismadireccion as $valuemismadireccion){
                       $cuenta_mismadireccion = $cuenta_mismadireccion.'C'.$valuemismadireccion->cuenta.'<br>';
-                      $valor_mismadireccion = $valor_mismadireccion.($valuemismadireccion->valor_mercado!=''?$valuemismadireccion->valor_mercado:'0.00').'<br>';
-                      $total_valor += intval($valuemismadireccion->valor_mercado);
+                      $valor_mismadireccion = $valor_mismadireccion.($valuemismadireccion->monto_solicitado!=''?$valuemismadireccion->monto_solicitado:'0.00').'<br>';
+                      $total_valor += (float) $valuemismadireccion->monto_solicitado;
                   }
 
                    $credito_garantias_direccionusuario = DB::table('users')
@@ -190,9 +191,15 @@
                       $cuenta_direccionusuario = 'C'.$value->cuenta;
                       $valor_direccionusuario = $value->valor_mercado;
                   }
-                  $total_valor = number_format($total_valor, 2, '.', '');
+                  if (in_array($value->idcliente, $clientes_mismo_negocio) && $value->idcliente != $idcliente) {
+                  if ($cuenta_direccionusuario !== '') {
+                      $familia_por_cliente[$value->idcliente][$cuenta_direccionusuario] = $valor_direccionusuario;
+                  }
+                  continue;
+              }
+              $total_valor = number_format($total_valor, 2, '.', '');
                   $html .= "<tr id='show_data_select' idcredito='{$value->id}'>
-                                <td>".($key+1)."</td>
+                                <td>".(++$numero_fila)."</td>
                                 <td>{$value->identificacioncliente}</td>
                                 <td style='width: 200px;'>{$value->nombrecliente}</td>
 
@@ -200,18 +207,17 @@
                                 <td style='text-align: right;'>{$valor_mismadireccion}</td>
                                 <td style='text-align: center;width: 80px;'>{$cuenta_direccionusuario}</td>
                                 <td style='text-align: right;'>{$valor_direccionusuario}</td>
-                                <td style='text-align: right;width: 80px;'>{$total_valor}</td>
+                                <td></td><td></td><td style='text-align: right;width: 80px;'>{$total_valor}</td>
                             </tr>";
                   $total += $total_valor;
               }
             
-             $credito_garantias_mismadireccions = DB::table('credito_garantia')
-                ->join('credito','credito.id','credito_garantia.idcredito')
+             $credito_garantias_mismadireccions = DB::table('credito')
                 ->join('users as cliente','cliente.id','credito.idcliente')
                 ->join('s_users_prestamo','s_users_prestamo.id_s_users','credito.idcliente')
                 ->where('credito.idestadocredito',1)
                 ->whereIn('credito.estado',['APROBADO','DESEMBOLSADO'])
-                ->when(!empty($s_users_prestamo->direccionnegocio), fn ($query) => $query->where('s_users_prestamo.direccion_ac_economica', 'LIKE', '%'.$s_users_prestamo->direccionnegocio.'%'), fn ($query) => $query->whereRaw('1 = 0'))
+                ->whereIn('credito.idcliente', $clientes_mismo_negocio)
                 ->where('cliente.id','<>',$idcliente)
                 ->select(
                       'cliente.id as idcliente',
@@ -226,17 +232,16 @@
                    $total_valor = 0;
 
 
-                   $credito_garantias_mismadireccion = DB::table('credito_garantia')
-                      ->join('credito','credito.id','credito_garantia.idcredito')
+                   $credito_garantias_mismadireccion = DB::table('credito')
                       ->join('users as cliente','cliente.id','credito.idcliente')
                       ->join('s_users_prestamo','s_users_prestamo.id_s_users','credito.idcliente')
                       ->where('credito.idestadocredito',1)
                       ->whereIn('credito.estado',['APROBADO','DESEMBOLSADO'])
-                      ->when(!empty($s_users_prestamo->direccionnegocio), fn ($query) => $query->where('s_users_prestamo.direccion_ac_economica', 'LIKE', '%'.$s_users_prestamo->direccionnegocio.'%'), fn ($query) => $query->whereRaw('1 = 0'))
+                      ->whereIn('credito.idcliente', $clientes_mismo_negocio)
                       ->where('cliente.id',$value->idcliente)
                       ->select(
-                          'credito_garantia.*',
                           'credito.cuenta as cuenta',
+                          'credito.monto_solicitado',
                       )
                       ->get();
 
@@ -244,27 +249,30 @@
                   $valor_mismadireccion = '';
                   foreach($credito_garantias_mismadireccion as $valuemismadireccion){
                       $cuenta_mismadireccion = $cuenta_mismadireccion.'C'.$valuemismadireccion->cuenta.'<br>';
-                      $valor_mismadireccion = $valor_mismadireccion.($valuemismadireccion->valor_mercado!=''?$valuemismadireccion->valor_mercado:'0.00').'<br>';
-                      $total_valor += intval($valuemismadireccion->valor_mercado);
+                      $valor_mismadireccion = $valor_mismadireccion.($valuemismadireccion->monto_solicitado!=''?$valuemismadireccion->monto_solicitado:'0.00').'<br>';
+                      $total_valor += (float) $valuemismadireccion->monto_solicitado;
                   }
 
-                  $total_valor = number_format($total_valor, 2, '.', '');
+                  $familia = $familia_por_cliente[$value->idcliente] ?? [];
+              $cuenta_familia = implode('<br>', array_map('e', array_keys($familia)));
+              $valor_familia = implode('<br>', array_map('e', array_values($familia)));
+              $total_valor = number_format($total_valor, 2, '.', '');
                   $html .= "<tr id='show_data_select'>
-                                <td>".($key+1)."</td>
+                                <td>".(++$numero_fila)."</td>
                                 <td>{$value->identificacioncliente}</td>
                                 <td>{$value->nombrecliente}</td>
 
                                 <td style='text-align: center;width: 80px;'>{$cuenta_mismadireccion}</td>
                                 <td style='text-align: right;'>{$valor_mismadireccion}</td>
-                                <td style='text-align: center;width: 80px;'></td>
-                                <td style='text-align: right;'></td>
-                                <td style='text-align: right;width: 80px;'>{$total_valor}</td>
+                                <td style='text-align: center;width: 80px;'>{$cuenta_familia}</td>
+                            <td style='text-align: right;'>{$valor_familia}</td>
+                                <td></td><td></td><td style='text-align: right;width: 80px;'>{$total_valor}</td>
                             </tr>";
                   $total += $total_valor;
               }
               $html .= '
                 <tr style="position: sticky;bottom: 0;">
-                  <td colspan="7" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">TOTAL S/.</td>
+                  <td colspan="9" style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">TOTAL S/.</td>
                   <td style="border-top: 2px solid #000;border-bottom: 2px solid #000;text-align:right;font-weight: bold;">'.number_format($total, 2, '.', '').'</td>
                 </tr>';
                 echo $html;

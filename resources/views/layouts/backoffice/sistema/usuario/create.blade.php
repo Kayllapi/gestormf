@@ -429,7 +429,7 @@
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-5">
-                        <div id="cont_casanegocio">
+                        <div class="cont_casanegocio">
                             <div class="mb-1">
                                 <label>Direccion  <span class="text-danger">(*)</span></label>
                                 <input type="text" class="form-control" id="direccion_ac_economica">
@@ -438,7 +438,7 @@
                     </div>
 
                     <div class="col-sm-12 col-md-4">
-                        <div id="cont_casanegocio">
+                        <div class="cont_casanegocio">
                             <div class="mb-1">
                                 <label id="cont-ubigeo">Distrito – Provincia – Departamento <span class="text-danger">(*)</span></label>
                                 <select class="form-control" id="idubigeo_ac_economica">
@@ -448,7 +448,7 @@
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-6">
-                        <div id="cont_casanegocio">
+                        <div class="cont_casanegocio">
                             <div class="mb-1">
                                 <label>Referencia de Ubicación <span class="text-danger">(*)</span></label>
                                 <input type="text" class="form-control" id="referencia_ac_economica">
@@ -456,7 +456,7 @@
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-4">
-                        <div id="cont_casanegocio">
+                        <div class="cont_casanegocio">
                             <div class="mb-1">
                                 <label>Local Negocio  <span class="text-danger">(*)</span></label>
                                 <select class="form-control" id="idlocalnegocio_ac_economica">
@@ -910,7 +910,14 @@
             destino.val(null).trigger('change');
         }
     }
-    $('#casanegocio').on('change', sincronizar_casa_negocio);
+    function mostrar_direccion_negocio() {
+        $('.cont_casanegocio').toggle(!$('#casanegocio').is(':checked'));
+    }
+    $('#casanegocio').on('change', function () {
+        mostrar_direccion_negocio();
+        sincronizar_casa_negocio();
+    });
+    mostrar_direccion_negocio();
     $('#direccion, #referencia_direccion').on('input', sincronizar_casa_negocio);
     $('#idubigeo, #idcondicionviviendalocal').on('change', sincronizar_casa_negocio);
 

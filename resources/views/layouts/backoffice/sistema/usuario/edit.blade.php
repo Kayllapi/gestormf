@@ -1015,20 +1015,26 @@
         $('#cont_centrolaboraldepareja').css('display','none');
     }
   
-    // INICIO CHECK CASA NEGOCIO
-    @if($users_prestamo)
-    if('{{$users_prestamo->casanegocio}}'=='SI'){
-        $('div#cont_casanegocio').css('display','none');
-    }
-    @endif
-  
-    $('#casanegocio').change(function() {
-        $('div#cont_casanegocio').css('display','none');
-        if(!$('#casanegocio').is(":checked")){
-            $('div#cont_casanegocio').css('display','block');
+    function sincronizar_casa_negocio() {
+        if (!$('#casanegocio').is(':checked')) return;
+
+        $('#direccion_ac_economica').val($('#direccion').val());
+        $('#referencia_ac_economica').val($('#referencia_direccion').val());
+        $('#idlocalnegocio_ac_economica').val($('#idcondicionviviendalocal').val()).trigger('change');
+        const origen = $('#idubigeo option:selected');
+        const destino = $('#idubigeo_ac_economica');
+        if (origen.val()) {
+            if (!destino.find('option').filter(function () { return this.value === origen.val(); }).length) {
+                destino.append(new Option(origen.text(), origen.val(), false, false));
+            }
+            destino.val(origen.val()).trigger('change');
+        } else {
+            destino.val(null).trigger('change');
         }
-    });
-    // FIN CHECK CASA NEGOCIO
+    }
+    $('#casanegocio').on('change', sincronizar_casa_negocio);
+    $('#direccion, #referencia_direccion').on('input', sincronizar_casa_negocio);
+    $('#idubigeo, #idcondicionviviendalocal').on('change', sincronizar_casa_negocio);
 
   
     function agregar_cliente_financiera(tabla,valor=''){

@@ -746,6 +746,15 @@ class UsuarioController extends Controller
                 'codigo'       => 'CL'.str_pad($user_id, 8, "0", STR_PAD_LEFT),
             ]);*/
 
+            if ($request->input('casanegocio')) {
+                $direccion_ac_economica = $request->input('direccion');
+                $idubigeo_ac_economica = $idubigeo;
+                $referencia_ac_economica = $referencia_direccion;
+                $idlocalnegocio_ac_economica = $idcondicionviviendalocal;
+                $db_idubigeo_ac_economica = $db_idubigeo;
+                $db_idlocalnegocio_ac_economica = $db_idcondicionviviendalocal;
+            }
+
             $estado_casa_negocio = $request->input('casanegocio') ? 'SI' : 'NO'; 
             $informacin_cliente = [
                 'idtipodocumento'       => $request->idtipodocumento != null ? $request->idtipodocumento : 0 ,
@@ -1781,6 +1790,15 @@ class UsuarioController extends Controller
             ]);
             
             
+            if ($request->input('casanegocio')) {
+                $direccion_ac_economica = $request->input('direccion');
+                $idubigeo_ac_economica = $idubigeo;
+                $referencia_ac_economica = $referencia_direccion;
+                $idlocalnegocio_ac_economica = $idcondicionviviendalocal;
+                $db_idubigeo_ac_economica = $db_idubigeo;
+                $db_idlocalnegocio_ac_economica = $db_idcondicionviviendalocal;
+            }
+
             $estado_casa_negocio = $request->input('casanegocio') ? 'SI' : 'NO'; 
             $informacin_cliente = [
                 'idtipodocumento'       => $request->idtipodocumento != null ? $request->idtipodocumento : 0 ,

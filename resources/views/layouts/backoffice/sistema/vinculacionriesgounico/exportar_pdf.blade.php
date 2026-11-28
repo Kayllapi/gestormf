@@ -124,9 +124,20 @@
     <div class="container">
       <h4 align="center">VINCULACIÓN POR RIESGO UNICO</h4>
       
-           <b>CLIENTE/AVAL: </b>{{ $cliente }}<br>
-           <b>DIRECCIÓN DE DOMICILIO: </b>{{ $direcciondomicilio }}<br>
-           <b>DIRECCIÓN DE NEGOCIO: </b>{{ $direccionnegocio }}<br><br>
+           @php($dependiente = (int) $actividad['idfuenteingreso'] === 2)
+           <table style="width:100%; margin-bottom: 12px;">
+             <tr>
+               <td style="width:65%; vertical-align:top;">
+                 <b>CLIENTE/AVAL: </b>{{ $cliente }}<br>
+                 <b>DIRECCIÓN DE DOMICILIO: </b>{{ $direcciondomicilio }}<br>
+                 <b>{{ $dependiente ? 'EMPRESA' : 'DIRECCIÓN DE NEGOCIO' }}: </b>{{ $dependiente ? $actividad['empresa'] : $direccionnegocio }}
+               </td>
+               <td style="width:35%; vertical-align:top; text-transform:uppercase;">
+                 <b>FUENTE DE INGRESO: </b>{{ $actividad['fuenteingreso'] }}<br>
+                 <b>{{ $dependiente ? 'CARGO' : 'GIRO ECONÓMICO' }}: </b>{{ $dependiente ? $actividad['cargo'] : $actividad['giro_economico'] }}
+               </td>
+             </tr>
+           </table>
             
             <table style="width:100%;">
               <thead class="table-dark">

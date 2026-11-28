@@ -84,16 +84,10 @@ class VinculacionRiesgoUnicoController extends Controller
               ->where('id_s_users',$request->idcliente)
               ->select('s_users_prestamo.direccion_ac_economica as direccionnegocio','db_idubigeo_ac_economica', 'idubigeo_ac_economica')->first();
 
-            $fuenteingreso = $cliente ? ($cliente->fuente_ingreso != null && $cliente->fuente_ingreso != '' ? $cliente->fuente_ingreso : $cliente->db_idfuenteingreso) : '';
-            return response()->json([
+            return response()->json(array_merge([
                 'direcciondomicilio' => $cliente->direcciondomicilio.', '.$cliente->db_idubigeo,
                 'direccionnegocio'   => $s_users_prestamo->direccionnegocio.', '.$s_users_prestamo->db_idubigeo_ac_economica,
-                'fuenteingreso' => $fuenteingreso,
-                'idfuenteingreso' => $cliente->idfuenteingreso ?? null,
-                'giro_economico' => [1 => 'COMERCIO', 2 => 'SERVICIO', 3 => 'PRODUCCION'][$cliente->idgiro_ac_economica ?? 0] ?? ($cliente->db_idgiro_ac_economica ?? ''),
-                'cargo' => $cliente->cargo_laboral_cliente ?? '',
-                'empresa' => $cliente->razonsocial_laboral_cliente ?? '',
-            ]);
+            ], $this->datosActividad($cliente)));
         }
         
         if($id == 'show_credito'){
@@ -137,14 +131,16 @@ class VinculacionRiesgoUnicoController extends Controller
           abort_unless($cliente, 404, 'Seleccione un cliente válido para generar el reporte.');
             
             $s_users_prestamo = DB::table('s_users_prestamo')
-              ->where('id_s_users', $request->idcliente)
-              ->select('direccion_ac_economica as direccionnegocio', 'db_idubigeo_ac_economica')->first();
+              ->leftJoin('f_fuenteingreso', 'f_fuenteingreso.id', '=', 's_users_prestamo.idfuenteingreso')
+              ->where('s_users_prestamo.id_s_users', $request->idcliente)
+              ->select('s_users_prestamo.*', 's_users_prestamo.direccion_ac_economica as direccionnegocio', 'f_fuenteingreso.nombre as fuente_ingreso')->first();
             $filas = \App\Support\VinculacionRiesgoUnico::filas($request->idcliente);
             $pdf = PDF::loadView(sistema_view().'/vinculacionriesgounico/exportar_pdf',[
                 'tienda' => $tienda,
                 'filas' => $filas,
                 'idcliente' => $request->idcliente,
                 's_users_prestamo' => $s_users_prestamo,
+                'actividad' => $this->datosActividad($s_users_prestamo),
                 'cliente' => $cliente->identificacion.' - '.$cliente->nombrecompleto,
                 'direcciondomicilio' => $cliente->direcciondomicilio.', '.$cliente->db_idubigeo,
                 'direccionnegocio'   => trim(($s_users_prestamo->direccionnegocio ?? '').', '.($s_users_prestamo->db_idubigeo_ac_economica ?? ''), ', '),
@@ -152,6 +148,17 @@ class VinculacionRiesgoUnicoController extends Controller
             $pdf->setPaper('A4', 'landscape');
             return $pdf->stream('CARTERA_DE_CREDITO.pdf');
         }  
+    }
+
+    private function datosActividad($datos): array
+    {
+        return [
+            'fuenteingreso' => ($datos->fuente_ingreso ?? '') ?: ($datos->db_idfuenteingreso ?? ''),
+            'idfuenteingreso' => $datos->idfuenteingreso ?? null,
+            'giro_economico' => [1 => 'COMERCIO', 2 => 'SERVICIO', 3 => 'PRODUCCION'][$datos->idgiro_ac_economica ?? 0] ?? ($datos->db_idgiro_ac_economica ?? ''),
+            'cargo' => $datos->cargo_laboral_cliente ?? '',
+            'empresa' => $datos->razonsocial_laboral_cliente ?? '',
+        ];
     }
 
     public function update(Request $request, $idtienda, $id)

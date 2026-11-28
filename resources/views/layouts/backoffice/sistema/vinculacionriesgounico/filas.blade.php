@@ -9,8 +9,8 @@
         <td class="text-end">@foreach($fila['gestion'] as $cuenta){{ number_format($cuenta['monto'], 2, '.', '') }}<br>@endforeach</td>
         <td class="text-center">@foreach($fila['familia'] as $cuenta)C{{ $cuenta['cuenta'] }}<br>@endforeach</td>
         <td class="text-end">@foreach($fila['familia'] as $cuenta){{ number_format($cuenta['monto'], 2, '.', '') }}<br>@endforeach</td>
-        <td></td>
-        <td></td>
+        <td class="text-center">@foreach($fila['propiedad'] as $cuenta)C{{ $cuenta['cuenta'] }}<br>@endforeach</td>
+        <td class="text-end">@foreach($fila['propiedad'] as $cuenta){{ number_format($cuenta['monto'], 2, '.', '') }}<br>@endforeach</td>
         <td class="text-end">{{ number_format($fila['total'], 2, '.', '') }}</td>
     </tr>
 @endforeach

@@ -8,7 +8,7 @@ class VinculacionRiesgoUnico
 {
     public static function filas($idCliente): array
     {
-        $cliente = DB::table('users')->where('id', $idCliente)->first(['id', 'idestadocivil']);
+        $cliente = DB::table('users')->where('id', $idCliente)->first(['id', 'idestadocivil', 'identificacion']);
         $datos = DB::table('s_users_prestamo')->where('id_s_users', $idCliente)
             ->first(['dni_pareja', 'direccion_ac_economica', 'idubigeo_ac_economica']);
 
@@ -27,7 +27,14 @@ class VinculacionRiesgoUnico
             }
         }
 
-        $ids = array_unique(array_merge($gestion, $pareja === null ? [] : [$pareja]));
+        $documento = trim((string) $cliente->identificacion);
+        $propiedad = $documento === '' ? [] : DB::table('users')
+            ->join('s_users_prestamo', 's_users_prestamo.id_s_users', '=', 'users.id')
+            ->where('users.idtipopersona', 2)
+            ->where('s_users_prestamo.documento_representantelegal', $documento)
+            ->pluck('users.id')->unique()->all();
+
+        $ids = array_unique(array_merge($gestion, $propiedad, $pareja === null ? [] : [$pareja]));
         $creditos = DB::table('credito')->join('users', 'users.id', '=', 'credito.idcliente')
             ->whereIn('credito.idcliente', $ids)->where('credito.idcliente', '<>', $idCliente)
             ->where('credito.idestadocredito', 1)->whereIn('credito.estado', ['APROBADO', 'DESEMBOLSADO'])
@@ -38,7 +45,7 @@ class VinculacionRiesgoUnico
         foreach ($creditos as $credito) {
             $id = $credito->idcliente;
             if (! isset($filas[$id])) {
-                $filas[$id] = ['identificacion' => $credito->identificacion, 'nombre' => $credito->nombrecompleto, 'gestion' => [], 'familia' => [], 'total' => 0];
+                $filas[$id] = ['identificacion' => $credito->identificacion, 'nombre' => $credito->nombrecompleto, 'gestion' => [], 'familia' => [], 'propiedad' => [], 'total' => 0];
             }
             $cuenta = ['cuenta' => $credito->cuenta, 'monto' => (float) $credito->monto_solicitado];
             if (in_array($id, $gestion)) {
@@ -46,6 +53,9 @@ class VinculacionRiesgoUnico
             }
             if ($pareja !== null && (string) $id === (string) $pareja) {
                 $filas[$id]['familia'][] = $cuenta;
+            }
+            if (in_array($id, $propiedad)) {
+                $filas[$id]['propiedad'][] = $cuenta;
             }
             $filas[$id]['total'] += $cuenta['monto'];
         }

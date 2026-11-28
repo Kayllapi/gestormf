@@ -18,11 +18,12 @@ class VinculacionRiesgoUnicoParejaTest extends TestCase
         ]]);
         Schema::create('users', function (Blueprint $t) {
             $t->integer('id')->primary(); $t->integer('idestadocivil');
-            $t->string('identificacion'); $t->string('nombrecompleto');
+            $t->string('identificacion'); $t->string('nombrecompleto'); $t->integer('idtipopersona')->default(1);
         });
         Schema::create('s_users_prestamo', function (Blueprint $t) {
             $t->integer('id_s_users'); $t->string('dni_pareja')->nullable();
             $t->string('direccion_ac_economica')->nullable(); $t->integer('idubigeo_ac_economica')->nullable();
+            $t->string('documento_representantelegal')->nullable();
         });
         Schema::create('credito', function (Blueprint $t) {
             $t->integer('id')->primary(); $t->integer('idcliente'); $t->string('cuenta');
@@ -71,5 +72,27 @@ class VinculacionRiesgoUnicoParejaTest extends TestCase
         $this->assertCount(1, $filas);
         $this->assertEmpty($filas[0]['gestion']);
         $this->assertSame('180', $filas[0]['familia'][0]['cuenta']);
+    }
+
+    public function test_encuentra_personas_juridicas_del_representante_sin_duplicar_totales(): void
+    {
+        DB::table('users')->insert([
+            ['id' => 3, 'idestadocivil' => 1, 'identificacion' => '20123456789', 'nombrecompleto' => 'Empresa', 'idtipopersona' => 2],
+            ['id' => 4, 'idestadocivil' => 1, 'identificacion' => '87654321', 'nombrecompleto' => 'Natural', 'idtipopersona' => 1],
+        ]);
+        DB::table('s_users_prestamo')->insert([
+            ['id_s_users' => 3, 'documento_representantelegal' => '11111111', 'direccion_ac_economica' => 'Jr Union 123', 'idubigeo_ac_economica' => 10],
+            ['id_s_users' => 4, 'documento_representantelegal' => '11111111', 'direccion_ac_economica' => null, 'idubigeo_ac_economica' => null],
+        ]);
+        DB::table('credito')->insert([
+            ['id' => 3, 'idcliente' => 3, 'cuenta' => '200', 'monto_solicitado' => 250.75, 'idestadocredito' => 1, 'estado' => 'APROBADO'],
+            ['id' => 4, 'idcliente' => 4, 'cuenta' => '201', 'monto_solicitado' => 100, 'idestadocredito' => 1, 'estado' => 'APROBADO'],
+        ]);
+        $filas = collect(VinculacionRiesgoUnico::filas(1));
+        $empresa = $filas->firstWhere('nombre', 'Empresa');
+        $this->assertSame('200', $empresa['propiedad'][0]['cuenta']);
+        $this->assertCount(1, $empresa['gestion']);
+        $this->assertEquals(250.75, $empresa['total']);
+        $this->assertNull($filas->firstWhere('nombre', 'Natural'));
     }
 }

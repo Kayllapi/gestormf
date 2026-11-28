@@ -232,7 +232,8 @@
 
    function exportar_pdf(){
       if (!$('#idcliente').val()) {
-          alert('Seleccione un cliente o aval para generar el reporte.');
+          mensaje = 'Seleccione un cliente o aval para generar el reporte.';
+          modal({ route:"{{url('backoffice/'.$tienda->id.'/inicio/create?view=alerta')}}&mensaje="+mensaje, size: 'modal-sm' });
           return;
       }
       let url = "{{ url('backoffice/'.$tienda->id) }}/vinculacionriesgounico/0/edit?view=exportar&idcliente="+$('#idcliente').val()+

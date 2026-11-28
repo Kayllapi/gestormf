@@ -235,6 +235,8 @@ class VinculacionRiesgoUnicoController extends Controller
                 'users.db_idubigeo',
                 's_users_prestamo.idfuenteingreso',
                 's_users_prestamo.db_idfuenteingreso',
+                's_users_prestamo.idgiro_ac_economica',
+                's_users_prestamo.db_idgiro_ac_economica',
                 'f_fuenteingreso.nombre as fuente_ingreso'
                 )
               ->first();
@@ -247,6 +249,7 @@ class VinculacionRiesgoUnicoController extends Controller
                 'direcciondomicilio' => $cliente->direcciondomicilio.', '.$cliente->db_idubigeo,
                 'direccionnegocio'   => $s_users_prestamo->direccionnegocio.', '.$s_users_prestamo->db_idubigeo_ac_economica,
                 'fuenteingreso' => $fuenteingreso,
+                'giro_economico' => [1 => 'COMERCIO', 2 => 'SERVICIO', 3 => 'PRODUCCION'][$cliente->idgiro_ac_economica ?? 0] ?? ($cliente->db_idgiro_ac_economica ?? ''),
             ]);
         }
         

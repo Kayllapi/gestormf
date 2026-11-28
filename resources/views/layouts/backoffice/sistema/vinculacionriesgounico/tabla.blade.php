@@ -40,7 +40,10 @@
                                   <button type="button" class="btn btn-success" onclick="lista_credito()"><i class="fa-solid fa-search"></i> FILTRAR</button>
                                 </div>
                                 <div class="col-sm-4">
-                                    <input type="text" disabled value="" class="form-control" id="data-fuente-ingreso" style="background-color: white;">
+                                    <input type="text" disabled value="" class="form-control" id="data-fuente-ingreso" aria-label="Fuente de ingreso" placeholder="Fuente de ingreso" style="background-color: white;">
+                                </div>
+                                <div class="col-sm-4">
+                                    <input type="text" disabled value="" class="form-control" id="data-giro-economico" aria-label="Giro económico" placeholder="Giro económico" style="background-color: white;">
                                 </div>
                               </div>
                           </div>
@@ -184,6 +187,7 @@
         $('#data-direccion-domicilio').val(res.direcciondomicilio);
         $('#data-direccion-negocio').val(res.direccionnegocio);
         $('#data-fuente-ingreso').val(res.fuenteingreso);
+        $('#data-giro-economico').val(res.giro_economico);
       }
     })
   }

@@ -237,6 +237,8 @@ class VinculacionRiesgoUnicoController extends Controller
                 's_users_prestamo.db_idfuenteingreso',
                 's_users_prestamo.idgiro_ac_economica',
                 's_users_prestamo.db_idgiro_ac_economica',
+                's_users_prestamo.cargo_laboral_cliente',
+                's_users_prestamo.razonsocial_laboral_cliente',
                 'f_fuenteingreso.nombre as fuente_ingreso'
                 )
               ->first();
@@ -249,7 +251,10 @@ class VinculacionRiesgoUnicoController extends Controller
                 'direcciondomicilio' => $cliente->direcciondomicilio.', '.$cliente->db_idubigeo,
                 'direccionnegocio'   => $s_users_prestamo->direccionnegocio.', '.$s_users_prestamo->db_idubigeo_ac_economica,
                 'fuenteingreso' => $fuenteingreso,
+                'idfuenteingreso' => $cliente->idfuenteingreso ?? null,
                 'giro_economico' => [1 => 'COMERCIO', 2 => 'SERVICIO', 3 => 'PRODUCCION'][$cliente->idgiro_ac_economica ?? 0] ?? ($cliente->db_idgiro_ac_economica ?? ''),
+                'cargo' => $cliente->cargo_laboral_cliente ?? '',
+                'empresa' => $cliente->razonsocial_laboral_cliente ?? '',
             ]);
         }
         

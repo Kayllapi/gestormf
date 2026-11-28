@@ -40,16 +40,16 @@
                                   <button type="button" class="btn btn-success" onclick="lista_credito()"><i class="fa-solid fa-search"></i> FILTRAR</button>
                                 </div>
                                 <div class="col-sm-4">
-                                    <input type="text" disabled value="" class="form-control" id="data-fuente-ingreso" aria-label="Fuente de ingreso" placeholder="Fuente de ingreso" style="background-color: white;">
+                                    <input type="text" disabled value="" class="form-control" id="data-fuente-ingreso" aria-label="Fuente de ingreso" placeholder="Fuente de ingreso" style="background-color: white; text-transform: uppercase;">
                                 </div>
                                 <div class="col-sm-4">
-                                    <input type="text" disabled value="" class="form-control" id="data-giro-economico" aria-label="Giro económico" placeholder="Giro económico" style="background-color: white;">
+                                    <input type="text" disabled value="" class="form-control" id="data-giro-economico" aria-label="Giro económico" placeholder="Giro económico" style="background-color: white; text-transform: uppercase;">
                                 </div>
                               </div>
                           </div>
                            <div class="col-sm-6 col-md-6">
                               <div class="row">
-                                <label for="fecha_fin" class="col-sm-4 col-form-label">DIRECCIÓN DE NEGOCIO</label>
+                                <label for="data-direccion-negocio" class="col-sm-4 col-form-label" id="label-direccion-negocio">DIRECCIÓN DE NEGOCIO</label>
                                 <div class="col-sm-8">
                                     <input type="text" disabled value="" class="form-control" id="data-direccion-negocio" style="background-color: white;">
                                 </div>
@@ -184,10 +184,13 @@
           idcliente : id
       },
       success: function (res){
+        if (String($('#idcliente').val()) !== String(id)) return;
+        const dependiente = Number(res.idfuenteingreso) === 2;
         $('#data-direccion-domicilio').val(res.direcciondomicilio);
-        $('#data-direccion-negocio').val(res.direccionnegocio);
+        $('#label-direccion-negocio').text(dependiente ? 'EMPRESA' : 'DIRECCIÓN DE NEGOCIO');
+        $('#data-direccion-negocio').val(dependiente ? res.empresa : res.direccionnegocio);
         $('#data-fuente-ingreso').val(res.fuenteingreso);
-        $('#data-giro-economico').val(res.giro_economico);
+        $('#data-giro-economico').attr({'aria-label': dependiente ? 'Cargo' : 'Giro económico', 'placeholder': dependiente ? 'Cargo' : 'Giro económico'}).val(dependiente ? res.cargo : res.giro_economico);
       }
     })
   }

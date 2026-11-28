@@ -15,7 +15,7 @@
     </tr>
 @endforeach
 <tr class="tabla-total">
-    <th colspan="8" class="text-end" style="text-align:right; border-top: 2px solid #000;"></th>
-    <th class="text-end" style="text-align:center; border-top: 2px solid #000; border-bottom: 2px solid #000;">TOTAL S/.</th>
-    <th class="text-end" style="text-align:right; border-top: 2px solid #000; border-bottom: 2px solid #000;">{{ number_format($total, 2, '.', '') }}</th>
+    <th colspan="8" class="text-end" style="text-align:right;"></th>
+    <th class="text-end total-importe" style="text-align:center;">TOTAL S/.</th>
+    <th class="text-end total-importe" style="text-align:right;">{{ number_format($total, 2, '.', '') }}</th>
 </tr>

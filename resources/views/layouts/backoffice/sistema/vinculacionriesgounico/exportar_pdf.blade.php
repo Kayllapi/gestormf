@@ -84,6 +84,12 @@
       .border-td{
         border:solid 1px #888888;    
       }
+      .tabla-total th {
+        border-top: 2px solid #000;
+      }
+      .tabla-total .total-importe {
+        border-bottom: 2px solid #000;
+      }
       
       .table, .table th, .table td {
         border: 1px solid #888888;
